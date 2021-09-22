@@ -18,6 +18,28 @@ const Guild = require('./models/guild');
 const colors = require('./files/colors.json');
 const config = require('./files/config.json');
 
+const settings = await Guild.findOne({
+    guildID: message.guild.id
+}, (err, guild) => {
+    if (err) message.channel.send(errorMain);
+    if (!guild) {
+        const newGuild = new Guild({
+            _id: mongoose.Types.ObjectId(),
+            guildID: message.guild.id,
+            prefix: config.PREFIX,
+            logChannelID: String,
+            enableLog: false,
+            enableSwearFilter: true,
+            enableMusic: true,
+            enableLevel: true,
+        });
+
+        newGuild.save()
+            .catch(err => message.channel.send(errorMain));
+        return message.channel.send({embeds: [addedDatabase]}).then(m => m.delete({ timeout: 10000 }))
+    }
+});
+
 client.commands = new Discord.Collection();
 client.mongoose = require('./utils/mongoose');
 
