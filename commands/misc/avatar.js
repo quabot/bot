@@ -13,10 +13,10 @@ module.exports = {
 
         let user = message.author || message.mentions.users.first();
         let author = message.author;
-        let avatar = user.displayAvatarURL({ size: 1024 });
+        let avatar = user.displayAvatarURL({ size: 1024, dynamic: true });
 
         const embed = new discord.MessageEmbed()
-            .setTitle(`${user.username}'s avatar`)
+            .setTitle(`Avatar of ${user.username}`)
             .setImage(avatar)
             .setColor(colors.COLOR)
             .setFooter(`Requested by: ${author.tag}`)

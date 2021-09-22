@@ -21,7 +21,7 @@ module.exports = {
     aliases: ["ap"],
     async execute(client, message, args) {
 
-                console.log("Command `autoplay` was used.");
+        console.log("Command `autoplay` was used.");
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
@@ -56,8 +56,8 @@ module.exports = {
         if (!message.member.voice.channel) return message.channel.send(notVC);
 
         const newMode = new discord.MessageEmbed()
-            .setDescription(`Autoplay is now \`${client.player.toggleAutoplay(message) ? "ON" : "OFF"}\`!`)
+            .setTitle(`Autoplay is now \`${client.player.toggleAutoplay(message) ? "ON" : "OFF"}\`!`)
             .setColor(colors.COLOR);
-        message.channel.send(newMode);
+        message.channel.send({ embeds: [newMode] });
     }
 }

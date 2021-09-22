@@ -60,8 +60,8 @@ module.exports = {
         }
 
         const embed = new discord.MessageEmbed()
-            .setDescription(`Succesfully joined ${message.author}'s voice channel!`)
+            .setDescription(`Succesfully joined the voice chanel of ${message.author}!`)
             .setColor(colors.COLOR);
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     }
 }

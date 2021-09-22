@@ -59,7 +59,7 @@ module.exports = {
         if (!message.member.voice.channel) return message.channel.send(notVC);
 
         let queue = client.player.getQueue(message);
-        if (!queue) return message.channel.send(noPlay);
+        if (!queue) return message.channel.send({ embeds: [noPlay] });
 
         const song0 = queue.songs[0];
         const song1 = queue.songs[1];
@@ -76,8 +76,8 @@ module.exports = {
             const a = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(a);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [a] });
             return;
         }
 
@@ -85,8 +85,8 @@ module.exports = {
             const b = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(b);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [b] });
             return;
         }
 
@@ -94,8 +94,8 @@ module.exports = {
             const c = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(c);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [c] });
             return;
         }
 
@@ -103,8 +103,8 @@ module.exports = {
             const d = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(d);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [d] });
             return;
         }
 
@@ -112,8 +112,8 @@ module.exports = {
             const e = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}\n5. ${song4.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(e);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [e] });
             return;
         }
 
@@ -121,8 +121,8 @@ module.exports = {
             const f = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}\n5. ${song4.name}\n6. ${song5.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(f);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [f] });
             return;
         }
 
@@ -130,8 +130,8 @@ module.exports = {
             const g = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}\n5. ${song4.name}\n6. ${song5.name}\n7. ${song6.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(g);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [g] });
             return;
         }
 
@@ -139,8 +139,8 @@ module.exports = {
             const h = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}\n5. ${song4.name}\n6. ${song5.name}\n7. ${song6.name}\n8. ${song7.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(h);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [h] });
             return;
         }
 
@@ -148,8 +148,8 @@ module.exports = {
             const i = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}\n5. ${song4.name}\n6. ${song5.name}\n7. ${song6.name}\n8. ${song7.name}\n9. ${song8.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(i);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [i] });
             return;
         }
 
@@ -157,8 +157,8 @@ module.exports = {
             const j = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}\n5. ${song4.name}\n6. ${song5.name}\n7. ${song6.name}\n8. ${song7.name}\n9. ${song9.name}\n10.${song10.name}`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(j);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [j] });
             return;
         }
 
@@ -166,8 +166,8 @@ module.exports = {
             const k = new discord.MessageEmbed()
                 .setDescription(`1. ${song0.name}\n2. ${song1.name}\n3. ${song2.name}\n4. ${song3.name}\n5. ${song4.name}\n6. ${song5.name}\n7. ${song6.name}\n8. ${song7.name}\n9. ${song9.name}\n10.${song10.name}\nMore songs will be shown soon.`)
                 .setColor(colors.COLOR)
-                .setTitle("Quabot Queue")
-            message.channel.send(k);
+                .setTitle("Music Queue")
+            message.channel.send({ embeds: [k] });
             return;
         }
     }

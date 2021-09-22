@@ -15,8 +15,9 @@ module.exports = {
         const members = guild.memberCount;
         const membersEmbed = new discord.MessageEmbed()
             .setColor(colors.COLOR)
-            .setDescription(`This server has **${members}** members!`)
-        message.channel.send(membersEmbed)
+            .setThumbnail(message.guild.iconURL({ dynamic: true }))
+            .setTitle(`${message.guild.name} has **${members}** members!`)
+        message.channel.send({ embeds: [membersEmbed] })
 
     }
 }

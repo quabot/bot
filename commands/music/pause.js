@@ -59,6 +59,6 @@ module.exports = {
         const pausedQueue = new discord.MessageEmbed()
             .setDescription(`:pause_button: Paused the queue!`)
             .setColor(colors.COLOR);
-        message.channel.send(pausedQueue);
+        message.channel.send({ embeds: [pausedQueue] });
     }
 }

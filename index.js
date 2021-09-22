@@ -1,4 +1,5 @@
 const { Client, Intents } = require('discord.js');
+const Discord = require("discord.js");
 const client = new Client({
 	intents: [
 		'GUILDS',
@@ -9,32 +10,35 @@ const client = new Client({
 	],
 });
 
-const Discord = require("discord.js");
 const Levels = require("discord.js-leveling");
 const { GiveawaysManager } = require('discord-giveaways');
 const DisTube = require('distube');
 const mongoose = require("./utils/mongoose");
-const Guild = require('./models/guild');
+
+client.mongoose = require('./utils/mongoose');
 const colors = require('./files/colors.json');
 const config = require('./files/config.json');
 
 client.commands = new Discord.Collection();
-client.mongoose = require('./utils/mongoose');
-
 ['command_handler', 'event_handler'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
 });
+
+// get functions config.js:
+const prefix = "!";
+const func = require('./commands/management[!]/config');
+
+console.log("Loaded index.js");
+
 const player = new DisTube.default(client, {
 	searchSongs: 1,
 	leaveOnEmpty: true,
 	emptyCooldown: 60,
 	leaveOnFinish: true,
 	leaveOnStop: true
-})
+});
 
-// get functions config.js:
-const prefix = require('./commands/management/config');
-const func = require('./commands/management/config')
+client.player = player;
 
 player.on('playSong', (message, queue, song) => {
     const playingEmbed = new Discord.MessageEmbed()
@@ -51,9 +55,8 @@ player.on('playSong', (message, queue, song) => {
         .addField("Autoplay", `\`${queue.autoplay}\``, true)
         .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
         .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
-    message.channel.send(playingEmbed);
+    message.channel.send({ embeds: [playingEmbed] });
 });
-
 player.on('addSong', (message, queue, song) => {
     const addedEmbed = new Discord.MessageEmbed()
         .setColor(colors.COLOR)
@@ -62,36 +65,31 @@ player.on('addSong', (message, queue, song) => {
         .addField("Added by", song.user, true)
         .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
         .addField("Duration", `${song.formattedDuration}`, true)
-    message.channel.send(addedEmbed);
+    message.channel.send({ embeds: [addedEmbed] });
 });
-
 player.on('error', (message, err) => {
     const musicErrorEmbed = new Discord.MessageEmbed()
-        .setDescription("There was an error!")
+        .setTitle("There was an error!")
         .setColor(colors.COLOR)
-    message.channel.send(musicErrorEmbed);
+    message.channel.send({ embeds: [musicErrorEmbed] });
 });
-
 player.on('finish', message => {
     const finishQueueEmbed = new Discord.MessageEmbed()
-        .setDescription("There are no more songs in queue, leaving voice channel!")
+        .setTitle("There are no more songs in queue, leaving voice channel!")
         .setColor(colors.COLOR)
-    message.channel.send(finishQueueEmbed);
+    message.channel.send({ embeds: [finishQueueEmbed] });
 });
-
 player.on('initQueue', queue => {
     queue.autoplay = false,
         queue.volume = 50
 });
-
 player.on('noRelated', message => {
     const noRelatedEmbed = new Discord.MessageEmbed()
-        .setDescription("Could not find any related songs, stopping queue!")
+        .setTitle("Could not find any related songs, stopping queue!")
         .setColor(colors.COLOR)
-    message.channel.send(noRelatedEmbed);
+    message.channel.send({ embeds: [noRelatedEmbed] });
 });
 
-client.player = player;
 
 client.giveawaysManager = new GiveawaysManager(client, {
     storage: "./files/giveaways.json",
@@ -267,5 +265,4 @@ client.on("interactionCreate", async (interaction) => {
 
 Levels.setURL("mongodb+srv://admin:AbyUoKpaaWrjK@cluster.n4eqp.mongodb.net/Database?retryWrites=true&w=majority");
 client.mongoose.init();
-console.log("Loaded index.js")
 client.login(config.BOT_TOKEN);

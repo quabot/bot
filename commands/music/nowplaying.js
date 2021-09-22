@@ -68,7 +68,7 @@ module.exports = {
             .addField("Volume", `\`${queue.volume}%\``, true)
             .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
             .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``)
-        message.channel.send(playingEmbed);
+        message.channel.send({ embeds: [playingEmbed] });
 
     }
 }

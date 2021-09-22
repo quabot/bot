@@ -57,11 +57,11 @@ module.exports = {
             }
         });
 
-        if (settings.enableMusic === "false") return message.channel.send(musicOff);
-        if (!message.member.voice.channel) return message.channel.send(notVC);
+        if (settings.enableMusic === "false") return message.channel.send({ embeds: [musicOff] });
+        if (!message.member.voice.channel) return message.channel.send({ embeds: [notVC] });
 
         let search = args.join(" ");
-        if (!search) return message.channel.send(noSearch);
+        if (!search) return message.channel.send({ embeds: [noSearch] });
 
         client.player.play(message, search);
     }
