@@ -11,15 +11,15 @@ module.exports = {
     name: "debug",
     aliases: [],
     async execute(client, message, args) {
+        message.delete()
 
         console.log("Command `debug` was used.");
-
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
         if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) return message.channel.send("I don't have permission to manage messages!");
 
         if (message.author.id === "486563467810308096") {
-            if (!args[0]) return message.channel.send(validDebugs)
+            if (!args[0]) return message.channel.send({ embeds: [validDebugs] })
             if (args[0] === "servers") {
                 message.channel.send("**Quabot discord servers:**")
                 client.guilds.cache.forEach(guild => {
@@ -28,7 +28,7 @@ module.exports = {
                 });
             }
             if (args[0] === "servers-console") {
-                console.log("QUABOT DISCORD SERVERS:")
+                console.log("Quabot discord servers:")
                 client.guilds.cache.forEach(guild => {
                     console.log(`${guild.name} | ${guild.id}`);
                     return
@@ -36,11 +36,18 @@ module.exports = {
             }
             if (args[0] === "reload") {
                 const commandName = args[1];
+                const noCommandName = new discord.MessageEmbed()
+                    .setTitle(":x: Please enter a command or alias to reload!")
+                    .setColor(colors.COLOR)
+                if (!commandName) return message.channel.send({ embeds: [noCommandName] })
                 const command = message.client.commands.get(commandName)
                     || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
                 if (!command) {
-                    return message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
+                    const noFoundCommand = new discord.MessageEmbed()
+                        .setTitle(`:x: There is no command with name or alias \`${commandName}\`!`)
+                        .setColor(colors.COLOR)
+                    return message.channel.send({ embeds: [noFoundCommand] });
                 }
 
                 const commandFolders = fs.readdirSync('./commands');
@@ -51,24 +58,36 @@ module.exports = {
                 try {
                     const newCommand = require(`../${folderName}/${command.name}.js`);
                     message.client.commands.set(newCommand.name, newCommand);
-                    message.channel.send(`Command \`${command.name}\` was reloaded!`);
+                    const succesReloaded = new discord.MessageEmbed()
+                        .setTitle(`Command \`${command.name}\` was reloaded!`)
+                        .setColor(colors.COLOR)
+                    message.channel.send({ embeds: [succesReloaded] });
                 } catch (error) {
                     console.error(error);
-                    message.channel.send(`There was an error while reloading a command \`${command.name}\`:\n\`${error.message}\``);
+                    const reloadError = new discord.MessageEmbed()
+                        .setTitle(`There was an error while reloading a command \`${command.name}\`:\n\`${error.message}\``)
+                        .setColor(colors.COLOR)
+                    message.channel.send({ embeds: [reloadError] });
                 }
             }
             if (args[0] === "username") {
                 const newUsername = args[1];
-                if (!newUsername) return message.channel.send("Please enter a 2nd argument")
+                const noargs = new discord.MessageEmbed()
+                    .setTitle(`Please enter a new username for the bot!`)
+                    .setColor(colors.COLOR)
+                if (!newUsername) return message.channel.send({ embeds: [noargs] })
                 client.user.setUsername(newUsername);
-                message.channel.send(`Changed username to: ${newUsername}`);
+                const newName = new discord.MessageEmbed()
+                    .setTitle(`Changed username to: ${newUsername}`)
+                    .setColor(colors.COLOR)
+                message.channel.send({ embeds: [newName] });
             }
             if (args[0] === "activity") {
                 const newActivity = args[1];
                 const newType = args[2];
                 if (!newActivity) return message.channel.send("Please enter a 2nd argument")
-                if(!newType) return message.channel.send("Please enter a 3rd argument")
-                if(newType === "WATCHING" || newType === "STREAMING" || newType === "PLAYING") {
+                if (!newType) return message.channel.send("Please enter a 3rd argument")
+                if (newType === "WATCHING" || newType === "STREAMING" || newType === "PLAYING") {
                     client.user.setActivity(newActivity, { type: newType });
                     message.channel.send(`Changed activity to: ${newActivity}`);
                 } else {
@@ -77,8 +96,8 @@ module.exports = {
             }
             if (args[0] === "presence") {
                 const newPresence = args[1];
-                if(!newPresence) return message.channel.send("Please enter a 2rd argument")
-                if(newPresence === "invisible" || newPresence === "online" || newPresence === "idle" || newPresence === "dnd") {
+                if (!newPresence) return message.channel.send("Please enter a 2rd argument")
+                if (newPresence === "invisible" || newPresence === "online" || newPresence === "idle" || newPresence === "dnd") {
                     client.user.setStatus(newPresence);
                     message.channel.send(`Changed activity to: ${newPresence}`);
                 } else {
@@ -86,8 +105,14 @@ module.exports = {
                 }
             }
             if (args[0] === "destroy") {
-                message.channel.send("QuaBot Shutting down.");
-                client.destroy();
+                const shutdown = new discord.MessageEmbed()
+                    .setTitle(":x: Quabot shutting down in 5 seconds...")
+                    .setColor(colors.COLOR)
+                message.channel.send({ embeds: [shutdown] });
+                setTimeout(() => {
+                    client.destroy();
+                }, 5000);
+
             }
         } else {
             return;
