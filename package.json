@@ -1,0 +1,28 @@
+{
+  "name": "quabot-djs13",
+  "version": "2.0.0",
+  "description": "Quabot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.5.6",
+    "discord-api-types": "^0.22.0",
+    "discord-giveaways": "^4.5.1",
+    "discord-slash-commands-client": "^1.2.1",
+    "discord.js": "^13.0.1",
+    "discord.js-leveling": "^5.4.0",
+    "distube": "^3.0.0-beta.38",
+    "ffmpeg": "^0.0.4",
+    "fs": "^0.0.1-security",
+    "mongoose": "^5.13.6",
+    "random-puppy": "^1.1.0",
+    "request": "^2.88.2",
+    "ytdl-core": "^4.9.1"
+  }
+}
