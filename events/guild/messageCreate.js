@@ -32,6 +32,7 @@ const errorEmbed = new Discord.MessageEmbed()
 module.exports = async (Discord, client, message) => {
 
     const thisGuildId = message.guild.id;
+    const mongoID = mongoose.Types.ObjectId();
 
     // FAIL SAVE
     if (!message.guild) return;

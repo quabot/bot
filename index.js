@@ -18,7 +18,7 @@ const Guild = require('./models/guild');
 const colors = require('./files/colors.json');
 const config = require('./files/config.json');
 
-const thisGuildId = require('./events/guild/messageCreate')
+const thisGuildId = require('./events/guild/messageCreate');
 
 const settings = Guild.findOne({
     guildID: thisGuildId
@@ -26,7 +26,7 @@ const settings = Guild.findOne({
     if (err) return;
     if (!guild) {
         const newGuild = new Guild({
-            //_id: mongoose.Types.ObjectId(),
+            _id: mongoose.Types.ObjectId(),
             guildID: thisGuildId,
             prefix: config.PREFIX,
             logChannelID: String,
