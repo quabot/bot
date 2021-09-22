@@ -32,7 +32,8 @@ const player = new DisTube.default(client, {
 	leaveOnStop: true
 })
 
-const prefix = "!";
+// get functions config.js:
+const prefix = require('./commands/management/config');
 
 player.on('playSong', (message, queue, song) => {
     const playingEmbed = new Discord.MessageEmbed()
@@ -252,10 +253,12 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.isButton()) {
         if(interaction.customId  === "enableLevel") {
             if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
+            // run function
             await interaction.update({ ephemeral: true, embeds: [levelsEnabled], components: [disabledToggle] });
         }
         if(interaction.customId  === "disableLevel") {
             if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
+            // run function
             await interaction.update({ ephemeral: true, embeds: [levelsDisabled], components: [disabledToggle] });
         }
     }

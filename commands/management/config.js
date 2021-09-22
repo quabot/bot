@@ -1,5 +1,6 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
+const Guild = require('../../models/guild');
 
 const optionsEmbed = new discord.MessageEmbed()
     .setTitle("Quabot configuration")
@@ -15,9 +16,36 @@ module.exports = {
     aliases: ["settings"],
     async execute(client, message, args) {
 
+        const settings = await Guild.findOne({
+            guildID: message.guild.id
+        }, (err, guild) => {
+            if (err) message.channel.send(errorMain);
+            if (!guild) {
+                const newGuild = new Guild({
+                    _id: mongoose.Types.ObjectID(),
+                    guildID: message.guild.id,
+                    guildName: message.guild.name,
+                    prefix: config.PREFIX,
+                    logChannelID: none,
+                    enableLog: false,
+                    enableSwearFilter: true,
+                    enableMusic: true,
+                    enableLevel: true,
+                    mutedRoleName: muted,
+                    mainRoleName: member
+                });
+
+                newGuild.save()
+                    .catch(err => message.channel.send(errorMain));
+
+                return message.channel.send(addedDatabase);
+            }
+        });
+        const prefix = settings.prefix;
+
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send({ embeds: [noPerms]});
-        
+        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send({ embeds: [noPerms] });
+
         const selectCategory = new discord.MessageActionRow()
             .addComponents(
                 new discord.MessageSelectMenu()
@@ -50,5 +78,18 @@ module.exports = {
             );
         message.reply({ ephemeral: true, embeds: [optionsEmbed], components: [selectCategory] });
 
+                // LEVELS ENABLE
+              function enableLevel() {
+                   settings.updateOne({
+                      enableLevel: "true"
+                 }),
+                // LEVELS DISABLE
+                function disableLevel() {
+                    settings.updateOne({
+                        enableLevel: "false"
+                    });
+                }
+        module.exports = {enableLevel, disableLevel}
+        }
     }
 }
