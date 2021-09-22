@@ -77,19 +77,5 @@ module.exports = {
                     ]),
             );
         message.reply({ ephemeral: true, embeds: [optionsEmbed], components: [selectCategory] });
-
-                // LEVELS ENABLE
-              function enableLevel() {
-                   settings.updateOne({
-                      enableLevel: "true"
-                 }),
-                // LEVELS DISABLE
-                function disableLevel() {
-                    settings.updateOne({
-                        enableLevel: "false"
-                    });
-                }
-        module.exports = {enableLevel, disableLevel}
-        }
     }
 }
