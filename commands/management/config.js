@@ -7,7 +7,7 @@ const optionsEmbed = new discord.MessageEmbed()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setDescription("Configure quabot to be perfect for your server. Select a category using the dropdown.")
 const noPerms = new discord.MessageEmbed()
-    .setDescription(":x: You do not have permission!")
+    .setTitle(":x: You do not have permission!")
     .setColor(colors.COLOR)
 
 module.exports = {

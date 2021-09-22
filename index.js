@@ -18,30 +18,6 @@ const Guild = require('./models/guild');
 const colors = require('./files/colors.json');
 const config = require('./files/config.json');
 
-const thisGuildId = require('./events/guild/messageCreate');
-
-const settings = Guild.findOne({
-    guildID: thisGuildId
-}, (err, guild) => {
-    if (err) return;
-    if (!guild) {
-        const newGuild = new Guild({
-            _id: mongoose.Types.ObjectId(),
-            guildID: thisGuildId,
-            prefix: config.PREFIX,
-            logChannelID: String,
-            enableLog: false,
-            enableSwearFilter: true,
-            enableMusic: true,
-            enableLevel: true,
-        });
-
-        newGuild.save()
-            .catch(err);
-        return;
-    }
-});
-
 client.commands = new Discord.Collection();
 client.mongoose = require('./utils/mongoose');
 
@@ -204,7 +180,6 @@ const toggleLevels = new Discord.MessageEmbed()
     .setTitle("Toggle Levels")
     .setDescription("Use the buttons to enable/disable the levels system.")
     .addField("Current value", "[CURRENT VALUE]")
-    .setFooter("You have 15 seconds to press the buttons.")
     .setColor(colors.COLOR)
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
 const levelsDisabled = new Discord.MessageEmbed()
@@ -215,6 +190,9 @@ const levelsEnabled = new Discord.MessageEmbed()
     .setTitle("Disabled Level System")
     .setColor(colors.COLOR)
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
+const noperms = new Discord.MessageEmbed()
+    .setTitle(":x: You do not have permission!")
+    .setColor(colors.COLOR)
 const levelsButtons = new Discord.MessageActionRow()
     .addComponents(
         new Discord.MessageButton()
@@ -263,24 +241,23 @@ client.on("interactionCreate", async (interaction) => {
             interaction.reply({ embeds: [miscEmbed] })
         }
         if(interaction.values[0] === "toggle_features") {
+            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
             interaction.reply({ embeds: [toggleEmbed], components: [toggle], ephemeral: true })
         }
         if(interaction.values[0] === "levels_toggle") {
+            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
             interaction.reply({ ephemeral: true, embeds: [toggleLevels], components: [levelsButtons] })
         }
     }
     if (interaction.isButton()) {
-        const filter = i => i.customId === 'enableLevel' || i.customId === 'disableLevel';
-        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
-        collector.on('collect', async i => {
-            if (i.customId === 'enableLevel') {
-                await i.update({ ephemeral: true, embeds: [levelsEnabled], components: [disabledToggle] });
-            }
-            if (i.customId === 'disableLevel') {
-                await i.update({ ephemeral: true, embeds: [levelsDisabled], components: [disabledToggle] });
-            }
-        });
-
+        if(interaction.customId  === "enableLevel") {
+            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
+            await interaction.update({ ephemeral: true, embeds: [levelsEnabled], components: [disabledToggle] });
+        }
+        if(interaction.customId  === "disableLevel") {
+            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
+            await interaction.update({ ephemeral: true, embeds: [levelsDisabled], components: [disabledToggle] });
+        }
     }
 });
 
