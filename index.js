@@ -32,33 +32,7 @@ const player = new DisTube.default(client, {
 	leaveOnStop: true
 })
 
-const settings = Guild.findOne({
-    guildID: message.guild.id
-}, (err, guild) => {
-    if (err) message.channel.send({ embeds: [errorMain]});
-    if (!guild) {
-        const newGuild = new Guild({
-            _id: mongoose.Types.ObjectID(),
-            guildID: message.guild.id,
-            guildName: message.guild.name,
-            prefix: config.PREFIX,
-            logChannelID: none,
-            enableLog: false,
-            enableSwearFilter: true,
-            enableMusic: true,
-            enableLevel: true,
-            mutedRoleName: muted,
-            mainRoleName: member
-        });
-
-        newGuild.save()
-            .catch(err => message.channel.send({ embeds: [errorMain]}));
-
-        return message.channel.send({ embeds: [addedDatabase]});
-    }
-});
-const prefix = settings.prefix;
-console.log(prefix)
+const prefix = "!";
 
 player.on('playSong', (message, queue, song) => {
     const playingEmbed = new Discord.MessageEmbed()
@@ -288,4 +262,5 @@ client.on("interactionCreate", async (interaction) => {
 
 Levels.setURL("mongodb+srv://admin:AbyUoKpaaWrjK@cluster.n4eqp.mongodb.net/Database?retryWrites=true&w=majority");
 client.mongoose.init();
+console.log("Loaded index.js")
 client.login(config.BOT_TOKEN);
