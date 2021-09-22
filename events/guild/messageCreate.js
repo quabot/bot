@@ -31,6 +31,8 @@ const errorEmbed = new Discord.MessageEmbed()
 
 module.exports = async (Discord, client, message) => {
 
+    const thisGuildId = message.guild.id;
+
     // FAIL SAVE
     if (!message.guild) return;
     if (message.author.bot) return;

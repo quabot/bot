@@ -18,14 +18,16 @@ const Guild = require('./models/guild');
 const colors = require('./files/colors.json');
 const config = require('./files/config.json');
 
-const settings = await Guild.findOne({
-    guildID: message.guild.id
+const thisGuildId = require('./events/guild/messageCreate')
+
+const settings = Guild.findOne({
+    guildID: thisGuildId
 }, (err, guild) => {
-    if (err) message.channel.send(errorMain);
+    if (err) return;
     if (!guild) {
         const newGuild = new Guild({
-            _id: mongoose.Types.ObjectId(),
-            guildID: message.guild.id,
+            //_id: mongoose.Types.ObjectId(),
+            guildID: thisGuildId,
             prefix: config.PREFIX,
             logChannelID: String,
             enableLog: false,
@@ -35,8 +37,8 @@ const settings = await Guild.findOne({
         });
 
         newGuild.save()
-            .catch(err => message.channel.send(errorMain));
-        return message.channel.send({embeds: [addedDatabase]}).then(m => m.delete({ timeout: 10000 }))
+            .catch(err);
+        return;
     }
 });
 
