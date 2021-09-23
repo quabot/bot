@@ -1,13 +1,11 @@
 const discord = require('discord.js');
+
 const colors = require('../../files/colors.json');
 
 module.exports = {
     name: "online",
     aliases: ["presence"],
     async execute(client, message, args) {
-
-        console.log("Command `online` was used.");
-
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 

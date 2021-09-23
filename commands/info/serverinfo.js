@@ -7,8 +7,6 @@ module.exports = {
     name: "serverinfo",
     aliases: [],
     async execute(client, message, args) {
-
-        console.log("Command `serverinfo` was used.");
         const guild = message.guild
         const roles = guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
         const members = message.guild.members.cache;

@@ -1,20 +1,13 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
+const { SupportEmbed } = require('../../files/embeds');
 
 module.exports = {
     name: "support",
     aliases: ["discord"],
     async execute(client, message, args) {
-
-        console.log("Command `support` was used.");
-
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-
-        const embed = new discord.MessageEmbed()
-            .setColor(colors.COLOR)
-            .setThumbnail("https://i.imgur.com/jgdQUul.png")
-            .setDescription("**Do you need support?**\n\nIf you run into an issue, have a question or just wanna chat with people you can join our support discord.\nBot downtime, updates and more are also announced here.\n\nInvite: https://discord.gg/Nwu9DNjYa9");
-        message.channel.send({ embeds: [embed]});
+        message.channel.send({ embeds: [SupportEmbed]});
     }
 }

@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
+const embed = require('../../files/embeds');
 const fs = require('fs');
 
 const validDebugs = new discord.MessageEmbed()

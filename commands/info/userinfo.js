@@ -6,23 +6,17 @@ module.exports = {
     name: "userinfo",
     aliases: ['memberinfo', "whois"],
     async execute(client, message, args) {
-
-        console.log("Command `userinfo` was used.");
-
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 
         let user = message.mentions.users.first() || message.author;
-
         const joinDiscord = moment(user.createdAt).format('llll');
         const joinServer = moment(user.joinedAt).format('llll');
-
         if (!Discord.GuildMember.nickname) Discord.GuildMember.nickname = "None";
-
         if (user.bot = "false") user.bot = "False";
         if (user.status = "online") user.status = "Online";
 
-        let embed = new Discord.MessageEmbed()
+        const embed = new Discord.MessageEmbed()
             .setAuthor(user.username + '#' + user.discriminator, user.displayAvatarURL)
             .setColor(colors.COLOR)
             .setImage(user.avatarURL())

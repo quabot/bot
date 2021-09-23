@@ -4,11 +4,8 @@ const config = require('../../files/config.json');
 
 module.exports = {
     name: "info",
-    aliases: ["information"],
+    aliases: ["information", "quabot"],
     async execute(client, message, args) {
-
-        console.log("Command `info` was used.");
-
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
 
@@ -26,13 +23,12 @@ module.exports = {
             .setThumbnail("https://i.imgur.com/jgdQUul.png")
             .addField("Version", config.VERSION)
             .addField("Servers", `${client.guilds.cache.size}`)
-            .addField("Language", "English, discord.js")
+            .addField("Language", "English, Discord.js v13")
             .addField("Users", `${client.users.cache.size}`)
             .addField("Creator", "do#8888")
             .addField("Commands", config.CMD_AMOUNT)
             .setFooter(`Uptime: ${uptime}`)
             .setColor(colors.COLOR)
         message.channel.send({ embeds: [embed]})
-
     }
 }

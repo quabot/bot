@@ -5,9 +5,6 @@ module.exports = {
     name: "uptime",
     aliases: ['onlinetime'],
     async execute(client, message, args) {
-
-        console.log("Command `uptime` was used.");
-
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 

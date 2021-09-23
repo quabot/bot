@@ -11,6 +11,6 @@ module.exports = (client, Discord) => {
             client.commands.set(command.name, command);
             console.info(`Loaded ${file}`)
         }
-        console.info(`Loaded all commands in category ${folder}`)
+        console.info(`Loaded all commands in category ${folder}`);
     }
 }

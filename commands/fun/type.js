@@ -3,7 +3,6 @@ const ms = require('ms');
 
 const { TypeNoSentence } = require('../../files/embeds');
 const colors = require('../../files/colors.json');
-const sentence = sentences[Math.floor(Math.random() * sentences.length)];
 const sentences = [
     "MCLands is the best minecraft server", 
     "discord.mclands.net for best mc server", 
@@ -23,6 +22,7 @@ const sentences = [
     "the new discord logo sucks", 
     "do you want free nitro? {NO}"
 ]
+const sentence = sentences[Math.floor(Math.random() * sentences.length)];
 
 module.exports = {
     name: "type",

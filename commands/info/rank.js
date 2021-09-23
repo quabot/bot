@@ -1,30 +1,16 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild')
-
 const Levels = require('discord.js-leveling');
 
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
-const noLVLS = new discord.MessageEmbed()
-    .setDescription("Levels are disabled!")
-    .setColor(colors.COLOR)
-const noXP = new discord.MessageEmbed()
-    .setDescription("This person does not have xp yet!")
-    .setColor(colors.COLOR)
+const { errorMain, addedDatabase } = require('../../files/embeds');
+const { errorMain, LBNoXP, LBDisabled, addedDatabase } = require('../../files/embeds');
 
 
 module.exports = {
     name: "rank",
     aliases: ["level"],
     async execute(client, message, args) {
-
-        console.log("Command `rank` was used.");
-
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
         
@@ -51,14 +37,10 @@ module.exports = {
                 return message.channel.send({ embeds: [addedDatabase]});
             }
         });
-
-        if (settings.enableLevel === "false") return message.channel.send({ embeds: [noLVLS]});
-
+        if (settings.enableLevel === "false") return message.channel.send({ embeds: [LBDisabled]});
         const target = message.mentions.users.first() || message.author;
-
         const user = await Levels.fetch(target.id, message.guild.id);
-
-        if (!user) return message.channel.send({ embeds: [noXP]});
+        if (!user) return message.channel.send({ embeds: [LBNoXP]});
 
         const embed = new discord.MessageEmbed()
             .setColor(colors.COLOR)
