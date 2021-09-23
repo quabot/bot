@@ -43,7 +43,8 @@ module.exports = {
 
         if (settings.enableMusic === "false") return message.channel.send({ embeds: [MusicDisabled] });
         if (!message.member.voice.channel) return message.channel.send({ embeds: [NotInVC] });
-        if(client.player.queue.playing === "false") return message.channel.send({ embeds: [NotPlaying] })
+        let queue = client.player.getQueue(message); 
+        if (!queue) return message.channel.send({ embeds: [NotPlaying] });
 
         const newMode = new discord.MessageEmbed()
             .setTitle(`Autoplay is now \`${client.player.toggleAutoplay(message) ? "ON" : "OFF"}\`!`)

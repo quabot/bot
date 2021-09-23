@@ -59,6 +59,9 @@ const NotInVC = new discord.MessageEmbed()
     .setColor(colors.COLOR);
 const MusicDisabled = new discord.MessageEmbed()
     .setColor(colors.COLOR)
-    .setDescription("Music is disabled!");
+    .setDescription(":x: Music is disabled in this guild!");
+const NotPlaying = new discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setDescription(":x: There is no music playing!");
 
-module.exports = {MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = {NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
