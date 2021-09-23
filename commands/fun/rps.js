@@ -25,7 +25,7 @@ module.exports = {
     aliases: [],
     async execute(client, message, args) {
 
-        //return message.channel.send("!rps is currently unavailable.")
+        return message.channel.send("!rps is currently unavailable.")
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
