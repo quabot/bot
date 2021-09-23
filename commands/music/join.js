@@ -1,5 +1,6 @@
 const discord = require('discord.js');
 const DisTube = require('distube');
+const { joinVoiceChannel } = require('@discordjs/voice');
 
 const Guild = require('../../models/guild');
 const colors = require('../../files/colors.json');
@@ -9,9 +10,6 @@ module.exports = {
     name: "join",
     aliases: [],
     async execute(client, message, args) {
-
-        console.log("Command `join` was used.");
-
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 
@@ -43,13 +41,18 @@ module.exports = {
 
         if (settings.enableMusic === "false") return message.channel.send({ embeds: [MusicDisabled] });
         if (!message.member.voice.channel) return message.channel.send({ embeds: [NotInVC] });
+        const voiceCID = message.member.voice.channel.id;
 
         if (message.member.voice.channel) {
-            const connection = await message.member.voice.channel.join();
+            const connection = joinVoiceChannel({
+                channelId: voiceCID,
+                guildId: message.guild.id
+            });
         }
 
         const embed = new discord.MessageEmbed()
-            .setDescription(`Succesfully joined the voice chanel of ${message.author}!`)
+            .setTitle(`:white_check_mark: Succesfully joined the voice channel!`)
+            .setDescription(`${message.author} requested me to join <#${voiceCID}>!`)
             .setColor(colors.COLOR);
         message.channel.send({ embeds: [embed] });
     }

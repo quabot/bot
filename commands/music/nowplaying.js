@@ -3,19 +3,7 @@ const DisTube = require('distube');
 
 const Guild = require('../../models/guild');
 const colors = require('../../files/colors.json');
-
-const noPlay = new discord.MessageEmbed()
-    .setDescription("There is nothing playing!")
-    .setColor(colors.COLOR);
-const musicOff = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setDescription("Music is disabled!");
-    const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
+const { errorMain, addedDatabase, NotInVC, MusicDisabled, NotPlaying } = require('../../files/embeds');
 module.exports = {
     name: "nowplaying",
     aliases: ["np"],
@@ -29,7 +17,7 @@ module.exports = {
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send(errorMain);
+            if (err) message.channel.send({ embeds: [errorMain]});
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -46,14 +34,14 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain]}));
 
-                return message.channel.send(addedDatabase);
+                return message.channel.send({ embeds: [addedDatabase]});
             }
         });
 
-        if (settings.enableMusic === "false") return message.channel.send(musicOff);
-        if (!message.member.voice.channel) return message.channel.send(notVC);
+        if (settings.enableMusic === "false") return message.channel.send({ embeds: [MusicDisabled]});
+        if (!message.member.voice.channel) return message.channel.send({ embeds: [NotInVC]});
 
         let queue = client.player.getQueue(message); 
         if (!queue) return message.channel.send(noPlay);
@@ -66,8 +54,8 @@ module.exports = {
             .setThumbnail(song.thumbnail)
             .addField("Added by", `${song.user}`, true)
             .addField("Volume", `\`${queue.volume}%\``, true)
-            .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
-            .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``)
+            .addField("Queue", `${queue.songs.length} song(s)`, true)
+            .addField("Duration", `\`${(Math.floor(song.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``)
         message.channel.send({ embeds: [playingEmbed] });
 
     }
