@@ -1,24 +1,39 @@
 const discord = require("discord.js");
-const sentences = ["MCLands is the best minecraft server", "discord.mclands.net for best mc server", "minecraft is the best game", "this is a very easy sentence", "its the prime time of your life", "go spend your money on fortnite", "please make sure to like", "maybe even subscribe", "this is a very short sentence", "learn to type today", "this is a typing game", "i like to type", "i have discord nitro", "imagine having discord nitro", "the new discord logo sucks", "do you want free nitro? {NO}"]
 const ms = require('ms');
-const colors = require('../../files/colors.json');
 
+const { TypeNoSentence } = require('../../files/embeds');
+const colors = require('../../files/colors.json');
 const sentence = sentences[Math.floor(Math.random() * sentences.length)];
+const sentences = [
+    "MCLands is the best minecraft server", 
+    "discord.mclands.net for best mc server", 
+    "minecraft is the best game", 
+    "this is a very easy sentence", 
+    "its the prime time of your life", 
+    "go spend your money on fortnite", 
+    "please make sure to like", 
+    "maybe even subscribe", 
+    "this is a very short sentence", 
+    "learn to type today", 
+    "this is a typing game", 
+    "this bot sucks",
+    "guess who's back", 
+    "i have discord nitro", 
+    "imagine having discord nitro", 
+    "the new discord logo sucks", 
+    "do you want free nitro? {NO}"
+]
 
 module.exports = {
     name: "type",
-    aliases: ['type-game', 'typing', 'tgame'],
+    aliases: ['type-game', 'typing', 'tgame', 'bigpp'],
     async execute(client, message, args) {
-
-        console.log("Command `type` was used.");
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 
-        const sentence = sentences[Math.floor(Math.random() * sentences.length)];
         const author = message.author.id
-
-        if (!sentence) return message.channel.send("Could not get a sentence, please try again.");
+        if (!sentence) return message.channel.send({embeds: [TypeNoSentence]});
 
         const embed = new discord.MessageEmbed()
             .setTitle("Type this sentence")

@@ -56,7 +56,7 @@ module.exports = async (Discord, client, message) => {
 
             newGuild.save()
                 .catch(err => message.channel.send(errorMain));
-            return message.channel.send({embeds: [addedDatabase]}).then(m => m.delete({ timeout: 10000 }))
+            return message.channel.send({ embeds: [addedDatabase] }).then(m => m.delete({ timeout: 10000 }))
         }
     });
 
@@ -66,7 +66,6 @@ module.exports = async (Discord, client, message) => {
     const prefix = settings.prefix;
     const swearFilterOn = settings.enableSwearFilter;
 
-    // LEVEL SYSTEM
     if (settings.enableLevel === "true") {
 
         const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
@@ -83,7 +82,7 @@ module.exports = async (Discord, client, message) => {
                 .setColor(colors.COLOR)
                 .setDescription(`**GG** ${message.author}, you just leveled up to level **${user.level}**!\nContiune to chat to level up again.`)
 
-            const sendEmbed = await message.channel.send({embeds: [levelEmbed]});
+            const sendEmbed = await message.channel.send({ embeds: [levelEmbed] });
         }
     }
 
@@ -104,7 +103,10 @@ module.exports = async (Discord, client, message) => {
         const command = client.commands.get(cmd) ||
             client.commands.find(a => a.aliases && a.aliases.includes(cmd));;
 
-        if (command) command.execute(client, message, args, Discord)
+        if (command) {
+            command.execute(client, message, args, Discord);
+            console.log(`Command "!${command.name}" was used.`);
+        }
 
     } else {
         if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -115,6 +117,9 @@ module.exports = async (Discord, client, message) => {
         const command = client.commands.get(cmd) ||
             client.commands.find(a => a.aliases && a.aliases.includes(cmd));;
 
-        if (command) command.execute(client, message, args, Discord)
+        if (command) {
+            command.execute(client, message, args, Discord);
+            console.log(`Command "!${command.name}" was used.`);
+        }
     }
 }
