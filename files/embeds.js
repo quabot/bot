@@ -57,8 +57,8 @@ const SupportEmbed = new discord.MessageEmbed()
 const NotInVC = new discord.MessageEmbed()
     .setTitle(":x: You need to be in a voice channel to play songs!")
     .setColor(colors.COLOR);
-const musicOff = new discord.MessageEmbed()
+const MusicDisabled = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setDescription("Music is disabled!");
 
-module.exports = {CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = {MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
