@@ -54,6 +54,11 @@ const SupportEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setDescription("**Do you need support?**\n\nIf you run into an issue, have a question or just wanna chat with people you can join our support discord.\nBot downtime, updates and more are also announced here.\n\nInvite: https://discord.gg/Nwu9DNjYa9");
+const NotInVC = new discord.MessageEmbed()
+    .setTitle(":x: You need to be in a voice channel to play songs!")
+    .setColor(colors.COLOR);
+const MusicDisabled = new discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setDescription("Music is disabled!");
 
-
-module.exports = {CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = {MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
