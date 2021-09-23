@@ -55,7 +55,7 @@ player.on('playSong', (message, queue, song) => {
         .addField("Autoplay", `\`${queue.autoplay}\``, true)
         .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
         .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
-    message.channel.send({ embeds: [playingEmbed] });
+    //message.channel.send({ embeds: [playingEmbed] });
 });
 player.on('addSong', (message, queue, song) => {
     const addedEmbed = new Discord.MessageEmbed()
@@ -65,19 +65,19 @@ player.on('addSong', (message, queue, song) => {
         .addField("Added by", song.user, true)
         .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
         .addField("Duration", `${song.formattedDuration}`, true)
-    message.channel.send({ embeds: [addedEmbed] });
+    //message.channel.send({ embeds: [addedEmbed] });
 });
 player.on('error', (message, err) => {
     const musicErrorEmbed = new Discord.MessageEmbed()
         .setTitle("There was an error!")
         .setColor(colors.COLOR)
-    message.channel.send({ embeds: [musicErrorEmbed] });
+    //message.channel.send({ embeds: [musicErrorEmbed] });
 });
 player.on('finish', message => {
     const finishQueueEmbed = new Discord.MessageEmbed()
         .setTitle("There are no more songs in queue, leaving voice channel!")
         .setColor(colors.COLOR)
-    message.channel.send({ embeds: [finishQueueEmbed] });
+    //message.channel.send({ embeds: [finishQueueEmbed] });
 });
 player.on('initQueue', queue => {
     queue.autoplay = false,
@@ -87,7 +87,7 @@ player.on('noRelated', message => {
     const noRelatedEmbed = new Discord.MessageEmbed()
         .setTitle("Could not find any related songs, stopping queue!")
         .setColor(colors.COLOR)
-    message.channel.send({ embeds: [noRelatedEmbed] });
+    //message.channel.send({ embeds: [noRelatedEmbed] });
 });
 
 

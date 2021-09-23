@@ -3,7 +3,6 @@ const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild')
 const Levels = require('discord.js-leveling');
 
-const { errorMain, addedDatabase } = require('../../files/embeds');
 const { errorMain, LBNoXP, LBDisabled, addedDatabase } = require('../../files/embeds');
 
 
