@@ -3,8 +3,19 @@ const DisTube = require('distube');
 
 const Guild = require('../../models/guild');
 const colors = require('../../files/colors.json');
-const { errorMain, addedDatabase, NotInVC, MusicDisabled } = require('../../files/embeds');
 
+const notVC = new discord.MessageEmbed()
+    .setDescription("You need to be in a voice channel to play songs!")
+    .setColor(colors.COLOR);
+const musicOff = new discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setDescription("Music is disabled!");
+const errorMain = new discord.MessageEmbed()
+    .setDescription("There was an error!")
+    .setColor(colors.COLOR)
+const addedDatabase = new discord.MessageEmbed()
+    .setDescription("This server is now added to our database.")
+    .setColor(colors.COLOR)
 module.exports = {
     name: "autoplay",
     aliases: ["ap"],
@@ -18,7 +29,7 @@ module.exports = {
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain] });
+            if (err) message.channel.send(errorMain);
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -35,14 +46,14 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
+                    .catch(err => message.channel.send(errorMain));
 
-                return message.channel.send({ embeds: [addedDatabase] });
+                return message.channel.send(addedDatabase);
             }
         });
 
-        if (settings.enableMusic === "false") return message.channel.send({ embeds: [MusicDisabled] });
-        if (!message.member.voice.channel) return message.channel.send({ embeds: [NotInVC] });
+        if (settings.enableMusic === "false") return message.channel.send(musicOff);
+        if (!message.member.voice.channel) return message.channel.send(notVC);
 
         const newMode = new discord.MessageEmbed()
             .setTitle(`Autoplay is now \`${client.player.toggleAutoplay(message) ? "ON" : "OFF"}\`!`)

@@ -6,6 +6,8 @@ module.exports = {
     aliases: [],
     async execute(client, message, args) {
 
+        console.log("Command `avatar` was used.");
+
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
 
