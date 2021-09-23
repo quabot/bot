@@ -3,7 +3,7 @@ const DisTube = require('distube');
 
 const Guild = require('../../models/guild');
 const colors = require('../../files/colors.json');
-const { errorMain, addedDatabase } = require('../../files/embeds');
+const { errorMain, addedDatabase, NotInVC, MusicDisabled } = require('../../files/embeds');
 
 module.exports = {
     name: "autoplay",
@@ -41,8 +41,8 @@ module.exports = {
             }
         });
 
-        if (settings.enableMusic === "false") return message.channel.send(musicOff);
-        if (!message.member.voice.channel) return message.channel.send(notVC);
+        if (settings.enableMusic === "false") return message.channel.send({ embeds: [MusicDisabled] });
+        if (!message.member.voice.channel) return message.channel.send({ embeds: [NotInVC] });
 
         const newMode = new discord.MessageEmbed()
             .setTitle(`Autoplay is now \`${client.player.toggleAutoplay(message) ? "ON" : "OFF"}\`!`)
