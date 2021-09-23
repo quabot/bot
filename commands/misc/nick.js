@@ -16,7 +16,6 @@ module.exports = {
     aliases: ["changename"],
     async execute(client, message, args) {
 
-        console.log("Command `nick` was used.");
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
         if (!message.guild.me.permissions.has("MANAGE_NICKNAMES") || !message.guild.me.permissions.has("ADMINISTRATOR")) return message.channel.send(errorEmbed).then(message.delete({ timout: 10000 }));
         if (message.member.permissions.has('ADMINISTRATOR')) return message.channel.send({ embeds: [errorEmbed] }).then(message.delete({ timout: 10000 }));
@@ -31,7 +30,10 @@ module.exports = {
         const change = new discord.MessageEmbed()
             .setColor(colors.COLOR)
             .setTitle(`Changed your nickname to **${newNick}**!`)
-        message.channel.send({ embeds: [change] });
-
+        message.channel.send({ embeds: [change] }).then(msg => {
+            setTimeout(() => {
+                msg.delete();
+            }, 10000);
+        });
     }
 }
