@@ -98,7 +98,7 @@ module.exports = {
             winnerCount: parseInt(giveawayNumberWinners),
             hostedBy: message.author ? message.author : null,
             messages: {
-                giveaway: (true ? "@everyone\n\n" : "") + ":tada: **GIVEAWAY** :tada:",
+                giveaway: ":tada: **GIVEAWAY** :tada:",
                 giveawayEnded: (true ? "@everyone\n\n" : "") + ":tada: **GIVEAWAY ENDED** :tada:",
                 timeRemaining: "Time remaining: **{duration}**!",
                 inviteToParticipate: "React with 🎉 to participate.",
