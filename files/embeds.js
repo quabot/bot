@@ -63,5 +63,8 @@ const MusicDisabled = new discord.MessageEmbed()
 const NotPlaying = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle(":x: There is no music playing!");
+const PauseQueue = new discord.MessageEmbed()
+    .setTitle(`:pause_button: Paused the queue!`)
+    .setColor(colors.COLOR);
 
-module.exports = {NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = {PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}

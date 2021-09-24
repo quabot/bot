@@ -27,6 +27,7 @@ client.commands = new Discord.Collection();
 // get functions config.js:
 const prefix = "!";
 const func = require('./commands/management[!]/config');
+const { NotPlaying } = require('./files/embeds');
 
 console.log("Loaded index.js");
 
@@ -39,8 +40,10 @@ const player = new DisTube.default(client, {
 });
 
 client.player = player;
-
-player.on('playSong', (message, queue, song) => {
+player.on('playSong', (message) => {
+    let queue = client.player.getQueue(message); 
+    if (!queue) return message.channel.send({ embeds: [NotPlaying]});
+    let song = queue.songs[0]
     const playingEmbed = new Discord.MessageEmbed()
         .setTitle("Now Playing")
         .setColor(colors.COLOR)
@@ -49,40 +52,48 @@ player.on('playSong', (message, queue, song) => {
         .addField("Views", `${song.views}`, true)
         .addField("Likes", `${song.likes}`, true)
         .addField("Disikes", `${song.dislikes}`, true)
-        .addField("Added by", `${song.user}`, true)
+        .addField("Added by", `${song.user} `, true)
         .addField("Volume", `\`${queue.volume}%\``, true)
         .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
         .addField("Autoplay", `\`${queue.autoplay}\``, true)
         .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
         .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
-    //message.channel.send({ embeds: [playingEmbed] });
+    message.channel.send({ embeds: [playingEmbed] });
 });
-player.on('addSong', (message, queue, song) => {
+
+player.on('addSong', (message) => {
+    let queue = client.player.getQueue(message); 
+    if (!queue) return message.channel.send({ embeds: [NotPlaying]});
+    let song = queue.songs[0]
     const addedEmbed = new Discord.MessageEmbed()
         .setColor(colors.COLOR)
         .setTitle("Song added to the queue")
-        .setDescription(song.name)
-        .addField("Added by", song.user, true)
+        .setDescription(`${song.name}`)
+        .addField("Added by", `${song.user} `, true)
         .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
         .addField("Duration", `${song.formattedDuration}`, true)
-    //message.channel.send({ embeds: [addedEmbed] });
+    message.channel.send({ embeds: [addedEmbed] });
 });
+
 player.on('error', (message, err) => {
     const musicErrorEmbed = new Discord.MessageEmbed()
         .setTitle("There was an error!")
         .setColor(colors.COLOR)
     //message.channel.send({ embeds: [musicErrorEmbed] });
+    console.log(err);
 });
+
 player.on('finish', message => {
     const finishQueueEmbed = new Discord.MessageEmbed()
         .setTitle("There are no more songs in queue, leaving voice channel!")
         .setColor(colors.COLOR)
-    //message.channel.send({ embeds: [finishQueueEmbed] });
+    message.channel.send({ embeds: [finishQueueEmbed] });
 });
 player.on('initQueue', queue => {
     queue.autoplay = false,
         queue.volume = 50
 });
+
 player.on('noRelated', message => {
     const noRelatedEmbed = new Discord.MessageEmbed()
         .setTitle("Could not find any related songs, stopping queue!")

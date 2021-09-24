@@ -8,9 +8,7 @@ module.exports = {
     name: "nowplaying",
     aliases: ["np"],
     async execute(client, message, args) {
-
-        console.log("Command `nowplaying` was used.");
-
+        
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 
@@ -44,7 +42,7 @@ module.exports = {
         if (!message.member.voice.channel) return message.channel.send({ embeds: [NotInVC]});
 
         let queue = client.player.getQueue(message); 
-        if (!queue) return message.channel.send(noPlay);
+        if (!queue) return message.channel.send({ embeds: [NotPlaying]});
         let song = queue.songs[0]
 
         const playingEmbed = new discord.MessageEmbed()

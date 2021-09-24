@@ -3,14 +3,12 @@ const DisTube = require('distube');
 
 const Guild = require('../../models/guild');
 const colors = require('../../files/colors.json');
-const { errorMain, addedDatabase, NotInVC, MusicDisabled, NotPlaying } = require('../../files/embeds');
+const { errorMain, addedDatabase, NotInVC, MusicDisabled, NotPlaying, PauseQueue } = require('../../files/embeds');
 
 module.exports = {
     name: "pause",
     aliases: [],
     async execute(client, message, args) {
-
-        console.log("Command `pause` was used.");
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
@@ -48,10 +46,6 @@ module.exports = {
         if (!queue) return message.channel.send({ embeds: [NotPlaying] });
         
         client.player.pause(message); 
-
-        const pausedQueue = new discord.MessageEmbed()
-            .setDescription(`:pause_button: Paused the queue!`)
-            .setColor(colors.COLOR);
-        message.channel.send({ embeds: [pausedQueue] });
+        message.channel.send({ embeds: [PauseQueue] });
     }
 }
