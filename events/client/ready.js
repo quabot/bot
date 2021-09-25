@@ -10,7 +10,7 @@ module.exports = (Discord, client, message) => {
     }, 5000);
 
     // STATUS
-    client.user.setActivity(`${config.PREFIX}help`, { type: "PLAYING" });
+    client.user.setActivity(`${config.PREFIX}help - Now without music!`, { type: "PLAYING" });
 
 
 
