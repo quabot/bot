@@ -58,7 +58,12 @@ module.exports = {
         if (settings.enableMusic === "false") return message.channel.send(musicOff);
         if (!message.member.voice.channel) return message.channel.send(notVC);
 
-        let queue = client.player.getQueue(message);
+        let queue = distube.getQueue(message);
+        message.channel.send('Current queue:\n' + queue.songs.map((song, id) =>
+            `**${id+1}**. [${song.name}](${song.url}) - \`${song.formattedDuration}\``
+        ).join("\n"));
+        console.log(queue);
+        return;
         if (!queue) return message.channel.send({ embeds: [noPlay] });
 
         const song0 = queue.songs[0];
