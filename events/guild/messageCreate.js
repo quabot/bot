@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const Levels = require('discord.js-leveling');
+const DisTube = require('distube');
 
 // FILES
 const Guild = require('../../models/guild');
@@ -65,6 +66,76 @@ module.exports = async (Discord, client, message) => {
     const user = message.author;
     const prefix = settings.prefix;
     const swearFilterOn = settings.enableSwearFilter;
+
+    const player = new DisTube.default(client, {
+        searchSongs: 1,
+        leaveOnEmpty: true,
+        emptyCooldown: 60,
+        leaveOnFinish: true,
+        leaveOnStop: true
+    });
+    
+    client.player = player;
+    player.on('playSong', () => {
+        let queue = client.player.getQueue(message); 
+        if (!queue) return message.channel.send({ embeds: [NotPlaying]});
+        let song = queue.songs[0]
+        const playingEmbed = new Discord.MessageEmbed()
+            .setTitle("Now Playing")
+            .setColor(colors.COLOR)
+            .setDescription(`${song.name}`)
+            .setThumbnail(song.thumbnail)
+            .addField("Views", `${song.views}`, true)
+            .addField("Likes", `${song.likes}`, true)
+            .addField("Disikes", `${song.dislikes}`, true)
+            .addField("Added by", `${song.user} `, true)
+            .addField("Volume", `\`${queue.volume}%\``, true)
+            .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
+            .addField("Autoplay", `\`${queue.autoplay}\``, true)
+            .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
+            .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
+        message.channel.send({ embeds: [playingEmbed] });
+    });
+    
+    player.on('addSong', () => {
+        let queue = client.player.getQueue(message); 
+        if (!queue) return;
+        let song = queue.songs[0]
+        const addedEmbed = new Discord.MessageEmbed()
+            .setColor(colors.COLOR)
+            .setTitle("Song added to the queue")
+            .setDescription(`${song.name}`)
+            .addField("Added by", `${song.user} `, true)
+            .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
+            .addField("Duration", `${song.formattedDuration}`, true)
+        message.channel.send({ embeds: [addedEmbed] });
+    });
+    
+    player.on('error', (message, err) => {
+        const musicErrorEmbed = new Discord.MessageEmbed()
+            .setTitle("There was an error!")
+            .setColor(colors.COLOR)
+        //message.channel.send({ embeds: [musicErrorEmbed] });
+        console.log(err);
+    });
+    
+    player.on('finish', message => {
+        const finishQueueEmbed = new Discord.MessageEmbed()
+            .setTitle("There are no more songs in queue, leaving voice channel!")
+            .setColor(colors.COLOR)
+        message.channel.send({ embeds: [finishQueueEmbed] });
+    });
+    player.on('initQueue', queue => {
+        queue.autoplay = false,
+            queue.volume = 50
+    });
+    
+    player.on('noRelated', message => {
+        const noRelatedEmbed = new Discord.MessageEmbed()
+            .setTitle("Could not find any related songs, stopping queue!")
+            .setColor(colors.COLOR)
+        message.channel.send({ embeds: [noRelatedEmbed] });
+    });
 
     if (settings.enableLevel === "true") {
 
