@@ -1,0 +1,9 @@
+Format: 
+!ticket [topic]
+!close
+!reopen
+!add
+
+Channel:
+!config channels #ticket-catagory
+!config toggle tickets [true/fale]

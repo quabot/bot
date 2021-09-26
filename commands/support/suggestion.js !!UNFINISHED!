@@ -1,0 +1,8 @@
+Format: 
+!sugggest [suggestion]
+!acceptsuggestion [id]
+!denysuggestion [id]
+
+Channel:
+!config channels #suggestions-logs
+!config toggle suggestions [true/fale]

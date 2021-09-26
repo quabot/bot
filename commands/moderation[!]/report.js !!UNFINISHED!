@@ -1,0 +1,5 @@
+Format: 
+!report [user] [report]
+
+Channel:
+!config channels #reports-logs

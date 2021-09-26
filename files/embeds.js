@@ -66,5 +66,26 @@ const NotPlaying = new discord.MessageEmbed()
 const PauseQueue = new discord.MessageEmbed()
     .setTitle(`:pause_button: Paused the queue!`)
     .setColor(colors.COLOR);
+const banNoPermsBot = new discord.MessageEmbed()
+    .setTitle(":x: I do not have permission to ban members!")
+    .setColor(colors.COLOR);
+const banNoPermsUser = new discord.MessageEmbed()
+    .setTitle(":x: You do not have permission to ban members!")
+    .setColor(colors.COLOR);
+const banNoUser = new discord.MessageEmbed()
+    .setTitle(":question: Please mention a user you want to ban!")
+    .setColor(colors.COLOR)
+const banImpossible = new discord.MessageEmbed()
+    .setTitle(":x: Failed to ban, you cannot ban this user!")
+    .setColor(colors.COLOR)
+const PunsishmentsOthers = new discord.MessageEmbed()
+    .setTitle(":x: You do not have permission to view punishments of other users!")
+    .setColor(colors.COLOR)
+const clearpunNoType = new discord.MessageEmbed()
+    .setTitle(":question: Please enter a type of punishment to clear: `warn, kick, mute or ban`!")
+    .setColor(colors.COLOR);
+const clearpunNoMember = new discord.MessageEmbed()
+    .setTitle(":x: Please mention a user to clear the warnings of!")
+    .setColor(colors.COLOR);
 
-module.exports = {PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = {clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}

@@ -4,25 +4,12 @@ const colors = require('../../files/colors.json');
 const User = require('../../models/user');
 const Guild = require('../../models/guild');
 
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
-const noType = new discord.MessageEmbed()
-    .setDescription("Please enter a type of punishment to clear: `warn, kick, mute or ban`!")
-    .setColor(colors.COLOR);
-const noMember = new discord.MessageEmbed()
-    .setDescription("Please mention a user to clear the warnings of!")
-    .setColor(colors.COLOR);
+const {errorMain, addedDatabase, clearpunNoType, clearpunNoMember} = require('../../files/embeds');
 
 module.exports = {
     name: "clearpunishments",
-    aliases: ["resetpunishments"],
+    aliases: ["resetpunishments", "cp", "devcp"],
     async execute(client, message, args) {
-
-        console.log("Command `clearpunishments` was used.");
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
@@ -30,16 +17,16 @@ module.exports = {
         const type = args[0];
         const member = message.mentions.users.first();
 
-        if (!type) return message.channel.send(noType);
-        if (!args[1]) return message.channel.send(noMember);
-        if (!member) return message.channel.send(noMember);
+        if (!type) return message.channel.send({ embeds: [clearpunNoType] });
+        if (!args[1]) return message.channel.send({ embeds: [clearpunNoMember] });
+        if (!member) return message.channel.send({ embeds: [clearpunNoMember] });
 
         const userDatabase = await User.findOne({
             guildID: message.guild.id,
             userID: member.id
-        }, (err, user) => {
-            if (err) message.channel.send(errorMain);
-            if (!user) {
+        }, (err, User) => {
+            if (err) message.channel.send({ embeds: [errorMain] });
+            if (!User) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
                     guildID: message.guild.id,
@@ -51,8 +38,8 @@ module.exports = {
                 });
 
                 newUser.save()
-                    .catch(err => message.channel.send(errorMain));
-                return message.channel.send(addedDatabase);
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
+                return message.channel.send({ embeds: [addedDatabase] });
             }
         });
 
@@ -62,43 +49,43 @@ module.exports = {
                     warnCount: 0
                 });
                 const embed1 = new discord.MessageEmbed()
-                    .setDescription(`Cleared all warnings for ${member}!`)
+                    .setDescription(`:white_check_mark: Cleared all warnings for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send(embed1);
+                message.channel.send({ embeds: [embed1] });
             }
             if (type === "kick") {
                 await userDatabase.updateOne({
                     kickCount: 0
                 });
                 const embed2 = new discord.MessageEmbed()
-                    .setDescription(`Cleared all kicks for ${member}!`)
+                    .setDescription(`:white_check_mark: Cleared all kicks for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send(embed2);
+                message.channel.send({ embeds: [embed2] });
             }
             if (type === "mute") {
                 await userDatabase.updateOne({
                     muteCount: 0
                 });
                 const embed3 = new discord.MessageEmbed()
-                    .setDescription(`Cleared all mutes for ${member}!`)
+                    .setDescription(`:white_check_mark: Cleared all mutes for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send(embed3);
+                message.channel.send({ embeds: [embed3] });
             }
             if (type === "ban") {
                 await userDatabase.updateOne({
                     banCount: 0
                 });
                 const embed4 = new discord.MessageEmbed()
-                    .setDescription(`Cleared all bans for ${member}!`)
+                    .setDescription(`:white_check_mark: Cleared all bans for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send(embed4);
+                message.channel.send({ embeds: [embed4] });
             }
         } else return message.channel.send(noType);
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send(errorMain);
+            if (err) message.channel.send({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -115,9 +102,9 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
 
-                return message.channel.send(addedDatabase);
+                return message.channel.send({ embeds: [addedDatabase] });
             }
         });
 
@@ -128,11 +115,11 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.CLEAR_COLOR)
                 .setTitle(`User\'s ${type} Reset`)
-                .addField('Punishment', type)
-                .addField('User', member)
-                .addField('User ID', member.id)
-                .addField('Reset By', message.author);
-            logChannel.send(embed);
+                .addField('Punishment', `${type}`)
+                .addField('User', `${member}`)
+                .addField('User ID', `${member.id}`)
+                .addField('Reset By', `${message.author}`);
+            logChannel.send({ embeds: [embed] });
         } else {
             return;
         }

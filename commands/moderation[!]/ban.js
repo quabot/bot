@@ -3,56 +3,43 @@ const discord = require('discord.js');
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 const User = require('../../models/guild');
+const mongoose = require('mongoose');
 
-const noPermsBanBot = new discord.MessageEmbed()
-    .setDescription("I do not have permission to ban members!")
-    .setColor(colors.COLOR);
-const noPermsBanUser = new discord.MessageEmbed()
-    .setDescription("You do not have permission to ban members!")
-    .setColor(colors.COLOR);
-const noUserToBan = new discord.MessageEmbed()
-    .setDescription("Please mention a user you want to ban!")
-    .setColor(colors.COLOR)
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
-const notBannable = new discord.MessageEmbed()
-    .setDescription("You cannot ban this user!")
-    .setColor(colors.COLOR)
+const {errorMain, addedDatabase, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible} = require('../../files/embeds');
 
 module.exports = {
     name: "ban",
     aliases: [],
     async execute(client, message, args) {
 
-        console.log("Command `ban` was used.");
-        const member = message.mentions.members.first();
+        const member = message.mentions.members.first();// || client.users.cache.find(user => user.id === args[0]);
         let reason = "No reason specified.";
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanBot);
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
+        if (!message.guild.me.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsBot]});
+        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsUser]});
 
-        if (!member) return message.channel.send(noUserToBan);
+        if (!member) return message.channel.send({embeds: [banNoUser]});
         if (args.length > 1) reason = args.slice(1).join(' ');
 ;
         const userBanned = new discord.MessageEmbed()
-            .setTitle("User Banned")
+            .setTitle(":white_check_mark: User Banned")
             .setDescription(`${member} was banned.\n**Reason:** ${reason}`)
             .setColor(colors.COLOR)
 
-        member.ban({ reason: reason });
-        message.channel.send(userBanned);
+        member.ban({ reason: reason }).catch(err => {
+            message.channel.send({embeds: [banImpossible]});
+            let reason = ":x: Ban failed. Reason: " + reason;
+            return;
+        }); 
+        message.channel.send({embeds: [userBanned]});
         
         User.findOne({
             guildID: message.guild.id,
             userID: member.id,
-        }, async (err, user) => {
-            if(err) message.channel.send(errorMain);
+        }, async (err, User) => {
+            if(err) message.channel.send({embeds: [errorMain]});
             if(!User) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
@@ -65,19 +52,19 @@ module.exports = {
                 });
                 
                 await newUser.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({embeds: [errorMain]}));
             } else {
                 User.updateOne({
                     banCount: User.banCount + 1
                 })
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({embeds: [errorMain]}));
             };
         });
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send(errorMain);
+            if (err) message.channel.send({embeds: [errorMain]});
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -94,9 +81,9 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({embeds: [errorMain]}));
 
-                return message.channel.send(addedDatabase);
+                return message.channel.send({embeds: [addedDatabase]});
             }
         });
 
@@ -107,11 +94,11 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.BAN_COLOR)
                 .setTitle('User Banned')
-                .addField('Username', member.user.username)
-                .addField('User ID', member.id)
-                .addField('Banned by', message.author)
-                .addField('Reason', reason);
-            logChannel.send(embed);
+                .addField('Username', `${member.user.username}`)
+                .addField('User ID', `${member.id}`)
+                .addField('Banned by', `${message.author}`)
+                .addField('Reason', `${reason}`);
+            logChannel.send({ embeds: [embed] });
         } else {
             return;
         }

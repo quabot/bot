@@ -161,25 +161,25 @@ const disabledToggle = new Discord.MessageActionRow()
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isSelectMenu()) {
         if(interaction.values[0] === "fun_commands") {
-            interaction.reply({ embeds: [funEmbed] })
+            interaction.reply({ ephemeral: true, embeds: [funEmbed] })
         }
         if(interaction.values[0] === "info_commands") {
-            interaction.reply({ embeds: [infoEmbed] })
+            interaction.reply({ ephemeral: true, embeds: [infoEmbed] })
         }
         if(interaction.values[0] === "music_commands") {
-            interaction.reply({ embeds: [musicEmbed] })
+            interaction.reply({ ephemeral: true, embeds: [musicEmbed] })
         }
         if(interaction.values[0] === "mod_commands") {
-            interaction.reply({ embeds: [ModMain], components: [selectMod] });
+            interaction.reply({ ephemeral: true, embeds: [ModMain], components: [selectMod] });
         }
         if(interaction.values[0] === "moder_commands") {
-            interaction.reply({ embeds: [moderationEmbed] });
+            interaction.reply({ ephemeral: true, embeds: [moderationEmbed] });
         }
         if(interaction.values[0] === "mang_commands") {
-            interaction.reply({ embeds: [managementEmbed] });
+            interaction.reply({ ephemeral: true, embeds: [managementEmbed] });
         }
         if(interaction.values[0] === "misc_commands") {
-            interaction.reply({ embeds: [miscEmbed] })
+            interaction.reply({ ephemeral: true, embeds: [miscEmbed] })
         }
         if(interaction.values[0] === "toggle_features") {
             if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
