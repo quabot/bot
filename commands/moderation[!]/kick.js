@@ -3,36 +3,21 @@ const discord = require('discord.js');
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 const User = require('../../models/guild');
+const {errorMain, addedDatabase, kickNoPermsClient, kickNoUser, kickNoPermsUser, kickImpossible} = require('../../files/embeds');
 
-const noPermsKickBot = new discord.MessageEmbed()
-    .setDescription("I do not have permission to kick members!")
-    .setColor(colors.COLOR)
-const noPermsKickUser = new discord.MessageEmbed()
-    .setDescription("You do not have permission to kick members!")
-    .setColor(colors.COLOR)
-const noUsertoKick = new discord.MessageEmbed()
-    .setDescription("Please mention a user you want to kick!")
-    .setColor(colors.COLOR)
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
 
 module.exports = {
     name: "kick",
     aliases: [],
     async execute(client, message, args) {
 
-        console.log("Command `kick` was used.");
         const member = message.mentions.members.first();
         let reason = "No reason specified.";
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("KICK_MEMBERS")) return message.channel.send(noPermsKickBot);
-        if (!message.member.permissions.has("KICK_MEMBERS")) return message.channel.send(noPermsKickUser);
+        if (!message.guild.me.permissions.has("KICK_MEMBERS")) return message.channel.send({embeds:[kickNoPermsClient]});
+        if (!message.member.permissions.has("KICK_MEMBERS")) return message.channel.send({embeds:[kickNoPermsUser]});
 
         if (!member) return message.channel.send(noUsertoKick);
         if (args.length > 1) reason = args.slice(1).join(' ');

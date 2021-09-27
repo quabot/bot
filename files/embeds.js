@@ -87,5 +87,17 @@ const clearpunNoType = new discord.MessageEmbed()
 const clearpunNoMember = new discord.MessageEmbed()
     .setTitle(":x: Please mention a user to clear the warnings of!")
     .setColor(colors.COLOR);
+const kickNoPermsClient = new discord.MessageEmbed()
+    .setTitle(":x: I do not have permission to kick members!")
+    .setColor(colors.COLOR)
+const kickNoPermsUser = new discord.MessageEmbed()
+    .setTitle(":x: You do not have permission to kick members!")
+    .setColor(colors.COLOR)
+const kickNoUser = new discord.MessageEmbed()
+    .setTitle(":question: Please mention a user you want to kick!")
+    .setColor(colors.COLOR)
+const kickImpossible = new discord.MessageEmbed()
+    .setTitle(":x: Failed to kick, you cannot ban this user!")
+    .setColor(colors.COLOR)
 
-module.exports = {clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = {kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
