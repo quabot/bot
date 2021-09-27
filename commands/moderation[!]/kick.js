@@ -19,22 +19,25 @@ module.exports = {
         if (!message.guild.me.permissions.has("KICK_MEMBERS")) return message.channel.send({embeds:[kickNoPermsClient]});
         if (!message.member.permissions.has("KICK_MEMBERS")) return message.channel.send({embeds:[kickNoPermsUser]});
 
-        if (!member) return message.channel.send(noUsertoKick);
+        if (!member) return message.channel.send({ embeds: [kickNoUser]});
         if (args.length > 1) reason = args.slice(1).join(' ');
+        if (reason.length > 1024) {
+            let reason = "No reason specified.";
+        } 
 
-        const userBanned = new discord.MessageEmbed()
+        const userKicked = new discord.MessageEmbed()
             .setTitle("User Banned")
             .setDescription(`${member} was kicked.\n**Reason:** ${reason}`)
             .setColor(colors.KICK_COLOR)
 
         member.kick(reason);
-        message.channel.send(userBanned);
+        message.channel.send({ embeds: [userKicked]});
         
         User.findOne({
             guildID: message.guild.id,
             userID: member.id,
         }, async (err, user) => {
-            if(err) message.channel.send(errorMain);
+            if(err) message.channel.send({ embeds: [errorMain] });
             if(!User) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
@@ -47,19 +50,19 @@ module.exports = {
                 });
                 
                 await newUser.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
             } else {
                 User.updateOne({
                     kickCount: User.kickCount + 1
                 })
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
             };
         });
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send(errorMain);
+            if (err) message.channel.send({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -76,9 +79,9 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
 
-                return message.channel.send(addedDatabase);
+                return message.channel.send({ embeds: [addedDatabase] });
             }
         });
 
@@ -89,11 +92,11 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.KICK_COLOR)
                 .setTitle('User Kicked')
-                .addField('Username', member.user.username)
-                .addField('User ID', member.id)
-                .addField('Kicked by', message.author)
-                .addField('Reason', reason);
-            logChannel.send(embed);
+                .addField('Username', `${member.user.username}`)
+                .addField('User ID', `${member.id}`)
+                .addField('Kicked by', `${message.author}`)
+                .addField('Reason', `${reason}`);
+            logChannel.send({ embeds: [embed] });
         } else {
             return;
         }
