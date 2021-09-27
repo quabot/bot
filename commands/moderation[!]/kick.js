@@ -21,9 +21,6 @@ module.exports = {
 
         if (!member) return message.channel.send({ embeds: [kickNoUser]});
         if (args.length > 1) reason = args.slice(1).join(' ');
-        if (reason.length > 1024) {
-            let reason = "No reason specified.";
-        } 
 
         const userKicked = new discord.MessageEmbed()
             .setTitle("User Banned")
@@ -31,7 +28,7 @@ module.exports = {
             .setColor(colors.KICK_COLOR)
 
         member.kick(reason);
-        message.channel.send({ embeds: [userKicked]});
+        message.channel.send({ embeds: [userKicked]}).catch(err => message.channel.send("There was an error! The reason probaly exceeded the 1024 character limit."))
         
         User.findOne({
             guildID: message.guild.id,
@@ -96,7 +93,7 @@ module.exports = {
                 .addField('User ID', `${member.id}`)
                 .addField('Kicked by', `${message.author}`)
                 .addField('Reason', `${reason}`);
-            logChannel.send({ embeds: [embed] });
+            logChannel.send({ embeds: [embed], split: true }).catch(err => logChannel.send("There was an error! The reason probably exceeded the 1024 character limit."));
         } else {
             return;
         }

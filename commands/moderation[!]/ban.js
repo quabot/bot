@@ -33,7 +33,7 @@ module.exports = {
             let reason = ":x: Ban failed. Reason: " + reason;
             return;
         }); 
-        message.channel.send({embeds: [userBanned]});
+        message.channel.send({embeds: [userBanned], split: true}).catch(err => logChannel.send("There was an error! The reason probably exceeded the 1024 character limit."));        ;
         
         User.findOne({
             guildID: message.guild.id,
@@ -98,7 +98,7 @@ module.exports = {
                 .addField('User ID', `${member.id}`)
                 .addField('Banned by', `${message.author}`)
                 .addField('Reason', `${reason}`);
-            logChannel.send({ embeds: [embed] });
+            logChannel.send({ embeds: [embed], split: true }).catch(err => logChannel.send("There was an error! The reason probably exceeded the 1024 character limit."));            ;
         } else {
             return;
         }

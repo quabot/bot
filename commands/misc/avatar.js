@@ -3,7 +3,7 @@ const colors = require('../../files/colors.json');
 
 module.exports = {
     name: "avatar",
-    aliases: [],
+    aliases: ["av"],
     async execute(client, message, args) {
 
         console.log("Command `avatar` was used.");
