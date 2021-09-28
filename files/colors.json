@@ -13,5 +13,6 @@
     "UNMUTE_COLOR": "#55e6bd",
     "WARN_COLOR": "#b157de",
     "RED": "#fc0303",
-    "LIME": "#6fff00"
+    "LIME": "#6fff00",
+    "REPORT_COLOR": "#70ffea"
 }

@@ -30,17 +30,18 @@ module.exports = {
 
         member.ban({ reason: reason }).catch(err => {
             message.channel.send({embeds: [banImpossible]});
-            let reason = ":x: Ban failed. Reason: " + reason;
+            let reason = ":x: Ban failed.";
             return;
         }); 
         message.channel.send({embeds: [userBanned], split: true}).catch(err => logChannel.send("There was an error! The reason probably exceeded the 1024 character limit."));        ;
         
         User.findOne({
             guildID: message.guild.id,
-            userID: member.id,
-        }, async (err, User) => {
-            if(err) message.channel.send({embeds: [errorMain]});
-            if(!User) {
+            userID: member.id
+        }, async (err, user) => {
+            if (err) console.error(err);
+
+            if (!user) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
                     guildID: message.guild.id,
@@ -50,14 +51,14 @@ module.exports = {
                     kickCount: 0,
                     banCount: 1
                 });
-                
+
                 await newUser.save()
-                    .catch(err => message.channel.send({embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
             } else {
                 User.updateOne({
-                    banCount: User.banCount + 1
+                    warnCount: User.warnCount + 1
                 })
-                    .catch(err => message.channel.send({embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
             };
         });
 

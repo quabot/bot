@@ -32,8 +32,8 @@ module.exports = {
                     enableSwearFilter: true,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member"
                 });
 
                 newGuild.save()
@@ -65,7 +65,7 @@ module.exports = {
 
         User.findOne({
             guildID: message.guild.id,
-            userID: target.id
+            userID: member.id
         }, async (err, user) => {
             if (err) console.error(err);
 
@@ -73,20 +73,20 @@ module.exports = {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
                     guildID: message.guild.id,
-                    userID: target.id,
-                    muteCount: 1,
+                    userID: member.id,
+                    muteCount: 0,
                     warnCount: 0,
                     kickCount: 0,
-                    banCount: 0
+                    banCount: 1
                 });
 
                 await newUser.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
             } else {
                 User.updateOne({
-                    muteCount: User.muteCount + 1
+                    warnCount: User.warnCount + 1
                 })
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
             };
         });
 

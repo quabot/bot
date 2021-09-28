@@ -108,5 +108,20 @@ const muteNoRoleManage = new discord.MessageEmbed()
 const muteNoPermsUser = new discord.MessageEmbed()
     .setDescription(":x: You do not have permission to mute members!")
     .setColor(colors.COLOR);
+const reportNoUser = new discord.MessageEmbed()
+    .setTitle(":question: Please mention a user to report!")
+    .setColor(colors.COLOR);
+const reportNoSelf = new discord.MessageEmbed()
+    .setTitle(":x: You cannot report yourself!")
+    .setColor(colors.COLOR);
+const reportNoContent = new discord.MessageEmbed()
+    .setTitle(":x: Please enter something you wish to report this user for!")
+    .setColor(colors.COLOR);
+const reportsDisabled = new discord.MessageEmbed()
+    .setTitle(":x: This guild has reports disabled!")
+    .setColor(colors.COLOR);
+const reportNoChannel = new discord.MessageEmbed()
+    .setTitle(":x: This guild doesn't have a report logging channel setup!")
+    .setColor(colors.COLOR);
 
-module.exports = {muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}

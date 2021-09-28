@@ -46,7 +46,7 @@ module.exports = {
 
         if (type === "warn" || type === "kick" || type === "mute" || type === "ban") {
             if (type === "warn") {
-                await userDatabase.updateOne({
+                userDatabase.updateOne({
                     warnCount: 0
                 });
                 const embed1 = new discord.MessageEmbed()
@@ -55,7 +55,7 @@ module.exports = {
                 message.channel.send({ embeds: [embed1] });
             }
             if (type === "kick") {
-                await userDatabase.updateOne({
+                userDatabase.updateOne({
                     kickCount: 0
                 });
                 const embed2 = new discord.MessageEmbed()
@@ -64,7 +64,7 @@ module.exports = {
                 message.channel.send({ embeds: [embed2] });
             }
             if (type === "mute") {
-                await userDatabase.updateOne({
+                userDatabase.updateOne({
                     muteCount: 0
                 });
                 const embed3 = new discord.MessageEmbed()
@@ -73,7 +73,7 @@ module.exports = {
                 message.channel.send({ embeds: [embed3] });
             }
             if (type === "ban") {
-                await userDatabase.updateOne({
+                userDatabase.updateOne({
                     banCount: 0
                 });
                 const embed4 = new discord.MessageEmbed()

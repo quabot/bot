@@ -18,12 +18,13 @@ const {errorMain, addedDatabase, PunsishmentsOthers} = require('../../files/embe
             return message.channel.send({embeds: [PunsishmentsOthers]});
         }
 
-        const punishments = await User.findOne({
+        const punishments = User.findOne({
             guildID: message.guild.id,
             userID: member.id
-        }, async (err, User) => {
-            if (err) message.channel.send({embeds: [errorMain]});
-            if (!User) {
+        }, async (err, user) => {
+            if (err) console.error(err);
+
+            if (!user) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
                     guildID: message.guild.id,
@@ -31,14 +32,17 @@ const {errorMain, addedDatabase, PunsishmentsOthers} = require('../../files/embe
                     muteCount: 0,
                     warnCount: 0,
                     kickCount: 0,
-                    banCount: 0
+                    banCount: 1
                 });
 
                 await newUser.save()
-                return message.channel.send({embeds: [addedDatabase]})
-                    .catch(err => message.reply({embeds: [errorMain]}));
-
-            }
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
+            } else {
+                User.updateOne({
+                    warnCount: User.warnCount + 1
+                })
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
+            };
         });
 
         const embed = new discord.MessageEmbed()

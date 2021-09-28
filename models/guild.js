@@ -11,7 +11,9 @@ const guildSchema = mongoose.Schema({
     enableMusic: String,
     enableLevel: String,
     mutedRoleName: String,
-    mainRoleName: String
+    mainRoleName: String,
+    reportEnabled: String,
+    reportChannelID: String,
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');
