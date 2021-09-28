@@ -1,4 +1,5 @@
 const discord = require('discord.js');
+const mongoose = require('mongoose');
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
@@ -96,9 +97,9 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.MUTE_COLOR)
                 .setTitle('User Muted')
-                .addField('Username', target)
-                .addField('User ID', target.id)
-                .addField('Muted by', message.author)
+                .addField('Username', `${target}`)
+                .addField('User ID', `${target.id}`)
+                .addField('Muted by', `${message.author}`)
             logChannel.send({ embeds: [embed]});
         } else {
             return;
