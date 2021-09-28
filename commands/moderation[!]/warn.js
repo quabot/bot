@@ -1,6 +1,8 @@
 const discord = require("discord.js");
 const mongoose = require('mongoose');
 
+// LOGGING CHANNEL
+
 const User = require('../../models/user');
 const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
