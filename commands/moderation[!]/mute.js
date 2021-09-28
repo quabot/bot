@@ -4,28 +4,12 @@ const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
 const User = require('../../models/user');
 
-const noUser = new discord.MessageEmbed()
-    .setDescription("Please mention a user to mute!")
-    .setColor(colors.COLOR);
-const noPermsManageRoles = new discord.MessageEmbed()
-    .setDescription("I do not have permission to manage roles!")
-    .setColor(colors.COLOR);
-const noPermsBanUser = new discord.MessageEmbed()
-    .setDescription("You do not have permission to mute members!")
-    .setColor(colors.COLOR);
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was a database error, the user was muted succesfully!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
+const {errorMain, addedDatabase, muteNoUser, muteNoRoleManage, muteNoPermsUser} = require('../../files/embeds');
 
 module.exports = {
     name: "mute",
     aliases: [],
     async execute(client, message, args) {
-
-        console.log("Command `mute` was used.");
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
@@ -35,7 +19,7 @@ module.exports = {
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send(errorMain);
+            if (err) message.channel.send({ embeds: [errorMain]});
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -52,9 +36,9 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain]}));
 
-                return message.channel.send(addedDatabase);
+                return message.channel.send({ embeds: [addedDatabase]});
             }
         });
 
@@ -63,8 +47,8 @@ module.exports = {
 
         const target = message.mentions.users.first();
 
-        if(!args[0]) return message.channel.send(noUser);
-        if(!target) return message.channel.send(noUser);
+        if(!args[0]) return message.channel.send({ embeds: [muteNoUser]});
+        if(!target) return message.channel.send({ embeds: [muteNoUser]});
 
         let mainRole = message.guild.roles.cache.find(role => role.name === `${mainRoleName}`);
         let muteRole = message.guild.roles.cache.find(role => role.name === `${mutedRoleName}`);
@@ -74,9 +58,9 @@ module.exports = {
         memberTarget.roles.remove(mainRole.id);
         memberTarget.roles.add(muteRole.id);
         const mutedUser = new discord.MessageEmbed()
-            .setDescription(`<@${memberTarget.user.id}> has been muted`)
+            .setDescription(`:white_check_mark: <@${memberTarget.user.id}> has been muted`)
             .setColor(colors.COLOR);
-        message.channel.send(mutedUser);
+        message.channel.send({ embeds: [mutedUser]});
 
         User.findOne({
             guildID: message.guild.id,
@@ -96,12 +80,12 @@ module.exports = {
                 });
 
                 await newUser.save()
-                    .catch(err => message.channel.send(errorMain)   );
+                    .catch(err => message.channel.send({ embeds: [errorMain]}));
             } else {
                 User.updateOne({
                     muteCount: User.muteCount + 1
                 })
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain]}));
             };
         });
 
@@ -115,7 +99,7 @@ module.exports = {
                 .addField('Username', target)
                 .addField('User ID', target.id)
                 .addField('Muted by', message.author)
-            logChannel.send(embed);
+            logChannel.send({ embeds: [embed]});
         } else {
             return;
         }

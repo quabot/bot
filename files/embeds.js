@@ -99,5 +99,14 @@ const kickNoUser = new discord.MessageEmbed()
 const kickImpossible = new discord.MessageEmbed()
     .setTitle(":x: Failed to kick, you cannot ban this user!")
     .setColor(colors.COLOR)
+const muteNoUser = new discord.MessageEmbed()
+    .setTitle(":question: Please mention a user to mute!")
+    .setColor(colors.COLOR);
+const muteNoRoleManage = new discord.MessageEmbed()
+    .setDescription(":x: I do not have permission to manage roles!")
+    .setColor(colors.COLOR);
+const muteNoPermsUser = new discord.MessageEmbed()
+    .setDescription(":x: You do not have permission to mute members!")
+    .setColor(colors.COLOR);
 
-module.exports = {kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = {muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
