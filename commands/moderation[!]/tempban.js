@@ -61,15 +61,23 @@ module.exports = {
             }); 
             const embed = new discord.MessageEmbed()
                 .setTitle("User Tempbanned")
-                .setDescription(`${member} was tempbanned for ${ms(time)}.\n**Reason:** ${reason}`)
+                .setDescription(`${member} was tempbanned for **${time}**.\n**Reason:** ${reason}`)
                 .setColor(colors.COLOR)
             message.channel.send({ embeds: [embed] });
             setTimeout(function () {
-                message.guild.members.unban(member.id)
+                message.guild.members.unban(member.id);
                 const unbannedAfter = new discord.MessageEmbed()
-                    .setDescription(`${member} was unbanned after ${time}!`)
+                    .setDescription(`${member} was unbanned after **${time}**!`)
                     .setColor(colors.COLOR);
                 message.channel.send({ embeds: [unbannedAfter] });
+                if (settings.enableLog === "true") {
+                    const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+                    if (!logChannel) {
+                        return;
+                    } else {
+                        logChannel.send({ embeds: [unbannedAfter] });
+                    };
+                }
             }, ms(time));
         } else {
             return message.channel.send({ embeds: [banNoTime] });
@@ -81,7 +89,7 @@ module.exports = {
         }, async (err, user) => {
             if (err) console.error(err);
 
-            if (!user) {
+            if (!User) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
                     guildID: message.guild.id,
@@ -107,14 +115,14 @@ module.exports = {
             if (!logChannel) {
                 return;
             } else {
-                const embed = new Discord.MessageEmbed()
+                const embed = new discord.MessageEmbed()
                     .setColor(colors.BAN_COLOR)
                     .setTitle('User Tempbanned')
-                    .addField('Username', member.username)
-                    .addField('User ID', member.id)
-                    .addField('Banned by', message.author)
-                    .addField('Reason', reason)
-                    .addField('Time', ms(time));
+                    .addField('Username', `${member.tag}`)
+                    .addField('User ID', `${member.id}`)
+                    .addField('Banned by', `${message.author}`)
+                    .addField('Reason', `${reason}`)
+                    .addField('Time', `${time}`);
                 return logChannel.send({ embeds: [embed] });
             };
         }
