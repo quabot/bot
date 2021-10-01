@@ -126,5 +126,14 @@ const reportNoChannel = new discord.MessageEmbed()
 const banNoTime = new discord.MessageEmbed()
     .setTitle(":question: Please enter a time to ban this user!")
     .setColor(colors.COLOR);
+const muteNoManageRoles = new discord.MessageEmbed()
+    .setTitle(":x: I do not have permission to manage roles!")
+    .setColor(colors.COLOR);
+const muteUserNoPerms = new discord.MessageEmbed()
+    .setTitle(":x: You do not have permission to ban members!")
+    .setColor(colors.COLOR);
+const muteNoTime = new discord.MessageEmbed()
+    .setTitle(":question: Please enter a time to ban this user!")
+    .setColor(colors.COLOR);
 
-module.exports = { banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
