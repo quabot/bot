@@ -4,7 +4,7 @@ const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
 const colors = require('../../files/colors.json');
 
-const { errorMain, banNoUserFound, banImpossible, addedDatabase, banNoPermsUser, unbanNoUser, banNoTime, muteNoManageRoles, muteNoPermsUser, muteNoTime, muteNoUser, banNoPermsBot } = require('../../files/embeds');
+const { errorMain, notBanned, banNoUserFound, banImpossible, addedDatabase, banNoPermsUser, unbanNoUser, banNoTime, muteNoManageRoles, muteNoPermsUser, muteNoTime, muteNoUser, banNoPermsBot } = require('../../files/embeds');
 
 
 module.exports = {
@@ -14,26 +14,33 @@ module.exports = {
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsBot]});
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsUser]});
+        if (!message.guild.me.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsBot] });
+        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsUser] });
 
-        const member = args[0];
-        const memberid = args[0];
-        const sender = message.author;
+        if (!args[0]) return message.channel.send({ embeds: [unbanNoUser] });
+        let bannedMember;
+        try {
+            bannedMember = await client.users.cache.get(args[0])
+        } catch (e) {
+            if (!bannedMember) return message.channel.send({ embeds: [unbanNoUser] });
+        }
 
-        if (!member || !memberid) return message.channel.send({ embeds: [unbanNoUser]});
+        try {
+            await message.guild.bans.fetch(args[0])
+        } catch (e) {
+            message.channel.send({ embeds: [notBanned] });
+            return;
+        }
 
-        let userID = args[0]
-        message.guild.bans.fetch().then(bans => {
-            if (bans.size == 0) return
-            let bUser = bans.find(b => b.user.id == userID)
-            if (!bUser) return message.channel.send({ embeds: [banNoUserFound]})
-            message.guild.members.unban(bUser.user)
-            const unbannedUser = new discord.MessageEmbed()
-                .setDescription(`Succesfully unbanned ${args[0]}.`)
-                .setColor(colors.COLOR);
-            message.channel.send({ embeds: [unbannedUser]});
-        })
+        try {
+            message.guild.members.unban(args[0])
+            const embed1 = new discord.MessageEmbed()
+                .setColor(colors.COLOR)
+                .setDescription(`:white_check_mark:<@${args[0]}> has been unbanned.`)
+            message.channel.send({ embeds: [embed1] })
+        } catch (e) {
+            console.log(e.message)
+        }
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
@@ -50,8 +57,10 @@ module.exports = {
                     enableSwearFilter: true,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none
                 });
 
                 newGuild.save()
@@ -60,9 +69,9 @@ module.exports = {
                 return message.channel.send({ embeds: [addedDatabase] });
             }
         });
+
         const logChannel = message.guild.channels.cache.get(settings.logChannelID);
 
-        const user = message.mentions.users.first();
         if (settings.enableLog === "true") {
             if (!logChannel) {
                 return;
@@ -70,9 +79,9 @@ module.exports = {
                 const embed = new discord.MessageEmbed()
                     .setColor(colors.UNBAN_COLOR)
                     .setTitle('User Unban')
-                    .addField('Username', user)
-                    .addField('User ID', memberid)
-                    .addField('Unbanned by', message.author)
+                    .addField('Username', `<@${args[0]}>`)
+                    .addField('User ID', `${args[0]}`)
+                    .addField('Unbanned by', `${message.author}`)
                 return logChannel.send({ embeds: [embed] });
             };
         }
