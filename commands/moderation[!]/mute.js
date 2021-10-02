@@ -47,6 +47,7 @@ module.exports = {
         let mainRoleName = settings.mainRoleName;
 
         const target = message.mentions.users.first();
+        const member = message.mentions.members.first();
 
         if(!args[0]) return message.channel.send({ embeds: [muteNoUser]});
         if(!target) return message.channel.send({ embeds: [muteNoUser]});

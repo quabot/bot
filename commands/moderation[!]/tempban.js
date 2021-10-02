@@ -1,54 +1,34 @@
 const discord = require('discord.js');
 const ms = require('ms');
+const mongoose = require('mongoose');
 
 const Guild = require('../../models/guild');
+
 const config = require('../../files/config.json');
 const User = require('../../models/user');
 const colors = require('../../files/colors.json');
-
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR);
-const noPermsManageRoles = new discord.MessageEmbed()
-    .setDescription("I do not have permission to manage roles!")
-    .setColor(colors.COLOR);
-const noPermsBanUser = new discord.MessageEmbed()
-    .setDescription("You do not have permission to mute members!")
-    .setColor(colors.COLOR);
-const noUser = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setDescription("Please enter a valid user to ban!");
-const noTime = new discord.MessageEmbed()
-    .setDescription("Please enter a time to ban this user!")
-    .setColor(colors.COLOR);
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
+const {errorMain, banImpossible, addedDatabase, banNoPermsUser, banNoUser, banNoTime} = require('../../files/embeds');
 
 module.exports = {
     name: "tempban",
-    aliases: [],
+    aliases: ["tb"],
     async execute(client, message, args) {
-
-        console.log("Command `tempban` was used.");
-
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_ROLES")) return message.channel.send(noPermsManageRoles);
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
+        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsUser] });
 
-        const user = message.mentions.users.first();
+        const member = message.mentions.members.first();
         const time = args[1];
-        if (!args[0]) return message.channel.send("Please enter a user to tempban!");
-        if (!user) return message.channel.send("Please enter a user to tempban!");
-        if (!time) return message.channel.send(noTime);
-        let reason = "No reason specified"; // ERROR?
+        if (!args[0]) return message.channel.send({ embeds: [banNoUser] });
+        if (!member) return message.channel.send({ embeds: [banNoUser] });
+        if (!time) return message.channel.send({ embeds: [banNoTime] });
+        let reason = "No reason specified";
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send(errorMain);
+            if (err) message.channel.send({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -60,33 +40,47 @@ module.exports = {
                     enableSwearFilter: true,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
 
-                return message.channel.send(addedDatabase);
+                return message.channel.send({ embeds: [addedDatabase] });
             }
         });
         
         if (ms(time)) {
-            await message.guild.member(user).ban({ reason: reason });
+            member.ban({ reason: reason }).catch(err => {
+                message.channel.send({embeds: [banImpossible]});
+                let reason = ":x: Ban failed.";
+                return;
+            }); 
             const embed = new discord.MessageEmbed()
                 .setTitle("User Tempbanned")
-                .setDescription(`${member} was tempbanned for ${ms(time)}.\n**Reason:** ${reason}`)
+                .setDescription(`${member} was tempbanned for **${time}**.\n**Reason:** ${reason}`)
                 .setColor(colors.COLOR)
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
             setTimeout(function () {
-                message.guild.members.unban(user.id)
+                message.guild.members.unban(member.id);
                 const unbannedAfter = new discord.MessageEmbed()
-                    .setDescription(`${user} was unbanned after ${time}!`)
+                    .setDescription(`${member} was unbanned after **${time}**!`)
                     .setColor(colors.COLOR);
-                message.channel.send(unbannedAfter);
+                message.channel.send({ embeds: [unbannedAfter] });
+                if (settings.enableLog === "true") {
+                    const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+                    if (!logChannel) {
+                        return;
+                    } else {
+                        logChannel.send({ embeds: [unbannedAfter] });
+                    };
+                }
             }, ms(time));
         } else {
-            return message.channel.send(noTime);
+            return message.channel.send({ embeds: [banNoTime] });
         }
 
         User.findOne({
@@ -95,7 +89,7 @@ module.exports = {
         }, async (err, user) => {
             if (err) console.error(err);
 
-            if (!user) {
+            if (!User) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
                     guildID: message.guild.id,
@@ -107,12 +101,12 @@ module.exports = {
                 });
 
                 await newUser.save()
-                    .catch(err => console.error(err));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
             } else {
                 User.updateOne({
                     banCount: User.banCount + 1
                 })
-                    .catch(err => console.error(err));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
             };
         });
 
@@ -121,15 +115,15 @@ module.exports = {
             if (!logChannel) {
                 return;
             } else {
-                const embed = new Discord.MessageEmbed()
+                const embed = new discord.MessageEmbed()
                     .setColor(colors.BAN_COLOR)
                     .setTitle('User Tempbanned')
-                    .addField('Username', member.username)
-                    .addField('User ID', user.id)
-                    .addField('Banned by', message.author)
-                    .addField('Reason', reason)
-                    .addField('Time', ms(time));
-                return logChannel.send(embed);
+                    .addField('Username', `${member.tag}`)
+                    .addField('User ID', `${member.id}`)
+                    .addField('Banned by', `${message.author}`)
+                    .addField('Reason', `${reason}`)
+                    .addField('Time', `${time}`);
+                return logChannel.send({ embeds: [embed] });
             };
         }
     }

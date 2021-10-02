@@ -23,7 +23,7 @@ module.exports = {
         if (args.length > 1) reason = args.slice(1).join(' ');
 
         const userKicked = new discord.MessageEmbed()
-            .setTitle("User Banned")
+            .setTitle("User Kicked")
             .setDescription(`${member} was kicked.\n**Reason:** ${reason}`)
             .setColor(colors.KICK_COLOR)
 
