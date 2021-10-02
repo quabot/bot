@@ -6,15 +6,13 @@ const fs = require('fs');
 
 const validDebugs = new discord.MessageEmbed()
     .setColor(colors.COLOR)
-    .setDescription("**Invalid debug**\nValid debugs are:\n`servers\nservers-console\nreload\nusername\nactivity\npresence`")
+    .setDescription("**Invalid debug**\nValid debugs are:\n`destroy\nservers\nservers-console\nreload\nusername\nactivity\npresence`")
 
 module.exports = {
     name: "debug",
     aliases: [],
     async execute(client, message, args) {
         message.delete()
-
-        console.log("Command `debug` was used.");
         
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
         if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) return message.channel.send("I don't have permission to manage messages!");

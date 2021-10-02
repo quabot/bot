@@ -20,9 +20,7 @@ module.exports = {
     name: "lockdown",
     aliases: ["lock"],
     async execute(client, message, args) {
-
-        console.log("Command `lockdown` was used.");
-
+        
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
         if (!message.guild.me.permissions.has("MANAGE_CHANNELS")) return message.channel.send({ embeds: [noManageChannels]});
