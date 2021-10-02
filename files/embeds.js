@@ -75,6 +75,9 @@ const banNoPermsUser = new discord.MessageEmbed()
 const banNoUser = new discord.MessageEmbed()
     .setTitle(":question: Please mention a user you want to ban!")
     .setColor(colors.COLOR)
+const unbanNoUser = new discord.MessageEmbed()
+    .setTitle(":question: Please mention a user you want to unban, or enter their User-ID!")
+    .setColor(colors.COLOR)
 const banImpossible = new discord.MessageEmbed()
     .setTitle(":x: Failed to ban, you cannot ban this user!")
     .setColor(colors.COLOR)
@@ -135,5 +138,8 @@ const muteUserNoPerms = new discord.MessageEmbed()
 const muteNoTime = new discord.MessageEmbed()
     .setTitle(":question: Please enter a time to ban this user!")
     .setColor(colors.COLOR);
+const banNoUserFound = new discord.MessageEmbed()
+    .setTitle(":x: Could not find that user!")
+    .setColor(colors.COLOR);
 
-module.exports = { muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
