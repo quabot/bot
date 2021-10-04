@@ -36,7 +36,7 @@ module.exports = {
             message.guild.members.unban(args[0])
             const embed1 = new discord.MessageEmbed()
                 .setColor(colors.COLOR)
-                .setDescription(`:white_check_mark:<@${args[0]}> has been unbanned.`)
+                .setDescription(`:white_check_mark: <@${args[0]}> has been unbanned.`)
             message.channel.send({ embeds: [embed1] })
         } catch (e) {
             console.log(e.message)

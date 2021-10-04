@@ -82,12 +82,12 @@ module.exports = {
                 });
 
                 await newUser.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain]}));
             } else {
                 User.updateOne({
                     warnCount: User.warnCount + 1
                 })
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain]}));
             };
         });
 

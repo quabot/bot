@@ -24,8 +24,6 @@ module.exports = {
     aliases: [],
     async execute(client, message, args) {
 
-        console.log("Command `unmute` was used.");
-
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
         if (!message.guild.me.permissions.has("MANAGE_ROLES")) return message.channel.send(noPermsManageRoles);
@@ -34,7 +32,7 @@ module.exports = {
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send(errorMain);
+            if (err) message.channel.send({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -46,14 +44,16 @@ module.exports = {
                     enableSwearFilter: true,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
 
-                return message.channel.send(addedDatabase);
+                return message.channel.send({ embeds: [addedDatabase] });
             }
         });
 
@@ -83,9 +83,9 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.UNMUTE_COLOR)
                 .setTitle('User Unmuted')
-                .addField('Username', target)
-                .addField('User ID', target.id)
-                .addField('Unmuted by', message.author)
+                .addField('Username', `${target}`)
+                .addField('User ID', `${target.id}`)
+                .addField('Unmuted by', `${message.author}`)
             logChannel.send(embed);
         } else {
             return;
