@@ -14,6 +14,8 @@ const guildSchema = mongoose.Schema({
     mainRoleName: String,
     reportEnabled: String,
     reportChannelID: String,
+    suggestEnabled: String,
+    suggestChannelID: String,
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');

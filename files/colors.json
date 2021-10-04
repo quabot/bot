@@ -14,5 +14,6 @@
     "WARN_COLOR": "#b157de",
     "RED": "#fc0303",
     "LIME": "#6fff00",
-    "REPORT_COLOR": "#70ffea"
+    "REPORT_COLOR": "#70ffea",
+    "SUGGEST_COLOR": "#63ff9a"
 }
