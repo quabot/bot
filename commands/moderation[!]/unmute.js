@@ -3,21 +3,7 @@ const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
 
-const noUser = new discord.MessageEmbed()
-    .setDescription("Please mention a user to mute!")
-    .setColor(colors.COLOR);
-const noPermsManageRoles = new discord.MessageEmbed()
-    .setDescription("I do not have permission to manage roles!")
-    .setColor(colors.COLOR);
-const noPermsBanUser = new discord.MessageEmbed()
-    .setDescription("You do not have permission to mute members!")
-    .setColor(colors.COLOR);
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
+const { errorMain, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, addedDatabase } = require('../../files/embeds');
 
 module.exports = {
     name: "unmute",
@@ -26,8 +12,8 @@ module.exports = {
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_ROLES")) return message.channel.send(noPermsManageRoles);
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
+        if (!message.guild.me.permissions.has("MANAGE_ROLES")) return message.channel.send({ embeds: [unmuteBotNoRoles] });
+        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [unmuteUserNoPerms] });
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
@@ -62,8 +48,8 @@ module.exports = {
 
         const target = message.mentions.users.first();
 
-        if(!args[0]) return message.channel.send(noUser);
-        if(!target) return message.channel.send(noUser);
+        if(!args[0]) return message.channel.send({ embeds: [unmuteNoUser] });
+        if(!target) return message.channel.send({ embeds: [unmuteNoUser] });
 
         let mainRole = message.guild.roles.cache.find(role => role.name === `${mainRoleName}`);
         let muteRole = message.guild.roles.cache.find(role => role.name === `${mutedRoleName}`);
@@ -75,7 +61,7 @@ module.exports = {
         const mutedUser = new discord.MessageEmbed()
             .setDescription(`<@${memberTarget.user.id}> has been unmuted`)
             .setColor(colors.COLOR);
-        message.channel.send(mutedUser);
+        message.channel.send({ embeds: [mutedUser] });
 
         if (settings.enableLog === "true") {
             const logChannel = message.guild.channels.cache.get(settings.logChannelID);
@@ -86,7 +72,7 @@ module.exports = {
                 .addField('Username', `${target}`)
                 .addField('User ID', `${target.id}`)
                 .addField('Unmuted by', `${message.author}`)
-            logChannel.send(embed);
+            logChannel.send({ embeds: [embed] });
         } else {
             return;
         }
