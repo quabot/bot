@@ -46,6 +46,7 @@ const addedDatabase = new discord.MessageEmbed()
     .setColor(colors.COLOR)
 const errorMain = new discord.MessageEmbed()
     .setTitle(":x: There was an error!")
+    .setDescription("This issue is probably database related, please contact someone at our support discord.\nhttps://discord.gg/Nwu9DNjYa9")
     .setColor(colors.COLOR)
 const PingGetting = new discord.MessageEmbed()
     .setColor(colors.COLOR)
@@ -153,5 +154,14 @@ const unmuteBotNoRoles = new discord.MessageEmbed()
 const unmuteUserNoPerms = new discord.MessageEmbed()
     .setTitle(":x: You do not have permission to mute members!")
     .setColor(colors.COLOR);
+const warnNoPerms = new discord.MessageEmbed()
+    .setTitle(":x: You do not have permission to warn members! `BAN_MEMBERS`")
+    .setColor(colors.COLOR);
+const warnNoUserToWarn = new discord.MessageEmbed()
+    .setTitle(":question: Please mention a user you want to warn!")
+    .setColor(colors.COLOR)
+const warnNotHigherRole = new discord.MessageEmbed()
+    .setTitle(":x: You cannot warn someone with a higher role than you!")
+    .setColor(colors.COLOR)
 
-module.exports = { unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
