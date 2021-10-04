@@ -25,10 +25,8 @@ module.exports = {
     name: "play",
     aliases: ["p"],
     async execute(client, message, args) {
-
-        console.log("Command `play` was used.");
-
-        //if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        
+        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
 
         const settings = await Guild.findOne({
@@ -62,9 +60,7 @@ module.exports = {
 
         let search = args.join(" ");
         if (!search) return message.channel.send({ embeds: [noSearch] });
-        let queue = client.player.getQueue(message);
 
         client.player.play(message, search);
-        //queue.add(message,search);
     }
 }

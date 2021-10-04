@@ -1,18 +1,17 @@
 const { Client, Intents } = require('discord.js');
 const Discord = require("discord.js");
 const client = new Client({
-	intents: [
-		'GUILDS',
-		'GUILD_VOICE_STATES',
-		'GUILD_MESSAGES',
+    intents: [
+        'GUILDS',
+        'GUILD_VOICE_STATES',
+        'GUILD_MESSAGES',
         'GUILD_PRESENCES',
         'GUILD_MEMBERS'
-	],
+    ],
 });
 
 const Levels = require("discord.js-leveling");
 const { GiveawaysManager } = require('discord-giveaways');
-const DisTube = require('distube');
 const mongoose = require("./utils/mongoose");
 
 client.mongoose = require('./utils/mongoose');
@@ -24,13 +23,8 @@ client.commands = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
-// get functions config.js:
-const prefix = "!";
-const func = require('./commands/management[!]/config');
-const { NotPlaying } = require('./files/embeds');
-
 console.log("Loaded index.js");
-
+const prefix = "!";
 
 client.giveawaysManager = new GiveawaysManager(client, {
     storage: "./files/giveaways.json",
@@ -137,66 +131,66 @@ const noperms = new Discord.MessageEmbed()
 const levelsButtons = new Discord.MessageActionRow()
     .addComponents(
         new Discord.MessageButton()
-        .setCustomId('enableLevel')
-        .setLabel('Enable')
-        .setStyle('SUCCESS'),
+            .setCustomId('enableLevel')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
         new Discord.MessageButton()
-        .setCustomId('disableLevel')
-        .setLabel('Disable')
-        .setStyle('DANGER'),
+            .setCustomId('disableLevel')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
     );
 const disabledToggle = new Discord.MessageActionRow()
     .addComponents(
         new Discord.MessageButton()
-        .setCustomId('enableLevel')
-        .setLabel('Enable')
-        .setDisabled('true')
-        .setStyle('SUCCESS'),
+            .setCustomId('enableLevel')
+            .setLabel('Enable')
+            .setDisabled('true')
+            .setStyle('SUCCESS'),
         new Discord.MessageButton()
-        .setCustomId('disableLevel')
-        .setLabel('Disable')
-        .setDisabled('true')
-        .setStyle('DANGER'),
+            .setCustomId('disableLevel')
+            .setLabel('Disable')
+            .setDisabled('true')
+            .setStyle('DANGER'),
     );
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isSelectMenu()) {
-        if(interaction.values[0] === "fun_commands") {
+        if (interaction.values[0] === "fun_commands") {
             interaction.reply({ ephemeral: true, embeds: [funEmbed] })
         }
-        if(interaction.values[0] === "info_commands") {
+        if (interaction.values[0] === "info_commands") {
             interaction.reply({ ephemeral: true, embeds: [infoEmbed] })
         }
-        if(interaction.values[0] === "music_commands") {
+        if (interaction.values[0] === "music_commands") {
             interaction.reply({ ephemeral: true, embeds: [musicEmbed] })
         }
-        if(interaction.values[0] === "mod_commands") {
+        if (interaction.values[0] === "mod_commands") {
             interaction.reply({ ephemeral: true, embeds: [ModMain], components: [selectMod] });
         }
-        if(interaction.values[0] === "moder_commands") {
+        if (interaction.values[0] === "moder_commands") {
             interaction.reply({ ephemeral: true, embeds: [moderationEmbed] });
         }
-        if(interaction.values[0] === "mang_commands") {
+        if (interaction.values[0] === "mang_commands") {
             interaction.reply({ ephemeral: true, embeds: [managementEmbed] });
         }
-        if(interaction.values[0] === "misc_commands") {
+        if (interaction.values[0] === "misc_commands") {
             interaction.reply({ ephemeral: true, embeds: [miscEmbed] })
         }
-        if(interaction.values[0] === "toggle_features") {
+        if (interaction.values[0] === "toggle_features") {
             if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
             interaction.reply({ embeds: [toggleEmbed], components: [toggle], ephemeral: true })
         }
-        if(interaction.values[0] === "levels_toggle") {
+        if (interaction.values[0] === "levels_toggle") {
             if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
             interaction.reply({ ephemeral: true, embeds: [toggleLevels], components: [levelsButtons] })
         }
     }
     if (interaction.isButton()) {
-        if(interaction.customId  === "enableLevel") {
+        if (interaction.customId === "enableLevel") {
             if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
             func.enableLevel();
             await interaction.update({ ephemeral: true, embeds: [levelsEnabled], components: [disabledToggle] });
         }
-        if(interaction.customId  === "disableLevel") {
+        if (interaction.customId === "disableLevel") {
             if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
             func.disableLevel();
             await interaction.update({ ephemeral: true, embeds: [levelsDisabled], components: [disabledToggle] });

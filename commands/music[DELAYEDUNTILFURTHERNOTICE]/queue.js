@@ -63,7 +63,6 @@ module.exports = {
             `**${id+1}**. [${song.name}](${song.url}) - \`${song.formattedDuration}\``
         ).join("\n"));
         console.log(queue);
-        return;
         if (!queue) return message.channel.send({ embeds: [noPlay] });
 
         const song0 = queue.songs[0];

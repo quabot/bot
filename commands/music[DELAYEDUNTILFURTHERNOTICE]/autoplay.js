@@ -27,8 +27,10 @@ module.exports = {
                     enableSwearFilter: true,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none
                 });
 
                 newGuild.save()
