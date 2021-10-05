@@ -1,14 +1,14 @@
 const discord = require('discord.js');
-const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
 const Guild = require('../../models/guild');
-const { errorMain, noSuggestChannelConfigured, suggestTooShort, addedDatabase, suggestDisabled } = require('../../files/embeds');
+
+const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
 
 module.exports = {
-    name: "suggest",
-    aliases: ["suggestion"],
+    name: "ticket",
+    aliases: ["tickets", "ct", "maketicket", "createticket"],
     async execute(client, message, args) {
 
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
@@ -46,35 +46,6 @@ module.exports = {
             }
         });
 
-        if (settings.suggestEnabled === "false") return message.channel.send({ embeds: [suggestDisabled] });
-        const suggestChannel = message.guild.channels.cache.get(settings.suggestChannelID);
-        if (!suggestChannel) return message.channel.send({ embeds: [noSuggestChannelConfigured] });
-
-        const suggestionContent = args.slice(0).join(' ');
-
-        if (suggestionContent.length < 3) return message.channel.send({ embeds: [suggestTooShort] });
-
-        const embed = new discord.MessageEmbed()
-            .setColor(colors.SUGGEST_COLOR)
-            .setTitle("New Suggestion!")
-            .addField("Suggested by:", `${message.author}`)
-            .addField("Suggestion:", `${suggestionContent}`)
-            .setTimestamp()
-        suggestChannel.send({ embeds: [embed] });
-
-        if (settings.enableLog === "true") {
-            const logChannel = message.guild.channels.cache.get(settings.logChannelID);
-            if (!logChannel) return;
-            const embed2 = new discord.MessageEmbed()
-                .setColor(colors.KICK_COLOR)
-                .setTitle("New Suggestion")
-                .addField("Suggested by:", `${message.author}`, true)
-                .addField("User ID:", `${message.author.id}`, true)
-                .addField("Suggestion:", `${suggestionContent}`)
-                .setTimestamp()
-            logChannel.send({ embeds: [embed2   ] });
-        } else {
-            return;
-        }
+        if (settings.ticketEnabled === "false") return message.channel.send({ embeds: [ticketsDisabled] })
     }
 }

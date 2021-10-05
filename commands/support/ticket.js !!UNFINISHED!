@@ -5,5 +5,9 @@ Format:
 !add
 
 Channel:
-!config channels #ticket-catagory
+!config channels ticket-catagory-name
 !config toggle tickets [true/fale]
+
+if there is no catagory with name, make one!
+
+system with button to make ticket
