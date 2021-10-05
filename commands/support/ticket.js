@@ -46,6 +46,13 @@ module.exports = {
             }
         });
 
-        if (settings.ticketEnabled === "false") return message.channel.send({ embeds: [ticketsDisabled] })
+        if (settings.ticketEnabled === "false") return message.channel.send({ embeds: [ticketsDisabled] });
+    
+        let ticketsCatName = settings.ticketChannelName; 
+        if (!ticketsCatName) let ticketsCatName = "Tickets";
+
+        let category = message.guild.channels.find(cat=> cat.name === ticketsCatName);
+        message.channel.send(category.id)
+
     }
 }
