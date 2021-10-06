@@ -49,10 +49,17 @@ module.exports = {
         if (settings.ticketEnabled === "false") return message.channel.send({ embeds: [ticketsDisabled] });
     
         let ticketsCatName = settings.ticketChannelName; 
-        if (!ticketsCatName) let ticketsCatName = "Tickets";
+        if (ticketsCatName === "undefined") {
+            let ticketsCatName = "Tickets";
+        }
 
-        let category = message.guild.channels.find(cat=> cat.name === ticketsCatName);
-        message.channel.send(category.id)
+        let category = message.guild.channels.cache.find(cat=> cat.name === ticketsCatName);
+        if (category === undefined) {
+            message.channel.send("That category does not exist, creating one now...");
+            message.guild.channels.create(ticketsCatName, { type: "GUILD_CATEGORY" });
+            return message.channel.send(":white_check_mark: Succes! Please run the command again.")
+        }
+        message.channel.send("Category const returns: " + category.name + " Base:" + category)
 
     }
 }

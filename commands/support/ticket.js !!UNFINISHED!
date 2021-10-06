@@ -9,5 +9,6 @@ Channel:
 !config toggle tickets [true/fale]
 
 if there is no catagory with name, make one!
+defining staff roles
 
 system with button to make ticket
