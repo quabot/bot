@@ -47,24 +47,26 @@ module.exports = {
         });
 
         if (settings.ticketEnabled === "false") return message.channel.send({ embeds: [ticketsDisabled] });
-    
-        let ticketsCatName = settings.ticketChannelName; 
+
+        let ticketsCatName = settings.ticketChannelName;
         if (ticketsCatName === "undefined") {
             let ticketsCatName = "Tickets";
         }
 
-        let category = message.guild.channels.cache.find(cat=> cat.name === ticketsCatName);
+        let category = message.guild.channels.cache.find(cat => cat.name === ticketsCatName);
         if (category === undefined) {
             message.channel.send("That category does not exist, creating one now...");
             message.guild.channels.create(ticketsCatName, { type: "GUILD_CATEGORY" });
             return message.channel.send(":white_check_mark: Succes! Please run the command again.")
         }
-        let ticketChannel = message.guild.channels.cache.find(chan => chan.name === `${message.author.username}-${message.author.discriminator}`);
+        console.log(`#${message.author.username}-${message.author.discriminator}`)
+        let ticketChannel = message.guild.channels.cache.find(channel => channel.name === `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
         if (ticketChannel === undefined) {
             message.channel.send("Creating your ticket now...");
-            message.guild.channels.create(ticketsCatName, { type: "GUILD_TEXT_CHANNEL" });
-            let ticketChannelCreated = message.guild.channels.cache.find(chan => chan.name === `${message.author.username}-${message.author.discriminator}`);
-            return message.channel.send(":white_check_mark: Succes! You can find your ticket here: " + `<#${ticketChannelCreated}>`)
+            message.guild.channels.create(`${message.author.username}-${message.author.discriminator}`, { parent: category });
+            message.channel.send(`:white_check_mark: Succesfully created your ticket!`);
+        } else {
+            return message.channel.send("You already have a ticket! You can find it here: <@" + ticketChannel + ">");
         }
     }
 }
