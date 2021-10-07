@@ -59,7 +59,12 @@ module.exports = {
             message.guild.channels.create(ticketsCatName, { type: "GUILD_CATEGORY" });
             return message.channel.send(":white_check_mark: Succes! Please run the command again.")
         }
-        message.channel.send("Category const returns: " + category.name + " Base:" + category)
-
+        let ticketChannel = message.guild.channels.cache.find(chan => chan.name === `${message.author.username}-${message.author.discriminator}`);
+        if (ticketChannel === undefined) {
+            message.channel.send("Creating your ticket now...");
+            message.guild.channels.create(ticketsCatName, { type: "GUILD_TEXT_CHANNEL" });
+            let ticketChannelCreated = message.guild.channels.cache.find(chan => chan.name === `${message.author.username}-${message.author.discriminator}`);
+            return message.channel.send(":white_check_mark: Succes! You can find your ticket here: " + `<#${ticketChannelCreated}>`)
+        }
     }
 }
