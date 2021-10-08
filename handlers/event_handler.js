@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
+const consola = require('consola')
 
 module.exports = (client, Discord) => {
     const load_dir = (dirs) => {
@@ -9,7 +10,9 @@ module.exports = (client, Discord) => {
             const event = require(`../events/${dirs}/${file}`);
             const event_name = file.split('.')[0];
             client.on(event_name, event.bind(null, Discord, client));
+            consola.success(`Loaded event ${file}`)
         }
+        consola.info(`Loaded all events in subfolder ${dirs}`);
     }
 
     ['client', 'guild'].forEach(e => load_dir(e));

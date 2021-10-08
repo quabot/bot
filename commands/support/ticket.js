@@ -49,6 +49,7 @@ module.exports = {
         if (settings.ticketEnabled === "false") return message.channel.send({ embeds: [ticketsDisabled] });
 
         let ticketsCatName = settings.ticketChannelName;
+        
         if (ticketsCatName === "undefined") {
             let ticketsCatName = "Tickets";
         }
@@ -59,14 +60,31 @@ module.exports = {
             message.guild.channels.create(ticketsCatName, { type: "GUILD_CATEGORY" });
             return message.channel.send(":white_check_mark: Succes! Please run the command again.")
         }
-        console.log(`#${message.author.username}-${message.author.discriminator}`)
+
         let ticketChannel = message.guild.channels.cache.find(channel => channel.name === `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
+        
         if (ticketChannel === undefined) {
             message.channel.send("Creating your ticket now...");
             message.guild.channels.create(`${message.author.username}-${message.author.discriminator}`, { parent: category });
             message.channel.send(`:white_check_mark: Succesfully created your ticket!`);
+            setTimeout(() => {
+                let ticketChannel2 = message.guild.channels.cache.find(channel => channel.name === `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
+                ticketChannel2.permissionOverwrites.edit(message.author, {
+                    SEND_MESSAGES: true,
+                    VIEW_CHANNEL: true,
+                    READ_MESSAGE_HISTORY: true
+                })
+
+                ticketChannel2.send(`Hello <@${message.author.id}>, please wait, staff will be with you shortly.`);
+            }, 1000);
         } else {
-            return message.channel.send("You already have a ticket! You can find it here: <@" + ticketChannel + ">");
+            message.channel.send("You already have a ticket! You can find it here: <#" + ticketChannel + ">");
+            ticketChannel.send("<@" + message.author.id + ">, here is your ticket!").then(msg => {
+                setTimeout(() => {
+                    msg.delete()
+                }, 5000);;
+            })
+            return
         }
     }
 }

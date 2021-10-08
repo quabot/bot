@@ -1,5 +1,5 @@
 @echo off
-color b
+color f
 echo Starting..
 :main
 node index.js

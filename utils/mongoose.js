@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const consola = require('consola');
 
 module.exports = {
     init: () => {
@@ -16,15 +17,15 @@ module.exports = {
         mongoose.Promise = global.Promise;
 
         mongoose.connection.on('connected', () => {
-            console.log('Connected to the Quabot database.');
+            consola.info('Connected to the Quabot database.');
         });
 
         mongoose.connection.on('err', err => {
-            console.error(`Failed to connect to the Quabot database.\n${err.stack}`);
+            consola.error(`Failed to connect to the Quabot database.\n${err.stack}`);
         });
 
         mongoose.connection.on('disconnected', () => {
-            console.warn('Disconnected from the Quabot database.');
+            consola.warn('Disconnected from the Quabot database.');
         });
     }
 }

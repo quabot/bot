@@ -1,5 +1,6 @@
 const { Client, Intents } = require('discord.js');
 const Discord = require("discord.js");
+const consola = require('consola')
 const client = new Client({
     intents: [
         'GUILDS',
@@ -23,7 +24,7 @@ client.commands = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
-console.log("Loaded index.js");
+consola.success('Loaded index.js!')
 const prefix = "!";
 
 client.giveawaysManager = new GiveawaysManager(client, {

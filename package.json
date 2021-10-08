@@ -12,6 +12,7 @@
     "@discordjs/opus": "^0.5.3",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.5.6",
+    "consola": "^2.15.3",
     "discord-api-types": "^0.22.0",
     "discord-giveaways": "^4.5.1",
     "discord-slash-commands-client": "^1.2.1",
@@ -22,8 +23,9 @@
     "fs": "^0.0.1-security",
     "libsodium-wrappers": "^0.7.9",
     "mongoose": "^5.13.6",
+    "node-fetch": "^3.0.0",
     "random-puppy": "^1.1.0",
-    "random-reddit": "^2.0.2",
+    "random-reddit": "^2.0.2-2",
     "request": "^2.88.2",
     "ytdl-core": "^4.9.1"
   }

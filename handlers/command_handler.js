@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Client, Intents } = require('discord.js');
+const consola = require('consola')
 
 module.exports = (client, Discord) => {
     const commandFolders = fs.readdirSync('./commands/');
@@ -9,8 +10,8 @@ module.exports = (client, Discord) => {
         for (const file of command_files) {
             const command = require(`../commands/${folder}/${file}`);
             client.commands.set(command.name, command);
-            console.info(`Loaded ${file}`)
+            consola.success(`Loaded ${file}`)
         }
-        console.info(`Loaded all commands in category ${folder}`);
+        consola.info(`Loaded all commands in category ${folder}`);
     }
 }
