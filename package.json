@@ -23,6 +23,7 @@
     "libsodium-wrappers": "^0.7.9",
     "mongoose": "^5.13.6",
     "random-puppy": "^1.1.0",
+    "random-reddit": "^2.0.2",
     "request": "^2.88.2",
     "ytdl-core": "^4.9.1"
   }
