@@ -67,36 +67,34 @@ module.exports = {
         if (ticketChannel === undefined) {
             message.channel.send("You do not have a ticket! Create one using `!ticket`!");
         } else {
-            message.channel.send("Are you sure you want to close your ticket? Type `close` within 10 seconds to confirm.");
-            const filter = m => m.author.id === message.author.id;
-            const collector = message.channel.createMessageCollector({ filter, max: 1, time: 10000 });
-            collector.on('collect', m => {
-                message.channel.send("Do you want to delete the ticket or archive it? Enter `delete` or `archive`");
-                collector.on('collect', m => {
-                    if (!m.content.toLowerCase() === "close") {
-                        message.channel.send(":x: Cancelled!");
-                    }
-                });
+            const embed1 = new discord.MessageEmbed()
+                .setColor(colors.COLOR)
+                .setTitle("Do you really want to close this ticket?")
+                .setDescription("React with **Close** to close and **Cancel** to cancel!")
+                .setTimestamp()
+            const button1 = new discord.MessageActionRow()
+                .addComponents(
+                    new discord.MessageButton()
+                        .setCustomId('closeTicket')
+                        .setLabel('Close')
+                        .setStyle('SUCCESS'),
+                    new discord.MessageButton()
+                        .setCustomId('cancelClose')
+                        .setLabel('Cancel')
+                        .setStyle('DANGER'),
+                );
+            message.channel.send({ embeds: [embed1], components: [button1] }).then(msg => {
+                function closeUpdate() {
 
-                collector.on('collect', m => {
-                    message.channel.send("Do you want to delete the ticket or archive it? Enter `delete` or `archive`");
-                    const collector = message.channel.createMessageCollector({ filter, max: 1, time: 15000 });
-                    collector.on('collect', m => {
-                        if (m.content.toLowerCase() === "delete") {
-                            message.channel.send(":x: Deleting ticket in 5 seconds!");
-                        } else {
-                            if (m.content.toLowerCase() === "close") {
-                                message.channel.send("Closing tickets is coming soon!");
-                                return;
-                            } else {
-                                message.reply("Invalid answer, :x: cancelled!");
-                                return;
-                            }
-                        }
-                    });
-                    return message.channel.send(":x: Cancelled!");
-                });
+                }
+                function cancelTicket() {
+                    const cancelled = new discord.MessageEmbed()
+                        .setColor(colors.COLOR)
+                        .setTitle(":x: Cancelled!")
+                        .setTimestamp()
+                    msg.edit({ embeds: [cancelled] })
+                }
             })
-        }
+        };
     }
 }
