@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const Levels = require('discord.js-leveling');
 const DisTube = require('distube');
+const consola = require('consola');
 
 // FILES
 const Guild = require('../../models/guild');
@@ -106,7 +107,7 @@ module.exports = async (Discord, client, message) => {
 
         if (command) {
             command.execute(client, message, args, Discord);
-            console.log(`Command "!${command.name}" was used.`);
+            consola.info(`Command "!${command.name}" was used.`);
         }
 
     } else {
@@ -120,7 +121,7 @@ module.exports = async (Discord, client, message) => {
 
         if (command) {
             command.execute(client, message, args, Discord);
-            console.log(`Command "!${command.name}" was used.`);
+            consola.info(`Command "!${command.name}" was used.`);
         }
     }
 }
