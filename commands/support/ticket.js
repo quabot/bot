@@ -14,6 +14,9 @@ module.exports = {
         if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
         if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
 
+        const topic = args.slice(0).join(' ');
+        if(!topic) return message.channel.send("There is no topic specified!")
+
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
@@ -26,7 +29,7 @@ module.exports = {
                     prefix: config.PREFIX,
                     logChannelID: none,
                     enableLog: false,
-                    enableSwearFilter: true,
+                    enableSwearFilter: false,
                     enableMusic: true,
                     enableLevel: true,
                     mutedRoleName: "Muted",
@@ -73,9 +76,11 @@ module.exports = {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true
-                })
+                });
 
-                ticketChannel2.send(`Hello <@${message.author.id}>, please wait, staff will be with you shortly.`);
+                ticketChannel2.setTopic(`Created by: ${message.author} | Topic: ${topic}`)
+
+                ticketChannel2.send(`Hello <@${message.author.id}>, please wait, staff will be with you shortly. Topic: ${topic}`);
             }, 1000);
         } else {
             message.channel.send("You already have a ticket! You can find it here: <#" + ticketChannel + ">");

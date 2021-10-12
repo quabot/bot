@@ -23,6 +23,7 @@ client.commands = new Discord.Collection();
 ['command_handler', 'event_handler'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
 });
+const { cancelTicket, closeUpdate } = require('./commands/support/close');
 
 consola.success('Loaded index.js!')
 const prefix = "!";
