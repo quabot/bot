@@ -37,6 +37,34 @@ client.giveawaysManager = new GiveawaysManager(client, {
     }
 });
 
+client.on('guildMemberAdd', member => {
+    const welcomeChannel = member.guild.channels.cache.get("888800181213102133");
+    const welcomeEmbed = new Discord.MessageEmbed()
+        .setColor(colors.LIME)
+        .setTitle("Member Joined!")
+        .setDescription(`Welcome <@${member.id}> to **${member.guild.name}**!`)
+        .setTimestamp()
+    welcomeChannel.send({ embeds: [welcomeEmbed] })
+});
+
+client.on('guildMemberRemove', member => {
+    const leaveChannel = member.guild.channels.cache.get("888800181213102133");
+    const leaveEmbed = new Discord.MessageEmbed()
+        .setColor(colors.RED)
+        .setTitle("Member Left!")
+        .setDescription(`<@${member.id}> left **${member.guild.name}**!`)
+        .setTimestamp()
+        leaveChannel.send({ embeds: [leaveEmbed] });
+});
+
+
+
+
+
+
+
+
+
 const ModMain = new Discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Select Management or Moderation commands in the dropdown below.")
