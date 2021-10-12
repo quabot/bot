@@ -6,6 +6,19 @@ const Guild = require('../../models/guild');
 
 const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
 
+
+
+
+
+// topics, closed category
+
+
+
+
+
+
+
+
 module.exports = {
     name: "ticket",
     aliases: ["tickets", "ct", "maketicket", "createticket"],
@@ -26,7 +39,7 @@ module.exports = {
                     prefix: config.PREFIX,
                     logChannelID: none,
                     enableLog: false,
-                    enableSwearFilter: true,
+                    enableSwearFilter: false,
                     enableMusic: true,
                     enableLevel: true,
                     mutedRoleName: "Muted",
@@ -37,6 +50,10 @@ module.exports = {
                     suggestChannelID: none,
                     ticketEnabled: true,
                     ticketChannelName: "Tickets",
+                    closedTicketCategoryName: "Closed Tickets",
+                    welcomeEnabled: true,
+                    welcomeChannelID: none,
+                    enableNSFWContent: false,
                 });
 
                 newGuild.save()
@@ -49,7 +66,7 @@ module.exports = {
         if (settings.ticketEnabled === "false") return message.channel.send({ embeds: [ticketsDisabled] });
 
         let ticketsCatName = settings.ticketChannelName;
-        
+
         if (ticketsCatName === "undefined") {
             let ticketsCatName = "Tickets";
         }
@@ -62,7 +79,7 @@ module.exports = {
         }
 
         let ticketChannel = message.guild.channels.cache.find(channel => channel.name === `${message.author.username.toLowerCase()}-${message.author.discriminator}`);
-        
+
         if (ticketChannel === undefined) {
             message.channel.send("Creating your ticket now...");
             message.guild.channels.create(`${message.author.username}-${message.author.discriminator}`, { parent: category });

@@ -18,6 +18,10 @@ const guildSchema = mongoose.Schema({
     suggestChannelID: String,
     ticketEnabled: String,
     ticketChannelName: String,
+    closedTicketCategoryName: String,
+    welcomeEnabled: String,
+    welcomeChannelID: String,
+    enableNSFWContent: String,
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');
