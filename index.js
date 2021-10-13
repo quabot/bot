@@ -39,7 +39,7 @@ client.giveawaysManager = new GiveawaysManager(client, {
 });
 
 client.on('guildMemberAdd', member => {
-    const settings = await Guild.findOne({
+    const settings = Guild.findOne({
         guildID: member.guild.id
     }, (err, guild) => {
         if (err) message.channel.send({ embeds: [errorMain] });
