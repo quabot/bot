@@ -39,7 +39,7 @@ client.giveawaysManager = new GiveawaysManager(client, {
 });
 
 client.on('guildMemberAdd', member => {
-    const settings = await Guild.findOne({
+    const settings = Guild.findOne({
         guildID: member.guild.id
     }, (err, guild) => {
         if (err) message.channel.send({ embeds: [errorMain] });
@@ -76,7 +76,8 @@ client.on('guildMemberAdd', member => {
     });
     if(settings.welcomeEnabled === "false") return;
     const welcomeChannel = member.guild.channels.cache.get(settings.welcomeChannelID);
-    if(!welcomeChannel) return message.channel.send({ embeds: [noWelcomeChannel]});
+    const logChannel = member.guild.channels.cache.get(settings.logChannelID);
+    if(!welcomeChannel) return logChannel.send({ embeds: [noWelcomeChannel] });
     const welcomeEmbed = new Discord.MessageEmbed()
         .setColor(colors.LIME)
         .setTitle("Member Joined!")

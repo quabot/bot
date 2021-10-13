@@ -178,5 +178,9 @@ const ticketsDisabled = new discord.MessageEmbed()
 const PornScanning = new discord.MessageEmbed()
     .setTitle(":mag: Scanning the web for porn!")
     .setColor(colors.COLOR);
+const noWelcomeChannel = new discord.MessageEmbed()
+    .setTitle("New member!")
+    .setDescription("Did not send a message, no channel is setup!")
+    .setColor(colors.COLOR)
 
-module.exports = { PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
