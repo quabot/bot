@@ -17,6 +17,7 @@ const mongoose = require("./utils/mongoose");
 
 client.mongoose = require('./utils/mongoose');
 const colors = require('./files/colors.json');
+const { errorMain, addedDatabase, noWelcomeChannel } = require('./files/embeds');
 const config = require('./files/config.json');
 
 client.commands = new Discord.Collection();
@@ -38,7 +39,44 @@ client.giveawaysManager = new GiveawaysManager(client, {
 });
 
 client.on('guildMemberAdd', member => {
-    const welcomeChannel = member.guild.channels.cache.get("888800181213102133");
+    const settings = await Guild.findOne({
+        guildID: member.guild.id
+    }, (err, guild) => {
+        if (err) message.channel.send({ embeds: [errorMain] });
+        if (!guild) {
+            const newGuild = new Guild({
+                _id: mongoose.Types.ObjectID(),
+                guildID: member.guild.id,
+                guildName: member.guild.name,
+                prefix: config.PREFIX,
+                logChannelID: none,
+                enableLog: true,
+                enableSwearFilter: false,
+                enableMusic: true,
+                enableLevel: true,
+                mutedRoleName: "Muted",
+                mainRoleName: "Member",
+                reportEnabled: true,
+                reportChannelID: none,
+                suggestEnabled: true,
+                suggestChannelID: none,
+                ticketEnabled: true,
+                ticketChannelName: "Tickets",
+                closedTicketCategoryName: "Closed Tickets",
+                welcomeEnabled: true,
+                welcomeChannelID: none,
+                enableNSFWContent: false,
+            });
+
+            newGuild.save()
+                .catch(err => message.channel.send({ embeds: [errorMain] }));
+
+            return message.channel.send({ embeds: [addedDatabase] });
+        }
+    });
+    if(settings.welcomeEnabled === "false") return;
+    const welcomeChannel = member.guild.channels.cache.get(settings.welcomeChannelID);
+    if(!welcomeChannel) return message.channel.send({ embeds: [noWelcomeChannel]});
     const welcomeEmbed = new Discord.MessageEmbed()
         .setColor(colors.LIME)
         .setTitle("Member Joined!")
@@ -54,12 +92,8 @@ client.on('guildMemberRemove', member => {
         .setTitle("Member Left!")
         .setDescription(`<@${member.id}> left **${member.guild.name}**!`)
         .setTimestamp()
-        leaveChannel.send({ embeds: [leaveEmbed] });
+    leaveChannel.send({ embeds: [leaveEmbed] });
 });
-
-
-
-
 
 
 
