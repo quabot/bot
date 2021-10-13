@@ -19,6 +19,7 @@ client.mongoose = require('./utils/mongoose');
 const colors = require('./files/colors.json');
 const { errorMain, addedDatabase, noWelcomeChannel } = require('./files/embeds');
 const config = require('./files/config.json');
+const Guild = require('./models/guild');
 
 client.commands = new Discord.Collection();
 ['command_handler', 'event_handler'].forEach(handler => {
