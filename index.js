@@ -40,51 +40,51 @@ client.giveawaysManager = new GiveawaysManager(client, {
 });
 
 client.on('guildMemberAdd', member => {
-    const settings = Guild.findOne({
-        guildID: member.guild.id
-    }, (err, guild) => {
-        if (err) message.channel.send({ embeds: [errorMain] });
-        if (!guild) {
-            const newGuild = new Guild({
-                _id: mongoose.Types.ObjectID(),
-                guildID: member.guild.id,
-                guildName: member.guild.name,
-                prefix: config.PREFIX,
-                logChannelID: none,
-                enableLog: true,
-                enableSwearFilter: false,
-                enableMusic: true,
-                enableLevel: true,
-                mutedRoleName: "Muted",
-                mainRoleName: "Member",
-                reportEnabled: true,
-                reportChannelID: none,
-                suggestEnabled: true,
-                suggestChannelID: none,
-                ticketEnabled: true,
-                ticketChannelName: "Tickets",
-                closedTicketCategoryName: "Closed Tickets",
-                welcomeEnabled: true,
-                welcomeChannelID: none,
-                enableNSFWContent: false,
-            });
+    // const settings = Guild.findOne({
+    //     guildID: member.guild.id
+    // }, (err, guild) => {
+    //     if (err) message.channel.send({ embeds: [errorMain] });
+    //     if (!guild) {
+    //         const newGuild = new Guild({
+    //             _id: mongoose.Types.ObjectID(),
+    //             guildID: member.guild.id,
+    //             guildName: member.guild.name,
+    //             prefix: config.PREFIX,
+    //             logChannelID: none,
+    //             enableLog: true,
+    //             enableSwearFilter: false,
+    //             enableMusic: true,
+    //             enableLevel: true,
+    //             mutedRoleName: "Muted",
+    //             mainRoleName: "Member",
+    //             reportEnabled: true,
+    //             reportChannelID: none,
+    //             suggestEnabled: true,
+    //             suggestChannelID: none,
+    //             ticketEnabled: true,
+    //             ticketChannelName: "Tickets",
+    //             closedTicketCategoryName: "Closed Tickets",
+    //             welcomeEnabled: true,
+    //             welcomeChannelID: none,
+    //             enableNSFWContent: false,
+    //         });
 
-            newGuild.save()
-                .catch(err => message.channel.send({ embeds: [errorMain] }));
+    //         newGuild.save()
+    //             .catch(err => message.channel.send({ embeds: [errorMain] }));
 
-            return message.channel.send({ embeds: [addedDatabase] });
-        }
-    });
-    if(settings.welcomeEnabled === "false") return;
-    const welcomeChannel = member.guild.channels.cache.get(settings.welcomeChannelID);
-    const logChannel = member.guild.channels.cache.get(settings.logChannelID);
-    if(!welcomeChannel) return logChannel.send({ embeds: [noWelcomeChannel] });
-    const welcomeEmbed = new Discord.MessageEmbed()
-        .setColor(colors.LIME)
-        .setTitle("Member Joined!")
-        .setDescription(`Welcome <@${member.id}> to **${member.guild.name}**!`)
-        .setTimestamp()
-    welcomeChannel.send({ embeds: [welcomeEmbed] })
+    //         return message.channel.send({ embeds: [addedDatabase] });
+    //     }
+    // });
+    // if(settings.welcomeEnabled === "false") return;
+    // const welcomeChannel = member.guild.channels.cache.get(settings.welcomeChannelID);
+    // const logChannel = member.guild.channels.cache.get(settings.logChannelID);
+    // if(!welcomeChannel) return logChannel.send({ embeds: [noWelcomeChannel] });
+    // const welcomeEmbed = new Discord.MessageEmbed()
+    //     .setColor(colors.LIME)
+    //     .setTitle("Member Joined!")
+    //     .setDescription(`Welcome <@${member.id}> to **${member.guild.name}**!`)
+    //     .setTimestamp()
+    // welcomeChannel.send({ embeds: [welcomeEmbed] })
 });
 
 client.on('guildMemberRemove', member => {
