@@ -1,6 +1,6 @@
 {
     "BOT_TOKEN": "ODkzMDQ5ODQ4OTczMDk5MDc5.YVVzfA.iWhqtQjX8U0MeeHU2AjlCeVl5KA",
-    "PREFIX": "!",
-    "VERSION": "2.0.0-BETA5",
+    "PREFIX": "/",
+    "VERSION": "2.0.0",
     "CMD_AMOUNT": "0"
 }

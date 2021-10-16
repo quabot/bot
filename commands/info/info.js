@@ -1,13 +1,16 @@
 const discord = require('discord.js');
+const { Client, CommandInteraction, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
 
 module.exports = {
     name: "info",
-    aliases: ["information", "quabot"],
-    async execute(client, message, args) {
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
+    description: "When using this command you will recieve a list of bot information.",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    async execute(client, interaction) {
 
         let totalSeconds = (client.uptime / 1000);
         let days = Math.floor(totalSeconds / 86400);
@@ -25,10 +28,10 @@ module.exports = {
             .addField("Servers", `${client.guilds.cache.size}`)
             .addField("Language", "English, Discord.js v13")
             .addField("Users", `${client.users.cache.size}`)
-            .addField("Creator", "do#8888")
+            .addField("Creator", "Joa_sss#0001")
             .addField("Commands", config.CMD_AMOUNT)
             .setFooter(`Uptime: ${uptime}`)
             .setColor(colors.COLOR)
-        message.channel.send({ embeds: [embed]})
+        interaction.reply({ embeds: [embed]})
     }
 }

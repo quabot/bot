@@ -1,18 +1,21 @@
 const config = require('../../files/config.json');
 const discord = require('discord.js');
-const consola = require('consola')
+const consola = require('consola');
 
-module.exports = (Discord, client, message) => {
+module.exports = {
+    name: "ready",
+    once: true,
+    execute(client) {
 
-    // STARTUP MESSAGE
-    consola.log(` \nClient: ${client.user.tag}\nChannels: ${client.channels.cache.size}\nServers: ${client.guilds.cache.size}\nUsers: ${client.users.cache.size}\nVersion: ${config.VERSION}\n `);
-
-    setTimeout(() => {
-        consola.info("Loading commands: Succes!");
-        consola.info("Loading events: Succes!");
-        consola.success("QuaBot is now fully loaded!");
-    }, 1000);
-
-    // STATUS
-    client.user.setActivity(`${config.PREFIX}help`, { type: "PLAYING" });
+        consola.log(` \n${client.user.username.toUpperCase()}\nServers: ${client.guilds.cache.size}\nUsers: ${client.users.cache.size}\nVersion: ${config.VERSION}\n `);
+        setTimeout(() => {
+            consola.success("QuaBot is now fully loaded!\n ");
+        }, 3000); 
+        (function loop() {
+            setTimeout(function () {
+                client.user.setActivity(`/help to ${client.guilds.cache.size} servers!`, { type: "STREAMING", url: "https://twitch.tv/joa_sss" });
+              loop()
+            }, 10000);
+          }());
+    }
 };

@@ -1,3 +1,6 @@
-module.exports = async (client, guild, message) => {
-    console.log('Quabot has left a server.');
+module.exports = {
+    name: "guildDelete",
+    execute(message, args, client) {
+        console.log('Quabot has left a server.');
+    }
 };

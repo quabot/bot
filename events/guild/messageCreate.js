@@ -1,17 +1,13 @@
-// MODULES
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const Levels = require('discord.js-leveling');
 const DisTube = require('distube');
 const consola = require('consola');
 
-// FILES
 const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
 const swearwords = require("../../files/data.json");
 const colors = require('../../files/colors.json');
-
-// ERROR MESSAGE
 
 const errorMain = new Discord.MessageEmbed()
     .setDescription("There was an error!")
@@ -19,99 +15,84 @@ const errorMain = new Discord.MessageEmbed()
 const addedDatabase = new Discord.MessageEmbed()
     .setDescription("This server is now added to our database.")
     .setColor(colors.COLOR)
-const errorEmbed = new Discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Something went wrong")
-    .setDescription("There could be multiple reasons for this error.")
-    .addField("Missing Permissions", "[Click here](https://github.com/QuaBot/QuaBot/wiki/Quabot-permissions) for the required permissions.", true)
-    .addField("Bot maintenance", "[Click here](https://discord.gg/G9m7EAnbvq) to see Quabot status/maintenance.", true)
-    .addField("Coding error", "[Click here](https://discord.gg/kNfy8MRF4n) to join the Quabot discord and report it.", true)
-    .addField("Database error", "[Click here](https://discord.gg/2ryKmzTzFF) to make a support ticket.", true)
-    .addField("Re-enter command", "Please re-enter your command to see if it works this time.", true)
-    .addField("Other options", "This issue occured in the Quabot message.js event handler. Contact developers immediately.", true)
-    .setFooter("Quabot errorEmbed")
 
-module.exports = async (Discord, client, message) => {
+module.exports = {
+    name: "messageCreate",
+    async execute(message, args, client) {
 
-    const thisGuildId = message.guild.id;
+        const thisGuildId = message.guild.id;
 
-    // FAIL SAVE
-    if (!message.guild) return;
-    if (message.author.bot) return;
+        if (!message.guild) return;
+        if (message.author.bot) return;
 
-    // DATABASE
-    const settings = await Guild.findOne({
-        guildID: message.guild.id
-    }, (err, guild) => {
-        if (err) message.channel.send({ embeds: [errorMain] });
-        if (!guild) {
-            const newGuild = new Guild({
-                _id: mongoose.Types.ObjectID(),
-                guildID: message.guild.id,
-                guildName: message.guild.name,
-                prefix: config.PREFIX,
-                logChannelID: none,
-                enableLog: true,
-                enableSwearFilter: false,
-                enableMusic: true,
-                enableLevel: true,
-                mutedRoleName: "Muted",
-                mainRoleName: "Member",
-                reportEnabled: true,
-                reportChannelID: none,
-                suggestEnabled: true,
-                suggestChannelID: none,
-                ticketEnabled: true,
-                ticketChannelName: "Tickets",
-                closedTicketCategoryName: "Closed Tickets",
-                welcomeEnabled: true,
-                welcomeChannelID: none,
-                enableNSFWContent: false,
-            });
-    
-            newGuild.save()
-                .catch(err => message.channel.send({ embeds: [errorMain] }));
-    
-            return message.channel.send({ embeds: [addedDatabase] });
-        }
-    });
+        const settings = await Guild.findOne({
+            guildID: message.guild.id
+        }, (err, guild) => {
+            if (err) message.channel.send({ embeds: [errorMain] });
+            if (!guild) {
+                const newGuild = new Guild({
+                    _id: mongoose.Types.ObjectID(),
+                    guildID: message.guild.id,
+                    guildName: message.guild.name,
+                    prefix: config.PREFIX,
+                    logChannelID: none,
+                    enableLog: true,
+                    enableSwearFilter: false,
+                    enableMusic: true,
+                    enableLevel: true,
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none,
+                    suggestEnabled: true,
+                    suggestChannelID: none,
+                    ticketEnabled: true,
+                    ticketChannelName: "Tickets",
+                    closedTicketCategoryName: "Closed Tickets",
+                    welcomeEnabled: true,
+                    welcomeChannelID: none,
+                    enableNSFWContent: false,
+                });
 
-    // VARIABLES
-    const IDGuild = message.guild.id;
-    const user = message.author;
-    const prefix = settings.prefix;
-    const swearFilterOn = settings.enableSwearFilter;
+                newGuild.save()
+                    .catch(err => message.channel.send({ embeds: [errorMain] }));
 
-    if (settings.enableLevel === "true") {
+                return message.channel.send({ embeds: [addedDatabase] });
+            }
+        });
 
-        const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
+        const IDGuild = message.guild.id;
+        const user = message.author;
+        const prefix = settings.prefix;
+        const swearFilterOn = settings.enableSwearFilter;
 
-        const randomAmountOfXp = Math.floor(Math.random() * 29) + 1;
-        const hasLeveledUp = await Levels.appendXp(message.author.id, message.guild.id, randomAmountOfXp);
+        if (settings.enableLevel === "true") {
 
-        if (hasLeveledUp) {
+            const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
+            const randomAmountOfXp = Math.floor(Math.random() * 29) + 1;
+            const hasLeveledUp = await Levels.appendXp(message.author.id, message.guild.id, randomAmountOfXp);
 
-            const user = await Levels.fetch(message.author.id, message.guild.id);
+            if (hasLeveledUp) {
+                const user = await Levels.fetch(message.author.id, message.guild.id);
 
-            const levelEmbed = new Discord.MessageEmbed()
-                .setTitle('New Level!')
-                .setColor(colors.COLOR)
-                .setDescription(`**GG** ${message.author}, you just leveled up to level **${user.level}**!\nContiune to chat to level up again.`)
-
-            const sendEmbed = await message.channel.send({ embeds: [levelEmbed] });
-        }
-    }
-
-    // EXECUTE COMMAND AND SWEARFILTER
-    if (swearFilterOn === "true") {
-        var msg = message.content.toLowerCase();
-        for (let i = 0; i < swearwords["swearwords"].length; i++) {
-            if (msg.includes(swearwords["swearwords"][i])) {
-                message.delete();
-                return message.channel.send("Please do not swear.").then(msg => msg.delete({ timeout: 3000 }));
+                const levelEmbed = new Discord.MessageEmbed()
+                    .setTitle('New Level!')
+                    .setColor(colors.COLOR)
+                    .setDescription(`**GG** ${message.author}, you just leveled up to level **${user.level}**!\nContiune to chat to level up again.`)
+                const sendEmbed = await message.channel.send({ embeds: [levelEmbed] });
             }
         }
-        if (!message.content.startsWith(prefix) || message.author.bot) return;
 
+        if (swearFilterOn === "true") {
+            var msg = message.content.toLowerCase();
+            for (let i = 0; i < swearwords["swearwords"].length; i++) {
+                if (msg.includes(swearwords["swearwords"][i])) {
+                    message.delete();
+                    return message.channel.send("Please do not swear.").then(msg => msg.delete({ timeout: 3000 }));
+                }
+            }
+            if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+        }
     }
 }
