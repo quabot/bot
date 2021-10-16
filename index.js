@@ -10,25 +10,20 @@ const client = new Client({
         'GUILD_MEMBERS'
     ],
 });
-
 const Levels = require("discord.js-leveling");
 const { GiveawaysManager } = require('discord-giveaways');
 const mongoose = require("./utils/mongoose");
-
 client.mongoose = require('./utils/mongoose');
 const colors = require('./files/colors.json');
 const { errorMain, addedDatabase, noWelcomeChannel } = require('./files/embeds');
 const config = require('./files/config.json');
 const Guild = require('./models/guild');
-
 client.commands = new Discord.Collection();
 ['command_handler', 'event_handler'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
 });
-
 consola.success('Loaded index.js!')
 const prefix = "!";
-
 client.giveawaysManager = new GiveawaysManager(client, {
     storage: "./files/giveaways.json",
     updateCountdownEvery: 5000,
@@ -39,18 +34,18 @@ client.giveawaysManager = new GiveawaysManager(client, {
     }
 });
 
+
 client.on('guildMemberAdd', member => {
-    const settings = "NOT_WORKING";
-
-    console.log(settings.welcomeChannelID);
-    console.log(member.guild.id);
-    console.log(settings.guildID);
-
     if(settings.welcomeEnabled === "false") return;
 
     const welcomeChannel = member.guild.channels.cache.get(`${settings.welcomeChannelID}`);
-    const logChannel = member.guild.channels.cache.get(settings.logChannelID);
-    if(!welcomeChannel) return logChannel.send({ embeds: [noWelcomeChannel] });
+    const logChannel = member.guild.channels.cache.get(`${settings.logChannelID}`);
+    
+    if(!welcomeChannel) {
+        if (!logChannel) return;
+    } else {
+        return logChannel.send({ embeds: [noWelcomeChannel] });
+    }
 
     const welcomeEmbed = new Discord.MessageEmbed()
         .setColor(colors.LIME)
