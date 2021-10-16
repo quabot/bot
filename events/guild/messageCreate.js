@@ -43,22 +43,36 @@ module.exports = async (Discord, client, message) => {
     const settings = await Guild.findOne({
         guildID: message.guild.id
     }, (err, guild) => {
-        if (err) message.channel.send(errorMain);
+        if (err) message.channel.send({ embeds: [errorMain] });
         if (!guild) {
             const newGuild = new Guild({
-                _id: mongoose.Types.ObjectId(),
+                _id: mongoose.Types.ObjectID(),
                 guildID: message.guild.id,
+                guildName: message.guild.name,
                 prefix: config.PREFIX,
-                logChannelID: String,
-                enableLog: false,
-                enableSwearFilter: true,
+                logChannelID: none,
+                enableLog: true,
+                enableSwearFilter: false,
                 enableMusic: true,
                 enableLevel: true,
+                mutedRoleName: "Muted",
+                mainRoleName: "Member",
+                reportEnabled: true,
+                reportChannelID: none,
+                suggestEnabled: true,
+                suggestChannelID: none,
+                ticketEnabled: true,
+                ticketChannelName: "Tickets",
+                closedTicketCategoryName: "Closed Tickets",
+                welcomeEnabled: true,
+                welcomeChannelID: none,
+                enableNSFWContent: false,
             });
-
+    
             newGuild.save()
-                .catch(err => message.channel.send(errorMain));
-            return message.channel.send({ embeds: [addedDatabase] }).then(m => m.delete({ timeout: 10000 }))
+                .catch(err => message.channel.send({ embeds: [errorMain] }));
+    
+            return message.channel.send({ embeds: [addedDatabase] });
         }
     });
 
@@ -99,29 +113,5 @@ module.exports = async (Discord, client, message) => {
         }
         if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-        const args = message.content.slice(prefix.length).split(/ +/);
-        const cmd = args.shift().toLowerCase();
-
-        const command = client.commands.get(cmd) ||
-            client.commands.find(a => a.aliases && a.aliases.includes(cmd));;
-
-        if (command) {
-            command.execute(client, message, args, Discord);
-            consola.info(`Command "!${command.name}" was used.`);
-        }
-
-    } else {
-        if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-        const args = message.content.slice(prefix.length).split(/ +/);
-        const cmd = args.shift().toLowerCase();
-
-        const command = client.commands.get(cmd) ||
-            client.commands.find(a => a.aliases && a.aliases.includes(cmd));;
-
-        if (command) {
-            command.execute(client, message, args, Discord);
-            consola.info(`Command "!${command.name}" was used.`);
-        }
     }
 }

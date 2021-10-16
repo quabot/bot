@@ -1,15 +1,8 @@
 const { Client, Intents } = require('discord.js');
 const Discord = require("discord.js");
 const consola = require('consola')
-const client = new Client({
-    intents: [
-        'GUILDS',
-        'GUILD_VOICE_STATES',
-        'GUILD_MESSAGES',
-        'GUILD_PRESENCES',
-        'GUILD_MEMBERS'
-    ],
-});
+const client = new Client({ intents: 32767 });
+module.exports = client;
 const Levels = require("discord.js-leveling");
 const { GiveawaysManager } = require('discord-giveaways');
 const mongoose = require("./utils/mongoose");
@@ -19,7 +12,7 @@ const { errorMain, addedDatabase, noWelcomeChannel } = require('./files/embeds')
 const config = require('./files/config.json');
 const Guild = require('./models/guild');
 client.commands = new Discord.Collection();
-['command_handler', 'event_handler'].forEach(handler => {
+['commands', 'events'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
 });
 consola.success('Loaded index.js!')
@@ -34,36 +27,40 @@ client.giveawaysManager = new GiveawaysManager(client, {
     }
 });
 
+client.on('interactionCreate', async (interaction) => {
 
-client.on('guildMemberAdd', member => {
-    if(settings.welcomeEnabled === "false") return;
-
-    const welcomeChannel = member.guild.channels.cache.get(`${settings.welcomeChannelID}`);
-    const logChannel = member.guild.channels.cache.get(`${settings.logChannelID}`);
+    if(!interaction.isCommand()) return;
     
-    if(!welcomeChannel) {
-        if (!logChannel) return;
-    } else {
-        return logChannel.send({ embeds: [noWelcomeChannel] });
+    const { commandName, options } = interaction
+
+    if (commandName === "ping") {
+        interaction.reply({
+            content: 'pong',
+            ephemeral: true,
+        });
+    } else if (commandName === "add") {
+        const num1 = options.getNumber('num1')
+        const num2 = options.getNumber('num2')
+
+        interaction.reply({ 
+            content: `The sum is ${num1 + num2}`,
+        })
     }
-
-    const welcomeEmbed = new Discord.MessageEmbed()
-        .setColor(colors.LIME)
-        .setTitle("Member Joined!")
-        .setDescription(`Welcome <@${member.id}> to **${member.guild.name}**!`)
-        .setTimestamp()
-    welcomeChannel.send({ embeds: [welcomeEmbed] })
 });
 
-client.on('guildMemberRemove', member => {
-    const leaveChannel = member.guild.channels.cache.get("888800181213102133");
-    const leaveEmbed = new Discord.MessageEmbed()
-        .setColor(colors.RED)
-        .setTitle("Member Left!")
-        .setDescription(`<@${member.id}> left **${member.guild.name}**!`)
-        .setTimestamp()
-    leaveChannel.send({ embeds: [leaveEmbed] });
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
