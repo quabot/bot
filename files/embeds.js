@@ -37,7 +37,7 @@ const HelpMain = new discord.MessageEmbed()
     .setDescription("When selecting a category you'll get a detailed list of commands within that category.")
     .setThumbnail("https://i.imgur.com/jgdQUul.png");
 const LBNoXP = new discord.MessageEmbed()
-    .setTitle(":x: There are no people with xp!")
+    .setTitle(":x: That user does not have XP!")
     .setColor(colors.COLOR);
 const LBDisabled = new discord.MessageEmbed()
     .setTitle(":x: Levels are disabled in this guild!")

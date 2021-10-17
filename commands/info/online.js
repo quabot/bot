@@ -23,6 +23,7 @@ module.exports = {
             .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
             .setTitle(`${interaction.guild.name}`)
             .addField("Online:", `${online}`, true)
+            .addField("Idle:", `${idle}`, true)
             .addField("Do Not Disturb:", `${dnd}`, true)
             .addField("Offline:", `${totalOffline}`, true)
             .setFooter(`Total Members: ${totalMembers}`)

@@ -4,25 +4,27 @@ const config = require('../../files/config.json');
 
 module.exports = {
     name: "stats",
-    aliases: ["statistics"],
-    async execute(client, message, args) {
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+    description: "View the discord bot stats and hardware.",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    async execute(client, interaction) {
 
         const embed = new Discord.MessageEmbed()
             .setTitle("Quabot Statistics")
             .setColor(colors.COLOR)
             .setThumbnail("https://i.imgur.com/jgdQUul.png")
-            .addField("CPU", "unknown", true)
-            .addField("Memory","2GB", true)
+            .addField("Memory", "1024MB", true)
             .addField("Library", "Discord.js V13", true)
-            .addField("Node.js Version", "16.9.1", true)
+            .addField("Node.js Version", "16.6.1", true)
             .addField("Version", config.VERSION, true)
             .addField("Commands", config.CMD_AMOUNT, true)
             .addField("Channels", `${client.channels.cache.size}`, true)
             .addField("Users", `${client.users.cache.size}`, true)
+            .addField("Client", `${client.user.username}`, true)
             .addField("Servers", `${client.guilds.cache.size}`, true);
-        message.channel.send({ embeds: [embed]});
+        interaction.reply({ embeds: [embed] });
     }
 
 }

@@ -13,9 +13,12 @@ module.exports = {
         }, 3000); 
         (function loop() {
             setTimeout(function () {
+                client.user.setActivity(`/help to ${client.users.cache.size} users!`, { type: "STREAMING", url: "https://twitch.tv/joa_sss" });
+            }, 6000);
+            setTimeout(function () {
                 client.user.setActivity(`/help to ${client.guilds.cache.size} servers!`, { type: "STREAMING", url: "https://twitch.tv/joa_sss" });
-              loop()
-            }, 10000);
+                loop()
+            }, 12000);
           }());
     }
 };

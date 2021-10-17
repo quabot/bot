@@ -2,6 +2,6 @@
 color f
 echo Starting..
 :main
-node index.js
+npm run dev
 echo Restarting Bot..
 goto main

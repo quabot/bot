@@ -6,14 +6,14 @@ const {CatNoFiles, CatScanning} = require('../../files/embeds');
 
 module.exports = {
     name: "cat",
-    aliases: ["kitten"],
-    async execute(client, message, args) {
+    description: "When you use this command you will recieve a cute picture of a cat.",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    async execute(client, interaction) {
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("ATTACH_FILES")) return message.channel.send({ embeds: [CatNoFiles] });
-
-        message.channel.send({ embeds: [CatScanning] }).then(msg => {
+        interaction.reply({ embeds: [CatScanning] }).then(msg => {
             setTimeout(async function () {
                 const subReddits = ["catpics", "kittens"];
                 const random = subReddits[Math.floor(Math.random() * subReddits.length)];
@@ -24,7 +24,7 @@ module.exports = {
                     .setImage(img)
                     .setColor(colors.COLOR);
 
-                msg.edit({ embeds: [embed] });
+                interaction.editReply({ embeds: [embed] });
             });
         }, 2000);
     }

@@ -4,12 +4,22 @@ const colors = require('../../files/colors.json')
 
 module.exports = {
     name: "userinfo",
-    aliases: ['memberinfo', "whois"],
-    async execute(client, message, args) {
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+    description: "When you use this command you get a list of information about a user.",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+     options: [
+        {
+            name: "user",
+            description: "A user to get the information of.",
+            type: "USER",
+            required: false,
+        }
+    ],
+    async execute(client, interaction) {
 
-        let user = message.mentions.users.first() || message.author;
+        let user = interaction.options.getUser('user') || interaction.user;
         const joinDiscord = moment(user.createdAt).format('llll');
         const joinServer = moment(user.joinedAt).format('llll');
         if (!Discord.GuildMember.nickname) Discord.GuildMember.nickname = "None";
@@ -25,11 +35,11 @@ module.exports = {
             .addField("Nickname:", `${Discord.GuildMember.nickname !== null ? `${Discord.GuildMember.nickname}` : 'None'}`, true)
             .addField("Status:", `${user.status}`, true) //add game
             .addField("Bot:", `${user.bot}`, true)
-            .addField("Joined The Server On:", `${moment.utc(Discord.GuildMember.joinedAt).format("dddd, MMMM Do, YYYY")}`, true)
+            .addField("Joined The Server On:", `${moment.utc(Discord.GuildMember.joinedTimestamp).format("dddd, MMMM Do, YYYY")}`, true)
             .addField("Account Created On:", `${moment.utc(user.createdAt).format("dddd, MMMM Do,    YYYY")}`, true)
-            .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
+            .setFooter(`Replying to ${interaction.user.username}#${interaction.user.discriminator}`)
             .setFooter(`ID: ${user.id}`)
             .setTimestamp();
-        message.channel.send({ embeds: [embed]});
+        interaction.reply({ embeds: [embed]});
     }
 }
