@@ -9,19 +9,34 @@ const {errorMain, addedDatabase, banNoPermsBot, banNoPermsUser, banNoUser, banIm
 
 module.exports = {
     name: "ban",
-    aliases: [],
-    async execute(client, message, args) {
+    description: "This command allows you to permanently ban a user from the guild your in.",
+    permission: "BAN_MEMBERS",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+     options: [
+        {
+            name: "user",
+            description: "A user to ban",
+            type: "USER",
+            required: true,
+        },
+        {
+            name: "reason",
+            description: "A reason to ban the user (optional)",
+            type: "STRING",
+            required: false,
+        }
+    ],
+    async execute(client, interaction) {
 
-        const member = message.mentions.members.first();// || client.users.cache.find(user => user.id === args[0]);
+        const member = interaction.options.getMember('user');
+        const reasonRaw = interaction.options.getString('reason');
         let reason = "No reason specified.";
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsBot]});
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsUser]});
-
-        if (!member) return message.channel.send({embeds: [banNoUser]});
-        if (args.length > 1) reason = args.slice(1).join(' ');
+        if (!member) return interaction.reply({embeds: [banNoUser]});
+        if (reasonRaw) reason = reasonRaw;
 ;
         const userBanned = new discord.MessageEmbed()
             .setTitle(":white_check_mark: User Banned")
@@ -29,14 +44,14 @@ module.exports = {
             .setColor(colors.COLOR)
 
         member.ban({ reason: reason }).catch(err => {
-            message.channel.send({embeds: [banImpossible]});
+            interaction.reply({embeds: [banImpossible]});
             let reason = ":x: Ban failed.";
             return;
         }); 
-        message.channel.send({embeds: [userBanned], split: true}).catch(err => logChannel.send("There was an error! The reason probably exceeded the 1024 character limit."));        ;
+        interaction.reply({embeds: [userBanned], split: true}).catch(err => console.log("There was an error! The reason probably exceeded the 1024 character limit."));        ;
         
         User.findOne({
-            guildID: message.guild.id,
+            guildID: interaction.guild.id,
             userID: member.id
         }, async (err, user) => {
             if (err) console.error(err);
@@ -44,7 +59,7 @@ module.exports = {
             if (!user) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
-                    guildID: message.guild.id,
+                    guildID: interaction.guild.id,
                     userID: member.id,
                     muteCount: 0,
                     warnCount: 0,
@@ -53,43 +68,52 @@ module.exports = {
                 });
 
                 await newUser.save()
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => interaction.reply({ embeds: [errorMain] }));
             } else {
                 User.updateOne({
                     warnCount: User.warnCount + 1
                 })
-                    .catch(err => message.channel.send(errorMain));
+                    .catch(err => interaction.reply({ embeds: [errorMain] }));
             };
         });
 
         const settings = await Guild.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({embeds: [errorMain]});
+            if (err) interaction.reply({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
                     guildID: message.guild.id,
                     guildName: message.guild.name,
-                    prefix: config.PREFIX,
-                    logChannelID: "none",
-                    enableLog: false,
-                    enableSwearFilter: true,
+                    logChannelID: none,
+                    enableLog: true,
+                    enableSwearFilter: false,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none,
+                    suggestEnabled: true,
+                    suggestChannelID: none,
+                    ticketEnabled: true,
+                    ticketChannelName: "Tickets",
+                    closedTicketCategoryName: "Closed Tickets",
+                    welcomeEnabled: true,
+                    welcomeChannelID: none,
+                    enableNSFWContent: false,
                 });
-
+        
                 newGuild.save()
-                    .catch(err => message.channel.send({embeds: [errorMain]}));
-
-                return message.channel.send({embeds: [addedDatabase]});
+                    .catch(err => interaction.reply({ embeds: [errorMain] }));
+        
+                return interaction.reply({ embeds: [addedDatabase] });
             }
         });
 
         if (settings.enableLog === "true") {
-            const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
             if (!logChannel) return;
 
             const embed = new discord.MessageEmbed()
@@ -97,7 +121,7 @@ module.exports = {
                 .setTitle('User Banned')
                 .addField('Username', `${member.user.username}`)
                 .addField('User ID', `${member.id}`)
-                .addField('Banned by', `${message.author}`)
+                .addField('Banned by', `${interaction.user}`)
                 .addField('Reason', `${reason}`);
             logChannel.send({ embeds: [embed], split: true }).catch(err => logChannel.send("There was an error! The reason probably exceeded the 1024 character limit."));            ;
         } else {

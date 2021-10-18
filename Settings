@@ -1,7 +1,7 @@
 const settings = await Guild.findOne({
-    guildID: message.guild.id
+    guildID: interaction.guild.id
 }, (err, guild) => {
-    if (err) message.channel.send({ embeds: [errorMain] });
+    if (err) interaction.reply({ embeds: [errorMain] });
     if (!guild) {
         const newGuild = new Guild({
             _id: mongoose.Types.ObjectID(),
@@ -27,8 +27,8 @@ const settings = await Guild.findOne({
         });
 
         newGuild.save()
-            .catch(err => message.channel.send({ embeds: [errorMain] }));
+            .catch(err => interaction.reply({ embeds: [errorMain] }));
 
-        return message.channel.send({ embeds: [addedDatabase] });
+        return interaction.reply({ embeds: [addedDatabase] });
     }
 });

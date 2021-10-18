@@ -1,12 +1,12 @@
 const discord = require("discord.js");
 const mongoose = require('mongoose');
 
-const User = require('../../models/user');
-const Guild = require('../../models/guild');
-const config = require('../../files/config.json');
-const colors = require('../../files/colors.json');
+const User = require('../../../models/user');
+const Guild = require('../../../models/guild');
+const config = require('../../../files/config.json');
+const colors = require('../../../files/colors.json');
 
-const { errorMain, warnNoPerms, warnNoUserToWarn, warnNotHigherRole, addedDatabase } = require('../../files/embeds');
+const { errorMain, warnNoPerms, warnNoUserToWarn, warnNotHigherRole, addedDatabase } = require('../../../files/embeds');
 
 module.exports = {
     name: "warn",

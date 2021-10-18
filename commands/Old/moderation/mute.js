@@ -1,11 +1,11 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
-const config = require('../../files/config.json');
-const User = require('../../models/user');
+const colors = require('../../../files/colors.json');
+const Guild = require('../../../models/guild');
+const config = require('../../../files/config.json');
+const User = require('../../../models/user');
 
-const {errorMain, addedDatabase, muteNoUser, muteNoRoleManage, muteNoPermsUser} = require('../../files/embeds');
+const {errorMain, addedDatabase, muteNoUser, muteNoRoleManage, muteNoPermsUser} = require('../../../files/embeds');
 
 module.exports = {
     name: "mute",

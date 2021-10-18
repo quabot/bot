@@ -49,7 +49,7 @@ module.exports = async (client) => {
                 const cmdPerms = CommandsArray.find((c) => c.name === commandName).permission;
                 if(!cmdPerms) return null;
 
-                return MainGuild.roles.cache.filter((r) => r.permissions.had(cmdPerms));
+                return MainGuild.roles.cache.filter((r) => r.permissions.has(cmdPerms));
             }
 
             const fullPermissions = command.reduce((accumulator, r) => {

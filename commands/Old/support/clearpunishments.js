@@ -1,36 +1,49 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
 
-const colors = require('../../files/colors.json');
-const User = require('../../models/user');
-const Guild = require('../../models/guild');
+const colors = require('../../../files/colors.json');
+const User = require('../../../models/user');
+const Guild = require('../../../models/guild');
 
-const {errorMain, addedDatabase, clearpunNoType, clearpunNoMember} = require('../../files/embeds');
+const {errorMain, addedDatabase, clearpunNoType } = require('../../../files/embeds');
 
 module.exports = {
     name: "clearpunishments",
-    aliases: ["resetpunishments", "cp", "devcp"],
-    async execute(client, message, args) {
+    description: "Clear a users's punishments.",
+    permission: "BAN_MEMBERS",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+     options: [
+        {
+            name: "type",
+            description: "A type of punishments",
+            type: "STRING",
+            required: true,
+        },
+        {
+            name: "user",
+            description: "A user to clear the punishments of.",
+            type: "USER",
+            required: true,
+        }
+    ],
+    async execute(client, interaction) {
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        const member = interaction.options.getMember('user');
+        const type = interaction.options.getString('type');
 
-        const type = args[0];
-        const member = message.mentions.users.first();
-
-        if (!type) return message.channel.send({ embeds: [clearpunNoType] });
-        if (!args[1]) return message.channel.send({ embeds: [clearpunNoMember] });
-        if (!member) return message.channel.send({ embeds: [clearpunNoMember] });
-
-        const userDatabase = await User.findOne({
-            guildID: message.guild.id,
+        const userDatabase = User.findOne({
+            guildID: interaction.guild.id,
             userID: member.id
-        }, (err, User) => {
-            if (err) message.channel.send({ embeds: [errorMain] });
-            if (!User) {
+        }, async (err, user) => {
+            if (err) console.error(err);
+
+            if (!user) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
-                    guildID: message.guild.id,
+                    guildID: interaction.guild.id,
                     userID: member.id,
                     muteCount: 0,
                     warnCount: 0,
@@ -38,10 +51,9 @@ module.exports = {
                     banCount: 0
                 });
 
-                newUser.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
-                return message.channel.send({ embeds: [addedDatabase] });
-            }
+                await newUser.save()
+                    .catch(err => interaction.reply({ embeds: [errorMain] }));
+            };
         });
 
         if (type === "warn" || type === "kick" || type === "mute" || type === "ban") {
@@ -52,7 +64,7 @@ module.exports = {
                 const embed1 = new discord.MessageEmbed()
                     .setDescription(`:white_check_mark: Cleared all warnings for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send({ embeds: [embed1] });
+                interaction.followUp({ embeds: [embed1] });
             }
             if (type === "kick") {
                 userDatabase.updateOne({
@@ -61,7 +73,7 @@ module.exports = {
                 const embed2 = new discord.MessageEmbed()
                     .setDescription(`:white_check_mark: Cleared all kicks for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send({ embeds: [embed2] });
+                interaction.followUp({ embeds: [embed2] });
             }
             if (type === "mute") {
                 userDatabase.updateOne({
@@ -70,7 +82,7 @@ module.exports = {
                 const embed3 = new discord.MessageEmbed()
                     .setDescription(`:white_check_mark: Cleared all mutes for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send({ embeds: [embed3] });
+                interaction.followUp({ embeds: [embed3] });
             }
             if (type === "ban") {
                 userDatabase.updateOne({
@@ -79,38 +91,47 @@ module.exports = {
                 const embed4 = new discord.MessageEmbed()
                     .setDescription(`:white_check_mark: Cleared all bans for ${member}!`)
                     .setColor(colors.COLOR);
-                message.channel.send({ embeds: [embed4] });
+                interaction.followUp({ embeds: [embed4] });
             }
-        } else return message.channel.send(noType);
+        } else return interaction.followUp({ embeds: [clearpunNoType] });
 
         const settings = await Guild.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain] });
+            if (err) interaction.reply({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
                     guildID: message.guild.id,
                     guildName: message.guild.name,
-                    prefix: config.PREFIX,
                     logChannelID: none,
-                    enableLog: false,
-                    enableSwearFilter: true,
+                    enableLog: true,
+                    enableSwearFilter: false,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none,
+                    suggestEnabled: true,
+                    suggestChannelID: none,
+                    ticketEnabled: true,
+                    ticketChannelName: "Tickets",
+                    closedTicketCategoryName: "Closed Tickets",
+                    welcomeEnabled: true,
+                    welcomeChannelID: none,
+                    enableNSFWContent: false,
                 });
-
+        
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
-
-                return message.channel.send({ embeds: [addedDatabase] });
+                    .catch(err => interaction.reply({ embeds: [errorMain] }));
+        
+                return interaction.reply({ embeds: [addedDatabase] });
             }
         });
 
         if (settings.enableLog === "true") {
-            const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
             if (!logChannel) return;
 
             const embed = new discord.MessageEmbed()
@@ -119,7 +140,7 @@ module.exports = {
                 .addField('Punishment', `${type}`)
                 .addField('User', `${member}`)
                 .addField('User ID', `${member.id}`)
-                .addField('Reset By', `${message.author}`);
+                .addField('Reset By', `${interaction.user}`);
             logChannel.send({ embeds: [embed] });
         } else {
             return;
