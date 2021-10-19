@@ -1,16 +1,16 @@
 const discord = require('discord.js');
+const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 const User = require('../../models/guild');
-const mongoose = require('mongoose');
+const {errorMain, addedDatabase, kickNoPermsClient, kickNoUser, kickNoPermsUser, kickImpossible} = require('../../files/embeds');
 
-const {errorMain, addedDatabase, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible} = require('../../files/embeds');
 
 module.exports = {
-    name: "ban",
-    description: "This command allows you to permanently ban a user from the guild your in.",
-    permission: "BAN_MEMBERS",
+    name: "kick",
+    description: "This command allows you to kick a user from the guild your in.",
+    permission: "KICK_MEMBERS",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -35,20 +35,16 @@ module.exports = {
         const reasonRaw = interaction.options.getString('reason');
         let reason = "No reason specified.";
 
-        if (!member) return interaction.reply({embeds: [banNoUser]});
+        if (!member) return interaction.reply({embeds: [kickNoUser]});
         if (reasonRaw) reason = reasonRaw;
-;
-        const userBanned = new discord.MessageEmbed()
-            .setTitle(":white_check_mark: User Banned")
-            .setDescription(`${member} was banned.\n**Reason:** ${reason}`)
-            .setColor(colors.COLOR)
 
-        member.ban({ reason: reason }).catch(err => {
-            interaction.channel.send({embeds: [banImpossible]});
-            let reason = ":x: Ban failed.";
-            return;
-        }); 
-        interaction.reply({embeds: [userBanned], split: true}).catch(err => console.log("There was an error! The reason probably exceeded the 1024 character limit."));        ;
+        const userKicked = new discord.MessageEmbed()
+            .setTitle("User Kicked")
+            .setDescription(`${member} was kicked.\n**Reason:** ${reason}`)
+            .setColor(colors.KICK_COLOR)
+
+        member.kick(reason).catch(err => interaction.channel.send({ embeds: [kickImpossible] }));
+        interaction.reply({ embeds: [userKicked]}).catch(err => interaction.followUp("There was an error! The your reason for kick probably exceeded the 1024 character limit."))
         
         User.findOne({
             guildID: interaction.guild.id,
@@ -63,19 +59,20 @@ module.exports = {
                     userID: member.id,
                     muteCount: 0,
                     warnCount: 0,
-                    kickCount: 0,
-                    banCount: 1
+                    kickCount: 1,
+                    banCount: 0
                 });
 
                 await newUser.save()
                     .catch(err => interaction.followUp({ embeds: [errorMain] }));
             } else {
                 User.updateOne({
-                    warnCount: User.banCount + 1
+                    warnCount: User.kickCount + 1
                 })
                     .catch(err => interaction.followUp({ embeds: [errorMain] }));
             };
         });
+
         const settings = await Guild.findOne({
             guildID: interaction.guild.id
         }, (err, guild) => {
@@ -116,13 +113,13 @@ module.exports = {
             if (!logChannel) return;
 
             const embed = new discord.MessageEmbed()
-                .setColor(colors.BAN_COLOR)
-                .setTitle('User Banned')
+                .setColor(colors.KICK_COLOR)
+                .setTitle('User Kicked')
                 .addField('Username', `${member.user.username}`)
                 .addField('User ID', `${member.id}`)
-                .addField('Banned by', `${interaction.user}`)
+                .addField('Kicked by', `${interaction.user}`)
                 .addField('Reason', `${reason}`);
-            logChannel.send({ embeds: [embed], split: true }).catch(err => logChannel.send("There was an error! The reason probably exceeded the 1024 character limit."));            ;
+            logChannel.send({ embeds: [embed], split: true }).catch(err => logChannel.send("There was an error! The reason for kicking probably exceeded the 1024 character limit."));
         } else {
             return;
         }

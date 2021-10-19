@@ -54,67 +54,9 @@ const selectMod = new Discord.MessageActionRow()
                 },
             ]),
     );
-const toggle = new Discord.MessageActionRow()
-    .addComponents(
-        new Discord.MessageSelectMenu()
-            .setCustomId('select')
-            .setPlaceholder('None selected.')
-            .setMinValues(1)
-            .setMaxValues(1)
-            .addOptions([
-                {
-                    label: 'Levels',
-                    description: 'Enable or disable the levels system.',
-                    value: 'levels_toggle',
-                },
-            ]),
-    );
-const toggleEmbed = new Discord.MessageEmbed()
-    .setTitle("Toggle Features")
-    .setDescription("Use the dropdown to select a setting you wish to change!")
-    .setColor(colors.COLOR)
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-const toggleLevels = new Discord.MessageEmbed()
-    .setTitle("Toggle Levels")
-    .setDescription("Use the buttons to enable/disable the levels system.")
-    .addField("Current value", "[CURRENT VALUE]")
-    .setColor(colors.COLOR)
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-const levelsDisabled = new Discord.MessageEmbed()
-    .setTitle("Disabled Level System")
-    .setColor(colors.COLOR)
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-const levelsEnabled = new Discord.MessageEmbed()
-    .setTitle("Disabled Level System")
-    .setColor(colors.COLOR)
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
 const noperms = new Discord.MessageEmbed()
     .setTitle(":x: You do not have permission!")
     .setColor(colors.COLOR)
-const levelsButtons = new Discord.MessageActionRow()
-    .addComponents(
-        new Discord.MessageButton()
-            .setCustomId('enableLevel')
-            .setLabel('Enable')
-            .setStyle('SUCCESS'),
-        new Discord.MessageButton()
-            .setCustomId('disableLevel')
-            .setLabel('Disable')
-            .setStyle('DANGER'),
-    );
-const disabledToggle = new Discord.MessageActionRow()
-    .addComponents(
-        new Discord.MessageButton()
-            .setCustomId('enableLevel')
-            .setLabel('Enable')
-            .setDisabled('true')
-            .setStyle('SUCCESS'),
-        new Discord.MessageButton()
-            .setCustomId('disableLevel')
-            .setLabel('Disable')
-            .setDisabled('true')
-            .setStyle('DANGER'),
-    );
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isSelectMenu()) {
         if (interaction.values[0] === "fun_commands") {
@@ -137,26 +79,6 @@ client.on("interactionCreate", async (interaction) => {
         }
         if (interaction.values[0] === "misc_commands") {
             interaction.reply({ ephemeral: true, embeds: [miscEmbed] })
-        }
-        if (interaction.values[0] === "toggle_features") {
-            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
-            interaction.reply({ embeds: [toggleEmbed], components: [toggle], ephemeral: true })
-        }
-        if (interaction.values[0] === "levels_toggle") {
-            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
-            interaction.reply({ ephemeral: true, embeds: [toggleLevels], components: [levelsButtons] })
-        }
-    }
-    if (interaction.isButton()) {
-        if (interaction.customId === "enableLevel") {
-            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
-            func.enableLevel();
-            await interaction.update({ ephemeral: true, embeds: [levelsEnabled], components: [disabledToggle] });
-        }
-        if (interaction.customId === "disableLevel") {
-            if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noperms] });
-            func.disableLevel();
-            await interaction.update({ ephemeral: true, embeds: [levelsDisabled], components: [disabledToggle] });
         }
     }
 });

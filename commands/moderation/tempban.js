@@ -11,51 +11,81 @@ const {errorMain, banImpossible, addedDatabase, banNoPermsUser, banNoUser, banNo
 
 module.exports = {
     name: "tempban",
-    aliases: ["tb"],
-    async execute(client, message, args) {
+    description: "This command allows you to temporarily ban a user from the guild your in.",
+    permission: "BAN_MEMBERS",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+     options: [
+        {
+            name: "user",
+            description: "The user to ban.",
+            type: "USER",
+            required: true,
+        },
+        {
+            name: "time",
+            description: "The time to ban the user.",
+            type: "STRING",
+            required: true,
+        },
+        {
+            name: "reason",
+            description: "The reason to ban the user. (optional)",
+            type: "STRING",
+            required: false,
+        }
+    ],
+    async execute(client, interaction) {
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [banNoPermsUser] });
+        const member = interaction.options.getMember('user');
+        const time = interaction.options.getString('time');
+        const reasonRaw = interaction.options.getString('reason');
+        let reason = "No reason specified.";
 
-        const member = message.mentions.members.first();
-        const time = args[1];
-        if (!args[0]) return message.channel.send({ embeds: [banNoUser] });
-        if (!member) return message.channel.send({ embeds: [banNoUser] });
-        if (!time) return message.channel.send({ embeds: [banNoTime] });
-        let reason = "No reason specified";
+        if (!member) return interaction.reply({embeds: [banNoUser]});
+        if (!time) return interaction.reply({embeds: [banNoTime]});
+        if (reasonRaw) reason = reasonRaw;
 
         const settings = await Guild.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain] });
+            if (err) interaction.reply({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
                     guildID: message.guild.id,
                     guildName: message.guild.name,
-                    prefix: config.PREFIX,
                     logChannelID: none,
-                    enableLog: false,
-                    enableSwearFilter: true,
+                    enableLog: true,
+                    enableSwearFilter: false,
                     enableMusic: true,
                     enableLevel: true,
                     mutedRoleName: "Muted",
                     mainRoleName: "Member",
                     reportEnabled: true,
-                    reportChannelID: none
+                    reportChannelID: none,
+                    suggestEnabled: true,
+                    suggestChannelID: none,
+                    ticketEnabled: true,
+                    ticketChannelName: "Tickets",
+                    closedTicketCategoryName: "Closed Tickets",
+                    welcomeEnabled: true,
+                    welcomeChannelID: none,
+                    enableNSFWContent: false,
                 });
-
+        
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
-
-                return message.channel.send({ embeds: [addedDatabase] });
+                    .catch(err => interaction.followUp({ embeds: [errorMain] }));
+        
+                return interaction.followUp({ embeds: [addedDatabase] });
             }
         });
         
         if (ms(time)) {
             member.ban({ reason: reason }).catch(err => {
-                message.channel.send({embeds: [banImpossible]});
+                interaction.channel.send({embeds: [banImpossible]});
                 let reason = ":x: Ban failed.";
                 return;
             }); 
@@ -63,15 +93,15 @@ module.exports = {
                 .setTitle("User Tempbanned")
                 .setDescription(`${member} was tempbanned for **${time}**.\n**Reason:** ${reason}`)
                 .setColor(colors.COLOR)
-            message.channel.send({ embeds: [embed] });
+            interaction.reply({ embeds: [embed] });
             setTimeout(function () {
-                message.guild.members.unban(member.id);
+                interaction.guild.members.unban(member.id);
                 const unbannedAfter = new discord.MessageEmbed()
                     .setDescription(`${member} was unbanned after **${time}**!`)
                     .setColor(colors.COLOR);
-                message.channel.send({ embeds: [unbannedAfter] });
+                interaction.followUp({ embeds: [unbannedAfter] });
                 if (settings.enableLog === "true") {
-                    const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+                    const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
                     if (!logChannel) {
                         return;
                     } else {
@@ -80,11 +110,11 @@ module.exports = {
                 }
             }, ms(time));
         } else {
-            return message.channel.send({ embeds: [banNoTime] });
+            return interaction.reply({ embeds: [banNoTime] });
         }
 
         User.findOne({
-            guildID: message.guild.id,
+            guildID: interaction.guild.id,
             userID: member.id
         }, async (err, user) => {
             if (err) console.error(err);
@@ -92,7 +122,7 @@ module.exports = {
             if (!User) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
-                    guildID: message.guild.id,
+                    guildID: interaction.guild.id,
                     userID: member.id,
                     muteCount: 0,
                     warnCount: 0,
@@ -101,26 +131,26 @@ module.exports = {
                 });
 
                 await newUser.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
+                    .catch(err => interaction.followUp({ embeds: [errorMain] }));
             } else {
                 User.updateOne({
                     banCount: User.banCount + 1
                 })
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
+                    .catch(err => interaction.followUp({ embeds: [errorMain] }));
             };
         });
 
         if (settings.enableLog === "true") {
-            const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
             if (!logChannel) {
                 return;
             } else {
                 const embed = new discord.MessageEmbed()
                     .setColor(colors.BAN_COLOR)
                     .setTitle('User Tempbanned')
-                    .addField('Username', `${member.tag}`)
+                    .addField('Username', `${member}`)
                     .addField('User ID', `${member.id}`)
-                    .addField('Banned by', `${message.author}`)
+                    .addField('Banned by', `${interaction.user}`)
                     .addField('Reason', `${reason}`)
                     .addField('Time', `${time}`);
                 return logChannel.send({ embeds: [embed] });

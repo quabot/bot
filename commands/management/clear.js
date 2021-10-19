@@ -1,4 +1,6 @@
 const discord = require('discord.js');
+const mongoose = require('mongoose');
+
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 
@@ -23,63 +25,78 @@ const addedDatabase = new discord.MessageEmbed()
 
 module.exports = {
     name: "clear",
-    aliases: [],
-    async execute(client, message, args) {
+    description: "By using this command you will be able to clear an amount of messages.",
+    permission: "ADMINISTRATOR",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    options: [
+        {
+            name: "amount",
+            description: "The amount of messages to clear.",
+            type: "INTEGER",
+            required: true,
+        },
+    ],
+    async execute(client, interaction) {
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) return message.channel.send({ embeds: [noPermsMsg]});
-        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send({ embeds: [noPermsAdminUser]});
-
-        let amount = args[0]
-        if (!amount) return message.channel.send({ embeds: [noAmountMsg]});
+        let amount = interaction.options.getInteger('amount');
+        console.log(amount)
+        if (!amount) return interaction.reply({ embeds: [noAmountMsg] });
         if (amount <= 0) amount = 1;
         if (amount >= 201) amount = 200;
-        if (isNaN(args)) return message.channel.send({ embeds: [msg200Max]});
 
-        message.channel.bulkDelete(amount).catch(err => message.channel.send({ embeds: [errorMain]})).then(msg => {setTimeout(() => msg.delete(), 6000)});
+        interaction.channel.bulkDelete(amount).catch(err => interaction.channel.send({ embeds: [errorMain] })).then(msg => { setTimeout(() => msg.delete(), 6000) });
         const clearedAmount = new discord.MessageEmbed()
             .setDescription(`:white_check_mark: Succesfully cleared **${amount}** messages!`)
             .setColor(colors.COLOR)
-        message.channel.send({ embeds: [clearedAmount]}).then(msg => {
-            setTimeout(() => msg.delete(), 6000)
-          });
+            interaction.reply({ embeds: [clearedAmount] });
 
         const settings = await Guild.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain]});
+            if (err) interaction.reply({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
                     guildID: message.guild.id,
                     guildName: message.guild.name,
-                    prefix: config.PREFIX,
                     logChannelID: none,
-                    enableLog: false,
-                    enableSwearFilter: true,
+                    enableLog: true,
+                    enableSwearFilter: false,
                     enableMusic: true,
                     enableLevel: true,
-                    mutedRoleName: muted,
-                    mainRoleName: member
+                    mutedRoleName: "Muted",
+                    mainRoleName: "Member",
+                    reportEnabled: true,
+                    reportChannelID: none,
+                    suggestEnabled: true,
+                    suggestChannelID: none,
+                    ticketEnabled: true,
+                    ticketChannelName: "Tickets",
+                    closedTicketCategoryName: "Closed Tickets",
+                    welcomeEnabled: true,
+                    welcomeChannelID: none,
+                    enableNSFWContent: false,
                 });
-
+        
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
-
-                return message.channel.send({ embeds: [addedDatabase]});
+                    .catch(err => interaction.followUp({ embeds: [errorMain] }));
+        
+                return interaction.followUp({ embeds: [addedDatabase] });
             }
         });
 
         if (settings.enableLog === "true") {
-            const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
             if (!logChannel) return;
             const embed = new discord.MessageEmbed()
                 .setColor(colors.CLEAR_COLOR)
                 .setTitle('Messages Cleared')
-                .addField('Channel', message.channel)
-                .addField('Amount', amount)
-            logChannel.send({ embeds: [embed]});
+                .addField('Channel', `${interaction.channel}`)
+                .addField('Amount', `${amount}`)
+            logChannel.send({ embeds: [embed] });
         } else {
             return;
         }

@@ -35,5 +35,269 @@ const HelpSelect = new discord.MessageActionRow()
                 },
             ]),
     );
+const selectCategory = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Toggle Features',
+                    description: 'Toggle certain settings like log channels, tickets, music and more.',
+                    value: 'toggle_features',
+                },
+                {
+                    label: 'Change Channels',
+                    description: 'Allows you to change log channel, welcome channel and more channel-related settings.',
+                    value: 'change_channels',
+                 },
+                // {
+                //     label: 'Change Roles',
+                //     description: 'Allows you to change roles for people who are muted, on first join etc..',
+                //     value: 'change_roles',
+                // },
+            ]),
+    );
+const levelsButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableLevel')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableLevel')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const logButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableLogs')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableLogs')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const swearButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableSwear')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableSwear')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const musicButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableMusic')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableMusic')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const reportButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableReport')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableReport')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const suggestButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableSuggest')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableSuggest')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const ticketButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableTicket')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableTicket')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const welcomeButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enableWelcome')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disableWelcome')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+const disabledToggle = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('disabledE')
+            .setLabel('Enable')
+            .setDisabled('true')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disabledD')
+            .setLabel('Disable')
+            .setDisabled('true')
+            .setStyle('DANGER'),
+    );
+const nextPage1 = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('next1')
+            .setLabel('Next Page')
+            .setStyle('SUCCESS'),
+    );
+const nextPage2 = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('next2')
+            .setLabel('Previous Page')
+            .setStyle('DANGER'),
+    );
+const nextPage3 = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('next3')
+            .setLabel('Next Page')
+            .setStyle('SUCCESS'),
+    );
+const nextPage4 = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('next4')
+            .setLabel('Previous Page')
+            .setStyle('DANGER'),
+    );
+const toggle = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Levels',
+                    description: 'Enable or disable the levels system.',
+                    value: 'levels_toggle',
+                },
+                {
+                    label: 'Event Logging',
+                    description: 'Enable or disable events logging.',
+                    value: 'log_toggle',
+                },
+                {
+                    label: 'Swear Filter',
+                    description: 'Enable or disable the swear filter.',
+                    value: 'swear_toggle',
+                },
+                {
+                    label: 'Music',
+                    description: 'Enable or disable all music related commands.',
+                    value: 'music_toggle',
+                },
+                {
+                    label: 'Reports',
+                    description: 'Enable or disable reports for your guild.',
+                    value: 'report_toggle',
+                },
+            ]),
+    );
+const toggle2 = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Suggestions',
+                    description: 'Enable or disable the suggestions system.',
+                    value: 'suggest_toggle',
+                },
+                {
+                    label: 'Tickets',
+                    description: 'Enable or disable the tickets system.',
+                    value: 'tickets_toggle',
+                },
+                {
+                    label: 'Welcome Messages',
+                    description: 'Enable or disable welcome messages.',
+                    value: 'welcome_toggle',
+                },
+            ]),
+    );
+const channel = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Log Channel',
+                    description: 'The channel that guild and command events are sent in.',
+                    value: 'log_channel',
+                },
+                {
+                    label: 'Report Channel',
+                    description: 'The public channel that user reports are sent in.',
+                    value: 'report_channel',
+                },
+                {
+                    label: 'Suggest Channel',
+                    description: 'The public channel that suggestions are sent in.',
+                    value: 'suggest_channel',
+                },
+                {
+                    label: 'Welcome Channel',
+                    description: 'The channel that welcome messages are sent in.',
+                    value: 'welcome_channel',
+                },
+                {
+                    label: 'Ticket Category',
+                    description: 'The name of the category where tickets are stored.',
+                    value: 'ticket_channel',
+                },
+            ]),
+    );
+const channel2 = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Closed Tickets Category',
+                    description: 'The name of the category where closed tickets are stored.',
+                    value: 'closedticket_channel',
+                },
+            ]),
+    );
 
-module.exports = {HelpSelect}
+module.exports = { channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

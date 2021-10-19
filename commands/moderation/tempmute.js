@@ -1,5 +1,6 @@
 const discord = require('discord.js');
 const ms = require('ms');
+const mongoose = require('mongoose');
 
 const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
@@ -9,83 +10,103 @@ const { errorMain, banImpossible, addedDatabase, banNoPermsUser, banNoUser, banN
 
 module.exports = {
     name: "tempmute",
-    aliases: ["tm"],
-    async execute(client, message, args) {
-
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_ROLES")) return message.channel.send({ embeds: [muteNoManageRoles] });
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send({ embeds: [muteNoPermsUser] });
+    description: "This command allows you to temporarily mute a user on the guild you're in.",
+    permission: "BAN_MEMBERS",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+     options: [
+        {
+            name: "user",
+            description: "The user to mute.",
+            type: "USER",
+            required: true,
+        },
+        {
+            name: "time",
+            description: "The time to mute the user.",
+            type: "STRING",
+            required: true,
+        },
+    ],
+    async execute(client, interaction) {
 
         const settings = await Guild.findOne({
-            guildID: message.guild.id
+            guildID: interaction.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain] });
+            if (err) interaction.reply({ embeds: [errorMain] });
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
-                    guildID: message.guild.id,
-                    guildName: message.guild.name,
-                    prefix: config.PREFIX,
+                    guildID: interaction.guild.id,
+                    guildName: interaction.guild.name,
                     logChannelID: none,
-                    enableLog: false,
-                    enableSwearFilter: true,
+                    enableLog: true,
+                    enableSwearFilter: false,
                     enableMusic: true,
                     enableLevel: true,
                     mutedRoleName: "Muted",
                     mainRoleName: "Member",
                     reportEnabled: true,
-                    reportChannelID: none
+                    reportChannelID: none,
+                    suggestEnabled: true,
+                    suggestChannelID: none,
+                    ticketEnabled: true,
+                    ticketChannelName: "Tickets",
+                    closedTicketCategoryName: "Closed Tickets",
+                    welcomeEnabled: true,
+                    welcomeChannelID: none,
+                    enableNSFWContent: false,
                 });
-
+        
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
-
-                return message.channel.send({ embeds: [addedDatabase] });
+                    .catch(err => interaction.followUp({ embeds: [errorMain] }));
+        
+                return interaction.followUp({ embeds: [addedDatabase] });
             }
         });
 
         let mutedRoleName = settings.mutedRoleName;
         let mainRoleName = settings.mainRoleName;
 
-        const target = message.mentions.users.first();
-        const member = message.mentions.members.first();
+        const target = interaction.options.getMember('user');
+        const member = interaction.options.getMember('user');
 
-        if (!args[0]) return message.channel.send({ embeds: [{ embeds: [muteNoUser] }] });
-        if (!target) return message.channel.send({ embeds: [muteNoUser] });
+        if (!target) return interaction.reply({ embeds: [muteNoUser] });
 
-        let mainRole = message.guild.roles.cache.find(role => role.name === `${mainRoleName}`);
-        let muteRole = message.guild.roles.cache.find(role => role.name === `${mutedRoleName}`);
+        let mainRole = interaction.guild.roles.cache.find(role => role.name === `${mainRoleName}`);
+        let muteRole = interaction.guild.roles.cache.find(role => role.name === `${mutedRoleName}`);
 
-        let memberTarget = message.guild.members.cache.get(target.id);
+        let memberTarget = interaction.guild.members.cache.get(target.id);
 
-        const time = args[1];
+        const time = interaction.options.getString('time');
 
-        if (!time) return message.channel.send({ embeds: [muteNoTime] });
+        if (!time) return interaction.reply({ embeds: [muteNoTime] });
 
         if (ms(time)) {
             memberTarget.roles.remove(mainRole.id);
             memberTarget.roles.add(muteRole.id);
             const mutedUser4 = new discord.MessageEmbed()
-                .setTitle("User tempmuted")
+                .setTitle(":white_check_mark: User tempmuted!")
                 .setDescription(`<@${memberTarget.user.id}> has been tempmuted for ${time}`)
                 .setColor(colors.COLOR);
-            message.channel.send({ embeds: [mutedUser4] });
+            interaction.reply({ embeds: [mutedUser4] });
             setTimeout(function () {
                 memberTarget.roles.add(mainRole.id);
                 memberTarget.roles.remove(muteRole.id);
                 const mutedUser23 = new discord.MessageEmbed()
-                    .setTitle("User auto-unmuted")
+                    .setTitle(":white_check_mark: User auto-unmuted")
                     .setDescription(`<@${memberTarget.user.id}> has been unmuted after ${time}!`)
                     .setColor(colors.COLOR);
-                message.channel.send({ embeds: [mutedUser23] });
+                interaction.channel.send({ embeds: [mutedUser23] });
             }, ms(time));
         } else {
-            return message.channel.send({ embeds: { muteNoTime } });
+            return interaction.reply({ embeds: { muteNoTime } });
         }
 
         User.findOne({
-            guildID: message.guild.id,
+            guildID: interaction.guild.id,
             userID: member.id
         }, async (err, user) => {
             if (err) console.error(err);
@@ -93,7 +114,7 @@ module.exports = {
             if (!user) {
                 const newUser = new User({
                     _id: mongoose.Types.ObjectId(),
-                    guildID: message.guild.id,
+                    guildID: interaction.guild.id,
                     userID: member.id,
                     muteCount: 1,
                     warnCount: 0,
@@ -112,7 +133,7 @@ module.exports = {
         });
 
         if (settings.enableLog === "true") {
-            const logChannel = message.guild.channels.cache.get(settings.logChannelID);
+            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
             if (!logChannel) return;
 
             const embed = new discord.MessageEmbed()
@@ -120,7 +141,7 @@ module.exports = {
                 .setTitle('User Tempmuted')
                 .addField('User', `${target.tag}`)
                 .addField('User ID', `${target.id}`)
-                .addField('Muted by', `${message.author}`)
+                .addField('Muted by', `${interaction.user}`)
                 .addField('Time', `${time}`)
             logChannel.send({ embeds: [embed] });
         } else {

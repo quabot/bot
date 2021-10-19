@@ -1,6 +1,6 @@
 const discord = require('discord.js');
 
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 const errorMain = new discord.MessageEmbed()
     .setDescription("There was an error!")
     .setColor(colors.COLOR)
@@ -13,7 +13,7 @@ const noNewPrefix = new discord.MessageEmbed()
 const noNewValue = new discord.MessageEmbed()
     .setDescription("Please enter a valid new value!")
     .setColor(colors.COLOR)
-const Guild = require('../../models/guild');
+const Guild = require('../../../models/guild');
 const optionsEmbed = new discord.MessageEmbed()
     .setTitle("Quabot configuration")
     .setColor(colors.COLOR)
