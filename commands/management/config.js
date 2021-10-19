@@ -206,17 +206,7 @@ module.exports = {
                     interaction.reply({ embeds: [ticketChannel], ephemeral: true });
                     collector.on('collect', async m => {
                         if (m) {
-                            if (m.author.bot) return;
-                            const F  = m;
-                            if(!F) return;
-                            await settings.updateOne({
-                                ticketChannelName: F
-                            });
-                            const updated5 = new discord.MessageEmbed()
-                                .setTitle(":white_check_mark: Succes!")
-                                .setDescription(`Changed ticket category to ${F}!`)
-                                .setColor(colors.COLOR)
-                            m.channel.send({ embeds: [updated5]})
+                            console.log(m)
                             return;
                         } else {
                             if (m.author.bot) return;
@@ -233,8 +223,8 @@ module.exports = {
                     interaction.reply({ embeds: [CticketChannel], ephemeral: true });
                     collector.on('collect', async m => {
                         if (m) {
-                            let E;
-                            if(!m.length > 100) E = m;
+                            if (m.author.bot) return;
+                            const E  = m;
                             if(!E) return;
                             await settings.updateOne({
                                 ticketChannelName: E
