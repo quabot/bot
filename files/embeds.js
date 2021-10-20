@@ -20,6 +20,9 @@ const DogScanning = new discord.MessageEmbed()
 const MemeNoAttach = new discord.MessageEmbed()
     .setTitle(":x: I do not have permission to attach files!")
     .setColor(colors.COLOR);
+const MusicDisabled = new discord.MessageEmbed()
+    .setTitle(":x:")
+    .setColor(colors.COLOR);
 const MemeScanning = new discord.MessageEmbed()
     .setTitle(":mag: Scanning for the best memes... :joy:")
     .setColor(colors.COLOR)
@@ -59,9 +62,10 @@ const SupportEmbed = new discord.MessageEmbed()
 const NotInVC = new discord.MessageEmbed()
     .setTitle(":x: You need to be in a voice channel to play songs!")
     .setColor(colors.COLOR);
-const MusicDisabled = new discord.MessageEmbed()
+const MusicIsDisabled = new discord.MessageEmbed()
     .setColor(colors.COLOR)
-    .setTitle(":x: Music is disabled in this guild!");
+    .setTitle(":x: Music is disabled in this guild!")
+    .setDescription("Please ask an administrator to change this.");
 const NotPlaying = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle(":x: There is no music playing!");
@@ -355,4 +359,4 @@ const roleEmbed = new discord.MessageEmbed()
     .setTimestamp()
     .setFooter("Eg. For mutes and join roles.");
 
-module.exports = { roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, swearDisabled, swearEnabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, swearDisabled, swearEnabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}

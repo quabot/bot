@@ -8,19 +8,13 @@ const { NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 
 module.exports = {
-    name: "play",
-    description: "This command allows you to play music.",
+    name: "stop",
+    description: "This command allows you to stop the entire music queue.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
-        {
-            name: "song",
-            description: "Enter the song you wish to play or add to the queue here.",
-            type: "STRING",
-            required: true,
-        }
     ],
     async execute(client, interaction) {
 
@@ -63,10 +57,10 @@ module.exports = {
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
         if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-        const voiceChannel = member.voice.channel;
 
-        const song = interaction.options.getString('song');
-        client.player.playVoiceChannel(voiceChannel, song);
-        interaction.reply("Now playing: **" + song + "**! (THIS MESSAGE WILL BE REMOVED SOON)");
+        const queue = client.player.getQueue(interaction);
+        if(!queue) return interaction.reply("There is no queue! (new message soon)");
+        client.player.stop(interaction);
+        interaction.reply("Stopped the queue (message revamp soon)");
     }
 }

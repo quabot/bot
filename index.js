@@ -30,15 +30,6 @@ client.giveawaysManager = new GiveawaysManager(client, {
 
 client.player = new DisTube.default(client);
 
-client.on('message', (message) => {
-    if (!message.content.startsWith("!")) return;
-    const args = message.content.slice(1).trim().split(/ +/g);
-    const command = args.shift();
-    if (command == "play")
-        client.player.play(message, args.join(" "));
-        message.reply("Now Playing: " + args.join(" "));
-});
-
 const { miscEmbed, funEmbed, infoEmbed, musicEmbed, moderationEmbed, managementEmbed } = require('./files/embeds');
 const ModMain = new Discord.MessageEmbed()
     .setColor(colors.COLOR)
