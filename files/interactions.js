@@ -53,11 +53,11 @@ const selectCategory = new discord.MessageActionRow()
                     description: 'Allows you to change log channel, welcome channel and more channel-related settings.',
                     value: 'change_channels',
                  },
-                // {
-                //     label: 'Change Roles',
-                //     description: 'Allows you to change roles for people who are muted, on first join etc..',
-                //     value: 'change_roles',
-                // },
+                {
+                    label: 'Change Roles',
+                    description: 'Allows you to change roles for people who are muted, on join etc.',
+                    value: 'change_roles',
+                },
             ]),
     );
 const levelsButtons = new discord.MessageActionRow()
@@ -299,5 +299,25 @@ const channel2 = new discord.MessageActionRow()
                 },
             ]),
     );
+const role = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Main Role',
+                    description: 'The main role that users get when being muted/unmuted and get on join *if enabled.',
+                    value: 'main_role',
+                },
+                {
+                    label: 'Muted Role',
+                    description: 'The role that users get when muted.',
+                    value: 'muted_role',
+                },
+            ]),
+    );
 
-module.exports = { channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

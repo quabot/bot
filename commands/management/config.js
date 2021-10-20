@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 
-const { channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled } = require('../../files/embeds');
-const { channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons } = require('../../files/interactions');
+const { roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled } = require('../../files/embeds');
+const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons } = require('../../files/interactions');
 
 module.exports = {
     name: "config",
@@ -54,6 +54,84 @@ module.exports = {
         client.on('interactionCreate', async (interaction) => {
             const filter = m => interaction.user === author;
             const collector = interaction.channel.createMessageCollector({ time: 15000 });
+            const mutedRole = new discord.MessageEmbed()
+                .setTitle("Change Muted Role name")
+                .setDescription("Enter the new name within 15 seconds to change it.")
+                .addField("Current value", `${settings.mutedRoleName}`)
+                .setColor(colors.COLOR)
+                .setThumbnail("https://i.imgur.com/jgdQUul.png");
+            const mainRole = new discord.MessageEmbed()
+                .setTitle("Change Main Role name")
+                .setDescription("Enter the new name within 15 seconds to change it.")
+                .addField("Current value", `${settings.mainRoleName}`)
+                .setColor(colors.COLOR)
+                .setThumbnail("https://i.imgur.com/jgdQUul.png");
+
+            if (interaction.isSelectMenu()) {
+                if (interaction.values[0] === "change_roles") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                    interaction.reply({ embeds: [roleEmbed], components: [role], ephemeral: true })
+                }
+                if (interaction.values[0] === "muted_role") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                    interaction.reply({ embeds: [mutedRole], ephemeral: true });
+                    collector.on('collect', async m => {
+                        if (m) {
+                            if(m.author.bot) return;
+                            if(m.content.lenght > 25) return;
+                            await settings.updateOne({
+                                mutedRoleName: m.content
+                            });
+                            const updated5 = new discord.MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription(`Changed muted role name to ${m.content}!`)
+                                .setColor(colors.COLOR)
+                            m.channel.send({ embeds: [updated5]})
+                            return;
+                        } else {
+                            if (m.author.bot) return;
+                            const timedOu5t = new discord.MessageEmbed()
+                                .setTitle("❌ Timed Out!")
+                                .setDescription("You took too long to respond.")
+                                .setColor(colors.COLOR)
+                            m.reply({ embeds: [timedOu5t] });
+                        }
+                    });
+                }
+                if (interaction.values[0] === "main_role") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                    interaction.reply({ embeds: [mainRole], ephemeral: true });
+                    collector.on('collect', async m => {
+                        if (m) {
+                            if(m.author.bot) return;
+                            if(m.content.lenght > 25) return;
+                            await settings.updateOne({
+                                mainRoleName: m.content
+                            });
+                            const updated5 = new discord.MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription(`Changed main role name to ${m.content}!`)
+                                .setColor(colors.COLOR)
+                            m.channel.send({ embeds: [updated5]})
+                            return;
+                        } else {
+                            if (m.author.bot) return;
+                            const timedOu5t = new discord.MessageEmbed()
+                                .setTitle("❌ Timed Out!")
+                                .setDescription("You took too long to respond.")
+                                .setColor(colors.COLOR)
+                            m.reply({ embeds: [timedOu5t] });
+                        }
+                    });
+                }
+            };
+        })
+        
+
+        // CHANNELS
+        client.on('interactionCreate', async (interaction) => {
+            const filter = m => interaction.user === m.author;
+            const collector = interaction.channel.createMessageCollector({ filter, time: 15000 });
             const logChannel = new discord.MessageEmbed()
                 .setTitle("Change Logging Channel")
                 .setDescription("Mention the new channel within 15 seconds to change it.")
@@ -206,7 +284,16 @@ module.exports = {
                     interaction.reply({ embeds: [ticketChannel], ephemeral: true });
                     collector.on('collect', async m => {
                         if (m) {
-                            console.log(m)
+                            if(m.author.bot) return;
+                            if(m.content.lenght > 100) return;
+                            await settings.updateOne({
+                                ticketChannelName: m.content
+                            });
+                            const updated5 = new discord.MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription(`Changed tickets category to ${m.content}!`)
+                                .setColor(colors.COLOR)
+                            m.channel.send({ embeds: [updated5]})
                             return;
                         } else {
                             if (m.author.bot) return;
@@ -223,15 +310,14 @@ module.exports = {
                     interaction.reply({ embeds: [CticketChannel], ephemeral: true });
                     collector.on('collect', async m => {
                         if (m) {
-                            if (m.author.bot) return;
-                            const E  = m;
-                            if(!E) return;
+                            if(m.author.bot) return;
+                            if(m.content.lenght > 100) return;
                             await settings.updateOne({
-                                ticketChannelName: E
+                                closedTicketCategoryName: m.content
                             });
                             const updated5 = new discord.MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
-                                .setDescription(`Changed report channel to ${E}!`)
+                                .setDescription(`Changed closed tickets category to ${m.content}!`)
                                 .setColor(colors.COLOR)
                             m.channel.send({ embeds: [updated5]})
                             return;
