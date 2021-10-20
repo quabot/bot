@@ -9,6 +9,7 @@ const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketBut
 module.exports = {
     name: "config",
     description: "By using this command you will be able to change settings for your guild.",
+    permission: "ADMINISTRATOR",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

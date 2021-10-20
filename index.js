@@ -1,5 +1,6 @@
 const { Client, Intents } = require('discord.js');
 const Discord = require("discord.js");
+const DisTube = require("distube")
 const consola = require('consola')
 const client = new Client({ intents: 32767 });
 module.exports = client;
@@ -27,6 +28,16 @@ client.giveawaysManager = new GiveawaysManager(client, {
     }
 });
 
+client.player = new DisTube.default(client);
+
+client.on('message', (message) => {
+    if (!message.content.startsWith("!")) return;
+    const args = message.content.slice(1).trim().split(/ +/g);
+    const command = args.shift();
+    if (command == "play")
+        client.player.play(message, args.join(" "));
+        message.reply("Now Playing: " + args.join(" "));
+});
 
 const { miscEmbed, funEmbed, infoEmbed, musicEmbed, moderationEmbed, managementEmbed } = require('./files/embeds');
 const ModMain = new Discord.MessageEmbed()
