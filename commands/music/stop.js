@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
-const User = require('../../models/guild');
-const { NotInVC, MusicIsDisabled } = require('../../files/embeds');
+const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 
 module.exports = {

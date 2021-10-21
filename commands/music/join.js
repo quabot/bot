@@ -1,14 +1,14 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
+const { joinVoiceChannel } = require('@discordjs/voice');
 
-const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
+const colors = require('../../files/colors.json');
 const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
-
 module.exports = {
-    name: "skip",
-    description: "This command allows you to skip the currently playing song.",
+    name: "join",
+    description: "Make quabot join your voice channel.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -51,19 +51,27 @@ module.exports = {
                 return interaction.reply({ embeds: [addedDatabase] });
             }
         });
-
         if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
         if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-
         const queue = client.player.getQueue(interaction);
-        if(!queue) return interaction.reply("There is no queue! (new message soon)");
+        if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
 
-        const song1 = queue.songs[1];
-        if (!song1) return interaction.reply("There is no song next in queue! Add more songs first!");
+        const voiceChannel = member.voice.channel;
+        const voiceChannelID = voiceChannel.id;
 
-        client.player.skip(queue);
-        interaction.reply("Skipped a song (message revamp soon)");
+        if (member.voice.channel) {
+            const connection = joinVoiceChannel({
+                channelId: voiceChannelID,
+                guildId: interaction.guild.id
+            });
+        }
+
+        const embed = new discord.MessageEmbed()
+            .setTitle(`:white_check_mark: Succesfully joined the voice channel!`)
+            .setDescription(`${interaction.user} requested me to join <#${voiceChannelID}>!`)
+            .setColor(colors.COLOR);
+        interaction.reply({ embeds: [embed] });
     }
 }
