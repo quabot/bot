@@ -7,8 +7,8 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../fi
 
 
 module.exports = {
-    name: "skip",
-    description: "This command allows you to skip the currently playing song.",
+    name: "shuffle",
+    description: "Shuffle the queue to a new order.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -57,11 +57,7 @@ module.exports = {
 
         const queue = client.player.getQueue(interaction);
         if(!queue) return interaction.reply("There is no queue! (new message soon)");
-
-        const song1 = queue.songs[1];
-        if (!song1) return interaction.reply("There is no song next in queue! Add more songs first!");
-
-        client.player.skip(queue);
-        interaction.reply("Skipped a song (message revamp soon)");
+        client.player.shuffle(interaction);
+        interaction.reply("Resumed the music stream! (message revamp soon)");
     }
 }

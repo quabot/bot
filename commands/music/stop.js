@@ -13,8 +13,6 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-    options: [
-    ],
     async execute(client, interaction) {
 
         const settings = await Guild.findOne({

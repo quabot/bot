@@ -1,18 +1,26 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
+const { joinVoiceChannel } = require('@discordjs/voice');
 
-const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
+const colors = require('../../files/colors.json');
 const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
-
 module.exports = {
-    name: "skip",
-    description: "This command allows you to skip the currently playing song.",
+    name: "volume",
+    description: "Change the volume of the currently playing music.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
+     options: [
+        {
+            name: "volume",
+            description: "Enter the new volume level you wish to apply.",
+            type: "INTEGER",
+            required: true,
+        }
+    ],
     async execute(client, interaction) {
 
         const settings = await Guild.findOne({
@@ -49,19 +57,25 @@ module.exports = {
                 return interaction.reply({ embeds: [addedDatabase] });
             }
         });
-
         if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
         if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-
         const queue = client.player.getQueue(interaction);
-        if(!queue) return interaction.reply("There is no queue! (new message soon)");
+        if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
 
-        const song1 = queue.songs[1];
-        if (!song1) return interaction.reply("There is no song next in queue! Add more songs first!");
+        const volumeNew = interaction.options.getInteger('volume');
+        if (volumeNew <= 0) return interaction.reply("invalid number (new message soon)");
+        if (volumeNew >= 101) return interaction.reply("invalid number (new message soon)");
 
-        client.player.skip(queue);
-        interaction.reply("Skipped a song (message revamp soon)");
+        const song = queue.songs[0];
+
+        client.player.setVolume(interaction, volumeNew);
+        const newVolume = new discord.MessageEmbed()
+            .setTitle("Changed Volume! :speaker:")
+            .setThumbnail(song.thumbnail)
+            .setDescription(`Succesfully set the volume to **${volumeNew}%**`)
+            .setColor(colors.COLOR);
+        interaction.reply({ embeds: [newVolume]});  
     }
 }
