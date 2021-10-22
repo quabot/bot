@@ -7,19 +7,13 @@ const colors = require('../../files/colors.json');
 const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 module.exports = {
-    name: "repeat",
-    description: "Change the repeat mode: 0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE.",
+    name: "leave",
+    description: "Make quabot leave the voice channel it's i.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
-        {
-            name: "repeatmode",
-            description: "E0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE",
-            type: "INTEGER",
-            required: true,
-        }
     ],
     async execute(client, interaction) {
 
@@ -64,12 +58,15 @@ module.exports = {
         const queue = client.player.getQueue(interaction);
         if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
 
-        const newMode = interaction.options.getInteger('repeatmode');
-        if(!newMode === "0" || !newMode === "1" || !newMode === "2") return interaction.reply("Invalid mode! Enter either `0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE`")
+        const voiceChannel = member.voice.channel;
+        const voiceChannelID = voiceChannel.id;
 
-        let mode = client.player.setRepeatMode(interaction, newMode);
-        mode = mode ? mode == 2 ? "Repeat queue :repeat:" : "Repeat song :repeat_one:" : "Off :arrow_forward:";
+        client.player.stop(interaction);
 
-        interaction.reply(`Changed repeat mode to **${mode}**!`)
+        const embed = new discord.MessageEmbed()
+            .setTitle(`:mute: Succesfully left the voice channel!`)
+            .setDescription(`${interaction.user} made me leave <#${voiceChannelID}>!`)
+            .setColor(colors.COLOR);
+        interaction.reply({ embeds: [embed] });
     }
 }
