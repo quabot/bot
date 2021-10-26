@@ -28,7 +28,11 @@ client.giveawaysManager = new GiveawaysManager(client, {
     }
 });
 
-client.player = new DisTube.default(client);
+client.player = new DisTube.default(client, {
+    leaveOnEmpty: true,
+    leaveOnFinish: true,
+    leaveOnStop: true,
+});
 
 const { miscEmbed, funEmbed, infoEmbed, musicEmbed, moderationEmbed, managementEmbed } = require('./files/embeds');
 const ModMain = new Discord.MessageEmbed()

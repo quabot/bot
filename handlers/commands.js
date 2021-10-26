@@ -115,7 +115,7 @@ module.exports = async (client) => {
                     }, [])
 
                     return [...accumulator, { id: r.id, permissions }]
-                }, [])
+                }, []);
 
                 await guild.commands.permissions.set({ fullPermissions })
             })
