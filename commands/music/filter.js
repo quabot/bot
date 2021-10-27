@@ -3,20 +3,20 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
-const { NotInVC, MusicIsDisabled, errorMain, addedDatabase } = require('../../files/embeds');
+const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 
 module.exports = {
-    name: "play",
-    description: "This command allows you to play music.",
+    name: "filter",
+    description: "When using this command you can apply a filter to the playing song.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
         {
-            name: "song",
-            description: "Enter the song you wish to play or add to the queue here.",
+            name: "filter-type",
+            description: "Enter the the type of filter you wish! (Bass boost, treble etc.).",
             type: "STRING",
             required: true,
         }
@@ -58,14 +58,19 @@ module.exports = {
             }
         });
 
+        const type = interaction.options.getString('filter-type');
+
         if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
         if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-        const voiceChannel = member.voice.channel;
 
-        const song = interaction.options.getString('song');
-        client.player.playVoiceChannel(voiceChannel, song);
-        interaction.reply("Now playing: **" + song + "**! (THIS MESSAGE WILL BE REMOVED SOON)");
+        const queue = client.player.getQueue(interaction);
+        if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
+
+        if (type === "off" && queue.filters?.length) queue.setFilter(false);
+        else if (Object.keys(client.player.filters).includes(type)) queue.setFilter(type)
+        else if (type) return interaction.reply(`Not a valid filter! (new msgs soon :) )`)
+        interaction.reply(`Current Queue Filter: \`${queue.filters.join(", ") || "Off"}\``)
     }
 }

@@ -3,24 +3,16 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
-const { NotInVC, MusicIsDisabled, errorMain, addedDatabase } = require('../../files/embeds');
+const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 
 module.exports = {
-    name: "play",
-    description: "This command allows you to play music.",
+    name: "queue",
+    description: "When using this command you will get a list of the current songs in queue.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-    options: [
-        {
-            name: "song",
-            description: "Enter the song you wish to play or add to the queue here.",
-            type: "STRING",
-            required: true,
-        }
-    ],
     async execute(client, interaction) {
 
         const settings = await Guild.findOne({
@@ -61,11 +53,12 @@ module.exports = {
         if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
-        if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-        const voiceChannel = member.voice.channel;
+        if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC] });
 
-        const song = interaction.options.getString('song');
-        client.player.playVoiceChannel(voiceChannel, song);
-        interaction.reply("Now playing: **" + song + "**! (THIS MESSAGE WILL BE REMOVED SOON)");
+        const queue = client.player.getQueue(interaction);
+        if (!queue) return interaction.reply("There is no queue! (new message soon)");
+        interaction.reply('Current queue:\n' + queue.songs.map((song, id) =>
+            `**${id + 1}**. [${song.name}](${song.url}) - \`${song.formattedDuration}\``
+        ).join("\n"));
     }
 }

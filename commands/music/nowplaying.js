@@ -1,25 +1,18 @@
 const discord = require('discord.js');
-const mongoose = require('mongoose');
+const DisTube = require('distube');
 
-const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
-const { NotInVC, MusicIsDisabled, errorMain, addedDatabase } = require('../../files/embeds');
-
+const colors = require('../../files/colors.json');
+const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 module.exports = {
-    name: "play",
-    description: "This command allows you to play music.",
+    name: "nowplaying",
+    description: "Get informations about the currently playing song.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
-        {
-            name: "song",
-            description: "Enter the song you wish to play or add to the queue here.",
-            type: "STRING",
-            required: true,
-        }
     ],
     async execute(client, interaction) {
 
@@ -57,15 +50,30 @@ module.exports = {
                 return interaction.reply({ embeds: [addedDatabase] });
             }
         });
-
-        if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
+        if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] });
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
         if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-        const voiceChannel = member.voice.channel;
 
-        const song = interaction.options.getString('song');
-        client.player.playVoiceChannel(voiceChannel, song);
-        interaction.reply("Now playing: **" + song + "**! (THIS MESSAGE WILL BE REMOVED SOON)");
+        const queue = client.player.getQueue(interaction);
+        if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
+
+        let song = queue.songs[0];
+        if (!song) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
+
+        const playingEmbed = new discord.MessageEmbed()
+            .setTitle("Now Playing")
+            .setColor(colors.COLOR)
+            .setDescription(`${song.name}`)
+            .setThumbnail(song.thumbnail)
+            .addField("Added by", `${song.user}`, true)
+            .addField("Volume", `\`${queue.volume}%\``, true)
+            .addField("Queue", `${queue.songs.length} song(s)`, true)
+            .addField("Likes", `${song.likes}`, true)
+            .addField("Dislikes", `${song.dislikes}`, true)
+            .addField("Views", `${song.views}`, true)
+            .addField("Duration", `\`${song.formattedDuration}\``, true)
+        interaction.reply({ embeds: [playingEmbed] });
+
     }
 }

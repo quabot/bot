@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
-const User = require('../../models/guild');
-const { NotInVC, MusicIsDisabled } = require('../../files/embeds');
+const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 
 module.exports = {
@@ -14,8 +13,6 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-    options: [
-    ],
     async execute(client, interaction) {
 
         const settings = await Guild.findOne({
@@ -60,6 +57,10 @@ module.exports = {
 
         const queue = client.player.getQueue(interaction);
         if(!queue) return interaction.reply("There is no queue! (new message soon)");
+
+        const song1 = queue.songs[1];
+        if (!song1) return interaction.reply("There is no song next in queue! Add more songs first!");
+
         client.player.skip(queue);
         interaction.reply("Skipped a song (message revamp soon)");
     }

@@ -1,23 +1,23 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
+const { joinVoiceChannel } = require('@discordjs/voice');
 
-const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
-const { NotInVC, MusicIsDisabled, errorMain, addedDatabase } = require('../../files/embeds');
-
+const colors = require('../../files/colors.json');
+const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 module.exports = {
-    name: "play",
-    description: "This command allows you to play music.",
+    name: "repeat",
+    description: "Change the repeat mode: 0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
         {
-            name: "song",
-            description: "Enter the song you wish to play or add to the queue here.",
-            type: "STRING",
+            name: "repeatmode",
+            description: "E0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE",
+            type: "INTEGER",
             required: true,
         }
     ],
@@ -57,15 +57,19 @@ module.exports = {
                 return interaction.reply({ embeds: [addedDatabase] });
             }
         });
-
         if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
         if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-        const voiceChannel = member.voice.channel;
+        const queue = client.player.getQueue(interaction);
+        if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
 
-        const song = interaction.options.getString('song');
-        client.player.playVoiceChannel(voiceChannel, song);
-        interaction.reply("Now playing: **" + song + "**! (THIS MESSAGE WILL BE REMOVED SOON)");
+        const newMode = interaction.options.getInteger('repeatmode');
+        if(!newMode === "0" || !newMode === "1" || !newMode === "2") return interaction.reply("Invalid mode! Enter either `0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE`")
+
+        let mode = client.player.setRepeatMode(interaction, newMode);
+        mode = mode ? mode == 2 ? "Repeat queue :repeat:" : "Repeat song :repeat_one:" : "Off :arrow_forward:";
+
+        interaction.reply(`Changed repeat mode to **${mode}**!`)
     }
 }

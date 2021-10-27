@@ -1,25 +1,19 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
+const { joinVoiceChannel } = require('@discordjs/voice');
 
-const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
-const { NotInVC, MusicIsDisabled, errorMain, addedDatabase } = require('../../files/embeds');
-
+const colors = require('../../files/colors.json');
+const { errorMain, addedDatabase, NotInVC, MusicIsDisabled } = require('../../files/embeds');
 
 module.exports = {
-    name: "play",
-    description: "This command allows you to play music.",
+    name: "autoplay",
+    description: "Toggle the automatic playing or similar songs on or off.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
-        {
-            name: "song",
-            description: "Enter the song you wish to play or add to the queue here.",
-            type: "STRING",
-            required: true,
-        }
     ],
     async execute(client, interaction) {
 
@@ -57,15 +51,13 @@ module.exports = {
                 return interaction.reply({ embeds: [addedDatabase] });
             }
         });
-
         if (settings.enableMusic === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
 
         const member = interaction.guild.members.cache.get(interaction.user.id);
         if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-        const voiceChannel = member.voice.channel;
+        const queue = client.player.getQueue(interaction);
+        if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
 
-        const song = interaction.options.getString('song');
-        client.player.playVoiceChannel(voiceChannel, song);
-        interaction.reply("Now playing: **" + song + "**! (THIS MESSAGE WILL BE REMOVED SOON)");
+        interaction.reply(`Turned autoplay **${client.player.toggleAutoplay(interaction) ? "ON" : "OFF"}**!`)
     }
 }
