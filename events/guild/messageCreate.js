@@ -9,6 +9,8 @@ const config = require('../../files/config.json');
 const swearwords = require("../../files/data.json");
 const colors = require('../../files/colors.json');
 
+const { Guilds } = require("../validation/bannedguilds.js");
+
 const errorMain = new Discord.MessageEmbed()
     .setDescription("There was an error!")
     .setColor(colors.COLOR)
@@ -19,6 +21,8 @@ const addedDatabase = new Discord.MessageEmbed()
 module.exports = {
     name: "messageCreate",
     async execute(message, args, client) {
+
+        if(Perms.includes(message.guild.id)) return;
 
         const thisGuildId = message.guild.id;
 
