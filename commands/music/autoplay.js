@@ -58,6 +58,10 @@ module.exports = {
         const queue = client.player.getQueue(interaction);
         if(!queue) return interaction.reply("There are no songs playing! Play a song first. (new message soon)");
 
-        interaction.reply(`Turned autoplay **${client.player.toggleAutoplay(interaction) ? "ON" : "OFF"}**!`)
+        const embed = new discord.MessageEmbed()
+            .setColor(colors.COLOR)
+            .setTitle(`:white_check_mark: Toggled autoplay ${client.player.toggleAutoplay(interaction) ? "ON" : "OFF"}!`)
+            .setDescription('When enabled, it makes it so that when the queue finishes playing, it will find songs that are relatabe to the last song in queue!')
+        interaction.reply({ embeds: [embed] })
     }
 }

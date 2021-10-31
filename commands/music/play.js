@@ -69,5 +69,6 @@ module.exports = {
             textChannel: interaction.channel,
         });
         interaction.reply("** **");
+        interaction.deleteReply();
     }
 }

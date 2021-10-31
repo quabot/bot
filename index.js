@@ -54,6 +54,32 @@ client.player.on("addSong", (queue, song) => {
     queue.textChannel.send({ embeds: [embed] });
 });
 
+client.player.on('error', (channel, err) => {
+    const musicErrorEmbed = new Discord.MessageEmbed()
+        .setTitle(":x: There was an error!")
+        .setColor(colors.COLOR)
+    channel.send({ embeds: [musicErrorEmbed] });
+});
+
+client.player.on('finish', queue  => {
+    const finishQueueEmbed = new Discord.MessageEmbed()
+        .setTitle(":x: There are no more songs in queue, leaving voice channel!")
+        .setColor(colors.COLOR)
+    queue.textChannel.send({ embeds: [finishQueueEmbed] });
+});
+
+client.player.on('initQueue', queue => {
+    queue.autoplay = false,
+        queue.volume = 50
+});
+
+client.player.on('noRelated', queue  => {
+    const noRelatedEmbed = new Discord.MessageEmbed()
+        .setTitle(":x: Could not find any related songs, ending queue!")
+        .setColor(colors.COLOR)
+    queue.textChannel.send({ embeds: [noRelatedEmbed] });
+});
+
 const { GiveawaysManager } = require('discord-giveaways');
 
 const manager = new GiveawaysManager(client, {
