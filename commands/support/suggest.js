@@ -63,7 +63,6 @@ module.exports = {
         if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] });
 
         const suggestionContent = interaction.options.getString('suggestion');
-
         if (suggestionContent.length < 3) return interaction.reply({ embeds: [suggestTooShort] });
 
         const embed = new discord.MessageEmbed()

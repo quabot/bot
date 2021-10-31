@@ -5,7 +5,6 @@ const consola = require('consola')
 const client = new Client({ intents: 32767 });
 module.exports = client;
 const Levels = require("discord.js-leveling");
-const { GiveawaysManager } = require('discord-giveaways');
 const mongoose = require("./utils/mongoose");
 client.mongoose = require('./utils/mongoose');
 const colors = require('./files/colors.json');
@@ -18,21 +17,55 @@ client.commands = new Discord.Collection();
 });
 consola.success('Loaded index.js!')
 const prefix = "/";
-client.giveawaysManager = new GiveawaysManager(client, {
-    storage: "./files/giveaways.json",
-    updateCountdownEvery: 5000,
-    default: {
-        botsCanWin: false,
-        embedColor: "#FF0000",
-        reaction: "🎉"
-    }
-});
 
 client.player = new DisTube.default(client, {
     leaveOnEmpty: true,
     leaveOnFinish: true,
     leaveOnStop: true,
 });
+
+client.player.on('playSong', (queue, song) => {
+    const playingEmbed = new Discord.MessageEmbed()
+        .setTitle("Now Playing")
+        .setColor(colors.COLOR)
+        .setDescription(`${song.name}`)
+        .setThumbnail(song.thumbnail)
+        .addField("Views", `${song.views}`, true)
+        .addField("Likes", `${song.likes}`, true)
+        .addField("Disikes", `${song.dislikes}`, true)
+        .addField("Added by", `${song.user}`, true)
+        .addField("Volume", `\`${queue.volume}%\``, true)
+        .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
+        .addField("Autoplay", `\`${queue.autoplay}\``, true)
+        .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
+        .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
+        queue.textChannel.send({ embeds: [playingEmbed] });
+});
+
+client.player.on("addSong", (queue, song) => {
+    const embed = new Discord.MessageEmbed()
+        .setColor(colors.COLOR)
+        .setTitle("Song added to the queue")
+        .setThumbnail(song.thumbnail)
+        .setDescription(`${song.name}`)
+        .addField("Added by", `${song.user}`, true)
+        .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
+        .addField("Duration", `${song.formattedDuration}`, true)
+    queue.textChannel.send({ embeds: [embed] });
+});
+
+const { GiveawaysManager } = require('discord-giveaways');
+
+const manager = new GiveawaysManager(client, {
+    storage: './giveaways.json',
+    default: {
+        botsCanWin: false,
+        embedColor: '#ff38f8',
+        embedColorEnd: '#030061',
+        reaction: '🎉'
+    }
+});
+client.giveawaysManager = manager;
 
 const { miscEmbed, funEmbed, infoEmbed, musicEmbed, moderationEmbed, managementEmbed } = require('./files/embeds');
 const ModMain = new Discord.MessageEmbed()

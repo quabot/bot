@@ -1,7 +1,7 @@
 const discord = require('discord.js');
-const config = require('../../files/config.json')
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
+const config = require('../../../files/config.json')
+const colors = require('../../../files/colors.json');
+const Guild = require('../../../models/guild');
 
 const noPermsAdminUser = new discord.MessageEmbed()
     .setDescription("You do not have administrator permissions!")

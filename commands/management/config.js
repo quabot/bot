@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 
-const { roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled } = require('../../files/embeds');
-const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons } = require('../../files/interactions');
+const { disabledLevelUp, roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled } = require('../../files/embeds');
+const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons, disableLevel } = require('../../files/interactions');
 
 module.exports = {
     name: "config",
@@ -24,7 +24,7 @@ module.exports = {
                     _id: mongoose.Types.ObjectID(),
                     guildID: message.guild.id,
                     guildName: message.guild.name,
-                    logChannelID: none,
+                    logChannelID: "none",
                     enableLog: true,
                     enableSwearFilter: false,
                     enableMusic: true,
@@ -32,15 +32,16 @@ module.exports = {
                     mutedRoleName: "Muted",
                     mainRoleName: "Member",
                     reportEnabled: true,
-                    reportChannelID: none,
+                    reportChannelID: "none",
                     suggestEnabled: true,
-                    suggestChannelID: none,
+                    suggestChannelID: "none",
                     ticketEnabled: true,
                     ticketChannelName: "Tickets",
                     closedTicketCategoryName: "Closed Tickets",
                     welcomeEnabled: true,
-                    welcomeChannelID: none,
+                    welcomeChannelID: "none",
                     enableNSFWContent: false,
+                    levelUpChannelID:"none",
                 });
 
                 newGuild.save()
@@ -169,6 +170,12 @@ module.exports = {
                 .addField("Current value", `${settings.closedTicketCategoryName}`)
                 .setColor(colors.COLOR)
                 .setThumbnail("https://i.imgur.com/jgdQUul.png");
+            const levelUpEmbed = new discord.MessageEmbed()
+                .setTitle("Change Level Up Message Channel Name")
+                .setDescription("Mention the new channel within 15 seconds to change it, or click the button to disable this channel, level up messages would then be sent in the channel the user is in at that time.")
+                .addField("Current value", `${settings.levelUpChannelID}`)
+                .setColor(colors.COLOR)
+                .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
 
             if (interaction.isSelectMenu()) {
@@ -199,6 +206,32 @@ module.exports = {
                                 .setDescription("You took too long to respond.")
                                 .setColor(colors.COLOR)
                             m.reply({ embeds: [timedOut] });
+                        }
+                    });
+                }
+                if (interaction.values[0] === "levelup_channel") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                    interaction.reply({ embeds: [levelUpEmbed], components: [disableLevel], ephemeral: true });
+                    collector.on('collect', async m => {
+                        if (m) {
+                            const D = m.mentions.channels.first();
+                            if(!D) return;
+                            await settings.updateOne({
+                                levelUpChannelID: D
+                            });
+                            const updated2 = new discord.MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription(`Changed level up channel to ${D}!`)
+                                .setColor(colors.COLOR)
+                            m.channel.send({ embeds: [updated2]})
+                            return;
+                        } else {
+                            if (m.author.bot) return;
+                            const timedOu2t = new discord.MessageEmbed()
+                                .setTitle("❌ Timed Out!")
+                                .setDescription("You took too long to respond.")
+                                .setColor(colors.COLOR)
+                            m.reply({ embeds: [timedOu2t] });
                         }
                     });
                 }
@@ -342,6 +375,14 @@ module.exports = {
                 if (interaction.customId === "next4") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
                     interaction.update({ ephemeral: true, embeds: [channelEmbed], components: [channel, nextPage3] });
+                }
+                if (interaction.customId === "disablelevel") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                    interaction.update({ ephemeral: true, embeds: [disabledLevelUp]});
+                    await settings.updateOne({
+                        levelUpChannelID: "none"
+                    });
+
                 }
             }
         })

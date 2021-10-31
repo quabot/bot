@@ -65,7 +65,9 @@ module.exports = {
         const voiceChannel = member.voice.channel;
 
         const song = interaction.options.getString('song');
-        client.player.playVoiceChannel(voiceChannel, song);
-        interaction.reply("Now playing: **" + song + "**! (THIS MESSAGE WILL BE REMOVED SOON)");
+        client.player.playVoiceChannel(voiceChannel, song, {
+            textChannel: interaction.channel,
+        });
+        interaction.reply("** **");
     }
 }

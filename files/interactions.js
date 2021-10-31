@@ -189,6 +189,13 @@ const nextPage4 = new discord.MessageActionRow()
             .setLabel('Previous Page')
             .setStyle('DANGER'),
     );
+const disableLevel = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('disablelevel')
+            .setLabel('Disable Level-up channel')
+            .setStyle('DANGER'),
+    );
 const toggle = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageSelectMenu()
@@ -297,6 +304,11 @@ const channel2 = new discord.MessageActionRow()
                     description: 'The name of the category where closed tickets are stored.',
                     value: 'closedticket_channel',
                 },
+                {
+                    label: 'Level Up Channel',
+                    description: 'The name of the channel used to send level-up messages.',
+                    value: 'levelup_channel',
+                },
             ]),
     );
 const role = new discord.MessageActionRow()
@@ -320,4 +332,4 @@ const role = new discord.MessageActionRow()
             ]),
     );
 
-module.exports = { role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

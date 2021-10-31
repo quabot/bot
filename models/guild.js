@@ -21,6 +21,7 @@ const guildSchema = mongoose.Schema({
     welcomeEnabled: String,
     welcomeChannelID: String,
     enableNSFWContent: String,
+    levelUpChannelID: String,
 });
 
 module.exports = mongoose.model('Guild', guildSchema, 'guilds');

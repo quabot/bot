@@ -9,7 +9,7 @@ module.exports = {
 
         consola.log(` \n${client.user.username.toUpperCase()}\nServers: ${client.guilds.cache.size}\nUsers: ${client.users.cache.size}\nVersion: ${config.VERSION}\n `);
         setTimeout(() => {
-            consola.success("QuaBot is now fully loaded!\n ");
+            consola.success(`${client.user.username} is now fully loaded!\n `);
         }, 3000); 
         (function loop() {
             setTimeout(function () {
