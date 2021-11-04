@@ -1,26 +1,26 @@
-const { commands } = require('../../index');
+const { commands } = require('../../../index');
 const { Client, MessageEmbed } = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 const consola = require('consola');
-const Guild = require('../../models/guild');
+const Guild = require('../../../models/guild');
 const mongoose = require('mongoose');
 
 module.exports = {
-    name: "emojiDelete",
+    name: "guildMemberRemove",
     /**
      * @param {Client} client 
      */
-    async execute(emoji, client) {
+    async execute(member, client) {
 
         const settings = await Guild.findOne({
-            guildID: emoji.guild.id
+            guildID: member.guild.id
         }, (err, guild) => {
             if (err) return;
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
-                    guildID: emoji.guild.id,
-                    guildName: emoji.guild.name,
+                    guildID: member.guild.id,
+                    guildName: member.guild.name,
                     prefix: config.PREFIX,
                     logChannelID: "none",
                     enableLog: true,
@@ -47,19 +47,31 @@ module.exports = {
                 return;
             }
         });
-        const logChannel = emoji.guild.channels.cache.get(settings.logChannelID);
+        const logChannel = member.guild.channels.cache.get(settings.logChannelID);
+        const joinChannel = member.guild.channels.cache.get(settings.welcomeChannelID);
+
+        console.log(joinChannel)
 
         if (settings.enableLog === "true") {
             if (logChannel) {
                 const embed = new MessageEmbed()
-                    .setColor(colors.LOCK_COLOR)
-                    .setTitle('Emoji Deleted!')
-                    .addField('Animated', `\`${emoji.animated}\``, true)
-                    .addField('Emoji-ID', `\`${emoji.id}\``, true)
-                    .addField('Emoji Name', `\`${emoji.name}\``, true)
-                    .setTimestamp()
+                    .setColor(colors.REd)
+                    .setTitle('Member Left!')
+                    .setAuthor(`${member.user.tag} just left.`, member.user.avatarURL())
+                    .addField('User', `${member.user}`)
+                    .addField('User-ID', `${member.user.id}`)
                 logChannel.send({ embeds: [embed] });
             };
+        }
+
+        if (settings.welcomeEnabled === "true") {
+            if(joinChannel) {
+                const welcomeEmbed = new MessageEmbed()
+                .setAuthor(`${member.user.tag} just left!`, member.user.avatarURL())
+                .setDescription(`Goodbye ${member.user}!`)
+                .setColor(colors.RED);
+            joinChannel.send({ embeds: [welcomeEmbed] });
+            }
         }
     }
 }

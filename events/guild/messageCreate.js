@@ -128,7 +128,7 @@ module.exports = {
 
         if (settings.enableLevel === "true") {
 
-            //if (message.author.id === "486563467810308096") return;
+            if(message.content.startsWith("pls" || "?" || "!")) return;
 
             const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
             const randomAmountOfXp = Math.floor(Math.random() * 14) + 1;

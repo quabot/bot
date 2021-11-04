@@ -1,26 +1,26 @@
-const { commands } = require('../../index');
+const { commands } = require('../../../index');
 const { Client, MessageEmbed } = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 const consola = require('consola');
-const Guild = require('../../models/guild');
+const Guild = require('../../../models/guild');
 const mongoose = require('mongoose');
 
 module.exports = {
-    name: "messageDelete",
+    name: "roleDelete",
     /**
      * @param {Client} client 
      */
-    async execute(message, client) {
+    async execute(role, client) {
 
         const settings = await Guild.findOne({
-            guildID: message.guild.id
+            guildID: role.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain] });
+            if (err) return;
             if (!guild) {
                 const newGuild = new Guild({
-                    //_id: mongoose.Types.ObjectID(),
-                    guildID: message.guild.id,
-                    guildName: message.guild.name,
+                    _id: mongoose.Types.ObjectID(),
+                    guildID: role.guild.id,
+                    guildName: role.guild.name,
                     prefix: config.PREFIX,
                     logChannelID: "none",
                     enableLog: true,
@@ -42,29 +42,24 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain] }));
+                    .catch(err => console.log(err));
 
-                return message.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
-        const logChannel = message.guild.channels.cache.get(settings.logChannelID);
-        console.log(message)
+        const logChannel = role.guild.channels.cache.get(settings.logChannelID);
 
         if (settings.enableLog === "true") {
-            if (!logChannel) {
-                return;
-            } else {
+            if (logChannel) {
+                console.log(role)
                 const embed = new MessageEmbed()
-                    .setColor(colors.COLOR)
-                    .setTitle('Message Deleted')
-                    .addField('Channel', `<#${message.channelId}>`)
-                    .addField('Author', `<@${message.author.id}>`)
-                    .addField('Content', `** ${message.content}**`)
-                    .addField('Message ID', `${message.id}`)
-                return logChannel.send({ embeds: [embed]});
+                    .setColor(colors.PREFIX_COLOR)
+                    .setTitle('Role Deleted!')
+                    .setDescription(`<@&${role.id}>`)
+                    .addField('Role', `${role.name}`)
+                    .addField('Role-ID', `${role.id}`)
+                logChannel.send({ embeds: [embed] });
             };
-        } else {
-            return;
         }
     }
 }
