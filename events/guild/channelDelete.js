@@ -49,16 +49,70 @@ module.exports = {
         });
         const logChannel = channel.guild.channels.cache.get(settings.logChannelID);
 
-        if (settings.enableLog === "true") {
-            if (logChannel) {
-                const embed = new MessageEmbed()
-                    .setColor(colors.KICK_COLOR)
-                    .setTitle('Channel Deleted!')
-                    .addField('Channel Name', `${channel.name}`)
-                    .addField('Channel-ID', `${channel.id}`)
-                    .setTimestamp()
-                logChannel.send({ embeds: [embed] });
-            };
+        if (channel.type === "GUILD_TEXT") {
+            if (settings.enableLog === "true") {
+                if (logChannel) {
+                    const embed = new MessageEmbed()
+                        .setColor(colors.TEXT_CHANNEL_DELETE)
+                        .setTitle('Text Channel Deleted!')
+                        .addField('Name', `${channel.name}`)
+                        .addField('ID', `${channel.id}`)
+                        .setTimestamp()
+                    logChannel.send({ embeds: [embed] });
+                };
+            }
+        }
+        if (channel.type === "GUILD_NEWS") {
+            if (settings.enableLog === "true") {
+                if (logChannel) {
+                    const embed = new MessageEmbed()
+                        .setColor(colors.NEWS_CHANNEL_DELETE)
+                        .setTitle('Announcement Channel Deleted!')
+                        .addField('Name', `${channel.name}`)
+                        .addField('ID', `${channel.id}`)
+                        .setTimestamp()
+                    logChannel.send({ embeds: [embed] });
+                };
+            }
+        }
+        if (channel.type === "GUILD_STAGE_VOICE") {
+            if (settings.enableLog === "true") {
+                if (logChannel) {
+                    const embed = new MessageEmbed()
+                        .setColor(colors.STAGE_CHANNEL_DELETE)
+                        .setTitle('Stage Channel Deleted!')
+                        .addField('Name', `${channel.name}`)
+                        .addField('ID', `${channel.id}`)
+                        .setTimestamp()
+                    logChannel.send({ embeds: [embed] });
+                };
+            }
+        }
+        if (channel.type === "GUILD_CATEGORY") {
+            if (settings.enableLog === "true") {
+                if (logChannel) {
+                    const embed = new MessageEmbed()
+                        .setColor(colors.CAT_CHANNEL_DELETE)
+                        .setTitle('Category Deleted!')
+                        .addField('Name', `${channel.name}`)
+                        .addField('ID', `${channel.id}`)
+                        .setTimestamp()
+                    logChannel.send({ embeds: [embed] });
+                };
+            }
+        }
+        if (channel.type === "GUILD_VOICE") {
+            if (settings.enableLog === "true") {
+                if (logChannel) {
+                    const embed = new MessageEmbed()
+                        .setColor(colors.VOICE_CHANNEL_DELETE)
+                        .setTitle('Voice Channel Deleted!')
+                        .addField('Name', `${channel.name}`)
+                        .addField('ID', `${channel.id}`)
+                        .setTimestamp()
+                    logChannel.send({ embeds: [embed] });
+                };
+            }
         }
     }
 }

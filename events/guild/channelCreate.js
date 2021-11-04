@@ -49,17 +49,77 @@ module.exports = {
         });
         const logChannel = channel.guild.channels.cache.get(settings.logChannelID);
 
-        if (settings.enableLog === "true") {
+        console.log(channel)
+        if(channel.type === "GUILD_TEXT") {
+            if (settings.enableLog === "true") {
             if (logChannel) {
                 const embed = new MessageEmbed()
-                    .setColor(colors.LIME)
+                    .setColor(colors.TEXT_CHANNEL_CREATE)
                     .setDescription(`<#${channel.id}>`)
-                    .setTitle('Channel Created!')
-                    .addField('Channel Name', `${channel.name}`)
-                    .addField('Channel-ID', `${channel.id}`)
+                    .setTitle('Text Channel Created!')
+                    .addField('Name', `${channel.name}`)
+                    .addField('ID', `${channel.id}`)
                     .setTimestamp()
                 logChannel.send({ embeds: [embed] });
             };
         }
+        }
+        if(channel.type === "GUILD_NEWS") {
+            if (settings.enableLog === "true") {
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor(colors.NEWS_CHANNEL_CREATE)
+                    .setDescription(`<#${channel.id}>`)
+                    .setTitle('Announcement Channel Created!')
+                    .addField('Name', `${channel.name}`)
+                    .addField('ID', `${channel.id}`)
+                    .setTimestamp()
+                logChannel.send({ embeds: [embed] });
+            };
+        }
+        }
+        if(channel.type === "GUILD_STAGE_VOICE") {
+            if (settings.enableLog === "true") {
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor(colors.STAGE_CHANNEL_CREATE)
+                    .setDescription(`<#${channel.id}>`)
+                    .setTitle('Stage Channel Created!')
+                    .addField('Name', `${channel.name}`)
+                    .addField('ID', `${channel.id}`)
+                    .setTimestamp()
+                logChannel.send({ embeds: [embed] });
+            };
+        }
+        }
+        if(channel.type === "GUILD_CATEGORY") {
+            if (settings.enableLog === "true") {
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor(colors.CAT_CHANNEL_CREATE)
+                    .setDescription(`<#${channel.id}>`)
+                    .setTitle('Category Created!')
+                    .addField('Name', `${channel.name}`)
+                    .addField('ID', `${channel.id}`)
+                    .setTimestamp()
+                logChannel.send({ embeds: [embed] });
+            };
+        }
+        }
+        if(channel.type === "GUILD_VOICE") {
+            if (settings.enableLog === "true") {
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor(colors.VOICE_CHANNEL_CREATE)
+                    .setDescription(`<#${channel.id}>`)
+                    .setTitle('Voice Channel Created!')
+                    .addField('Name', `${channel.name}`)
+                    .addField('ID', `${channel.id}`)
+                    .setTimestamp()
+                logChannel.send({ embeds: [embed] });
+            };
+        }
+        }
+        
     }
 }

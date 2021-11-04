@@ -49,22 +49,6 @@ module.exports = {
         });
         const logChannel = newChannel.guild.channels.cache.get(settings.logChannelID);
 
-        if (settings.enableLog === "true") {
-            if (logChannel) {
-                const embed = new MessageEmbed()
-                    .setColor(colors.GIVEAWAY_COLOR)
-                    .setTitle('Channel Updated!')
-                    .setDescription(`<#${newChannel.id}>`)
-                    .addField('Old Name', `${oldChannel.parentId}`)
-                    .addField('New Name', `${newChannel.parentId}`)
-                    .addField('Channel ID', `${oldChannel.id}`, true)
-                    .addField('Parent', `\`${oldChannel.parentId}/${newChannel.parentId}\``, true)
-                    .addField('NSFW', `\`${oldChannel.nsfw}/${newChannel.nsfw}\``, true)
-                    .addField('Old Topic', `${oldChannel.topic}`)
-                    .addField('New Topic', `${newChannel.topic}`)
-                    .setTimestamp()
-                logChannel.send({ embeds: [embed] });
-            };
-        }
+        // wanneer text naar announcement logging
     }
 }
