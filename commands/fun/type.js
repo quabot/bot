@@ -63,6 +63,8 @@ module.exports = {
                         .addField("Your answer:", `**${m.content}**`)
                         .setColor(colors.RED)
                     m.reply({ embeds: [wrongSentence] });
+                    collector.stop()
+                    return
                 }
             });
         }, 500);

@@ -14,7 +14,7 @@ module.exports = {
         const members = guild.memberCount;
         const membersEmbed = new discord.MessageEmbed()
             .setColor(colors.COLOR)
-            .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
+            .setImage(interaction.guild.iconURL({ dynamic: true }))
             .setTitle(`${interaction.guild.name}`)
             .setFooter("If you don't see an icon, the guild doesn't have one.")
             interaction.reply({ embeds: [membersEmbed] })

@@ -25,7 +25,7 @@ module.exports = {
                     .setColor(colors.COLOR)
                     .setFooter(`Your meme from r/${random}`)
                 interaction.editReply({ embeds: [embed] });
-            }, 5000);
+            }, 2000);
         });
 
     }

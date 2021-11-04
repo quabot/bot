@@ -16,6 +16,10 @@ module.exports = {
         const members = interaction.guild.members.cache;
         const channels = interaction.guild.channels.cache;
         const emojis = interaction.guild.emojis.cache;
+        const stickers = interaction.guild.stickers.cache;
+
+        console.log(guild)
+
 
         const embed = new discord.MessageEmbed()
             .setTitle(`${interaction.guild.name} server info`)
@@ -26,10 +30,15 @@ module.exports = {
             .addField(`Voice channels`, `${channels.filter(channel => channel.type === "GUILD_VOICE").size}`, true)
             .addField(`Boosts`, `${interaction.guild.premiumSubscriptionCount || '0'}`, true)
             .addField(`Emojis:`, `${emojis.size}`, true)
-            .addField(`Time Created:`, `${moment(interaction.guild.createdTimestamp).format('LT')} ${moment(interaction.guild.createdTimestamp).format('LL')} [${moment(interaction.guild.createdTimestamp).fromNow()}]`)
-            .addField(`Roles [${roles.length - 1}]`, roles.join(', '))
+            .addField(`Stickers:`, `${stickers.size}`, true)
+            .addField(`Owner`, `<@${guild.ownerId}>`, true)
+            .addField(`Roles`, `${roles.length}`, true)
+            .addField(`Time Created:`, `${moment(interaction.guild.createdTimestamp).format('LT')} ${moment(interaction.guild.createdTimestamp).format('LL')} [${moment(interaction.guild.createdTimestamp).fromNow()}]`, true)
+            .addField(`Verification Level`, `${guild.verificationLevel}`, true)
+            .addField(`Preferred Locale`, `${guild.preferredLocale}`, true)
+            .addField(`Description`, `${guild.description}`)
             .setColor(colors.COLOR)
-            interaction.reply({ embeds: [embed]})
 
+        interaction.reply({ embeds: [embed], split: true })
     }
 }

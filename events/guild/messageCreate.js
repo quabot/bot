@@ -128,7 +128,7 @@ module.exports = {
 
         if (settings.enableLevel === "true") {
 
-            if (message.author.id === "486563467810308096") return;
+            //if (message.author.id === "486563467810308096") return;
 
             const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
             const randomAmountOfXp = Math.floor(Math.random() * 14) + 1;
@@ -146,7 +146,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter("Continue to chat to level up further!")
                 if (joinChannel) return joinChannel.send({ embeds: [levelUpEmbed] });
-                const sendEmbed = await message.channel.send({ embeds: [levelUpEmbed] });
+                const sendEmbed = await message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] });
             }
         }
     }
