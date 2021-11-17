@@ -2,6 +2,7 @@ const discord = require('discord.js');
 
 const colors = require('../../files/colors.json');
 const { adminButtons } = require('../../files/interactions');
+const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "admin",
@@ -14,8 +15,8 @@ module.exports = {
      options: [
     ],
     async execute(client, interaction) {
-
-        const embed = new discord.MessageEmbed()
+        try {
+            const embed = new discord.MessageEmbed()
             .setColor(colors.TICKET_CREATED)
             .setTitle("Admin")
             .setDescription("Change settings, send messages and more. Settings you can change are:")
@@ -23,6 +24,9 @@ module.exports = {
             .setFooter("Change them with the buttons below this message!")
             .setTimestamp()
         interaction.reply({ embeds: [embed], components: [adminButtons], empheral: true });
-
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain]})
+            console.log(e)
+        }
     }
 }

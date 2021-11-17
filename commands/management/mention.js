@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const colors = require('../../files/colors.json');
 const Guild = require('../../models/guild');
 
+const { errorMain } = require('../../files/embeds');
+
 module.exports = {
     name: "mention",
     description: "By using this command you will mention the entire guild (so you don't take the blame).",
@@ -14,16 +16,20 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        const ebed = new discord.MessageEmbed()
-            .setColor(colors.COLOR)
-            .setTitle(":white_check_mark: Mentioned everyone!")
-        interaction.reply({ embeds: [ebed] });
-        setTimeout(() => {
-            interaction.deleteReply()
-        }, 3000);
-        interaction.channel.send(`@everyone`).then(m => {
-            m.delete();
-        });
-
+        try {
+            const ebed = new discord.MessageEmbed()
+                .setColor(colors.COLOR)
+                .setTitle(":white_check_mark: Mentioned everyone!")
+            interaction.reply({ embeds: [ebed] });
+            setTimeout(() => {
+                interaction.deleteReply()
+            }, 3000);
+            interaction.channel.send(`@everyone`).then(m => {
+                m.delete();
+            });
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
+        }
     }
 }

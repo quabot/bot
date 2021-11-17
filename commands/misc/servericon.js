@@ -10,14 +10,18 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        const guild = interaction.guild
-        const members = guild.memberCount;
-        const membersEmbed = new discord.MessageEmbed()
-            .setColor(colors.COLOR)
-            .setImage(interaction.guild.iconURL({ dynamic: true }))
-            .setTitle(`${interaction.guild.name}`)
-            .setFooter("If you don't see an icon, the guild doesn't have one.")
+        try {
+            const guild = interaction.guild
+            const members = guild.memberCount;
+            const membersEmbed = new discord.MessageEmbed()
+                .setColor(colors.COLOR)
+                .setImage(interaction.guild.iconURL({ dynamic: true }))
+                .setTitle(`${interaction.guild.name}`)
+                .setFooter("If you don't see an icon, the guild doesn't have one.")
             interaction.reply({ embeds: [membersEmbed] })
-
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
+        }
     }
 }

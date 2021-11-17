@@ -41,64 +41,69 @@ module.exports = {
     ],
     async execute(client, interaction) {
 
-        let amount = interaction.options.getInteger('amount');
-        console.log(amount)
-        if (!amount) return interaction.reply({ embeds: [noAmountMsg] });
-        if (amount <= 0) amount = 1;
-        if (amount >= 201) amount = 200;
+        try {
+            let amount = interaction.options.getInteger('amount');
+            console.log(amount)
+            if (!amount) return interaction.reply({ embeds: [noAmountMsg] });
+            if (amount <= 0) amount = 1;
+            if (amount >= 201) amount = 200;
 
-        interaction.channel.bulkDelete(amount).catch(err => interaction.channel.send({ embeds: [errorMain] })).then(msg => { setTimeout(() => msg.delete(), 6000) });
-        const clearedAmount = new discord.MessageEmbed()
-            .setDescription(`:white_check_mark: Succesfully cleared **${amount}** messages!`)
-            .setColor(colors.COLOR)
+            interaction.channel.bulkDelete(amount).catch(err => interaction.channel.send({ embeds: [errorMain] })).then(msg => { setTimeout(() => msg.delete(), 6000) });
+            const clearedAmount = new discord.MessageEmbed()
+                .setDescription(`:white_check_mark: Succesfully cleared **${amount}** messages!`)
+                .setColor(colors.COLOR)
             interaction.reply({ embeds: [clearedAmount] });
 
-        const settings = await Guild.findOne({
-            guildID: interaction.guild.id
-        }, (err, guild) => {
-            if (err) interaction.reply({ embeds: [errorMain] });
-            if (!guild) {
-                const newGuild = new Guild({
-                    _id: mongoose.Types.ObjectID(),
-                    guildID: message.guild.id,
-                    guildName: message.guild.name,
-                    logChannelID: none,
-                    enableLog: true,
-                    enableSwearFilter: false,
-                    enableMusic: true,
-                    enableLevel: true,
-                    mutedRoleName: "Muted",
-                    mainRoleName: "Member",
-                    reportEnabled: true,
-                    reportChannelID: none,
-                    suggestEnabled: true,
-                    suggestChannelID: none,
-                    ticketEnabled: true,
-                    ticketChannelName: "Tickets",
-                    closedTicketCategoryName: "Closed Tickets",
-                    welcomeEnabled: true,
-                    welcomeChannelID: none,
-                    enableNSFWContent: false,
-                });
-        
-                newGuild.save()
-                    .catch(err => interaction.followUp({ embeds: [errorMain] }));
-        
-                return interaction.followUp({ embeds: [addedDatabase] });
-            }
-        });
+            const settings = await Guild.findOne({
+                guildID: interaction.guild.id
+            }, (err, guild) => {
+                if (err) interaction.reply({ embeds: [errorMain] });
+                if (!guild) {
+                    const newGuild = new Guild({
+                        _id: mongoose.Types.ObjectID(),
+                        guildID: message.guild.id,
+                        guildName: message.guild.name,
+                        logChannelID: none,
+                        enableLog: true,
+                        enableSwearFilter: false,
+                        enableMusic: true,
+                        enableLevel: true,
+                        mutedRoleName: "Muted",
+                        mainRoleName: "Member",
+                        reportEnabled: true,
+                        reportChannelID: none,
+                        suggestEnabled: true,
+                        suggestChannelID: none,
+                        ticketEnabled: true,
+                        ticketChannelName: "Tickets",
+                        closedTicketCategoryName: "Closed Tickets",
+                        welcomeEnabled: true,
+                        welcomeChannelID: none,
+                        enableNSFWContent: false,
+                    });
 
-        if (settings.enableLog === "true") {
-            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
-            if (!logChannel) return;
-            const embed = new discord.MessageEmbed()
-                .setColor(colors.CLEAR_COLOR)
-                .setTitle('Messages Cleared')
-                .addField('Channel', `${interaction.channel}`)
-                .addField('Amount', `${amount}`)
-            logChannel.send({ embeds: [embed] });
-        } else {
-            return;
+                    newGuild.save()
+                        .catch(err => interaction.followUp({ embeds: [errorMain] }));
+
+                    return interaction.followUp({ embeds: [addedDatabase] });
+                }
+            });
+
+            if (settings.enableLog === "true") {
+                const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
+                if (!logChannel) return;
+                const embed = new discord.MessageEmbed()
+                    .setColor(colors.CLEAR_COLOR)
+                    .setTitle('Messages Cleared')
+                    .addField('Channel', `${interaction.channel}`)
+                    .addField('Amount', `${amount}`)
+                logChannel.send({ embeds: [embed] });
+            } else {
+                return;
+            }
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
         }
     }
 }
