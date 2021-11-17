@@ -331,5 +331,88 @@ const role = new discord.MessageActionRow()
                 },
             ]),
     );
-
-module.exports = { disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+const closeTicket = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('close')
+            .setLabel('Close')
+            .setEmoji('🔒')
+            .setStyle('PRIMARY'),
+        new discord.MessageButton()
+            .setCustomId('delete')
+            .setLabel('Delete')
+            .setEmoji('🗑️')
+            .setStyle('DANGER'),
+    );
+const closeTicketWCancel = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('close')
+            .setLabel('Close')
+            .setEmoji('🔒')
+            .setStyle('PRIMARY'),
+        new discord.MessageButton()
+            .setCustomId('cancelclose')
+            .setLabel('Cancel')
+            .setEmoji('❌')
+            .setStyle('DANGER'),
+    );
+const deleteTicket = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('deleteconfirm')
+            .setLabel('Delete')
+            .setEmoji('🗑️')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('cancel')
+            .setLabel('Cancel')
+            .setEmoji('❌')
+            .setStyle('DANGER'),
+    );
+const newMeme = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('meme')
+            .setLabel('Next Meme')
+            .setStyle('PRIMARY'),
+    );
+const newCat = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('cat')
+            .setLabel('Next Cat')
+            .setStyle('PRIMARY'),
+    );
+const newDog = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('dog')
+            .setLabel('Next Dog')
+            .setStyle('PRIMARY'),
+    );
+const adminButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('ticketmsg')
+            .setLabel('Ticket Message')
+            .setStyle('PRIMARY'),
+    );
+const ticketButton = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('ticket')
+            .setLabel('Ticket')
+            .setEmoji('📩')
+            .setStyle('SECONDARY'),
+    );
+const reopenButton = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('reopen')
+            .setLabel('Reopen')
+            .setEmoji('🔓')
+            .setStyle('SUCCESS'),
+    );
+    
+module.exports = { reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

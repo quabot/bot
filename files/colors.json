@@ -25,5 +25,9 @@
     "STAGE_CHANNEL_DELETE": "#940005",
     "CAT_CHANNEL_DELETE": "#940016",
     "TEXT_CHANNEL_UPDATE": "#f7ff85",
-    "TEXT_TO_NEWS_CHANNEL_UPDATE": "#eeff00"
+    "TEXT_TO_NEWS_CHANNEL_UPDATE": "#eeff00",
+    "TICKET_CREATED": "#a1ffc2",
+    "TICKET_CLOSE": "#f9ffa3",
+    "TICKET_DELETE": "#ff9c9c",
+    "TICKET_CLOSING": "#ff96fc"
 }

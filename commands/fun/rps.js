@@ -44,6 +44,8 @@ const resultLosePaper = new discord.MessageEmbed()
 const cancelled = new discord.MessageEmbed()
     .setDescription(":x: Cancelled! You failed to respond in time!")
     .setColor(colors.COLOR);
+const { errorMain } = require('../../files/embeds');
+
 module.exports = {
     name: "rps",
     description: "With this command you can play rock, paper, scissors with the bot.",
@@ -53,58 +55,62 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        const choices = ['🪨', '✂️', '📰'];
-        const me = choices[Math.floor(Math.random() * choices.length)];
+        try {
+            const choices = ['🪨', '✂️', '📰'];
+            const me = choices[Math.floor(Math.random() * choices.length)];
 
-        let msg = await interaction.reply({ embeds: [rpsMessage], fetchReply: true}).then(m => {
-            m.react('🪨');
-            m.react('✂️');
-            m.react('🧻');
-            const filter = (reaction, user) => {
-                return reaction.emoji.name === '🪨' || reaction.emoji.name === '✂️' || reaction.emoji.name === '🧻' && user.id === interaction.user.id;
-            };
-            const collector = m.createReactionCollector({ filter, time: 20000 });
-            collector.on('collect', (reaction, user) => {
-                if (user.bot) return;
-                if (reaction.emoji.name === '🪨') {
-                    if(me === '🪨') {
-                        interaction.followUp({ embeds: [resultTieRock] });
+            let msg = await interaction.reply({ embeds: [rpsMessage], fetchReply: true }).then(m => {
+                m.react('🪨');
+                m.react('✂️');
+                m.react('🧻');
+                const filter = (reaction, user) => {
+                    return reaction.emoji.name === '🪨' || reaction.emoji.name === '✂️' || reaction.emoji.name === '🧻' && user.id === interaction.user.id;
+                };
+                const collector = m.createReactionCollector({ filter, time: 20000 });
+                collector.on('collect', (reaction, user) => {
+                    if (user.bot) return;
+                    collector.stop()
+                    if (reaction.emoji.name === '🪨') {
+                        if (me === '🪨') {
+                            interaction.followUp({ embeds: [resultTieRock] });
+                        }
+                        if (me === '✂️') {
+                            interaction.followUp({ embeds: [resultWinRock] });
+                        }
+                        if (me === '🧻') {
+                            interaction.followUp({ embeds: [resultLoseRock] });
+                        }
                     }
-                    if(me === '✂️') {
-                        interaction.followUp({ embeds: [resultWinRock] });
+                    if (reaction.emoji.name === '✂️') {
+                        if (me === '🪨') {
+                            interaction.followUp({ embeds: [resultLoseScissors] });
+                        }
+                        if (me === '✂️') {
+                            interaction.followUp({ embeds: [resultTieScissors] });
+                        }
+                        if (me === '🧻') {
+                            interaction.followUp({ embeds: [resultWinScissors] });
+                        }
                     }
-                    if(me === '🧻') {
-                        interaction.followUp({ embeds: [resultLoseRock] });
+                    if (reaction.emoji.name === '🧻') {
+                        if (me === '🪨') {
+                            interaction.followUp({ embeds: [resultWinPaper] });
+                        }
+                        if (me === '✂️') {
+                            interaction.followUp({ embeds: [resultLosePaper] });
+                        }
+                        if (me === '🧻') {
+                            interaction.followUp({ embeds: [resultTiePaper] });
+                        }
                     }
-                }
-                if (reaction.emoji.name === '✂️') {
-                    if(me === '🪨') {
-                        interaction.followUp({ embeds: [resultLoseScissors] });
-                    }
-                    if(me === '✂️') {
-                        interaction.followUp({ embeds: [resultTieScissors] });
-                    }
-                    if(me === '🧻') {
-                        interaction.followUp({ embeds: [resultWinScissors] });
-                    }
-                }
-                if (reaction.emoji.name === '🧻') {
-                    if(me === '🪨') {
-                        interaction.followUp({ embeds: [resultWinPaper] });
-                    }
-                    if(me === '✂️') {
-                        interaction.followUp({ embeds: [resultLosePaper] });
-                    }
-                    if(me === '🧻') {
-                        interaction.followUp({ embeds: [resultTiePaper] });
-                    }
-                }
+                });
+                collector.on('end', collected => {
+                    interaction.followUp({ embeds: [cancelled] })
+                });
             });
-            collector.on('end', collected => {
-                interaction.followUp({embeds: [cancelled]})
-            });
-        });
-        
-        
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
+        }
     }
 }

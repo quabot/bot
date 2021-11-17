@@ -1,6 +1,6 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
-const { CoinFlipping } = require('../../files/embeds');
+const { CoinFlipping, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "coin",
@@ -11,18 +11,23 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        function randomCoin() {
-            const random = ['Heads', 'Tails'];
-            return random[Math.floor(Math.random() * random.length)];
-        }
+        try {
+            function randomCoin() {
+                const random = ['Heads', 'Tails'];
+                return random[Math.floor(Math.random() * random.length)];
+            }
 
-        const Result = new discord.MessageEmbed()
-            .setDescription(`**${randomCoin()}! :coin:**`)
-            .setColor(colors.COLOR);
-        interaction.reply({ embeds: [CoinFlipping] }).then(msg => {
-            setTimeout(function () {
-                interaction.editReply({ embeds: [Result] });
-            }, 2000);
-        })
+            const Result = new discord.MessageEmbed()
+                .setDescription(`**${randomCoin()}! :coin:**`)
+                .setColor(colors.COLOR);
+            interaction.reply({ embeds: [CoinFlipping] }).then(msg => {
+                setTimeout(function () {
+                    interaction.editReply({ embeds: [Result] });
+                }, 1500);
+            })
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain]})
+            console.log(e)
+        }
     }
 }

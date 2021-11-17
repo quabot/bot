@@ -2,6 +2,7 @@ const discord = require('discord.js');
 
 const colors = require('../../files/colors.json');
 const { PingGetting } = require('../../files/embeds');
+const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "ping",
@@ -12,7 +13,8 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        interaction.reply({ embeds: [PingGetting]}).then(m => {
+        try {
+            interaction.reply({ embeds: [PingGetting]}).then(m => {
             var ping = Date.now() - interaction.createdTimestamp;
 
             const YourPing = new discord.MessageEmbed()
@@ -21,6 +23,9 @@ module.exports = {
 
             interaction.editReply({ embeds: [YourPing]})
         })
-
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain]})
+            console.log(e)
+        }
     }
 }

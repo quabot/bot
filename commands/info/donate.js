@@ -1,7 +1,7 @@
 const discord = require("discord.js");
 
 const colors = require('../../files/colors.json');
-const {DonateEmbed} = require('../../files/embeds');
+const { DonateEmbed, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "donate",
@@ -11,6 +11,11 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(client, interaction) {
-        interaction.reply({embeds: [DonateEmbed]});
+        try {
+            interaction.reply({embeds: [DonateEmbed]});
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain]})
+            console.log(e)
+        }
     }
 }

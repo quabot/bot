@@ -1,7 +1,8 @@
 const discord = require('discord.js');
-const randomPuppy = require('random-puppy');
+const { meme } = require('memejs');
 
-const { MemeScanning, MemeNoAttach } = require('../../files/embeds');
+const { MemeScanning, errorMain } = require('../../files/embeds');
+const { newMeme } = require('../../files/interactions');
 const colors = require('../../files/colors.json');
 
 module.exports = {
@@ -13,20 +14,22 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        interaction.reply({ embeds: [MemeScanning] }).then(msg => {
-            setTimeout(async function () {
-                const subReddits = ["meme"];
-                const random = subReddits[Math.floor(Math.random() * subReddits.length)];
-                const img = await randomPuppy(random);
-
+        try {
+            interaction.reply({ embeds: [MemeScanning] })
+            meme('meme', function (err, data) {
+                if (err) return interaction.editReply({ embeds: [errorMain] });
                 const embed = new discord.MessageEmbed()
-                    .setTitle("There you go! :thumbsup:")
-                    .setImage(img)
+                    .setTitle(`${data.title}`)
                     .setColor(colors.COLOR)
-                    .setFooter(`Your meme from r/${random}`)
-                interaction.editReply({ embeds: [embed] });
-            }, 2000);
-        });
-
+                    .setURL(data.url)
+                    .setImage(`${data.url}`)
+                    .setFooter(`r/${data.subreddit}`)
+                    .setTimestamp('Created ' + data.created)
+                interaction.editReply({ embeds: [embed], components: [newMeme] });
+            });
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
+        }
     }
 }

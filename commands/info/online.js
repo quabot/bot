@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 
 const colors = require('../../files/colors.json');
+const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "online",
@@ -11,7 +12,8 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        const members = interaction.guild.members.cache;
+        try {
+            const members = interaction.guild.members.cache;
         const totalMembers = interaction.guild.memberCount;
         const online = members.filter(user => user.presence?.status === 'online').size;
         const idle = members.filter(user => user.presence?.status === 'idle').size;
@@ -28,5 +30,9 @@ module.exports = {
             .addField("Offline:", `${totalOffline}`, true)
             .setFooter(`Total Members: ${totalMembers}`)
         interaction.reply({ embeds: [embed]});
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain]})
+            console.log(e)
+        }
     }
 }

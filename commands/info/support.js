@@ -1,6 +1,6 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
-const { SupportEmbed } = require('../../files/embeds');
+const { SupportEmbed, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "support",
@@ -10,6 +10,11 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(client, interaction) {
-        interaction.reply({ embeds: [SupportEmbed]});
+        try {
+            interaction.reply({ embeds: [SupportEmbed]});
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
+        }
     }
 }

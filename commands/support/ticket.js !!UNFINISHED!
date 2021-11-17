@@ -2,6 +2,7 @@ Format:
 !ticket [topic]
 !close
 !reopen
+!settopic
 !add
 
 Channel:
@@ -12,3 +13,11 @@ if there is no catagory with name, make one!
 defining staff roles
 
 system with button to make ticket
+
+staff can close ticket with button (delete, reopen button too)\
+
+system for when name changes
+
+CHECK IF PARENT CATEGORY ISN"T TICKETS TO PREVENT PEOPLE USING /DELETE in #general!
+
+chcek perms one more time (oooh yeah)

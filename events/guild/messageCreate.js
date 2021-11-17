@@ -22,6 +22,8 @@ const addedDatabase = new Discord.MessageEmbed()
 module.exports = {
     name: "messageCreate",
     async execute(message, args, client) {
+
+        //consola.info(`${message.guild.name} - ${message.channel.name} | ${message.author.username}: ${message.content}`)
         if (!message.guild) return;
         if (message.author.bot) return;
         const thisGuildId = message.guild.id;
@@ -145,8 +147,12 @@ module.exports = {
                     .setThumbnail(message.author.avatarURL())
                     .setTimestamp()
                     .setFooter("Continue to chat to level up further!")
-                if (joinChannel) return joinChannel.send({ embeds: [levelUpEmbed] });
-                const sendEmbed = await message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] });
+                if (joinChannel) return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] });
+                const sendEmbed = await message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] }).then(m => {
+                    setTimeout(() => {
+                        m.edit({ content: `** **`, embeds: [levelUpEmbed] })
+                    }, 500);
+                })
             }
         }
     }

@@ -1,8 +1,9 @@
 const discord = require('discord.js');
-const randomPuppy = require('random-puppy');
+const { meme } = require('memejs');
 
 const colors = require('../../files/colors.json');
-const {CatNoFiles, CatScanning} = require('../../files/embeds');
+const { newCat } = require('../../files/interactions');
+const { CatScanning, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "cat",
@@ -13,19 +14,22 @@ module.exports = {
      */
     async execute(client, interaction) {
 
-        interaction.reply({ embeds: [CatScanning] }).then(msg => {
-            setTimeout(async function () {
-                const subReddits = ["catpics", "kittens"];
-                const random = subReddits[Math.floor(Math.random() * subReddits.length)];
-                const img = await randomPuppy(random);
-
+        try {
+            interaction.reply({ embeds: [CatScanning] })
+            meme('cats', function (err, data) {
+                if (err) return interaction.followUp({ embeds: [errorMain] });
                 const embed = new discord.MessageEmbed()
-                    .setDescription("There you go! :cat:")
-                    .setImage(img)
-                    .setColor(colors.COLOR);
-
-                interaction.editReply({ embeds: [embed] });
+                    .setTitle(`Here is your cat! :cat:`)
+                    .setColor(colors.COLOR)
+                    .setImage(`${data.url}`)
+                    .setURL(data.url)
+                    .setFooter(`r/${data.subreddit}`)
+                    .setTimestamp('Created ' + data.created)
+                interaction.editReply({ embeds: [embed], components: [newCat] });
             });
-        }, 2000);
+        } catch (e) {
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
+        }
     }
 }
