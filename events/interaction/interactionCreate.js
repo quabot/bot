@@ -68,18 +68,48 @@ module.exports = {
                 }
             });
             if (interaction.customId === "meme") {
-                interaction.reply({ embeds: [MemeScanning] })
-                meme('meme', function (err, data) {
-                    if (err) return interaction.editReply({ embeds: [errorMain] });
-                    const embed = new discord.MessageEmbed()
-                        .setTitle(`${data.title}`)
-                        .setColor(colors.COLOR)
-                        .setURL(data.url)
-                        .setImage(`${data.url}`)
-                        .setFooter(`r/${data.subreddit}`)
-                        .setTimestamp('Created ' + data.created)
-                    interaction.editReply({ embeds: [embed], components: [newMeme] });
-                });
+                const subreddits = ['meme', 'memes', 'dankmemes']
+                const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
+                if (subreddit === "meme") {
+                    interaction.reply({ embeds: [MemeScanning] })
+                    meme('meme', function (err, data) {
+                        if (err) return interaction.editReply({ embeds: [errorMain] });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`${data.title}`)
+                            .setColor(colors.COLOR)
+                            .setURL(data.url)
+                            .setImage(`${data.url}`)
+                            .setFooter(`r/${data.subreddit} - u/${data.author}`)
+                            .setTimestamp('Created ' + data.created)
+                        interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    });
+                } else if (subreddit === "memes") {
+                    interaction.reply({ embeds: [MemeScanning] })
+                    meme('memes', function (err, data) {
+                        if (err) return interaction.editReply({ embeds: [errorMain] });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`${data.title}`)
+                            .setColor(colors.COLOR)
+                            .setURL(data.url)
+                            .setImage(`${data.url}`)
+                            .setFooter(`r/${data.subreddit} - u/${data.author}`)
+                            .setTimestamp('Created ' + data.created)
+                        interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    });
+                } else if (subreddit === "dankmemes") {
+                    interaction.reply({ embeds: [MemeScanning] })
+                    meme('dankmemes', function (err, data) {
+                        if (err) return interaction.editReply({ embeds: [errorMain] });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`${data.title}`)
+                            .setColor(colors.COLOR)
+                            .setURL(data.url)
+                            .setImage(`${data.url}`)
+                            .setFooter(`r/${data.subreddit} - u/${data.author}`)
+                            .setTimestamp('Created ' + data.created)
+                        interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    });
+                }
             }
             if (interaction.customId === "cat") {
                 interaction.reply({ embeds: [CatScanning] })
@@ -293,7 +323,7 @@ module.exports = {
                     }, 1000);
 
                 } else {
-                    interaction.reply( { ephemeral: true, content: "You already have a ticket! You can find it here: <#" + ticketChannel + ">! If this ticket is closed, reopen it using /reopen <#" + ticketChannel + ">, or by clicking the button."} );
+                    interaction.reply({ ephemeral: true, content: "You already have a ticket! You can find it here: <#" + ticketChannel + ">! If this ticket is closed, reopen it using /reopen <#" + ticketChannel + ">, or by clicking the button." });
                     return
                 }
             }
