@@ -2,6 +2,6 @@
 color f
 echo Starting..
 :main
-npm run dev
+node .
 echo Restarting Bot..
 goto main

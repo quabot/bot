@@ -1,6 +1,7 @@
 const { Client, Intents } = require('discord.js');
 const Discord = require("discord.js");
 const DisTube = require("distube")
+require('dotenv').config()
 const consola = require('consola')
 const client = new Client({ intents: 32767 });
 module.exports = client;
@@ -151,4 +152,4 @@ client.on("interactionCreate", async (interaction) => {
 
 Levels.setURL("mongodb+srv://admin:AbyUoKpaaWrjK@cluster.n4eqp.mongodb.net/Database?retryWrites=true&w=majority");
 client.mongoose.init();
-client.login(config.BOT_TOKEN);
+client.login(process.env.TOKEN);

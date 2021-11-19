@@ -87,10 +87,12 @@ const swearButtons = new discord.MessageActionRow()
         new discord.MessageButton()
             .setCustomId('enableSwear')
             .setLabel('Enable')
+            .setDisabled(true)
             .setStyle('SUCCESS'),
         new discord.MessageButton()
             .setCustomId('disableSwear')
             .setLabel('Disable')
+            .setDisabled(true)
             .setStyle('DANGER'),
     );
 const musicButtons = new discord.MessageActionRow()
