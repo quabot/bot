@@ -55,6 +55,7 @@ client.player.on("addSong", (queue, song) => {
 });
 
 client.player.on('error', (channel, err) => {
+    console.log(err)
     const musicErrorEmbed = new Discord.MessageEmbed()
         .setTitle(":x: There was an error!")
         .setColor(colors.COLOR)
