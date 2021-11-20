@@ -10,8 +10,6 @@ const config = require('../../files/config.json');
 const swearwords = require("../../files/data.json");
 const colors = require('../../files/colors.json');
 
-const { Guilds } = require("../../validation/bannedguilds.js");
-
 const errorMain = new Discord.MessageEmbed()
     .setDescription("There was an error!")
     .setColor(colors.COLOR)
@@ -27,7 +25,6 @@ module.exports = {
         if (!message.guild) return;
         if (message.author.bot) return;
         const thisGuildId = message.guild.id;
-        if (Guilds.includes(message.guild.id)) return;
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
