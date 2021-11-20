@@ -13,7 +13,6 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(client, interaction) {
-
         try {
             interaction.reply({ embeds: [CatScanning] })
             meme('cats', function (err, data) {
