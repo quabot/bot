@@ -6,9 +6,9 @@ const DisTube = require('distube');
 const consola = require('consola');
 
 const Guild = require('../../models/guild');
-const config = require('../../files/config.json');
-const swearwords = require("../../files/data.json");
-const colors = require('../../files/colors.json');
+const config = require('../../../files/config.json');
+const swearwords = require("../../../files/data.json");
+const colors = require('../../../files/colors.json');
 
 const errorMain = new Discord.MessageEmbed()
     .setDescription("There was an error!")
@@ -25,6 +25,7 @@ module.exports = {
         if (!message.guild) return;
         if (message.author.bot) return;
         const thisGuildId = message.guild.id;
+        //message.reply("QuaBeta is rebooting. Please wait...")
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
@@ -71,7 +72,7 @@ module.exports = {
 
             if (message.author.id === "486563467810308096") {
                 const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
-                const randomAmountOfXp = Math.floor(Math.random() * 20) + 1;
+                const randomAmountOfXp = Math.floor(Math.random() * 30) + 1;
                 const hasLeveledUp = await Levels.appendXp(message.author.id, message.guild.id, randomAmountOfXp);
 
                 const joinChannel = message.guild.channels.cache.get(settings.levelUpChannelID);

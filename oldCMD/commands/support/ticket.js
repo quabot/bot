@@ -1,12 +1,12 @@
 const discord = require('discord.js');
 
-const colors = require('../../files/colors.json');
-const config = require('../../files/config.json');
-const Guild = require('../../models/guild');
+const colors = require('../../../files/colors.json');
+const config = require('../../../files/config.json');
+const Guild = require('../../../models/guild');
 
-const { closeTicket } = require('../../files/interactions');
+const { closeTicket } = require('../../../files/interactions');
 
-const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
+const { errorMain, addedDatabase, ticketsDisabled } = require('../../../files/embeds');
 
 module.exports = {
     name: "ticket",

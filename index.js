@@ -1,30 +1,101 @@
-const { Client, Intents } = require('discord.js');
 const Discord = require("discord.js");
-const DisTube = require("distube")
+const client = new Discord.Client({ intents: 32767 });
 require('dotenv').config()
-const consola = require('consola')
-const client = new Client({ intents: 32767 });
-module.exports = client;
-const Levels = require("discord.js-leveling");
-const mongoose = require("./utils/mongoose");
-client.mongoose = require('./utils/mongoose');
-const colors = require('./files/colors.json');
-const { errorMain, addedDatabase, noWelcomeChannel } = require('./files/embeds');
-const config = require('./files/config.json');
-const Guild = require('./models/guild');
+
+// COMMANDS
 client.commands = new Discord.Collection();
 ['commands', 'events'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
 });
-consola.success('Loaded index.js!')
-const prefix = "/";
 
+// DATABASE
+const mongoose = require('mongoose');
+const consola = require('consola');
+mongoose.connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then((m) => {
+        consola.success("Connected to database!");
+    })
+    .catch((err) => consola.error(err));
+
+client.on('messageCreate', async message => {
+
+    const Guild = require('./schemas/GuildSchema');
+    const guildDatabase = await Guild.findOne({
+        guildId: message.guild.id,
+    }, (err, guild) => {
+        if (err) console.error(err);
+        if (!guild) {
+            const newGuild = new Guild({
+                guildId: message.guild.id,
+                guildName: message.guild.name,
+                logChannelID: "none",
+                reportChannelID: "none",
+                suggestChannelID: "none",
+                welcomeChannelID: "none",
+                levelChannelID: "none",
+                pollChannelID: "none",
+                ticketCategory: "Tickets",
+                closedTicketCategory: "Tickets",
+                logEnabled: true,
+                musicEnabled: true,
+                levelEnabled: true,
+                reportEnabled: true,
+                suggestEnabled: true,
+                ticketEnabled: true,
+                welcomeEnabled: true,
+                pollsEnabled: true,
+                mainRole: "Member",
+                mutedRole: "Muted"
+            });
+            newGuild.save()
+                .catch(err => {
+                    console.log(err);
+                    message.channel.send({ embeds: [errorMain] });
+                });
+            return message.channel.send({ embeds: [addedDatabase] });
+        }
+    });
+
+    const User = require('./schemas/UserSchema');
+    const userDatabase = await User.findOne({
+        userId: message.author.id,
+        guildId: message.guild.id,
+    }, (err, user) => {
+        if (err) console.error(err);
+        if (!user) {
+            const newUser = new User({
+                userId: message.author.id,
+                guildId: message.guild.id,
+                guildName: message.guild.name,
+                kickCount: 0,
+                banCount: 0,
+                warnCount: 0,
+                muteCount: 0,
+            });
+            newUser.save()
+                .catch(err => {
+                    console.log(err);
+                    message.channel.send({ embeds: [errorMain] });
+                });
+            return message.channel.send({ embeds: [addedDatabase] });
+        }
+    });
+    console.log(userDatabase);
+    console.log(guildDatabase);
+});
+
+// MUSIC
+const DisTube = require("distube");
+const { errorMain, addedDatabase } = require('./files/embeds');
+const colors = require('./files/colors.json');
 client.player = new DisTube.default(client, {
     leaveOnEmpty: true,
     leaveOnFinish: true,
     leaveOnStop: true,
 });
-
 client.player.on('playSong', (queue, song) => {
     const playingEmbed = new Discord.MessageEmbed()
         .setTitle("Now Playing")
@@ -40,9 +111,8 @@ client.player.on('playSong', (queue, song) => {
         .addField("Autoplay", `\`${queue.autoplay}\``, true)
         .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
         .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
-        queue.textChannel.send({ embeds: [playingEmbed] });
+    queue.textChannel.send({ embeds: [playingEmbed] });
 });
-
 client.player.on("addSong", (queue, song) => {
     const embed = new Discord.MessageEmbed()
         .setColor(colors.COLOR)
@@ -54,7 +124,6 @@ client.player.on("addSong", (queue, song) => {
         .addField("Duration", `${song.formattedDuration}`, true)
     queue.textChannel.send({ embeds: [embed] });
 });
-
 client.player.on('error', (channel, err) => {
     console.log(err)
     const musicErrorEmbed = new Discord.MessageEmbed()
@@ -62,30 +131,27 @@ client.player.on('error', (channel, err) => {
         .setColor(colors.COLOR)
     channel.send({ embeds: [musicErrorEmbed] });
 });
-
-client.player.on('finish', queue  => {
+client.player.on('finish', queue => {
     const finishQueueEmbed = new Discord.MessageEmbed()
         .setTitle(":x: There are no more songs in queue, leaving voice channel!")
         .setColor(colors.COLOR)
     queue.textChannel.send({ embeds: [finishQueueEmbed] });
 });
-
 client.player.on('initQueue', queue => {
     queue.autoplay = false,
         queue.volume = 50
 });
-
-client.player.on('noRelated', queue  => {
+client.player.on('noRelated', queue => {
     const noRelatedEmbed = new Discord.MessageEmbed()
         .setTitle(":x: Could not find any related songs, ending queue!")
         .setColor(colors.COLOR)
     queue.textChannel.send({ embeds: [noRelatedEmbed] });
 });
 
+// GIVEAWAYS
 const { GiveawaysManager } = require('discord-giveaways');
-
 const manager = new GiveawaysManager(client, {
-    storage: './giveaways.json',
+    storage: './files/giveaways.json',
     default: {
         botsCanWin: false,
         embedColor: '#ff38f8',
@@ -150,6 +216,7 @@ client.on("interactionCreate", async (interaction) => {
     }
 });
 
-Levels.setURL("mongodb+srv://admin:AbyUoKpaaWrjK@cluster.n4eqp.mongodb.net/Database?retryWrites=true&w=majority");
-client.mongoose.init();
+const Levels = require("discord.js-leveling");
+Levels.setURL(process.env.DATABASE_URL);
+consola.success('Loaded index.js!');
 client.login(process.env.TOKEN);

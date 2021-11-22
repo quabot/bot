@@ -13,6 +13,8 @@ module.exports = {
         "Did you know we have a new website?",
         "https://quabot.xyz",
         "This bot was created by Joa_sss#0001",
+        "MCLands is the best minecraft server",
+        "https://mclands.net",
         "Quabot has over 75 commands!",
         "I wish i had a brother",
         "Can someone give me some money?",
@@ -23,7 +25,7 @@ module.exports = {
         "I'm sorry for some of the troll sentences that are included",
         "Skype is better than discord tho",
         "My arrow-up key is broken :(",
-        "The special character one: $*(&`~~{: }_+__$)~~3958*%&$&)(*(&)23;l%Op (No copy pasting)",
+        "$*(&~~{: }_+__$)~~3958*%&$&)(*(&)23;l%Op",
         "Do you have a sentence suggestion? https://discord.quabot.xyz",
         "We have a dashboard now: https://dashboard.quabot.xyz",
         "Good luck with this game lol"

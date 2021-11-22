@@ -1,6 +1,6 @@
-const { commands } = require('../../index');
+const { commands } = require('../../../index');
 const { Client, MessageEmbed } = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 const consola = require('consola');
 const Guild = require('../../models/guild');
 const mongoose = require('mongoose');

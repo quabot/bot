@@ -1,5 +1,5 @@
 const Guild = require('../../models/guild');
-const config = require('../../files/config.json');
+const config = require('../../../files/config.json');
 const mongoose = require('mongoose');
 
 module.exports = {

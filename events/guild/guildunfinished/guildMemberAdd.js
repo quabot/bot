@@ -1,12 +1,12 @@
-const { commands } = require('../../index');
+const { commands } = require('../../../index');
 const { Client, MessageEmbed } = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 const consola = require('consola');
 const Guild = require('../../models/guild');
 const mongoose = require('mongoose');
 
 module.exports = {
-    name: "guildMemberRemove",
+    name: "guildMemberAdd",
     /**
      * @param {Client} client 
      */
@@ -55,9 +55,9 @@ module.exports = {
         if (settings.enableLog === "true") {
             if (logChannel) {
                 const embed = new MessageEmbed()
-                    .setColor(colors.REd)
-                    .setTitle('Member Left!')
-                    .setAuthor(`${member.user.tag} just left.`, member.user.avatarURL())
+                    .setColor(colors.LIME)
+                    .setTitle('Member joined!')
+                    .setAuthor(`${member.user.tag} just joined!`, member.user.avatarURL())
                     .addField('User', `${member.user}`)
                     .addField('User-ID', `${member.user.id}`)
                 logChannel.send({ embeds: [embed] });
@@ -67,9 +67,9 @@ module.exports = {
         if (settings.welcomeEnabled === "true") {
             if(joinChannel) {
                 const welcomeEmbed = new MessageEmbed()
-                .setAuthor(`${member.user.tag} just left!`, member.user.avatarURL())
-                .setDescription(`Goodbye ${member.user}!`)
-                .setColor(colors.RED);
+                .setAuthor(`${member.user.tag} just joined!`, member.user.avatarURL())
+                .setDescription(`Welcome ${member.user} to **${member.guild.name}**!`)
+                .setColor(colors.LIME);
             joinChannel.send({ embeds: [welcomeEmbed] });
             }
         }
