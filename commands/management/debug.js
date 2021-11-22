@@ -2,7 +2,6 @@ const discord = require('discord.js');
 const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
 
 const { errorMain, debugError } = require('../../files/embeds');
 

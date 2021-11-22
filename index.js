@@ -38,7 +38,7 @@ client.on('messageCreate', async message => {
                 levelChannelID: "none",
                 pollChannelID: "none",
                 ticketCategory: "Tickets",
-                closedTicketCategory: "Tickets",
+                closedTicketCategory: "Closed Tickets",
                 logEnabled: true,
                 musicEnabled: true,
                 levelEnabled: true,
@@ -70,6 +70,7 @@ client.on('messageCreate', async message => {
                 userId: message.author.id,
                 guildId: message.guild.id,
                 guildName: message.guild.name,
+                typeScore: 0,
                 kickCount: 0,
                 banCount: 0,
                 warnCount: 0,
@@ -83,8 +84,6 @@ client.on('messageCreate', async message => {
             return message.channel.send({ embeds: [addedDatabase] });
         }
     });
-    console.log(userDatabase);
-    console.log(guildDatabase);
 });
 
 // MUSIC

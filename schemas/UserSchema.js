@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
     },
+    typeScore: {
+        type: mongoose.SchemaTypes.Number,
+        required: true,
+    },
     kickCount: {
         type: mongoose.SchemaTypes.Number,
         required: true,

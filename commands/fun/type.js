@@ -1,7 +1,7 @@
 const discord = require("discord.js");
 const ms = require('ms');
 
-const { TypeNoSentence, errorMain } = require('../../files/embeds');
+const { TypeNoSentence, errorMain, addedDatabase } = require('../../files/embeds');
 const colors = require('../../files/colors.json');
 const { Sentences } = require('../../validation/sentences');
 
@@ -15,6 +15,7 @@ module.exports = {
     async execute(client, interaction) {
 
         try {
+
             const sentenceSum = Math.floor(Math.random() * Sentences.length);
             const sentence = Sentences[sentenceSum];
 
@@ -29,7 +30,6 @@ module.exports = {
 
             setTimeout(() => {
                 var callTime = (new Date()).getTime();
-                console.log(callTime)
                 const filter = m => interaction.user === author;
                 const collector = interaction.channel.createMessageCollector({ time: 15000 });
                 collector.on('collect', m => {
@@ -44,6 +44,7 @@ module.exports = {
                             .addField("Time spent", `\`${timeSpentConverted} seconds\``)
                             .setColor(colors.LIME)
                         m.reply({ embeds: [correctSentence] });
+                        collector.stop()
                         return;
                     } else {
                         if (m.author.bot) return;
