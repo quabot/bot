@@ -21,6 +21,39 @@ mongoose.connect(process.env.DATABASE_URL, {
     .catch((err) => consola.error(err));
 
 client.on('messageCreate', async message => {
+    const User = require('./schemas/UserSchema');
+    const userDatabase = await User.findOne({
+        userId: message.author.id,
+        guildId: message.guild.id,
+    }, (err, user) => {
+        if (err) console.error(err);
+        if (!user) {
+            const newUser = new User({
+                userId: message.author.id,
+                guildId: message.guild.id,
+                guildName: message.guild.name,
+                typeScore: 0,
+                kickCount: 0,
+                banCount: 0,
+                warnCount: 0,
+                muteCount: 0,
+            });
+            newUser.save()
+                .catch(err => {
+                    console.log(err);
+                    message.channel.send({ embeds: [errorMain] });
+                });
+            return message.channel.send({ embeds: [addedDatabase] });
+        }
+    });
+    console.log(userDatabase.kickCount);
+    console.log(userDatabase.typeScore);
+    await userDatabase.updateOne({
+        kickCount: 1
+    });
+    await userDatabase.updateOne({
+        typeScore: userDatabase.typeScore + 1
+    });
 
     const Guild = require('./schemas/GuildSchema');
     const guildDatabase = await Guild.findOne({
@@ -51,32 +84,6 @@ client.on('messageCreate', async message => {
                 mutedRole: "Muted"
             });
             newGuild.save()
-                .catch(err => {
-                    console.log(err);
-                    message.channel.send({ embeds: [errorMain] });
-                });
-            return message.channel.send({ embeds: [addedDatabase] });
-        }
-    });
-
-    const User = require('./schemas/UserSchema');
-    const userDatabase = await User.findOne({
-        userId: message.author.id,
-        guildId: message.guild.id,
-    }, (err, user) => {
-        if (err) console.error(err);
-        if (!user) {
-            const newUser = new User({
-                userId: message.author.id,
-                guildId: message.guild.id,
-                guildName: message.guild.name,
-                typeScore: 0,
-                kickCount: 0,
-                banCount: 0,
-                warnCount: 0,
-                muteCount: 0,
-            });
-            newUser.save()
                 .catch(err => {
                     console.log(err);
                     message.channel.send({ embeds: [errorMain] });
