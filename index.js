@@ -46,14 +46,7 @@ client.on('messageCreate', async message => {
             return message.channel.send({ embeds: [addedDatabase] });
         }
     });
-    console.log(userDatabase.kickCount);
-    console.log(userDatabase.typeScore);
-    await userDatabase.updateOne({
-        kickCount: 1
-    });
-    await userDatabase.updateOne({
-        typeScore: userDatabase.typeScore + 1
-    });
+    console.log(userDatabase.banCount)
 
     const Guild = require('./schemas/GuildSchema');
     const guildDatabase = await Guild.findOne({

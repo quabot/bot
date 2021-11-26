@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const WarnSchema = new mongoose.Schema({
+const MuteSchema = new mongoose.Schema({
     guildId: {
         type: mongoose.SchemaTypes.String,
         required: true,
@@ -13,14 +13,14 @@ const WarnSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
     },
-    warnReason: {
+    kickReason: {
         type: mongoose.SchemaTypes.String,
         required: true,
     },
-    warnTime: {
+    kickTime: {
         type: mongoose.SchemaTypes.String,
         required: true,
     },
 });
 
-module.exports = mongoose.model('Warns', WarnSchema);
+module.exports = mongoose.model('Mutes', MuteSchema);

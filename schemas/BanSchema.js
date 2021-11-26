@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const WarnSchema = new mongoose.Schema({
+const BanSchema = new mongoose.Schema({
     guildId: {
         type: mongoose.SchemaTypes.String,
         required: true,
@@ -13,14 +13,14 @@ const WarnSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
     },
-    warnReason: {
+    banReason: {
         type: mongoose.SchemaTypes.String,
         required: true,
     },
-    warnTime: {
+    banTime: {
         type: mongoose.SchemaTypes.String,
         required: true,
     },
 });
 
-module.exports = mongoose.model('Warns', WarnSchema);
+module.exports = mongoose.model('Bans', BanSchema);

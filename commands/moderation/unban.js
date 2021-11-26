@@ -1,11 +1,10 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
 
-const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
 const colors = require('../../files/colors.json');
 
-const { errorMain, notBanned, banNoUserFound, banImpossible, addedDatabase, banNoPermsUser, unbanNoUser, banNoTime, muteNoManageRoles, muteNoPermsUser, muteNoTime, muteNoUser, banNoPermsBot } = require('../../files/embeds');
+const { errorMain, notBanned, addedDatabase, unbanNoUser } = require('../../files/embeds');
 
 
 module.exports = {
@@ -53,44 +52,46 @@ module.exports = {
             console.log(e.message)
         }
 
-        const settings = await Guild.findOne({
-            guildID: interaction.guild.id
+        const Guild = require('../../schemas/GuildSchema');
+        const guildDatabase = await Guild.findOne({
+            guildId: interaction.guild.id,
         }, (err, guild) => {
-            if (err) interaction.reply({ embeds: [errorMain] });
+            if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    _id: mongoose.Types.ObjectID(),
-                    guildID: interaction.guild.id,
+                    guildId: interaction.guild.id,
                     guildName: interaction.guild.name,
-                    logChannelID: none,
-                    enableLog: true,
-                    enableSwearFilter: false,
-                    enableMusic: true,
-                    enableLevel: true,
-                    mutedRoleName: "Muted",
-                    mainRoleName: "Member",
+                    logChannelID: "none",
+                    reportChannelID: "none",
+                    suggestChannelID: "none",
+                    welcomeChannelID: "none",
+                    levelChannelID: "none",
+                    pollChannelID: "none",
+                    ticketCategory: "Tickets",
+                    closedTicketCategory: "Closed Tickets",
+                    logEnabled: true,
+                    musicEnabled: true,
+                    levelEnabled: true,
                     reportEnabled: true,
-                    reportChannelID: none,
                     suggestEnabled: true,
-                    suggestChannelID: none,
                     ticketEnabled: true,
-                    ticketChannelName: "Tickets",
-                    closedTicketCategoryName: "Closed Tickets",
                     welcomeEnabled: true,
-                    welcomeChannelID: none,
-                    enableNSFWContent: false,
+                    pollsEnabled: true,
+                    mainRole: "Member",
+                    mutedRole: "Muted"
                 });
-        
                 newGuild.save()
-                    .catch(err => interaction.followUp({ embeds: [errorMain] }));
-        
-                return interaction.followUp({ embeds: [addedDatabase] });
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [errorMain] });
+                    });
+                return interaction.channel.send({ embeds: [addedDatabase] });
             }
         });
 
-        const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
+        const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
 
-        if (settings.enableLog === "true") {
+        if (guildDatabase.logEnabled === "true") {
             if (!logChannel) {
                 return;
             } else {

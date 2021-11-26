@@ -21,6 +21,8 @@ module.exports = {
     name: "messageCreate",
     async execute(message, args, client) {
 
+        // add user to db and to guildMMBADD
+
         //consola.info(`${message.guild.name} - ${message.channel.name} | ${message.author.username}: ${message.content}`)
         if (!message.guild) return;
         if (message.author.bot) return;
