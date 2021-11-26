@@ -29,7 +29,7 @@ module.exports = {
         },
         {
             name: "reason",
-            description: "The reason to ban the user. (optional)",
+            description: "The reason to ban the user.",
             type: "STRING",
             required: false,
         }

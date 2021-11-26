@@ -1,0 +1,154 @@
+const discord = require('discord.js');
+const mongoose = require('mongoose');
+const colors = require('../../files/colors.json');
+const config = require('../../files/config.json');
+
+const { errorMain, addedDatabase, muteNoUser, muteNoRoleManage, muteNoPermsUser } = require('../../files/embeds');
+
+module.exports = {
+    name: "mute",
+    description: "By using this command you will be able to mute any user in your guild.",
+    permission: "BAN_MEMBERS",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    options: [
+        {
+            name: "user",
+            description: "The user to mute.",
+            type: "USER",
+            required: true,
+        },
+        {
+            name: "reason",
+            description: "A reason to mute the user.",
+            type: "STRING",
+            required: false,
+        }
+    ],
+    async execute(client, interaction) {
+
+        const Guild = require('../../schemas/GuildSchema');
+        const guildDatabase = await Guild.findOne({
+            guildId: interaction.guild.id,
+        }, (err, guild) => {
+            if (err) console.error(err);
+            if (!guild) {
+                const newGuild = new Guild({
+                    guildId: interaction.guild.id,
+                    guildName: interaction.guild.name,
+                    logChannelID: "none",
+                    reportChannelID: "none",
+                    suggestChannelID: "none",
+                    welcomeChannelID: "none",
+                    levelChannelID: "none",
+                    pollChannelID: "none",
+                    ticketCategory: "Tickets",
+                    closedTicketCategory: "Closed Tickets",
+                    logEnabled: true,
+                    musicEnabled: true,
+                    levelEnabled: true,
+                    reportEnabled: true,
+                    suggestEnabled: true,
+                    ticketEnabled: true,
+                    welcomeEnabled: true,
+                    pollsEnabled: true,
+                    mainRole: "Member",
+                    mutedRole: "Muted"
+                });
+                newGuild.save()
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [errorMain] });
+                    });
+                return interaction.channel.send({ embeds: [addedDatabase] });
+            }
+        });
+
+        let mutedRoleName = guildDatabase.mutedRole;
+        let mainRoleName = guildDatabase.mainRole;
+
+        const target = interaction.options.getMember('user');
+        const member = interaction.options.getMember('user');
+        const reasonRaw = interaction.options.getString('reason');
+
+        let reason = "No reason specified.";
+
+        if (!target) return interaction.reply({ embeds: [muteNoUser] });
+        if (reasonRaw) reason = reasonRaw;
+
+        let mainRole = interaction.guild.roles.cache.find(role => role.name === `${mainRoleName}`);
+        let muteRole = interaction.guild.roles.cache.find(role => role.name === `${mutedRoleName}`);
+
+        let memberTarget = interaction.guild.members.cache.get(target.id);
+
+        memberTarget.roles.remove(mainRole.id);
+        memberTarget.roles.add(muteRole.id);
+        const mutedUser = new discord.MessageEmbed()
+            .setTitle("Succesfull mute! :white_check_mark:")
+            .setDescription(`<@${memberTarget.user.id}> has been muted`)
+            .addField('Reason', `${reason}`)
+            .setColor(colors.COLOR);
+        interaction.reply({ embeds: [mutedUser] });
+
+        const User = require('../../schemas/UserSchema');
+        const userDatabase = await User.findOne({
+            userId: member.id,
+            guildId: interaction.guild.id,
+        }, (err, user) => {
+            if (err) console.error(err);
+            if (!user) {
+                const newUser = new User({
+                    userId: member.id,
+                    guildId: interaction.guild.id,
+                    guildName: interaction.guild.name,
+                    typeScore: 0,
+                    kickCount: 0,
+                    banCount: 0,
+                    warnCount: 0,
+                    muteCount: 1,
+                });
+                newUser.save()
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [errorMain] });
+                    });
+                return interaction.channel.send({ embeds: [addedDatabase] });
+            }
+        });
+        await userDatabase.updateOne({
+            muteCount: userDatabase.muteCount + 1
+        });
+
+        const Mutes = require('../../schemas/MuteSchema');
+        const newMutes = new Mutes({
+            guildId: interaction.guild.id,
+            guildName: interaction.guild.name,
+            userId: member.id,
+            muteReason: reason,
+            muteTime: new Date(),
+        });
+        newMutes.save()
+            .catch(err => {
+                console.log(err);
+                interaction.channel.send({ embeds: [errorMain] });
+            });
+
+        if (guildDatabase.logEnabled === "true") {
+            const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+            if (!logChannel) return;
+
+            const embed = new discord.MessageEmbed()
+                .setColor(colors.MUTE_COLOR)
+                .setTitle('User Muted')
+                .addField('Username', `${target}`)
+                .addField('User ID', `${target.id}`)
+                .addField('Muted by', `${interaction.user}`)
+                .addField('Reason', `${reason}`)
+            logChannel.send({ embeds: [embed] });
+        } else {
+            return;
+        }
+    }
+}

@@ -35,7 +35,7 @@ module.exports = {
 
         if (!member) return interaction.reply({ embeds: [banNoUser] });
         if (reasonRaw) reason = reasonRaw;
-        ;
+        
         const userBanned = new discord.MessageEmbed()
             .setTitle(":white_check_mark: User Banned")
             .setDescription(`${member} was banned.\n**Reason:** ${reason}`)

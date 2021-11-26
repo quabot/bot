@@ -32,6 +32,9 @@ module.exports = {
 
         let reason = "No reason specified";
 
+        const reasonRaw = interaction.options.getString('reason');
+        if (reasonRaw) reason = reasonRaw;
+
         const member = interaction.options.getMember('user');
 
         const User = require('../../schemas/UserSchema');

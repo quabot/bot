@@ -13,11 +13,11 @@ const MuteSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
     },
-    kickReason: {
+    muteReason: {
         type: mongoose.SchemaTypes.String,
         required: true,
     },
-    kickTime: {
+    muteTime: {
         type: mongoose.SchemaTypes.String,
         required: true,
     },
