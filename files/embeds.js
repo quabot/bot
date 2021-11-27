@@ -1,7 +1,20 @@
 const discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const colors = require('./colors.json');
 const prefix = "/";
 
+const shuffledQueue = new MessageEmbed()
+    .setTitle(":twisted_rightwards_arrows: Shuffled the Queue!")
+    .setColor(colors.COLOR)
+    .setTimestamp()
+const stoppedQueue = new MessageEmbed()
+    .setTitle(":stop_button: Stopped the queue!")
+    .setColor(colors.COLOR)
+    .setTimestamp()
+const skippedSong = new MessageEmbed()
+    .setTitle(":track_next: Skipped a song!")
+    .setColor(colors.COLOR)
+    .setTimestamp()
 const noValidSeek = new discord.MessageEmbed()
     .setTitle("Invalid number!")
     .setDescription("Please enter a number of seconds to seek the song to.")
@@ -24,7 +37,7 @@ const resumedQueue = new discord.MessageEmbed()
     .setTimestamp()
 const noSongs = new discord.MessageEmbed()
     .setTitle(":x: No Songs!")
-    .setDescription("There are no songs playing, play one using `/play song: [song]`!")
+    .setDescription("There are no songs playing/in the queue, play one using `/play song: [song]`!")
     .setColor(colors.COLOR)
     .setTimestamp()
 const debugError = new discord.MessageEmbed()
@@ -400,4 +413,4 @@ const disabledLevelUp = new discord.MessageEmbed()
     .setTimestamp()
     .setDescription("Messages will now be sent in the users message channel at that time.")
 
-module.exports = { noValidSeek, disabledLevelUp, noSongs, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, swearDisabled, swearEnabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { stoppedQueue, skippedSong, noValidSeek, disabledLevelUp, noSongs, shuffledQueue, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, swearDisabled, swearEnabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
