@@ -2,6 +2,26 @@ const discord = require('discord.js');
 const colors = require('./colors.json');
 const prefix = "/";
 
+const noValidSeek = new discord.MessageEmbed()
+    .setTitle("Invalid number!")
+    .setDescription("Please enter a number of seconds to seek the song to.")
+    .setColor(colors.COLOR)
+    .setTimestamp()
+const noValidMode = new discord.MessageEmbed()
+    .setTitle(":x: Invalid mode")
+    .setDescription("Please pick either \`0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE\`")
+    .setColor(colors.COLOR)
+    .setTimestamp()
+const pausedQueue = new discord.MessageEmbed()
+    .setTitle(":pause_button: Paused the Queue!")
+    .setDescription("Use `/resume` to start playing again.")
+    .setColor(colors.COLOR)
+    .setTimestamp()
+const resumedQueue = new discord.MessageEmbed()
+    .setTitle(":play_pause: Resumed the Queue!")
+    .setDescription("Use `/pause` to pause the music stream again.")
+    .setColor(colors.COLOR)
+    .setTimestamp()
 const noSongs = new discord.MessageEmbed()
     .setTitle(":x: No Songs!")
     .setDescription("There are no songs playing, play one using `/play song: [song]`!")
@@ -380,4 +400,4 @@ const disabledLevelUp = new discord.MessageEmbed()
     .setTimestamp()
     .setDescription("Messages will now be sent in the users message channel at that time.")
 
-module.exports = { disabledLevelUp, noSongs, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, swearDisabled, swearEnabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
+module.exports = { noValidSeek, disabledLevelUp, noSongs, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, swearDisabled, swearEnabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain}
