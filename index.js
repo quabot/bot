@@ -20,72 +20,6 @@ mongoose.connect(process.env.DATABASE_URL, {
     })
     .catch((err) => consola.error(err));
 
-client.on('messageCreate', async message => {
-    const User = require('./schemas/UserSchema');
-    const userDatabase = await User.findOne({
-        userId: message.author.id,
-        guildId: message.guild.id,
-    }, (err, user) => {
-        if (err) console.error(err);
-        if (!user) {
-            const newUser = new User({
-                userId: message.author.id,
-                guildId: message.guild.id,
-                guildName: message.guild.name,
-                typeScore: 0,
-                kickCount: 0,
-                banCount: 0,
-                warnCount: 0,
-                muteCount: 0,
-            });
-            newUser.save()
-                .catch(err => {
-                    console.log(err);
-                    message.channel.send({ embeds: [errorMain] });
-                });
-            return message.channel.send({ embeds: [addedDatabase] });
-        }
-    });
-    console.log(userDatabase.banCount)
-
-    const Guild = require('./schemas/GuildSchema');
-    const guildDatabase = await Guild.findOne({
-        guildId: message.guild.id,
-    }, (err, guild) => {
-        if (err) console.error(err);
-        if (!guild) {
-            const newGuild = new Guild({
-                guildId: message.guild.id,
-                guildName: message.guild.name,
-                logChannelID: "none",
-                reportChannelID: "none",
-                suggestChannelID: "none",
-                welcomeChannelID: "none",
-                levelChannelID: "none",
-                pollChannelID: "none",
-                ticketCategory: "Tickets",
-                closedTicketCategory: "Closed Tickets",
-                logEnabled: true,
-                musicEnabled: true,
-                levelEnabled: true,
-                reportEnabled: true,
-                suggestEnabled: true,
-                ticketEnabled: true,
-                welcomeEnabled: true,
-                pollsEnabled: true,
-                mainRole: "Member",
-                mutedRole: "Muted"
-            });
-            newGuild.save()
-                .catch(err => {
-                    console.log(err);
-                    message.channel.send({ embeds: [errorMain] });
-                });
-            return message.channel.send({ embeds: [addedDatabase] });
-        }
-    });
-});
-
 // MUSIC
 const DisTube = require("distube");
 const { errorMain, addedDatabase } = require('./files/embeds');
@@ -153,8 +87,8 @@ const manager = new GiveawaysManager(client, {
     storage: './files/giveaways.json',
     default: {
         botsCanWin: false,
-        embedColor: '#ff38f8',
-        embedColorEnd: '#030061',
+        embedColor: `${colors.COLOR}`,
+        embedColorEnd: `${colors.LIME}`,
         reaction: '🎉'
     }
 });

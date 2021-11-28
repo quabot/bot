@@ -2,7 +2,6 @@ const { commands } = require('../../index');
 const { Client, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
 const consola = require('consola');
-const Guild = require('../../models/guild');
 const mongoose = require('mongoose');
 
 module.exports = {
@@ -12,43 +11,43 @@ module.exports = {
      */
     async execute(oldChannel, newChannel, client) {
 
-        const settings = await Guild.findOne({
-            guildID: newChannel.guild.id
+        const Guild = require('../../schemas/GuildSchema');
+        const guildDatabase = await Guild.findOne({
+            guildId: oldChannel.guild.id,
         }, (err, guild) => {
-            if (err) return;
+            if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    _id: mongoose.Types.ObjectID(),
-                    guildID: newChannel.guild.id,
-                    guildName: newChannel.guild.name,
-                    prefix: config.PREFIX,
+                    guildId: oldChannel.guild.id,
+                    guildName: oldChannel.guild.name,
                     logChannelID: "none",
-                    enableLog: true,
-                    enableSwearFilter: false,
-                    enableMusic: true,
-                    enableLevel: true,
-                    mutedRoleName: "Muted",
-                    mainRoleName: "Member",
-                    reportEnabled: true,
                     reportChannelID: "none",
-                    suggestEnabled: true,
                     suggestChannelID: "none",
-                    ticketEnabled: true,
-                    ticketChannelName: "Tickets",
-                    closedTicketCategoryName: "Closed Tickets",
-                    welcomeEnabled: true,
                     welcomeChannelID: "none",
-                    enableNSFWContent: false,
+                    levelChannelID: "none",
+                    pollChannelID: "none",
+                    ticketCategory: "Tickets",
+                    closedTicketCategory: "Tickets",
+                    logEnabled: true,
+                    musicEnabled: true,
+                    levelEnabled: true,
+                    reportEnabled: true,
+                    suggestEnabled: true,
+                    ticketEnabled: true,
+                    welcomeEnabled: true,
+                    pollsEnabled: true,
+                    mainRole: "Member",
+                    mutedRole: "Muted"
                 });
-
                 newGuild.save()
-                    .catch(err => console.log(err));
-
-                return;
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [errorMain] });
+                    });
+                return interaction.channel.send({ embeds: [addedDatabase] });
             }
         });
-        const logChannel = newChannel.guild.channels.cache.get(settings.logChannelID);
-        console.log(oldChannel)
+        const logChannel = oldChannel.guild.channels.cache.get(guildDatabase.logChannelID);
 
         if (oldChannel.type === "GUILD_TEXT") {
             if (newChannel.type === "GUILD_NEWS") {

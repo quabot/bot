@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
-const Guild = require('../../models/guild');
 const { errorMain, noSuggestChannelConfigured, suggestSucces, suggestTooShort, addedDatabase, suggestDisabled } = require('../../files/embeds');
 
 module.exports = {
@@ -13,7 +12,7 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-     options: [
+    options: [
         {
             name: "suggestion",
             description: "Your suggestion for everyone to vote on.",
@@ -23,43 +22,45 @@ module.exports = {
     ],
     async execute(client, interaction) {
 
-        const settings = await Guild.findOne({
-            guildID: interaction.guild.id
+        const Guild = require('../../schemas/GuildSchema');
+        const guildDatabase = await Guild.findOne({
+            guildId: interaction.guild.id,
         }, (err, guild) => {
-            if (err) interaction.reply({ embeds: [errorMain] });
+            if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    _id: mongoose.Types.ObjectID(),
-                    guildID: message.guild.id,
-                    guildName: message.guild.name,
-                    logChannelID: none,
-                    enableLog: true,
-                    enableSwearFilter: false,
-                    enableMusic: true,
-                    enableLevel: true,
-                    mutedRoleName: "Muted",
-                    mainRoleName: "Member",
+                    guildId: interaction.guild.id,
+                    guildName: interaction.guild.name,
+                    logChannelID: "none",
+                    reportChannelID: "none",
+                    suggestChannelID: "none",
+                    welcomeChannelID: "none",
+                    levelChannelID: "none",
+                    pollChannelID: "none",
+                    ticketCategory: "Tickets",
+                    closedTicketCategory: "Tickets",
+                    logEnabled: true,
+                    musicEnabled: true,
+                    levelEnabled: true,
                     reportEnabled: true,
-                    reportChannelID: none,
                     suggestEnabled: true,
-                    suggestChannelID: none,
                     ticketEnabled: true,
-                    ticketChannelName: "Tickets",
-                    closedTicketCategoryName: "Closed Tickets",
                     welcomeEnabled: true,
-                    welcomeChannelID: none,
-                    enableNSFWContent: false,
+                    pollsEnabled: true,
+                    mainRole: "Member",
+                    mutedRole: "Muted"
                 });
-        
                 newGuild.save()
-                    .catch(err => interaction.reply({ embeds: [errorMain] }));
-        
-                return interaction.reply({ embeds: [addedDatabase] });
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [errorMain] });
+                    });
+                return interaction.channel.send({ embeds: [addedDatabase] });
             }
         });
 
-        if (settings.suggestEnabled === "false") return interaction.reply({ embeds: [suggestDisabled] });
-        const suggestChannel = interaction.guild.channels.cache.get(settings.suggestChannelID);
+        if (guildDatabase.suggestEnabled === "false") return interaction.reply({ embeds: [suggestDisabled] });
+        const suggestChannel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
         if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] });
 
         const suggestionContent = interaction.options.getString('suggestion');
@@ -78,8 +79,8 @@ module.exports = {
         });
         interaction.reply({ embeds: [suggestSucces] });
 
-        if (settings.enableLog === "true") {
-            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
+        if (guildDatabase.logEnabled === "true") {
+            const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!logChannel) return;
             const embed2 = new discord.MessageEmbed()
                 .setColor(colors.KICK_COLOR)
@@ -88,7 +89,7 @@ module.exports = {
                 .addField("User ID:", `${interaction.user.id}`, true)
                 .addField("Suggestion:", `${suggestionContent}`)
                 .setTimestamp()
-            logChannel.send({ embeds: [embed2   ] });
+            logChannel.send({ embeds: [embed2] });
         } else {
             return;
         }

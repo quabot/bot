@@ -1,35 +1,20 @@
 const discord = require('discord.js');
 const ms = require('ms');
-const Guild = require('../../models/guild');
 const config = require('../../files/config.json');
 const colors = require('../../files/colors.json');
 
-const noPermsAdminUser = new discord.MessageEmbed()
-    .setDescription("You do not have administrator permissions!")
-    .setColor(colors.COLOR)
-const errorEmbed = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
 const noValidChannel = new discord.MessageEmbed()
     .setDescription("Please enter a valid channel for the giveaway to be hosted in!")
-    .setColor(colors.COLOR)
-const noPermsMsg = new discord.MessageEmbed()
-    .setDescription("I do not have permission to manage messages!")
     .setColor(colors.COLOR)
 const noTime = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setDescription("Please enter a time for the giveaway to last!")
-const errorMain = new discord.MessageEmbed()
-    .setDescription("There was an error!")
-    .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription("This server is now added to our database.")
-    .setColor(colors.COLOR)
+const { errorMain, addedDatabase } = require('../../files/embeds');
 const noWinners = new discord.MessageEmbed()
     .setDescription("Please enter an amount of winners!")
     .setColor(colors.COLOR)
 const noPrize = new discord.MessageEmbed()
-    .setDescription("Please enter a prize to win!")
+    .setTitle(":x: Please enter a prize to win!")
     .setColor(colors.COLOR)
 
 module.exports = {
@@ -74,50 +59,56 @@ module.exports = {
                 return interaction.reply({ embeds: [noValidChannel] });
             }
 
+            if (giveawayChannel.type !== "GUILD_TEXT") {
+                return interaction.reply({ embeds: [noValidChannel] });
+            }
+
             let giveawayDuration = interaction.options.getString('duration');
             if (!giveawayDuration || isNaN(ms(giveawayDuration))) {
                 return interaction.reply({ embeds: [noTime] });
             }
 
-            const settings = await Guild.findOne({
-                guildID: interaction.guild.id
+            const Guild = require('../../schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
             }, (err, guild) => {
-                if (err) interaction.reply({ embeds: [errorMain] });
+                if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        _id: mongoose.Types.ObjectID(),
-                        guildID: message.guild.id,
-                        guildName: message.guild.name,
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
                         logChannelID: "none",
-                        enableLog: true,
-                        enableSwearFilter: false,
-                        enableMusic: true,
-                        enableLevel: true,
-                        mutedRoleName: "Muted",
-                        mainRoleName: "Member",
-                        reportEnabled: true,
                         reportChannelID: "none",
-                        suggestEnabled: true,
                         suggestChannelID: "none",
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        pollChannelID: "none",
+                        ticketCategory: "Tickets",
+                        closedTicketCategory: "Tickets",
+                        logEnabled: true,
+                        musicEnabled: true,
+                        levelEnabled: true,
+                        reportEnabled: true,
+                        suggestEnabled: true,
                         ticketEnabled: true,
-                        ticketChannelName: "Tickets",
-                        closedTicketCategoryName: "Closed Tickets",
                         welcomeEnabled: true,
-                        welcomeChannelID: none,
-                        enableNSFWContent: false,
+                        pollsEnabled: true,
+                        mainRole: "Member",
+                        mutedRole: "Muted"
                     });
-
                     newGuild.save()
-                        .catch(err => interaction.reply({ embeds: [errorMain] }));
-
-                    return interaction.reply({ embeds: [addedDatabase] });
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [errorMain] });
+                        });
+                    return interaction.channel.send({ embeds: [addedDatabase] });
                 }
             });
-            const logChannel = interaction.guild.channels.cache.get(settings.logChannelID);
+            const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
 
             let giveawayNumberWinners = interaction.options.getInteger('winners');
             if (isNaN(giveawayNumberWinners) || (parseInt(giveawayNumberWinners) <= 0)) {
-                return interaction.reply({ embeds: no[noWinners] });
+                return interaction.reply({ embeds: [noWinners] });
             }
 
             let giveawayPrize = interaction.options.getString('prize');
@@ -144,11 +135,11 @@ module.exports = {
 
             interaction.reply(`The giveaway for the \`${giveawayPrize}\` is starting in ${giveawayChannel}.`);
 
-            if (settings.enableLog === "false") {
+            if (guildDatabase.logEnabled === "false") {
                 return;
             }
 
-            if (settings.enableLog === "true") {
+            if (guildDatabase.logEnabled === "true") {
                 if (!logChannel) {
                     return;
                 } else {
