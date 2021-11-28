@@ -150,6 +150,17 @@ const welcomeButtons = new discord.MessageActionRow()
             .setLabel('Disable')
             .setStyle('DANGER'),
     );
+const pollButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('enablePoll')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('disablePoll')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
 const disabledToggle = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
@@ -256,6 +267,11 @@ const toggle2 = new discord.MessageActionRow()
                     description: 'Enable or disable welcome messages.',
                     value: 'welcome_toggle',
                 },
+                {
+                    label: 'Polls',
+                    description: 'Enable or disable the polls system.',
+                    value: 'poll_toggle',
+                },
             ]),
     );
 const channel = new discord.MessageActionRow()
@@ -310,6 +326,11 @@ const channel2 = new discord.MessageActionRow()
                     label: 'Level Up Channel',
                     description: 'The name of the channel used to send level-up messages.',
                     value: 'levelup_channel',
+                },
+                {
+                    label: 'Polls Channel',
+                    description: 'The name of the channel used to send poll messages.',
+                    value: 'poll_channel',
                 },
             ]),
     );
@@ -417,4 +438,4 @@ const reopenButton = new discord.MessageActionRow()
             .setStyle('SUCCESS'),
     );
     
-module.exports = { reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

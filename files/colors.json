@@ -29,5 +29,6 @@
     "TICKET_CREATED": "#a1ffc2",
     "TICKET_CLOSE": "#f9ffa3",
     "TICKET_DELETE": "#ff9c9c",
-    "TICKET_CLOSING": "#ff96fc"
+    "TICKET_CLOSING": "#ff96fc",
+    "POLL_COLOR": "#ceff5c"
 }

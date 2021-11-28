@@ -9,8 +9,8 @@ const { commands } = require('../../index');
 
 const { CatScanning, addedDatabase, DogScanning, ticketsDisabled, MemeScanning } = require('../../files/embeds');
 const { closeTicket, reopenButton, ticketButton, deleteTicket, newMeme, newCat, newDog } = require('../../files/interactions');
-const { disabledLevelUp, roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, errorMain, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled } = require('../../files/embeds');
-const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons, disableLevel } = require('../../files/interactions');
+const { disabledLevelUp, roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, errorMain, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled, pollEnabled, pollsDisabled } = require('../../files/embeds');
+const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons, disableLevel, pollButtons } = require('../../files/interactions');
 
 module.exports = {
     name: "interactionCreate",
@@ -499,6 +499,12 @@ module.exports = {
             .addField("Current value", `${guildDatabase.welcomeEnabled}`)
             .setColor(colors.COLOR)
             .setThumbnail("https://i.imgur.com/jgdQUul.png");
+        const togglePoll = new discord.MessageEmbed()
+            .setTitle("Toggle Polls")
+            .setDescription("Use the buttons to enable/disable polls for this guild.")
+            .addField("Current value", `${guildDatabase.pollsEnabled}`)
+            .setColor(colors.COLOR)
+            .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
         if (interaction.isSelectMenu()) {
             if (interaction.values[0] === "toggle_features") {
@@ -536,6 +542,10 @@ module.exports = {
             if (interaction.values[0] === "welcome_toggle") {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
                 interaction.reply({ ephemeral: true, embeds: [toggleWelcome], components: [welcomeButtons] });
+            }
+            if (interaction.values[0] === "poll_toggle") {
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                interaction.reply({ ephemeral: true, embeds: [togglePoll], components: [pollButtons] });
             }
         };
 
@@ -632,6 +642,20 @@ module.exports = {
                 });
                 interaction.update({ ephemeral: true, embeds: [ticketDisabled], components: [disabledToggle] });
             }
+            if (interaction.customId === "enablePoll") {
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                await guildDatabase.updateOne({
+                    pollsEnabled: true
+                });
+                interaction.update({ ephemeral: true, embeds: [pollEnabled], components: [disabledToggle] });
+            }
+            if (interaction.customId === "disablePoll") {
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                await guildDatabase.updateOne({
+                    pollsEnabled: false,
+                });
+                interaction.update({ ephemeral: true, embeds: [pollsDisabled], components: [disabledToggle] });
+            }
             if (interaction.customId === "enableWelcome") {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
                 await guildDatabase.updateOne({
@@ -690,6 +714,12 @@ module.exports = {
             .setTitle("Change Closed Ticket Category Name")
             .setDescription("Send the new category name within 15 seconds to change it.")
             .addField("Current value", `${guildDatabase.closedTicketCategory}`)
+            .setColor(colors.COLOR)
+            .setThumbnail("https://i.imgur.com/jgdQUul.png");
+        const pollChannel = new discord.MessageEmbed()
+            .setTitle("Change Poll Messages channel")
+            .setDescription("Mention the new channel within 15 seconds to change it.")
+            .addField("Current value", `<#${guildDatabase.pollChannelID}>`)
             .setColor(colors.COLOR)
             .setThumbnail("https://i.imgur.com/jgdQUul.png");
         const levelUpEmbed = new discord.MessageEmbed()
@@ -890,6 +920,33 @@ module.exports = {
                             .setDescription("You took too long to respond.")
                             .setColor(colors.COLOR)
                         m.reply({ embeds: [timedOu5t] });
+                    }
+                });
+            }
+            if (interaction.values[0] === "poll_channel") {
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                interaction.reply({ embeds: [pollChannel], ephemeral: true });
+                collector.on('collect', async m => {
+                    if (m) {
+                        const C = m.mentions.channels.first();
+                        if (!C) return;
+                        await guildDatabase.updateOne({
+                            pollChannelID: C
+                        });
+                        const updated = new discord.MessageEmbed()
+                            .setTitle(":white_check_mark: Succes!")
+                            .setDescription(`Changed poll channel to ${C}!`)
+                            .setColor(colors.COLOR)
+                        m.channel.send({ embeds: [updated] })
+                        collector.stop();
+                        return;
+                    } else {
+                        if (m.author.bot) return;
+                        const timedOut = new discord.MessageEmbed()
+                            .setTitle("❌ Timed Out!")
+                            .setDescription("You took too long to respond.")
+                            .setColor(colors.COLOR)
+                        m.reply({ embeds: [timedOut] });
                     }
                 });
             }
