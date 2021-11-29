@@ -34,10 +34,10 @@ client.player.on('playSong', (queue, song) => {
         .setTitle("Now Playing")
         .setColor(colors.COLOR)
         .setDescription(`${song.name}`)
+        .setTimestamp()
         .setThumbnail(song.thumbnail)
         .addField("Views", `${song.views}`, true)
         .addField("Likes", `${song.likes}`, true)
-        .addField("Disikes", `${song.dislikes}`, true)
         .addField("Added by", `${song.user}`, true)
         .addField("Volume", `\`${queue.volume}%\``, true)
         .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
@@ -52,6 +52,7 @@ client.player.on("addSong", (queue, song) => {
         .setTitle("Song added to the queue")
         .setThumbnail(song.thumbnail)
         .setDescription(`${song.name}`)
+        .setTimestamp()
         .addField("Added by", `${song.user}`, true)
         .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
         .addField("Duration", `${song.formattedDuration}`, true)
@@ -61,12 +62,14 @@ client.player.on('error', (channel, err) => {
     console.log(err)
     const musicErrorEmbed = new Discord.MessageEmbed()
         .setTitle(":x: There was an error!")
+        .setTimestamp()
         .setColor(colors.COLOR)
     channel.send({ embeds: [musicErrorEmbed] });
 });
 client.player.on('finish', queue => {
     const finishQueueEmbed = new Discord.MessageEmbed()
         .setTitle(":x: There are no more songs in queue, leaving voice channel!")
+        .setTimestamp()
         .setColor(colors.COLOR)
     queue.textChannel.send({ embeds: [finishQueueEmbed] });
 });
@@ -76,8 +79,9 @@ client.player.on('initQueue', queue => {
 });
 client.player.on('noRelated', queue => {
     const noRelatedEmbed = new Discord.MessageEmbed()
-        .setTitle(":x: Could not find any related songs, ending queue!")
+        .setTitle(":x: Could not find any related songs, queue ended!")
         .setColor(colors.COLOR)
+        .setTimestamp()
     queue.textChannel.send({ embeds: [noRelatedEmbed] });
 });
 

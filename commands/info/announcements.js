@@ -5,7 +5,7 @@ const {  errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "announcement",
-    description: "This command is used to give info about new quabot patches.",
+    description: "Latest quabot news.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

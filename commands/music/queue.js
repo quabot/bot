@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require(
 
 module.exports = {
     name: "queue",
-    description: "When using this command you will get a list of the current songs in queue.",
+    description: "Get music queue.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, noValidVolu
 
 module.exports = {
     name: "volume",
-    description: "Change the volume of the currently playing music.",
+    description: "Change volume.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -15,7 +15,7 @@ module.exports = {
     options: [
         {
             name: "volume",
-            description: "Enter the new volume level you wish to apply.",
+            description: "New value",
             type: "INTEGER",
             required: true,
         }

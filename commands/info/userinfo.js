@@ -6,7 +6,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "userinfo",
-    description: "When you use this command you get a list of information about a user.",
+    description: "Information about a user.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -14,7 +14,7 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "A user to get the information of.",
+            description: "User to get info about",
             type: "USER",
             required: false,
         }

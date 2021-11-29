@@ -8,7 +8,7 @@ const { errorMain, banImpossible, addedDatabase, banNoUser, banNoTime } = requir
 
 module.exports = {
     name: "tempban",
-    description: "This command allows you to temporarily ban a user from the guild your in.",
+    description: "Temporarily ban a user.",
     permission: "BAN_MEMBERS",
     /**
      * @param {Client} client 
@@ -17,19 +17,19 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "The user to ban.",
+            description: "User to ban",
             type: "USER",
             required: true,
         },
         {
             name: "time",
-            description: "The time to ban the user.",
+            description: "Time to ban",
             type: "STRING",
             required: true,
         },
         {
             name: "reason",
-            description: "The reason to ban the user.",
+            description: "Reason to ban",
             type: "STRING",
             required: false,
         }

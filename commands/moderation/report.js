@@ -5,7 +5,7 @@ const { reportNoChannel, reportSucces, reportNoContent, reportsDisabled, errorMa
 
 module.exports = {
     name: "report",
-    description: "This command allows you to report a user.",
+    description: "Report a user",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -13,13 +13,13 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "The user to report.",
+            description: "User to report",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "The reason for reporting that user.",
+            description: "Reason for reporting",
             type: "STRING",
             required: true,
         }

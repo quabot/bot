@@ -5,7 +5,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "online",
-    description: "This will display the amount of users on the guild with every presence.",
+    description: "View activity list.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

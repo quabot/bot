@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, kickNoPermsClient, kickNoUser, kickNoPermsUser
 
 module.exports = {
     name: "kick",
-    description: "This command allows you to kick a user from the guild your in.",
+    description: "Kick a member.",
     permission: "KICK_MEMBERS",
     /**
      * @param {Client} client 
@@ -16,13 +16,13 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "A user to ban",
+            description: "User to kick",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "A reason to ban the user (optional)",
+            description: "Reason for kick",
             type: "STRING",
             required: false,
         }

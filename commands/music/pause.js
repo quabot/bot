@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, pausedQueue
 
 module.exports = {
     name: "pause",
-    description: "When using this command you will pause the currently playing song.",
+    description: "Pause the stream.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

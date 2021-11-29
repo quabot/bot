@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require(
 
 module.exports = {
     name: "leave",
-    description: "Make quabot leave the voice channel it's i.",
+    description: "Make bot leave vc.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

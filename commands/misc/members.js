@@ -3,7 +3,7 @@ const colors = require('../../files/colors.json');
 
 module.exports = {
     name: "members",
-    description: "When you use this command you will see the amount of members on a server.",
+    description: "Amount of members.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

@@ -7,7 +7,7 @@ const { errorMain, skippedSong, addedDatabase, NotInVC, MusicIsDisabled, noSongs
 
 module.exports = {
     name: "skip",
-    description: "This command allows you to skip the currently playing song.",
+    description: "Skip a song.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

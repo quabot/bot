@@ -1,6 +1,6 @@
 module.exports = {
     name: "add",
-    description: "This command allows you to add a user to your support ticket.",
+    description: "Add a user to your ticket.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -8,7 +8,7 @@ module.exports = {
      options: [
         {
             name: "user",
-            description: "A user to add to the ticket.",
+            description: "User to add",
             type: "USER",
             required: true,
         },

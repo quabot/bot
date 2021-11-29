@@ -10,7 +10,7 @@ const { commands } = require('../../index');
 const { CatScanning, addedDatabase, DogScanning, ticketsDisabled, MemeScanning } = require('../../files/embeds');
 const { closeTicket, reopenButton, ticketButton, deleteTicket, newMeme, newCat, newDog } = require('../../files/interactions');
 const { disabledLevelUp, roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, errorMain, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled, pollEnabled, pollsDisabled } = require('../../files/embeds');
-const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons, disableLevel, pollButtons } = require('../../files/interactions');
+const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons, disableLevel, pollButtons, pictureButtonsDisabled } = require('../../files/interactions');
 
 module.exports = {
     name: "interactionCreate",
@@ -89,7 +89,7 @@ module.exports = {
                             .setURL(data.url)
                             .setImage(`${data.url}`)
                             .setFooter(`r/${data.subreddit} - u/${data.author}`)
-                            .setTimestamp('Created ' + data.created)
+                            .setTimestamp('Posted ' + data.created)
                         interaction.editReply({ embeds: [embed], components: [newMeme] });
                     });
                 } else if (subreddit === "memes") {
@@ -102,7 +102,7 @@ module.exports = {
                             .setURL(data.url)
                             .setImage(`${data.url}`)
                             .setFooter(`r/${data.subreddit} - u/${data.author}`)
-                            .setTimestamp('Created ' + data.created)
+                            .setTimestamp('Posted ' + data.created)
                         interaction.editReply({ embeds: [embed], components: [newMeme] });
                     });
                 } else if (subreddit === "dankmemes") {
@@ -116,7 +116,7 @@ module.exports = {
                             .setURL(data.url)
                             .setImage(`${data.url}`)
                             .setFooter(`r/${data.subreddit} - u/${data.author}`)
-                            .setTimestamp('Created ' + data.created)
+                            .setTimestamp('Posted ' + data.created)
                         interaction.editReply({ embeds: [embed], components: [newMeme] });
                     });
                 }
@@ -128,13 +128,13 @@ module.exports = {
                     if (err) return interaction.followUp({ embeds: [errorMain] });
 
                     const embed = new MessageEmbed()
-                        .setTitle(`Here is your cat! :cat:`)
+                        .setTitle(`Here is your cat image! :cat:`)
                         .setColor(colors.COLOR)
                         .setImage(`${data.url}`)
                         .setURL(data.url)
                         .setFooter(`r/${data.subreddit}`)
-                        .setTimestamp('Created ' + data.created)
-                    
+                        .setTimestamp('Posted ' + data.created)
+
                     interaction.editReply({ embeds: [embed], components: [newCat] });
                 });
 
@@ -146,14 +146,130 @@ module.exports = {
 
                     if (err) return interaction.followUp({ embeds: [errorMain] });
                     const embed = new MessageEmbed()
-                        .setTitle(`Here is your dog! :dog:`)
+                        .setTitle(`Here is your dog image! :dog:`)
                         .setColor(colors.COLOR)
                         .setImage(`${data.url}`)
                         .setURL(data.url)
                         .setFooter(`r/${data.subreddit}`)
-                        .setTimestamp('Created ' + data.created)
+                        .setTimestamp('Posted ' + data.created)
                     interaction.editReply({ embeds: [embed], components: [newDog] });
                 });
+            }
+            if (interaction.customId === "memePic") {
+
+                const pictureEmbed2 = new discord.MessageEmbed()
+                    .setTitle("Pick a picture!")
+                    .setDescription(`Use the buttons below this message to pick a picture you wish to get!`)
+                    .setColor(colors.COLOR)
+                    .setTimestamp()
+                interaction.update({ embeds: [pictureEmbed2], components: [pictureButtonsDisabled] });
+
+                const subreddits = ['meme', 'memes', 'dankmemes'];
+                const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
+
+                if (subreddit === "meme") {
+                    interaction.reply({ embeds: [MemeScanning] });
+                    meme('meme', function (err, data) {
+                        if (err) return interaction.channel.send({ embeds: [errorMain] });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`${data.title}`)
+                            .setColor(colors.COLOR)
+                            .setURL(data.url)
+                            .setImage(`${data.url}`)
+                            .setFooter(`r/${data.subreddit} - u/${data.author}`)
+                            .setTimestamp('Posted ' + data.created)
+                        interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    });
+                } else if (subreddit === "memes") {
+                    interaction.reply({ embeds: [MemeScanning] });
+                    meme('memes', function (err, data) {
+                        if (err) return interaction.channel.send({ embeds: [errorMain] });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`${data.title}`)
+                            .setColor(colors.COLOR)
+                            .setURL(data.url)
+                            .setImage(`${data.url}`)
+                            .setFooter(`r/${data.subreddit} - u/${data.author}`)
+                            .setTimestamp('Posted ' + data.created)
+                        interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    });
+                } else if (subreddit === "dankmemes") {
+                    interaction.reply({ embeds: [MemeScanning] });
+
+                    meme('dankmemes', function (err, data) {
+                        if (err) return interaction.channel.send({ embeds: [errorMain] });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`${data.title}`)
+                            .setColor(colors.COLOR)
+                            .setURL(data.url)
+                            .setImage(`${data.url}`)
+                            .setFooter(`r/${data.subreddit} - u/${data.author}`)
+                            .setTimestamp('Posted ' + data.created)
+                        interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    });
+                }
+                const pictureEmbed = new discord.MessageEmbed()
+                    .setTitle("Pick a picture!")
+                    .setDescription(`Use the buttons below this message to pick a picture you wish to get!`)
+                    .setColor(colors.COLOR)
+                    .setTimestamp()
+                interaction.update({ embeds: [pictureEmbed], components: [pictureButtonsDisabled] });
+
+            }
+            if (interaction.customId === "catPics") {
+                const pictureEmbed3 = new discord.MessageEmbed()
+                    .setTitle("Pick a picture!")
+                    .setDescription(`Use the buttons below this message to pick a picture you wish to get!`)
+                    .setColor(colors.COLOR)
+                    .setTimestamp()
+                interaction.update({ embeds: [pictureEmbed3], components: [pictureButtonsDisabled] });
+
+                interaction.reply({ embeds: [CatScanning] });
+                meme('cats', function (err, data) {
+
+                    if (err) return interaction.t({ embeds: [errorMain] });
+
+                    const embed = new MessageEmbed()
+                        .setTitle(`Here is your cat image! :cat:`)
+                        .setColor(colors.COLOR)
+                        .setImage(`${data.url}`)
+                        .setURL(data.url)
+                        .setFooter(`r/${data.subreddit}`)
+                        .setTimestamp('Posted ' + data.created)
+
+                    interaction.editReply({ embeds: [embed], components: [newCat] });
+                });
+                const pictureEmbed = new discord.MessageEmbed()
+                    .setTitle("Pick a picture!")
+                    .setDescription(`Use the buttons below this message to pick a picture you wish to get!`)
+                    .setColor(colors.COLOR)
+                    .setTimestamp()
+                interaction.update({ embeds: [pictureEmbed], components: [pictureButtonsDisabled] });
+
+
+            }
+            if (interaction.customId === "dogPic") {
+                interaction.reply({ embeds: [DogScanning] });
+
+                meme('dogpics', function (err, data) {
+
+                    if (err) return interaction.channel.send({ embeds: [errorMain] });
+                    const embed = new MessageEmbed()
+                        .setTitle(`Here is your dog image! :dog:`)
+                        .setColor(colors.COLOR)
+                        .setImage(`${data.url}`)
+                        .setURL(data.url)
+                        .setFooter(`r/${data.subreddit}`)
+                        .setTimestamp('Posted ' + data.created)
+                    interaction.editReply({ embeds: [embed], components: [newDog] });
+                });
+                const pictureEmbed = new discord.MessageEmbed()
+                    .setTitle("Pick a picture!")
+                    .setDescription(`Use the buttons below this message to pick a picture you wish to get!`)
+                    .setColor(colors.COLOR)
+                    .setTimestamp()
+                interaction.update({ embeds: [pictureEmbed], components: [pictureButtonsDisabled] });
+
             }
             if (interaction.customId === "close") {
                 if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {

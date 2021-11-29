@@ -8,7 +8,7 @@ const { errorMain, LBNoXP, LBDisabled, addedDatabase } = require('../../files/em
 
 module.exports = {
     name: "rank",
-    description: "Get your current amount of levels and XP points.",
+    description: "Get level and xp points.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -16,7 +16,7 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "A user to get the rank from.",
+            description: "The user to see the rank of",
             type: "USER",
             required: true,
         }

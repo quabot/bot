@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
-const { errorMain, noSuggestChannelConfigured, suggestSucces, suggestTooShort, addedDatabase, suggestDisabled } = require('../../files/embeds');
+const { errorMain, noSuggestChannelConfigured, suggestSucces, addedDatabase, suggestDisabled } = require('../../files/embeds');
 
 module.exports = {
     name: "suggest",
-    description: "This command allows you to leave a suggestion.",
+    description: "Leave a suggestion.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -15,12 +15,14 @@ module.exports = {
     options: [
         {
             name: "suggestion",
-            description: "Your suggestion for everyone to vote on.",
+            description: "Your suggestion",
             type: "STRING",
             required: true,
         },
     ],
     async execute(client, interaction) {
+
+        const suggestion = interaction.options.getString('suggestion');
 
         const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
@@ -63,31 +65,71 @@ module.exports = {
         const suggestChannel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
         if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] });
 
-        const suggestionContent = interaction.options.getString('suggestion');
-        if (suggestionContent.length < 3) return interaction.reply({ embeds: [suggestTooShort] });
+        const Bot = require('../../schemas/BotSchema');
+        const botSettings = await Bot.findOne({
+            verifToken: 1,
+        }, (err, bot) => {
+            if (err) console.error(err);
+            if (!bot) {
+                const newBot = new Bot({
+                    verifToken: 1,
+                    pollId: 0,
+                    suggestId: 0,
+                });
+                newBot.save()
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [errorMain] });
+                    });
+                return interaction.channel.send({ embeds: [addedDatabase] });
+            }
+        });
+        const newSuggestId = botSettings.suggestId + 1;
+        await botSettings.updateOne({
+            suggestId: newSuggestId,
+        });
 
         const embed = new discord.MessageEmbed()
-            .setColor(colors.SUGGEST_COLOR)
-            .setTitle("New Suggestion!")
-            .addField("Suggested by:", `${interaction.user}`)
-            .addField("Suggestion:", `${suggestionContent}`)
-            .setFooter("Vote with the 🟢 and 🔴 emotes below this message!")
+            .setTitle(`New Suggestion!`)
+            .addField('Suggested by', `${interaction.user}`)
+            .addField(`Suggestion`, `${suggestion}`)
+            .setFooter(`Vote on this suggestion with the 🟢 and 🔴 emojis! • Suggestion ID: ${newSuggestId}`)
             .setTimestamp()
-        let sentsug = suggestChannel.send({ embeds: [embed] }).then(msg => {
-            msg.react('🟢');
-            msg.react('🔴');
+            .setColor(colors.SUGGEST_COLOR)
+            suggestChannel.send({ embeds: [embed] }).then(m => {
+            m.react('🟢');
+            m.react('🔴');
+            const Ids = require('../../schemas/IdsSchema');
+            const newSuggestion = new Ids({
+                guildId: interaction.guild.id,
+                guildName: interaction.guild.name,
+                suggestionMessageId: m.id,
+                suggestionId: newSuggestId,
+                suggestionName: suggestion,
+            });
+            newSuggestion.save()
+                .catch(err => {
+                    console.log(err);
+                    interaction.channel.send({ embeds: [errorMain] });
+                });
         });
-        interaction.reply({ embeds: [suggestSucces] });
+        const suggestionMade = new discord.MessageEmbed()
+            .setTitle(":white_check_mark: Succes!")
+            .setDescription(`You have succesfully left a suggestion!`)
+            .setColor(colors.SUGGEST_COLOR)
+            .setTimestamp()
+        interaction.reply({ embeds: [suggestionMade] });
 
         if (guildDatabase.logEnabled === "true") {
             const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!logChannel) return;
             const embed2 = new discord.MessageEmbed()
-                .setColor(colors.KICK_COLOR)
+                .setColor(colors.SUGGEST_COLOR)
                 .setTitle("New Suggestion")
-                .addField("Suggested by:", `${interaction.user}`, true)
-                .addField("User ID:", `${interaction.user.id}`, true)
-                .addField("Suggestion:", `${suggestionContent}`)
+                .addField(`Suggested By`, `${interaction.user}`)
+                .addField(`Suggestion`, `${suggestion}`)
+                .addField(`User-Id`, `${interaction.user.id}`)
+                .setFooter(`ID: ${newSuggestId}`)
                 .setTimestamp()
             logChannel.send({ embeds: [embed2] });
         } else {

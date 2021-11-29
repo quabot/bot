@@ -8,7 +8,7 @@ const { errorMain, warnNoUserToWarn, warnNotHigherRole, addedDatabase } = requir
 
 module.exports = {
     name: "warn",
-    description: "This command allows you to warn a user.",
+    description: "Warn a user.",
     permission: "KICK_MEMBERS",
     /**
      * @param {Client} client 
@@ -17,13 +17,13 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "The user to warn.",
+            description: "User to warn",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "The reason to warn the user.",
+            description: "Reason for warning",
             type: "STRING",
             required: true,
         },

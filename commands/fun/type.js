@@ -7,7 +7,7 @@ const { Sentences } = require('../../validation/sentences');
 
 module.exports = {
     name: "type",
-    description: "Play a game that makes you type words/sentences in 15 seconds.",
+    description: "Play a typing game.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -39,7 +39,7 @@ module.exports = {
                         var timeSpentConverted = date.getSeconds();
                         const correctSentence = new discord.MessageEmbed()
                             .setTitle(":white_check_mark: Correct sentence!")
-                            .setDescription("You typed the correcct sentence!")
+                            .setDescription("You typed the correct sentence!")
                             .addField("Sentence:", `${sentence}`)
                             .addField("Time spent", `\`${timeSpentConverted} seconds\``)
                             .setColor(colors.LIME)

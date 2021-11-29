@@ -6,39 +6,39 @@ const rpsMessage = new discord.MessageEmbed()
     .setDescription("Please react with rock :rock:, paper :newspaper: or scissors :scissors:!")
     .setColor(colors.COLOR);
 const resultTieRock = new discord.MessageEmbed()
-    .setTitle("It's a tie!  :worried:")
+    .setTitle("It's a tie! :worried:")
     .setDescription("We both picked 🪨!")
     .setColor(colors.COLOR);
 const resultWinRock = new discord.MessageEmbed()
-    .setTitle("You won!  :white_check_mark:")
+    .setTitle("You won! :white_check_mark:")
     .setDescription("You picked 🪨 and I picked ✂️!")
     .setColor(colors.COLOR);
 const resultLoseRock = new discord.MessageEmbed()
-    .setTitle("You lost!  :x:")
+    .setTitle("You lost! :x:")
     .setDescription("You picked 🪨 and I picked 📰!")
     .setColor(colors.COLOR);
 const resultTieScissors = new discord.MessageEmbed()
-    .setTitle("It's a tie!  :worried:")
+    .setTitle("It's a tie! :worried:")
     .setDescription("We both picked ✂️!")
     .setColor(colors.COLOR);
 const resultWinScissors = new discord.MessageEmbed()
-    .setTitle("You won!  :white_check_mark:")
+    .setTitle("You won! :white_check_mark:")
     .setDescription("You picked ✂️ and I picked 📰!")
     .setColor(colors.COLOR);
 const resultLoseScissors = new discord.MessageEmbed()
-    .setTitle("You lost!  :x:")
+    .setTitle("You lost! :x:")
     .setDescription("You picked ✂️ and I picked 🪨!")
     .setColor(colors.COLOR);
 const resultTiePaper = new discord.MessageEmbed()
-    .setTitle("It's a tie!  :worried:")
+    .setTitle("It's a tie! :worried:")
     .setDescription("We both picked 📰!")
     .setColor(colors.COLOR);
 const resultWinPaper = new discord.MessageEmbed()
-    .setTitle("You won!  :white_check_mark:")
+    .setTitle("You won! :white_check_mark:")
     .setDescription("You picked 📰 and I picked 🪨!")
     .setColor(colors.COLOR);
 const resultLosePaper = new discord.MessageEmbed()
-    .setTitle("You lost!  :x:")
+    .setTitle("You lost! :x:")
     .setDescription("You picked 📰 and I picked ✂️!")
     .setColor(colors.COLOR);
 const cancelled = new discord.MessageEmbed()
@@ -48,7 +48,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "rps",
-    description: "With this command you can play rock, paper, scissors with the bot.",
+    description: "Play rock, paper, scissors.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

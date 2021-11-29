@@ -1,6 +1,6 @@
 module.exports = {
     name: "settopic",
-    description: "This command allows you to change your support ticket's name.",
+    description: "Change a ticket's topic.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -8,7 +8,7 @@ module.exports = {
      options: [
         {
             name: "newtopic",
-            description: "The topic to change to.",
+            description: "New topic",
             type: "STRING",
             required: true,
         },

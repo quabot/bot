@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require(
 
 module.exports = {
     name: "join",
-    description: "Make quabot join your voice channel.",
+    description: "Make bot join your vc.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

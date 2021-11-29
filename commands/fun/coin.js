@@ -4,7 +4,7 @@ const { CoinFlipping, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "coin",
-    description: "When using this command you will flip a virtual coin.",
+    description: "Flip a coin.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -18,7 +18,7 @@ module.exports = {
             }
 
             const Result = new discord.MessageEmbed()
-                .setDescription(`**${randomCoin()}! :coin:**`)
+                .setTitle(`${randomCoin()}! :coin:`)
                 .setColor(colors.COLOR);
             interaction.reply({ embeds: [CoinFlipping] }).then(msg => {
                 setTimeout(function () {

@@ -8,7 +8,7 @@ const { errorMain, banImpossible, addedDatabase, banNoPermsUser, banNoUser, banN
 
 module.exports = {
     name: "tempmute",
-    description: "This command allows you to temporarily mute a user on the guild you're in.",
+    description: "Temporarily mute a user.",
     permission: "BAN_MEMBERS",
     /**
      * @param {Client} client 
@@ -17,19 +17,19 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "The user to mute.",
+            description: "User to mute",
             type: "USER",
             required: true,
         },
         {
             name: "time",
-            description: "The time to mute the user.",
+            description: "Time to mute",
             type: "STRING",
             required: true,
         },
         {
             name: "reason",
-            description: "A reason to mute the user.",
+            description: "Reason for mute",
             type: "STRING",
             required: false,
         }

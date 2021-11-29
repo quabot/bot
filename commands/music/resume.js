@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, resumedQueu
 
 module.exports = {
     name: "resume",
-    description: "Resume playing music if it has been been previously stopped.",
+    description: "Resume the stream.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

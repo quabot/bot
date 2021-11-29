@@ -5,7 +5,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "mention",
-    description: "By using this command you will mention the entire guild (so you don't take the blame).",
+    description: "Ping everyone",
     permission: "ADMINISTRATOR",
     /**
      * @param {Client} client 

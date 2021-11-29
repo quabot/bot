@@ -21,6 +21,18 @@ const IdsSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: false,
     },
+    suggestionMessageId: {
+        type: mongoose.SchemaTypes.String,
+        required: false,
+    },
+    suggestionId: {
+        type: mongoose.SchemaTypes.String,
+        required: false,
+    },
+    suggestionName: {
+        type: mongoose.SchemaTypes.String,
+        required: false,
+    },
 });
 
 module.exports = mongoose.model('Ids', IdsSchema);

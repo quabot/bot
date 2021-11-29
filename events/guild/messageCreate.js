@@ -15,6 +15,8 @@ module.exports = {
     name: "messageCreate",
     async execute(message, args, client) {
 
+        
+
         const User = require('../../schemas/UserSchema');
         const userDatabase = await User.findOne({
             userId: message.author.id,
@@ -106,11 +108,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter("Continue to chat to level up further!")
                 if (joinChannel) return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] });
-                const sendEmbed = await message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] }).then(m => {
-                    setTimeout(() => {
-                        m.edit({ content: `** **`, embeds: [levelUpEmbed] })
-                    }, 500);
-                })
+                const sendEmbed = await message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] });
             }
         }
     }

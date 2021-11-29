@@ -11,7 +11,7 @@ const noValidChannel = new discord.MessageEmbed()
 
 module.exports = {
     name: "unlock",
-    description: "By using this command you will be able to unlock a channel",
+    description: "Unlock a channel",
     permission: "ADMINISTRATOR",
     /**
      * @param {Client} client 
@@ -20,7 +20,7 @@ module.exports = {
     options: [
         {
             name: "channel",
-            description: "The amount of messages to clear.",
+            description: "Channel to unlock",
             type: "CHANNEL",
             required: false,
         },

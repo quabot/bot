@@ -6,7 +6,7 @@ const { errorMain, iNoPerms } = require('../../files/embeds');
 
 module.exports = {
     name: "nick",
-    description: "Change your nick or someone else's (MANAGE_NICKNAMES required!).",
+    description: "Change nicknames.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -20,7 +20,7 @@ module.exports = {
         },
         {
             name: "user",
-            description: "You need MANAGE MEMBERS permission for this!",
+            description: "User to change the nickname of",
             type: "USER"
         },
     ],

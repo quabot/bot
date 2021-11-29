@@ -5,7 +5,7 @@ const config = require('../../files/config.json');
 const { errorMain } = require('../../files/embeds');
 module.exports = {
     name: "stats",
-    description: "View the discord bot stats and hardware.",
+    description: "Bot statistics.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

@@ -7,7 +7,7 @@ const { errorMain, noPollChannelConfigured, suggestSucces, addedDatabase, pollDi
 
 module.exports = {
     name: "poll",
-    description: "This command allows you to start a poll.",
+    description: "Start a poll.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -15,7 +15,7 @@ module.exports = {
     options: [
         {
             name: "poll",
-            description: "The poll you want the vote to be about.",
+            description: "Poll topic",
             type: "STRING",
             required: true,
         },
@@ -74,6 +74,7 @@ module.exports = {
                 const newBot = new Bot({
                     verifToken: 1,
                     pollId: 0,
+                    suggestId: 0,
                 });
                 newBot.save()
                     .catch(err => {

@@ -9,8 +9,7 @@ module.exports = {
 
         consola.log(` \n${client.user.username.toUpperCase()}\nServers: ${client.guilds.cache.size}\nUsers: ${client.users.cache.size}\nVersion: ${config.VERSION}\n `);
         setTimeout(() => {
-            consola.success(`${client.user.username} is now fully loaded!`);
-            consola.success(`You may now use commands!\n `)
+            consola.success(`${client.user.username}`);
         }, 3000); 
         (function loop() {
             setTimeout(function () {

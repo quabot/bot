@@ -15,7 +15,7 @@ const invalidTime = new discord.MessageEmbed()
 
 module.exports = {
     name: "lock",
-    description: "By using this command you will be able to lock a channel",
+    description: "Lock a channel.",
     permission: "ADMINISTRATOR",
     /**
      * @param {Client} client 
@@ -24,19 +24,19 @@ module.exports = {
     options: [
         {
             name: "reason",
-            description: "The reason to lock the channel.",
+            description: "Reason to lock",
             type: "STRING",
             required: false,
         },
         {
             name: "channel",
-            description: "The amount of messages to clear.",
+            description: "Channel to lock",
             type: "CHANNEL",
             required: false,
         },
         {
             name: "duration",
-            description: "The duration to lock the channel.",
+            description: "Duration to lock",
             type: "STRING",
             required: false,
         },

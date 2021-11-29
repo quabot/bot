@@ -6,7 +6,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "ping",
-    description: "When using this command you will recieve your ping.",
+    description: "Your ping.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

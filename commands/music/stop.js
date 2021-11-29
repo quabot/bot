@@ -7,7 +7,7 @@ const { errorMain, stoppedQueue, noSongs, addedDatabase, NotInVC, MusicIsDisable
 
 module.exports = {
     name: "stop",
-    description: "This command allows you to stop the entire music queue.",
+    description: "Stop the stream.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

@@ -4,32 +4,34 @@ const colors = require('../../files/colors.json');
 const { errorMain } = require('../../files/embeds');
 
 module.exports = {
-    name: "avatar",
-    description: "Get a user's avatar.",
+    name: "power",
+    description: "Get the power of a number.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
         {
-            name: "user",
-            description: "User to get avatar of",
-            type: "USER",
-            required: false,
+            name: "number",
+            description: "Number",
+            type: "INTEGER",
+            required: true,
+        },
+        {
+            name: "power",
+            description: "Power",
+            type: "INTEGER",
+            required: true,
         }
     ],
     async execute(client, interaction) {
 
         try {
-            let user = interaction.options.getUser('user') || interaction.user;
-            let author = interaction.user;
-            let avatar = user.displayAvatarURL({ size: 1024, dynamic: true });
-
+            let no1 = interaction.options.getInteger('number');
+            let no2 = interaction.options.getInteger('power');
             const embed = new discord.MessageEmbed()
-                .setTitle(`Avatar of ${user.username}`)
-                .setImage(avatar)
+                .setTitle(`${no1}^${no2} = ${no1**no2}`)
                 .setColor(colors.COLOR)
-                .setFooter(`Requested by: ${author.tag}`)
             interaction.reply({ embeds: [embed] });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

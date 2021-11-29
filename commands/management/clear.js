@@ -12,13 +12,11 @@ const msg200Max = new discord.MessageEmbed()
 const errorMain = new discord.MessageEmbed()
     .setDescription(":x: I cannot delete messages older than 14 days!")
     .setColor(colors.COLOR)
-const addedDatabase = new discord.MessageEmbed()
-    .setDescription(":white_check_mark: This server is now added to our database.")
-    .setColor(colors.COLOR)
+const { addedDatabase } = require('../../files/embeds');
 
 module.exports = {
     name: "clear",
-    description: "By using this command you will be able to clear an amount of messages.",
+    description: "Clear a number of messages.",
     permission: "ADMINISTRATOR",
     /**
      * @param {Client} client 
@@ -27,7 +25,7 @@ module.exports = {
     options: [
         {
             name: "amount",
-            description: "The amount of messages to clear.",
+            description: "Amount of messages",
             type: "INTEGER",
             required: true,
         },

@@ -9,7 +9,7 @@ const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embed
 
 module.exports = {
     name: "ticket",
-    description: "This command allows you to make a support ticket.",
+    description: "Create a ticket.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -17,7 +17,7 @@ module.exports = {
     options: [
         {
             name: "topic",
-            description: "Your topic on what your ticket is about.",
+            description: "Ticket topic",
             type: "STRING",
             required: true,
         },

@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, noValidMode
 
 module.exports = {
     name: "repeat",
-    description: "Change the repeat mode: 0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE.",
+    description: "Alter repeat mode.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

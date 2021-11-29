@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, shuffledQue
 
 module.exports = {
     name: "shuffle",
-    description: "Shuffle the queue to a new order.",
+    description: "Shuffle queue.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

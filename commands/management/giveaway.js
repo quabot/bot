@@ -19,7 +19,7 @@ const noPrize = new discord.MessageEmbed()
 
 module.exports = {
     name: "giveaway",
-    description: "Create a server giveaway.",
+    description: "Host a giveaway.",
     permission: "ADMINISTRATOR",
     /**
      * @param {Client} client 
@@ -28,25 +28,25 @@ module.exports = {
     options: [
         {
             name: "channel",
-            description: "The channel id where the giveaway should be held.",
+            description: "Channel for the giveaway",
             type: "CHANNEL",
             required: true,
         },
         {
             name: "duration",
-            description: "The duration for the giveaway to last.",
+            description: "Giveaway's duration",
             type: "STRING",
             required: true,
         },
         {
             name: "winners",
-            description: "The amount of winners for the giveaway.",
+            description: "Amount of winners",
             type: "INTEGER",
             required: true,
         },
         {
             name: "prize",
-            description: "The prize for the giveaway.",
+            description: "Giveaway prize",
             type: "STRING",
             required: true,
         },
@@ -133,7 +133,7 @@ module.exports = {
                 }
             });
 
-            interaction.reply(`The giveaway for the \`${giveawayPrize}\` is starting in ${giveawayChannel}.`);
+            interaction.reply(`The giveaway for \`${giveawayPrize}\` is starting in ${giveawayChannel}.`);
 
             if (guildDatabase.logEnabled === "false") {
                 return;

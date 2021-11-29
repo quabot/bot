@@ -7,7 +7,7 @@ const colors = require('../../files/colors.json');
 
 module.exports = {
     name: "meme",
-    description: "When you use this command you get a random meme from a subreddit.",
+    description: "Get a meme.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -27,7 +27,7 @@ module.exports = {
                         .setURL(data.url)
                         .setImage(`${data.url}`)
                         .setFooter(`r/${data.subreddit} - u/${data.author}`)
-                        .setTimestamp('Created ' + data.created)
+                        .setTimestamp('Posted ' + data.created)
                     interaction.editReply({ embeds: [embed], components: [newMeme] });
                 });
             } else if (subreddit === "memes") {
@@ -40,7 +40,7 @@ module.exports = {
                         .setURL(data.url)
                         .setImage(`${data.url}`)
                         .setFooter(`r/${data.subreddit} - u/${data.author}`)
-                        .setTimestamp('Created ' + data.created)
+                        .setTimestamp('Posted ' + data.created)
                     interaction.editReply({ embeds: [embed], components: [newMeme] });
                 });
             } else if (subreddit === "dankmemes") {
@@ -53,7 +53,7 @@ module.exports = {
                         .setURL(data.url)
                         .setImage(`${data.url}`)
                         .setFooter(`r/${data.subreddit} - u/${data.author}`)
-                        .setTimestamp('Created ' + data.created)
+                        .setTimestamp('Posted ' + data.created)
                     interaction.editReply({ embeds: [embed], components: [newMeme] });
                 });
             }

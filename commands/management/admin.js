@@ -6,7 +6,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "admin",
-    description: "This command allows admins to send messages and do some other things.",
+    description: "General admin features.",
     permission: "ADMINISTRATOR",
     /**
      * @param {Client} client 

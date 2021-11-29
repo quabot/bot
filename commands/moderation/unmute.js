@@ -6,7 +6,7 @@ const { errorMain, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, addedDatab
 
 module.exports = {
     name: "unmute",
-    description: "By using this command you will be able to unmute any user in your guild.",
+    description: "Unmute a user",
     permission: "BAN_MEMBERS",
     /**
      * @param {Client} client 
@@ -15,7 +15,7 @@ module.exports = {
      options: [
         {
             name: "user",
-            description: "The user to unmute.",
+            description: "User to unmute",
             type: "USER",
             required: true,
         },

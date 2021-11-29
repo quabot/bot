@@ -7,7 +7,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "serverinfo",
-    description: "When you use this command, you can see a list of information about the server.",
+    description: "Server information.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

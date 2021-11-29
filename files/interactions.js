@@ -414,6 +414,39 @@ const newDog = new discord.MessageActionRow()
             .setLabel('Next Dog')
             .setStyle('PRIMARY'),
     );
+const pictureButtons = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('memePic')
+            .setLabel('Meme')
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('dogPic')
+            .setLabel('Dog')
+            .setStyle('PRIMARY'),
+        new discord.MessageButton()
+            .setCustomId('catPic')
+            .setLabel('Cat')
+            .setStyle('DANGER'),
+    );
+const pictureButtonsDisabled = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('memePic')
+            .setLabel('Meme')
+            .setStyle('SUCCESS')
+            .setDisabled('true'),
+        new discord.MessageButton()
+            .setCustomId('dogPic')
+            .setLabel('Dog')
+            .setStyle('PRIMARY')
+            .setDisabled('true'),
+        new discord.MessageButton()
+            .setCustomId('catPic')
+            .setLabel('Cat')
+            .setStyle('DANGER')
+            .setDisabled('true'),
+    );
 const adminButtons = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
@@ -438,4 +471,4 @@ const reopenButton = new discord.MessageActionRow()
             .setStyle('SUCCESS'),
     );
     
-module.exports = { pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

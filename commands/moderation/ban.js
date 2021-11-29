@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, banNoUser, banImpossible } = require('../../fi
 
 module.exports = {
     name: "ban",
-    description: "This command allows you to permanently ban a user from the guild your in.",
+    description: "Ban a member.",
     permission: "BAN_MEMBERS",
     /**
      * @param {Client} client 
@@ -16,13 +16,13 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "A user to ban",
+            description: "User to ban",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "A reason to ban the user (optional)",
+            description: "Reason for ban",
             type: "STRING",
             required: false,
         }

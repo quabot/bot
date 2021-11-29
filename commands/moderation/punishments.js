@@ -7,7 +7,7 @@ const { errorMain, addedDatabase } = require('../../files/embeds');
 
 module.exports = {
     name: "punishments",
-    description: "By using this command you will be able to mute any user in your guild.",
+    description: "View someone's punishments",
     permission: "BAN_MEMBERS",
     /**
      * @param {Client} client 
@@ -16,13 +16,13 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "The user to get the punishments of.",
+            description: "Use",
             type: "USER",
             required: true,
         },
         {
             name: "punishment",
-            description: "mute/kick/warn/ban/all",
+            description: "Type: mute/kick/warn/ban",
             type: "STRING",
             required: true,
         }

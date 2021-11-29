@@ -9,7 +9,7 @@ const { errorMain, notBanned, addedDatabase, unbanNoUser } = require('../../file
 
 module.exports = {
     name: "unban",
-    description: "This command allows you to unban a previously banned user from the guild your in.",
+    description: "Unban a user.",
     permission: "BAN_MEMBERS",
     /**
      * @param {Client} client 
@@ -18,7 +18,7 @@ module.exports = {
      options: [
         {
             name: "userid",
-            description: "The userID you wish to unban.",
+            description: "User-ID to unban",
             type: "STRING",
             required: true,
         },

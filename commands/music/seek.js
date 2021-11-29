@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, noValidSeek
 
 module.exports = {
     name: "seek",
-    description: "Go to a specific point in the currently playing song.",
+    description: "Seek to a point in the song.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -15,7 +15,7 @@ module.exports = {
     options: [
         {
             name: "seconds",
-            description: "Enter the new time in seconds you wish to seek to.",
+            description: "Time in seconds",
             type: "INTEGER",
             required: true,
         }

@@ -6,7 +6,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "info",
-    description: "When using this command you will recieve a list of bot information.",
+    description: "Information about the bot.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -28,10 +28,10 @@ module.exports = {
                 .setThumbnail("https://i.imgur.com/jgdQUul.png")
                 .addField("Version", config.VERSION)
                 .addField("Servers", `${client.guilds.cache.size}`)
-                .addField("Language", "English, Discord.js v13")
                 .addField("Users", `${client.users.cache.size}`)
                 .addField("Creator", "Joa_sss#0001")
                 .addField("Commands", config.CMD_AMOUNT)
+                .addField("Shard", "Coming soon")
                 .setFooter(`Uptime: ${uptime}`)
                 .setColor(colors.COLOR)
             interaction.reply({ embeds: [embed] })

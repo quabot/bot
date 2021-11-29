@@ -3,19 +3,19 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
-const { errorMain, noPollChannelConfigured, noMSG, addedDatabase, pollDisabled } = require('../../files/embeds');
+const { errorMain, noSuggestChannelConfigured, noMSG, addedDatabase, suggestDisabled } = require('../../files/embeds');
 
 module.exports = {
-    name: "endpoll",
-    description: "Close a poll.",
+    name: "endsuggestion",
+    description: "Close a suggestion.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
     options: [
         {
-            name: "poll-id",
-            description: "Poll ID",
+            name: "suggestion-id",
+            description: "Suggestion ID",
             type: "INTEGER",
             required: true,
         },
@@ -23,7 +23,7 @@ module.exports = {
     async execute(client, interaction) {
 
         try {
-            const pollId = interaction.options.getInteger('poll-id');
+            const suggestionId = interaction.options.getInteger('suggestion-id');
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: interaction.guild.id,
@@ -61,14 +61,14 @@ module.exports = {
                 }
             });
 
-            if (guildDatabase.pollsEnabled === "false") return interaction.reply({ embeds: [pollDisabled] });
-            const pollChannel = interaction.guild.channels.cache.get(guildDatabase.pollChannelID);
-            if (!pollChannel) return interaction.reply({ embeds: [noPollChannelConfigured] });
+            if (guildDatabase.suggestEnabled === "false") return interaction.reply({ embeds: [suggestDisabled] });
+            const suggestChannel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
+            if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] });
 
             const Ids = require('../../schemas/IdsSchema');
-            const pollDatabase = await Ids.findOne({
+            const suggestDatabase = await Ids.findOne({
                 guildId: interaction.guild.id,
-                pollId: pollId,
+                suggestionId: suggestionId,
             }, (err, ids) => {
                 if (err) console.error(err);
                 if (!ids) {
@@ -76,16 +76,17 @@ module.exports = {
                 }
             });
 
-            const msgId = pollDatabase.pollMessageId;
-            const pollContent = pollDatabase.pollName;
+            const msgId = suggestDatabase.suggestionMessageId;
+            const suggestionContent = suggestDatabase.suggestionName;
 
-            pollChannel.messages.fetch(msgId)
+            suggestChannel.messages.fetch(msgId)
                 .then(message => {
+                console.log(message)
                     let result = "did not have a winner";
                     let color = "COLOR";
-                    message.reactions.resolve('⬆️').users.fetch().then(userList => {
+                    message.reactions.resolve('🟢').users.fetch().then(userList => {
                         const upvotes = userList.size;
-                        message.reactions.resolve('⬇️').users.fetch().then(userList => {
+                        message.reactions.resolve('🔴').users.fetch().then(userList => {
                             const downvotes = userList.size;
                             if (downvotes > upvotes) result = "failed"
                             if (upvotes > downvotes) result = "won"
@@ -94,15 +95,17 @@ module.exports = {
                             if (upvotes === downvotes) color = "#4e71e6"
                             if (upvotes === downvotes) result = "tied"
                             const winEmbed = new discord.MessageEmbed()
-                                .setTitle(`${pollContent}`)
-                                .setDescription(`Voting for this poll is over, the poll ${result}!\n\n:arrow_up:  ${upvotes} | :arrow_down:  ${downvotes}`)
+                                .setTitle(`New Suggestion!`)
+                                .setDescription(`Voting has closed, the suggestion has ${result}!`)
+                                .addField(`Suggestion`, `${suggestionContent}`)
+                                .setFooter(`Voting for this suggestion has closed! • Suggestion ID: ${suggestionId}`)
                                 .setTimestamp()
-                                .setFooter(`ID: ${pollDatabase.pollId}`)
-                                .setColor(`${color}`)
+                                .setColor(color)
                             message.edit({ embeds: [winEmbed] });
                             const replyEmbed = new discord.MessageEmbed()
-                                .setTitle(`Poll Ended`)
-                                .setDescription(`Voting for the poll ended, the poll ${result}!`)
+                                .setTitle(`Suggestion Ended`)
+                                .setDescription(`Voting for the suggestion ended, the suggestion ${result}!`)
+                                .addField(`Suggestion`, `${suggestionContent}`)
                                 .setTimestamp()
                                 .setColor(colors.COLOR)
                             interaction.reply({ embeds: [replyEmbed] });
@@ -110,6 +113,7 @@ module.exports = {
                     });
                 })
                 .catch(err => {
+                    console.log(err)
                     interaction.reply({ embeds: [noMSG] });
                 });
 
@@ -117,10 +121,10 @@ module.exports = {
                 const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
                 if (!logChannel) return;
                 const embed2 = new discord.MessageEmbed()
-                    .setColor(colors.POLL_COLOR)
-                    .setTitle("Poll ended")
-                    .addField(`Poll`, `${pollContent}`)
-                    .addField(`Poll ID`, `${pollId}`)
+                    .setColor(colors.SUGGEST_COLOR)
+                    .setTitle("Suggestion ended")
+                    .addField(`Suggestion`, `${suggestionContent}`)
+                    .addField(`Suggestion ID`, `${suggestionId}`)
                     .addField("Message ID", `${msgId}`)
                     .addField("Ended by", `${interaction.user}`)
                     .setTimestamp()

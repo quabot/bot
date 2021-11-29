@@ -7,7 +7,7 @@ const { NotInVC, MusicIsDisabled, errorMain, addedDatabase } = require('../../fi
 
 module.exports = {
     name: "play",
-    description: "This command allows you to play music.",
+    description: "Play a song.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -15,7 +15,7 @@ module.exports = {
     options: [
         {
             name: "song",
-            description: "Enter the song you wish to play or add to the queue here.",
+            description: "Song name/url",
             type: "STRING",
             required: true,
         }

@@ -7,7 +7,7 @@ const { CatScanning, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "cat",
-    description: "When you use this command you will recieve a cute picture of a cat.",
+    description: "Get an image of a cat.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -18,12 +18,12 @@ module.exports = {
             meme('cats', function (err, data) {
                 if (err) return interaction.followUp({ embeds: [errorMain] });
                 const embed = new discord.MessageEmbed()
-                    .setTitle(`Here is your cat! :cat:`)
+                    .setTitle(`Here is your cat image! :cat:`)
                     .setColor(colors.COLOR)
                     .setImage(`${data.url}`)
                     .setURL(data.url)
                     .setFooter(`r/${data.subreddit}`)
-                    .setTimestamp('Created ' + data.created)
+                    .setTimestamp('Posted ' + data.created)
                 interaction.editReply({ embeds: [embed], components: [newCat] });
             });
         } catch (e) {

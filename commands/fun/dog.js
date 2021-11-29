@@ -7,7 +7,7 @@ const { newDog } = require('../../files/interactions');
 
 module.exports = {
     name: "dog",
-    description: "By using this command you recieve picture of a dog.",
+    description: "Get an imagine of a dog.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -19,12 +19,12 @@ module.exports = {
             meme('dogpics', function (err, data) {
                 if (err) return interaction.followUp({ embeds: [errorMain] });
                 const embed = new discord.MessageEmbed()
-                    .setTitle(`Here is your dog! :dog:`)
+                    .setTitle(`Here is your dog image! :dog:`)
                     .setColor(colors.COLOR)
                     .setImage(`${data.url}`)
                     .setURL(data.url)
                     .setFooter(`r/${data.subreddit}`)
-                    .setTimestamp('Created ' + data.created)
+                    .setTimestamp('Posted ' + data.created)
                 interaction.editReply({ embeds: [embed], components: [newDog] });
             });
         } catch (e) {

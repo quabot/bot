@@ -6,11 +6,11 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "help",
-    description: "By using this command you will get a list of commands or see how to use them.",
+    description: "List of commands and their descriptions.",
     options: [
         {
             name: "category",
-            description: "A category of commands to choose from.",
+            description: "Help category",
             type: "STRING",
             required: false,
         }

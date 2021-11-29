@@ -6,7 +6,7 @@ const { LBNoXP, LBDisabled, addedDatabase, errorMain } = require('../../files/em
 
 module.exports = {
     name: "leaderboard",
-    description: "This command allows you to view a leaderbord of levels of a server.",
+    description: "Server's xp leaderboard.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

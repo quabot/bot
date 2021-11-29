@@ -5,7 +5,7 @@ const {errorMain} = require('../../files/embeds')
 
 module.exports = {
     name: "uptime",
-    description: "When using this command, the current online time of the bot is displayed.",
+    description: "Bot's uptime.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, muteNoUser, muteNoRoleManage, muteNoPermsUser 
 
 module.exports = {
     name: "mute",
-    description: "By using this command you will be able to mute any user in your guild.",
+    description: "Mute a member.",
     permission: "BAN_MEMBERS",
     /**
      * @param {Client} client 
@@ -16,13 +16,13 @@ module.exports = {
     options: [
         {
             name: "user",
-            description: "The user to mute.",
+            description: "User to mute",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "A reason to mute the user.",
+            description: "Reason for mute",
             type: "STRING",
             required: false,
         }

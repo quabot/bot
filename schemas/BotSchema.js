@@ -9,6 +9,10 @@ const BotSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.Number,
         required: true,
     },
+    suggestId: {
+        type: mongoose.SchemaTypes.Number,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('Bot', BotSchema);

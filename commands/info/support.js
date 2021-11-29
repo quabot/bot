@@ -4,7 +4,7 @@ const { SupportEmbed, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "support",
-    description: "Get support if you have issues with quabot.",
+    description: "Bot's support discord.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

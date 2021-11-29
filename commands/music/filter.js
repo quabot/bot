@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, noSongs, MusicIsDisabled } = require(
 
 module.exports = {
     name: "filter",
-    description: "When using this command you can apply a filter to the playing song.",
+    description: "Toggle filters.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -15,7 +15,7 @@ module.exports = {
     options: [
         {
             name: "filter-type",
-            description: "Enter the the type of filter you wish! (Bass boost, treble etc.).",
+            description: "The filter-type",
             type: "STRING",
             required: true,
         }

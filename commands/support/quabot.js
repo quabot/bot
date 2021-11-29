@@ -6,7 +6,7 @@ const config = require('../../files/config.json')
 
 module.exports = {
     name: "quabot",
-    description: "This command is for testing purposes.",
+    description: "Report bugs or leave suggestions for the quabot team.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

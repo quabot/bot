@@ -1,6 +1,6 @@
 module.exports = {
     name: "reopen",
-    description: "This command allows you to add a user to your support ticket.",
+    description: "Reopen a ticket.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -8,9 +8,9 @@ module.exports = {
      options: [
         {
             name: "channel",
-            description: "The channel to reopen",
+            description: "Ticket to reopen",
             type: "CHANNEL",
-            required: true,
+            required: false,
         },
     ],
     async execute(client, interaction) {

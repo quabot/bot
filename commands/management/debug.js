@@ -7,7 +7,7 @@ const { errorMain, debugError } = require('../../files/embeds');
 
 module.exports = {
     name: "debug",
-    description: "Command that is used for developement.",
+    description: "Developer command [QuaBeta only].",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

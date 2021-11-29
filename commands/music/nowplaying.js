@@ -6,7 +6,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require(
 
 module.exports = {
     name: "nowplaying",
-    description: "Get informations about the currently playing song.",
+    description: "Information about playing song.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

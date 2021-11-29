@@ -9,7 +9,7 @@ const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embed
 
 module.exports = {
     name: "close",
-    description: "This command allows you to close a support ticket.",
+    description: "Close a ticket.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

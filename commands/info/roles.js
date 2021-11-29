@@ -4,7 +4,7 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "roles",
-    description: "When using this command you will recieve a list of roles in this guild.",
+    description: "List of roles in this guild.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

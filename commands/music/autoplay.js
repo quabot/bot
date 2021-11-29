@@ -7,7 +7,7 @@ const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require(
 
 module.exports = {
     name: "autoplay",
-    description: "Toggle the automatic playing or similar songs on or off.",
+    description: "Toggle autoplay.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

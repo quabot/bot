@@ -3,7 +3,7 @@ const colors = require('../../files/colors.json');
 
 module.exports = {
     name: "servericon",
-    description: "When you use this command you will see the servers icon.",
+    description: "Server's icon.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -17,6 +17,7 @@ module.exports = {
                 .setColor(colors.COLOR)
                 .setImage(interaction.guild.iconURL({ dynamic: true }))
                 .setTitle(`${interaction.guild.name}`)
+                .setTimestamp()
                 .setFooter("If you don't see an icon, the guild doesn't have one.")
             interaction.reply({ embeds: [membersEmbed] })
         } catch (e) {
