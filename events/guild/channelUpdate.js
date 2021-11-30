@@ -36,15 +36,15 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [errorMain] });
                     });
-                return interaction.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
         const logChannel = oldChannel.guild.channels.cache.get(guildDatabase.logChannelID);
@@ -67,13 +67,12 @@ module.exports = {
                     embed.addField(`**  **`, `**  **`, true)
                 }
                 if (oldChannel.nsfw !== newChannel.nsfw) {
-                    embed.addField(`Old NSFW`, `${oldChannel.nsfw}`, true)
-                    embed.addField(`New NSFW`, `${newChannel.nsfw}`, true)
+                    embed.addField(`NSFW`, `${oldChannel.nsfw}`, true)
                     embed.addField(`**  **`, `**  **`, true)
                 }
                 if (oldChannel.parentId !== newChannel.parentId) {
-                    embed.addField(`Old Parent`, `<#${oldChannel.parentId}>`, true)
-                    embed.addField(`New Parent`, `<#${newChannel.parentId}>`, true)
+                    embed.addField(`Old Parent`, `${oldChannel.parentId}`, true)
+                    embed.addField(`New Parent`, `${newChannel.parentId}`, true)
                     embed.addField(`**  **`, `**  **`, true)
                 }
                 if (oldChannel.rawPosition !== newChannel.rawPosition) {
@@ -100,13 +99,13 @@ module.exports = {
                 embed.addField(`**  **`, `**  **`, true)
             }
             if (oldChannel.nsfw !== newChannel.nsfw) {
-                embed.addField(`Old NSFW`, `${oldChannel.nsfw}`, true)
-                embed.addField(`New NSFW`, `${newChannel.nsfw}`, true)
+                embed.addField(`NSFW`, `${newChannel.nsfw}`, true)
+                embed.addField(`**  **`, `**  **`, true)
                 embed.addField(`**  **`, `**  **`, true)
             }
             if (oldChannel.parentId !== newChannel.parentId) {
-                embed.addField(`Old Parent`, `<#${oldChannel.parentId}>`, true)
-                embed.addField(`New Parent`, `<#${newChannel.parentId}>`, true)
+                embed.addField(`Old Parent`, `${oldChannel.parentId}`, true)
+                embed.addField(`New Parent`, `${newChannel.parentId}`, true)
                 embed.addField(`**  **`, `**  **`, true)
             }
             if (oldChannel.rawPosition !== newChannel.rawPosition) {
@@ -114,6 +113,11 @@ module.exports = {
                 embed.addField(`New Position`, `${newChannel.rawPosition}`, true)
                 embed.addField(`**  **`, `**  **`, true)
             }
+                if (oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser) {
+                    embed.addField(`Old Slowmode`, `${oldChannel.rateLimitPerUser /60} minutes`, true)
+                    embed.addField(`New Slowmode`, `${newChannel.rateLimitPerUser/60} minuts`, true)
+                    embed.addField(`**  **`, `**  **`, true)
+                }
             logChannel.send({ embeds: [embed] });
         }
 
@@ -135,18 +139,23 @@ module.exports = {
                     embed.addField(`**  **`, `**  **`, true)
                 }
                 if (oldChannel.nsfw !== newChannel.nsfw) {
-                    embed.addField(`Old NSFW`, `${oldChannel.nsfw}`, true)
-                    embed.addField(`New NSFW`, `${newChannel.nsfw}`, true)
+                    embed.addField(`NSFW`, `${newChannel.nsfw}`, true)
+                    embed.addField(`**  **`, `**  **`, true)
                     embed.addField(`**  **`, `**  **`, true)
                 }
                 if (oldChannel.parentId !== newChannel.parentId) {
-                    embed.addField(`Old Parent`, `<#${oldChannel.parentId}>`, true)
-                    embed.addField(`New Parent`, `<#${newChannel.parentId}>`, true)
+                    embed.addField(`Old Parent`, `${oldChannel.parentId}`, true)
+                    embed.addField(`New Parent`, `${newChannel.parentId}`, true)
                     embed.addField(`**  **`, `**  **`, true)
                 }
                 if (oldChannel.rawPosition !== newChannel.rawPosition) {
                     embed.addField(`Old Position`, `${oldChannel.rawPosition}`, true)
                     embed.addField(`New Position`, `${newChannel.rawPosition}`, true)
+                    embed.addField(`**  **`, `**  **`, true)
+                }
+                if (oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser) {
+                    embed.addField(`Old Slowmode`, `${oldChannel.rateLimitPerUser}`, true)
+                    embed.addField(`New Slowmode`, `${newChannel.rateLimitPerUser}`, true)
                     embed.addField(`**  **`, `**  **`, true)
                 }
                 logChannel.send({ embeds: [embed] });
@@ -167,13 +176,13 @@ module.exports = {
                 embed.addField(`**  **`, `**  **`, true)
             }
             if (oldChannel.nsfw !== newChannel.nsfw) {
-                embed.addField(`Old NSFW`, `${oldChannel.nsfw}`, true)
-                embed.addField(`New NSFW`, `${newChannel.nsfw}`, true)
+                embed.addField(`NSFW`, `${newChannel.nsfw}`, true)
+                embed.addField(`**  **`, `**  **`, true)
                 embed.addField(`**  **`, `**  **`, true)
             }
             if (oldChannel.parentId !== newChannel.parentId) {
-                embed.addField(`Old Parent`, `<#${oldChannel.parentId}>`, true)
-                embed.addField(`New Parent`, `<#${newChannel.parentId}>`, true)
+                embed.addField(`Old Parent`, `${oldChannel.parentId}`, true)
+                embed.addField(`New Parent`, `${newChannel.parentId}`, true)
                 embed.addField(`**  **`, `**  **`, true)
             }
             if (oldChannel.rawPosition !== newChannel.rawPosition) {

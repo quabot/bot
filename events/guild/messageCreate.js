@@ -68,6 +68,7 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
@@ -108,7 +109,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter("Continue to chat to level up further!")
                 if (joinChannel) return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] });
-                const sendEmbed = await message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] });
+                message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] });
             }
         }
     }

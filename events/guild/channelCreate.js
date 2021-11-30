@@ -36,15 +36,15 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [errorMain] });
                     });
-                return interaction.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
 
@@ -97,7 +97,6 @@ module.exports = {
             if (logChannel) {
                 const embed = new MessageEmbed()
                     .setColor(colors.CAT_CHANNEL_CREATE)
-                    .setDescription(`<#${channel.id}>`)
                     .setTitle('Category Created!')
                     .addField('Name', `${channel.name}`)
                     .addField('ID', `${channel.id}`)
@@ -110,7 +109,7 @@ module.exports = {
             if (guildDatabase.logEnabled === "true") {
             if (logChannel) {
                 const embed = new MessageEmbed()
-                    .setColor(colors.VOICE_CHANNEL_CREATE)
+                    .setColor(colors.NEWS_CHANNEL_CREATE)
                     .setDescription(`<#${channel.id}>`)
                     .setTitle('Voice Channel Created!')
                     .addField('Name', `${channel.name}`)

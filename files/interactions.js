@@ -52,7 +52,7 @@ const selectCategory = new discord.MessageActionRow()
                     label: 'Change Channels',
                     description: 'Allows you to change log channel, welcome channel and more channel-related settings.',
                     value: 'change_channels',
-                 },
+                },
                 {
                     label: 'Change Roles',
                     description: 'Allows you to change roles for people who are muted, on join etc.',
@@ -82,17 +82,17 @@ const logButtons = new discord.MessageActionRow()
             .setLabel('Disable')
             .setStyle('DANGER'),
     );
-const swearButtons = new discord.MessageActionRow()
+const roleButtons = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
-            .setCustomId('enableSwear')
+            .setCustomId('enableRole')
             .setLabel('Enable')
-            .setDisabled(true)
+            .setDisabled(false)
             .setStyle('SUCCESS'),
         new discord.MessageButton()
-            .setCustomId('disableSwear')
+            .setCustomId('disableRole')
             .setLabel('Disable')
-            .setDisabled(true)
+            .setDisabled(false)
             .setStyle('DANGER'),
     );
 const musicButtons = new discord.MessageActionRow()
@@ -228,9 +228,9 @@ const toggle = new discord.MessageActionRow()
                     value: 'log_toggle',
                 },
                 {
-                    label: 'Swear Filter',
-                    description: 'Enable or disable the swear filter.',
-                    value: 'swear_toggle',
+                    label: 'Join Roles',
+                    description: 'Enable or disable join roles.',
+                    value: 'role_toggle',
                 },
                 {
                     label: 'Music',
@@ -380,6 +380,21 @@ const closeTicketWCancel = new discord.MessageActionRow()
             .setEmoji('❌')
             .setStyle('DANGER'),
     );
+const closeTicketWCancelDis = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('close')
+            .setLabel('Close')
+            .setEmoji('🔒')
+            .setDisabled(true)
+            .setStyle('PRIMARY'),
+        new discord.MessageButton()
+            .setCustomId('cancelclose')
+            .setLabel('Cancel')
+            .setEmoji('❌')
+            .setDisabled(true)
+            .setStyle('DANGER'),
+    );
 const deleteTicket = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
@@ -470,5 +485,29 @@ const reopenButton = new discord.MessageActionRow()
             .setEmoji('🔓')
             .setStyle('SUCCESS'),
     );
-    
-module.exports = { pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, swearButtons, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+const reopenButtonClosed = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('reopen')
+            .setLabel('Reopen')
+            .setEmoji('🔓')
+            .setDisabled(true)
+            .setStyle('SUCCESS'),
+    );
+const deleteTicketC = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('deleteconfirm')
+            .setLabel('Delete')
+            .setEmoji('🗑️')
+            .setDisabled(true)
+            .setStyle('SUCCESS'),
+        new discord.MessageButton()
+            .setCustomId('cancel')
+            .setLabel('Cancel')
+            .setEmoji('❌')
+            .setDisabled(true)
+            .setStyle('DANGER'),
+    );
+
+module.exports = { reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

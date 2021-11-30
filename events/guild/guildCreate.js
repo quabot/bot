@@ -1,28 +1,22 @@
-const discord = require('discord.js');
+const config = require('../../files/config.json');
 const mongoose = require('mongoose');
-
-const colors = require('../../files/colors.json');
-const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, pausedQueue } = require('../../files/embeds');
-
+const consola = require('consola');
 
 module.exports = {
-    name: "pause",
-    description: "Pause the stream.",
+    name: "guildCreate",
     /**
      * @param {Client} client 
-     * @param {CommandInteraction} interaction
      */
-    async execute(client, interaction) {
-
+    async execute(guild, client) {
         const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
-            guildId: interaction.guild.id,
+            guildId: guild.id,
         }, (err, guild) => {
             if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    guildId: interaction.guild.id,
-                    guildName: interaction.guild.name,
+                    guildId: guild.id,
+                    guildName: guild.name,
                     logChannelID: "none",
                     reportChannelID: "none",
                     suggestChannelID: "none",
@@ -46,20 +40,13 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [errorMain] });
                     });
-                return interaction.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
 
-        if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
-
-        const member = interaction.guild.members.cache.get(interaction.user.id);
-        if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-
-        const queue = client.player.getQueue(interaction);
-        if(!queue) return interaction.reply({ embeds: [noSongs] });
-        client.player.pause(interaction);
-        interaction.reply({ embeds: [pausedQueue] });
+        consola.log(" ");
+        consola.info("QUABOT ADDED")
+        consola.info(`QuaBot has been added to: ${guild.name}\nMembers: ${guild.memberCount}`);
     }
-}
+};

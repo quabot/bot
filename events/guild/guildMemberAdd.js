@@ -13,7 +13,7 @@ module.exports = {
 
         const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
-            guildId: message.guild.id,
+            guildId: member.guild.id,
         }, (err, guild) => {
             if (err) console.error(err);
             if (!guild) {
@@ -36,6 +36,7 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
@@ -49,7 +50,13 @@ module.exports = {
         const logChannel = member.guild.channels.cache.get(guildDatabase.logChannelID);
         const joinChannel = member.guild.channels.cache.get(guildDatabase.welcomeChannelID);
 
-        console.log(joinChannel)
+        if (guildDatabase.roleEnabled === "true") {
+            let mainRoleName = guildDatabase.mainRole;
+            let mainRole = member.guild.roles.cache.find(role => role.name === `${mainRoleName}`);  
+            let memberTarget = member.guild.members.cache.get(member.id);
+
+            memberTarget.roles.add(mainRole.id);
+        }
 
         if (guildDatabase.logEnabled === "true") {
             if (logChannel) {

@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(message, client) {
 
-        const Guild = require('./schemas/GuildSchema');
+        const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: message.guild.id,
         }, (err, guild) => {
@@ -36,18 +36,19 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        message.channel.send({ embeds: [errorMain] });
                     });
-                return message.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
         const logChannel = message.guild.channels.cache.get(guildDatabase.logChannelID);
+
 
         if (guildDatabase.logEnabled === "true") {
             if (!logChannel) {
@@ -58,9 +59,10 @@ module.exports = {
                     .setTitle('Message Deleted')
                     .addField('Channel', `<#${message.channelId}>`)
                     .addField('Author', `<@${message.author.id}>`)
-                    .addField('Content', `** ${message.content}**`)
+                    .addField('Content', `${message.content}** **`)
                     .addField('Message ID', `${message.id}`)
-                return logChannel.send({ embeds: [embed]});
+                    .addField('Attachment', `${message.attachments.proxyUrl}`)
+                return logChannel.send({ embeds: [embed] });
             };
         } else {
             return;

@@ -1,28 +1,25 @@
-const discord = require('discord.js');
+const { commands } = require('../../index');
+const { Client, MessageEmbed } = require('discord.js');
+const colors = require('../../files/colors.json');
+const consola = require('consola');
 const mongoose = require('mongoose');
 
-const colors = require('../../files/colors.json');
-const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, pausedQueue } = require('../../files/embeds');
-
-
 module.exports = {
-    name: "pause",
-    description: "Pause the stream.",
+    name: "emojiDelete",
     /**
      * @param {Client} client 
-     * @param {CommandInteraction} interaction
      */
-    async execute(client, interaction) {
+    async execute(emoji, client) {
 
         const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
-            guildId: interaction.guild.id,
+            guildId: emoji.guild.id,
         }, (err, guild) => {
             if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    guildId: interaction.guild.id,
-                    guildName: interaction.guild.name,
+                    guildId: emoji.guild.id,
+                    guildName: emoji.guild.name,
                     logChannelID: "none",
                     reportChannelID: "none",
                     suggestChannelID: "none",
@@ -46,20 +43,25 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [errorMain] });
                     });
-                return interaction.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
+        const logChannel = emoji.guild.channels.cache.get(guildDatabase.logChannelID);
 
-        if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
-
-        const member = interaction.guild.members.cache.get(interaction.user.id);
-        if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC]});
-
-        const queue = client.player.getQueue(interaction);
-        if(!queue) return interaction.reply({ embeds: [noSongs] });
-        client.player.pause(interaction);
-        interaction.reply({ embeds: [pausedQueue] });
+        if (guildDatabase.logEnabled === "true") {
+            if (logChannel) {
+                const embed = new MessageEmbed()
+                    .setColor(colors.LOCK_COLOR)
+                    .setTitle('Emoji Deleted!')
+                    .addField('Emoji Name', `\`${emoji.name}\``, true)
+                    .addField('Emoji-ID', `\`${emoji.id}\``, true)
+                if (emoji.animated === true) {
+                    embed.addField(`Animated`, `${emoji.animated}`, true)
+                }
+                embed.setTimestamp()
+                logChannel.send({ embeds: [embed] });
+            };
+        }
     }
 }

@@ -13,7 +13,7 @@ module.exports = {
 
         if (oldMessage.author.bot) return
 
-        const Guild = require('./schemas/GuildSchema');
+        const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: oldMessage.guild.id,
         }, (err, guild) => {
@@ -38,19 +38,18 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        message.channel.send({ embeds: [errorMain] });
                     });
-                return message.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
         const logChannel = oldMessage.guild.channels.cache.get(guildDatabase.logChannelID);
-        console.log(oldMessage)
 
         if (guildDatabase.logEnabled === "true") {
             if (!logChannel) {

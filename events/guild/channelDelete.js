@@ -36,15 +36,15 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [errorMain] });
                     });
-                return interaction.channel.send({ embeds: [addedDatabase] });
+                return;
             }
         });
         const logChannel = channel.guild.channels.cache.get(guildDatabase.logChannelID);
@@ -105,7 +105,7 @@ module.exports = {
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
                     const embed = new MessageEmbed()
-                        .setColor(colors.VOICE_CHANNEL_DELETE)
+                        .setColor(colors.NEWS_CHANNEL_DELETE)
                         .setTitle('Voice Channel Deleted!')
                         .addField('Name', `${channel.name}`)
                         .addField('ID', `${channel.id}`)

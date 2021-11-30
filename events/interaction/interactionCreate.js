@@ -9,8 +9,9 @@ const { commands } = require('../../index');
 
 const { CatScanning, addedDatabase, DogScanning, ticketsDisabled, MemeScanning } = require('../../files/embeds');
 const { closeTicket, reopenButton, ticketButton, deleteTicket, newMeme, newCat, newDog } = require('../../files/interactions');
-const { disabledLevelUp, roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, errorMain, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, swearDisabled, swearEnabled, pollEnabled, pollsDisabled } = require('../../files/embeds');
-const { role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, swearButtons, disableLevel, pollButtons, pictureButtonsDisabled } = require('../../files/interactions');
+const { disabledLevelUp, roleEmbed, channelEmbed, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportDisabled, reportEnabled, musicDisabled, musicEnabled, errorMain, optionsEmbed, noPerms, toggleEmbed, levelsDisabled, levelsEnabled, logsDisabled, logsEnabled, roleDisabled, roleEnabled, pollEnabled, pollsDisabled, closeTicketEmbed } = require('../../files/embeds');
+const { closeTicket, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, roleButtons, disableLevel, pollButtons, pictureButtonsDisabled } = require('../../files/interactions');
+const { embedClose1, noOwner } = require('../../files/embeds');
 
 module.exports = {
     name: "interactionCreate",
@@ -61,6 +62,7 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
@@ -272,8 +274,10 @@ module.exports = {
 
             }
             if (interaction.customId === "close") {
+                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
                 if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-                    return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+                    return interaction.channel.send({ embeds: [noOwner] })
                 }
 
                 if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
@@ -282,7 +286,7 @@ module.exports = {
                     .setTitle("Closing ticket...")
                     .setDescription("Reopen this ticket using the buttons below this message!")
                     .setTimestamp()
-                interaction.reply({ embeds: [closeEmbed], components: [reopenButton] });
+                interaction.channel.send({ embeds: [closeEmbed], components: [reopenButton] });
 
                 let CticketsCatName = guildDatabase.closedTicketCategory;
                 if (CticketsCatName === "undefined") {
@@ -292,7 +296,7 @@ module.exports = {
                 let closedCategory = interaction.guild.channels.cache.find(cat => cat.name === CticketsCatName);
 
                 if (closedCategory === undefined) {
-                    interaction.reply("the closed category does not exist, creating one now...");
+                    interaction.channel.send("the closed category does not exist, creating one now...");
                     interaction.guild.channels.create(CticketsCatName, { type: "GUILD_CATEGORY" });
                     return interaction.channel.send(":white_check_mark: Succes! Please run the command again to create your ticket.")
                 }
@@ -303,52 +307,69 @@ module.exports = {
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true
                 });
+                interaction.update({ embeds: [closeTicketEmbed], components: [closeTicketWCancelDis] })
+
             }
             if (interaction.customId === "cancel") {
+                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+                interaction.update({ embeds: [embedClose1], components: [deleteTicketC] });
                 if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-                    return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+                    return interaction.channel.send({ embeds: [noOwner] })
                 }
                 const cancelEmbed = new MessageEmbed()
                     .setColor(colors.TICKET_CLOSING)
                     .setTitle(":x: Cancelled!")
-                    .setDescription("Cancelled the deleting/closing of this ticket.")
+                    .setDescription("Cancelled the deleting of this ticket.")
                     .setTimestamp()
-                interaction.reply({ embeds: [cancelEmbed] });
+                interaction.channel.send({ embeds: [cancelEmbed] });
             }
             if (interaction.customId === "cancelclose") {
+                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+                interaction.update({ embeds: [closeTicketEmbed], components: [closeTicketWCancelDis] })
+
                 if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-                    return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+                    return interaction.channel.send({ embeds: [noOwner] })
                 }
                 const cancelEmbed = new MessageEmbed()
                     .setColor(colors.TICKET_CLOSING)
                     .setTitle(":x: Cancelled!")
                     .setDescription("Cancelled the deleting/closing of this ticket.")
                     .setTimestamp()
-                interaction.reply({ embeds: [cancelEmbed] });
+                interaction.channel.send({ embeds: [cancelEmbed] });
             }
             if (interaction.customId === "deleteconfirm") {
+                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+                interaction.update({ components: [deleteTicket] });
                 const deleting = new MessageEmbed()
                     .setColor(colors.TICKET_DELETE)
                     .setTitle("Ticket deleting...")
                     .setDescription("Ticket will be deleted, this cannot be reverted.")
                     .setTimestamp()
-                interaction.reply({ embeds: [deleting] });
+                interaction.channel.send({ embeds: [deleting] });
                 setTimeout(() => {
                     interaction.channel.delete()
                 }, 2000);
             }
             if (interaction.customId === "delete") {
+                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+                interaction.update({ components: [deleteTicket]});
                 if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-                    return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+                    return interaction.channel.send({ embeds: [noOwner] })
                 }
                 const sureDelete = new MessageEmbed()
                     .setColor(colors.TICKET_CLOSING)
                     .setTitle("Are you sure you want to delete this ticket?")
                     .setDescription("This cannot be reverted.")
                     .setTimestamp()
-                interaction.reply({ embeds: [sureDelete], components: [deleteTicket] });
+                interaction.channel.send({ embeds: [sureDelete], components: [deleteTicket] });
             }
             if (interaction.customId === "ticketmsg") {
+                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
                 const ticketMsg = new MessageEmbed()
                     .setColor(colors.TICKET_CREATED)
                     .setTitle("Create a ticket!")
@@ -359,6 +380,8 @@ module.exports = {
                 interaction.channel.send({ embeds: [ticketMsg], components: [ticketButton] });
             }
             if (interaction.customId === "ticket") {
+                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
                 let ticketsCatName = guildDatabase.ticketCategory;
                 let CticketsCatName = guildDatabase.closedTicketCategory;
 
@@ -457,16 +480,19 @@ module.exports = {
                 }
             }
             if (interaction.customId === "reopen") {
+                interaction.update({ components: [reopenButtonClosed] });
+                if (guildDatabase.ticketEnabled === "false") return interaction.channel.send({ embeds: [ticketsDisabled] });
+
                 if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-                    return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+                    return interaction.channel.send({ embeds: [noOwner] })
                 }
-                if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+                if (guildDatabase.ticketEnabled === "false") return interaction.channel.send({ embeds: [ticketsDisabled] });
                 const reopenEmbed = new MessageEmbed()
                     .setColor(colors.TICKET_CLOSING)
                     .setTitle("Re-opening ticket...")
                     .setDescription("Close or delete this ticket using the buttons below this message!")
                     .setTimestamp()
-                interaction.reply({ embeds: [reopenEmbed], components: [closeTicket] });
+                interaction.channel.send({ embeds: [reopenEmbed], components: [closeTicket] });
 
                 let ticketsCatName = guildDatabase.ticketCategory;
                 if (ticketsCatName === "undefined") {
@@ -476,7 +502,7 @@ module.exports = {
                 let Category = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
 
                 if (Category === undefined) {
-                    interaction.reply("The tickets category does not exist, creating one now...");
+                    interaction.channel.send("The tickets category does not exist, creating one now...");
                     interaction.guild.channels.create(ticketsCatName, { type: "GUILD_CATEGORY" });
                     return interaction.channel.send(":white_check_mark: Succes! Please run the command again to create your ticket.")
                 }
@@ -579,10 +605,10 @@ module.exports = {
             .addField("Current value", `${guildDatabase.logEnabled}`)
             .setColor(colors.COLOR)
             .setThumbnail("https://i.imgur.com/jgdQUul.png");
-        const toggleSwear = new discord.MessageEmbed()
-            .setTitle("Toggle Swearfilter")
-            .setDescription("This feature has been removed.")
-            .addField("Current value", `**Removed**`)
+        const toggleRole = new discord.MessageEmbed()
+            .setTitle("Toggle Join Roles")
+            .setDescription("Use the buttons to enable/disable join roles.")
+            .addField("Current value", `${guildDatabase.roleEnabled}`)
             .setColor(colors.COLOR)
             .setThumbnail("https://i.imgur.com/jgdQUul.png"); 3
         const toggleMusic = new discord.MessageEmbed()
@@ -635,9 +661,9 @@ module.exports = {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
                 interaction.reply({ ephemeral: true, embeds: [toggleLogs], components: [logButtons] })
             }
-            if (interaction.values[0] === "swear_toggle") {
+            if (interaction.values[0] === "role_toggle") {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                interaction.reply({ ephemeral: true, embeds: [toggleSwear] })
+                interaction.reply({ ephemeral: true, embeds: [toggleRole], components: [roleButtons] })
             }
             if (interaction.values[0] === "music_toggle") {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
@@ -694,13 +720,19 @@ module.exports = {
                 });
                 interaction.update({ ephemeral: true, embeds: [logsDisabled], components: [disabledToggle] });
             }
-            if (interaction.customId === "enableSwear") {
+            if (interaction.customId === "enableRole") {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                interaction.update({ ephemeral: true, embeds: [swearEnabled], components: [disabledToggle] });
+                interaction.update({ ephemeral: true, embeds: [roleEnabled], components: [disabledToggle] });
+                await guildDatabase.updateOne({
+                    roleEnabled: true
+                });
             }
-            if (interaction.customId === "disableSwear") {
+            if (interaction.customId === "disableRole") {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                interaction.update({ ephemeral: true, embeds: [swearDisabled], components: [disabledToggle] });
+                interaction.update({ ephemeral: true, embeds: [roleDisabled], components: [disabledToggle] });
+                await guildDatabase.updateOne({
+                    roleEnabled: false
+                });
             }
             if (interaction.customId === "enableMusic") {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });

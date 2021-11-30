@@ -1,7 +1,7 @@
 @echo off
 color f
-echo Starting bot... ⌛
+echo Starting bot...
 :main
 node .
-echo Restarting bot.. 🔁
+echo Restarting bot..
 goto main

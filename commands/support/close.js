@@ -6,6 +6,7 @@ const config = require('../../files/config.json')
 const { closeTicketWCancel } = require('../../files/interactions');
 
 const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
+const { noOwner } = require('../../files/embeds');
 
 module.exports = {
     name: "close",
@@ -43,6 +44,7 @@ module.exports = {
                     ticketEnabled: true,
                     welcomeEnabled: true,
                     pollsEnabled: true,
+                    roleEnabled: true,
                     mainRole: "Member",
                     mutedRole: "Muted"
                 });
@@ -57,7 +59,7 @@ module.exports = {
         if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
 
         if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-            return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+            return interaction.reply({ embeds: [noOwner] })
         }
 
         const embed = new discord.MessageEmbed()
@@ -65,6 +67,6 @@ module.exports = {
             .setTitle("Close Ticket")
             .setDescription("Close or delete this ticket using the buttons below this message.")
             .setTimestamp()
-        interaction.reply({ embeds: [embed], components: [closeTicketWCancel]});
+        interaction.reply({ embeds: [embed], components: [closeTicketWCancel] });
     }
 }

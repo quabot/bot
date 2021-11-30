@@ -73,6 +73,10 @@ const GuildSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
     },
+    roleEnabled: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+    },
     mainRole: {
         type: mongoose.SchemaTypes.String,
         required: true,
