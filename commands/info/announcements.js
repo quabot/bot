@@ -15,7 +15,7 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.COLOR)
                 .setTitle("QuaBeta update - 27 November")
-                .setDescription("Check it out here: https://discord.quabot.xyz/\nFull changelog can be found here: https://discord.com/channels/847828281860423690/909416619971862578/914269370505637921")
+                .setDescription("Check it out here: https://discord.quabot.xyz/\nFull changelog can be found in the changelogs channel")
                 .setTimestamp()
             interaction.reply({ embeds: [embed] });
         } catch (e) {
