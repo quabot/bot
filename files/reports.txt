@@ -1,1 +1,10 @@
 QuaBot Bug Reports:
+
+
+User: Joa_sss#0001
+User-ID: 486563467810308096
+Bug-Report: Suggestions not recieving red emoji
+
+User: Joa_sss#0001
+User-ID: 486563467810308096
+Bug-Report: endpoll and endsuggestions accesible to ll
