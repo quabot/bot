@@ -8,6 +8,7 @@ const { errorMain, noPollChannelConfigured, noMSG, addedDatabase, pollDisabled }
 module.exports = {
     name: "endpoll",
     description: "Close a poll.",
+    permission: "MANAGE_MESSAGES",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction

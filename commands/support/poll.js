@@ -8,6 +8,7 @@ const { errorMain, noPollChannelConfigured, suggestSucces, addedDatabase, pollDi
 module.exports = {
     name: "poll",
     description: "Start a poll.",
+    permission: "MANAGE_MESSAGES",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -93,6 +94,7 @@ module.exports = {
         const embed = new discord.MessageEmbed()
             .setTitle(`${poll}`)
             .setDescription("Vote on this poll with the :arrow_up: :arrow_down: emojis.")
+            .addField("Created by", `${interaction.user}`)
             .setFooter(`ID: ${pollId}`)
             .setTimestamp()
             .setColor(colors.POLL_COLOR)

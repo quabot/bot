@@ -8,6 +8,7 @@ const { errorMain, noSuggestChannelConfigured, noMSG, addedDatabase, suggestDisa
 module.exports = {
     name: "endsuggestion",
     description: "Close a suggestion.",
+    permission: "MANAGE_MESSAGES",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
