@@ -1,0 +1,100 @@
+[
+    {
+        "question": "What was the Minecraft 1.13 update called?",
+        "answer1": "Update Aquatic",
+        "answer2": "The Aqua Update",
+        "answer3": "The ocean update",
+        "correct": "Update Aquatic"
+    },
+    {
+        "question": "How was Discord called before it was called discord?",
+        "answer1": "Guilded",
+        "answer2": "Nothing, it was always called discord",
+        "answer3": "Bonfire",
+        "correct": "Bonfire"
+    },
+    {
+        "question": "How is the discord BETA client called?",
+        "answer1": "Discord Beta",
+        "answer2": "Discord PTB",
+        "answer3": "Discord Canary",
+        "correct": "Discord PTB"
+    },
+    {
+        "question": "What is the biggest country?",
+        "answer1": "United States",
+        "answer2": "China",
+        "answer3": "Russia",
+        "correct": "Russia"
+    },
+    {
+        "question": "How many continents are there?",
+        "answer1": "6",
+        "answer2": "7",
+        "answer3": "8",
+        "correct": "7"
+    },
+    {
+        "question": "What is the russian capital?",
+        "answer1": "Moscow",
+        "answer2": "St. Petersburg",
+        "answer3": "Omsk",
+        "correct": "Moscow"
+    },
+    {
+        "question": "What is the US capital?",
+        "answer1": "Los Angeles",
+        "answer2": "Washington D.C.",
+        "answer3": "Las Vegas",
+        "correct": "Washington D.C."
+    },
+    {
+        "question": "What is the japanese capital?",
+        "answer1": "Kyoto",
+        "answer2": "Tokyo",
+        "answer3": "Sendai",
+        "correct": "Tokyo"
+    },
+    {
+        "question": "What is the south-african capital?",
+        "answer1": "Johannesburg",
+        "answer2": "Bloemfontein and Pretoria",
+        "answer3": "Cape town, Bloemfontein and Pretoria",
+        "correct": "Cape town, Bloemfontein and Pretoria"
+    },
+    {
+        "question": "What year did discord create Discord Nitro?",
+        "answer1": "2016",
+        "answer2": "2017",
+        "answer3": "2018",
+        "correct": "2016"
+    },
+    {
+        "question": "What was quabot called before?",
+        "answer1": "Navialer",
+        "answer2": "EBot",
+        "answer3": "GBot",
+        "correct": "GBot"
+    },
+    {
+        "question": "What is the biggest discord bot?",
+        "answer1": "MEE6",
+        "answer2": "Dyno",
+        "answer3": "Rythm",
+        "correct": "MEE6"
+    },
+    {
+        "question": "What is the most common discord bot language?",
+        "answer1": "Discord.py",
+        "answer2": "Java Discord API",
+        "answer3": "Discord.js",
+        "correct": "Discord.js"
+    },
+    {
+        "question": "Best netflix show?",
+        "answer1": "idk fill",
+        "answer2": "these in",
+        "answer3": "yourself",
+        "correct": "fuck they're all wrong"
+    }
+]

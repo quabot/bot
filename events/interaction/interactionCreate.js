@@ -1,6 +1,7 @@
 const { Client, CommandInteraction, MessageEmbed } = require('discord.js');
 const consola = require('consola');
 const discord = require('discord.js');
+const quiz = require('../../validation/quiz.json');
 const { meme } = require('memejs');
 const mongoose = require('mongoose');
 
@@ -35,6 +36,111 @@ module.exports = {
 
             command.execute(client, interaction);
 
+        }
+
+        if (interaction.isButton()) {
+            if (interaction.customId === "answer1") {
+                const embedRaw = interaction.message.embeds;
+                const embed = embedRaw[Math.floor(Math.random() * embedRaw.length)];
+                const description = embed.description;
+
+                function getQuizAnswers(desc) {
+                    return quiz.filter(
+                        function (quiz) {
+                            return quiz.question == desc
+                        }
+                    );
+                }
+                const answersRaw = getQuizAnswers(description);
+                const answers = answersRaw[Math.floor(Math.random() * answersRaw.length)];
+
+                if (answers.answer1 === answers.correct) {
+                    const correctEmbed = new discord.MessageEmbed()
+                        .setTitle(`You were correct!`)
+                        .setDescription(`**Question:**\n${answers.question}`)
+                        .addField(`Answer`, `${answers.correct}`)
+                        .setColor(colors.LIME)
+                        .setTimestamp()
+                    interaction.update({ embeds: [correctEmbed], components: [] });
+                } else {
+                    const wrongEmbed = new discord.MessageEmbed()
+                        .setTitle(`You were wrong!`)
+                        .setDescription(`**Question:**\n${answers.question}`)
+                        .addField(`Correct Answer`, `${answers.correct}`)
+                        .addField(`Your answer`, `${answers.answer1}`)
+                        .setColor(colors.RED)
+                        .setTimestamp()
+                    interaction.update({ embeds: [wrongEmbed], components: [] });
+                }
+            }
+            if (interaction.customId === "answer2") {
+                const embedRaw = interaction.message.embeds;
+                const embed = embedRaw[Math.floor(Math.random() * embedRaw.length)];
+                const description = embed.description;
+
+                function getQuizAnswers(desc) {
+                    return quiz.filter(
+                        function (quiz) {
+                            return quiz.question == desc
+                        }
+                    );
+                }
+                const answersRaw = getQuizAnswers(description);
+                const answers = answersRaw[Math.floor(Math.random() * answersRaw.length)];
+
+                if (answers.answer2 === answers.correct) {
+                    const correctEmbed = new discord.MessageEmbed()
+                        .setTitle(`You were correct!`)
+                        .setDescription(`**Question:**\n${answers.question}`)
+                        .addField(`Answer`, `${answers.correct}`)
+                        .setColor(colors.LIME)
+                        .setTimestamp()
+                    interaction.update({ embeds: [correctEmbed], components: [] });
+                } else {
+                    const wrongEmbed = new discord.MessageEmbed()
+                        .setTitle(`You were wrong!`)
+                        .setDescription(`**Question:**\n${answers.question}`)
+                        .addField(`Correct Answer`, `${answers.correct}`)
+                        .addField(`Your answer`, `${answers.answer2}`)
+                        .setColor(colors.RED)
+                        .setTimestamp()
+                    interaction.update({ embeds: [wrongEmbed], components: [] });
+                }
+            }
+            if (interaction.customId === "answer3") {
+                const embedRaw = interaction.message.embeds;
+                const embed = embedRaw[Math.floor(Math.random() * embedRaw.length)];
+                const description = embed.description;
+
+                function getQuizAnswers(desc) {
+                    return quiz.filter(
+                        function (quiz) {
+                            return quiz.question == desc
+                        }
+                    );
+                }
+                const answersRaw = getQuizAnswers(description);
+                const answers = answersRaw[Math.floor(Math.random() * answersRaw.length)];
+
+                if (answers.answer3 === answers.correct) {
+                    const correctEmbed = new discord.MessageEmbed()
+                        .setTitle(`You were correct!`)
+                        .setDescription(`**Question:**\n${answers.question}`)
+                        .addField(`Answer`, `${answers.correct}`)
+                        .setColor(colors.LIME)
+                        .setTimestamp()
+                    interaction.update({ embeds: [correctEmbed], components: [] });
+                } else {
+                    const wrongEmbed = new discord.MessageEmbed()
+                        .setTitle(`You were wrong!`)
+                        .setDescription(`**Question:**\n${answers.question}`)
+                        .addField(`Correct Answer`, `${answers.correct}`)
+                        .addField(`Your answer`, `${answers.answer3}`)
+                        .setColor(colors.RED)
+                        .setTimestamp()
+                    interaction.update({ embeds: [wrongEmbed], components: [] });
+                }
+            }
         }
 
         const Guild = require('../../schemas/GuildSchema');
@@ -356,7 +462,7 @@ module.exports = {
             if (interaction.customId === "delete") {
                 if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
 
-                interaction.update({ components: [deleteTicket]});
+                interaction.update({ components: [deleteTicket] });
                 if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
                     return interaction.channel.send({ embeds: [noOwner] })
                 }
@@ -1002,7 +1108,7 @@ module.exports = {
                         });
                         const updated4 = new discord.MessageEmbed()
                             .setTitle(":white_check_mark: Succes!")
-                            .setDescription(`Changed report channel to ${F}!`)
+                            .setDescription(`Changed welcome channel to ${F}!`)
                             .setColor(colors.COLOR)
                         m.channel.send({ embeds: [updated4] })
                         collector.stop();

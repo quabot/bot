@@ -108,8 +108,9 @@ module.exports = {
                     .setThumbnail(message.author.avatarURL())
                     .setTimestamp()
                     .setFooter("Continue to chat to level up further!")
-                if (joinChannel) return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] });
-                message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] });
+                if (joinChannel) { return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] }) } else {
+                    message.channel.send(`${message.author}`, { embeds: [levelUpEmbed] });
+                };
             }
         }
     }
