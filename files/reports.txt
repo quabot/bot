@@ -8,3 +8,15 @@ Bug-Report: Suggestions not recieving red emoji
 User: Joa_sss#0001
 User-ID: 486563467810308096
 Bug-Report: endpoll and endsuggestions accesible to ll
+
+User: Joa_sss#0001
+User-ID: 486563467810308096
+Bug-Report: msg on change welcome chnl
+
+User: Joa_sss#0001
+User-ID: 486563467810308096
+Bug-Report: broken embed on lvls
+
+User: Joa_sss#0001
+User-ID: 486563467810308096
+Bug-Report: issues with user model on msgcreate
