@@ -11,7 +11,8 @@ module.exports = {
      */
     async execute(oldChannel, newChannel, client) {
 
-        const Guild = require('../../schemas/GuildSchema');
+        try {
+            const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: oldChannel.guild.id,
         }, (err, guild) => {
@@ -275,5 +276,10 @@ module.exports = {
             }
             logChannel.send({ embeds: [embed] });
         }
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+        
     }
 }

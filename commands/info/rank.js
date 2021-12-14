@@ -69,6 +69,7 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.COLOR)
                 .setTitle(`${target.tag}'s rank:`)
+                .setThumbnail(target.avatarURL({ dynamic: true}))
                 .addField("Level", `${user.level}`)
                 .addField("XP", `${user.xp}`)
             interaction.reply({ embeds: [embed] });

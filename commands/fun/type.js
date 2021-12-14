@@ -1,7 +1,7 @@
 const discord = require("discord.js");
 const ms = require('ms');
 
-const { TypeNoSentence, errorMain, addedDatabase } = require('../../files/embeds');
+const { TypeNoSentence, errorMain, addedDatabase, tooLong } = require('../../files/embeds');
 const colors = require('../../files/colors.json');
 const { Sentences } = require('../../validation/sentences');
 
@@ -33,6 +33,7 @@ module.exports = {
                 const filter = m => interaction.user === author;
                 const collector = interaction.channel.createMessageCollector({ time: 15000 });
                 collector.on('collect', m => {
+                    if (m.content.length > 1024) return m.reply({ embeds: [tooLong] });
                     if (m.content === sentence) {
                         var timeSpent = new Date().getTime() - callTime
                         var date = new Date(timeSpent);

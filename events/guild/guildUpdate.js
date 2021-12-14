@@ -11,9 +11,8 @@ module.exports = {
      */
     async execute(oldGuild, newGuild, client) {
 
-        console.log(oldGuild)
-
-        const Guild = require('../../schemas/GuildSchema');
+        try {
+            const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: newGuild.id,
         }, (err, guild) => {
@@ -51,6 +50,11 @@ module.exports = {
         });
         const logChannel = newGuild.channels.cache.get(guildDatabase.logChannelID);
 
+        if(oldGuild.name !== newGuild.name) {
+            await guildDatabase.updateOne({
+                guildName: newGuild.name
+            });
+        }
         if (guildDatabase.logEnabled === "true") {
             if (guildDatabase) {
                 const embed = new MessageEmbed()
@@ -96,5 +100,11 @@ module.exports = {
                 logChannel.send({ embeds: [embed] });
             };
         }
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+
+        
     }
 }

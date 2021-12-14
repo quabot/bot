@@ -23,26 +23,21 @@ module.exports = {
 
         try {
             let user = interaction.options.getUser('user') || interaction.user;
-            const joinDiscord = moment(user.createdAt).format('llll');
-            const joinServer = moment(user.joinedAt).format('llll');
             if (!Discord.GuildMember.nickname) Discord.GuildMember.nickname = "None";
             if (user.bot = "false") user.bot = "False";
             if (user.status = "online") user.status = "Online";
-
             const embed = new Discord.MessageEmbed()
                 .setAuthor(user.username + '#' + user.discriminator, user.displayAvatarURL)
                 .setColor(colors.COLOR)
-                .setImage(user.avatarURL())
+                .setThumbnail(user.avatarURL({ dynamic: true}))
                 .addField(`${user.tag}`, `${user}`, true)
                 .addField("ID:", `${user.id}`, true)
-                .addField("Nickname:", `${Discord.GuildMember.nickname !== null ? `${Discord.GuildMember.nickname}` : 'None'}`, true)
-                .addField("Status:", `${user.status}`, true) //add game
-                .addField("Bot:", `${user.bot}`, true)
+                .addField("Status:", `${user.status}`, true) //add game                
                 .addField("Joined The Server On:", `${moment.utc(Discord.GuildMember.joinedTimestamp).format("dddd, MMMM Do, YYYY")}`, true)
                 .addField("Account Created On:", `${moment.utc(user.createdAt).format("dddd, MMMM Do,    YYYY")}`, true)
-                .setFooter(`Replying to ${interaction.user.username}#${interaction.user.discriminator}`)
-                .setFooter(`ID: ${user.id}`)
                 .setTimestamp();
+                if(user.bot === "true") embed.setFooter(`This user is a bot.`)
+                
             interaction.reply({ embeds: [embed] });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

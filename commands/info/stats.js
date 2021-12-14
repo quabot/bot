@@ -17,14 +17,11 @@ module.exports = {
                 .setTitle("Quabot Statistics")
                 .setColor(colors.COLOR)
                 .setThumbnail("https://i.imgur.com/jgdQUul.png")
-                .addField("Memory", "1024MB", true)
-                .addField("Library", "Discord.js V13", true)
-                .addField("Node.js Version", "16.6.1", true)
+                .addField("Memory", "8GB", true)
                 .addField("Version", config.VERSION, true)
                 .addField("Commands", config.CMD_AMOUNT, true)
                 .addField("Channels", `${client.channels.cache.size}`, true)
                 .addField("Users", `${client.users.cache.size}`, true)
-                .addField("Client", `${client.user.username}`, true)
                 .addField("Servers", `${client.guilds.cache.size}`, true);
             interaction.reply({ embeds: [embed] });
         } catch (e) {

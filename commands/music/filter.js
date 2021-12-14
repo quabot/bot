@@ -22,7 +22,8 @@ module.exports = {
     ],
     async execute(client, interaction) {
 
-        const Guild = require('../../schemas/GuildSchema');
+        try {
+            const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: interaction.guild.id,
         }, (err, guild) => {
@@ -72,7 +73,7 @@ module.exports = {
         const filters = new discord.MessageEmbed()
             .setTitle("Music Filters")
             .setColor(colors.COLOR)
-            .setDescription(`- 3d\n- bassboost\n- echo\n- karaoke\n- nightcore\n- vaporwave \n- flanger\n- gate\n- haas\n- reverse\n- surround\n- mcompnad\n- phaser\n- tremolo\n- earway`)
+            .setDescription(`- off\n- 3d\n- bassboost\n- echo\n- karaoke\n- nightcore\n- vaporwave \n- flanger\n- gate\n- haas\n- reverse\n- surround\n- mcompnad\n- phaser\n- tremolo\n- earway`)
             .setTimestamp()
         
         if (type === "off" && queue.filters?.length) queue.setFilter(false);
@@ -84,5 +85,10 @@ module.exports = {
             .setDescription(`\`${queue.filters.join(", ") || "Off"}\``)
             .setTimestamp()
         interaction.reply({ embeds: [currentFilters] });
+        } catch (e) {
+            console.log(e);
+            interaction.channel.send({ embeds: [errorMain] });
+            return;
+        }
     }
 }

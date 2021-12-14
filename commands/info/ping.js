@@ -14,17 +14,17 @@ module.exports = {
     async execute(client, interaction) {
 
         try {
-            interaction.reply({ embeds: [PingGetting]}).then(m => {
-            var ping = Date.now() - interaction.createdTimestamp;
+            interaction.reply({ embeds: [PingGetting] }).then(m => {
+                var ping = Date.now() - interaction.createdTimestamp;
 
-            const YourPing = new discord.MessageEmbed()
-                .setColor(colors.COLOR)
-                .setTitle(`:white_check_mark: Your current ping is: **${ping}ms**.`);
+                const YourPing = new discord.MessageEmbed()
+                    .setColor(colors.COLOR)
+                    .setTitle(`:white_check_mark: Your current ping is: **${ping}ms**.`);
 
-            interaction.editReply({ embeds: [YourPing]})
-        })
+                interaction.editReply({ embeds: [YourPing] })
+            })
         } catch (e) {
-            interaction.channel.send({ embeds: [errorMain]})
+            interaction.channel.send({ embeds: [errorMain] })
             console.log(e)
         }
     }

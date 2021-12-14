@@ -31,7 +31,6 @@ module.exports = {
                 .addField("Users", `${client.users.cache.size}`)
                 .addField("Creator", "Joa_sss#0001")
                 .addField("Commands", config.CMD_AMOUNT)
-                .addField("Shard", "Coming soon")
                 .setFooter(`Uptime: ${uptime}`)
                 .setColor(colors.COLOR)
             interaction.reply({ embeds: [embed] })

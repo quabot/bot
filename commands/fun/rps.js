@@ -104,9 +104,6 @@ module.exports = {
                         }
                     }
                 });
-                collector.on('end', collected => {
-                    interaction.followUp({ embeds: [cancelled] })
-                });
             });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

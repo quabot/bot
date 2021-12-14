@@ -3,6 +3,19 @@ const { MessageEmbed } = require('discord.js');
 const colors = require('./colors.json');
 const prefix = "/";
 
+const notClosed = new discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setTitle(":x: This ticket isn't closed")
+    .setTimestamp()
+const notATicket = new discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setTitle(":x: You are not inside of a ticket!")
+    .setTimestamp()
+const tooLong = new discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setTitle(`:x: Too Long!`)
+    .setDescription("Your response/reason was too long to fit in a message embed!")
+    .setTimestamp()
 const QuizSentenceNone = new discord.MessageEmbed()
     .setColor(colors.TICKET_CLOSE)
     .setTitle("No questions found!")
@@ -359,37 +372,117 @@ const funEmbed = new discord.MessageEmbed()
     .setTitle("Fun Commands")
     .setTimestamp()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setDescription(`These commands give funny pictures, games and more.\n\n**${prefix}coin** - When using this command you will flip a virtual coin.\n**${prefix}cat** - When you use this command you will recieve a cute picture of a cat.\n**${prefix}dog** - By using this command you recieve picture of a dog.\n**${prefix}meme** - When you use this command you get a random meme from a subreddit.\n**${prefix}rps** - With this command you can play rock, paper, scissors with the bot.\n**${prefix}type** - Play a game that makes you type words/sentences in 15 seconds.`);
+    .setDescription(`These commands give funny pictures, games and more.\n
+    **${prefix}cat** - Get an image of a cat.
+    **${prefix}coin** - Flip a coin.
+    **${prefix}dog** - Get an image of a dog.
+    **${prefix}meme** - Get a meme.
+    **${prefix}quiz** - Play a quiz.
+    **${prefix}rps** - Play rock, paper, scissors.
+    **${prefix}type** - Play a typing game.`);
 const infoEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Info Commands")
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setTimestamp()
-    .setDescription(`These commands are used to get information about loads of different things.\n\n**${prefix}server** - By using this command you get the server name.\n**${prefix}donate** - This command is used to get info about donations to quabot.\n**${prefix}help** - By using this command you will get a list of commands or see how to use them.\n**${prefix}info** - When using this command you will recieve a list of bot information.\n**${prefix}leaderboard** - This command allows you to view a leaderbord of levels of a server.\n**${prefix}online** -  This will display the amount of users on the guild with every presence.\n**${prefix}ping** - When using this command you will recieve your ping.\n**${prefix}serverinfo** - When you use this command, you can see a list of information about the server.\n**${prefix}uptime ** - When using this command, the current online time of the bot is displayed.\n**${prefix}userinfo** - When you use this command you get a list of information about a user.\n**${prefix}prefix** - Get the server prefix.\n**${prefix}stats** - View the discord bot stats and hardware.\n**${prefix}rank** - Get your current amount of levels and XP points.`)
+    .setDescription(`These commands are used to get information about loads of different things.\n    
+    **${prefix}announcement** - Latest quabot news.
+    **${prefix}help** - List commands and their descriptions.
+    **${prefix}info** - Information about the bot.
+    **${prefix}leaderboard** - Server XP's leadersboard.
+    **${prefix}nick** - Change the nickname of a user.
+    **${prefix}online** -  View activity list.
+    **${prefix}ping** - Get bot ping.
+    **${prefix}rank** - Get level and XP points.
+    **${prefix}roles** - List of roles in this guild.
+    **${prefix}serverinfo** - Server information.
+    **${prefix}stats** - Bot statistics.
+    **${prefix}support** - Bot's support discord.
+    **${prefix}uptime** - Bot's uptime.
+    **${prefix}userinfo** - Information about a user.
+    `)
 const musicEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Music Commands")
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setTimestamp()
-    .setDescription(`These commands are all commands related to music.\n\n**${prefix}autoplay** - By using this command you can toggle wether or not songs should automaticaly play.\n**${prefix}nowplaying** - This command displays the song that is currently playing.\n**${prefix}pause** - When using this command you will pause the currently playing song.\n**${prefix}play** - Play a song to your liking.\n**${prefix}queue** - View the current queue of songs.\n**${prefix}repeat** - Toggle if songs should repeat or not.\n**${prefix}resume** - Contiune to play music if it's been previously stopped.\n**${prefix}seek** - Go to a specific point in the currently playing song.\n**${prefix}shuffle** - Shuffle the queue to a new order.\n**${prefix}skip** - Skip the currently playing song and go to the next one.\n**${prefix}status** - Get the status of the bot (music related (volume etc.)).\n**${prefix}stop** - Stop the queue and the playing of the current song.\n**${prefix}volume** - Change the volume of the currently playing music.\n**${prefix}join** - Make quabot join your voice channel.`)
+    .setDescription(`These commands are all commands related to music.\n
+    **${prefix}autoplay** - Toggle autoplay.
+    **${prefix}nowplaying** - Information about the playing song.
+    **${prefix}filter** - Toggle filters.
+    **${prefix}join** - Make bot join your vc.
+    **${prefix}leave** - Make bot leave your vc.
+    **${prefix}pause** - Pause the stream.
+    **${prefix}queue** - Get music queue.
+    **${prefix}repeat** - Alter repeat mode.
+    **${prefix}resume** - Resume the stream.
+    **${prefix}seek** - Seek to a point in the song.
+    **${prefix}shuffle** - Shuffle queue.
+    **${prefix}skip** - Skip the playing song.
+    **${prefix}stop** - Stop the music stream.
+    **${prefix}volume** - Change volume.
+    `)
 const miscEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Misc Commands")
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setTimestamp()
-    .setDescription(`These commands are just general commands that dont fit the descrition of the ones above.\n**${prefix}avatar** - By using this command you will be able to view either your own profile picture or another users'\n**${prefix}members** - When you use this command you will see the amount of members on a server.\n**${prefix}nick** - By using this command you'll be able to change your nickname.\n**${prefix}emotes** - !emotes - When using this command you will recieve a list of emotes.`)
+    .setDescription(`These commands are just general commands that dont fit the descrition of the ones above.\n
+    **${prefix}avatar** - Get a user's avatar.
+    **${prefix}divide** - Divide two numbers.
+    **${prefix}members** - Get the guild's membercount.
+    **${prefix}multiply** - Multiply two numbers.
+    **${prefix}power** - Get a number to the power of a number.
+    **${prefix}servericon** - Get the guild's icon.
+    **${prefix}subtract** - Subtract two numbers.
+    **${prefix}sum** - Sum of two numbers.
+    `)
 const moderationEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Moderation Commands")
     .setTimestamp()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setDescription(`These commands are used to punish users and moderate the server.\n\n**${prefix}ban** - This command allows you to permanently ban a user from the guild your in.\n**${prefix}kick** - This command allows you to kick a user from the guild your in.\n**${prefix}mute** - By using this command you will be able to mute any user in your guild.\n**${prefix}tempban** - By using this command you can ban a user for a specified amount of time.\n**${prefix}tempmute** - By using this command you can mute a user for a specified amount of time.\n**${prefix}unban** - By using this command you can unban any user using their user-id.\n**${prefix}unmute** - You can unmute any person on your guild.\n**${prefix}warn** - Warn a specified user with a custom reason.\n**${prefix}punsihments** - View your punishments.\n**${prefix}clearpunishments** - Clear a users's punishments (or just one).`);
+    .setDescription(`These commands are used to punish users and moderate the server.\n
+    **${prefix}ban** - Ban a member.
+    **${prefix}kick** - Kick a member.
+    **${prefix}mute** - Mute a member.
+    **${prefix}punishments** - View a member's punishments.
+    **${prefix}report** - Report a user.
+    **${prefix}tempban** - Temporarily ban a member.
+    **${prefix}tempmute** - Temporarily mute a member.
+    **${prefix}unban** - Unban a member.
+    **${prefix}warn** - Warn a member.
+    `)
 const managementEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Management Commands")
     .setTimestamp()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setDescription(`These commands are used by managers to clear channels, start giveaways and more.\n\n**${prefix}clear** - By using this command you can delete a large amount of messages at once.\n**${prefix}config** - Change server settings.\n**${prefix}end** - When you use thins command correctly you will force-end a running giveaway.\n**${prefix}giveaway** - By using this command you will be able to start a giveaway.\n**${prefix}lockdown** - By using this command you will lockdown a channel to stop members from sending messages.\n**${prefix}reroll** - When using this command you can pick a new winner for a giveaway.`)
+    .setDescription(`These commands are used by managers to clear channels, start giveaways and more.\n
+    **${prefix}admin** - Send a "open ticket" message.
+    **${prefix}clear** - Clear an amount of messages.
+    **${prefix}config** - Configure quabot.
+    **${prefix}lock** - Lock a channel.
+    **${prefix}mention** - Ping everyone.
+    **${prefix}unlock** - Get bot ping.
+    `)
+const supportHEmbed = new discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setTitle("Support Commands")
+    .setTimestamp()
+    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+    .setDescription(`These commands can be used by members to seek support, make suggestions and more.\n
+    **${prefix}add** - Add a user to your ticket.
+    **${prefix}close** - Close a ticket.
+    **${prefix}delete** - Delete a ticket.
+    **${prefix}endpoll** - End the voting on a poll.
+    **${prefix}endsuggestion** - End the voting on a suggestion.
+    **${prefix}poll** - Start a poll.
+    **${prefix}quabot** - Leave suggestions and bug reports.
+    **${prefix}reopen** - Reopen a ticket.
+    **${prefix}suggest** - Make a suggestion.
+    **${prefix}ticket** - Open a ticket.
+    `)
 const reportSucces = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTimestamp()
@@ -582,4 +675,4 @@ const embedClose1 = new discord.MessageEmbed()
     .setTitle("Delete Ticket")
     .setDescription("Delete this ticket using the buttons below this message.")
     .setTimestamp()
-module.exports = { QuizSentenceNone, embedClose1, closeTicketEmbed, noOwner, pollEnabled, pollsDisabled, noPollChannelConfigured, noMSG, iNoPerms, pollDisabled, stoppedQueue, skippedSong, noValidSeek, disabledLevelUp, noSongs, shuffledQueue, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, roleEnabled, roleDisabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain }
+module.exports = { supportHEmbed, notClosed, notATicket, tooLong, QuizSentenceNone, embedClose1, closeTicketEmbed, noOwner, pollEnabled, pollsDisabled, noPollChannelConfigured, noMSG, iNoPerms, pollDisabled, stoppedQueue, skippedSong, noValidSeek, disabledLevelUp, noSongs, shuffledQueue, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, roleEnabled, roleDisabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain }

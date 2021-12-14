@@ -10,8 +10,8 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(channel, client) {
-
-        const Guild = require('../../schemas/GuildSchema');
+        try {
+            const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: channel.guild.id,
         }, (err, guild) => {
@@ -119,6 +119,9 @@ module.exports = {
             };
         }
         }
-        
+        } catch (e) {
+            console.log(e);
+            return;
+        }  
     }
 }

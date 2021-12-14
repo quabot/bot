@@ -11,7 +11,8 @@ module.exports = {
      */
     async execute(message, client) {
 
-        const Guild = require('../../schemas/GuildSchema');
+        try {
+             const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: message.guild.id,
         }, (err, guild) => {
@@ -67,5 +68,11 @@ module.exports = {
         } else {
             return;
         }
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+
+       
     }
 }

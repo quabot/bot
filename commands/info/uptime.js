@@ -25,7 +25,8 @@ module.exports = {
                 .setTitle(`${client.user.tag}`)
                 .setDescription(`has been online for: ${uptime}!`)
                 .setThumbnail("https://i.imgur.com/jgdQUul.png")
-                .setColor(colors.COLOR);
+                .setColor(colors.COLOR)
+                .setTimestamp();
             interaction.reply({ embeds: [embed] });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

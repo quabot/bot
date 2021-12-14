@@ -5,24 +5,21 @@ const consola = require('consola');
 const mongoose = require('mongoose');
 
 module.exports = {
-    name: "messageUpdate",
+    name: "roleDelete",
     /**
      * @param {Client} client 
      */
-    async execute(oldMessage, newMessage, client) {
-
+    async execute(role, client) {
         try {
-            if (oldMessage.author.bot) return
-
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: oldMessage.guild.id,
+                guildId: role.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: oldMessage.guild.id,
-                        guildName: oldMessage.guild.name,
+                        guildId: role.guild.id,
+                        guildName: role.guild.name,
                         logChannelID: "none",
                         reportChannelID: "none",
                         suggestChannelID: "none",
@@ -30,7 +27,7 @@ module.exports = {
                         levelChannelID: "none",
                         pollChannelID: "none",
                         ticketCategory: "Tickets",
-                        closedTicketCategory: "Closed Tickets",
+                        closedTicketCategory: "Tickets",
                         logEnabled: true,
                         musicEnabled: true,
                         levelEnabled: true,
@@ -50,24 +47,19 @@ module.exports = {
                     return;
                 }
             });
-            const logChannel = oldMessage.guild.channels.cache.get(guildDatabase.logChannelID);
+            const logChannel = role.guild.channels.cache.get(guildDatabase.logChannelID);
 
             if (guildDatabase.logEnabled === "true") {
-                if (!logChannel) {
-                    return;
-                } else {
+                if (logChannel) {
+                    console.log(role)
                     const embed = new MessageEmbed()
-                        .setColor(colors.GIVEAWAY_COLOR)
-                        .setTitle('Message Edited!')
-                        .addField('Channel', `<#${oldMessage.channelId}>`)
-                        .addField('Author', `<@${oldMessage.author.id}>`)
-                        .addField('Old Content', `\`${oldMessage.content}\``)
-                        .addField('New Content', `\`${newMessage.content}\``)
-                        .addField('Message ID', `${newMessage.id}`)
-                    return logChannel.send({ embeds: [embed] });
+                        .setColor(colors.PREFIX_COLOR)
+                        .setTitle('Role Deleted!')
+                        .setDescription(`<@&${role.id}>`)
+                        .addField('Role', `${role.name}`)
+                        .addField('Role-ID', `${role.id}`)
+                    logChannel.send({ embeds: [embed] });
                 };
-            } else {
-                return;
             }
         } catch (e) {
             console.log(e);

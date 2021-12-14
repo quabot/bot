@@ -2,7 +2,7 @@ const discord = require('discord.js');
 const { Client, CommandInteraction, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
-const { errorMain, iNoPerms } = require('../../files/embeds');
+const { errorMain, iNoPerms, tooLong } = require('../../files/embeds');
 
 module.exports = {
     name: "nick",
@@ -29,6 +29,7 @@ module.exports = {
         try {
             const member = interaction.member;
             const newNick = interaction.options.getString('new-nick');
+            if (newNick.length > 32) return interaction.reply({ embeds: [tooLong] });
             const user = interaction.options.getMember('user');
             if (member.permissions.has("MANAGE_NICKNAMES")) {
                 if (user) {

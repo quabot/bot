@@ -16,9 +16,12 @@ module.exports = {
                 client.user.setActivity(`${client.users.cache.size} users |  /help`, { type: "WATCHING" });
             }, 6000);
             setTimeout(function () {
+                client.user.setActivity(`quabot.xyz`, { type: "WATCHING" });
+            }, 5000);
+            setTimeout(function () {
                 client.user.setActivity(`${client.guilds.cache.size} servers |  /help`, { type: "WATCHING" });
                 loop()
-            }, 12000);
+            }, 18000);
           }());
     }
 };

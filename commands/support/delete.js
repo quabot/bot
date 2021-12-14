@@ -5,7 +5,7 @@ const config = require('../../files/config.json')
 
 const { deleteTicket } = require('../../files/interactions');
 
-const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
+const { errorMain, addedDatabase, ticketsDisabled, notATicket } = require('../../files/embeds');
 
 module.exports = {
     name: "delete",
@@ -18,54 +18,70 @@ module.exports = {
     ],
     async execute(client, interaction) {
 
-        const Guild = require('../../schemas/GuildSchema');
-        const guildDatabase = await Guild.findOne({
-            guildId: interaction.guild.id,
-        }, (err, guild) => {
-            if (err) console.error(err);
-            if (!guild) {
-                const newGuild = new Guild({
-                    guildId: interaction.guild.id,
-                    guildName: interaction.guild.name,
-                    logChannelID: "none",
-                    reportChannelID: "none",
-                    suggestChannelID: "none",
-                    welcomeChannelID: "none",
-                    levelChannelID: "none",
-                    pollChannelID: "none",
-                    ticketCategory: "Tickets",
-                    closedTicketCategory: "Tickets",
-                    logEnabled: true,
-                    musicEnabled: true,
-                    levelEnabled: true,
-                    reportEnabled: true,
-                    suggestEnabled: true,
-                    ticketEnabled: true,
-                    welcomeEnabled: true,
-                    pollsEnabled: true,
-                    roleEnabled: true,
-                    mainRole: "Member",
-                    mutedRole: "Muted"
-                });
-                newGuild.save()
-                    .catch(err => {
-                        console.log(err);
-                        interaction.channel.send({ embeds: [errorMain] });
+        try {
+            const Guild = require('../../schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        logChannelID: "none",
+                        reportChannelID: "none",
+                        suggestChannelID: "none",
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        pollChannelID: "none",
+                        ticketCategory: "Tickets",
+                        closedTicketCategory: "Tickets",
+                        logEnabled: true,
+                        musicEnabled: true,
+                        levelEnabled: true,
+                        reportEnabled: true,
+                        suggestEnabled: true,
+                        ticketEnabled: true,
+                        welcomeEnabled: true,
+                        pollsEnabled: true,
+                        roleEnabled: true,
+                        mainRole: "Member",
+                        mutedRole: "Muted"
                     });
-                return interaction.channel.send({ embeds: [addedDatabase] });
-            }
-        });
-        if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [errorMain] });
+                        });
+                    return interaction.channel.send({ embeds: [addedDatabase] });
+                }
+            });
+            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
 
-        if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-            return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+            let ticketsCatName = guildDatabase.ticketCategory;
+            if (ticketsCatName === "undefined") {
+                let ticketsCatName = "Tickets";
+            }
+
+            let ticketCategory = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
+
+            if (ticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket]});
+
+            if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
+                return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")
+            }
+
+            const embed = new discord.MessageEmbed()
+                .setColor(colors.TICKET_DELETE)
+                .setTitle("Delete Ticket")
+                .setDescription("Delete this ticket using the buttons below this message.")
+                .setTimestamp()
+            interaction.reply({ embeds: [embed], components: [deleteTicket] });
+        } catch (e) {
+            console.log(e);
+            interaction.channel.send({ embeds: [errorMain] });
+            return;
         }
 
-        const embed = new discord.MessageEmbed()
-            .setColor(colors.TICKET_DELETE)
-            .setTitle("Delete Ticket")
-            .setDescription("Delete this ticket using the buttons below this message.")
-            .setTimestamp()
-        interaction.reply({ embeds: [embed], components: [deleteTicket] });
     }
 }

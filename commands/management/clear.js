@@ -34,7 +34,6 @@ module.exports = {
 
         try {
             let amount = interaction.options.getInteger('amount');
-            console.log(amount)
             if (!amount) return interaction.reply({ embeds: [noAmountMsg] });
             if (amount <= 0) amount = 1;
             if (amount >= 201) amount = 200;

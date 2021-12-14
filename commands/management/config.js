@@ -15,12 +15,11 @@ module.exports = {
     async execute(client, interaction) {
 
         try {
-
-        interaction.reply({ ephemeral: true, embeds: [optionsEmbed], components: [selectCategory] });
+            interaction.reply({ ephemeral: true, embeds: [optionsEmbed], components: [selectCategory] });
         } catch (e) {
-            interaction.channel.send({ embeds: [errorMain]})
+            interaction.channel.send({ embeds: [errorMain] })
             console.log(e)
         }
-        
+
     }
 }

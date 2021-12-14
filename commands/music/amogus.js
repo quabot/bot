@@ -1,25 +1,17 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
-const { joinVoiceChannel } = require('@discordjs/voice');
 
 const colors = require('../../files/colors.json');
-const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, noValidMode } = require('../../files/embeds');
+const { NotInVC, MusicIsDisabled, errorMain, addedDatabase } = require('../../files/embeds');
+
 
 module.exports = {
-    name: "repeat",
-    description: "Alter repeat mode.",
+    name: "amogus",
+    description: "Play Amogus.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-    options: [
-        {
-            name: "repeatmode",
-            description: "0 - OFF, 1 - REPEAT SONG or 2 - REPEAT QUEUE",
-            type: "INTEGER",
-            required: true,
-        }
-    ],
     async execute(client, interaction) {
 
         try {
@@ -61,27 +53,18 @@ module.exports = {
                 }
             });
 
-            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [MusicIsDisabled] })
+            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [MusicIsDisabled] });
 
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC] });
-            const queue = client.player.getQueue(interaction);
-            if (!queue) return interaction.reply({ embeds: [noSongs] });
+            const voiceChannel = member.voice.channel;
 
-            const newMode = interaction.options.getInteger('repeatmode');
-            if (newMode === 0 || newMode === 1 || newMode === 2) {
-                let mode = client.player.setRepeatMode(interaction, newMode);
-                mode = mode ? mode == 2 ? "Repeat queue :repeat:" : "Repeat song :repeat_one:" : "Off :arrow_forward:";
-
-                const embed = new discord.MessageEmbed()
-                    .setTitle(":repeat:  Changed repeat mode!")
-                    .setDescription(`${mode}`)
-                    .setColor(colors.COLOR)
-                    .setTimestamp()
-                interaction.reply({ embeds: [embed] });
-            } else {
-                return interaction.reply({ embeds: [noValidMode] });
-            }
+            const song = "https://www.youtube.com/watch?v=grd-K33tOSM";
+            client.player.playVoiceChannel(voiceChannel, song, {
+                textChannel: interaction.channel,
+            });
+            interaction.reply("** **");
+            interaction.deleteReply();
         } catch (e) {
             console.log(e);
             interaction.channel.send({ embeds: [errorMain] });

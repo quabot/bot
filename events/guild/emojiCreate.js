@@ -10,8 +10,8 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(emoji, client) {
-
-        const Guild = require('../../schemas/GuildSchema');
+        try {
+            const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: emoji.guild.id,
         }, (err, guild) => {
@@ -64,5 +64,10 @@ module.exports = {
                 logChannel.send({ embeds: [embed] });
             };
         }
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+        
     }
 }

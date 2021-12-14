@@ -1,7 +1,7 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
 
-const { noOwner, ticketsDisabled } = require('../../files/embeds');
+const { noOwner, ticketsDisabled, notATicket, errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "add",
@@ -10,7 +10,7 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-     options: [
+    options: [
         {
             name: "user",
             description: "User to add",
@@ -20,64 +20,78 @@ module.exports = {
     ],
     async execute(client, interaction) {
 
-        const Guild = require('../../schemas/GuildSchema');
-        const guildDatabase = await Guild.findOne({
-            guildId: interaction.guild.id,
-        }, (err, guild) => {
-            if (err) console.error(err);
-            if (!guild) {
-                const newGuild = new Guild({
-                    guildId: interaction.guild.id,
-                    guildName: interaction.guild.name,
-                    logChannelID: "none",
-                    reportChannelID: "none",
-                    suggestChannelID: "none",
-                    welcomeChannelID: "none",
-                    levelChannelID: "none",
-                    pollChannelID: "none",
-                    ticketCategory: "Tickets",
-                    closedTicketCategory: "Tickets",
-                    logEnabled: true,
-                    musicEnabled: true,
-                    levelEnabled: true,
-                    reportEnabled: true,
-                    suggestEnabled: true,
-                    ticketEnabled: true,
-                    welcomeEnabled: true,
-                    pollsEnabled: true,
-                    roleEnabled: true,
-                    mainRole: "Member",
-                    mutedRole: "Muted"
-                });
-                newGuild.save()
-                    .catch(err => {
-                        console.log(err);
-                        interaction.channel.send({ embeds: [errorMain] });
+        try {
+            const Guild = require('../../schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        logChannelID: "none",
+                        reportChannelID: "none",
+                        suggestChannelID: "none",
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        pollChannelID: "none",
+                        ticketCategory: "Tickets",
+                        closedTicketCategory: "Tickets",
+                        logEnabled: true,
+                        musicEnabled: true,
+                        levelEnabled: true,
+                        reportEnabled: true,
+                        suggestEnabled: true,
+                        ticketEnabled: true,
+                        welcomeEnabled: true,
+                        pollsEnabled: true,
+                        roleEnabled: true,
+                        mainRole: "Member",
+                        mutedRole: "Muted"
                     });
-                return interaction.channel.send({ embeds: [addedDatabase] });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [errorMain] });
+                        });
+                    return interaction.channel.send({ embeds: [addedDatabase] });
+                }
+            });
+            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+            let ticketsCatName = guildDatabase.ticketCategory;
+            if (ticketsCatName === "undefined") {
+                let ticketsCatName = "Tickets";
             }
-        });
-        if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+            let ticketCategory = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
+
+            if (ticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket]});
 
 
-        if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
-            return interaction.reply({ embeds: [noOwner] });
+            if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
+                return interaction.reply({ embeds: [noOwner] });
+            }
+
+            const user = interaction.options.getUser('user');
+
+            interaction.channel.permissionOverwrites.edit(user, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true
+            });
+
+            const embed = new discord.MessageEmbed()
+                .setTitle(`:white_check_mark: Adding user...`)
+                .setDescription(`Adding ${user} to your support ticket!`)
+                .setTimestamp()
+                .setColor(colors.COLOR)
+            interaction.reply({ embeds: [embed] });
+        } catch (e) {
+            console.log(e);
+            interaction.channel.send({ embeds: [errorMain] });
+            return;
         }
-
-        const user = interaction.options.getUser('user');
-
-        interaction.channel.permissionOverwrites.edit(user, {
-            SEND_MESSAGES: true,
-            VIEW_CHANNEL: true,
-            READ_MESSAGE_HISTORY: true
-        });
-
-        const embed = new discord.MessageEmbed()
-            .setTitle(`:white_check_mark: Adding user...`)
-            .setDescription(`Adding ${user} to your support ticket!`)
-            .setTimestamp()
-            .setColor(colors.COLOR)
-        interaction.reply({ embeds: [embed] });
-
     }
 }

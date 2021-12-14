@@ -8,6 +8,8 @@ client.commands = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
+const { MiscSupport } = require('./files/interactions')
+
 // DATABASE
 const mongoose = require('mongoose');
 const consola = require('consola');
@@ -28,6 +30,7 @@ client.player = new DisTube.default(client, {
     leaveOnEmpty: true,
     leaveOnFinish: true,
     leaveOnStop: true,
+    updateYouTubeDL: false,
 });
 client.player.on('playSong', (queue, song) => {
     const playingEmbed = new Discord.MessageEmbed()
@@ -98,10 +101,15 @@ const manager = new GiveawaysManager(client, {
 });
 client.giveawaysManager = manager;
 
-const { miscEmbed, funEmbed, infoEmbed, musicEmbed, moderationEmbed, managementEmbed } = require('./files/embeds');
+const { miscEmbed, supportHEmbed, funEmbed, infoEmbed, musicEmbed, moderationEmbed, managementEmbed } = require('./files/embeds');
 const ModMain = new Discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Select Management or Moderation commands in the dropdown below.")
+    .setDescription("When selecting a category you'll get a detailed list of commands within that category.")
+    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+const SiscMain = new Discord.MessageEmbed()
+    .setColor(colors.COLOR)
+    .setTitle("Select Misc or Support commands in the dropdown below.")
     .setDescription("When selecting a category you'll get a detailed list of commands within that category.")
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
 const selectMod = new Discord.MessageActionRow()
@@ -141,6 +149,9 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.values[0] === "mod_commands") {
             interaction.reply({ ephemeral: true, embeds: [ModMain], components: [selectMod] });
         }
+        if (interaction.values[0] === "misc_sup_commands") {
+            interaction.reply({ ephemeral: true, embeds: [SiscMain], components: [MiscSupport] });
+        }
         if (interaction.values[0] === "moder_commands") {
             interaction.reply({ ephemeral: true, embeds: [moderationEmbed] });
         }
@@ -149,6 +160,9 @@ client.on("interactionCreate", async (interaction) => {
         }
         if (interaction.values[0] === "misc_commands") {
             interaction.reply({ ephemeral: true, embeds: [miscEmbed] })
+        }
+        if (interaction.values[0] === "support_commands") {
+            interaction.reply({ ephemeral: true, embeds: [supportHEmbed] })
         }
     }
 });

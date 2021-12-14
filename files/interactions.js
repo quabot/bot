@@ -29,9 +29,29 @@ const HelpSelect = new discord.MessageActionRow()
                     value: 'mod_commands',
                 },
                 {
+                    label: 'Misc & Support Commands',
+                    description: 'These commands are for misc and support related commands.',
+                    value: 'misc_sup_commands',
+                },
+            ]),
+    );
+const MiscSupport = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
                     label: 'Misc Commands',
-                    description: 'These commands are just general commands that dont fit the descrition of the ones above.',
+                    description: 'These commands are for commands that don\'t fit another category.',
                     value: 'misc_commands',
+                },
+                {
+                    label: 'Support Commands',
+                    description: 'With these commands users can seek support.',
+                    value: 'support_commands',
                 },
             ]),
     );
@@ -510,4 +530,4 @@ const deleteTicketC = new discord.MessageActionRow()
             .setStyle('DANGER'),
     );
 
-module.exports = { reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
