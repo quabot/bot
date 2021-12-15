@@ -16,7 +16,7 @@ module.exports = {
     ],
     async execute(client, interaction) {
         try {
-            const Guild = require('s../../schemas/GuildSchema');
+            const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: interaction.guild.id,
             }, (err, guild) => {
