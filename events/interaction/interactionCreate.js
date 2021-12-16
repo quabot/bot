@@ -833,9 +833,9 @@ module.exports = {
             if (interaction.isButton()) {
                 if (interaction.customId === "enableLevel") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                    await guildDatabase.updateOne({
-                        levelEnabled: true
-                    });
+                        await guildDatabase.updateOne({
+                            levelEnabled: true
+                        });
                     interaction.update({ ephemeral: true, embeds: [levelsEnabled], components: [disabledToggle] });
                 }
                 if (interaction.customId === "disableLevel") {

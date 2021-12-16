@@ -1,7 +1,7 @@
 const discord = require('discord.js');
 const colors = require('../../files/colors.json');
 
-const { errorMain } = require('../../files/embeds');
+const { errorMain, invalidEmojis } = require('../../files/embeds');
 
 const noValidChannel = new discord.MessageEmbed()
     .setTitle(":x: Please enter a valid text channel to create the reaction role in!")
@@ -9,7 +9,7 @@ const noValidChannel = new discord.MessageEmbed()
     .setTimestamp()
 const noMsgFound = new discord.MessageEmbed()
     .setTitle("Could not find that message!")
-    .setDescription("Would like to create the message? React with :white_check_mark: to continue.")
+    .setDescription("Would like to create the message? React with :white_check_mark: within 15 seconds to continue.")
     .setColor(colors.COLOR)
     .setTimestamp()
 
@@ -85,10 +85,10 @@ module.exports = {
 
             switch (Sub) {
                 case "create": {
-                    const channel = interaction.options.getChannel("channel");
-                    const message = interaction.options.getString("message");
-                    const role = interaction.options.getRole("role");
-                    const emoji = interaction.options.getString("emoji");
+                    let channel = interaction.options.getChannel("channel");
+                    let message = interaction.options.getString("message");
+                    let role = interaction.options.getRole("role");
+                    let emoji = interaction.options.getString("emoji");
                     let mode = interaction.options.getString("mode");
 
                     if (mode === null) mode = 'normal';
@@ -99,11 +99,28 @@ module.exports = {
 
                     channel.messages.fetch(message)
                         .then(async message => {
-                            console.log(message.content)
+                            let embed = new discord.MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription("Succesfully created a new reaction role.")
+                                .addField("Emoji", `${emoji}`, true)
+                                .addField("Channel", `${channel}`, true)
+                                .addField("Role", `${role}`, true)
+                                .setTimestamp()
+                                .setColor(colors.COLOR)
+                            try {
+                                message.react(`${emoji}`);
+                            } catch (e) {
+                                console.log(e)
+                                interaction.channel.send({ embeds: [invalidEmojis] });
+                                return
+                            }
+                            interaction.reply({ embeds: [embed] });
                         })
                         .catch(async err => {
-                            const message = await interaction.reply({ embeds: [noMsgFound], fetchReply: true });
-                            message.react('✅');
+                            const noMsg = await interaction.channel.send({ embeds: [noMsgFound], fetchReply: true });
+                            noMsg.react('✅');
+ 
+                            return;
                         })
 
                     const React = require('../../schemas/ReactSchema');
