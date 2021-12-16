@@ -183,6 +183,9 @@ module.exports = {
             });
 
             if (interaction.isButton()) {
+                if (interaction.customId === "closebutton") {
+                    interaction.reply({ embeds: [closeTicketEmbed], components: [closeTicketWCancel] })
+                }
                 if (interaction.customId === "meme") {
 
                     const subreddits = ['meme', 'memes', 'dankmemes'];

@@ -97,6 +97,13 @@ module.exports = {
                         return interaction.reply({ embeds: [noValidChannel] });
                     }
 
+                    const emojiurls = client.emojis
+                        .filter(emoji => emoji.available)
+                        .map(emoji => {
+                            return { "name": emoji.name, "url": emoji.url };
+                        });
+                    return res.json(emojiurls);
+
                     channel.messages.fetch(message)
                         .then(async message => {
                             console.log(message.content)

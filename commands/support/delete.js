@@ -62,10 +62,15 @@ module.exports = {
             if (ticketsCatName === "undefined") {
                 let ticketsCatName = "Tickets";
             }
+            let CticketsCatName = guildDatabase.closedTicketCategory
+            if (CticketsCatName === "undefined") {
+                let CticketsCatName = "Closed Tickets";
+            }
 
             let ticketCategory = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
+            let CticketCategory = interaction.guild.channels.cache.find(cat => cat.name === CticketsCatName);
 
-            if (ticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket]});
+            if (ticketCategory.id !== interaction.channel.parentId || CticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket]});
 
             if (!interaction.channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}` || !interaction.member.permissions.has('ADMINISTRATOR')) {
                 return interaction.reply("You are not the ticket owner and/or do not have the `KICK_MEMBERS` permission.")

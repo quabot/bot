@@ -374,15 +374,15 @@ const role = new discord.MessageActionRow()
                 },
             ]),
     );
-const closeTicket = new discord.MessageActionRow()
+const   closeTicket = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
-            .setCustomId('close')
+            .setCustomId('closebutton')
             .setLabel('Close')
             .setEmoji('🔒')
             .setStyle('PRIMARY'),
         new discord.MessageButton()
-            .setCustomId('delete')
+            .setCustomId('deletebutton')
             .setLabel('Delete')
             .setEmoji('🗑️')
             .setStyle('DANGER'),
