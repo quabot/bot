@@ -105,6 +105,7 @@ module.exports = {
                                 .addField("Emoji", `${emoji}`, true)
                                 .addField("Channel", `${channel}`, true)
                                 .addField("Role", `${role}`, true)
+                                .addField("Mode", `${mode}`, true)
                                 .setTimestamp()
                                 .setColor(colors.COLOR)
                             try {
@@ -131,6 +132,7 @@ module.exports = {
                         messageId: message,
                         emoji: emoji,
                         reactMode: mode,
+                        role: role.id,
                     });
                     newReact.save()
                         .catch(err => {
@@ -139,6 +141,8 @@ module.exports = {
                         });
                 }
                     break;
+
+                    // if exists return
                 case "delete": {
                     const messageId = interaction.options.getChannel("message-id");
                     console.log(messageId);

@@ -21,6 +21,10 @@ const ReactSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
     },
+    role: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+    }
 });
 
 module.exports = mongoose.model('React', ReactSchema);
