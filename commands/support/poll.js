@@ -13,14 +13,12 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-    options: [
-        {
-            name: "poll",
-            description: "Poll topic",
-            type: "STRING",
-            required: true,
-        },
-    ],
+    options: [{
+        name: "poll",
+        description: "Poll topic",
+        type: "STRING",
+        required: true,
+    }, ],
     async execute(client, interaction) {
 
         try {

@@ -167,31 +167,6 @@ client.on("interactionCreate", async (interaction) => {
     }
 });
 
-client.on('messageReactionAdd', async (reaction, user) => {
-
-    const React = require('./schemas/ReactSchema');
-    const reactList = await React.findOne({
-        guildId: reaction.message.guildId,
-        messageId: reaction.message.id,
-        emoji: reaction._emoji.name,
-    }, (err, react) => {
-        if (err) console.error(err);
-        if (!react) {
-            return;
-        }
-        return;
-    });
-    if (!reactList) return;
-    let emojiRole = reaction.message.guild.roles.cache.find(role => role.id === `${reactList.role}`);
-    if (!emojiRole) return reaction.message.reply("Error! No role found! Deleting reaction role now.");
-    // delete record
-
-    if (reactList.reactMode === "normal") {
-        userTarget.send(`You were given the role **${emojiRole.name}** in **${reaction.message.guild.name}**!`);
-        
-    }
-});
-
 const Levels = require("discord.js-leveling");
 Levels.setURL(process.env.DATABASE_URL);
 consola.success('Loaded index.js!');

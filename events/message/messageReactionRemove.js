@@ -6,14 +6,13 @@ const consola = require('consola');
 const mongoose = require('mongoose');
 
 module.exports = {
-    name: "messageReactionAdd",
+    name: "messageReactionRemove",
     /**
      * @param {Client} client 
      */
     async execute(reaction, user, client) {
 
         try {
-            if (user.bot) return;
             const React = require('../../schemas/ReactSchema');
             const reactList = await React.findOne({
                 guildId: reaction.message.guildId,
@@ -50,22 +49,21 @@ module.exports = {
 
             if (reactList.reactMode === "normal") {
                 const embed = new Discord.MessageEmbed()
-                    .setTitle(`Role given!`)
-                    .setDescription(`You were given the **${emojiRole.name}** role in **${reaction.message.guild.name}**!`)
-                    .setFooter("Remove your reaction to get rid of the role.")
+                    .setTitle(`Role remove!`)
+                    .setDescription(`You were removed the **${emojiRole.name}** role in **${reaction.message.guild.name}**!`)
+                    .setFooter("React again to get the role again.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
                 memberTarget.send({ embeds: [embed] });
-                memberTarget.roles.add(emojiRole)
+                memberTarget.roles.remove(emojiRole)
             } else if (reactList.reactMode === "verify") {
                 const embed2 = new Discord.MessageEmbed()
-                    .setTitle(`Role given!`)
-                    .setDescription(`You were given the **${emojiRole.name}** role in **${reaction.message.guild.name}**!`)
-                    .setFooter("You cannot remove this role.")
+                    .setTitle(`Error!!`)
+                    .setDescription(`You cannot remove the **${emojiRole.name}** role in **${reaction.message.guild.name}**!`)
+                    .setFooter("You cannot remove this role, as this is a verify mode role.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
                 memberTarget.send({ embeds: [embed2] });
-                memberTarget.roles.add(emojiRole)
             }
         } catch (e) {
             console.log(e);

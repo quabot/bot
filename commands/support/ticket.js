@@ -1,171 +1,165 @@
-const discord = require('discord.js');
+const {
+    MessageEmbed,
+    CommandInteraction,
+    MessageActionRow,
+    MessageButton
+} = require('discord.js')
 
-const colors = require('../../files/colors.json');
-const config = require('../../files/config.json');
-
-const { closeTicket } = require('../../files/interactions');
-
+const colors = require('../../files/colors.json')
 const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
+const { close } = require('../../files/interactions/tickets');
 
 module.exports = {
-    name: "ticket",
-    description: "Create a ticket.",
+    name: 'ticket',
+    description: 'Create a ticket.',
     /**
-     * @param {Client} client 
+     * @param {Client} client
      * @param {CommandInteraction} interaction
      */
-    options: [
-        {
-            name: "topic",
-            description: "Ticket topic",
-            type: "STRING",
-            required: true,
-        },
-    ],
+    options: [{
+        name: "topic",
+        description: "Ticket topic",
+        type: "STRING",
+        required: true,
+    }, ],
     async execute(client, interaction) {
-
         try {
-            const Guild = require('../../schemas/GuildSchema');
+            const topic = interaction.options.getString('topic');
+            const Guild = require('../../schemas/GuildSchema')
             const guildDatabase = await Guild.findOne({
-                guildId: interaction.guild.id,
-            }, (err, guild) => {
-                if (err) console.error(err);
-                if (!guild) {
-                    const newGuild = new Guild({
-                        guildId: interaction.guild.id,
-                        guildName: interaction.guild.name,
-                        logChannelID: "none",
-                        reportChannelID: "none",
-                        suggestChannelID: "none",
-                        welcomeChannelID: "none",
-                        levelChannelID: "none",
-                        pollChannelID: "none",
-                        ticketCategory: "Tickets",
-                        closedTicketCategory: "Tickets",
-                        logEnabled: true,
-                        musicEnabled: true,
-                        levelEnabled: true,
-                        reportEnabled: true,
-                        suggestEnabled: true,
-                        ticketEnabled: true,
-                        welcomeEnabled: true,
-                        pollsEnabled: true,
-                        roleEnabled: true,
-                        mainRole: "Member",
-                        mutedRole: "Muted"
-                    });
-                    newGuild.save()
-                        .catch(err => {
-                            console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
-                        });
-                    return interaction.channel.send({ embeds: [addedDatabase] });
+                    guildId: interaction.guild.id
+                },
+                (err, guild) => {
+                    if (err) console.error(err)
+                    if (!guild) {
+                        const newGuild = new Guild({
+                            guildId: interaction.guild.id,
+                            guildName: interaction.guild.name,
+                            logChannelID: 'none',
+                            reportChannelID: 'none',
+                            suggestChannelID: 'none',
+                            welcomeChannelID: 'none',
+                            levelChannelID: 'none',
+                            pollChannelID: 'none',
+                            ticketCategory: 'Tickets',
+                            closedTicketCategory: 'Tickets',
+                            logEnabled: true,
+                            musicEnabled: true,
+                            levelEnabled: true,
+                            reportEnabled: true,
+                            suggestEnabled: true,
+                            ticketEnabled: true,
+                            welcomeEnabled: true,
+                            pollsEnabled: true,
+                            roleEnabled: true,
+                            mainRole: 'Member',
+                            mutedRole: 'Muted'
+                        })
+                        newGuild.save().catch(err => {
+                            console.log(err)
+                            interaction.channel.send({ embeds: [errorMain] })
+                        })
+                        return interaction.channel.send({ embeds: [addedDatabase] })
+                    }
                 }
-            });
+            );
+
             if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
 
-            let ticketsCatName = guildDatabase.ticketCategory;
-            let CticketsCatName = guildDatabase.closedTicketCategory;
+            const GIds = require('../../schemas/GuildIds');
+            const GIdsDB = await GIds.findOne({
+                    verifyToken: 1,
+                    gId: interaction.guild.id
+                },
+                (err, GIds) => {
+                    if (err) return;
+                    if (!GIds) {
+                        const newGids = new GIds({
+                            verifyToken: 1,
+                            gId: interaction.guild.id,
+                            ticketId: 0,
+                            suggestId: 0,
+                            pollId: 0,
+                        })
+                        newGids.save().catch(err => {
+                            console.log(err)
+                            interaction.channel.send({ embeds: [errorMain] })
+                        })
+                        return interaction.channel.send({ embeds: [addedDatabase] })
+                    }
+                }
+            );
 
-            const topic = interaction.options.getString('topic');
+            let newId = GIdsDB.ticketId + 1;
+            await GIdsDB.updateOne({
+                ticketId: newId,
+            });
 
-            if (ticketsCatName === "undefined") {
-                let ticketsCatName = "Tickets";
-            }
+            let openedName = guildDatabase.ticketCategory;
+            if (openedName === undefined) openedName = 'Tickets';
+            const category = interaction.guild.channels.cache.find(cat => cat.name === openedName);
 
-            if (CticketsCatName === "undefined") {
-                let CticketsCatName = "Closed Tickets";
-            }
-
-            let category = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
-            let closedCategory = interaction.guild.channels.cache.find(cat => cat.name === CticketsCatName);
-            if (category === undefined) {
+            if (!category) {
+                interaction.guild.channels.create(openedName, { type: "GUILD_CATEGORY" });
                 const embedTicketsCreate = new discord.MessageEmbed()
                     .setColor(colors.TICKET_CREATED)
-                    .setTitle("Creating a category!")
-                    .setDescription("The tickets categegory does not exist. Creating one now...")
+                    .setTitle('Creating a category!')
+                    .setDescription('The tickets categegory does not exist. Creating one now...')
                     .setTimestamp()
-                interaction.reply({ embeds: [embedTicketsCreate] });
-                interaction.guild.channels.create(ticketsCatName, { type: "GUILD_CATEGORY" });
-                if (closedCategory === undefined) {
-                    const embedCTicketsCreate = new discord.MessageEmbed()
-                        .setColor(colors.TICKET_CREATED)
-                        .setTitle("Creating a category!")
-                        .setDescription("The categegory for closed tickets does not exist. Creating one now...")
-                        .setTimestamp()
-                    interaction.followUp({ embeds: [embedCTicketsCreate] });
-                    interaction.guild.channels.create(CticketsCatName, { type: "GUILD_CATEGORY" });
-                }
-                const succesCreate = new discord.MessageEmbed()
-                    .setColor(colors.TICKET_CREATED)
-                    .setTitle("Created category!")
-                    .setDescription("Succesfully created the required category(ies), run the command again.")
-                    .setTimestamp()
-                return interaction.followUp({ embeds: [succesCreate] });
-            }
-            if (closedCategory === undefined) {
-                const succesCreate = new discord.MessageEmbed()
-                    .setColor(colors.COLOR)
-                    .setTitle("Created category!")
-                    .setDescription("Succesfully created the required category(ies), run the command again.")
-                    .setTimestamp()
-                const embedCTicketsCreate = new discord.MessageEmbed()
-                    .setColor(colors.COLOR)
-                    .setTitle("Creating category!")
-                    .setDescription("The categegory for closed tickets does not exist. Creating one now...")
-                    .setTimestamp()
-                interaction.reply({ embeds: [embedCTicketsCreate] });
-                interaction.guild.channels.create(CticketsCatName, { type: "GUILD_CATEGORY" });
-                return interaction.channel.send({ embeds: [succesCreate] });
+                interaction.reply({ embeds: [embedTicketsCreate] })
+                return
             }
 
-            let ticketChannel = interaction.guild.channels.cache.find(channel => channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}`);
+            interaction.guild.channels.create(`ticket-${newId}`, { parent: category, topic: `Creator: ${interaction.user.username}#${interaction.user.discriminator} (${interaction.user.id}) - Topic: ${topic} - Ticket ID: ${newId}` }).then(channel => {
 
-            if (ticketChannel === undefined) {
+                const createdEmbed = new MessageEmbed()
+                    .setTitle("New ticket!")
+                    .setDescription(`Welcome to your ticket ${interaction.user}! \nPlease wait here, staff will be with you shortly.`)
+                    .addField(`Creator`, `${interaction.user}`)
+                    .addField(`Topic`, `${topic}`)
+                    .setFooter("Close the ticket with the button below this message!")
+                    .setTimestamp()
+                    .setColor(colors.COLOR)
+                channel.send({ embeds: [createdEmbed], components: [close] });
 
-                interaction.guild.channels.create(`${interaction.user.username}-${interaction.user.discriminator}`, { parent: category, topic: `Creator: ${interaction.user.username}#${interaction.user.discriminator} - Topic: ${topic}` }).then(ch => {
-                    const embed = new discord.MessageEmbed()
-                        .setColor(colors.TICKET_CREATED)
-                        .setTitle("Created your ticket :white_check_mark:")
-                        .setDescription("You can find it here: <#" + ch + ">")
-                        .addField("Topic", `${topic}`)
-                        .setTimestamp()
-                    interaction.reply({ embeds: [embed] })
+                const Ticket = require('../../schemas/TicketSchema')
+                const newTicket = new Ticket({
+                    guildId: interaction.guild.id,
+                    memberId: interaction.user.id,
+                    ticketId: newId,
+                    channelId: channel.id,
+                    closed: false,
+                    topic: topic,
                 });
+                newTicket.save()
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [errorMain] });
+                    });
 
                 setTimeout(() => {
-                    let ticketChannel2 = interaction.guild.channels.cache.find(channel => channel.name === `${interaction.user.username.toLowerCase()}-${interaction.user.discriminator}`);
-                    ticketChannel2.permissionOverwrites.edit(interaction.user, {
+                    let ticket = interaction.guild.channels.cache.find(channel => channel.name === `ticket-${newId}`);
+                    ticket.permissionOverwrites.edit(interaction.user, {
                         SEND_MESSAGES: true,
                         VIEW_CHANNEL: true,
                         READ_MESSAGE_HISTORY: true
                     });
-                    const createdSucces = new discord.MessageEmbed()
+
+                    const embed = new MessageEmbed()
                         .setColor(colors.TICKET_CREATED)
-                        .setTitle("Ticket Created!")
-                        .setDescription(`Welcome to your ticket, ${interaction.user}!\nPlease wait here, staff will be with you shortly.`)
-                        .addField(`Creator`, `${interaction.user}`)
-                        .addField(`Topic`, `${topic}`)
+                        .setTitle("Created your ticket :white_check_mark:")
+                        .setDescription("You can find it here: <#" + channel + ">")
+                        .addField("Topic", `${topic}`)
                         .setTimestamp()
-                        .setFooter(`Made a mistake? Close this ticket using the buttons below this message.`)
-                    ticketChannel2.send({ embeds: [createdSucces], components: [closeTicket] });
-                    ticketChannel2.send(`${interaction.user}`).then(m => {
-                        setTimeout(() => {
-                            m.delete()
-                        }, 200);
-                    });
-                }, 1000);
+                    interaction.reply({ embeds: [embed] })
+                }, 300);
+            });
 
-            } else {
-                interaction.reply("You already have a ticket! You can find it here: <#" + ticketChannel + ">! If this ticket is closed, reopen it using /reopen <#" + ticketChannel + ">, or by clicking the button.");
-                return
-            }
+            // CHANNEL MESSAGE - Close
         } catch (e) {
-            console.log(e);
-            interaction.channel.send({ embeds: [errorMain] });
-            return;
+            interaction.channel.send({ embeds: [errorMain] })
+            console.log(e)
+            return
         }
-
-
     }
 }

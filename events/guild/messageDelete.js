@@ -58,7 +58,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setColor(colors.COLOR)
                     .setTitle('Message Deleted')
-                    .addField('Channel', `<#${message.channelId}>`)
+                    .addField('Channel', `<#${message.channel.id}>`)
                     .addField('Author', `<@${message.author.id}>`)
                     .addField('Content', `${message.content}** **`)
                     .addField('Message ID', `${message.id}`)

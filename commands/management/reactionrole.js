@@ -9,7 +9,7 @@ const noValidChannel = new discord.MessageEmbed()
     .setTimestamp()
 const noMsgFound = new discord.MessageEmbed()
     .setTitle("Could not find that message!")
-    .setDescription("Would like to create the message? React with :white_check_mark: within 15 seconds to continue.")
+    .setDescription("Please send one first.")
     .setColor(colors.COLOR)
     .setTimestamp()
 
@@ -57,8 +57,8 @@ module.exports = {
                     type: "STRING",
                     required: false,
                     choices: [
-                        { name: "normal", value: "Normal" },
-                        { name: "verify", value: "Verify" }
+                        { name: "normal", value: "normal" },
+                        { name: "verify", value: "verify" }
                     ]
                 },
             ],
@@ -74,7 +74,18 @@ module.exports = {
                     type: "STRING",
                     required: true,
                 },
+                {
+                    name: "reaction",
+                    description: "The emoji reaction to remove.",
+                    type: "STRING",
+                    required: true,
+                },
             ],
+        },
+        {
+            name: "list",
+            description: "List all reaction roles.",
+            type: "SUB_COMMAND",
         },
     ],
     async execute(client, interaction) {
@@ -108,19 +119,19 @@ module.exports = {
                                 .addField("Mode", `${mode}`, true)
                                 .setTimestamp()
                                 .setColor(colors.COLOR)
-                            try {
-                                message.react(`${emoji}`);
-                            } catch (e) {
-                                console.log(e)
-                                interaction.channel.send({ embeds: [invalidEmojis] });
-                                return
-                            }
+                            message.react(`${emoji}`).catch(err => {
+                                const noRole = new discord.MessageEmbed()
+                                    .setTitle(":x: No Emoji!")
+                                    .setDescription(`Could not find that emoji! You can only react with default emojis.`)
+                                    .setColor(colors.COLOR)
+                                    .setTimestamp()
+                                interaction.channel.send({ embeds: [noRole] });
+                                return;
+                            })
                             interaction.reply({ embeds: [embed] });
                         })
                         .catch(async err => {
-                            const noMsg = await interaction.channel.send({ embeds: [noMsgFound], fetchReply: true });
-                            noMsg.react('✅');
- 
+                            await interaction.channel.send({ embeds: [noMsgFound], fetchReply: true });
                             return;
                         })
 
@@ -141,11 +152,48 @@ module.exports = {
                         });
                 }
                     break;
-
-                    // if exists return
                 case "delete": {
-                    const messageId = interaction.options.getChannel("message-id");
-                    console.log(messageId);
+                    const messageId = interaction.options.getString("message-id");
+                    const emoji = interaction.options.getString("reaction");
+                    const React = require('../../schemas/ReactSchema');
+                    React.deleteOne({
+                        guildId: interaction.guild.id,
+                        messageId: messageId,
+                        emoji: emoji,
+                    }, (err, react) => {
+                        if (err) return;
+                        if (!react) return interaction.channel.send("Could not find a message with that ID!")
+                    });
+                    const embed3 = new discord.MessageEmbed()
+                        .setTitle("Deleted the reaction role!")
+                        .addField("ID", `${messageId}`)
+                        .addField("Emoji", `${emoji}`)
+                        .setTimestamp()
+                        .setColor(colors.COLOR)
+                    interaction.reply({ embeds: [embed3]})
+                }
+                    break;
+                case "list": {
+                    const React = require('../../schemas/ReactSchema');
+                    const reactList = await React.find({
+                        guildId: interaction.guild.id,
+                    }, (err, react) => {
+                        if (err) console.error(err);
+                        if (!react) {
+                            return interaction.channel.send("There are no reaction roles!");
+                        }
+                        return;
+                    });
+                    const reacts = reactList.map(e => `**Message ID:**\n${e.messageId}\n**Role**\n<@&${e.role}>\n**Emoji**\n${e.emoji}`);
+
+                    const reactEmbed = new discord.MessageEmbed()
+                        .setColor(colors.COLOR)
+                        .setTitle(`${interaction.guild.name} Reaction Roles`)
+                        .setTimestamp()
+                        .setDescription(`${reacts.join("\n\n")}`)
+                    interaction.reply({ embeds: [reactEmbed] }).catch(err => {
+                        interaction.channel.send("The list is too long to be sent to this channel. Please contact the developers.")
+                    });
                 }
                     break;
             }
