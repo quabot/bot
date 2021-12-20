@@ -71,7 +71,7 @@ module.exports = {
                     if (closedName === undefined) openedName = 'Closed Tickets';
                     const closedCategory = interaction.guild.channels.cache.find(cat => cat.name === closedName);
 
-                    if (!category) {
+                    if (!closedCategory) {
                         interaction.guild.channels.create(closedName, { type: "GUILD_CATEGORY" });
                         const embedTicketsCreate = new discord.MessageEmbed()
                             .setColor(colors.TICKET_CREATED)
@@ -89,8 +89,28 @@ module.exports = {
                         READ_MESSAGE_HISTORY: true
                     });
 
-                    // update send message
-                    // add reopen etc button
+                    const embed = new MessageEmbed()
+                        .setTitle("Closed Ticket!")
+                        .setDescription("Reopen it, delete it, or get the transcript with the buttons below this message.")
+                        .setTimestamp()
+                        .setColor(colors.COLOR);
+                    interaction.update({ embeds: [embed] });
+
+
+                    let cId = interaction.channel.name;
+                    cId = cId.substring(7);
+
+                    const Ticket = require('../../schemas/TicketSchema')
+                    const TicketDB = await Ticket.findOne({
+                        guildId: interaction.guild.id,
+                        ticketId: cId,
+                        channelId: interaction.channel.id,
+                    }, (err, ticket) => {
+                        if (err) return;
+                        if (!ticket) return interaction.reply("Could not find this ticket in our database!");
+                    });
+                    //add reopen etc button
+                    // update db
                 }
                 if (interaction.customId === "closecancel") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
