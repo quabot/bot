@@ -6,7 +6,6 @@ module.exports = {
     name: "ready",
     once: true,
     execute(client) {
-
         consola.log(` \n${client.user.username.toUpperCase()}\nServers: ${client.guilds.cache.size}\nUsers: ${client.users.cache.size}\nVersion: ${config.VERSION}\n `);
         setTimeout(() => {
             consola.success(`${client.user.username}`);
