@@ -38,7 +38,7 @@ module.exports = {
                             console.log(err);
                             message.channel.send({ embeds: [errorMain] });
                         });
-                    return; //message.channel.send({ embeds: [addedDatabase] });
+                    return;
                 }
             });
 

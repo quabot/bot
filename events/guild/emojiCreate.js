@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(emoji, client) {
         try {
-            const Guild = require('../../schemas/GuildSchema');
+        const Guild = require('../../schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
             guildId: emoji.guild.id,
         }, (err, guild) => {

@@ -11,3 +11,7 @@ Bug-Report: broken embed on lvls ✅
 User: Joa_sss#0001
 User-ID: 486563467810308096
 Bug-Report: issues with user model on msgcreate ✅
+
+User: CasualSpeedcuber#4888
+User-ID: 621966627914907658
+Bug-Report: your mom is thick

@@ -1,9 +1,10 @@
 const { CommandInteraction, MessageButton, MessageEmbed } = require('discord.js');
 const mongoose = require('mongoose');
+const { createTranscript } = require('discord-html-transcripts');
 
 const colors = require('../../files/colors.json');
 const { errorMain, ticketsDisabled, addedDatabase, notATicket } = require('../../files/embeds');
-const { closeConfirm, closed, close } = require('../../files/interactions/tickets');
+const { closeConfirm, closed, close, deleteConfirm } = require('../../files/interactions/tickets');
 
 module.exports = {
     name: "interactionCreate",
@@ -83,6 +84,7 @@ module.exports = {
                     }
 
                     interaction.channel.setParent(closedCategory);
+                    interaction.channel.setParent(closedCategory);
                     interaction.channel.permissionOverwrites.edit(interaction.user, {
                         SEND_MESSAGES: false,
                         VIEW_CHANNEL: true,
@@ -142,6 +144,7 @@ module.exports = {
                     }
 
                     interaction.channel.setParent(category);
+                    interaction.channel.setParent(category);
                     interaction.channel.permissionOverwrites.edit(interaction.user, {
                         SEND_MESSAGES: true,
                         VIEW_CHANNEL: true,
@@ -172,6 +175,73 @@ module.exports = {
                     await TicketDB.updateOne({
                         closed: false,
                     });
+                }
+                if (interaction.customId === "transcript") {
+                    if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+                    let cId = interaction.channel.name;
+                    cId = cId.substring(7);
+                    const transcript = new MessageEmbed()
+                        .setTitle("Transcript saved!")
+                        .setDescription("Here is your transcript of this ticket. Download and open it to view it!")
+                        .setColor(colors.COLOR)
+                        .setTimestamp()
+                    const attachement = await createTranscript(interaction.channel, {
+                        limit: -2,
+                        returnBuffer: false,
+                        fileName: `ticket-${cId}.html`,
+                    });
+                    interaction.reply({ embeds: [transcript], components: [], files: [attachement] })
+
+                }
+                if (interaction.customId === "deleteconfirm") {
+                    if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+                    setTimeout(() => {
+                        interaction.channel.delete();
+                    }, 2000);
+
+                    const embed = new MessageEmbed()
+                        .setTitle("Deleting ticket Ticket!")
+                        .setDescription("This cannot be undone.")
+                        .setTimestamp()
+                        .setColor(colors.COLOR);
+                    interaction.update({ embeds: [embed], components: [] });
+
+
+                    let cId = interaction.channel.name;
+                    cId = cId.substring(7);
+
+                    const Ticket = require('../../schemas/TicketSchema')
+                    const TicketDB = await Ticket.findOne({
+                        guildId: interaction.guild.id,
+                        ticketId: cId,
+                        channelId: interaction.channel.id,
+                    }, (err, ticket) => {
+                        if (err) return;
+                        if (!ticket) return interaction.reply({ embeds: [notATicket] });
+                    });
+
+                    await TicketDB.updateOne({
+                        closed: true,
+                    });
+                }
+                if (interaction.customId === "deletecancel") {
+                    if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+                    const deleteCancel = new MessageEmbed()
+                        .setTitle(":x: Cancelled!")
+                        .setDescription("Cancelled the deletion of the ticket.")
+                        .setColor(colors.COLOR)
+                        .setTimestamp()
+                    interaction.update({ embeds: [deleteCancel], components: [] })
+                }
+                if (interaction.customId === "delete") {
+                    if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+                    const deleteEmbed = new MessageEmbed()
+                        .setTitle("Delete ticket")
+                        .setDescription("Are you sure you want to delete this ticket?")
+                        .setColor(colors.COLOR)
+                        .setTimestamp()
+                    interaction.reply({ embeds: [deleteEmbed], components: [deleteConfirm] })
                 }
             }
         } catch (e) {

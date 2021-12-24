@@ -55,7 +55,9 @@ module.exports = {
                     .setFooter("Remove your reaction to get rid of the role.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
-                memberTarget.send({ embeds: [embed] });
+                memberTarget.send({ embeds: [embed] }).catch(err => {
+                    return;
+                });;
                 memberTarget.roles.add(emojiRole)
             } else if (reactList.reactMode === "verify") {
                 const embed2 = new Discord.MessageEmbed()
@@ -64,7 +66,9 @@ module.exports = {
                     .setFooter("You cannot remove this role.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
-                memberTarget.send({ embeds: [embed2] });
+                memberTarget.send({ embeds: [embed2] }).catch(err => {
+                    return;
+                });
                 memberTarget.roles.add(emojiRole)
             }
         } catch (e) {

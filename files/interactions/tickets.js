@@ -8,6 +8,21 @@ const close = new discord.MessageActionRow()
             .setEmoji('🔒')
             .setStyle('SUCCESS'),
     );
+const deleteConfirm = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('deleteconfirm')
+            .setLabel('Delete')
+            .setEmoji('⛔')
+            .setStyle('PRIMARY'),
+    )
+    .addComponents(
+        new discord.MessageButton()
+            .setCustomId('deletecancel')
+            .setLabel('Cancel')
+            .setEmoji('❌')
+            .setStyle('DANGER'),
+    );   
 const closeConfirm = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
@@ -46,4 +61,4 @@ const closed = new discord.MessageActionRow()
             .setStyle('DANGER'),
     );
 
-module.exports = { closed, closeConfirm, close }
+module.exports = { deleteConfirm, closed, closeConfirm, close }

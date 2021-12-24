@@ -54,7 +54,9 @@ module.exports = {
                     .setFooter("React again to get the role again.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
-                memberTarget.send({ embeds: [embed] });
+                memberTarget.send({ embeds: [embed] }).catch(err => {
+                    return;
+                });;
                 memberTarget.roles.remove(emojiRole)
             } else if (reactList.reactMode === "verify") {
                 const embed2 = new Discord.MessageEmbed()
@@ -63,7 +65,9 @@ module.exports = {
                     .setFooter("You cannot remove this role, as this is a verify mode role.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
-                memberTarget.send({ embeds: [embed2] });
+                memberTarget.send({ embeds: [embed2] }).catch(err => {
+                    return;
+                });;
             }
         } catch (e) {
             console.log(e);
