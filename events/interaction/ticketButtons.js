@@ -14,6 +14,8 @@ module.exports = {
      */
     async execute(interaction, client) {
 
+        if (interaction.guild.id === null) return;
+
         // failsaves
         try {
             const Guild = require('../../schemas/GuildSchema')
@@ -201,7 +203,7 @@ module.exports = {
                     }, 2000);
 
                     const embed = new MessageEmbed()
-                        .setTitle("Deleting ticket Ticket!")
+                        .setTitle("Deleting ticket!")
                         .setDescription("This cannot be undone.")
                         .setTimestamp()
                         .setColor(colors.COLOR);

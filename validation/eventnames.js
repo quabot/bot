@@ -66,6 +66,6 @@ module.exports = {
         'userUpdate',
         "voiceStateUpdate",
         "warn",
-        "webhookUpdate",
+        "webhookUpdate"
     ]
 }

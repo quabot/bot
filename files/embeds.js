@@ -3,6 +3,11 @@ const { MessageEmbed } = require('discord.js');
 const colors = require('./colors.json');
 const prefix = "/";
 
+const timeoutNoTime = new MessageEmbed()
+    .setColor(colors.COLOR)
+    .setTitle(":x: No Time!")
+    .setDescription("You did not specify a valid time. Format: 1d, 2h, 1mo etc.")
+    .setTimestamp();
 const invalidEmojis = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle(":x: Error!")
@@ -507,7 +512,7 @@ const optionsEmbed = new discord.MessageEmbed()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setDescription("Configure quabot to be perfect for your server. Select a category using the dropdown.")
 const noPerms = new discord.MessageEmbed()
-    .setTitle(":x: You do not have permission!")
+    .setTitle(":x: You do not have permission to do that!")
     .setTimestamp()
     .setColor(colors.COLOR)
 const iNoPerms = new discord.MessageEmbed()
@@ -680,4 +685,4 @@ const embedClose1 = new discord.MessageEmbed()
     .setTitle("Delete Ticket")
     .setDescription("Delete this ticket using the buttons below this message.")
     .setTimestamp()
-module.exports = { invalidEmojis, supportHEmbed, notClosed, notATicket, tooLong, QuizSentenceNone, embedClose1, closeTicketEmbed, noOwner, pollEnabled, pollsDisabled, noPollChannelConfigured, noMSG, iNoPerms, pollDisabled, stoppedQueue, skippedSong, noValidSeek, disabledLevelUp, noSongs, shuffledQueue, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, roleEnabled, roleDisabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain }
+module.exports = { timeoutNoTime, invalidEmojis, supportHEmbed, notClosed, notATicket, tooLong, QuizSentenceNone, embedClose1, closeTicketEmbed, noOwner, pollEnabled, pollsDisabled, noPollChannelConfigured, noMSG, iNoPerms, pollDisabled, stoppedQueue, skippedSong, noValidSeek, disabledLevelUp, noSongs, shuffledQueue, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, roleEnabled, roleDisabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain }

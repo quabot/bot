@@ -39,7 +39,7 @@ module.exports = {
                 .addField(`Time Created:`, `${moment(interaction.guild.createdTimestamp).format('LT')} ${moment(interaction.guild.createdTimestamp).format('LL')} [${moment(interaction.guild.createdTimestamp).fromNow()}]`, true)
             if (roles.join(', ').length > 1024) embed.addField("Roles", `The roles on this server are too long to put in an embed!`, true)
             if (roles.join(', ').length < 1024) embed.addField(`Roles [${roles.length - 1}]`, roles.join(', '))
-            if (guild.description) embed.addField(`Description`, roles.join(', '))
+            if (guild.description) embed.addField(`Description`, `${guild.description}`)
 
             interaction.reply({ embeds: [embed], split: true })
         } catch (e) {

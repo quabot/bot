@@ -29,6 +29,8 @@ module.exports = {
     ],
     async execute(client, interaction) {
         try {
+            
+            
             const user = interaction.options.getMember('user');
             const punishment = interaction.options.getString('punishment');
 

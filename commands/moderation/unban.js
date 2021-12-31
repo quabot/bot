@@ -25,6 +25,8 @@ module.exports = {
     ],
     async execute(client, interaction) {
         try {
+            
+            
             const member = interaction.options.getString('userid');
 
             if (!member) return interaction.reply({ embeds: [unbanNoUser] });

@@ -9,12 +9,12 @@ const consola = require('consola');;
 /**
  * @param {Client} client
  */
-module.exports = async(client) => {
+module.exports = async (client) => {
     const Table = new Ascii("Commands loaded");
 
     CommandsArray = [];
 
-    (await PG(`${process.cwd()}/Commands/*/*.js`)).map(async(file) => {
+    (await PG(`${process.cwd()}/Commands/*/*.js`)).map(async (file) => {
         const command = require(file);
 
         if (!command.name)
@@ -46,9 +46,10 @@ module.exports = async(client) => {
 
 
 
-    client.on('ready', async() => {
+    client.on('ready', async () => {
+        return;
         client.guilds.cache.forEach((guild) => {
-            guild.commands.set(CommandsArray).then(async(command) => {
+            guild.commands.set(CommandsArray).then(async (command) => {
                 const Roles = (commandName) => {
                     const cmdPerms = CommandsArray.find((c) => c.name === commandName).permission;
                     if (!cmdPerms) return null;
@@ -70,30 +71,5 @@ module.exports = async(client) => {
                 await guild.commands.permissions.set({ fullPermissions })
             })
         })
-    })
-    client.on('guildCreate', async() => {
-        client.guilds.cache.forEach((guild) => {
-            guild.commands.set(CommandsArray).then(async(command) => {
-                const Roles = (commandName) => {
-                    const cmdPerms = CommandsArray.find((c) => c.name === commandName).permission;
-                    if (!cmdPerms) return null;
-
-                    return guild.roles.cache.filter((r) => r.permissions.has(cmdPerms))
-                }
-
-                const fullPermissions = command.reduce((accumulator, r) => {
-                    const roles = Roles(r.name);
-                    if (!roles) return accumulator;
-
-                    const permissions = roles.reduce((a, r) => {
-                        return [...a, { id: r.id, type: "ROLE", permission: true }]
-                    }, [])
-
-                    return [...accumulator, { id: r.id, permissions }]
-                }, [])
-
-                await guild.commands.permissions.set({ fullPermissions })
-            })
-        })
-    })
+    });
 };

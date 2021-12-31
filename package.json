@@ -20,7 +20,7 @@
     "discord-giveaways": "^5.0.1",
     "discord-html-transcripts": "^1.1.1",
     "discord-slash-commands-client": "^1.2.1",
-    "discord.js": "^13.0.1",
+    "discord.js": "^13.5.0",
     "discord.js-leveling": "^5.4.0",
     "distube": "^3.0.1",
     "dotenv": "^10.0.0",

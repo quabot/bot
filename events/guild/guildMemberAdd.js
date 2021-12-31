@@ -3,6 +3,7 @@ const { Client, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
 const consola = require('consola');
 const mongoose = require('mongoose');
+const { errorMain, addedDatabase } = require('../../files/embeds/botadd');
 
 module.exports = {
     name: "guildMemberAdd",
@@ -10,6 +11,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(member, client) {
+        if (member.guild.id === null) return;
 
         try {
             const Guild = require('../../schemas/GuildSchema');

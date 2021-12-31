@@ -9,11 +9,24 @@ const config = require('../../files/config.json');
 const swearwords = require("../../files/data.json");
 const colors = require('../../files/colors.json');
 
-const { errorMain, addedDatabase } = require('../../files/embeds')
+const { errorMain, addedDatabase } = require('../../files/embeds');
+const { addbot } = require('../../files/interactions.js');
 
 module.exports = {
     name: "messageCreate",
     async execute(message, args, client) {
+
+        if (message.guild === null) {
+            if (message.author.bot) return;
+            const embed = new Discord.MessageEmbed()
+                .setTitle("Ready to use QuaBot?")
+                .setDescription("In order to start using quabot, you need to add it to your server first. Do that by clicking the button below this message.")
+                .setColor(colors.COLOR)
+                .setTimestamp()
+                .setThumbnail("https://i.imgur.com/jgdQUul.png")
+            message.channel.send({ embeds: [embed], components: [addbot] });
+            return;
+        }
 
         try {
             const User = require('../../schemas/UserSchema');

@@ -21,6 +21,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(interaction, client) {
+        if (interaction.guild.id === null) return;
 
         try {
             if (interaction.isCommand()) {
@@ -388,9 +389,8 @@ module.exports = {
                 const filter = m => interaction.user === author;
                 const collector = interaction.channel.createMessageCollector({ time: 15000 });
                 const mutedRole = new discord.MessageEmbed()
-                    .setTitle("Change Muted Role name")
-                    .setDescription("Enter the new name within 15 seconds to change it.")
-                    .addField("Current value", `${guildDatabase.mutedRole}`)
+                    .setTitle(":x: Removed")
+                    .setDescription("The /mute and /tempmute commands have been removed from quabot and have since been replaced with /timeout!")
                     .setColor(colors.COLOR)
                     .setThumbnail("https://i.imgur.com/jgdQUul.png");
                 const mainRole = new discord.MessageEmbed()
@@ -406,29 +406,6 @@ module.exports = {
                 if (interaction.values[0] === "muted_role") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
                     interaction.reply({ embeds: [mutedRole], ephemeral: true });
-                    collector.on('collect', async m => {
-                        if (m) {
-                            if (m.author.bot) return;
-                            if (m.content.lenght > 25) return;
-                            await guildDatabase.updateOne({
-                                mutedRole: m.content
-                            });
-                            const updated5 = new discord.MessageEmbed()
-                                .setTitle(":white_check_mark: Succes!")
-                                .setDescription(`Changed muted role name to ${m.content}!`)
-                                .setColor(colors.COLOR)
-                            m.channel.send({ embeds: [updated5] })
-                            collector.stop();
-                            return;
-                        } else {
-                            if (m.author.bot) return;
-                            const timedOu5t = new discord.MessageEmbed()
-                                .setTitle("❌ Timed Out!")
-                                .setDescription("You took too long to respond.")
-                                .setColor(colors.COLOR)
-                            m.reply({ embeds: [timedOu5t] });
-                        }
-                    });
                 }
                 if (interaction.values[0] === "main_role") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });

@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client({ intents: 16319, partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const client = new Discord.Client({ intents: 6095, partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 require('dotenv').config()
 
 // COMMANDS

@@ -364,12 +364,12 @@ const role = new discord.MessageActionRow()
             .addOptions([
                 {
                     label: 'Main Role',
-                    description: 'The main role that users get when being muted/unmuted and get on join *if enabled.',
+                    description: 'The main role that users get when joining the server.',
                     value: 'main_role',
                 },
                 {
                     label: 'Muted Role',
-                    description: 'The role that users get when muted.',
+                    description: '/mute is no longer supported! Use /timeout instead.',
                     value: 'muted_role',
                 },
             ]),
@@ -529,5 +529,12 @@ const deleteTicketC = new discord.MessageActionRow()
             .setDisabled(true)
             .setStyle('DANGER'),
     );
+const addbot = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageButton()
+            .setURL('https://invite.quabot.xyz/')
+            .setLabel('Invite QuaBot')
+            .setStyle('LINK'),
+    );
 
-module.exports = { MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { addbot, MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

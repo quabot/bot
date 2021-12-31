@@ -2,12 +2,16 @@ const config = require('../../files/config.json');
 const mongoose = require('mongoose');
 const consola = require('consola');
 
+const { embed } = require('../../files/embeds/botadd');
+const { main } = require('../../files/interactions/botadd');
+
 module.exports = {
     name: "guildCreate",
     /**
      * @param {Client} client 
      */
     async execute(guild, client) {
+        if (guild.id === null) return;
         try {
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
@@ -45,10 +49,15 @@ module.exports = {
                     return;
                 }
             });
-
             consola.log(" ");
             consola.info("QUABOT ADDED")
             consola.info(`QuaBot has been added to: ${guild.name}\nMembers: ${guild.memberCount}`);
+
+
+            let channel = guild.channels.cache.filter(chx => chx.type === "GUILD_TEXT").find(x => x.position === 0);
+
+            channel.send({ embeds: [embed], components: [main] });
+
         } catch (e) {
             console.log(e);
             return;

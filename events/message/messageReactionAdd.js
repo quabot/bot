@@ -12,6 +12,8 @@ module.exports = {
      */
     async execute(reaction, user, client) {
 
+        if (reaction.message.guildId === null) return;
+
         try {
             if (user.bot) return;
             const React = require('../../schemas/ReactSchema');

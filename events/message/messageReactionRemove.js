@@ -12,6 +12,8 @@ module.exports = {
      */
     async execute(reaction, user, client) {
 
+        if (reaction.message.guildId === null) return;
+
         try {
             const React = require('../../schemas/ReactSchema');
             const reactList = await React.findOne({

@@ -30,6 +30,8 @@ module.exports = {
     ],
     async execute(client, interaction) {
         try {
+            
+            
             let reason = "No reason specified";
 
             const reasonRaw = interaction.options.getString('reason');

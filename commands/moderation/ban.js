@@ -29,6 +29,9 @@ module.exports = {
     ],
     async execute(client, interaction) {
         try {
+
+            
+            
             const member = interaction.options.getMember('user');
             const reasonRaw = interaction.options.getString('reason');
             let reason = "No reason specified.";

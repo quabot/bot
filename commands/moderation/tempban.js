@@ -37,6 +37,8 @@ module.exports = {
     async execute(client, interaction) {
 
         try {
+            
+            
             const member = interaction.options.getMember('user');
             const time = interaction.options.getString('time');
             const reasonRaw = interaction.options.getString('reason');

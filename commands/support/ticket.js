@@ -71,9 +71,9 @@ module.exports = {
                     verifyToken: 1,
                     gId: interaction.guild.id
                 },
-                (err, GIds) => {
+                (err, gids) => {
                     if (err) return;
-                    if (!GIds) {
+                    if (!gids) {
                         const newGids = new GIds({
                             verifyToken: 1,
                             gId: interaction.guild.id,
