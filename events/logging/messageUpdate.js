@@ -51,6 +51,8 @@ module.exports = {
         });
         const logChannel = newMessage.guild.channels.cache.get(guildDatabase.logChannelID);
 
+        if (guildDatabase.logEnabled === "false") return;
+
         const embed = new MessageEmbed()
             .setTitle("Message Updated!")
             .setTimestamp()

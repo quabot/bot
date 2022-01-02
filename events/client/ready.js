@@ -9,7 +9,7 @@ module.exports = {
         consola.log(` \n${client.user.username.toUpperCase()}\nServers: ${client.guilds.cache.size}\nUsers: ${client.users.cache.size}\nVersion: ${config.VERSION}\n `);
         setTimeout(() => {
             consola.success(`${client.user.username}`);
-        }, 3000); 
+        }, 3000);
         (function loop() {
             setTimeout(function () {
                 client.user.setActivity(`${client.users.cache.size} users |  /help`, { type: "WATCHING" });
@@ -21,6 +21,6 @@ module.exports = {
                 client.user.setActivity(`${client.guilds.cache.size} servers |  /help`, { type: "WATCHING" });
                 loop()
             }, 18000);
-          }());
+        }());
     }
 };

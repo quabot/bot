@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
 const config = require('../../files/config.json');
-const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
+const { errorMain, addedDatabase, ticketsDisabled, notATicket } = require('../../files/embeds');
 
 module.exports = {
-    name: "suggest",
-    description: "Leave a suggestion.",
+    name: "add",
+    description: "Add a user to your ticket.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
@@ -63,6 +63,29 @@ module.exports = {
             );
 
             if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+            let ticketsCatName = guildDatabase.ticketCategory;
+            if (ticketsCatName === "undefined") {
+                let ticketsCatName = "Tickets";
+            }
+
+            let ticketCategory = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
+            if (ticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket] });
+
+            const user = interaction.options.getUser('user');
+
+            interaction.channel.permissionOverwrites.edit(user, {
+                SEND_MESSAGES: true,
+                VIEW_CHANNEL: true,
+                READ_MESSAGE_HISTORY: true
+            });
+
+            const embed = new discord.MessageEmbed()
+                .setTitle(`:white_check_mark: Adding user...`)
+                .setDescription(`Adding ${user} to your support ticket!`)
+                .setTimestamp()
+                .setColor(colors.COLOR)
+            interaction.reply({ embeds: [embed] });
 
         } catch (e) {
             console.log(e);

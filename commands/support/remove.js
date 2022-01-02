@@ -6,12 +6,20 @@ const config = require('../../files/config.json');
 const { errorMain, addedDatabase, ticketsDisabled, notATicket } = require('../../files/embeds');
 
 module.exports = {
-    name: "settopic",
-    description: "Change a ticket topic.",
+    name: "remove",
+    description: "Remove a user from your ticket.",
     /**
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
+    options: [
+        {
+            name: "user",
+            description: "The user to remove.",
+            type: "USER",
+            required: true,
+        },
+    ],
     async execute(client, interaction) {
 
         try {
@@ -56,7 +64,29 @@ module.exports = {
 
             if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
 
-            
+            let ticketsCatName = guildDatabase.ticketCategory;
+            if (ticketsCatName === "undefined") {
+                let ticketsCatName = "Tickets";
+            }
+
+            let ticketCategory = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
+            if (ticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket] });
+
+            const user = interaction.options.getUser('user');
+
+            interaction.channel.permissionOverwrites.edit(user, {
+                SEND_MESSAGES: false,
+                VIEW_CHANNEL: false,
+                READ_MESSAGE_HISTORY: false
+            });
+
+            const embed = new discord.MessageEmbed()
+                .setTitle(`:white_check_mark: Removing user...`)
+                .setDescription(`Removed ${user} from your support ticket!`)
+                .setTimestamp()
+                .setColor(colors.COLOR)
+            interaction.reply({ embeds: [embed] });
+
         } catch (e) {
             console.log(e);
             interaction.channel.send({ embeds: [errorMain] });

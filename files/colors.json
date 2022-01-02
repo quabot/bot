@@ -27,5 +27,10 @@
     "INVITE_CREATE": "#99ff00",
     "INVITE_DELETE": "#ba255c",
     "MESSAGE_UPDATED": "#037ffc",
-    "MESSAGE_DELETE": "#d13b2a"
+    "MESSAGE_DELETE": "#d13b2a",
+    "EMOJI_CREATE": "#81b800",
+    "EMOJI_DELETE": "#b80065",
+    "EMOJI_UPDATE": "#0084b8",
+    "ROLE_CREATE": "#00ff6e",
+    "ROLE_DELETE": "#ff0062"
 }

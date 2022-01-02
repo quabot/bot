@@ -50,6 +50,8 @@ module.exports = {
         });
         const logChannel = newState.guild.channels.cache.get(guildDatabase.logChannelID);
 
+        if (guildDatabase.logEnabled === "false") return;
+
         if (oldState.channelId === null) {
             const embed = new MessageEmbed()
                 .setTitle("Member joined voice channel!")

@@ -50,6 +50,8 @@ module.exports = {
         });
         const logChannel = invite.guild.channels.cache.get(guildDatabase.logChannelID);
 
+        if (guildDatabase.logEnabled === "false") return;
+
         const embed = new MessageEmbed()
             .setTitle("Invite Deleted!")
             .addField("Code", `${invite.code}`)

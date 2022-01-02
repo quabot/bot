@@ -50,6 +50,9 @@ module.exports = {
         });
         const logChannel = invite.guild.channels.cache.get(guildDatabase.logChannelID);
 
+
+        if (guildDatabase.logEnabled === "false") return;
+
         const embed = new MessageEmbed()
             .setTitle("Invite Created!")
             .addField("Code", `[${invite.code}](https://discord.gg/${invite.code})`)

@@ -48,6 +48,7 @@ module.exports = async (client) => {
 
     client.on('ready', async () => {
         return;
+        client.commands.set(CommandsArray)
         client.guilds.cache.forEach((guild) => {
             guild.commands.set(CommandsArray).then(async (command) => {
                 const Roles = (commandName) => {

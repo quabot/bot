@@ -10,8 +10,6 @@ module.exports = {
      */
     async execute(message) {
 
-        console.log(message.guildId)
-
         if (message.guildId === null) return;
 
         const Guild = require('../../schemas/GuildSchema');
@@ -51,6 +49,8 @@ module.exports = {
             }
         });
         const logChannel = message.guild.channels.cache.get(guildDatabase.logChannelID);
+
+        if (guildDatabase.logEnabled === "false") return;
 
         const embed = new MessageEmbed()
             .setTitle("Message Deleted!")

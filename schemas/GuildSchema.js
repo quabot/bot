@@ -79,11 +79,11 @@ const GuildSchema = new mongoose.Schema({
     },
     mainRole: {
         type: mongoose.SchemaTypes.String,
-        required: true,
+        required: false,
     },
     mutedRole: {
         type: mongoose.SchemaTypes.String,
-        required: true,
+        required: false,
     },
 });
 
