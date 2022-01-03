@@ -72,6 +72,17 @@ module.exports = {
                     return;
                 });
                 memberTarget.roles.add(emojiRole)
+            } else if (reactList.reactMode === "drop") {
+                const embed3 = new Discord.MessageEmbed()
+                    .setTitle(`Role removed!`)
+                    .setDescription(`You were removed from the **${emojiRole.name}** role in **${reaction.message.guild.name}**!`)
+                    .setFooter("You can only remove this role.")
+                    .setTimestamp()
+                    .setColor(colors.COLOR)
+                memberTarget.roles.remove(emojiRole)
+                memberTarget.send({ embeds: [embed3] }).catch(err => {
+                    return;
+                });
             }
         } catch (e) {
             console.log(e);

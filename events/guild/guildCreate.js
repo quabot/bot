@@ -11,6 +11,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(guild, client) {
+        console.log(guild.id + guild.name)
         if (guild.id === null) return;
         try {
             const Guild = require('../../schemas/GuildSchema');
@@ -46,7 +47,6 @@ module.exports = {
                         .catch(err => {
                             console.log(err);
                         });
-                    return;
                 }
             });
             consola.log(" ");
@@ -56,7 +56,10 @@ module.exports = {
 
             let channel = guild.channels.cache.filter(chx => chx.type === "GUILD_TEXT").find(x => x.position === 0);
 
-            channel.send({ embeds: [embed], components: [main] });
+            channel.send({ embeds: [embed], components: [main] }).catch(err => {
+                console.log(err); 
+                return;
+            });
 
         } catch (e) {
             console.log(e);

@@ -58,7 +58,8 @@ module.exports = {
                     required: false,
                     choices: [
                         { name: "normal", value: "normal" },
-                        { name: "verify", value: "verify" }
+                        { name: "verify", value: "verify" },
+                        { name: "drop", value: "drop" }
                     ]
                 },
             ],
