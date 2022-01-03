@@ -423,6 +423,7 @@ const musicEmbed = new discord.MessageEmbed()
     **${prefix}join** - Make bot join your vc.
     **${prefix}leave** - Make bot leave your vc.
     **${prefix}pause** - Pause the stream.
+    **${prefix}play** - Play a song.
     **${prefix}queue** - Get music queue.
     **${prefix}repeat** - Alter repeat mode.
     **${prefix}resume** - Resume the stream.
@@ -455,11 +456,10 @@ const moderationEmbed = new discord.MessageEmbed()
     .setDescription(`These commands are used to punish users and moderate the server.\n
     **${prefix}ban** - Ban a member.
     **${prefix}kick** - Kick a member.
-    **${prefix}mute** - Mute a member.
+    **${prefix}timeout** - Timeout a member.
     **${prefix}punishments** - View a member's punishments.
     **${prefix}report** - Report a user.
     **${prefix}tempban** - Temporarily ban a member.
-    **${prefix}tempmute** - Temporarily mute a member.
     **${prefix}unban** - Unban a member.
     **${prefix}warn** - Warn a member.
     `)
@@ -474,6 +474,7 @@ const managementEmbed = new discord.MessageEmbed()
     **${prefix}config** - Configure quabot.
     **${prefix}lock** - Lock a channel.
     **${prefix}mention** - Ping everyone.
+    **${prefix}reactionrole** - Create and delete reactionroles.
     **${prefix}unlock** - Get bot ping.
     `)
 const supportHEmbed = new discord.MessageEmbed()
@@ -489,9 +490,12 @@ const supportHEmbed = new discord.MessageEmbed()
     **${prefix}endsuggestion** - End the voting on a suggestion.
     **${prefix}poll** - Start a poll.
     **${prefix}quabot** - Leave suggestions and bug reports.
+    **${prefix}remove** - Remove users from a ticket.
     **${prefix}reopen** - Reopen a ticket.
+    **${prefix}settopic** - Change a ticket topic.
     **${prefix}suggest** - Make a suggestion.
     **${prefix}ticket** - Open a ticket.
+    **${prefix}transcript** - Make a ticket transcript.
     `)
 const reportSucces = new discord.MessageEmbed()
     .setColor(colors.COLOR)

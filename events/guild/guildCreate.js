@@ -11,18 +11,20 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(guild, client) {
-        console.log(guild.id + guild.name)
+        const guildId = guild.id;
+        const guildName = guild.name;
+        
         if (guild.id === null) return;
         try {
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: guild.id,
+                guildId: guildId,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: guild.id,
-                        guildName: guild.name,
+                        guildId: guildId,
+                        guildName: guildName,
                         logChannelID: "none",
                         reportChannelID: "none",
                         suggestChannelID: "none",

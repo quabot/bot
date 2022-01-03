@@ -497,7 +497,7 @@ module.exports = {
             if (interaction.isSelectMenu()) {
                 if (interaction.values[0] === "toggle_features") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                    interaction.reply({ embeds: [toggleEmbed], components: [toggle, nextPage1], ephemeral: true })
+                    interaction.reply({ embeds: [toggleEmbed], components: [toggle], ephemeral: true })
                 }
                 if (interaction.values[0] === "levels_toggle") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
@@ -664,14 +664,6 @@ module.exports = {
                     });
                     interaction.update({ ephemeral: true, embeds: [welcomeDisabled], components: [disabledToggle] });
                 }
-                if (interaction.customId === "next1") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                    interaction.update({ ephemeral: true, embeds: [toggleEmbed2], components: [toggle2, nextPage2] });
-                }
-                if (interaction.customId === "next2") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                    interaction.update({ ephemeral: true, embeds: [toggleEmbed], components: [toggle, nextPage1] });
-                }
             }
 
             const logChannel = new discord.MessageEmbed()
@@ -726,7 +718,7 @@ module.exports = {
             if (interaction.isSelectMenu()) {
                 if (interaction.values[0] === "change_channels") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                    interaction.reply({ embeds: [channelEmbed], components: [channel, nextPage3], ephemeral: true })
+                    interaction.reply({ embeds: [channelEmbed], components: [channel], ephemeral: true })
                 }
                 if (interaction.values[0] === "log_channel") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
@@ -947,14 +939,6 @@ module.exports = {
             };
 
             if (interaction.isButton()) {
-                if (interaction.customId === "next3") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                    interaction.update({ ephemeral: true, embeds: [channelEmbed], components: [channel2, nextPage4] });
-                }
-                if (interaction.customId === "next4") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
-                    interaction.update({ ephemeral: true, embeds: [channelEmbed], components: [channel, nextPage3] });
-                }
                 if (interaction.customId === "disablelevel") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
                     interaction.update({ ephemeral: true, embeds: [disabledLevelUp] });

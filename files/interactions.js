@@ -26,12 +26,22 @@ const HelpSelect = new discord.MessageActionRow()
                 {
                     label: 'Moderation Commands',
                     description: 'These commands are used to punish users and moderate the server.',
-                    value: 'mod_commands',
+                    value: 'moder_commands',
                 },
                 {
-                    label: 'Misc & Support Commands',
-                    description: 'These commands are for misc and support related commands.',
-                    value: 'misc_sup_commands',
+                    label: 'Management Commands',
+                    description: 'These commands are used by managers to clear channels, start giveaways and more.',
+                    value: 'mang_commands',
+                },
+                {
+                    label: 'Misc Commands',
+                    description: 'These commands are for commands that don\'t fit another category.',
+                    value: 'misc_commands',
+                },
+                {
+                    label: 'Support Commands',
+                    description: 'With these commands users can seek support.',
+                    value: 'support_commands',
                 },
             ]),
     );
@@ -262,6 +272,26 @@ const toggle = new discord.MessageActionRow()
                     description: 'Enable or disable reports for your guild.',
                     value: 'report_toggle',
                 },
+                {
+                    label: 'Suggestions',
+                    description: 'Enable or disable the suggestions system.',
+                    value: 'suggest_toggle',
+                },
+                {
+                    label: 'Tickets',
+                    description: 'Enable or disable the tickets system.',
+                    value: 'tickets_toggle',
+                },
+                {
+                    label: 'Welcome Messages',
+                    description: 'Enable or disable welcome messages.',
+                    value: 'welcome_toggle',
+                },
+                {
+                    label: 'Polls',
+                    description: 'Enable or disable the polls system.',
+                    value: 'poll_toggle',
+                },
             ]),
     );
 const toggle2 = new discord.MessageActionRow()
@@ -327,6 +357,21 @@ const channel = new discord.MessageActionRow()
                     description: 'The name of the category where tickets are stored.',
                     value: 'ticket_channel',
                 },
+                {
+                    label: 'Closed Tickets Category',
+                    description: 'The name of the category where closed tickets are stored.',
+                    value: 'closedticket_channel',
+                },
+                {
+                    label: 'Level Up Channel',
+                    description: 'The name of the channel used to send level-up messages.',
+                    value: 'levelup_channel',
+                },
+                {
+                    label: 'Polls Channel',
+                    description: 'The name of the channel used to send poll messages.',
+                    value: 'poll_channel',
+                },
             ]),
     );
 const channel2 = new discord.MessageActionRow()
@@ -374,7 +419,7 @@ const role = new discord.MessageActionRow()
                 },
             ]),
     );
-const   closeTicket = new discord.MessageActionRow()
+const closeTicket = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
             .setCustomId('closebutton')
