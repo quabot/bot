@@ -11,12 +11,13 @@ module.exports = {
      */
     async execute(paramater1, paramater2) {
 
-        const invite = paramater1[0]
+        const invite = paramater1.guild.id
 
         const Guild = require('../../schemas/GuildSchema');
+        console.log(invite)
         // make sure to change the invite to the proper paramter (message.guild.id, member.guild.id)
         const guildDatabase = await Guild.findOne({
-            guildId: invite.guild.id,
+            guildId: invite,
         }, (err, guild) => {
             if (err) console.error(err);
             if (!guild) {
@@ -51,11 +52,11 @@ module.exports = {
             }
         });
         // change the invite.guild to work
-        const logChannel = invite.guild.channels.cache.get(guildDatabase.logChannelID);
+        const logChannel = paramater1.guild.channels.cache.get(guildDatabase.logChannelID);
 
         // colors = colors.COLOR for the main color, colors.MESSAGE_UPDATE for blue, colors.RED for red and colors.LIME for lime.
         
-        guildUserBanEmbed.setDescription("User banned: " + paramater1[0].user.tag)
+        guildUserBanEmbed.setDescription("User banned: " + paramater1.user.tag)
 
         logChannel.send({ embeds: [guildUserBanEmbed] })
     }
