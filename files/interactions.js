@@ -88,6 +88,86 @@ const selectCategory = new discord.MessageActionRow()
                     description: 'Allows you to change roles for people who are muted, on join etc.',
                     value: 'change_roles',
                 },
+                {
+                    label: 'Logging Settings',
+                    description: 'Allows you to toggle logging for certain events.',
+                    value: 'log_settings',
+                },
+            ]),
+    );
+const toggleEventsSelect = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Join and Leave Messages',
+                    description: 'Toggle join and leave message logging to the logging channel.',
+                    value: 'toggle_features',
+                },
+                {
+                    label: 'Channel deletion and creation',
+                    description: 'Toggle channel create and delete logging to the logging channel.',
+                    value: 'aas',
+                },
+                {
+                    label: 'Channel updates',
+                    description: 'Toggle channel updates logging to the logging channel.',
+                    value: 'asdd',
+                },
+                {
+                    label: 'Emoji creation and deletion',
+                    description: 'Toggle emoji creation and deletion logging to the logging channel.',
+                    value: 'fdsf',
+                },
+                {
+                    label: 'Emoji updates',
+                    description: 'Toggle emoji updates logging to the logging channel.',
+                    value: 'trhrh',
+                },
+                {
+                    label: 'Invite creation and deletion',
+                    description: 'Toggle invite creation and deletion logging to the logging channel.',
+                    value: 'rthrth',
+                },
+                {
+                    label: 'Message deletion',
+                    description: 'Toggle message deletion logging to the logging channel.',
+                    value: 'dgfdg',
+                },
+                {
+                    label: 'Message updates',
+                    description: 'Toggle message updates logging to the logging channel.',
+                    value: 'ghgh',
+                },
+                {
+                    label: 'Role creation and deletion',
+                    description: 'Toggle role creation and deletion logging to the logging channel.',
+                    value: 'dvfd',
+                },
+                {
+                    label: 'Role updates',
+                    description: 'Toggle role updates logging to the logging channel.',
+                    value: 'ddfdfvfd',
+                },
+                {
+                    label: 'Voice Joining and leaving',
+                    description: 'Toggle voice joins and leaves logging to the logging channel.',
+                    value: 'hgjhj',
+                },
+                {
+                    label: 'Voice Movement',
+                    description: 'Toggle voice moves logging to the logging channel.',
+                    value: 'gfg',
+                },
+                {
+                    label: 'QuaBot Logging',
+                    description: 'Toggle quabot command usage (/ban, not /info type commands) logging to the logging channel.',
+                    value: 'aaaas',
+                },
             ]),
     );
 const levelsButtons = new discord.MessageActionRow()
@@ -582,4 +662,4 @@ const addbot = new discord.MessageActionRow()
             .setStyle('LINK'),
     );
 
-module.exports = { addbot, MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { toggleEventsSelect, addbot, MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

@@ -48,9 +48,10 @@ module.exports = {
                 }
             });
             const logChannel = emoji.guild.channels.cache.get(guildDatabase.logChannelID);
+            if (!logChannel) return;
 
             if (guildDatabase.logEnabled === "true") {
-                if (guildDatabase) {
+                if (logChannel) {
                     const embed = new MessageEmbed()
                         .setColor(colors.EMOJI_CREATE)
                         .setTitle('Emoji Created!')

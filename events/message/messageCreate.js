@@ -4,6 +4,7 @@ const prefix = "!";
 const Levels = require('discord.js-leveling');
 const DisTube = require('distube');
 const consola = require('consola');
+const { Commands } = require("../../validation/commandnames");
 
 const config = require('../../files/config.json');
 const swearwords = require("../../files/data.json");
@@ -29,6 +30,15 @@ module.exports = {
         }
 
         try {
+
+            let content = message.content;
+            if (content.startsWith("!" || "?" || "$" || ".")) {
+                let commandName = content.substring(1)
+            
+                if (Commands.includes(commandName)) return message.reply(":robot: Please use a `/` to use my commands!");
+            }
+            
+
             const User = require('../../schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: message.author.id,

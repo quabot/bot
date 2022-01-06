@@ -99,6 +99,35 @@ module.exports = {
                     return;
                 }
             } else if (channel) {
+                if (channel.type === "GUILD_VOICE") {
+                    channel.permissionOverwrites.edit(mainRole, {
+                        CONNECT: true,
+                        SPEAK: true
+                    });
+                    channel.permissionOverwrites.edit(interaction.guild.id, {
+                        CONNECT: true,
+                        SPEAK: true
+                    });
+                    const unlockedChannelEmbed = new discord.MessageEmbed()
+                        .setTitle(":unlock: Voice Channel Unlocked!")
+                        .addField("Channel", `${channel}`)
+                        .setColor(colors.COLOR)
+                        .setTimestamp()
+                    interaction.reply({ embeds: [unlockedChannelEmbed] })
+                    if (guildDatabase.logEnabled === "true") {
+                        const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                        if (!logChannel) return;
+                        const embed = new discord.MessageEmbed()
+                            .setColor(colors.CLEAR_COLOR)
+                            .setTitle('Voice Channel Unlocked')
+                            .addField('Channel', `${channel}`)
+                            .addField('Unlocked by', `${interaction.user}`)
+                            .setTimestamp();
+                        logChannel.send({ embeds: [embed] });
+                    } else {
+                        return;
+                    }
+                }
                 if (channel.type !== "GUILD_TEXT") {
                     return interaction.reply({ embeds: [noValidChannel] });
                 }
