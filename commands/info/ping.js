@@ -19,7 +19,7 @@ module.exports = {
 
                 const YourPing = new discord.MessageEmbed()
                     .setColor(colors.COLOR)
-                    .setTitle(`:white_check_mark: Your current ping is: **${ping}ms**.`);
+                    .setTitle(`:white_check_mark: Your current ping is: **${client.ws.ping}ms**.`);
 
                 interaction.editReply({ embeds: [YourPing] })
             })
