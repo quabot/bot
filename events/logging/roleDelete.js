@@ -49,10 +49,12 @@ module.exports = {
             });
             const logChannel = role.guild.channels.cache.get(guildDatabase.logChannelID);
 
+            if (!logChannel) return;
+            
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
                     const embed = new MessageEmbed()
-                        .setColor(colors.ROLE_DELETE)
+                        .setColor(`${role.hexColor}`)
                         .setTitle('Role Deleted!')
                         .addField('Role', `${role.name}`)
                         .setFooter(`Role-ID: ${role.id}`)

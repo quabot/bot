@@ -7,18 +7,18 @@
         "correct": "Update Aquatic"
     },
     {
-        "question": "How was Discord called before it was called discord?",
-        "answer1": "Guilded",
-        "answer2": "Nothing, it was always called discord",
-        "answer3": "Bonfire",
-        "correct": "Bonfire"
+        "question": "What other country, besides the US, uses the US dollar as its official currency?",
+        "answer1": "Ecuador",
+        "answer2": "Mexico",
+        "answer3": "Canada",
+        "correct": "Ecuador"
     },
     {
-        "question": "How is the discord BETA client called?",
-        "answer1": "Discord Beta",
-        "answer2": "Discord PTB",
+        "question": "What measurement scale is used to determine wind speed?",
+        "answer1": "Beaufort scale",
+        "answer2": "Richter scale",
         "answer3": "Discord Canary",
-        "correct": "Discord PTB"
+        "correct": "Synoptic scale"
     },
     {
         "question": "What is the biggest country?",
@@ -70,11 +70,11 @@
         "correct": "2016"
     },
     {
-        "question": "What was quabot called before?",
-        "answer1": "Navialer",
-        "answer2": "EBot",
-        "answer3": "GBot",
-        "correct": "GBot"
+        "question": "The Statue of Liberty was a gift to the United States from which European country?",
+        "answer1": "Belgium",
+        "answer2": "Germany",
+        "answer3": "France",
+        "correct": "France"
     },
     {
         "question": "What is the biggest discord bot?",
@@ -91,10 +91,101 @@
         "correct": "Discord.js"
     },
     {
-        "question": "Best netflix show?",
-        "answer1": "idk fill",
-        "answer2": "these in",
-        "answer3": "yourself",
-        "correct": "fuck they're all wrong"
+        "question": "In which continent are Chile, Argentina and Brazil?",
+        "answer1": "North America",
+        "answer2": "South America",
+        "answer3": "Europe",
+        "correct": "South America"
+    },
+    {
+        "question": "The human body is made up of approximately how much water?",
+        "answer1": "50%",
+        "answer2": "60%",
+        "answer3": "70%",
+        "correct": "60%"
+    },
+    {
+        "question": "What is actually electricity?",
+        "answer1": "A flow of protons",
+        "answer2": "A flow of air",
+        "answer3": "A flow of electrons",
+        "correct": "A flow of electrons"
+    },
+    {
+        "question": "Wich of the following is not a US agency?",
+        "answer1": "FBI",
+        "answer2": "National Science Foundation",
+        "answer3": "DDA",
+        "correct": "DDA"
+    },
+    {
+        "question": "Which of the following disorders is the fear of being alone?",
+        "answer1": "Agoraphobia",
+        "answer2": "Aerophobia",
+        "answer3": "Acrophobia",
+        "correct": "Agoraphobia"
+    },
+    {
+        "question": "What is the name for the Jewish New Year?",
+        "answer1": "Hanukkah",
+        "answer2": "Yom Kippur",
+        "answer3": "Rosh Hashanah",
+        "correct": "Rosh Hashanah"
+    },
+    {
+        "question": "How many blue stripes are there on the U.S. flag?",
+        "answer1": "6",
+        "answer2": "9",
+        "answer3": "13",
+        "correct": "13"
+    },
+    {
+        "question": "Which planet is the hottest?",
+        "answer1": "Venus",
+        "answer2": "Saturn",
+        "answer3": "Mercury",
+        "correct": "correct"
+    },
+    {
+        "question": "Who was the only U.S. President to resign?",
+        "answer1": "Richard Nixon",
+        "answer2": "Herbert Hoover",
+        "answer3": "George W. Bush",
+        "correct": "Richard Nixon"
+    },
+    {
+        "question": "What does the “D” in “D-Day” stand for?",
+        "answer1": "Dooms",
+        "answer2": "Dark",
+        "answer3": "Day",
+        "correct": "Day"
+    },
+    {
+        "question": "In Pirates of the Caribbean, what was Captain Jack Sparrow’s ship’s name?",
+        "answer1": "The black pearl",
+        "answer2": "The blue earl",
+        "answer3": "The Boat",
+        "correct": "The black pearl"
+    },
+    {
+        "question": "What is the rarest blood type?",
+        "answer1": "AB Positive",
+        "answer2": "AB Negative",
+        "answer3": "A",
+        "correct": "AB Negative"
+    },
+    {
+        "question": "Which U.S. state is known as the sunflower state?",
+        "answer1": "Kansas",
+        "answer2": "Florida",
+        "answer3": "The Boat",
+        "correct": "The black pearl"
+    },
+    {
+        "question": "How many bones are there in the human body?",
+        "answer1": "193",
+        "answer2": "206",
+        "answer3": "234",
+        "correct": "206"
     }
 ]

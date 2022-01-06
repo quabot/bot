@@ -11,7 +11,8 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(oldChannel, newChannel, client) {
-        if (oldChannel.guild.id === null) return;
+
+        if (newChannel.guild.id === null) return;
 
         try {
             const Guild = require('../../schemas/GuildSchema');
@@ -51,6 +52,8 @@ module.exports = {
                 }
             });
             const logChannel = oldChannel.guild.channels.cache.get(guildDatabase.logChannelID);
+            if (!logChannel) return;
+            if (guildDatabase.logEnabled === "false") return;
 
             if (oldChannel.type === "GUILD_TEXT") {
                 if (newChannel.type === "GUILD_NEWS") {

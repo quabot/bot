@@ -11,17 +11,20 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(guild, client) {
+        const guildId = guild.id;
+        const guildName = guild.name;
+        
         if (guild.id === null) return;
         try {
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: guild.id,
+                guildId: guildId,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: guild.id,
-                        guildName: guild.name,
+                        guildId: guildId,
+                        guildName: guildName,
                         logChannelID: "none",
                         reportChannelID: "none",
                         suggestChannelID: "none",
@@ -46,7 +49,6 @@ module.exports = {
                         .catch(err => {
                             console.log(err);
                         });
-                    return;
                 }
             });
             consola.log(" ");
@@ -56,7 +58,10 @@ module.exports = {
 
             let channel = guild.channels.cache.filter(chx => chx.type === "GUILD_TEXT").find(x => x.position === 0);
 
-            channel.send({ embeds: [embed], components: [main] });
+            channel.send({ embeds: [embed], components: [main] }).catch(err => {
+                console.log(err); 
+                return;
+            });
 
         } catch (e) {
             console.log(e);

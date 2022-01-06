@@ -1,8 +1,13 @@
 const discord = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 const colors = require('./colors.json');
-const prefix = "/";
+const prefix = "/"
 
+const invalidDiscrim = - new MessageEmbed()
+    .setColor(colors.COLOR)
+    .setTitle(":x: Invalid discriminator!")
+    .setDescription("A valid discriminator looks like this: `0001`!")
+    .setTimestamp();
 const timeoutNoTime = new MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle(":x: No Time!")
@@ -144,6 +149,7 @@ const HelpMain = new discord.MessageEmbed()
     .setTimestamp()
     .setTitle("Select a category of commands using the dropdown.")
     .setDescription("When selecting a category you'll get a detailed list of commands within that category.")
+    .addField("Quick Links", "[Invite me](https://discord.com/oauth2/authorize?client_id=845603702210953246&scope=bot%20applications.commands&permissions=346268609631) - [Website](https://quabot.xyz/) - [Discord](https://discord.gg/Nwu9DNjYa9)")
     .setThumbnail("https://i.imgur.com/jgdQUul.png");
 const LBNoXP = new discord.MessageEmbed()
     .setTitle(":x: That user does not have XP!")
@@ -162,8 +168,8 @@ const addedDatabase = new discord.MessageEmbed()
     .setColor(colors.COLOR)
 const errorMain = new discord.MessageEmbed()
     .setTitle(":x: There was an error!")
-    .setDescription("The developers have been alerted of this error, it will be fixed soon.")
-    .setFooter("Tip: You can report bugs and leave suggestions with `/quabot`.")
+    .setDescription("We're sorry! Please join our [support discord](https://discord.gg/Nwu9DNjYa9) so the developers can help you.")
+    .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.xyz) - [Website](https://quabot.xyz)")
     .setTimestamp()
     .setColor(colors.COLOR)
 const PingGetting = new discord.MessageEmbed()
@@ -405,6 +411,7 @@ const infoEmbed = new discord.MessageEmbed()
     **${prefix}ping** - Get bot ping.
     **${prefix}rank** - Get level and XP points.
     **${prefix}roles** - List of roles in this guild.
+    **${prefix}role** - Create, delete, add or remove roles.
     **${prefix}serverinfo** - Server information.
     **${prefix}stats** - Bot statistics.
     **${prefix}support** - Bot's support discord.
@@ -423,6 +430,7 @@ const musicEmbed = new discord.MessageEmbed()
     **${prefix}join** - Make bot join your vc.
     **${prefix}leave** - Make bot leave your vc.
     **${prefix}pause** - Pause the stream.
+    **${prefix}play** - Play a song.
     **${prefix}queue** - Get music queue.
     **${prefix}repeat** - Alter repeat mode.
     **${prefix}resume** - Resume the stream.
@@ -438,7 +446,10 @@ const miscEmbed = new discord.MessageEmbed()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setTimestamp()
     .setDescription(`These commands are just general commands that dont fit the descrition of the ones above.\n
+    **${prefix}afk** - Set your afk status.
     **${prefix}avatar** - Get a user's avatar.
+    **${prefix}color** - Visualize a hex color.
+    **${prefix}discriminator** - Find all users with a discriminator.
     **${prefix}divide** - Divide two numbers.
     **${prefix}members** - Get the guild's membercount.
     **${prefix}multiply** - Multiply two numbers.
@@ -455,11 +466,10 @@ const moderationEmbed = new discord.MessageEmbed()
     .setDescription(`These commands are used to punish users and moderate the server.\n
     **${prefix}ban** - Ban a member.
     **${prefix}kick** - Kick a member.
-    **${prefix}mute** - Mute a member.
+    **${prefix}timeout** - Timeout a member.
     **${prefix}punishments** - View a member's punishments.
     **${prefix}report** - Report a user.
     **${prefix}tempban** - Temporarily ban a member.
-    **${prefix}tempmute** - Temporarily mute a member.
     **${prefix}unban** - Unban a member.
     **${prefix}warn** - Warn a member.
     `)
@@ -474,6 +484,7 @@ const managementEmbed = new discord.MessageEmbed()
     **${prefix}config** - Configure quabot.
     **${prefix}lock** - Lock a channel.
     **${prefix}mention** - Ping everyone.
+    **${prefix}reactionrole** - Create and delete reactionroles.
     **${prefix}unlock** - Get bot ping.
     `)
 const supportHEmbed = new discord.MessageEmbed()
@@ -489,9 +500,12 @@ const supportHEmbed = new discord.MessageEmbed()
     **${prefix}endsuggestion** - End the voting on a suggestion.
     **${prefix}poll** - Start a poll.
     **${prefix}quabot** - Leave suggestions and bug reports.
+    **${prefix}remove** - Remove users from a ticket.
     **${prefix}reopen** - Reopen a ticket.
+    **${prefix}settopic** - Change a ticket topic.
     **${prefix}suggest** - Make a suggestion.
     **${prefix}ticket** - Open a ticket.
+    **${prefix}transcript** - Make a ticket transcript.
     `)
 const reportSucces = new discord.MessageEmbed()
     .setColor(colors.COLOR)
@@ -510,6 +524,7 @@ const optionsEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTimestamp()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
+    .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.xyz) - [Website](https://quabot.xyz)")
     .setDescription("Configure quabot to be perfect for your server. Select a category using the dropdown.")
 const noPerms = new discord.MessageEmbed()
     .setTitle(":x: You do not have permission to do that!")
@@ -524,8 +539,8 @@ const toggleEmbed = new discord.MessageEmbed()
     .setTitle("Toggle Features")
     .setDescription("Use the dropdown to select a setting you wish to change!")
     .setColor(colors.COLOR)
+    .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.xyz) - [Website](https://quabot.xyz)")
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setFooter("(Page 1/2)")
     .setTimestamp();
 const toggleEmbed2 = new discord.MessageEmbed()
     .setTitle("Toggle Features")
@@ -664,6 +679,7 @@ const channelEmbed = new discord.MessageEmbed()
     .setTitle("Configure Channels")
     .setDescription("Use the dropdown to select a setting you wish to change!")
     .setColor(colors.COLOR)
+    .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.xyz) - [Website](https://quabot.xyz)")
     .setTimestamp()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
 const roleEmbed = new discord.MessageEmbed()
@@ -690,4 +706,4 @@ const guildUserBanEmbed = new discord.MessageEmbed()
     .setColor(colors.BAN_COLOR)
     .setTimestamp()
 
-module.exports = { guildUserBanEmbed, timeoutNoTime, invalidEmojis, supportHEmbed, notClosed, notATicket, tooLong, QuizSentenceNone, embedClose1, closeTicketEmbed, noOwner, pollEnabled, pollsDisabled, noPollChannelConfigured, noMSG, iNoPerms, pollDisabled, stoppedQueue, skippedSong, noValidSeek, disabledLevelUp, noSongs, shuffledQueue, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, roleEnabled, roleDisabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain }
+module.exports = { invalidDiscrim, guildUserBanEmbed, timeoutNoTime, invalidEmojis, supportHEmbed, notClosed, notATicket, tooLong, QuizSentenceNone, embedClose1, closeTicketEmbed, noOwner, pollEnabled, pollsDisabled, noPollChannelConfigured, noMSG, iNoPerms, pollDisabled, stoppedQueue, skippedSong, noValidSeek, disabledLevelUp, noSongs, shuffledQueue, resumedQueue, pausedQueue, noValidMode, debugError, roleEmbed, channelEmbed, MusicIsDisabled, welcomeDisabled, welcomeEnabled, ticketDisabled, ticketEnabled, suggestEnabled, suggestDisabled1, toggleEmbed2, reportEnabled, reportDisabled, musicDisabled, musicEnabled, roleEnabled, roleDisabled, logsDisabled, logsEnabled, levelsDisabled, levelsEnabled, toggleEmbed, noPerms, optionsEmbed, moderationEmbed, suggestSucces, reportSucces, managementEmbed, miscEmbed, funEmbed, infoEmbed, musicEmbed, noWelcomeChannel, PornScanning, ticketsDisabled, suggestTooShort, noSuggestChannelConfigured, suggestDisabled, warnNotHigherRole, warnNoPerms, warnNoUserToWarn, unmuteNoUser, unmuteUserNoPerms, unmuteBotNoRoles, notBanned, unbanNoUser, banNoUserFound, muteNoTime, muteNoManageRoles, muteUserNoPerms, banNoTime, reportNoChannel, reportsDisabled, reportNoContent, reportNoSelf, reportNoUser, muteNoUser, muteNoRoleManage, muteNoPermsUser, kickImpossible, kickNoPermsClient, kickNoUser, kickNoPermsUser, clearpunNoType, clearpunNoMember, PunsishmentsOthers, banNoPermsBot, banNoPermsUser, banNoUser, banImpossible, PauseQueue, NotPlaying, MusicDisabled, NotInVC, CatNoFiles, CatScanning, PingGetting, SupportEmbed, CoinFlipping, DogNoFiles, DogScanning, MemeScanning, MemeNoAttach, TypeNoSentence, DonateEmbed, HelpMain, LBNoXP, LBDisabled, addedDatabase, errorMain }

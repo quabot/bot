@@ -1,6 +1,6 @@
 {
-    "BOT_TOKEN": "fuckthisshitimout",
+    "BOT_TOKEN": "BOT_TOKEN",
     "PREFIX": "/",
-    "VERSION": "2.0.0 PRE RELEASE 2",
-    "CMD_AMOUNT": "74"
+    "VERSION": "2.0.1",
+    "CMD_AMOUNT": "76"
 }

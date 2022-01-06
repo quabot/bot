@@ -12,6 +12,14 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
+    options: [
+        {
+            name: "new-topic",
+            type: "STRING",
+            description: "The new ticket topic.",
+            required: true,
+        },
+    ],
     async execute(client, interaction) {
 
         try {
@@ -56,6 +64,31 @@ module.exports = {
 
             if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
 
+            let cId = interaction.channel.name;
+            cId = cId.substring(7);
+
+            const Ticket = require('../../schemas/TicketSchema')
+            const TicketDB = await Ticket.findOne({
+                guildId: interaction.guild.id,
+                ticketId: cId,
+                channelId: interaction.channel.id,
+            }, (err, ticket) => {
+                if (err) return;
+                if (!ticket) return interaction.reply({ embeds: [notATicket] });
+            });
+
+            if (TicketDB === null) return;
+
+            await TicketDB.updateOne({
+                topic: `${interaction.options.getString("new-topic")}`,
+            });
+
+            const newTopic = new discord.MessageEmbed()
+                .setTitle("Topic changed")
+                .setColor(colors.COLOR)
+                .setTimestamp()
+                .setDescription(`New ticket topic: **${interaction.options.getString("new-topic")}**!`)
+            interaction.reply({ embeds: [newTopic] });
             
         } catch (e) {
             console.log(e);

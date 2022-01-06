@@ -33,6 +33,14 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.Number,
         required: true,
     },
+    afk: {
+        type: mongoose.SchemaTypes.Boolean,
+        required: false,
+    },
+    afkStatus: {
+        type: mongoose.SchemaTypes.String,
+        required: false,
+    },
 });
 
 module.exports = mongoose.model('User', UserSchema);

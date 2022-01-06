@@ -50,6 +50,8 @@ module.exports = {
         });
         const logChannel = newState.guild.channels.cache.get(guildDatabase.logChannelID);
 
+        if (!logChannel) return;
+        
         if (guildDatabase.logEnabled === "false") return;
 
         if (oldState.channelId === null) {

@@ -50,6 +50,8 @@ module.exports = {
         });
         const logChannel = invite.guild.channels.cache.get(guildDatabase.logChannelID);
 
+        if (!logChannel) return;
+        
         if (guildDatabase.logEnabled === "false") return;
 
         const embed = new MessageEmbed()

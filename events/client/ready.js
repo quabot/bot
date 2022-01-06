@@ -16,7 +16,7 @@ module.exports = {
             }, 6000);
             setTimeout(function () {
                 client.user.setActivity(`quabot.xyz`, { type: "WATCHING" });
-            }, 6000);
+            }, 12000);
             setTimeout(function () {
                 client.user.setActivity(`${client.guilds.cache.size} servers |  /help`, { type: "WATCHING" });
                 loop()

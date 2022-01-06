@@ -26,12 +26,22 @@ const HelpSelect = new discord.MessageActionRow()
                 {
                     label: 'Moderation Commands',
                     description: 'These commands are used to punish users and moderate the server.',
-                    value: 'mod_commands',
+                    value: 'moder_commands',
                 },
                 {
-                    label: 'Misc & Support Commands',
-                    description: 'These commands are for misc and support related commands.',
-                    value: 'misc_sup_commands',
+                    label: 'Management Commands',
+                    description: 'These commands are used by managers to clear channels, start giveaways and more.',
+                    value: 'mang_commands',
+                },
+                {
+                    label: 'Misc Commands',
+                    description: 'These commands are for commands that don\'t fit another category.',
+                    value: 'misc_commands',
+                },
+                {
+                    label: 'Support Commands',
+                    description: 'With these commands users can seek support.',
+                    value: 'support_commands',
                 },
             ]),
     );
@@ -77,6 +87,86 @@ const selectCategory = new discord.MessageActionRow()
                     label: 'Change Roles',
                     description: 'Allows you to change roles for people who are muted, on join etc.',
                     value: 'change_roles',
+                },
+                {
+                    label: 'Logging Settings',
+                    description: 'Allows you to toggle logging for certain events.',
+                    value: 'log_settings',
+                },
+            ]),
+    );
+const toggleEventsSelect = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Join and Leave Messages',
+                    description: 'Toggle join and leave message logging to the logging channel.',
+                    value: 'toggle_features',
+                },
+                {
+                    label: 'Channel deletion and creation',
+                    description: 'Toggle channel create and delete logging to the logging channel.',
+                    value: 'aas',
+                },
+                {
+                    label: 'Channel updates',
+                    description: 'Toggle channel updates logging to the logging channel.',
+                    value: 'asdd',
+                },
+                {
+                    label: 'Emoji creation and deletion',
+                    description: 'Toggle emoji creation and deletion logging to the logging channel.',
+                    value: 'fdsf',
+                },
+                {
+                    label: 'Emoji updates',
+                    description: 'Toggle emoji updates logging to the logging channel.',
+                    value: 'trhrh',
+                },
+                {
+                    label: 'Invite creation and deletion',
+                    description: 'Toggle invite creation and deletion logging to the logging channel.',
+                    value: 'rthrth',
+                },
+                {
+                    label: 'Message deletion',
+                    description: 'Toggle message deletion logging to the logging channel.',
+                    value: 'dgfdg',
+                },
+                {
+                    label: 'Message updates',
+                    description: 'Toggle message updates logging to the logging channel.',
+                    value: 'ghgh',
+                },
+                {
+                    label: 'Role creation and deletion',
+                    description: 'Toggle role creation and deletion logging to the logging channel.',
+                    value: 'dvfd',
+                },
+                {
+                    label: 'Role updates',
+                    description: 'Toggle role updates logging to the logging channel.',
+                    value: 'ddfdfvfd',
+                },
+                {
+                    label: 'Voice Joining and leaving',
+                    description: 'Toggle voice joins and leaves logging to the logging channel.',
+                    value: 'hgjhj',
+                },
+                {
+                    label: 'Voice Movement',
+                    description: 'Toggle voice moves logging to the logging channel.',
+                    value: 'gfg',
+                },
+                {
+                    label: 'QuaBot Logging',
+                    description: 'Toggle quabot command usage (/ban, not /info type commands) logging to the logging channel.',
+                    value: 'aaaas',
                 },
             ]),
     );
@@ -262,6 +352,26 @@ const toggle = new discord.MessageActionRow()
                     description: 'Enable or disable reports for your guild.',
                     value: 'report_toggle',
                 },
+                {
+                    label: 'Suggestions',
+                    description: 'Enable or disable the suggestions system.',
+                    value: 'suggest_toggle',
+                },
+                {
+                    label: 'Tickets',
+                    description: 'Enable or disable the tickets system.',
+                    value: 'tickets_toggle',
+                },
+                {
+                    label: 'Welcome Messages',
+                    description: 'Enable or disable welcome messages.',
+                    value: 'welcome_toggle',
+                },
+                {
+                    label: 'Polls',
+                    description: 'Enable or disable the polls system.',
+                    value: 'poll_toggle',
+                },
             ]),
     );
 const toggle2 = new discord.MessageActionRow()
@@ -327,6 +437,21 @@ const channel = new discord.MessageActionRow()
                     description: 'The name of the category where tickets are stored.',
                     value: 'ticket_channel',
                 },
+                {
+                    label: 'Closed Tickets Category',
+                    description: 'The name of the category where closed tickets are stored.',
+                    value: 'closedticket_channel',
+                },
+                {
+                    label: 'Level Up Channel',
+                    description: 'The name of the channel used to send level-up messages.',
+                    value: 'levelup_channel',
+                },
+                {
+                    label: 'Polls Channel',
+                    description: 'The name of the channel used to send poll messages.',
+                    value: 'poll_channel',
+                },
             ]),
     );
 const channel2 = new discord.MessageActionRow()
@@ -374,7 +499,7 @@ const role = new discord.MessageActionRow()
                 },
             ]),
     );
-const   closeTicket = new discord.MessageActionRow()
+const closeTicket = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
             .setCustomId('closebutton')
@@ -537,4 +662,4 @@ const addbot = new discord.MessageActionRow()
             .setStyle('LINK'),
     );
 
-module.exports = { addbot, MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { toggleEventsSelect, addbot, MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
