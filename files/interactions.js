@@ -93,6 +93,36 @@ const selectCategory = new discord.MessageActionRow()
                     description: 'Allows you to toggle logging for certain events.',
                     value: 'log_settings',
                 },
+                {
+                    label: 'Other Settings',
+                    description: 'Allows you to change other things, like welcome messages and prefixes.',
+                    value: 'other_settings',
+                },
+            ]),
+    );
+const otherCategory = new discord.MessageActionRow()
+    .addComponents(
+        new discord.MessageSelectMenu()
+            .setCustomId('select')
+            .setPlaceholder('None selected.')
+            .setMinValues(1)
+            .setMaxValues(1)
+            .addOptions([
+                {
+                    label: 'Welcome message',
+                    description: 'Toggle certain settings like log channels, tickets, music and more.',
+                    value: 'welcome_msg',
+                },
+                {
+                    label: 'Leave message',
+                    description: 'Allows you to change log channel, welcome channel and more channel-related settings.',
+                    value: 'leave_msg',
+                },
+                {
+                    label: 'Economy Prefix',
+                    description: 'Coming soon.',
+                    value: 'eco_prefix',
+                },
             ]),
     );
 const toggleEventsSelect = new discord.MessageActionRow()
@@ -662,4 +692,4 @@ const addbot = new discord.MessageActionRow()
             .setStyle('LINK'),
     );
 
-module.exports = { toggleEventsSelect, addbot, MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }
+module.exports = { otherCategory, toggleEventsSelect, addbot, MiscSupport, reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, roleButtons, pictureButtonsDisabled, pictureButtons, pollButtons, reopenButton, ticketButton, adminButtons, newDog, newCat, newMeme, closeTicketWCancel, deleteTicket, closeTicket, disableLevel, role, channel, nextPage3, nextPage4, channel2, ticketButtons, welcomeButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, toggle, logButtons, disabledToggle, levelsButtons, selectCategory, HelpSelect }

@@ -56,7 +56,7 @@ module.exports = {
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
                     const embed = new MessageEmbed()
-                        .setColor(colors.RED)
+                        .setColor(colors.LEAVE_COLOR)
                         .setTitle('Member Left!')
                         .setAuthor(`${member.user.tag} just left.`, member.user.avatarURL())
                         .addField('User', `${member.user}`)
@@ -70,7 +70,7 @@ module.exports = {
                     const welcomeEmbed = new MessageEmbed()
                         .setAuthor(`${member.user.tag} just left!`, member.user.avatarURL())
                         .setDescription(`Goodbye ${member.user}!`)
-                        .setColor(colors.RED);
+                        .setColor(colors.LEAVE_COLOR);
                     joinChannel.send({ embeds: [welcomeEmbed] });
                 }
             }

@@ -58,6 +58,100 @@ module.exports = {
             );
 
             if (interaction.isButton()) {
+                if (interaction.customId === "ticketmsg") {
+                    const topic = "No topic specified.";
+
+                    if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+
+                    const GIds = require('../../schemas/GuildIds');
+                    const GIdsDB = await GIds.findOne({
+                        verifyToken: 1,
+                        gId: interaction.guild.id
+                    },
+                        (err, gids) => {
+                            if (err) return;
+                            if (!gids) {
+                                const newGids = new GIds({
+                                    verifyToken: 1,
+                                    gId: interaction.guild.id,
+                                    ticketId: 0,
+                                    suggestId: 0,
+                                    pollId: 0,
+                                })
+                                newGids.save().catch(err => {
+                                    console.log(err)
+                                    interaction.channel.send({ embeds: [errorMain] })
+                                })
+                                return interaction.channel.send({ embeds: [addedDatabase] })
+                            }
+                        }
+                    );
+
+                    let newId = GIdsDB.ticketId + 1;
+                    await GIdsDB.updateOne({
+                        ticketId: newId,
+                    });
+
+                    let openedName = guildDatabase.ticketCategory;
+                    if (openedName === undefined) openedName = 'Tickets';
+                    const category = interaction.guild.channels.cache.find(cat => cat.name === openedName);
+
+                    if (!category) {
+                        interaction.guild.channels.create(openedName, { type: "GUILD_CATEGORY" });
+                        const embedTicketsCreate = new discord.MessageEmbed()
+                            .setColor(colors.TICKET_CREATED)
+                            .setTitle('Creating a category!')
+                            .setDescription('The tickets categegory does not exist. Creating one now...')
+                            .setTimestamp()
+                        interaction.reply({ embeds: [embedTicketsCreate] })
+                        return
+                    }
+
+                    interaction.guild.channels.create(`ticket-${newId}`, { parent: category, topic: `Creator: ${interaction.user.username}#${interaction.user.discriminator} (${interaction.user.id}) - Topic: ${topic} - Ticket ID: ${newId}` }).then(channel => {
+
+                        const createdEmbed = new MessageEmbed()
+                            .setTitle("New ticket!")
+                            .setDescription(`Welcome to your ticket ${interaction.user}! \nPlease wait here, staff will be with you shortly.`)
+                            .addField(`Creator`, `${interaction.user}`)
+                            .addField(`Topic`, `${topic}`)
+                            .setFooter("Close the ticket with the button below this message!")
+                            .setTimestamp()
+                            .setColor(colors.COLOR)
+                        channel.send({ embeds: [createdEmbed], components: [close] });
+
+                        const Ticket = require('../../schemas/TicketSchema')
+                        const newTicket = new Ticket({
+                            guildId: interaction.guild.id,
+                            memberId: interaction.user.id,
+                            ticketId: newId,
+                            channelId: channel.id,
+                            closed: false,
+                            topic: topic,
+                        });
+                        newTicket.save()
+                            .catch(err => {
+                                console.log(err);
+                                interaction.channel.send({ embeds: [errorMain] });
+                            });
+
+                        setTimeout(() => {
+                            let ticket = interaction.guild.channels.cache.find(channel => channel.name === `ticket-${newId}`);
+                            ticket.permissionOverwrites.edit(interaction.user, {
+                                SEND_MESSAGES: true,
+                                VIEW_CHANNEL: true,
+                                READ_MESSAGE_HISTORY: true
+                            });
+
+                            const embed = new MessageEmbed()
+                                .setColor(colors.TICKET_CREATED)
+                                .setTitle("Created your ticket :white_check_mark:")
+                                .setDescription("You can find it here: <#" + channel + ">")
+                                .addField("Topic", `${topic}`)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] })
+                        }, 300);
+                    });
+                }
                 if (interaction.customId === "close") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
                     const close = new MessageEmbed()

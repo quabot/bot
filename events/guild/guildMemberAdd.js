@@ -64,7 +64,7 @@ module.exports = {
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
                     const embed = new MessageEmbed()
-                        .setColor(colors.LIME)
+                        .setColor(colors.JOIN_COLOR)
                         .setTitle('Member joined!')
                         .setAuthor(`${member.user.tag} just joined!`, member.user.avatarURL())
                         .addField('User', `${member.user}`)
@@ -78,7 +78,7 @@ module.exports = {
                     const welcomeEmbed = new MessageEmbed()
                         .setAuthor(`${member.user.tag} just joined!`, member.user.avatarURL())
                         .setDescription(`Welcome ${member.user} to **${member.guild.name}**!`)
-                        .setColor(colors.LIME);
+                        .setColor(colors.JOIN_COLOR);
                     joinChannel.send({ embeds: [welcomeEmbed] });
                 }
             }

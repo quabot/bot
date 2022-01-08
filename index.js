@@ -8,6 +8,10 @@ client.commands = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
+['text_commands'].forEach(handler => {
+    require(`./handlers/${handler}`)(client, Discord);
+})
+
 const { MiscSupport } = require('./files/interactions')
 
 
