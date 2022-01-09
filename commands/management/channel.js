@@ -93,7 +93,7 @@ module.exports = {
             options.raw = interaction.options._hoistedOptions
             options.raw.forEach(option => {
                 options[option.name] = option.value
-                if (options.channel) options[option.name] = option.channel
+                if (option.channel) options[option.name] = option.channel
             })
             switch (sub) {
                 case "create":
@@ -109,6 +109,10 @@ module.exports = {
                     options.channel.delete()
                     interaction.reply("Deleted channel " + options.channel.name)
                     break;
+                case "slowmode":
+                    console.log(options)
+                    options.channel.setRateLimitPerUser(options.amount)
+                    interaction.reply(`Set channel ${options.channel.name}'s slowmode to ${options.amount}`)
             }
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })
