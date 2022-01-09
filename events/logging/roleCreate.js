@@ -48,11 +48,15 @@ module.exports = {
             });
             const logChannel = role.guild.channels.cache.get(guildDatabase.logChannelID);
 
+            if (!logChannel) return;
+            
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
-                    const perms = role.permissions.toArray().join("\n")
+                    let perms = role.permissions.toArray().join("\n")
+                    let permsLength = String(perms);
+                    if (permsLength.length > 1022) perms = "Too long for message embed."
                     const embed = new MessageEmbed()
-                        .setColor(colors.ROLE_CREATE)
+                        .setColor(`${role.hexColor}`)
                         .setDescription(`<@&${role.id}>`)
                         .setTitle('Role Created!')
                         .addField('Role', `${role.name}`)

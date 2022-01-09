@@ -22,7 +22,7 @@ module.exports = {
         },
         {
             name: "punishment",
-            description: "Type: mute/kick/warn/ban",
+            description: "Type: timeout/kick/warn/ban",
             type: "STRING",
             required: true,
         }
@@ -101,7 +101,7 @@ module.exports = {
             const noVal = new discord.MessageEmbed()
                 .setColor(colors.COLOR)
                 .setTitle("Invalid Punishment!")
-                .setDescription("Please pick: `kick/mute/ban/warn/all`!")
+                .setDescription("Please pick: `kick/timeout/ban/warn/all`!")
                 .setTimestamp()
             const noPuns = new discord.MessageEmbed()
                 .setColor(colors.COLOR)
@@ -109,7 +109,7 @@ module.exports = {
                 .setDescription("This user hasn't recieved (one of) these punishments yet!")
                 .setTimestamp()
 
-            if (!punishment === "kick" || !punishment === "mute" || !punishment === "ban" || !punishment === "warn" || !punishment == "all") return interaction.reply({ embeds: [noVal] });
+            if (!punishment === "kick" || !punishment === "timeout" || !punishment === "ban" || !punishment === "warn" || !punishment == "all") return interaction.reply({ embeds: [noVal] });
 
             if (punishment === "kick") {
                 const Kicks = require('../../schemas/KickSchema');
@@ -157,7 +157,7 @@ module.exports = {
                 interaction.reply({ embeds: [banEmbed] });
                 return;
             }
-            if (punishment === "mute") {
+            if (punishment === "timeout") {
                 const Mutes = require('../../schemas/MuteSchema');
                 const muteList = await Mutes.find({
                     userId: user.id,
@@ -174,9 +174,9 @@ module.exports = {
 
                 const muteEmbed = new discord.MessageEmbed()
                     .setColor(colors.COLOR)
-                    .setTitle(`${user.user.username}#${user.user.discriminator} Mute Logs`)
+                    .setTitle(`${user.user.username}#${user.user.discriminator} Timout Logs`)
                     .setTimestamp()
-                    .setDescription(`This user has been muted \`${userDatabase.muteCount}\` times!\n\n${mutes.join("\n\n")}`)
+                    .setDescription(`This user has been timed-out \`${userDatabase.muteCount}\` times!\n\n${mutes.join("\n\n")}`)
                 interaction.reply({ embeds: [muteEmbed] });
                 return;
             }
@@ -199,7 +199,7 @@ module.exports = {
                     .setColor(colors.COLOR)
                     .setTitle(`${user.user.username}#${user.user.discriminator} Warn Logs`)
                     .setTimestamp()
-                    .setDescription(`This user has been muted \`${userDatabase.warnCount}\` times!\n\n${warns.join("\n\n")}`)
+                    .setDescription(`This user has been warned \`${userDatabase.warnCount}\` times!\n\n${warns.join("\n\n")}`)
                 interaction.reply({ embeds: [warnEmbed] });
                 return;
             }

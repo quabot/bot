@@ -49,6 +49,8 @@ module.exports = {
             });
             const logChannel = oldRole.guild.channels.cache.get(guildDatabase.logChannelID);
 
+            if (!logChannel) return;
+            
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
                     //console.log(oldRole)

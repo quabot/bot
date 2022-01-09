@@ -50,6 +50,7 @@ module.exports = {
             }
         });
         const logChannel = newMessage.guild.channels.cache.get(guildDatabase.logChannelID);
+        if (!logChannel) return;
 
         if (guildDatabase.logEnabled === "false") return;
 
@@ -59,9 +60,15 @@ module.exports = {
             .setFooter(`Message-ID: ${oldMessage.id}`)
             .setColor(colors.MESSAGE_UPDATED);
 
+        let oldContent = String(oldMessage.content);
+        let newContent = String(newMessage.content);
+
+        if (oldContent.length > 1024) oldContent = "Too long for message embed.";
+        if (newContent.length > 1024) newContent = "Too long for message embed.";
+        
         if (oldMessage.content !== newMessage.content) {
-            embed.addField("Content", `${oldMessage.content} ** **`)
-            embed.addField("Changed to", `${newMessage.content} ** **`)
+            embed.addField("Content", `${oldContent} ** **`)
+            embed.addField("Changed to", `${newContent} ** **`)
         }
         embed.addField("Channel", `${oldMessage.channel} ** **`)
         if (oldMessage.author === null || oldMessage.author === '') { } else {

@@ -32,5 +32,7 @@
     "EMOJI_DELETE": "#b80065",
     "EMOJI_UPDATE": "#0084b8",
     "ROLE_CREATE": "#00ff6e",
-    "ROLE_DELETE": "#ff0062"
+    "ROLE_DELETE": "#ff0062",
+    "JOIN_COLOR": "#43e085",
+    "LEAVE_COLOR": "#d90d43"
 }

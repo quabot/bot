@@ -49,6 +49,7 @@ module.exports = {
             }
         });
         const logChannel = message.guild.channels.cache.get(guildDatabase.logChannelID);
+        if (!logChannel) return;
 
         if (guildDatabase.logEnabled === "false") return;
 
@@ -58,8 +59,12 @@ module.exports = {
             .setFooter(`Message-ID: ${message.id}`)
             .setColor(colors.MESSAGE_DELETE);
 
+        let content = String(message.content);
+
+        if (content.length > 1024) content = "Too long for message embed.";
+
         if (message.content === null || message.content === '') { } else {
-            embed.addField("Content", `${message.content} ** **`)
+            embed.addField("Content", `${content} ** **`)
         }
         embed.addField("Channel", `${message.channel} ** **`)
         if (message.author === null || message.author === '') { } else {

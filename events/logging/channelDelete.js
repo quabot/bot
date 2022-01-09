@@ -49,6 +49,8 @@ module.exports = {
                 }
             });
             const logChannel = channel.guild.channels.cache.get(guildDatabase.logChannelID);
+            if (guildDatabase.logEnabled === "false") return;
+
 
             if (channel.type === "GUILD_TEXT") {
                 if (guildDatabase.logEnabled === "true") {

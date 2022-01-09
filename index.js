@@ -8,11 +8,31 @@ client.commands = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
+['text_commands'].forEach(handler => {
+    require(`./handlers/${handler}`)(client, Discord);
+})
+
 const { MiscSupport } = require('./files/interactions')
+
+
+const dbots = require('dbots');
+const consola = require('consola');
+const poster = new dbots.Poster({
+    client,
+    apiKeys: {
+        discordbotlist: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0IjoxLCJpZCI6Ijg0NTYwMzcwMjIxMDk1MzI0NiIsImlhdCI6MTY0MTMwMDYwOX0.73lJeUdYcD-75lGJVuO9ha2MApZsEdxAqT78dwjC4Lk',
+        topgg: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg0NTYwMzcwMjIxMDk1MzI0NiIsImJvdCI6dHJ1ZSwiaWF0IjoxNjI0OTE5NDYxfQ.rC8BpVuxV4C6o9xb-KX5uh0gGZ2srpZhlG9BMwNmx-g',
+        discordbotsgg: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGkiOnRydWUsImlkIjoiNDg2NTYzNDY3ODEwMzA4MDk2IiwiaWF0IjoxNjQxMzAxMzk4fQ.inD9YUCZIsMtYfHg9NRhrfC8VOYMmhJGLlwKztAC62w'
+    },
+    clientLibrary: 'discord.js'
+});
+
+poster.startInterval();
+consola.info("Poster interval started.")
+
 
 // DATABASE
 const mongoose = require('mongoose');
-const consola = require('consola');
 mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

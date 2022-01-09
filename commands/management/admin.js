@@ -12,7 +12,7 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-     options: [
+    options: [
     ],
     async execute(client, interaction) {
         try {
@@ -54,17 +54,17 @@ module.exports = {
                 }
             });
             if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
-    
+
             const embed = new discord.MessageEmbed()
-            .setColor(colors.TICKET_CREATED)
-            .setTitle("Admin")
-            .setDescription("Change settings, send messages and more. Settings you can change are:")
-            .addField("Ticket Message", "Send a message that users can react to to create a ticket!")
-            .setFooter("Change them with the buttons below this message!")
-            .setTimestamp()
-        interaction.reply({ embeds: [embed], components: [adminButtons], empheral: true });
+                .setColor(colors.TICKET_CREATED)
+                .setTitle("Admin")
+                .setDescription("Change settings, send messages and more. Settings you can change are:")
+                .addField("Ticket Message", "Send a message that users can react to to create a ticket!")
+                .setFooter("Change them with the buttons below this message!")
+                .setTimestamp()
+            interaction.reply({ embeds: [embed], components: [adminButtons], empheral: true });
         } catch (e) {
-            interaction.channel.send({ embeds: [errorMain]})
+            interaction.channel.send({ embeds: [errorMain] })
             console.log(e)
         }
     }

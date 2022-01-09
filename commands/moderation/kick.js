@@ -67,6 +67,8 @@ module.exports = {
                         banCount: 0,
                         warnCount: 0,
                         muteCount: 0,
+                        afk: false,
+                        afkStatus: "none",
                     });
                     newUser.save()
                         .catch(err => {
