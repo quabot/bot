@@ -74,6 +74,7 @@ module.exports = {
         'transcript',
         'color',
         'discriminator',
-        'afk'
+        'afk',
+        'channel'
     ]
 }
