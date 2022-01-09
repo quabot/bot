@@ -65,25 +65,6 @@ module.exports = {
             }
           ]
         },
-        {
-          "type": 1,
-          "name": "position",
-          "description": "Move the channel",
-          "options": [
-            {
-              "type": 7,
-              "name": "channel",
-              "description": "Channel to move",
-              "required": true
-            },
-            {
-              "type": 3,
-              "name": "category",
-              "description": "Where to move the channel",
-              "required": true
-            }
-          ]
-        }
     ],
     
     async execute(client, interaction) {
@@ -110,9 +91,9 @@ module.exports = {
                     interaction.reply("Deleted channel " + options.channel.name)
                     break;
                 case "slowmode":
-                    console.log(options)
                     options.channel.setRateLimitPerUser(options.amount)
                     interaction.reply(`Set channel ${options.channel.name}'s slowmode to ${options.amount}`)
+                    break;
             }
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })
