@@ -6,6 +6,7 @@ const { errorMain } = require('../../files/embeds');
 module.exports = {
     name: "deposit",
     aliases: ['dep', 'store'],
+    economy: true,
     async execute(client, message, args) {
         try {
 

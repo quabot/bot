@@ -6,6 +6,7 @@ const { errorMain } = require('../../files/embeds');
 module.exports = {
     name: "withdraw",
     aliases: ['with'],
+    economy: true,
     async execute(client, message, args) {
         try {
 

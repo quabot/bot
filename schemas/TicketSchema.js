@@ -1,30 +1,20 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
+const reqBool = {
+    type: Boolean,
+    required: true,
+}
 
 const TicketSchema = new mongoose.Schema({
-    guildId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    memberId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    ticketId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    channelId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    closed: {
-        type: mongoose.SchemaTypes.Boolean,
-        required: true,
-    },
-    topic: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
+    guildId: reqString,
+    memberId: reqString,
+    ticketId: reqString,
+    channelId: reqString,
+    closed: reqBool,
+    topic: reqString,
 });
 
 module.exports = mongoose.model('Tickets', TicketSchema);

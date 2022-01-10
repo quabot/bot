@@ -1,46 +1,28 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
+const falseString = {
+    type: String,
+    required: false,
+}
+const reqNumber = {
+    type: Number,
+    required: true,
+}
 
 const UserEcoSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildName: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    outWallet: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    walletSize: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    inWallet: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    lastDaily: {
-        type: mongoose.SchemaTypes.String,
-        required: false,
-    },
-    lastWeekly: {
-        type: mongoose.SchemaTypes.String,
-        required: false,
-    },
-    lastMonthly: {
-        type: mongoose.SchemaTypes.String,
-        required: false,
-    },
-    lastUsed: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
+    userId: reqString,
+    guildId: reqString,
+    guildName: reqString,
+    outWallet: reqNumber,
+    walletSize: reqNumber,
+    inWallet: reqNumber,
+    lastDaily: falseString,
+    lastWeekly: falseString,
+    lastMonthly: falseString,
+    lastUsed: reqString,
 });
 
 module.exports = mongoose.model('UserEco', UserEcoSchema);

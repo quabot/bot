@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const colors = require('../../files/colors.json');
-const config = require('../../files/config.json');
+const config = require('../../files/settings.json');
 
 const { errorMain } = require('../../files/embeds');
 module.exports = {

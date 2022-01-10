@@ -1,46 +1,28 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
+const reqNumber = {
+    type: Number,
+    required: true,
+}
+const falseBool = {
+    type: Boolean,
+    required: false,
+}
 
 const UserSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildName: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    typeScore: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    kickCount: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    banCount: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    muteCount: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    warnCount: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    afk: {
-        type: mongoose.SchemaTypes.Boolean,
-        required: false,
-    },
-    afkStatus: {
-        type: mongoose.SchemaTypes.String,
-        required: false,
-    },
+    userId: reqString,
+    guildId: reqString,
+    guildName: reqString,
+    typeScore: reqNumber,
+    kickCount: reqNumber,
+    banCount: reqNumber,
+    muteCount: reqNumber,
+    warnCount: reqNumber,
+    afk: falseBool,
+    afkStatus: falseBool,
 });
 
 module.exports = mongoose.model('User', UserSchema);

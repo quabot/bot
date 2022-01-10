@@ -3,6 +3,8 @@ const { MessageEmbed } = require('discord.js');
 const colors = require('./colors.json');
 const prefix = "/"
 
+const miscEmbed = "a";
+
 const invalidDiscrim = - new MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle(":x: Invalid discriminator!")
@@ -383,130 +385,12 @@ const noWelcomeChannel = new discord.MessageEmbed()
     .setFooter("Tip: use `/config` to set it up")
     .setDescription("Did not send a message, no channel is setup!")
     .setColor(colors.COLOR)
-const funEmbed = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Fun Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setDescription(`These commands give funny pictures, games and more.\n
-    **${prefix}cat** - Get an image of a cat.
-    **${prefix}coin** - Flip a coin.
-    **${prefix}dog** - Get an image of a dog.
-    **${prefix}meme** - Get a meme.
-    **${prefix}quiz** - Play a quiz.
-    **${prefix}rps** - Play rock, paper, scissors.
-    **${prefix}type** - Play a typing game.`);
-const infoEmbed = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Info Commands")
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setTimestamp()
-    .setDescription(`These commands are used to get information about loads of different things.\n    
-    **${prefix}announcement** - Latest quabot news.
-    **${prefix}help** - List commands and their descriptions.
-    **${prefix}info** - Information about the bot.
-    **${prefix}leaderboard** - Server XP's leadersboard.
-    **${prefix}nick** - Change the nickname of a user.
-    **${prefix}online** -  View activity list.
-    **${prefix}ping** - Get bot ping.
-    **${prefix}rank** - Get level and XP points.
-    **${prefix}roles** - List of roles in this guild.
-    **${prefix}role** - Create, delete, add or remove roles.
-    **${prefix}serverinfo** - Server information.
-    **${prefix}stats** - Bot statistics.
-    **${prefix}support** - Bot's support discord.
-    **${prefix}uptime** - Bot's uptime.
-    **${prefix}userinfo** - Information about a user.
-    `)
-const musicEmbed = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Music Commands")
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setTimestamp()
-    .setDescription(`These commands are all commands related to music.\n
-    **${prefix}autoplay** - Toggle autoplay.
-    **${prefix}nowplaying** - Information about the playing song.
-    **${prefix}filter** - Toggle filters.
-    **${prefix}join** - Make bot join your vc.
-    **${prefix}leave** - Make bot leave your vc.
-    **${prefix}pause** - Pause the stream.
-    **${prefix}play** - Play a song.
-    **${prefix}queue** - Get music queue.
-    **${prefix}repeat** - Alter repeat mode.
-    **${prefix}resume** - Resume the stream.
-    **${prefix}seek** - Seek to a point in the song.
-    **${prefix}shuffle** - Shuffle queue.
-    **${prefix}skip** - Skip the playing song.
-    **${prefix}stop** - Stop the music stream.
-    **${prefix}volume** - Change volume.
-    `)
-const miscEmbed = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Misc Commands")
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setTimestamp()
-    .setDescription(`These commands are just general commands that dont fit the descrition of the ones above.\n
-    **${prefix}afk** - Set your afk status.
-    **${prefix}avatar** - Get a user's avatar.
-    **${prefix}color** - Visualize a hex color.
-    **${prefix}discriminator** - Find all users with a discriminator.
-    **${prefix}divide** - Divide two numbers.
-    **${prefix}members** - Get the guild's membercount.
-    **${prefix}multiply** - Multiply two numbers.
-    **${prefix}power** - Get a number to the power of a number.
-    **${prefix}servericon** - Get the guild's icon.
-    **${prefix}subtract** - Subtract two numbers.
-    **${prefix}sum** - Sum of two numbers.
-    `)
-const moderationEmbed = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Moderation Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setDescription(`These commands are used to punish users and moderate the server.\n
-    **${prefix}ban** - Ban a member.
-    **${prefix}kick** - Kick a member.
-    **${prefix}timeout** - Timeout a member.
-    **${prefix}punishments** - View a member's punishments.
-    **${prefix}report** - Report a user.
-    **${prefix}tempban** - Temporarily ban a member.
-    **${prefix}unban** - Unban a member.
-    **${prefix}warn** - Warn a member.
-    `)
-const managementEmbed = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Management Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setDescription(`These commands are used by managers to clear channels, start giveaways and more.\n
-    **${prefix}admin** - Send a "open ticket" message.
-    **${prefix}clear** - Clear an amount of messages.
-    **${prefix}config** - Configure quabot.
-    **${prefix}lock** - Lock a channel.
-    **${prefix}mention** - Ping everyone.
-    **${prefix}reactionrole** - Create and delete reactionroles.
-    **${prefix}unlock** - Get bot ping.
-    `)
-const supportHEmbed = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setTitle("Support Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setDescription(`These commands can be used by members to seek support, make suggestions and more.\n
-    **${prefix}add** - Add a user to your ticket.
-    **${prefix}close** - Close a ticket.
-    **${prefix}delete** - Delete a ticket.
-    **${prefix}endpoll** - End the voting on a poll.
-    **${prefix}endsuggestion** - End the voting on a suggestion.
-    **${prefix}poll** - Start a poll.
-    **${prefix}quabot** - Leave suggestions and bug reports.
-    **${prefix}remove** - Remove users from a ticket.
-    **${prefix}reopen** - Reopen a ticket.
-    **${prefix}settopic** - Change a ticket topic.
-    **${prefix}suggest** - Make a suggestion.
-    **${prefix}ticket** - Open a ticket.
-    **${prefix}transcript** - Make a ticket transcript.
-    `)
+const funEmbed = "a";
+const infoEmbed = "a";
+const musicEmbed = "a";
+const moderationEmbed = "a"
+const managementEmbed = "a"
+const supportHEmbed = "a";
 const reportSucces = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTimestamp()

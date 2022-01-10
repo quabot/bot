@@ -4,9 +4,9 @@ const discord = require('discord.js')
 const { createTranscript } = require('discord-html-transcripts');
 
 const colors = require('../../files/colors.json');
-const { noPerms } = require('../../files/embeds');
-const { mainDisabled, stepOneToggle, stepOneDisabled, stepTwoToggle, stepTwoToggleDisabled, stepTwoToggleTwo, stepTwoToggleTwoDisabled, stepThreeTD, stepThreeT } = require('../../files/interactions/botadd');
-const { addedDatabase, stepOne, stepTwo, stepOne2, stepOneTDisabled, stepTwoRoleToggle, stepTwoChannel, stepTwoRole, stepTwoTDisabled, stepThree, errorMain, stepToTDisabled, done, stepThreeMainCat } = require('../../files/embeds/botadd');
+const { noPerms } = require('../../files/embeds.js');
+const { mainDisabled, stepOneToggle, stepOneDisabled, stepTwoToggle, stepTwoToggleDisabled, stepTwoToggleTwo, stepTwoToggleTwoDisabled, stepThreeTD, stepThreeT } = require('../../files/interactions/guildAdd');
+const { addedDatabase, stepOne, stepTwo, stepOne2, stepOneTDisabled, stepTwoRoleToggle, stepTwoChannel, stepTwoRole, stepTwoTDisabled, stepThree, errorMain, stepToTDisabled, done, stepThreeMainCat } = require('../../files/embeds/guildAdd');
 
 module.exports = {
     name: "interactionCreate",

@@ -2,7 +2,7 @@ const discord = require('discord.js');
 const mongoose = require('mongoose');
 const ms = require('ms');
 
-const config = require('../../files/config.json');
+const config = require('../../files/settings.json');
 const colors = require('../../files/colors.json');
 const { errorMain, timeoutNoTime, addedDatabase } = require('../../files/embeds');
 

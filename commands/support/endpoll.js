@@ -2,7 +2,7 @@ const discord = require('discord.js');
 const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
-const config = require('../../files/config.json');
+const config = require('../../files/settings.json');
 const { errorMain, noPollChannelConfigured, noMSG, addedDatabase, pollDisabled } = require('../../files/embeds');
 
 module.exports = {

@@ -2,15 +2,27 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const consola = require('consola');
 
-module.exports = (client, Discord) => {
-    const commandFolders = fs.readdirSync('./commands/');
+const { promisify } = require('util');
+const { glob } = require("glob");
+const Ascii = require('ascii-table');
+const PG = promisify(glob);
 
-    for (const folder of commandFolders) {
-        const command_files = fs.readdirSync(`./commands/economy`).filter(file => file.endsWith('.js'));
-        for (const file of command_files) {
-            const command = require(`../commands/economy/${file}`);
-            client.commands.set(command.name, command);
-            consola.info(`Loaded ${file}`)
-        }
-    }
+module.exports = async (client) => {
+    const commandFolders = fs.readdirSync('./commands/');
+    const Table = new Ascii("Economy Commands loaded");
+
+    (await PG(`${process.cwd()}/Commands/economy/*.js`)).map(async (file) => {
+        const command = require(file);
+
+        if (!command.name)
+            return Table.addRow(file.split("/")[7], "❌ FAILED", "Missing a name.");
+        if (!command.aliases)
+        return Table.addRow(file.split("/")[7], "❌ FAILED", "Missing an alias.");
+
+        client.commands.set(command.name, command)
+
+        await Table.addRow(command.name, "✅SUCCESFULL");
+
+    });
+    consola.log(Table.toString());
 }

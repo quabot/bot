@@ -1,7 +1,7 @@
 const discord = require('discord.js');
 const { Client, CommandInteraction, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
-const config = require('../../files/config.json');
+const config = require('../../files/settings.json');
 const { errorMain, iNoPerms, tooLong } = require('../../files/embeds');
 
 module.exports = {

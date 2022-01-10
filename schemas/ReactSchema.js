@@ -1,30 +1,16 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
 
 const ReactSchema = new mongoose.Schema({
-    guildId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildName: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    messageId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    emoji: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    reactMode: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    role: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    }
+    guildId: reqString,
+    guildName: reqString,
+    messageId: reqString,
+    emoji: reqString,
+    reactMode: reqString,
+    role: reqString
 });
 
 module.exports = mongoose.model('React', ReactSchema);

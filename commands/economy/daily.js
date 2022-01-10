@@ -6,6 +6,7 @@ const { errorMain } = require('../../files/embeds');
 module.exports = {
     name: "daily",
     aliases: ['dailymoney', 'coinsdaily'],
+    economy: true,
     async execute(client, message, args) {
 
         try {

@@ -1,4 +1,4 @@
-const config = require('../../files/config.json');
+const config = require('../../files/settings.json');
 const mongoose = require('mongoose');
 const consola = require('consola');
 const Discord = require('discord.js');

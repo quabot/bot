@@ -1,26 +1,15 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
 
 const WarnSchema = new mongoose.Schema({
-    guildId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildName: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    userId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    warnReason: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    warnTime: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
+    guildId: reqString,
+    guildName: reqString,
+    userId: reqString,
+    warnReason: reqString,
+    warnTime: reqString,
 });
 
 module.exports = mongoose.model('Warns', WarnSchema);

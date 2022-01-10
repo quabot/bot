@@ -16,7 +16,7 @@ module.exports = {
 
         if (interaction.guild.id === null) return;
 
-        // failsaves
+
         try {
             const Guild = require('../../schemas/GuildSchema')
             const guildDatabase = await Guild.findOne({

@@ -1,26 +1,16 @@
-const discord = require('discord.js');
-const mongoose = require('mongoose');
-
+const { CommandInteraction, MessageButton, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
-const config = require('../../files/settings.json');
-const { errorMain, addedDatabase, ticketsDisabled, notATicket } = require('../../files/embeds');
+
+const { misc, support, fun, info, music, moderation, management } = require('../../files/embeds/help');
 
 module.exports = {
-    name: "settopic",
-    description: "Change a ticket topic.",
+    name: "interactionCreate",
     /**
+     * @param {CommandInteraction} interaction 
      * @param {Client} client 
-     * @param {CommandInteraction} interaction
      */
-    options: [
-        {
-            name: "new-topic",
-            type: "STRING",
-            description: "The new ticket topic.",
-            required: true,
-        },
-    ],
-    async execute(client, interaction) {
+    async execute(interaction, client) {
+        if (interaction.guild.id === null) return;
 
         try {
             const Guild = require('../../schemas/GuildSchema')
@@ -62,33 +52,29 @@ module.exports = {
                 }
             );
 
-            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
-
-            let cId = interaction.channel.name;
-            cId = cId.substring(7);
-
-            const Ticket = require('../../schemas/TicketSchema')
-            const TicketDB = await Ticket.findOne({
-                guildId: interaction.guild.id,
-                ticketId: cId,
-                channelId: interaction.channel.id,
-            }, (err, ticket) => {
-                if (err) return;
-                if (!ticket) return interaction.reply({ embeds: [notATicket] });
-            });
-
-            if (TicketDB === null) return;
-
-            await TicketDB.updateOne({
-                topic: `${interaction.options.getString("new-topic")}`,
-            });
-
-            const newTopic = new discord.MessageEmbed()
-                .setTitle("Topic changed")
-                .setColor(colors.COLOR)
-                .setTimestamp()
-                .setDescription(`New ticket topic: **${interaction.options.getString("new-topic")}**!`)
-            interaction.reply({ embeds: [newTopic] });
+            if (interaction.isSelectMenu()) {
+                if (interaction.values[0] === "fun_commands") {
+                    interaction.reply({ ephemeral: true, embeds: [fun] })
+                }
+                if (interaction.values[0] === "info_commands") {
+                    interaction.reply({ ephemeral: true, embeds: [info] })
+                }
+                if (interaction.values[0] === "music_commands") {
+                    interaction.reply({ ephemeral: true, embeds: [music] })
+                }
+                if (interaction.values[0] === "moder_commands") {
+                    interaction.reply({ ephemeral: true, embeds: [moderation] });
+                }
+                if (interaction.values[0] === "mang_commands") {
+                    interaction.reply({ ephemeral: true, embeds: [management] });
+                }
+                if (interaction.values[0] === "misc_commands") {
+                    interaction.reply({ ephemeral: true, embeds: [misc] })
+                }
+                if (interaction.values[0] === "support_commands") {
+                    interaction.reply({ ephemeral: true, embeds: [support] })
+                }
+            }
             
         } catch (e) {
             console.log(e);

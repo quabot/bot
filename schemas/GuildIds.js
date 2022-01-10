@@ -1,26 +1,19 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
+const reqNumber = {
+    type: Number,
+    required: true,
+}
 
 const GIdSchema = new mongoose.Schema({
-    gId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    verifyToken: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    suggestId: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    pollId: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
-    ticketId: {
-        type: mongoose.SchemaTypes.Number,
-        required: true,
-    },
+    gId: reqString,
+    verifyToken: reqNumber,
+    suggestId: reqNumber,
+    pollId: reqNumber,
+    ticketId: reqNumber,
 });
 
 module.exports = mongoose.model('GIds', GIdSchema);

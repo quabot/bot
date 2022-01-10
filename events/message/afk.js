@@ -6,8 +6,6 @@ const DisTube = require('distube');
 const consola = require('consola');
 const { Commands } = require("../../validation/commandnames");
 
-const config = require('../../files/config.json');
-const swearwords = require("../../files/data.json");
 const colors = require('../../files/colors.json');
 
 const { errorMain, addedDatabase } = require('../../files/embeds');

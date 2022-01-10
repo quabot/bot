@@ -1,9 +1,9 @@
-const config = require('../../files/config.json');
+const config = require('../../files/settings.json');
 const mongoose = require('mongoose');
 const consola = require('consola');
 
-const { embed } = require('../../files/embeds/botadd');
-const { main } = require('../../files/interactions/botadd');
+const { embed } = require('../../files/embeds/guildAdd');
+const { main } = require('../../files/interactions/guildAdd');
 
 module.exports = {
     name: "guildCreate",

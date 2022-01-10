@@ -1,7 +1,7 @@
 const colors = require('../../files/colors.json');
 const mongoose = require('mongoose');
 const { MessageEmbed } = require('discord.js');
-const consola = require('consola'); // for logging
+const consola = require('consola');
 const { guildUserBanEmbed } = require('../../files/embeds.js');
 
 module.exports = {
@@ -9,13 +9,11 @@ module.exports = {
     /**
      * @param {Client} client 
      */
-    async execute(paramater1, paramater2) {
+    async execute(paramater1) {
 
         const invite = paramater1.guild.id
 
         const Guild = require('../../schemas/GuildSchema');
-        console.log(invite)
-        // make sure to change the invite to the proper paramter (message.guild.id, member.guild.id)
         const guildDatabase = await Guild.findOne({
             guildId: invite,
         }, (err, guild) => {
@@ -51,12 +49,11 @@ module.exports = {
                 return;
             }
         });
-        // change the invite.guild to work
+
         const logChannel = paramater1.guild.channels.cache.get(guildDatabase.logChannelID);
 
-        // colors = colors.COLOR for the main color, colors.MESSAGE_UPDATE for blue, colors.RED for red and colors.LIME for lime.
-        
-        guildUserBanEmbed.setDescription("User banned: " + paramater1.user.tag)
+        guildUserBanEmbed.setDescription("User banned: " + `${paramater1.user.tag}`)
+        guildUserBanEmbed.addField("User-ID", `${paramater1.user.id}`)
 
         logChannel.send({ embeds: [guildUserBanEmbed] })
     }

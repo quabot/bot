@@ -1,26 +1,18 @@
-const discord = require('discord.js');
-const mongoose = require('mongoose');
-
+const { CommandInteraction, MessageButton, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
-const config = require('../../files/settings.json');
-const { errorMain, addedDatabase, ticketsDisabled, notATicket } = require('../../files/embeds');
+
+const { role, noPermission, other, channel, toggle } = require('../../files/embeds/config');
+const { selectRole, selectOther, selectToggle, selectChannel } = require('../../files/interactions/config');
+const { errorMain, addedDatabase } = require('../../files/embeds.js');
 
 module.exports = {
-    name: "settopic",
-    description: "Change a ticket topic.",
+    name: "interactionCreate",
     /**
+     * @param {CommandInteraction} interaction 
      * @param {Client} client 
-     * @param {CommandInteraction} interaction
      */
-    options: [
-        {
-            name: "new-topic",
-            type: "STRING",
-            description: "The new ticket topic.",
-            required: true,
-        },
-    ],
-    async execute(client, interaction) {
+    async execute(interaction, client) {
+        if (interaction.guild.id === null) return;
 
         try {
             const Guild = require('../../schemas/GuildSchema')
@@ -62,34 +54,25 @@ module.exports = {
                 }
             );
 
-            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
+            if (interaction.isSelectMenu()) {
+                if (interaction.values[0] === "change_roles") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    interaction.reply({ embeds: [role], components: [selectRole], ephemeral: true })
+                }
+                if (interaction.values[0] === "other_settings") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    interaction.reply({ embeds: [other], components: [selectOther], ephemeral: true })
+                }
+                if (interaction.values[0] === "toggle_features") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    interaction.reply({ embeds: [toggle], components: [selectToggle], ephemeral: true })
+                }
+                if (interaction.values[0] === "change_channels") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPerms] });
+                    interaction.reply({ embeds: [channel], components: [selectChannel], ephemeral: true })
+                }
+            }
 
-            let cId = interaction.channel.name;
-            cId = cId.substring(7);
-
-            const Ticket = require('../../schemas/TicketSchema')
-            const TicketDB = await Ticket.findOne({
-                guildId: interaction.guild.id,
-                ticketId: cId,
-                channelId: interaction.channel.id,
-            }, (err, ticket) => {
-                if (err) return;
-                if (!ticket) return interaction.reply({ embeds: [notATicket] });
-            });
-
-            if (TicketDB === null) return;
-
-            await TicketDB.updateOne({
-                topic: `${interaction.options.getString("new-topic")}`,
-            });
-
-            const newTopic = new discord.MessageEmbed()
-                .setTitle("Topic changed")
-                .setColor(colors.COLOR)
-                .setTimestamp()
-                .setDescription(`New ticket topic: **${interaction.options.getString("new-topic")}**!`)
-            interaction.reply({ embeds: [newTopic] });
-            
         } catch (e) {
             console.log(e);
             interaction.channel.send({ embeds: [errorMain] });

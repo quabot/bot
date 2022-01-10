@@ -1,26 +1,15 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
 
 const KickSchema = new mongoose.Schema({
-    guildId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildName: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    userId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    kickReason: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    kickTime: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
+    guildId: reqString,
+    guildName: reqString,
+    userId: reqString,
+    kickReason: reqString,
+    kickTime: reqString,
 });
 
 module.exports = mongoose.model('Kicks', KickSchema);

@@ -2,7 +2,7 @@ const discord = require('discord.js');
 const fs = require('fs');
 
 const colors = require('../../files/colors.json');
-const config = require('../../files/config.json')
+const config = require('../../files/settings.json')
 
 module.exports = {
     name: "quabot",

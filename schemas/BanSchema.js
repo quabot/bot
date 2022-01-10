@@ -1,26 +1,15 @@
 const mongoose = require('mongoose');
+const reqString = {
+    type: String,
+    required: true,
+}
 
 const BanSchema = new mongoose.Schema({
-    guildId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    guildName: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    userId: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    banReason: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
-    banTime: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-    },
+    guildId: reqString,
+    guildName: reqString,
+    userId: reqString,
+    banReason: reqString,
+    banTime: reqString,
 });
 
 module.exports = mongoose.model('Bans', BanSchema);
