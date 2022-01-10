@@ -4,6 +4,7 @@ const {
     MessageActionRow,
     MessageButton
 } = require('discord.js')
+const discord = require('discord.js');
 
 const colors = require('../../files/colors.json')
 const { errorMain, addedDatabase, ticketsDisabled } = require('../../files/embeds');
