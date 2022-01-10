@@ -2,7 +2,7 @@ const discord = require('discord.js');
 
 const colors = require('../../files/colors.json');
 const { adminButtons } = require('../../files/interactions');
-const { errorMain, ticketDisabled } = require('../../files/embeds');
+const { errorMain, ticketDisabled, createTicket } = require('../../files/embeds');
 
 module.exports = {
     name: "admin",

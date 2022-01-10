@@ -9,6 +9,10 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(message, client) {
+        if (message.guild === null) {
+            if (message.author.bot) return;
+            return;
+        }
         const guildId = message.guild.id;
 
         if (guildId === null) return;

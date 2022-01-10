@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const { createTranscript } = require('discord-html-transcripts');
 
 const colors = require('../../files/colors.json');
-const { errorMain, ticketsDisabled, addedDatabase, notATicket } = require('../../files/embeds');
+const { errorMain, ticketsDisabled, addedDatabase, notATicket,createTicket } = require('../../files/embeds');
 const { closeConfirm, closed, close, deleteConfirm } = require('../../files/interactions/tickets');
+const { ticketButton } = require('../../files/interactions');
 
 module.exports = {
     name: "interactionCreate",
@@ -58,7 +59,7 @@ module.exports = {
             );
 
             if (interaction.isButton()) {
-                if (interaction.customId === "ticketmsg") {
+                if (interaction.customId === "ticket") {
                     const topic = "No topic specified.";
 
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
@@ -151,6 +152,9 @@ module.exports = {
                             interaction.reply({ ephemeral: true, embeds: [embed] })
                         }, 300);
                     });
+                }
+                if (interaction.customId === "ticketmsg") {
+                    interaction.reply({ embeds: [createTicket], components: [ticketButton]});
                 }
                 if (interaction.customId === "close") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
