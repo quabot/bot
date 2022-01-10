@@ -4,17 +4,17 @@ const { MessageEmbed } = require('discord.js')
 module.exports  = {
     name: 'guildMemberUpdate',
     async execute(oldMember, newMember) {
-        if (channel.guild.id === null) return;
+        if (oldMember.guild.id === null) return;
         try {
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: channel.guild.id,
+                guildId: oldMember.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: channel.guild.id,
-                        guildName: channel.guild.name,
+                        guildId: oldMember.guild.id,
+                        guildName: oldMember.guild.name,
                         logChannelID: "none",
                         reportChannelID: "none",
                         suggestChannelID: "none",
@@ -43,7 +43,7 @@ module.exports  = {
                 }
             });
 
-            const logChannel = channel.guild.channels.cache.get(guildDatabase.logChannelID);
+            const logChannel = oldMember.guild.channels.cache.get(guildDatabase.logChannelID);
 
             if (guildDatabase.logEnabled === "false") return;
             const oldStatus = oldMember.premiumSince;
@@ -51,9 +51,13 @@ module.exports  = {
             const boostStatusEmbed = new MessageEmbed()
                 .setTitle('Boost Status Update')
                 .setDescription(`${newMember} has boosted the server!`)
+                .setColor(colors.COLOR)
+                .setTimestamp()
             const boostStatusEmbed2 = new MessageEmbed()
                 .setTitle('Boost Status Update')
                 .setDescription(`${newMember} has stopped boosting the server!`)
+                .setColor(colors.COLOR)
+                .setTimestamp()
             if (!oldStatus && newStatus) {
                 logChannel.send({ embeds: [boostStatusEmbed]})
             }

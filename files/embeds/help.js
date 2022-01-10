@@ -61,6 +61,7 @@ const fun = new MessageEmbed()
     **/meme** - Get a meme.
     **/quiz** - Play a quiz.
     **/rps** - Play rock, paper, scissors.
+    **/reddit** - Find images from any subreddit.
     **/type** - Play a typing game.`);
 
 const info = new MessageEmbed()
@@ -133,6 +134,7 @@ const management = new MessageEmbed()
     .setDescription(`These commands are used by managers to clear channels, start giveaways and more.\n
     **/admin** - Send a "open ticket" message.
     **/clear** - Clear an amount of messages.
+    **/channel** - To delete, create and set slowmodes.
     **/config** - Configure quabot.
     **/lock** - Lock a channel.
     **/mention** - Ping everyone.
