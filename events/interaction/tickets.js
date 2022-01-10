@@ -98,7 +98,7 @@ module.exports = {
 
                     if (!category) {
                         interaction.guild.channels.create(openedName, { type: "GUILD_CATEGORY" });
-                        const embedTicketsCreate = new discord.MessageEmbed()
+                        const embedTicketsCreate = new MessageEmbed()
                             .setColor(colors.TICKET_CREATED)
                             .setTitle('Creating a category!')
                             .setDescription('The tickets categegory does not exist. Creating one now...')
@@ -170,7 +170,7 @@ module.exports = {
 
                     if (!closedCategory) {
                         interaction.guild.channels.create(closedName, { type: "GUILD_CATEGORY" });
-                        const embedTicketsCreate = new discord.MessageEmbed()
+                        const embedTicketsCreate = new MessageEmbed()
                             .setColor(colors.TICKET_CREATED)
                             .setTitle('Creating a category!')
                             .setDescription('The categegory for closed tickets does not exist. Creating one now...')
@@ -230,7 +230,7 @@ module.exports = {
 
                     if (!category) {
                         interaction.guild.channels.create(openedName, { type: "GUILD_CATEGORY" });
-                        const embedTicketsCreate = new discord.MessageEmbed()
+                        const embedTicketsCreate = new MessageEmbed()
                             .setColor(colors.TICKET_CREATED)
                             .setTitle('Creating a category!')
                             .setDescription('The categegory for opened tickets does not exist. Creating one now...')

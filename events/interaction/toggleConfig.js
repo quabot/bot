@@ -110,7 +110,7 @@ module.exports = {
                         .addField("Current value", `${guildDatabase.reportEnabled}`)
                         .setColor(colors.COLOR)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
-
+                        
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
                     interaction.reply({ ephemeral: true, embeds: [reports], components: [buttonsReport] });
                 }

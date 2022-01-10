@@ -165,7 +165,7 @@ module.exports = {
 
                 if (interaction.values[0] === "suggest_channel") {
 
-                    const suggest = new discord.MessageEmbed()
+                    const suggest = new MessageEmbed()
                         .setTitle("Change Suggestions Channel")
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.suggestChannelID}>`)
@@ -197,7 +197,7 @@ module.exports = {
 
                 if (interaction.values[0] === "welcome_channel") {
 
-                    const welcome = new discord.MessageEmbed()
+                    const welcome = new MessageEmbed()
                         .setTitle("Change Welcome Messages Channel")
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.welcomeChannelID}>`)
@@ -230,7 +230,7 @@ module.exports = {
 
                 if (interaction.values[0] === "ticket_channel") {
 
-                    const ticket = new discord.MessageEmbed()
+                    const ticket = new MessageEmbed()
                         .setTitle("Change Main Ticket Category name")
                         .setDescription("Send the new channel name within 15 seconds to change it.")
                         .addField("Current value", `${guildDatabase.ticketCategory}`)
@@ -262,7 +262,7 @@ module.exports = {
 
                 if (interaction.values[0] === "closedticket_channel") {
 
-                    const closed = new discord.MessageEmbed()
+                    const closed = new MessageEmbed()
                         .setTitle("Change Closed Ticket Category Name")
                         .setDescription("Send the new category name within 15 seconds to change it.")
                         .addField("Current value", `${guildDatabase.closedTicketCategory}`)
@@ -294,7 +294,7 @@ module.exports = {
 
                 if (interaction.values[0] === "poll_channel") {
 
-                    const poll = new discord.MessageEmbed()
+                    const poll = new MessageEmbed()
                         .setTitle("Change Poll Messages channel")
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.pollChannelID}>`)

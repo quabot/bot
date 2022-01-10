@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js');
 
 const selectRole = new MessageActionRow()
     .addComponents(
@@ -98,9 +98,9 @@ const selectToggle = new MessageActionRow()
             ]),
     );
 
-const selectChannel = new discord.MessageActionRow()
+const selectChannel = new MessageActionRow()
     .addComponents(
-        new discord.MessageSelectMenu()
+        new MessageSelectMenu()
             .setCustomId('select')
             .setPlaceholder('None selected.')
             .setMinValues(1)
@@ -150,14 +150,14 @@ const selectChannel = new discord.MessageActionRow()
     );
 
 
-const disabled = new discord.MessageActionRow()
+const disabled = new MessageActionRow()
     .addComponents(
-        new discord.MessageButton()
+        new MessageButton()
             .setCustomId('enable')
             .setLabel('Enable')
             .setDisabled(true)
             .setStyle('SUCCESS'),
-        new discord.MessageButton()
+        new MessageButton()
             .setCustomId('disable')
             .setLabel('Disable')
             .setDisabled(true)

@@ -39,7 +39,7 @@ const toggle = new MessageEmbed()
     .setThumbnail("https://i.imgur.com/jgdQUul.png")
     .setTimestamp();
 
-const channel = new discord.MessageEmbed()
+const channel = new MessageEmbed()
     .setTitle("Configure Channels")
     .setDescription("Use the dropdown to select a setting you wish to change!")
     .setColor(colors.COLOR)

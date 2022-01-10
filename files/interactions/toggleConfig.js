@@ -110,9 +110,9 @@ const buttonsPoll = new MessageActionRow()
             .setStyle('DANGER'),
     );
 
-const buttonsLevel = new discord.MessageActionRow()
+const buttonsLevel = new MessageActionRow()
     .addComponents(
-        new discord.MessageButton()
+        new MessageButton()
             .setCustomId('disablelevel')
             .setLabel('Disable Level-up channel')
             .setStyle('DANGER'),

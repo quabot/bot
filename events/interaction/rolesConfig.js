@@ -60,7 +60,7 @@ module.exports = {
                 if (interaction.values[0] === "main_role") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
 
-                    const mainRole = new discord.MessageEmbed()
+                    const mainRole = new MessageEmbed()
                         .setTitle("Change Main Role name")
                         .setDescription("Enter the new name within 15 seconds to change it.")
                         .addField("Current value", `${guildDatabase.mainRole}`)
