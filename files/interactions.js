@@ -23,15 +23,17 @@ const selectCategory = new discord.MessageActionRow()
                     description: 'Allows you to change roles for people who are muted, on join etc.',
                     value: 'change_roles',
                 },
-                // {
-                //     label: 'Logging Settings',
-                //     description: 'Allows you to toggle logging for certain events.',
-                //     value: 'log_settings',
-                // },
+                {
+                    label: 'Logging Settings',
+                    description: 'Allows you to toggle logging for certain events.',
+                    //value: 'log_settings',
+                    value: 'hello_world',
+                },
                 {
                     label: 'Other Settings',
-                    description: 'Allows you to change other things, like welcome messages and prefixes.',
-                    value: 'other_settings',
+                    description: 'Coming soon.',
+                    //value: 'other_settings',
+                    value: 'hello_earth',
                 },
             ]),
     );

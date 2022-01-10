@@ -74,7 +74,7 @@ module.exports = {
                         embed.addField(`**  **`, `**  **`, true)
                     }
                     if (oldChannel.nsfw !== newChannel.nsfw) {
-                        embed.addField(`NSFW`, `${oldChannel.nsfw}`, true)
+                        embed.addField(`NSFW`, `${newChannel.nsfw}`, true)
                         embed.addField(`**  **`, `**  **`, true)
                     }
                     if (oldChannel.parentId !== newChannel.parentId) {

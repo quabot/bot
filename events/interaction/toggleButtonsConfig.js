@@ -69,7 +69,7 @@ module.exports = {
                     await guildDatabase.updateOne({
                         levelEnabled: false,
                     });
-                    interaction.update({ ephemeral: true, embeds: [levelDisabled], components: [disabledvvvv] });
+                    interaction.update({ ephemeral: true, embeds: [levelDisabled], components: [disabled] });
                 }
                 
                 if (interaction.customId === "enableLogs") {
@@ -181,8 +181,7 @@ module.exports = {
                     await guildDatabase.updateOne({
                         pollsEnabled: false,
                     });
-                    inter
-                    action.update({ ephemeral: true, embeds: [pollsDisabled], components: [disabled] });
+                    interaction.update({ ephemeral: true, embeds: [pollsDisabled], components: [disabled] });
                 }
 
                 if (interaction.customId === "enableWelcome") {

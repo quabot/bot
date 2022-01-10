@@ -78,7 +78,7 @@ module.exports = {
                                 logChannelID: C
                             });
 
-                            const updated = new discord.MessageEmbed()
+                            const updated = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed log channel to ${C}!`)
                                 .setColor(colors.COLOR)
@@ -103,7 +103,7 @@ module.exports = {
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
-                    interaction.reply({ embeds: [level], components: [buttonsLevel], ephemeral: true });
+                    interaction.reply({ ephemeral: true, embeds: [level], components: [buttonsLevel] });
                     collector.on('collect', async m => {
                         if (m) {
                             const D = m.mentions.channels.first();
@@ -111,7 +111,7 @@ module.exports = {
                             await guildDatabase.updateOne({
                                 levelChannelID: D
                             });
-                            const updated2 = new discord.MessageEmbed()
+                            const updated2 = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed level up channel to ${D}!`)
                                 .setColor(colors.COLOR)
@@ -120,10 +120,6 @@ module.exports = {
                             return;
                         } else {
                             if (m.author.bot) return;
-                            const timedOu2t = new discord.MessageEmbed()
-                                .setTitle("❌ Timed Out!")
-                                .setDescription("You took too long to respond.")
-                                .setColor(colors.COLOR)
                             m.reply({ embeds: [timedOut] });
                         }
                     });
@@ -148,7 +144,7 @@ module.exports = {
                                 reportChannelID: D
                             });
 
-                            const updated2 = new discord.MessageEmbed()
+                            const updated2 = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed report channel to ${D}!`)
                                 .setColor(colors.COLOR)
@@ -181,7 +177,7 @@ module.exports = {
                             await guildDatabase.updateOne({
                                 suggestChannelID: E
                             });
-                            const updated3 = new discord.MessageEmbed()
+                            const updated3 = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed report channel to ${E}!`)
                                 .setColor(colors.COLOR)
@@ -214,7 +210,7 @@ module.exports = {
                             await guildDatabase.updateOne({
                                 welcomeChannelID: F
                             });
-                            const updated4 = new discord.MessageEmbed()
+                            const updated4 = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed welcome channel to ${F}!`)
                                 .setColor(colors.COLOR)
@@ -246,7 +242,7 @@ module.exports = {
                             await guildDatabase.updateOne({
                                 ticketCategory: m.content
                             });
-                            const updated5 = new discord.MessageEmbed()
+                            const updated5 = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed tickets category to ${m.content}!`)
                                 .setColor(colors.COLOR)
@@ -278,7 +274,7 @@ module.exports = {
                             await guildDatabase.updateOne({
                                 closedTicketCategory: m.content
                             });
-                            const updated5 = new discord.MessageEmbed()
+                            const updated5 = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed closed tickets category to ${m.content}!`)
                                 .setColor(colors.COLOR)
@@ -310,7 +306,7 @@ module.exports = {
                             await guildDatabase.updateOne({
                                 pollChannelID: C
                             });
-                            const updated = new discord.MessageEmbed()
+                            const updated = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed poll channel to ${C}!`)
                                 .setColor(colors.COLOR)

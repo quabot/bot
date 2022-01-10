@@ -164,4 +164,12 @@ const disabled = new MessageActionRow()
             .setStyle('DANGER'),
     );
 
-module.exports = { selectRole, selectOther, selectToggle, disabled, selectChannel };
+const buttonsLevel = new MessageActionRow()
+    .addComponents(
+        new MessageButton()
+            .setCustomId('disable')
+            .setLabel('Disable Level Channel')
+            .setStyle('DANGER'),
+    );
+
+module.exports = { selectRole, selectOther, selectToggle, disabled, selectChannel, buttonsLevel };

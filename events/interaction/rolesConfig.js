@@ -77,7 +77,7 @@ module.exports = {
                                 mainRole: m.content
                             });
 
-                            const updated = new discord.MessageEmbed()
+                            const updated = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed main role name to ${m.content}!`)
                                 .setColor(colors.COLOR)
