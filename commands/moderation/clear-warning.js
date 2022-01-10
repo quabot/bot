@@ -11,8 +11,8 @@ const unable = new discord.MessageEmbed()
 const { errorMain, warnNoUserToWarn, warnNotHigherRole, addedDatabase } = require('../../files/embeds');
 
 module.exports = {
-    name: "warn",
-    description: "Warn a user.",
+    name: "clear-warning",
+    description: "Clear warnings.",
     permission: "KICK_MEMBERS",
     /**
      * @param {Client} client 
@@ -26,20 +26,20 @@ module.exports = {
             required: true,
         },
         {
-            name: "reason",
-            description: "Reason for warning",
-            type: "STRING",
+            name: "id",
+            description: "The warn ID.",
+            type: "INTEGER",
             required: true,
         },
     ],
     async execute(client, interaction) {
         try {
 
-
-            let reason = "No reason specified";
-
-            const reasonRaw = interaction.options.getString('reason');
-            if (reasonRaw) reason = reasonRaw;
+            const notFound = new discord.MessageEmbed()
+                .setDescription("Could not find a warn with that ID.")
+                .setColor(colors.COLOR)
+                .setFooter("Warns removal was introduced in version 2.0.3, any warns made before that version cannot be removed.")
+            const id = interaction.options.getInteger('id');
 
             const member = interaction.options.getMember('user');
 
@@ -69,9 +69,6 @@ module.exports = {
                         });
                     return interaction.channel.send({ embeds: [addedDatabase] });
                 }
-            });
-            await userDatabase.updateOne({
-                warnCount: userDatabase.warnCount + 1
             });
 
             const Guild = require('../../schemas/GuildSchema');
@@ -113,46 +110,43 @@ module.exports = {
             });
 
             const Warns = require('../../schemas/WarnSchema');
-            const newWarns = new Warns({
-                guildId: interaction.guild.id,
-                guildName: interaction.guild.name,
+            const warnDB = await Warns.findOne({
                 userId: member.id,
-                warnReason: reason,
-                warnTime: new Date().getTime(),
-                warnId: userDatabase.warnCount + 1,
-                warnedBy: interaction.user.id,
-                warnChannel: interaction.channel.id,
-                active: true,
+                guildId: interaction.guild.id,
+                warnId: id,
+            }, (err, warns) => {
+                if (err) console.error(err);
+                if (!warns) { }
             });
-            newWarns.save()
-                .catch(err => {
-                    console.log(err);
-                    interaction.channel.send({ embeds: [errorMain] });
-                });
-            const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
 
-            if (!member)
-                return interaction.reply({ embeds: [warnNoUserToWarn] });
+            if (!warnDB) return interaction.reply({ embeds: [notFound] });
 
-            if (interaction.member.roles.highest.position < member.roles.highest.position)
-                return interaction.reply({ embeds: [warnNotHigherRole] });
+            var timestamp = parseInt(warnDB.warnTime);
+            var date = new Date(timestamp);
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
 
-            const rRaw = interaction.options.getString('reason');
-            if (rRaw.length > 1) reason = rRaw;
-
-            const warnedEmbed = new discord.MessageEmbed()
-                .setDescription(`${member} was warned\nReason: **${reason}**`)
-                .setFooter(`Warn-ID: ${userDatabase.warnCount + 1}`)
-                .setColor(colors.COLOR);
-            interaction.reply({ embeds: [warnedEmbed] });
-            const youWereWarned = new discord.MessageEmbed()
-                .setDescription(`You were warned on one of your servers, **${interaction.guild.name}**.`)
-                .addField("Warned By", `${interaction.user}`)
-                .addField("Reason", `${reason}`)
-                .setFooter(`Warn-ID: ${userDatabase.warnCount + 1}`)
-                .setColor(colors.COLOR);
-            member.send({ embeds: [youWereWarned] }).catch(e => { 
-                interaction.channel.send({ embeds: [unable] });
+            const infoEmbed = new discord.MessageEmbed()
+                .setTitle("Removing warn")
+                .addField("User", `${member}`, true)
+                .addField("Reason", `${warnDB.warnReason}`, true)
+                .addField("Warned by", `<@${warnDB.warnedBy}>`, true)
+                .addField("Warned at", `${year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds}`, true)
+                .addField("Warn ID", `${warnDB.warnId}`, true)
+                .addField("Warn Channel", `<#${warnDB.warnChannel}>`, true)
+                .setColor(colors.COLOR)
+                .setTimestamp(warnDB.warnTime)
+            interaction.reply({ embeds: [infoEmbed] });
+            const embed = new discord.MessageEmbed()
+                .setDescription(`Warn with id \`${warnDB.warnId}\` is now removed from ${member}.`)
+                .setColor(colors.COLOR)
+            interaction.channel.send({ embeds: [embed]})
+            await warnDB.updateOne({
+                active: false,
             });
 
             if (guildDatabase.logEnabled === "true") {
@@ -161,12 +155,11 @@ module.exports = {
                 } else {
                     const embed = new discord.MessageEmbed()
                         .setColor(colors.WARN_COLOR)
-                        .setTitle('User Warned')
-                        .addField('Username', `${member.user.username}`)
-                        .addField('User ID', `${member.id}`)
-                        .addField('Warned by', `${interaction.user}`)
-                        .addField('Reason', `${reason}`);
-
+                        .setTitle('Warn removed')
+                        .addField('Username', `${member}`)
+                        .setFooter(`User ID ${member.id}`)
+                        .addField('Warn-ID', `${warnDB.warnId}`)
+                        .addField('Reason', `${warnDB.warnReason}`);
                     return logChannel.send({ embeds: [embed] });
                 };
             }

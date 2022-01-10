@@ -1,5 +1,6 @@
 const discord = require('discord.js')
 const { MessageEmbed } = require('discord.js')
+const colors = require('../../files/colors.json')
 
 module.exports  = {
     name: 'guildMemberUpdate',

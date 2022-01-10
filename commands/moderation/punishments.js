@@ -22,15 +22,21 @@ module.exports = {
         },
         {
             name: "punishment",
-            description: "Type: timeout/kick/warn/ban",
+            description: "Type of punishment.",
             type: "STRING",
             required: true,
+            choices: [
+                { name: "ban", value: "ban" },
+                { name: "kick", value: "kick" },
+                { name: "warn", value: "warn" },
+                { name: "timeout", value: "timeout" }
+            ]
         }
     ],
     async execute(client, interaction) {
         try {
-            
-            
+
+
             const user = interaction.options.getMember('user');
             const punishment = interaction.options.getString('punishment');
 
@@ -185,6 +191,7 @@ module.exports = {
                 const warnList = await Warns.find({
                     userId: user.id,
                     guildId: interaction.guild.id,
+                    active: true,
                 }, (err, warns) => {
                     if (err) console.error(err);
                     if (!warns) {
@@ -193,13 +200,24 @@ module.exports = {
                     return;
                 });
 
-                const warns = warnList.map(e => `**Reason:**\n${e.warnReason}\n**Time**\n${e.warnTime}`);
 
+                var timestamp = parseInt(warnList.warnTime);
+                var date = new Date(timestamp);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var seconds = date.getSeconds();
+
+                let warns = warnList.map(e => `**Reason:**\n${e.warnReason}\n**Moderator**\n<@${e.warnedBy}>`);
+
+                if (warns.length > 980) warns = "The warns no longer fit in an embed. Please use /find-warning to find the punishments."
                 const warnEmbed = new discord.MessageEmbed()
                     .setColor(colors.COLOR)
                     .setTitle(`${user.user.username}#${user.user.discriminator} Warn Logs`)
                     .setTimestamp()
-                    .setDescription(`This user has been warned \`${userDatabase.warnCount}\` times!\n\n${warns.join("\n\n")}`)
+                    .setDescription(`${warns.join("\n\n")}`)
                 interaction.reply({ embeds: [warnEmbed] });
                 return;
             }

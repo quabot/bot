@@ -154,7 +154,7 @@ module.exports = {
                     });
                 }
                 if (interaction.customId === "ticketmsg") {
-                    interaction.reply({ embeds: [createTicket], components: [ticketButton]});
+                    interaction.channel.send({ embeds: [createTicket], components: [ticketButton]});
                 }
                 if (interaction.customId === "close") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });

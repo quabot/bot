@@ -11,6 +11,10 @@ const falseBool = {
     type: Boolean,
     required: false,
 }
+const falseString = {
+    type: String,
+    required: false,
+}
 
 const UserSchema = new mongoose.Schema({
     userId: reqString,
@@ -22,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     muteCount: reqNumber,
     warnCount: reqNumber,
     afk: falseBool,
-    afkStatus: falseBool,
+    afkStatus: falseString,
 });
 
 module.exports = mongoose.model('User', UserSchema);
