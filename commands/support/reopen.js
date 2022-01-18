@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const colors = require('../../files/colors.json');
 const config = require('../../files/settings.json');
 const { errorMain, addedDatabase, ticketsDisabled, notATicket } = require('../../files/embeds');
+const { close } = require('../../files/interactions/tickets');
 
 module.exports = {
     name: "reopen",
@@ -66,7 +67,7 @@ module.exports = {
                 channelId: interaction.channel.id,
             }, (err, ticket) => {
                 if (err) return;
-                if (!ticket) return interaction.reply({ embeds: [notATicket] });
+                if (!ticket) return interaction.channel.send({ embeds: [notATicket] });
             });
 
             if (TicketDB === null) return;
@@ -88,13 +89,17 @@ module.exports = {
 
             interaction.channel.setParent(category);
             interaction.channel.setParent(category);
-            interaction.channel.permissionOverwrites.edit(interaction.user, {
-                SEND_MESSAGES: true,
-                VIEW_CHANNEL: true,
-                READ_MESSAGE_HISTORY: true
-            });
+            let userFound = interaction.guild.members.cache.get(`${TicketDB.memberId}`);
+            setTimeout(() => {
+                interaction.channel.permissionOverwrites.edit(userFound, {
+                    SEND_MESSAGES: true,
+                    VIEW_CHANNEL: true,
+                    READ_MESSAGE_HISTORY: true
+                });
+            }, 1000);
 
-            const embed = new MessageEmbed()
+
+            const embed = new discord.MessageEmbed()
                 .setTitle("Re-Opened Ticket!")
                 .setDescription("Close it with the button below this message.")
                 .setTimestamp()
@@ -104,7 +109,7 @@ module.exports = {
             await TicketDB.updateOne({
                 closed: false,
             });
-            
+
         } catch (e) {
             console.log(e);
             interaction.channel.send({ embeds: [errorMain] });

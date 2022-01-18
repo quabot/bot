@@ -3,6 +3,10 @@ const discord = require('discord.js');
 const colors = require('../../files/colors.json');
 const mongoose = require('mongoose');
 
+const unable = new discord.MessageEmbed()
+    .setDescription(`Could not send a DM to that user.`)
+    .setColor(colors.COLOR);
+
 const { errorMain, addedDatabase, banNoUser, banImpossible } = require('../../files/embeds');
 
 module.exports = {
@@ -30,8 +34,8 @@ module.exports = {
     async execute(client, interaction) {
         try {
 
-            
-            
+
+
             const member = interaction.options.getMember('user');
             const reasonRaw = interaction.options.getString('reason');
             let reason = "No reason specified.";
@@ -50,7 +54,14 @@ module.exports = {
                 return;
             });
             interaction.reply({ embeds: [userBanned], split: true }).catch(err => console.log("There was an error! The reason probably exceeded the 1024 character limit."));
-
+            const youWereBanned = new discord.MessageEmbed()
+                .setDescription(`You were banned from one of your servers, **${interaction.guild.name}**.`)
+                .addField("Banned By", `${interaction.user}`)
+                .addField("Reason", `${reason}`)
+                .setColor(colors.COLOR);
+            member.send({ embeds: [youWereBanned] }).catch(e => {
+                interaction.channel.send({ embeds: [unable] });
+            });
             const User = require('../../schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: member.id,

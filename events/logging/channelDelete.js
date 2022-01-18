@@ -56,7 +56,7 @@ module.exports = {
                 if (guildDatabase.logEnabled === "true") {
                     if (logChannel) {
                         const embed = new MessageEmbed()
-                            .setColor(colors.LIME)
+                            .setColor(colors.RED)
                             .setTitle('Text Channel Deleted!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
@@ -69,7 +69,7 @@ module.exports = {
                 if (guildDatabase.logEnabled === "true") {
                     if (logChannel) {
                         const embed = new MessageEmbed()
-                            .setColor(colors.LIME)
+                            .setColor(colors.RED)
                             .setTitle('Announcement Channel Deleted!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
@@ -82,7 +82,7 @@ module.exports = {
                 if (guildDatabase.logEnabled === "true") {
                     if (logChannel) {
                         const embed = new MessageEmbed()
-                            .setColor(colors.LIME)
+                            .setColor(colors.RED)
                             .setTitle('Stage Channel Deleted!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
@@ -95,7 +95,7 @@ module.exports = {
                 if (guildDatabase.logEnabled === "true") {
                     if (logChannel) {
                         const embed = new MessageEmbed()
-                            .setColor(colors.LIME)
+                            .setColor(colors.RED)
                             .setTitle('Category Deleted!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
@@ -108,7 +108,7 @@ module.exports = {
                 if (guildDatabase.logEnabled === "true") {
                     if (logChannel) {
                         const embed = new MessageEmbed()
-                            .setColor(colors.LIME)
+                            .setColor(colors.RED)
                             .setTitle('Voice Channel Deleted!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)

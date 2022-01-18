@@ -67,7 +67,7 @@ module.exports = {
                 channelId: interaction.channel.id,
             }, (err, ticket) => {
                 if (err) return;
-                if (!ticket) return interaction.reply({ embeds: [notATicket] });
+                if (!ticket) return interaction.channel.send({ embeds: [notATicket] });
             });
             if (TicketDB === null) return;
 

@@ -39,7 +39,9 @@ module.exports = {
                         .setFooter("Click the title for a special surprise!")
                         .setDescription(`r/${data.subreddit} - Human, Human, Human, after all.`)
                         .setTimestamp('Posted ' + data.created)
-                    interaction.editReply({ embeds: [embed] });
+                    interaction.editReply({ embeds: [embed] }).catch(err =>{
+                        return;
+                    });
                 });
                 return;
             }
@@ -58,7 +60,9 @@ module.exports = {
                     .setURL(data.url)
                     .setFooter(`r/${data.subreddit}`)
                     .setTimestamp('Posted ' + data.created)
-                interaction.editReply({ embeds: [embed] });
+                interaction.editReply({ embeds: [embed] }).catch(err =>{
+                    return;
+                });
             });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

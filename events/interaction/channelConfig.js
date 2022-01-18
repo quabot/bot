@@ -179,7 +179,7 @@ module.exports = {
                             });
                             const updated3 = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
-                                .setDescription(`Changed report channel to ${E}!`)
+                                .setDescription(`Changed suggestions channel to ${E}!`)
                                 .setColor(colors.COLOR)
                             m.channel.send({ embeds: [updated3] })
                             collector.stop();

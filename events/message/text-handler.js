@@ -27,9 +27,8 @@ module.exports = {
             const cmd = args.shift().toLowerCase();
 
             const command = client.commands.get(cmd) ||
-                client.commands.find(a => a.aliases && a.aliases.includes(cmd));;
-
-            if (command) return message.channel.send(":money_with_wings: Economy is coming to quabot soon!");//command.execute(client, message, args)
+                client.commands.find(a => a.aliases && a.aliases.includes(cmd));
+            if (command) return message.channel.send(":money_with_wings: Text commands and economy are coming to quabot soon!");
 
 
         } catch (e) {

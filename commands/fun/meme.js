@@ -28,7 +28,10 @@ module.exports = {
                         .setImage(`${data.url}`)
                         .setFooter(`r/${data.subreddit} - u/${data.author}`)
                         .setTimestamp('Posted ' + data.created)
-                    interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                        interaction.channel.send({ embeds: [embed], components: [newMeme] })
+                        return;
+                    });
                 });
             } else if (subreddit === "memes") {
                 interaction.reply({ embeds: [MemeScanning] })
@@ -41,7 +44,10 @@ module.exports = {
                         .setImage(`${data.url}`)
                         .setFooter(`r/${data.subreddit} - u/${data.author}`)
                         .setTimestamp('Posted ' + data.created)
-                    interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                        interaction.channel.send({ embeds: [embed], components: [newMeme] })
+                        return;
+                    });
                 });
             } else if (subreddit === "dankmemes") {
                 interaction.reply({ embeds: [MemeScanning] })
@@ -54,7 +60,10 @@ module.exports = {
                         .setImage(`${data.url}`)
                         .setFooter(`r/${data.subreddit} - u/${data.author}`)
                         .setTimestamp('Posted ' + data.created)
-                    interaction.editReply({ embeds: [embed], components: [newMeme] });
+                    interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                        interaction.channel.send({ embeds: [embed], components: [newMeme] })
+                        return;
+                    });
                 });
             }
         } catch (e) {

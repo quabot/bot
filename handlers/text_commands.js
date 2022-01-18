@@ -17,7 +17,7 @@ module.exports = async (client) => {
         if (!command.name)
             return Table.addRow(file.split("/")[7], "❌ FAILED", "Missing a name.");
         if (!command.aliases)
-        return Table.addRow(file.split("/")[7], "❌ FAILED", "Missing an alias.");
+            return Table.addRow(file.split("/")[7], "❌ FAILED", "Missing an alias.");
 
         client.commands.set(command.name, command)
 

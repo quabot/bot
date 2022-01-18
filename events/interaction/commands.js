@@ -203,7 +203,10 @@ module.exports = {
                                 .setImage(`${data.url}`)
                                 .setFooter(`r/${data.subreddit} - u/${data.author}`)
                                 .setTimestamp('Posted ' + data.created)
-                            interaction.editReply({ embeds: [embed], components: [newMeme] });
+                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                                interaction.channel.send({ embeds: [embed], components: [newMeme] })
+                                return;
+                            });
                         });
                     } else if (subreddit === "memes") {
                         interaction.reply({ embeds: [MemeScanning] });
@@ -216,7 +219,10 @@ module.exports = {
                                 .setImage(`${data.url}`)
                                 .setFooter(`r/${data.subreddit} - u/${data.author}`)
                                 .setTimestamp('Posted ' + data.created)
-                            interaction.editReply({ embeds: [embed], components: [newMeme] });
+                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                                interaction.channel.send({ embeds: [embed], components: [newMeme] })
+                                return;
+                            });
                         });
                     } else if (subreddit === "dankmemes") {
                         interaction.reply({ embeds: [MemeScanning] });
@@ -230,7 +236,10 @@ module.exports = {
                                 .setImage(`${data.url}`)
                                 .setFooter(`r/${data.subreddit} - u/${data.author}`)
                                 .setTimestamp('Posted ' + data.created)
-                            interaction.editReply({ embeds: [embed], components: [newMeme] });
+                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                                interaction.channel.send({ embeds: [embed], components: [newMeme] })
+                                return;
+                            });
                         });
                     }
                 }
@@ -248,7 +257,10 @@ module.exports = {
                             .setFooter(`r/${data.subreddit}`)
                             .setTimestamp('Posted ' + data.created)
 
-                        interaction.editReply({ embeds: [embed], components: [newCat] });
+                        interaction.editReply({ embeds: [embed], components: [newCat] }).catch(err =>{
+                            interaction.channel.send({ embeds: [embed], components: [newCat] })
+                            return;
+                        });
                     });
 
                 }
@@ -265,7 +277,10 @@ module.exports = {
                             .setURL(data.url)
                             .setFooter(`r/${data.subreddit}`)
                             .setTimestamp('Posted ' + data.created)
-                        interaction.editReply({ embeds: [embed], components: [newDog] });
+                        interaction.editReply({ embeds: [embed], components: [newDog] }).catch(err =>{
+                            interaction.channel.send({ embeds: [embed], components: [newDog] })
+                            return;
+                        });
                     });
                 }
                 if (interaction.customId === "memePic") {
@@ -321,13 +336,6 @@ module.exports = {
                             interaction.editReply({ embeds: [embed], components: [newMeme] });
                         });
                     }
-                    const pictureEmbed = new discord.MessageEmbed()
-                        .setTitle("Pick a picture!")
-                        .setDescription(`Use the buttons below this message to pick a picture you wish to get!`)
-                        .setColor(colors.COLOR)
-                        .setTimestamp()
-                    interaction.update({ embeds: [pictureEmbed], components: [pictureButtonsDisabled] });
-
                 }
                 if (interaction.customId === "catPics") {
                     const pictureEmbed3 = new discord.MessageEmbed()

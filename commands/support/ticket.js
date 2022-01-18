@@ -158,7 +158,6 @@ module.exports = {
 
             // CHANNEL MESSAGE - Close
         } catch (e) {
-            interaction.channel.send({ embeds: [errorMain] })
             console.log(e)
             return
         }

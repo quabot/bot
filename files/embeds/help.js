@@ -124,6 +124,8 @@ const moderation = new MessageEmbed()
     **/tempban** - Temporarily ban a member.
     **/unban** - Unban a member.
     **/warn** - Warn a member.
+    **/find-warning** - Find a warning.
+    **/clear-warning** - Clear a warning.
     `)
 
 const management = new MessageEmbed()

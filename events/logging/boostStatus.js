@@ -50,12 +50,12 @@ module.exports  = {
             const oldStatus = oldMember.premiumSince;
             const newStatus = newMember.premiumSince;
             const boostStatusEmbed = new MessageEmbed()
-                .setTitle('Boost Status Update')
+                .setTitle('Boost Added')
                 .setDescription(`${newMember} has boosted the server!`)
                 .setColor(colors.COLOR)
                 .setTimestamp()
             const boostStatusEmbed2 = new MessageEmbed()
-                .setTitle('Boost Status Update')
+                .setTitle('Boost Removed')
                 .setDescription(`${newMember} has stopped boosting the server!`)
                 .setColor(colors.COLOR)
                 .setTimestamp()

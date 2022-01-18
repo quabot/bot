@@ -37,8 +37,8 @@ module.exports = {
     async execute(client, interaction) {
 
         try {
-            
-            
+
+
             const member = interaction.options.getMember('user');
             const time = interaction.options.getString('time');
             const reasonRaw = interaction.options.getString('reason');
@@ -142,6 +142,18 @@ module.exports = {
                     .setDescription(`${member} was tempbanned for **${time}**.\n**Reason:** ${reason}`)
                     .setColor(colors.COLOR)
                 interaction.reply({ embeds: [embed] });
+                const unable = new discord.MessageEmbed()
+                    .setDescription(`Could not send a DM to that user.`)
+                    .setColor(colors.COLOR);
+                const youWereKicked = new discord.MessageEmbed()
+                    .setDescription(`You were temp-banned from one of your servers, **${interaction.guild.name}**.`)
+                    .addField("Banned By", `${interaction.user}`)
+                    .addField("Time", `${time}`)
+                    .addField("Reason", `${reason}`)
+                    .setColor(colors.COLOR);
+                member.send({ embeds: [youWereKicked] }).catch(e => {
+                    interaction.channel.send({ embeds: [unable] });
+                });
                 setTimeout(function () {
                     interaction.guild.members.unban(member.id);
                     const unbannedAfter = new discord.MessageEmbed()

@@ -5,63 +5,64 @@ const { errorMain } = require('../../files/embeds');
 module.exports = {
   name: "channel",
   description: "Manage channels",
+  permission: "MANAGE_CHANNELS", 
   /**
    * @param {Client} client 
    * @param {CommandInteraction} interaction
    **/
-  "options": [
+  options: [
     {
-      "type": 1,
-      "name": "slowmode",
-      "description": "Set a slowmode in seconds",
-      "options": [
+      type: 1,
+      name: "slowmode",
+      description: "Set a slowmode in seconds",
+      options: [
         {
-          "type": 7,
-          "name": "channel",
-          "description": "The channel to set",
-          "required": true
+          type: 7,
+          name: "channel",
+          description: "The channel to set",
+          required: true
         },
         {
-          "type": 4,
-          "name": "amount",
-          "description": "The length to set in seconds",
-          "required": true
+          type: 4,
+          name: "amount",
+          description: "The length to set in seconds",
+          required: true
         }
       ]
     },
     {
-      "type": 1,
-      "name": "create",
-      "description": "Create a channel",
-      "options": [
+      type: 1,
+      name: "create",
+      description: "Create a channel",
+      options: [
         {
-          "type": 3,
-          "name": "name",
-          "description": "Name of the channel",
-          "required": true
+          type: 3,
+          name: "name",
+          description: "Name of the channel",
+          required: true
         },
         {
-          "type": 3,
-          "name": "description",
-          "description": "Optional channel description"
+          type: 3,
+          name: "description",
+          description: "Optional channel description"
         },
         {
-          "type": 4,
-          "name": "slowmode",
-          "description": "Optional channel slowmode (in seconds)"
+          type: 4,
+          name: "slowmode",
+          description: "Optional channel slowmode (in seconds)"
         }
       ]
     },
     {
-      "type": 1,
-      "name": "delete",
-      "description": "Delete a channel",
-      "options": [
+      type: 1,
+      name: "delete",
+      description: "Delete a channel",
+      options: [
         {
-          "type": 7,
-          "name": "channel",
-          "description": "The target channel",
-          "required": true
+          type: 7,
+          name: "channel",
+          description: "The target channel",
+          required: true
         }
       ]
     },

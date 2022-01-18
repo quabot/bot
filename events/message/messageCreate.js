@@ -30,12 +30,12 @@ module.exports = {
 
         try {
 
-            // let content = message.content;
-            // if (content.startsWith("!" || "?" || "$" || ".")) {
-            //     let commandName = content.substring(1)
-            
-            //     if (Commands.includes(commandName)) return message.reply(":robot: Please use a `/` to use my commands!");
-            // }
+            let content = message.content;
+            if (content.startsWith("!" || "?" || "$" || ".")) {
+                let commandName = content.substring(1)
+
+                if (Commands.includes(commandName)) return message.reply(":robot: Please use a `/` to use my commands!");
+            }
             
 
             const User = require('../../schemas/UserSchema');
@@ -116,7 +116,12 @@ module.exports = {
 
 
                 const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
-                const randomAmountOfXp = Math.floor(Math.random() * 14) + 1;
+                let randomAmountOfXp = Math.floor(Math.random() * 14) + 1;
+                if (message.content.length < 2) randomAmountOfXp = Math.ceil(randomAmountOfXp / 4);
+                if (message.content.length < 5) randomAmountOfXp = Math.ceil(randomAmountOfXp / 3);
+                if (message.content.length < 10) randomAmountOfXp = Math.ceil(randomAmountOfXp / 2);
+                console.log(randomAmountOfXp)
+                
                 const hasLeveledUp = await Levels.appendXp(message.author.id, message.guild.id, randomAmountOfXp);
 
                 const joinChannel = message.guild.channels.cache.get(guildDatabase.levelChannelID);

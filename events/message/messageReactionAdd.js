@@ -37,7 +37,7 @@ module.exports = {
                     .setDescription(`Could not find a role with the id **${reactList.role}**!`)
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                reaction.message.reply({ embeds: [noRole] });
+                reaction.message.reply({ ephemeral: true, embeds: [noRole] });
                 React.deleteOne({
                     guildId: reaction.message.guildId,
                     messageId: reaction.message.id,
@@ -59,7 +59,11 @@ module.exports = {
                     .setColor(colors.COLOR)
                 memberTarget.send({ embeds: [embed] }).catch(err => {
                     return;
-                });;
+                }).then(msg => {
+                    setTimeout(() => {
+                        msg.delete();
+                    }, 5000);
+                });
                 memberTarget.roles.add(emojiRole)
             } else if (reactList.reactMode === "verify") {
                 const embed2 = new Discord.MessageEmbed()
@@ -70,7 +74,11 @@ module.exports = {
                     .setColor(colors.COLOR)
                 memberTarget.send({ embeds: [embed2] }).catch(err => {
                     return;
-                });
+                }).then(msg => {
+                    setTimeout(() => {
+                        msg.delete();
+                    }, 5000);
+                });;
                 memberTarget.roles.add(emojiRole)
             } else if (reactList.reactMode === "drop") {
                 const embed3 = new Discord.MessageEmbed()
@@ -82,7 +90,11 @@ module.exports = {
                 memberTarget.roles.remove(emojiRole)
                 memberTarget.send({ embeds: [embed3] }).catch(err => {
                     return;
-                });
+                }).then(msg => {
+                    setTimeout(() => {
+                        msg.delete();
+                    }, 5000);
+                });;
             }
         } catch (e) {
             console.log(e);

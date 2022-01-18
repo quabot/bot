@@ -30,8 +30,8 @@ module.exports = {
     async execute(client, interaction) {
 
         try {
-            
-            
+
+
             const member = interaction.options.getMember('user');
             const reasonRaw = interaction.options.getString('reason');
             let reason = "No reason specified.";
@@ -48,6 +48,17 @@ module.exports = {
                 interaction.channel.send({ embeds: [kickImpossible] });
                 console.log(err);
                 return;
+            });
+            const unable = new discord.MessageEmbed()
+                .setDescription(`Could not send a DM to that user.`)
+                .setColor(colors.COLOR);
+            const youWereKicked = new discord.MessageEmbed()
+                .setDescription(`You were kicked from one of your servers, **${interaction.guild.name}**.`)
+                .addField("Kicked By", `${interaction.user}`)
+                .addField("Reason", `${reason}`)
+                .setColor(colors.COLOR);
+            member.send({ embeds: [youWereKicked] }).catch(e => {
+                interaction.channel.send({ embeds: [unable] });
             });
             interaction.reply({ embeds: [userKicked] }).catch(err => interaction.followUp("There was an error! The your reason for kick probably exceeded the 1024 character limit."))
 

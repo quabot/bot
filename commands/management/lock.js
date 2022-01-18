@@ -86,121 +86,22 @@ module.exports = {
             const channel = interaction.options.getChannel('channel');
             const reasonRaw = interaction.options.getString('reason');
 
+            console.log(channel)
+
             let reason = "No reason specified";
             if (reasonRaw) reason = reasonRaw;
 
             let mainRoleName = guildDatabase.mainRole;
             let mainRole = interaction.guild.roles.cache.find(role => role.name === `${mainRoleName}`);
 
-            if (channel.type === "GUILD_VOICE") {
-                if (!duration) {
-                    channel.permissionOverwrites.edit(mainRole, {
-                        CONNECT: false
-                    });
-                    channel.permissionOverwrites.edit(interaction.guild.id, {
-                        CONNECT: false,
-                        SPEAK: false
-                    });
-                    const lockedChannelEmbed = new discord.MessageEmbed()
-                        .setTitle(":lock: Voice Channel Locked!")
-                        .addField("Channel", `${channel}`)
-                        .addField(`Reason`, `${reason}`)
-                        .setColor(colors.COLOR)
-                        .setTimestamp()
-                    interaction.reply({ embeds: [lockedChannelEmbed] })
-                    if (guildDatabase.logEnabled === "true") {
-                        const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
-                        if (!logChannel) return;
-                        const embed = new discord.MessageEmbed()
-                            .setColor(colors.CLEAR_COLOR)
-                            .setTitle('Voice Channel Locked')
-                            .addField('Channel', `${channel}`)
-                            .addField('Locked by', `${interaction.user}`)
-                            .addField(`Reason`, `${reason}`)
-                            .setTimestamp();
-                        logChannel.send({ embeds: [embed] });
-                        return;
-                    } else {
-                        return;
-                    }
-                } else if (duration) {
-                    if (channel) {
-                        if (ms(duration)) {
-                            channel.permissionOverwrites.edit(mainRole, {
-                                CONNECT: false,
-                                SPEAK: false
-                            });
-                            channel.permissionOverwrites.edit(interaction.guild.id, {
-                                CONNECT: false,
-                                SPEAK: false
-                            });
-                            const lockedChannelEmbed = new discord.MessageEmbed()
-                                .setTitle(":lock: Voice Channel Temporarily Locked!")
-                                .addField("Channel", `${channel}`)
-                                .addField(`Reason`, `${reason}`)
-                                .addField(`Duration`, `${duration}`)
-                                .setColor(colors.COLOR)
-                                .setTimestamp()
-                            interaction.reply({ embeds: [lockedChannelEmbed] })
-                            setTimeout(function () {
-                                channel.permissionOverwrites.edit(mainRole, {
-                                    CONNECT: true,
-                                    SPEAK: true
-                                });
-                                channel.permissionOverwrites.edit(interaction.guild.id, {
-                                    CONNECT: true,
-                                    SPEAK: true
-                                });
-                                if (guildDatabase.logEnabled === "true") {
-                                    const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
-                                    if (!logChannel) return;
-                                    const embed = new discord.MessageEmbed()
-                                        .setColor(colors.CLEAR_COLOR)
-                                        .setTitle('Channel Auto Unlocked')
-                                        .addField('Channel', `${channel}`)
-                                        .addField('Locked by', `${interaction.user}`)
-                                        .addField(`Reason`, `${reason}`)
-                                        .addField(`Locked for`, `${duration}`)
-                                        .setTimestamp();
-                                    logChannel.send({ embeds: [embed] });
-                                } else {
-                                    return;
-                                }
-                            }, ms(duration));
-                            if (guildDatabase.logEnabled === "true") {
-                                const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
-                                if (!logChannel) return;
-                                const embed = new discord.MessageEmbed()
-                                    .setColor(colors.CLEAR_COLOR)
-                                    .setTitle('Voice Channel Locked')
-                                    .addField('Channel', `${channel}`)
-                                    .addField('Locked by', `${interaction.user}`)
-                                    .addField(`Reason`, `${reason}`)
-                                    .addField(`Duration`, `${duration}`)
-                                    .setTimestamp();
-                                logChannel.send({ embeds: [embed] });
-                                return;
-                            } else {
-                                return;
-                            }
-                        } else {
-                            interaction.reply({ embeds: [invalidTime] });
-                        }
-                    } else {
-                        interaction.reply({ embeds: [errorMain] });
-                    }
-                } else {
-                    interaction.reply({ embeds: [errorMain] });
-                }
-                return;
-            }
-
             if (!duration) {
                 if (!channel) {
                     const lockChannel = interaction.channel;
-                    lockChannel.permissionOverwrites.edit(mainRole, {
-                        SEND_MESSAGES: false
-                    });
+                    if (mainRole) {
+                        lockChannel.permissionOverwrites.edit(mainRole, {
+                            SEND_MESSAGES: false
+                        });
+                    }
                     lockChannel.permissionOverwrites.edit(interaction.guild.id, {
                         SEND_MESSAGES: false
                     });
@@ -226,6 +127,117 @@ module.exports = {
                         return;
                     }
                 } else if (channel) {
+                    if (channel.type === "GUILD_VOICE") {
+                        if (!duration) {
+                            if (mainRole) {
+                                channel.permissionOverwrites.edit(mainRole, {
+                                    CONNECT: false,
+                                    SPEAK: false
+                                });
+                            }
+                            channel.permissionOverwrites.edit(interaction.guild.id, {
+                                CONNECT: false,
+                                SPEAK: false
+                            });
+                            const lockedChannelEmbed = new discord.MessageEmbed()
+                                .setTitle(":lock: Voice Channel Locked!")
+                                .addField("Channel", `${channel}`)
+                                .addField(`Reason`, `${reason}`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ embeds: [lockedChannelEmbed] })
+                            if (guildDatabase.logEnabled === "true") {
+                                const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                                if (!logChannel) return;
+                                const embed = new discord.MessageEmbed()
+                                    .setColor(colors.CLEAR_COLOR)
+                                    .setTitle('Voice Channel Locked')
+                                    .addField('Channel', `${channel}`)
+                                    .addField('Locked by', `${interaction.user}`)
+                                    .addField(`Reason`, `${reason}`)
+                                    .setTimestamp();
+                                logChannel.send({ embeds: [embed] });
+                                return;
+                            } else {
+                                return;
+                            }
+                        } else if (duration) {
+                            if (channel) {
+                                if (ms(duration)) {
+                                    if (mainRole) {
+                                        channel.permissionOverwrites.edit(mainRole, {
+                                            CONNECT: false,
+                                            SPEAK: false
+                                        });
+                                    }
+                                    channel.permissionOverwrites.edit(interaction.guild.id, {
+                                        CONNECT: false,
+                                        SPEAK: false
+                                    });
+                                    const lockedChannelEmbed = new discord.MessageEmbed()
+                                        .setTitle(":lock: Voice Channel Temporarily Locked!")
+                                        .addField("Channel", `${channel}`)
+                                        .addField(`Reason`, `${reason}`)
+                                        .addField(`Duration`, `${duration}`)
+                                        .setColor(colors.COLOR)
+                                        .setTimestamp()
+                                    interaction.reply({ embeds: [lockedChannelEmbed] })
+                                    setTimeout(function () {
+                                        if (mainRole) {
+                                            channel.permissionOverwrites.edit(mainRole, {
+                                                CONNECT: true,
+                                                SPEAK: true
+                                            });
+                                        }
+                                        channel.permissionOverwrites.edit(interaction.guild.id, {
+                                            CONNECT: true,
+                                            SPEAK: true
+                                        });
+                                        if (guildDatabase.logEnabled === "true") {
+                                            const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                                            if (!logChannel) return;
+                                            const embed = new discord.MessageEmbed()
+                                                .setColor(colors.CLEAR_COLOR)
+                                                .setTitle('Channel Auto Unlocked')
+                                                .addField('Channel', `${channel}`)
+                                                .addField('Locked by', `${interaction.user}`)
+                                                .addField(`Reason`, `${reason}`)
+                                                .addField(`Locked for`, `${duration}`)
+                                                .setTimestamp();
+                                            logChannel.send({ embeds: [embed] });
+                                        } else {
+                                            return;
+                                        }
+                                    }, ms(duration));
+                                    if (guildDatabase.logEnabled === "true") {
+                                        const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                                        if (!logChannel) return;
+                                        const embed = new discord.MessageEmbed()
+                                            .setColor(colors.CLEAR_COLOR)
+                                            .setTitle('Voice Channel Locked')
+                                            .addField('Channel', `${channel}`)
+                                            .addField('Locked by', `${interaction.user}`)
+                                            .addField(`Reason`, `${reason}`)
+                                            .addField(`Duration`, `${duration}`)
+                                            .setTimestamp();
+                                        logChannel.send({ embeds: [embed] });
+                                        return;
+                                    } else {
+                                        return;
+                                    }
+                                } else {
+                                    interaction.reply({ embeds: [invalidTime] });
+                                }
+                            } else {
+                                interaction.reply({ embeds: [errorMain] });
+                            }
+                        } else {
+                            interaction.reply({ embeds: [errorMain] });
+                        }
+                        return;
+                    }
+
+
                     if (channel.type !== "GUILD_TEXT") {
                         return interaction.reply({ embeds: [noValidChannel] });
                     }
@@ -268,9 +280,11 @@ module.exports = {
                 if (!channel) {
                     if (ms(duration)) {
                         const lockChannel = interaction.channel;
-                        lockChannel.permissionOverwrites.edit(mainRole, {
-                            SEND_MESSAGES: false
-                        });
+                        if (mainRole) {
+                            lockChannel.permissionOverwrites.edit(mainRole, {
+                                SEND_MESSAGES: false
+                            });
+                        }
                         lockChannel.permissionOverwrites.edit(interaction.guild.id, {
                             SEND_MESSAGES: false
                         });
@@ -331,12 +345,123 @@ module.exports = {
                     }
                 } else if (channel) {
                     if (ms(duration)) {
+                        if (channel.type === "GUILD_VOICE") {
+                            if (!duration) {
+                                if (mainRole) {
+                                    channel.permissionOverwrites.edit(mainRole, {
+                                        CONNECT: false,
+                                        SPEAK: false
+                                    });
+                                }
+                                channel.permissionOverwrites.edit(interaction.guild.id, {
+                                    CONNECT: false,
+                                    SPEAK: false
+                                });
+                                const lockedChannelEmbed = new discord.MessageEmbed()
+                                    .setTitle(":lock: Voice Channel Locked!")
+                                    .addField("Channel", `${channel}`)
+                                    .addField(`Reason`, `${reason}`)
+                                    .setColor(colors.COLOR)
+                                    .setTimestamp()
+                                interaction.reply({ embeds: [lockedChannelEmbed] })
+                                if (guildDatabase.logEnabled === "true") {
+                                    const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                                    if (!logChannel) return;
+                                    const embed = new discord.MessageEmbed()
+                                        .setColor(colors.CLEAR_COLOR)
+                                        .setTitle('Voice Channel Locked')
+                                        .addField('Channel', `${channel}`)
+                                        .addField('Locked by', `${interaction.user}`)
+                                        .addField(`Reason`, `${reason}`)
+                                        .setTimestamp();
+                                    logChannel.send({ embeds: [embed] });
+                                    return;
+                                } else {
+                                    return;
+                                }
+                            } else if (duration) {
+                                if (channel) {
+                                    if (ms(duration)) {
+                                        if (mainRole) {
+                                            channel.permissionOverwrites.edit(mainRole, {
+                                                CONNECT: false,
+                                                SPEAK: false
+                                            });
+                                        }
+                                        channel.permissionOverwrites.edit(interaction.guild.id, {
+                                            CONNECT: false,
+                                            SPEAK: false
+                                        });
+                                        const lockedChannelEmbed = new discord.MessageEmbed()
+                                            .setTitle(":lock: Voice Channel Temporarily Locked!")
+                                            .addField("Channel", `${channel}`)
+                                            .addField(`Reason`, `${reason}`)
+                                            .addField(`Duration`, `${duration}`)
+                                            .setColor(colors.COLOR)
+                                            .setTimestamp()
+                                        interaction.reply({ embeds: [lockedChannelEmbed] })
+                                        setTimeout(function () {
+                                            if (mainRole) {
+                                                channel.permissionOverwrites.edit(mainRole, {
+                                                    CONNECT: true,
+                                                    SPEAK: true
+                                                });
+                                            }
+                                            channel.permissionOverwrites.edit(interaction.guild.id, {
+                                                CONNECT: true,
+                                                SPEAK: true
+                                            });
+                                            if (guildDatabase.logEnabled === "true") {
+                                                const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                                                if (!logChannel) return;
+                                                const embed = new discord.MessageEmbed()
+                                                    .setColor(colors.CLEAR_COLOR)
+                                                    .setTitle('Channel Auto Unlocked')
+                                                    .addField('Channel', `${channel}`)
+                                                    .addField('Locked by', `${interaction.user}`)
+                                                    .addField(`Reason`, `${reason}`)
+                                                    .addField(`Locked for`, `${duration}`)
+                                                    .setTimestamp();
+                                                logChannel.send({ embeds: [embed] });
+                                            } else {
+                                                return;
+                                            }
+                                        }, ms(duration));
+                                        if (guildDatabase.logEnabled === "true") {
+                                            const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                                            if (!logChannel) return;
+                                            const embed = new discord.MessageEmbed()
+                                                .setColor(colors.CLEAR_COLOR)
+                                                .setTitle('Voice Channel Locked')
+                                                .addField('Channel', `${channel}`)
+                                                .addField('Locked by', `${interaction.user}`)
+                                                .addField(`Reason`, `${reason}`)
+                                                .addField(`Duration`, `${duration}`)
+                                                .setTimestamp();
+                                            logChannel.send({ embeds: [embed] });
+                                            return;
+                                        } else {
+                                            return;
+                                        }
+                                    } else {
+                                        interaction.reply({ embeds: [invalidTime] });
+                                    }
+                                } else {
+                                    interaction.reply({ embeds: [errorMain] });
+                                }
+                            } else {
+                                interaction.reply({ embeds: [errorMain] });
+                            }
+                            return;
+                        }
                         if (channel.type !== "GUILD_TEXT") {
                             return interaction.reply({ embeds: [noValidChannel] });
                         }
-                        channel.permissionOverwrites.edit(mainRole, {
-                            SEND_MESSAGES: false
-                        });
+                        if (mainRole) {
+                            channel.permissionOverwrites.edit(mainRole, {
+                                SEND_MESSAGES: false
+                            });
+                        }
                         channel.permissionOverwrites.edit(interaction.guild.id, {
                             SEND_MESSAGES: false
                         });
@@ -357,9 +482,11 @@ module.exports = {
                         channel.send({ embeds: [lockedEmbed] });
                         interaction.reply({ embeds: [lockedChannelEmbed] })
                         setTimeout(function () {
-                            channel.permissionOverwrites.edit(mainRole, {
-                                SEND_MESSAGES: true
-                            });
+                            if (mainRole) {
+                                channel.permissionOverwrites.edit(mainRole, {
+                                    SEND_MESSAGES: false
+                                });
+                            }
                             channel.permissionOverwrites.edit(interaction.guild.id, {
                                 SEND_MESSAGES: true
                             });

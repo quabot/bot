@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { createTranscript } = require('discord-html-transcripts');
 
 const colors = require('../../files/colors.json');
-const { errorMain, ticketsDisabled, addedDatabase, notATicket,createTicket } = require('../../files/embeds');
+const { errorMain, ticketsDisabled, addedDatabase, notATicket, createTicket } = require('../../files/embeds');
 const { closeConfirm, closed, close, deleteConfirm } = require('../../files/interactions/tickets');
 const { ticketButton } = require('../../files/interactions');
 
@@ -154,7 +154,7 @@ module.exports = {
                     });
                 }
                 if (interaction.customId === "ticketmsg") {
-                    interaction.channel.send({ embeds: [createTicket], components: [ticketButton]});
+                    interaction.channel.send({ embeds: [createTicket], components: [ticketButton] });
                 }
                 if (interaction.customId === "close") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
@@ -182,25 +182,9 @@ module.exports = {
                         interaction.reply({ embeds: [embedTicketsCreate] })
                         return
                     }
-
-                    interaction.channel.setParent(closedCategory);
-                    interaction.channel.setParent(closedCategory);
-                    interaction.channel.permissionOverwrites.edit(interaction.user, {
-                        SEND_MESSAGES: false,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true
-                    });
-
-                    const embed = new MessageEmbed()
-                        .setTitle("Closed Ticket!")
-                        .setDescription("Reopen it, delete it, or get the transcript with the buttons below this message.")
-                        .setTimestamp()
-                        .setColor(colors.COLOR);
-                    interaction.update({ embeds: [embed], components: [closed] });
-
-
                     let cId = interaction.channel.name;
                     cId = cId.substring(7);
+                    console.log(cId)
 
                     const Ticket = require('../../schemas/TicketSchema')
                     const TicketDB = await Ticket.findOne({
@@ -209,12 +193,33 @@ module.exports = {
                         channelId: interaction.channel.id,
                     }, (err, ticket) => {
                         if (err) return;
-                        if (!ticket) return interaction.reply({ embeds: [notATicket] });
+                        if (!ticket) return interaction.channel.send({ embeds: [notATicket] });
                     });
+
+                    if (!TicketDB) return;
 
                     await TicketDB.updateOne({
                         closed: true,
                     });
+
+                    interaction.channel.setParent(closedCategory);
+                    interaction.channel.setParent(closedCategory);
+                    let userFound = interaction.guild.members.cache.get(`${TicketDB.memberId}`);
+                    setTimeout(() => {
+                        interaction.channel.permissionOverwrites.edit(userFound, {
+                            SEND_MESSAGES: false,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true
+                        });
+                    }, 1000);
+
+
+                    const embed = new MessageEmbed()
+                        .setTitle("Closed Ticket!")
+                        .setDescription("Reopen it, delete it, or get the transcript with the buttons below this message.")
+                        .setTimestamp()
+                        .setColor(colors.COLOR);
+                    interaction.update({ embeds: [embed], components: [closed] });
                 }
                 if (interaction.customId === "closecancel") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
@@ -243,22 +248,6 @@ module.exports = {
                         return
                     }
 
-                    interaction.channel.setParent(category);
-                    interaction.channel.setParent(category);
-                    interaction.channel.permissionOverwrites.edit(interaction.user, {
-                        SEND_MESSAGES: true,
-                        VIEW_CHANNEL: true,
-                        READ_MESSAGE_HISTORY: true
-                    });
-
-                    const embed = new MessageEmbed()
-                        .setTitle("Re-Opened Ticket!")
-                        .setDescription("Close it with the button below this message.")
-                        .setTimestamp()
-                        .setColor(colors.COLOR);
-                    interaction.update({ embeds: [embed], components: [close] });
-
-
                     let cId = interaction.channel.name;
                     cId = cId.substring(7);
 
@@ -269,12 +258,30 @@ module.exports = {
                         channelId: interaction.channel.id,
                     }, (err, ticket) => {
                         if (err) return;
-                        if (!ticket) return interaction.reply({ embeds: [notATicket] });
+                        if (!ticket) return interaction.channel.send({ embeds: [notATicket] });
                     });
 
                     await TicketDB.updateOne({
                         closed: false,
                     });
+
+                    interaction.channel.setParent(category);
+                    interaction.channel.setParent(category);
+                    setTimeout(() => {
+                        interaction.channel.permissionOverwrites.edit(TicketDB.memberId, {
+                            SEND_MESSAGES: true,
+                            VIEW_CHANNEL: true,
+                            READ_MESSAGE_HISTORY: true
+                        });
+                    }, 1000);
+
+                    const embed = new MessageEmbed()
+                        .setTitle("Re-Opened Ticket!")
+                        .setDescription("Close it with the button below this message.")
+                        .setTimestamp()
+                        .setColor(colors.COLOR);
+                    interaction.update({ embeds: [embed], components: [close] });
+
                 }
                 if (interaction.customId === "transcript") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
@@ -318,7 +325,7 @@ module.exports = {
                         channelId: interaction.channel.id,
                     }, (err, ticket) => {
                         if (err) return;
-                        if (!ticket) return interaction.reply({ embeds: [notATicket] });
+                        if (!ticket) return interaction.channel.send({ embeds: [notATicket] });
                     });
 
                     await TicketDB.updateOne({

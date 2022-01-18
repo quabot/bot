@@ -25,7 +25,10 @@ module.exports = {
                     .setURL(data.url)
                     .setFooter(`r/${data.subreddit}`)
                     .setTimestamp('Posted ' + data.created)
-                interaction.editReply({ embeds: [embed], components: [newDog] });
+                interaction.editReply({ embeds: [embed], components: [newDog] }).catch(err =>{
+                    interaction.channel.send({ embeds: [embed], components: [newDog] })
+                    return;
+                });
             });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

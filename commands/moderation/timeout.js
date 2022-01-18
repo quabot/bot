@@ -75,9 +75,8 @@ module.exports = {
                 }
             });
 
-            const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
-
             const user = interaction.options.getMember('user');
+            const member = interaction.options.getMember('user');
             const time = interaction.options.getString('time');
 
             let reason = interaction.options.getString('reason');
@@ -86,7 +85,7 @@ module.exports = {
             if (ms(time)) {
                 const User = require('../../schemas/UserSchema');
                 const userDatabase = await User.findOne({
-                    userId: user.id,
+                    userId: member.id,
                     guildId: interaction.guild.id,
                 }, (err, user) => {
                     if (err) console.error(err);
@@ -137,7 +136,35 @@ module.exports = {
                         return interaction.channel.send({ embeds: [noPermstotimeout] });
                     });
                 interaction.reply({ embeds: [sendEmbed] });
-                // log to logchannel
+                const unable = new discord.MessageEmbed()
+                    .setDescription(`Could not send a DM to that user.`)
+                    .setColor(colors.COLOR);
+                const timoutuseer = new discord.MessageEmbed()
+                    .setDescription(`You were timed out on one of your servers, **${interaction.guild.name}**.`)
+                    .addField("Timed Out By", `${interaction.user}`)
+                    .addField("Time", `${time}`)
+                    .addField("Reason", `${reason}`)
+                    .setColor(colors.COLOR);
+                user.send({ embeds: [timoutuseer] }).catch(e => {
+                    interaction.channel.send({ embeds: [unable] });
+                });
+
+                if (guildDatabase.logEnabled === "true") {
+                    const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                    if (!logChannel) return;
+
+                    const embed = new discord.MessageEmbed()
+                        .setColor(colors.EMOJI_DELETE)
+                        .setTitle('User Timed Out')
+                        .addField('Username', `${user.user.username}`)
+                        .setFooter(`User ID ${user.id}`)
+                        .addField('Timed Out by', `${interaction.user}`)
+                        .addField("Duration", `${time}`)
+                        .addField('Reason', `${reason}`);
+                    logChannel.send({ embeds: [embed], split: true }).catch(err => logChannel.send("There was an error! The reason for kicking probably exceeded the 1024 character limit."));
+                } else {
+                    return;
+                }
             } else {
                 interaction.reply({ embeds: [timeoutNoTime] })
             }

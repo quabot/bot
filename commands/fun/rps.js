@@ -60,9 +60,15 @@ module.exports = {
             const me = choices[Math.floor(Math.random() * choices.length)];
 
             let msg = await interaction.reply({ embeds: [rpsMessage], fetchReply: true }).then(m => {
-                m.react('🪨');
-                m.react('✂️');
-                m.react('🧻');
+                m.react('🪨').catch(err =>{
+                    return;
+                });;
+                m.react('✂️').catch(err =>{
+                    return;
+                });;
+                m.react('🧻').catch(err =>{
+                    return;
+                });;
                 const filter = (reaction, user) => {
                     return reaction.emoji.name === '🪨' || reaction.emoji.name === '✂️' || reaction.emoji.name === '🧻' && user.id === interaction.user.id;
                 };
