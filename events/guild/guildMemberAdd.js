@@ -41,7 +41,9 @@ module.exports = {
                         pollsEnabled: true,
                         roleEnabled: true,
                         mainRole: "Member",
-                        mutedRole: "Muted"
+                        mutedRole: "Muted",
+                        joinMessage: "Welcome {user} to **{guild-name}**!",
+                        leaveMessage: "Goodbye {user}!"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -58,8 +60,21 @@ module.exports = {
                 let mainRole = member.guild.roles.cache.find(role => role.name === `${mainRoleName}`);
                 let memberTarget = member.guild.members.cache.get(member.id);
 
-                memberTarget.roles.add(mainRole.id);
+                if (mainRole) {
+                    memberTarget.roles.add(mainRole.id);
+                }
             }
+
+            let joinmessage = guildDatabase.joinMessage;
+
+            if (joinmessage === undefined) joinmessage = "Welcome {user} to **{guild-name}**"
+
+            joinmessage = joinmessage.replace("{user}", member);
+            joinmessage = joinmessage.replace("{user-name}", member.user.username);
+            joinmessage = joinmessage.replace("{user-discriminator}", member.user.discriminator);
+            joinmessage = joinmessage.replace("{guild-name}", member.guild.name);
+
+            console.log(joinmessage)
 
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
@@ -77,12 +92,13 @@ module.exports = {
                 if (joinChannel) {
                     const welcomeEmbed = new MessageEmbed()
                         .setAuthor(`${member.user.tag} just joined!`, member.user.avatarURL())
-                        .setDescription(`Welcome ${member.user} to **${member.guild.name}**!`)
+                        .setDescription(`${joinmessage}`)
                         .setColor(colors.JOIN_COLOR);
                     joinChannel.send({ embeds: [welcomeEmbed] });
                 }
             }
         } catch (e) {
+            console.log(e)
             return;
         }
     }

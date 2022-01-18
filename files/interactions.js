@@ -33,7 +33,7 @@ const selectCategory = new discord.MessageActionRow()
                     label: 'Other Settings',
                     description: 'Coming soon.',
                     //value: 'other_settings',
-                    value: 'hello_earth',
+                    value: 'other_settings',
                 },
             ]),
     );

@@ -14,7 +14,6 @@ module.exports = {
      */
     async execute(client, interaction) {
         try {
-            return interaction.reply({ embeds: [errorMain]});
             interaction.reply({ embeds: [CatScanning] })
             meme('cats', function (err, data) {
                 if (err) return interaction.followUp({ embeds: [errorMain] });

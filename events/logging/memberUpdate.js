@@ -12,7 +12,7 @@ module.exports = {
     async execute(oldMember, newMember) {
 
         try {
-            console.log(newMember)
+            //console.log(newMember)
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: oldMember.guild.id,
@@ -40,7 +40,9 @@ module.exports = {
                         pollsEnabled: true,
                         roleEnabled: true,
                         mainRole: "Member",
-                        mutedRole: "Muted"
+                        mutedRole: "Muted",
+                        joinMessage: "Welcome {user} to **{guild-name}**!",
+                        leaveMessage: "Goodbye {user}!"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -72,6 +74,7 @@ module.exports = {
                 if (oldMember._roles > newMember._roles) {
                     const roleRemoved = new MessageEmbed()
                         .setTitle('Role(s) Removed')
+                        .addField("User", `${newMember}`)
                         .setDescription(`<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`)
                         .setColor(colors.COLOR)
                         .setFooter(`User ID: ${newMember.id}`)

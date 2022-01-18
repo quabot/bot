@@ -67,7 +67,9 @@ module.exports = {
                         pollsEnabled: true,
                         roleEnabled: true,
                         mainRole: "Member",
-                        mutedRole: "Muted"
+                        mutedRole: "Muted",
+                        joinMessage: "Welcome {user} to **{guild-name}**!",
+                        leaveMessage: "Goodbye {user}!"
                     });
                     newGuild.save()
                         .catch(err => {
