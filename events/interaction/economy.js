@@ -88,11 +88,9 @@ module.exports = {
                     });
                     let moneyGiven = 0;
                     let moneySpent = 0;
+                    let otherUsers = 50;
 
-
-
-                    /// script
-
+                    
 
                     
                     let spaceAdd = moneyGiven / 40;

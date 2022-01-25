@@ -62,12 +62,12 @@ module.exports = {
                 }
             }
 
-            moneyGiven = 10000;
+            moneyGiven = 5000;
 
             const embed = new discord.MessageEmbed()
                 .setTitle(`Daily money for ${interaction.user.username}!`)
                 .setColor(colors.COLOR)
-                .setDescription(`You were given **⑩ 10,000**!\nYou can claim money again in 24 hours.`)
+                .setDescription(`You were given **⑩ 5,000**!\nYou can claim money again in 24 hours.`)
                 .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
                 .setTimestamp()
             interaction.reply({ embeds: [embed] });

@@ -39,7 +39,7 @@ module.exports = {
             });
             let moneyGiven = 0;
             let moneySpent = 0;
-            let randomPlayers = Math.floor(Math.random() * 50) + 1
+            let randomPlayers = 36;
 
             const buttonsLottery = new discord.MessageActionRow()
                 .addComponents(
@@ -57,7 +57,7 @@ module.exports = {
                 .setTitle(`Do you want to continue?`)
                 .setColor(colors.COLOR)
                 .addField(`Ticket Prize`, `⑩ 500`, true)
-                .addField(`Other Players`, `${randomPlayers}`, true)
+                .addField(`Other Players`, `50`, true)
                 .addField("Prize", "⑩ 10,000", true)
             interaction.reply({ embeds: [embed], components: [buttonsLottery] });
 
