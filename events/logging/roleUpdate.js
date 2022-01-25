@@ -40,7 +40,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -55,7 +56,8 @@ module.exports = {
             
             if (guildDatabase.logEnabled === "true") {
                 if (logChannel) {
-                    //console.log(oldRole)
+                    if (oldRole.rawPosition !== newRole.rawPosition) return;
+                    //console.log(oldRole) 
                     const oldPerms = oldRole.permissions.toArray().join("\n");
                     const newPerms = newRole.permissions.toArray().join("\n");
 

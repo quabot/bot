@@ -3,6 +3,7 @@ const DisTube = require('distube');
 
 const colors = require('../../files/colors.json');
 const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require('../../files/embeds');
+const { skipButtons } = require('../../files/interactions/music');
 
 module.exports = {
     name: "nowplaying",
@@ -45,7 +46,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -77,7 +79,7 @@ module.exports = {
                 .addField("Likes", `${song.likes}`, true)
                 .addField("Views", `${song.views}`, true)
                 .addField("Duration", `\`${song.formattedDuration}\``, true)
-            interaction.reply({ embeds: [playingEmbed] });
+            interaction.reply({ embeds: [playingEmbed], components: [skipButtons] });
         } catch (e) {
             console.log(e);
             interaction.channel.send({ embeds: [errorMain] });

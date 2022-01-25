@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const colors = require('../../files/colors.json');
 const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, pausedQueue } = require('../../files/embeds');
 
+const { pausedButtons } = require('../../files/interactions/music');
+
 
 module.exports = {
     name: "pause",
@@ -44,7 +46,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -63,10 +66,10 @@ module.exports = {
             const queue = client.player.getQueue(interaction);
             if (!queue) return interaction.reply({ embeds: [noSongs] });
             client.player.pause(interaction);
-            interaction.reply({ embeds: [pausedQueue] });
+            interaction.reply({ embeds: [pausedQueue], components: [pausedButtons] });
         } catch (e) {
-            console.log(e);
-            interaction.channel.send({ embeds: [errorMain] });
+            //console.log(e);
+            //interaction.channel.send({ embeds: [errorMain] });
             return;
         }
     }

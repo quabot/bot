@@ -5,22 +5,33 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "deposit",
-    aliases: ['dep', 'store'],
-    economy: true,
-    async execute(client, message, args) {
+    description: "Deposit money.",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+     options: [
+        {
+            name: "amount",
+            description: "Amount to deposit.",
+            type: "STRING",
+            required: true,
+        },
+    ],
+    async execute(client, interaction) {
         try {
 
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                guildId: message.guild.id,
-                userId: message.author.id
+                guildId: interaction.guild.id,
+                userId: interaction.user.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: message.author.id,
-                        guildId: message.guild.id,
-                        guildName: message.guild.name,
+                        userId: interaction.user.id,
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
                         outWallet: 0,
                         walletSize: 500,
                         inWallet: 0,
@@ -29,13 +40,18 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [errorMain] });
+                            interaction.channel.send({ embeds: [errorMain] });
                         });
-                    return message.channel.send("You were added to the database! Please add users on messageCreate next time.")
+                    return interaction.channel.send("You were added to the database! Please add users on messageCreate next time.")
                 }
             });
 
-            if (args[0] === "max" || args[0] === "all") {
+            const amountArgs = interaction.options.getString('amount');
+
+            if (amountArgs.length > 500) return interaction.reply({ ephemeral: true, content:"That amount is too much for our systems to handle!"});
+
+
+            if (amountArgs === "max" || amountArgs === "all") {
                 let amount = UserEcoDatabase.outWallet;
                 const freeSpace = UserEcoDatabase.walletSize - UserEcoDatabase.inWallet;
                 if (amount > freeSpace) {
@@ -44,11 +60,11 @@ module.exports = {
 
                     let inwalletAmount = UserEcoDatabase.inWallet + amount;
                     const embed = new discord.MessageEmbed()
-                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('en-US', {minimumFractionDigits: 0})}`)
-                        .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your wallet and **⑩ ${remaining.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your pocket.`)
+                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
+                        .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${remaining.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
+                    interaction.reply({ embeds: [embed] })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: remaining,
@@ -58,11 +74,11 @@ module.exports = {
                     let inwalletAmount = UserEcoDatabase.inWallet + amount;
                     let something = UserEcoDatabase.outWallet - amount;
                     const embed = new discord.MessageEmbed()
-                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('en-US', {minimumFractionDigits: 0})}`)
-                        .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your wallet and **⑩ ${something.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your pocket.`)
+                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
+                        .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${something.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
+                    interaction.reply({ embeds: [embed] })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: UserEcoDatabase.outWallet - amount,
@@ -72,46 +88,44 @@ module.exports = {
 
                 return;
             } else {
-                let amount = args[0];
-                if (!amount) return message.reply({ content: "Please give an amount to deposit.", allowedMentions: { repliedUser: false } });
-                if (isNaN(amount)) return message.reply({ content: "Please give an amount to deposit.", allowedMentions: { repliedUser: false } });
+                let amount = amountArgs;
+                if (!amount) return interaction.reply({ content: "Please give an amount to deposit." });
+                if (isNaN(amount)) return interaction.reply({ content: "Please give an amount to deposit." });
                 const freeSpace = UserEcoDatabase.walletSize - UserEcoDatabase.inWallet;
-            
+
                 if (amount > UserEcoDatabase.outWallet) amount = UserEcoDatabase.outWallet;
 
                 if (amount > freeSpace) {
-                    let remaining = parseInt(amount) - freeSpace;
                     amount = freeSpace;
+                    let remaining = UserEcoDatabase.outWallet - amount;
 
-                    var a = UserEcoDatabase.inWallet + parseInt(amount);
+                    let inwalletAmount = UserEcoDatabase.inWallet + amount;
                     const embed = new discord.MessageEmbed()
-                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('en-US', {minimumFractionDigits: 0})}`)
-                        .setDescription(`There's now **⑩ ${a.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your wallet and **⑩ ${remaining.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your pocket.`)
+                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
+                        .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${remaining.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
+                    interaction.reply({ embeds: [embed] })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: remaining,
                         inWallet: UserEcoDatabase.inWallet + amount,
                     });
                 } else {
-                    var a  = parseInt(UserEcoDatabase.inWallet) + parseInt(amount);
+                    var a = parseInt(UserEcoDatabase.inWallet) + parseInt(amount);
                     var b = parseInt(UserEcoDatabase.outWallet) - parseInt(amount);
                     const embed = new discord.MessageEmbed()
-                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('en-US', {minimumFractionDigits: 0})}`)
-                        .setDescription(`There's now **⑩ ${a.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your wallet and **⑩ ${b.toLocaleString('en-US', {minimumFractionDigits: 0})}** in your pocket.`)
+                        .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
+                        .setDescription(`There's now **⑩ ${a.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${b.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } })
+                    interaction.reply({ embeds: [embed] })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: UserEcoDatabase.outWallet - parseInt(amount),
                         inWallet: UserEcoDatabase.inWallet + parseInt(amount),
                     });
                 }
-
-
                 return;
             }
 

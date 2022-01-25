@@ -41,7 +41,8 @@ module.exports = {
                         mutedRole: "Muted",
                         mainRole: "Member",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {

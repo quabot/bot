@@ -4,6 +4,7 @@ const { joinVoiceChannel } = require('@discordjs/voice');
 
 const colors = require('../../files/colors.json');
 const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require('../../files/embeds');
+const { skipButtons } = require('../../files/interactions/music');
 
 module.exports = {
     name: "autoplay",
@@ -46,7 +47,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -67,7 +69,7 @@ module.exports = {
                 .setColor(colors.COLOR)
                 .setTitle(`:white_check_mark: Toggled autoplay ${client.player.toggleAutoplay(interaction) ? "ON" : "OFF"}!`)
                 .setDescription('When enabled, it makes it so that when the queue finishes playing, it will find songs that are relatabe to the last song in queue!')
-            interaction.reply({ embeds: [embed] })
+            interaction.reply({ embeds: [embed], components: [skipButtons] })
         } catch (e) {
             console.log(e);
             interaction.channel.send({ embeds: [errorMain] });

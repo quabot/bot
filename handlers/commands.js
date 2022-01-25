@@ -16,7 +16,7 @@ module.exports = async (client) => {
         const command = require(file);
 
         if (command.economy) return;
-        
+
         if (!command.name)
             return Table.addRow(file.split("/")[7], "❌ FAILED", "Missing a name.");
         if (!command.description)
@@ -36,7 +36,7 @@ module.exports = async (client) => {
     });
 
     consola.log(Table.toString());
-
+// ADD HOTFIX// ADD HOTFIX// ADD HOTFIX
     client.on('ready', async () => {
         client.guilds.cache.forEach((guild) => {
             guild.commands.set(CommandsArray).then(async (command) => {
@@ -44,7 +44,7 @@ module.exports = async (client) => {
                     const cmdPerms = CommandsArray.find((c) => c.name === commandName).permission;
                     if (!cmdPerms) return null;
 
-                    return guild.roles.cache.filter((r) => r.permissions.has(cmdPerms))
+                    return guild.roles.cache.filter((r) => r.permissions.has(cmdPerms) && !r.managed).first(10);
                 }
 
                 const fullPermissions = command.reduce((accumulator, r) => {
@@ -58,11 +58,11 @@ module.exports = async (client) => {
                     return [...accumulator, { id: r.id, permissions }]
                 }, [])
 
-                await guild.commands.permissions.set({ fullPermissions })
+                await guild.commands.permissions.set({ fullPermissions });
             })
         })
-    });
-
+    });// ADD HOTFIX// ADD HOTFIX// ADD HOTFIX
+// ADD HOTFIX
     client.on('guildCreate', async (guild) => {
         guild.commands.set(CommandsArray).then(async (command) => {
             const Roles = (commandName) => {
@@ -84,6 +84,6 @@ module.exports = async (client) => {
             }, [])
 
             await guild.commands.permissions.set({ fullPermissions })
-        });
+        }) // ADD HOTFIX
     })
 };

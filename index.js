@@ -3,18 +3,22 @@ const client = new Discord.Client({ intents: 6095, partials: ['MESSAGE', 'CHANNE
 require('dotenv').config()
 
 client.commands = new Discord.Collection();
-['commands', 'events', 'text_commands'].forEach(handler => {
+['commands', 'events'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
 });
 
 client.login(process.env.TOKEN);
 
 const DisTube = require("distube");
+const { SpotifyPlugin } = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud");
+const { playButtons } = require('./files/interactions/music');
 const colors = require('./files/colors.json');
 client.player = new DisTube.default(client, {
     leaveOnEmpty: true,
     leaveOnFinish: true,
     leaveOnStop: true,
+    plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
     updateYouTubeDL: false,
 });
 client.player.on('playSong', (queue, song) => {
@@ -32,7 +36,7 @@ client.player.on('playSong', (queue, song) => {
         .addField("Autoplay", `\`${queue.autoplay}\``, true)
         .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
         .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
-    queue.textChannel.send({ embeds: [playingEmbed] });
+    queue.textChannel.send({ embeds: [playingEmbed], components: [playButtons] });
 });
 client.player.on("addSong", (queue, song) => {
     const embed = new Discord.MessageEmbed()

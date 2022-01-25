@@ -100,7 +100,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -152,9 +153,8 @@ module.exports = {
             });
 
             if (guildDatabase.logEnabled === "true") {
-                if (!logChannel) {
-                    return
-                } else {
+                const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
+                if (logChannel) {
                     const embed = new discord.MessageEmbed()
                         .setColor(colors.WARN_COLOR)
                         .setTitle('Warn removed')

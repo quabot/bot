@@ -22,7 +22,7 @@ Version: ${config.VERSION}\n `);
             }, 6000);
 
             setTimeout(function () {
-                client.user.setActivity(`quabot.xyz`, { type: "WATCHING" });
+                client.user.setActivity(`quabot.net`, { type: "WATCHING" });
             }, 12000);
 
             setTimeout(function () {

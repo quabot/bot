@@ -5,22 +5,25 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "balance",
-    aliases: ['bal', 'money'],
-    economy: true,
-    async execute(client, message, args) {
+    description: "Get your balance.",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    async execute(client, interaction) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                guildId: message.guild.id,
-                userId: message.author.id
+                guildId: interaction.guild.id,
+                userId: interaction.user.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: message.author.id,
-                        guildId: message.guild.id,
-                        guildName: message.guild.name,
+                        userId: interaction.user.id,
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
                         outWallet: 0,
                         walletSize: 500,
                         inWallet: 0,
@@ -29,9 +32,9 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [errorMain] });
+                            interaction.channel.send({ embeds: [errorMain] });
                         });
-                    return message.channel.send("You were added to the database! Please add users on messageCreate next time.")
+                    return interaction.channel.send("You were added to the database! Please add users on messageCreate next time.")
                 }
             });
 
@@ -39,12 +42,12 @@ module.exports = {
             var inWallet = UserEcoDatabase.inWallet;
             var outWallet = UserEcoDatabase.outWallet;
             const embed = new discord.MessageEmbed()
-                .setTitle(`Money of ${message.author.username}`)
+                .setTitle(`Money of ${interaction.user.username}`)
                 .setColor(colors.COLOR)
-                .setDescription(`PERCENTAGE Bank: ⑩ ${inWallet.toLocaleString('en-US', {minimumFractionDigits: 0})}/${walletSize.toLocaleString('en-US', {minimumFractionDigits: 0})}
-                Pocket: ⑩ ${outWallet.toLocaleString('en-US', {minimumFractionDigits: 0})}`)
+                .setDescription(`Bank: ⑩ ${inWallet.toLocaleString('us-US', {minimumFractionDigits: 0})}/${walletSize.toLocaleString('us-US', {minimumFractionDigits: 0})} \`${Math.round(inWallet / walletSize * 100)}%\`
+                Pocket: ⑩ ${outWallet.toLocaleString('us-US', {minimumFractionDigits: 0})}`)
                 .setTimestamp()
-            message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false }})
+            interaction.reply({ embeds: [embed] })
         } catch (e) {
             console.log(e);
             return;

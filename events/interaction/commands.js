@@ -14,6 +14,8 @@ const { disabledLevelUp, roleEmbed, channelEmbed, welcomeDisabled, welcomeEnable
 const { reopenButtonClosed, deleteTicketC, closeTicketWCancelDis, role, channel, nextPage3, nextPage4, channel2, welcomeButtons, ticketButtons, suggestButtons, toggle2, nextPage2, nextPage1, reportButtons, musicButtons, selectCategory, disabledToggle, levelsButtons, toggle, logButtons, roleButtons, disableLevel, pollButtons, pictureButtonsDisabled, otherCategory } = require('../../files/interactions');
 const { embedClose1, noOwner } = require('../../files/embeds');
 
+const cooldowns = new Map()
+
 module.exports = {
     name: "interactionCreate",
     /**
@@ -52,7 +54,8 @@ module.exports = {
                     mainRole: "Member",
                     mutedRole: "Muted",
                     joinMessage: "Welcome {user} to **{guild-name}**!",
-                    leaveMessage: "Goodbye {user}!"
+                    swearEnabled: false,
+                    transcriptChannelID: "none"
                 });
                 newGuild.save()
                     .catch(err => {
@@ -66,6 +69,26 @@ module.exports = {
         try {
             if (interaction.isCommand()) {
                 const command = client.commands.get(interaction.commandName);
+                if (!cooldowns.has(command.name)) {
+                    cooldowns.set(command.name, new discord.Collection());
+                }
+
+                const current_time = Date.now();
+                const time_stamps = cooldowns.get(command.name);
+                const cooldown_amount = 1 * 1000;
+
+                if (time_stamps.has(interaction.user.id)) {
+                    const expiration_time = time_stamps.get(interaction.user.id) + cooldown_amount;
+
+                    if (current_time < expiration_time) {
+                        const time_left = (expiration_time - current_time) / 1000;
+                        return interaction.reply({ ephemeral: true, content: `Please wait ${time_left.toFixed(1)} more seconds before using /${command.name}` });
+                    }
+                }
+
+                time_stamps.set(interaction.user.id, current_time);
+                setTimeout(() => time_stamps.delete(interaction.user.id), cooldown_amount);
+
                 consola.info(`/${command.name} was used.`)
                 if (!command) return interaction.reply({
                     embeds: [
@@ -81,6 +104,7 @@ module.exports = {
             }
 
             if (interaction.isButton()) {
+
                 if (interaction.customId === "answer1") {
                     const embedRaw = interaction.message.embeds;
                     const embed = embedRaw[Math.floor(Math.random() * embedRaw.length)];
@@ -205,7 +229,7 @@ module.exports = {
                                 .setImage(`${data.url}`)
                                 .setFooter(`r/${data.subreddit} - u/${data.author}`)
                                 .setTimestamp('Posted ' + data.created)
-                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err => {
                                 interaction.channel.send({ embeds: [embed], components: [newMeme] })
                                 return;
                             });
@@ -221,7 +245,7 @@ module.exports = {
                                 .setImage(`${data.url}`)
                                 .setFooter(`r/${data.subreddit} - u/${data.author}`)
                                 .setTimestamp('Posted ' + data.created)
-                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err => {
                                 interaction.channel.send({ embeds: [embed], components: [newMeme] })
                                 return;
                             });
@@ -238,7 +262,7 @@ module.exports = {
                                 .setImage(`${data.url}`)
                                 .setFooter(`r/${data.subreddit} - u/${data.author}`)
                                 .setTimestamp('Posted ' + data.created)
-                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err =>{
+                            interaction.editReply({ embeds: [embed], components: [newMeme] }).catch(err => {
                                 interaction.channel.send({ embeds: [embed], components: [newMeme] })
                                 return;
                             });
@@ -259,7 +283,7 @@ module.exports = {
                             .setFooter(`r/${data.subreddit}`)
                             .setTimestamp('Posted ' + data.created)
 
-                        interaction.editReply({ embeds: [embed], components: [newCat] }).catch(err =>{
+                        interaction.editReply({ embeds: [embed], components: [newCat] }).catch(err => {
                             interaction.channel.send({ embeds: [embed], components: [newCat] })
                             return;
                         });
@@ -279,7 +303,7 @@ module.exports = {
                             .setURL(data.url)
                             .setFooter(`r/${data.subreddit}`)
                             .setTimestamp('Posted ' + data.created)
-                        interaction.editReply({ embeds: [embed], components: [newDog] }).catch(err =>{
+                        interaction.editReply({ embeds: [embed], components: [newDog] }).catch(err => {
                             interaction.channel.send({ embeds: [embed], components: [newDog] })
                             return;
                         });

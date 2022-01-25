@@ -49,7 +49,8 @@ module.exports = {
                             mainRole: 'Member',
                             mutedRole: 'Muted',
                             joinMessage: "Welcome {user} to **{guild-name}**!",
-                            leaveMessage: "Goodbye {user}!"
+                            swearEnabled: false,
+transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
@@ -59,6 +60,8 @@ module.exports = {
                     }
                 }
             );
+
+            const transcriptChannel = interaction.guild.channels.cache.get(guildDatabase.transcriptChannelID);
 
             if (interaction.isButton()) {
                 if (interaction.customId === "ticket") {
@@ -222,6 +225,20 @@ module.exports = {
                         .setTimestamp()
                         .setColor(colors.COLOR);
                     interaction.update({ embeds: [embed], components: [closed] });
+                    
+                    if (transcriptChannel) {
+                        const transcriptembed = new MessageEmbed()
+                            .setTitle("Transcript saved.")
+                            .setColor(colors.COLOR)
+                            .setDescription(`Ticket ID: ${cId}\nChannel: ${interaction.channel}`)
+                        const attachementtranscript = await createTranscript(interaction.channel, {
+                            limit: -2,
+                            returnBuffer: false,
+                            fileName: `ticket-${cId}.html`,
+                        });
+                        transcriptChannel.send({ embeds: [transcriptembed], components: [], files: [attachementtranscript] })
+                        
+                    }
                 }
                 if (interaction.customId === "closecancel") {
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
@@ -303,22 +320,33 @@ module.exports = {
 
                 }
                 if (interaction.customId === "deleteconfirm") {
+                    let cId = interaction.channel.name;
+                    cId = cId.substring(7);
+                    if (transcriptChannel) {
+                        const transcriptembed = new MessageEmbed()
+                            .setTitle("Transcript saved.")
+                            .setColor(colors.COLOR)
+                            .setDescription(`Ticket ID: ${cId}\nChannel: ${interaction.channel}`)
+                        const attachementtranscript = await createTranscript(interaction.channel, {
+                            limit: -2,
+                            returnBuffer: false,
+                            fileName: `ticket-${cId}.html`,
+                        });
+                        transcriptChannel.send({ embeds: [transcriptembed], components: [], files: [attachementtranscript] })
+                        
+                    }
                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketsDisabled] });
 
                     setTimeout(() => {
                         interaction.channel.delete();
-                    }, 2000);
+                    }, 3000);
 
                     const embed = new MessageEmbed()
                         .setTitle("Deleting ticket!")
-                        .setDescription("This cannot be undone.")
+                        .setDescription("This cannot be undone. Creating final transcript and logging it now...")
                         .setTimestamp()
                         .setColor(colors.COLOR);
                     interaction.update({ embeds: [embed], components: [] });
-
-
-                    let cId = interaction.channel.name;
-                    cId = cId.substring(7);
 
                     const Ticket = require('../../schemas/TicketSchema')
                     const TicketDB = await Ticket.findOne({
@@ -355,7 +383,6 @@ module.exports = {
             }
         } catch (e) {
             console.log(e);
-            interaction.channel.send({ embeds: [errorMain] });
             return;
         }
     }

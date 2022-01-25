@@ -57,7 +57,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -78,7 +79,7 @@ module.exports = {
             const content = interaction.options.getString('reason');
             if (!content) return interaction.reply({ embeds: [reportNoContent] });
 
-            interaction.reply({ embeds: [reportSucces] });
+            interaction.reply({ ephemeral: true, embeds: [reportSucces] });
 
             const embed = new discord.MessageEmbed()
                 .setColor(colors.REPORT_COLOR)

@@ -20,8 +20,7 @@ const UserEcoSchema = new mongoose.Schema({
     walletSize: reqNumber,
     inWallet: reqNumber,
     lastDaily: falseString,
-    lastWeekly: falseString,
-    lastMonthly: falseString,
+    lastLottery: falseString,
     lastUsed: reqString,
 });
 

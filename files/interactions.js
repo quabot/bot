@@ -27,7 +27,7 @@ const selectCategory = new discord.MessageActionRow()
                     label: 'Logging Settings',
                     description: 'Allows you to toggle logging for certain events.',
                     //value: 'log_settings',
-                    value: 'hello_world',
+                    value: 'event_settings',
                 },
                 {
                     label: 'Other Settings',
@@ -73,9 +73,14 @@ const toggleEventsSelect = new discord.MessageActionRow()
             .setMaxValues(1)
             .addOptions([
                 {
-                    label: 'Join and Leave Messages',
-                    description: 'Toggle join and leave message logging to the logging channel.',
-                    value: 'toggle_features',
+                    label: 'Join Messages',
+                    description: 'Toggle join message logging to the logging channel and welcome channel.',
+                    value: 'join_messages',
+                },
+                {
+                    label: 'Leave Messages',
+                    description: 'Toggle leave message logging to the logging channel and welcome channel.',
+                    value: 'leave_messages',
                 },
                 {
                     label: 'Channel deletion and creation',
@@ -131,6 +136,11 @@ const toggleEventsSelect = new discord.MessageActionRow()
                     label: 'Voice Movement',
                     description: 'Toggle voice moves logging to the logging channel.',
                     value: 'gfg',
+                },
+                {
+                    label: "Member Updates",
+                    description:"Toggle nickname changes and role additions logging to the logging channel.",
+                    value: 'sdagy',
                 },
                 {
                     label: 'QuaBot Logging',
@@ -626,7 +636,7 @@ const deleteTicketC = new discord.MessageActionRow()
 const addbot = new discord.MessageActionRow()
     .addComponents(
         new discord.MessageButton()
-            .setURL('https://invite.quabot.xyz/')
+            .setURL('https://invite.quabot.net/')
             .setLabel('Invite QuaBot')
             .setStyle('LINK'),
     );

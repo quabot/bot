@@ -53,7 +53,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+                        transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -71,9 +72,9 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setColor(colors.COLOR)
                 .setTitle(`${target.tag}'s rank:`)
-                .setThumbnail(target.avatarURL({ dynamic: true}))
-                .addField("Level", `${user.level}`)
-                .addField("XP", `${user.xp}`)
+                .setThumbnail(target.avatarURL({ dynamic: true }))
+                .addField("Level", `${user.level}`, true)
+                .addField("XP", `${user.xp}/${Levels.xpFor(user.level + 1)}`, true)
             interaction.reply({ embeds: [embed] });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

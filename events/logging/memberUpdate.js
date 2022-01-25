@@ -42,7 +42,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -84,6 +85,7 @@ module.exports = {
                 if (oldMember._roles < newMember._roles) {
                     const roleRemoved = new MessageEmbed()
                         .setTitle('Role(s) Added')
+                        .addField("User", `${newMember}`)
                         .setDescription(`<@&${newMember._roles.filter(n => !oldMember._roles.includes(n)).join('>\n<@&')}>`)
                         .setColor(colors.COLOR)
                         .setFooter(`User ID: ${newMember.id}`)
@@ -92,7 +94,7 @@ module.exports = {
                 }
             }
         } catch (e) {
-            console.log(e)
+            //console.log(e)
             return;
         }
 

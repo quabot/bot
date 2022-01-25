@@ -11,7 +11,7 @@ module.exports = {
         "Discord nitro classic needs more features, change my mind",
         "Boost the server for free nitro",
         "Did you know we have a new website?",
-        "https://quabot.xyz",
+        "https://quabot.net",
         "This bot was created by Joa_sss#0001",
         "MCLands is the best minecraft server",
         "https://mclands.net",
@@ -19,13 +19,13 @@ module.exports = {
         "Can someone give me some money?",
         "Why are GPU's so expensive?",
         "Learn to type with quabot, for free",
-        "Fun fact: https://discord.quabot.xyz",
+        "Fun fact: https://discord.quabot.net",
         "You are actually required to completely type this sentence, even tho i typed this to be very annoying to type, and to be very long so there is practically no way for you to type this in time, but if you did, i'm very proud of you and you just wasted half of your life!",
         "I'm sorry for some of the troll sentences that are included",
         "Skype is better than discord tho",
         "My arrow-up key is broken :(",
-        "Do you have a sentence suggestion? https://discord.quabot.xyz",
-        "We have a dashboard now: https://dashboard.quabot.xyz",
+        "Do you have a sentence suggestion? https://discord.quabot.net",
+        "We have a dashboard now: https://dashboard.quabot.net",
         "Good luck with this game lol"
     ]
 }

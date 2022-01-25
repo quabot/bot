@@ -6,7 +6,7 @@ const main = new MessageEmbed()
     .setTimestamp()
     .setTitle("Select a category of commands using the dropdown.")
     .setDescription("When selecting a category you'll get a detailed list of commands within that category.")
-    .addField("Quick Links", "[Invite me](https://discord.com/oauth2/authorize?client_id=845603702210953246&scope=bot%20applications.commands&permissions=346268609631) - [Website](https://quabot.xyz/) - [Discord](https://discord.gg/Nwu9DNjYa9)")
+    .addField("Quick Links", "[Invite me](https://discord.com/oauth2/authorize?client_id=845603702210953246&scope=bot%20applications.commands&permissions=346268609631) - [Website](https://quabot.net/) - [Discord](https://discord.gg/Nwu9DNjYa9)")
     .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
 const misc = new MessageEmbed()

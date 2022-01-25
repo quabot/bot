@@ -2,6 +2,7 @@ const discord = require('discord.js');
 const mongoose = require('mongoose');
 
 const colors = require('../../files/colors.json');
+const { skipButtons } = require('../../files/interactions/music');
 const { errorMain, skippedSong, addedDatabase, NotInVC, MusicIsDisabled, noSongs } = require('../../files/embeds');
 
 
@@ -44,7 +45,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -67,7 +69,7 @@ module.exports = {
             if (!song1) return interaction.reply({ embeds: [noSongs] });
 
             client.player.skip(queue);
-            interaction.reply({ embeds: [skippedSong] });
+            interaction.reply({ embeds: [skippedSong], components: [skipButtons] });
         } catch (e) {
             console.log(e);
             interaction.channel.send({ embeds: [errorMain] });

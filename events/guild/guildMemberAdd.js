@@ -1,4 +1,4 @@
-const { commands } = require('../../index');
+const { commands } = require('../..');
 const { Client, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
 const consola = require('consola');
@@ -43,7 +43,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -67,7 +68,7 @@ module.exports = {
 
             let joinmessage = guildDatabase.joinMessage;
 
-            if (joinmessage === undefined) joinmessage = "Welcome {user} to **{guild-name}**"
+            if (joinmessage === undefined) joinmessage = "Welcome {user} to **{guild-name}**!"
 
             joinmessage = joinmessage.replace("{user}", member);
             joinmessage = joinmessage.replace("{user-name}", member.user.username);

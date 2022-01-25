@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { MessageEmbed } = require('discord.js');
 const consola = require('consola');
 const { errorMain, addedDatabase } = require('../../files/embeds.js');
+const { default: consolaGlobalInstance } = require('consola');
 module.exports = {
     name: "messageUpdate",
     /**
@@ -43,7 +44,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -53,6 +55,40 @@ module.exports = {
                 }
             });
             const logChannel = newMessage.guild.channels.cache.get(guildDatabase.logChannelID);
+
+            const { Swears } = require('../../validation/swearwords');
+            let msg = newMessage.content.toLowerCase();
+            msg = msg.replace(/\s+/g, '');
+            msg = msg.replace('.', '');
+            msg = msg.replace(',', '');
+            for (let i = 0; i < Swears.length; i++) {
+                if (msg.includes(Swears[i])) {
+                    const SwearFound = new MessageEmbed()
+                        .setDescription(`Please do not swear! One of your servers, **${newMessage.guild.name}** has a swearfilter activated.`)
+                        .setColor(colors.COLOR)
+                        newMessage.author.send({ embeds: [SwearFound] }).catch(err => {
+                        console.log("DMS Disabled.");
+                    })
+                    newMessage.delete().catch(err => {
+                        console.log("Delete swearfilter error.");
+                    });
+
+                    if (guildDatabase.logEnabled === "false") return;
+                    if (logChannel) {
+                        const embed = new MessageEmbed()
+                            .setTitle("Swear Filter Triggered")
+                            .addField("User", `${newMessage.author}`)
+                            .addField("Swearword", `${Swears[i]}`)
+                            .setFooter(`ID: ${newMessage.author.id}`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        logChannel.send({ embeds: [embed] }).catch(err => {
+                            console.log("Delete swearfilter error.");
+                        });
+                    }
+                    return;
+                }
+            }
             if (!logChannel) return;
 
             if (guildDatabase.logEnabled === "false") return;
@@ -66,7 +102,6 @@ module.exports = {
             let oldContent = String(oldMessage.content);
             let newContent = String(newMessage.content);
 
-            if (oldContent.length > 1024) oldContent = "Too long for message embed.";
             if (newContent.length > 1024) newContent = "Too long for message embed.";
 
             if (oldMessage.content !== newMessage.content) {

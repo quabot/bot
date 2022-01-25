@@ -2,7 +2,7 @@ const { CommandInteraction, MessageButton, MessageEmbed } = require('discord.js'
 const colors = require('../../files/colors.json');
 
 const { errorMain, addedDatabase } = require('../../files/embeds.js');
-const { buttonsLevels, buttonsLogs, buttonsRole, buttonsMusic, buttonsReport, buttonsSuggest, buttonsPoll, buttonsTicket, buttonsWelcome } = require('../../files/interactions/toggleConfig');
+const { buttonsLevels, buttonsLogs, buttonsRole, buttonsMusic, buttonsSwear, buttonsReport, buttonsSuggest, buttonsPoll, buttonsTicket, buttonsWelcome } = require('../../files/interactions/toggleConfig');
 const { noPermission } = require('../../files/embeds/toggleConfig');
 
 module.exports = {
@@ -45,7 +45,8 @@ module.exports = {
                             mainRole: 'Member',
                             mutedRole: 'Muted',
                             joinMessage: "Welcome {user} to **{guild-name}**!",
-                            leaveMessage: "Goodbye {user}!"
+                            swearEnabled: false,
+transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
@@ -67,6 +68,18 @@ module.exports = {
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
                     interaction.reply({ ephemeral: true, embeds: [levels], components: [buttonsLevels] })
+                }
+
+                if (interaction.values[0] === "swear_toggle") {
+                    const swear = new MessageEmbed()
+                        .setTitle("Toggle Swear Filter")
+                        .setDescription("Use the buttons to enable/disable the swear filter.")
+                        .addField("Current value", `${guildDatabase.swearEnabled}`)
+                        .setColor(colors.COLOR)
+                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    interaction.reply({ ephemeral: true, embeds: [swear], components: [buttonsSwear] })
                 }
 
                 if (interaction.values[0] === "log_toggle") {

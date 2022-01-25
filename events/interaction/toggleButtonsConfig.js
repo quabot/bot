@@ -4,7 +4,7 @@ const colors = require('../../files/colors.json');
 const { noPermission } = require('../../files/embeds/config')
 const { errorMain, addedDatabase } = require('../../files/embeds.js');
 const { disabled } = require('../../files/interactions/config');
-const { channelLevelDisabled, welcomeDisabled, welcomeEnabled, pollsDisabled, pollEnabled, levelEnabled, levelDisabled, logEnabled, logDisabled, roleEnabled, roleDisabled, ticketDisabled, ticketEnabled, musicDisabled, musicEnabled, reportEnabled, reportDisabled, suggestDisabled, suggestEnabled } = require('../../files/embeds/toggleConfig');
+const { swearEnabled, swearDisabled, channelLevelDisabled, welcomeDisabled, welcomeEnabled, pollsDisabled, pollEnabled, levelEnabled, levelDisabled, logEnabled, logDisabled, roleEnabled, roleDisabled, ticketDisabled, ticketEnabled, musicDisabled, musicEnabled, reportEnabled, reportDisabled, suggestDisabled, suggestEnabled } = require('../../files/embeds/toggleConfig');
 
 module.exports = {
     name: "interactionCreate",
@@ -46,7 +46,8 @@ module.exports = {
                             mainRole: 'Member',
                             mutedRole: 'Muted',
                             joinMessage: "Welcome {user} to **{guild-name}**!",
-                            leaveMessage: "Goodbye {user}!"
+                            swearEnabled: false,
+transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
@@ -200,6 +201,23 @@ module.exports = {
                         welcomeEnabled: false,
                     });
                     interaction.update({ ephemeral: true, embeds: [welcomeDisabled], components: [disabled] });
+                }
+
+                if (interaction.customId === "disableSwear") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    await guildDatabase.updateOne({
+                        swearEnabled: false,
+transcriptChannelID: "none",
+                    });
+                    interaction.update({ ephemeral: true, embeds: [swearDisabled], components: [disabled] });
+                }
+
+                if (interaction.customId === "enableSwear") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    await guildDatabase.updateOne({
+                        swearEnabled: true,
+                    });
+                    interaction.update({ ephemeral: true, embeds: [swearEnabled], components: [disabled] });
                 }
 
                 if (interaction.isButton()) {

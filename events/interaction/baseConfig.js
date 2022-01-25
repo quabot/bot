@@ -1,9 +1,10 @@
 const { CommandInteraction, MessageButton, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
 
-const { role, noPermission, other, channel, toggle } = require('../../files/embeds/config');
+const { events, role, noPermission, other, channel, toggle } = require('../../files/embeds/config');
 const { selectRole, selectOther, selectToggle, selectChannel } = require('../../files/interactions/config');
 const { errorMain, addedDatabase } = require('../../files/embeds.js');
+const { toggleEventsSelect  } = require('../../files/interactions.js')
 
 module.exports = {
     name: "interactionCreate",
@@ -45,7 +46,8 @@ module.exports = {
                             mainRole: 'Member',
                             mutedRole: 'Muted',
                             joinMessage: "Welcome {user} to **{guild-name}**!",
-                            leaveMessage: "Goodbye {user}!"
+                            swearEnabled: false,
+transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
@@ -64,6 +66,10 @@ module.exports = {
                 if (interaction.values[0] === "other_settings") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
                     interaction.reply({ embeds: [other], components: [selectOther], ephemeral: true })
+                }
+                if (interaction.values[0] === "event_settings") {
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    interaction.reply({ embeds: [events], components: [toggleEventsSelect], ephemeral: true })
                 }
                 if (interaction.values[0] === "toggle_features") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });

@@ -2,6 +2,7 @@ const { CommandInteraction, MessageButton, MessageEmbed } = require('discord.js'
 const colors = require('../../files/colors.json');
 
 const { misc, support, fun, info, music, moderation, management } = require('../../files/embeds/help');
+const { errorMain, addedDatabase } = require('../../files/embeds.js');
 
 module.exports = {
     name: "interactionCreate",
@@ -43,13 +44,14 @@ module.exports = {
                             mainRole: 'Member',
                             mutedRole: 'Muted',
                             joinMessage: "Welcome {user} to **{guild-name}**!",
-                            leaveMessage: "Goodbye {user}!"
+                            swearEnabled: false,
+transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
                             interaction.channel.send({ embeds: [errorMain] })
                         })
-                        return interaction.channel.send({ embeds: [addedDatabase] })
+                        return;
                     }
                 }
             );

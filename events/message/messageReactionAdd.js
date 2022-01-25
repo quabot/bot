@@ -61,10 +61,14 @@ module.exports = {
                     return;
                 }).then(msg => {
                     setTimeout(() => {
-                        msg.delete();
+                        msg.delete().catch(err => {
+                            return;
+                        });
                     }, 5000);
                 });
-                memberTarget.roles.add(emojiRole)
+                memberTarget.roles.add(emojiRole).catch(err => {
+                    return;
+                })
             } else if (reactList.reactMode === "verify") {
                 const embed2 = new Discord.MessageEmbed()
                     .setTitle(`Role given!`)
@@ -76,10 +80,14 @@ module.exports = {
                     return;
                 }).then(msg => {
                     setTimeout(() => {
-                        msg.delete();
+                        msg.delete().catch(err => {
+                            return;
+                        });
                     }, 5000);
                 });;
-                memberTarget.roles.add(emojiRole)
+                memberTarget.roles.add(emojiRole).catch(err => {
+                    return;
+                })
             } else if (reactList.reactMode === "drop") {
                 const embed3 = new Discord.MessageEmbed()
                     .setTitle(`Role removed!`)
@@ -87,12 +95,16 @@ module.exports = {
                     .setFooter("You can only remove this role.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
-                memberTarget.roles.remove(emojiRole)
+                memberTarget.roles.remove(emojiRole).catch(err => {
+                    return;
+                })
                 memberTarget.send({ embeds: [embed3] }).catch(err => {
                     return;
                 }).then(msg => {
                     setTimeout(() => {
-                        msg.delete();
+                        msg.delete().catch(err => {
+                            return;
+                        });
                     }, 5000);
                 });;
             }

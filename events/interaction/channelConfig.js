@@ -48,7 +48,8 @@ module.exports = {
                             mainRole: 'Member',
                             mutedRole: 'Muted',
                             joinMessage: "Welcome {user} to **{guild-name}**!",
-                            leaveMessage: "Goodbye {user}!"
+                            swearEnabled: false,
+transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
@@ -217,6 +218,38 @@ module.exports = {
                                 .setDescription(`Changed welcome channel to ${F}!`)
                                 .setColor(colors.COLOR)
                             m.channel.send({ embeds: [updated4] })
+                            collector.stop();
+                            return;
+                        } else {
+                            if (m.author.bot) return;
+                            m.reply({ embeds: [timedOut] });
+                        }
+                    });
+                }
+                if (interaction.values[0] === "transcript_channel") {
+
+                    const transcript = new MessageEmbed()
+                        .setTitle("Change Transcripts Channel")
+                        .setDescription("Mention the new channel within 15 seconds to change it.")
+                        .addField("Current value", `<#${guildDatabase.transcriptChannelID}>`)
+                        .setColor(colors.COLOR)
+                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    interaction.reply({ embeds: [transcript], ephemeral: true });
+
+                    collector.on('collect', async m => {
+                        if (m) {
+                            const F = m.mentions.channels.first();
+                            if (!F) return;
+                            await guildDatabase.updateOne({
+                                transcriptChannelID: F
+                            });
+                            const updated42 = new MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription(`Changed transcript logging channel to ${F}!`)
+                                .setColor(colors.COLOR)
+                            m.channel.send({ embeds: [updated42] })
                             collector.stop();
                             return;
                         } else {

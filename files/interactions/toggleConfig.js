@@ -12,6 +12,18 @@ const buttonsLevels = new MessageActionRow()
             .setStyle('DANGER'),
     );
 
+const buttonsSwear = new MessageActionRow()
+    .addComponents(
+        new MessageButton()
+            .setCustomId('enableSwear')
+            .setLabel('Enable')
+            .setStyle('SUCCESS'),
+        new MessageButton()
+            .setCustomId('disableSwear')
+            .setLabel('Disable')
+            .setStyle('DANGER'),
+    );
+
 const buttonsLogs = new MessageActionRow()
     .addComponents(
         new MessageButton()
@@ -119,4 +131,4 @@ const buttonsLevel = new MessageActionRow()
     );
 
 
-module.exports = { buttonsLevel, buttonsLevels, buttonsLogs, buttonsRole, buttonsMusic, buttonsReport, buttonsSuggest, buttonsTicket, buttonsWelcome, buttonsPoll }
+module.exports = { buttonsSwear, buttonsLevel, buttonsLevels, buttonsLogs, buttonsRole, buttonsMusic, buttonsReport, buttonsSuggest, buttonsTicket, buttonsWelcome, buttonsPoll }

@@ -43,7 +43,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -67,11 +68,20 @@ module.exports = {
                 };
             }
 
+            let leavemessage = guildDatabase.leaveMessage;
+
+            if (leavemessage === undefined) leavemessage = "Goodbye {user}!"
+
+            leavemessage = leavemessage.replace("{user}", member.user);
+            leavemessage = leavemessage.replace("{user-name}", member.user.username);
+            leavemessage = leavemessage.replace("{user-discriminator}", member.user.discriminator);
+            leavemessage = leavemessage.replace("{guild-name}", member.guild.name);
+
             if (guildDatabase.welcomeEnabled === "true") {
                 if (joinChannel) {
                     const welcomeEmbed = new MessageEmbed()
                         .setAuthor(`${member.user.tag} just left!`, member.user.avatarURL())
-                        .setDescription(`Goodbye ${member.user}!`)
+                        .setDescription(`${leavemessage}`)
                         .setColor(colors.LEAVE_COLOR);
                     joinChannel.send({ embeds: [welcomeEmbed] });
                 }

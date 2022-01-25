@@ -26,12 +26,12 @@ const selectOther = new MessageActionRow()
             .addOptions([
                 {
                     label: 'Welcome message',
-                    description: 'Toggle certain settings like log channels, tickets, music and more.',
+                    description: 'Change the server\'s leave message.',
                     value: 'welcome_msg',
                 },
                 {
                     label: 'Leave message',
-                    description: 'Allows you to change log channel, welcome channel and more channel-related settings.',
+                    description: 'Change the server\'s welcome message.',
                     value: 'leave_msg',
                 },
                 {
@@ -95,6 +95,11 @@ const selectToggle = new MessageActionRow()
                     description: 'Enable or disable the polls system.',
                     value: 'poll_toggle',
                 },
+                {
+                    label: 'Swear Filter',
+                    description: 'Enable the automated deletion of words like fuck, n word and more.',
+                    value: 'swear_toggle',
+                },
             ]),
     );
 
@@ -145,6 +150,11 @@ const selectChannel = new MessageActionRow()
                     label: 'Polls Channel',
                     description: 'The name of the channel used to send poll messages.',
                     value: 'poll_channel',
+                },
+                {
+                    label: 'Transcripts Channel',
+                    description: 'The name of the channel used to send ticket transcripts.',
+                    value: 'transcript_channel',
                 },
             ]),
     );

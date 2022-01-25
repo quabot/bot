@@ -43,7 +43,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+                        transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -57,14 +58,23 @@ module.exports = {
 
             const rawLeaderboard = await Levels.fetchLeaderboard(interaction.guild.id, 10);
             if (rawLeaderboard.length < 1) return interaction.reply({ embeds: [LBNoXP] });
-            const leaderboard = await Levels.computeLeaderboard(client, rawLeaderboard, true); // We process the leaderboard.
+            const leaderboard = await Levels.computeLeaderboard(client, rawLeaderboard, true);
             const lb = leaderboard.map(e => `${e.position}. **${e.username}#${e.discriminator}** | Level: \`${e.level}\` | \`XP: ${e.xp.toLocaleString()}\``); // We map the outputs.
+            let userFound = leaderboard.find(user => {
+                return user.userID === `${interaction.user.id}`;
+            });
 
             const embed = new discord.MessageEmbed()
                 .setColor(colors.COLOR)
                 .setTitle("Leaderboard")
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
-                .setDescription(`\n${lb.join("\n\n")}`)
+            
+            if (userFound.position < 10) {
+                embed.setDescription(`\n${lb.join("\n\n")}`)
+            }
+            if (userFound.position > 10) {
+                embed.setDescription(`\n${lb.join("\n\n")}\n\n${userFound.position}. **${userFound.username}#${userFound.discriminator}** | Level: \`${userFound.level}\` | \`XP: ${userFound.xp.toLocaleString()}\``)
+            };
             interaction.reply({ embeds: [embed] });
         } catch (e) {
             interaction.channel.send({ embeds: [errorMain] })

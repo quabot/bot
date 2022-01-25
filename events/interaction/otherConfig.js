@@ -1,7 +1,7 @@
 const { CommandInteraction, MessageButton, MessageEmbed } = require('discord.js');
 const colors = require('../../files/colors.json');
 
-const { role, noPermission } = require('../../files/embeds/config');
+const { noPermission } = require('../../files/embeds/config');
 const { errorMain, addedDatabase } = require('../../files/embeds.js');
 
 module.exports = {
@@ -38,7 +38,8 @@ module.exports = {
                             reportEnabled: true,
                             suggestEnabled: true,
                             joinMessage: "Welcome {user} to **{guild-name}**!",
-                            leaveMessage: "Goodbye {user}!"
+                            swearEnabled: false,
+transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
@@ -54,6 +55,8 @@ module.exports = {
 
             if (interaction.isSelectMenu()) {
                 if (interaction.values[0] === "welcome_msg") {
+
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
 
                     let joinmessage = guildDatabase.joinMessage;
 
@@ -96,7 +99,7 @@ module.exports = {
 
                             const updated = new MessageEmbed()
                                 .setTitle(":white_check_mark: Succes!")
-                                .setDescription(`Changed welcome message to ${C}. Example in use:`)
+                                .setDescription(`Changed welcome message to: ${C}. Example in use:`)
                                 .setColor(colors.COLOR)
                             m.channel.send({ embeds: [updated] })
 
@@ -106,6 +109,71 @@ module.exports = {
                                 .setColor(colors.JOIN_COLOR);
                             setTimeout(() => {
                                 m.channel.send({ embeds: [welcomeEmbed] });
+                            }, 500);
+
+                            collector.stop();
+                            return;
+                        } else {
+                            if (m.author.bot) return;
+                            m.reply({ embeds: [timedOut] });
+                        }
+                    });
+                }
+                if (interaction.values[0] === "leave_msg") {
+
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+
+                    let leavemessage = guildDatabase.leaveMessage;
+
+                    if (leavemessage === undefined) leavemessage = "Goodbye {user}!"
+
+                    leavemessage = leavemessage.replace("{user}", interaction.user);
+                    leavemessage = leavemessage.replace("{user-name}", interaction.user.username);
+                    leavemessage = leavemessage.replace("{user-discriminator}", interaction.user.discriminator);
+                    leavemessage = leavemessage.replace("{guild-name}", interaction.guild.name);
+
+
+                    const welcome = new MessageEmbed()
+                        .setTitle("Change Leave Message")
+                        .setDescription("Send the new leave message within 60 seconds to change it.")
+                        .addField("Variables to use", "**{user}** - mentions the user\n**{user-name}** - The users name\n**{user-discriminator}** - Sends the users discriminator\n**{guild-name}** - Sends the guild name")
+                        .addField("Current message", `${leavemessage}`)
+                        .setColor(colors.COLOR)
+                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
+                    interaction.reply({ embeds: [welcome], ephemeral: true });
+                    collector.on('collect', async m => {
+                        if (m) {
+                            const C = m.content;
+                            if (!C) return;
+                            if (m.content.length > 1020) return m.reply("That message is too long.");
+
+                            let newmsg = C;
+
+                            if (newmsg === undefined) newmsg = "Goodbye {user}!"
+
+                            newmsg = newmsg.replace("{user}", m.author);
+                            newmsg = newmsg.replace("{user-name}", m.author.username);
+                            newmsg = newmsg.replace("{user-discriminator}", m.author.discriminator);
+                            newmsg = newmsg.replace("{guild-name}", m.guild.name);
+
+                            await guildDatabase.updateOne({
+                                leaveMessage: C
+                            });
+
+                            const updated = new MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription(`Changed leave message to: ${C}. Example in use:`)
+                                .setColor(colors.COLOR)
+                            m.channel.send({ embeds: [updated] })
+
+                            const leaveEmbed = new MessageEmbed()
+                                .setAuthor(`${m.author.tag} just left!`, m.author.avatarURL())
+                                .setDescription(`${newmsg}`)
+                                .setColor(colors.LEAVE_COLOR);
+                            setTimeout(() => {
+                                m.channel.send({ embeds: [leaveEmbed] });
                             }, 500);
 
                             collector.stop();

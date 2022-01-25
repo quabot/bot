@@ -29,7 +29,7 @@ module.exports = {
                 .addField("Version", config.VERSION)
                 .addField("Servers", `${client.guilds.cache.size}`)
                 .addField("Users", `${client.users.cache.size}`)
-                .addField("Developers", "Joa_sss#0001\nAngel.#6921\nThe Developer#0986")
+                .addField("Developers", "Joa_sss#0001\nThe_T01let#0001\nThe Developer#0986")
                 .addField("Commands", config.CMD_AMOUNT)
                 .setFooter(`Uptime: ${uptime}`)
                 .setColor(colors.COLOR)

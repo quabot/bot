@@ -4,6 +4,7 @@ const { joinVoiceChannel } = require('@discordjs/voice');
 
 const colors = require('../../files/colors.json');
 const { errorMain, addedDatabase, NotInVC, MusicIsDisabled, noSongs, noValidMode } = require('../../files/embeds');
+const { skipButtons } = require('../../files/interactions/music');
 
 module.exports = {
     name: "repeat",
@@ -52,7 +53,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -82,7 +84,7 @@ module.exports = {
                     .setTimestamp()
                 interaction.reply({ embeds: [embed] });
             } else {
-                return interaction.reply({ embeds: [noValidMode] });
+                return interaction.reply({ embeds: [noValidMode], components: [skipButtons] });
             }
         } catch (e) {
             console.log(e);

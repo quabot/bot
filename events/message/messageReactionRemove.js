@@ -60,7 +60,9 @@ module.exports = {
                     return;
                 }).then(msg => {
                     setTimeout(() => {
-                        msg.delete();
+                        msg.delete().catch(err => {
+                            return;
+                        });
                     }, 5000);
                 });
                 memberTarget.roles.remove(emojiRole)
@@ -75,7 +77,9 @@ module.exports = {
                     return;
                 }).then(msg => {
                     setTimeout(() => {
-                        msg.delete();
+                        msg.delete().catch(err => {
+                            return;
+                        });
                     }, 5000);
                 });
             } else if (reactList.reactMode === "drop") {
@@ -89,7 +93,9 @@ module.exports = {
                     return;
                 }).then(msg => {
                     setTimeout(() => {
-                        msg.delete();
+                        msg.delete().catch(err => {
+                            return;
+                        });
                     }, 5000);
                 });
                 memberTarget.roles.remove(emojiRole)

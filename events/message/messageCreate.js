@@ -29,14 +29,13 @@ module.exports = {
         }
 
         try {
-
             let content = message.content;
             if (content.startsWith("!" || "?" || "$" || ".")) {
                 let commandName = content.substring(1)
 
                 if (Commands.includes(commandName)) return message.reply(":robot: Please use a `/` to use my commands!");
             }
-            
+
 
             const User = require('../../schemas/UserSchema');
             const userDatabase = await User.findOne({
@@ -93,7 +92,8 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!"
+                        swearEnabled: false,
+transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -112,18 +112,55 @@ module.exports = {
             const user = message.author;
             const prefix = "/";
 
+            //return;
+            if (guildDatabase.swearEnabled === "true") {
+                const { Swears } = require('../../validation/swearwords');
+                let msg = message.content.toLowerCase();
+                msg = msg.replace(/\s+/g, '');
+                msg = msg.replace('.', '');
+                msg = msg.replace(',', '');
+                for (let i = 0; i < Swears.length; i++) {
+                    if (msg.includes(Swears[i])) {
+                        const SwearFound = new Discord.MessageEmbed()
+                            .setDescription(`Please do not swear! One of your servers, **${message.guild.name}** has a swearfilter activated.`)
+                            .setColor(colors.COLOR)
+                        message.author.send({ embeds: [SwearFound] }).catch(err => {
+                            console.log("DMS Disabled.");
+                        })
+                        message.delete().catch(err => {
+                            console.log("Delete swearfilter error.");
+                        });
+                        const logChannel = message.guild.channels.cache.get(guildDatabase.logChannelID);
+
+                        if (guildDatabase.logEnabled === "false") return;
+                        if (logChannel) {
+                            const embed = new Discord.MessageEmbed()
+                                .setTitle("Swear Filter Triggered")
+                                .addField("User", `${message.author}`)
+                                .addField("Swearword", `${Swears[i]}`)
+                                .setFooter(`ID: ${message.author.id}`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            logChannel.send({ embeds: [embed] }).catch(err => {
+                                console.log("Delete swearfilter error.");
+                            });
+                        }
+                        return;
+                    }
+                }
+            }
+
             if (guildDatabase.levelEnabled === "true") {
 
                 if (message.content.startsWith("pls" || "?" || "!")) return;
 
 
-                const requiredXp = Levels.xpFor(parseInt(user.level) + 1)
+                const requiredXp = Levels.xpFor(3)
                 let randomAmountOfXp = Math.floor(Math.random() * 14) + 1;
                 if (message.content.length < 2) randomAmountOfXp = Math.ceil(randomAmountOfXp / 4);
                 if (message.content.length < 5) randomAmountOfXp = Math.ceil(randomAmountOfXp / 3);
                 if (message.content.length < 10) randomAmountOfXp = Math.ceil(randomAmountOfXp / 2);
-                console.log(randomAmountOfXp)
-                
+
                 const hasLeveledUp = await Levels.appendXp(message.author.id, message.guild.id, randomAmountOfXp);
 
                 const joinChannel = message.guild.channels.cache.get(guildDatabase.levelChannelID);
@@ -137,12 +174,17 @@ module.exports = {
                         .setThumbnail(message.author.avatarURL())
                         .setTimestamp()
                         .setFooter("Continue to chat to level up further!")
-                    if (joinChannel) { return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] }) } else {
-                        message.channel.send({ content: `${message.author}`, embeds: [levelUpEmbed] });
+                    if (joinChannel) { return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] }).catch(err => {
+                        return;
+                    }) } else {
+                        message.channel.send({ content: `${message.author}`, embeds: [levelUpEmbed] }).catch(err => {
+                            return;
+                        });
                     };
                 }
             }
         } catch (e) {
+            console.log(e)
             return;
         }
     }

@@ -5,22 +5,25 @@ const { errorMain } = require('../../files/embeds');
 
 module.exports = {
     name: "daily",
-    aliases: ['dailymoney', 'coinsdaily'],
-    economy: true,
-    async execute(client, message, args) {
+    description: "Get money every 24 hours.",
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    async execute(client, interaction) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                guildId: message.guild.id,
-                userId: message.author.id
+                guildId: interaction.guild.id,
+                userId: interaction.user.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: message.author.id,
-                        guildId: message.guild.id,
-                        guildName: message.guild.name,
+                        userId: interaction.user.id,
+                        guildId: interaction.guild.id,
+                        guildName: mesinteractionsage.guild.name,
                         outWallet: 0,
                         walletSize: 500,
                         inWallet: 0,
@@ -29,9 +32,9 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [errorMain] });
+                            interaction.channel.send({ embeds: [errorMain] });
                         });
-                    return message.channel.send("You were added to the database! Please add users on messageCreate next time.")
+                    return interaction.channel.send("You were added to the database! Please add users on messageCreate next time.")
                 }
             });
             let moneyGiven = 0;
@@ -52,9 +55,9 @@ module.exports = {
                         .setTitle(`You've already claimed your daily money!`)
                         .setColor(colors.COLOR)
                         .setDescription(`You can claim money again in **${timeLeft}**!`)
-                        .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.xyz) - [Website](https://quabot.xyz)")
+                        .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
                         .setTimestamp()
-                    message.reply({ embeds: [alreadyClaimed], allowedMentions: { repliedUser: false } })
+                    interaction.reply({ embeds: [alreadyClaimed] })
                     return;
                 }
             }
@@ -62,12 +65,12 @@ module.exports = {
             moneyGiven = 10000;
 
             const embed = new discord.MessageEmbed()
-                .setTitle(`Daily money for ${message.author.username}!`)
+                .setTitle(`Daily money for ${interaction.user.username}!`)
                 .setColor(colors.COLOR)
                 .setDescription(`You were given **⑩ 10,000**!\nYou can claim money again in 24 hours.`)
-                .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.xyz) - [Website](https://quabot.xyz)")
+                .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
                 .setTimestamp()
-            message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
+            interaction.reply({ embeds: [embed] });
 
             let spaceAdd = moneyGiven / 40;
 

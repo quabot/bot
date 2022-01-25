@@ -27,7 +27,9 @@ const GuildSchema = new mongoose.Schema({
     mainRole: reqString,
     mutedRole: reqString,
     joinMessage: reqString,
-    leaveMessage: reqString
+    leaveMessage: reqString,
+    swearEnabled: reqString,
+    transcriptChannelID: reqString,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);
