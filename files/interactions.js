@@ -23,16 +23,14 @@ const selectCategory = new discord.MessageActionRow()
                     description: 'Allows you to change roles for people who are muted, on join etc.',
                     value: 'change_roles',
                 },
-                {
-                    label: 'Logging Settings',
-                    description: 'Allows you to toggle logging for certain events.',
-                    //value: 'log_settings',
-                    value: 'event_settings',
-                },
+                // {
+                //     label: 'Logging Settings',
+                //     description: 'Allows you to toggle logging for certain events.',
+                //     value: 'event_settings',
+                // },
                 {
                     label: 'Other Settings',
                     description: 'Coming soon.',
-                    //value: 'other_settings',
                     value: 'other_settings',
                 },
             ]),
@@ -54,11 +52,6 @@ const otherCategory = new discord.MessageActionRow()
                     label: 'Leave message',
                     description: 'Allows you to change log channel, welcome channel and more channel-related settings.',
                     value: 'leave_msg',
-                },
-                {
-                    label: 'Economy Prefix',
-                    description: 'Coming soon.',
-                    value: 'eco_prefix',
                 },
             ]),
     );

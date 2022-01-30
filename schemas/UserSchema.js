@@ -25,8 +25,10 @@ const UserSchema = new mongoose.Schema({
     banCount: reqNumber,
     muteCount: reqNumber,
     warnCount: reqNumber,
+    
     afk: falseBool,
     afkStatus: falseString,
+    bio: falseString,
 });
 
 module.exports = mongoose.model('User', UserSchema);

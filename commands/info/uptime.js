@@ -23,8 +23,9 @@ module.exports = {
             let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
             const embed = new discord.MessageEmbed()
                 .setTitle(`${client.user.tag}`)
-                .setDescription(`has been online for: ${uptime}!`)
+                .setDescription(`has been online for: ${uptime}!\n(<t:${parseInt(client.readyTimestamp / 1000)}:R>`)
                 .setThumbnail("https://i.imgur.com/jgdQUul.png")
+                .setURL("https://status.watchbot.app/bot/845603702210953246")
                 .setColor(colors.COLOR)
                 .setTimestamp();
             interaction.reply({ embeds: [embed] });

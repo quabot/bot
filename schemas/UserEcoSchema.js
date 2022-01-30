@@ -7,6 +7,10 @@ const falseString = {
     type: String,
     required: false,
 }
+const falseNumber = {
+    type: Number,
+    required: false,
+}
 const reqNumber = {
     type: Number,
     required: true,
@@ -14,14 +18,18 @@ const reqNumber = {
 
 const UserEcoSchema = new mongoose.Schema({
     userId: reqString,
-    guildId: reqString,
-    guildName: reqString,
     outWallet: reqNumber,
     walletSize: reqNumber,
     inWallet: reqNumber,
     lastDaily: falseString,
     lastLottery: falseString,
     lastUsed: reqString,
+    lastMeme: falseString,
+    lastCrime: falseString,
+    lastBeg: falseString,
+    lastRobbed: falseString,
+    lastRobAny: falseString,
+    commandsUsed: falseNumber,
 });
 
 module.exports = mongoose.model('UserEco', UserEcoSchema);

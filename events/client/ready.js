@@ -1,4 +1,5 @@
 const config = require('../../files/settings.json');
+const colors = require('../../files/colors.json');
 const discord = require('discord.js');
 const dbots = require('dbots');
 const consola = require('consola');
@@ -51,5 +52,10 @@ Version: ${config.VERSION}\n `);
 
         const Levels = require("discord.js-leveling");
         Levels.setURL(process.env.DATABASE_URL);
+
+        const guild = client.guilds.cache.get("910929721078984735");
+        const channel = guild.channels.cache.get("936728844176592997");
+        const embed = new discord.MessageEmbed().setDescription(`<t:${Math.round((new Date()).getTime() / 1000)}:f>\nQuaBot has been restarted, all services should be operational again soon.`).setColor(colors.COLOR)
+        channel.send({ embeds: [embed] });
     }
 };

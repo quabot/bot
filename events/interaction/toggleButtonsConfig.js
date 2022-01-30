@@ -47,7 +47,7 @@ module.exports = {
                             mutedRole: 'Muted',
                             joinMessage: "Welcome {user} to **{guild-name}**!",
                             swearEnabled: false,
-transcriptChannelID: "none"
+                            transcriptChannelID: "none"
                         })
                         newGuild.save().catch(err => {
                             console.log(err)
@@ -74,7 +74,7 @@ transcriptChannelID: "none"
                     });
                     interaction.update({ ephemeral: true, embeds: [levelDisabled], components: [disabled] });
                 }
-                
+
                 if (interaction.customId === "enableLogs") {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
                     await guildDatabase.updateOne({
@@ -207,7 +207,6 @@ transcriptChannelID: "none"
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
                     await guildDatabase.updateOne({
                         swearEnabled: false,
-transcriptChannelID: "none",
                     });
                     interaction.update({ ephemeral: true, embeds: [swearDisabled], components: [disabled] });
                 }
@@ -227,7 +226,7 @@ transcriptChannelID: "none",
                         await guildDatabase.updateOne({
                             levelChannelID: "none"
                         });
-    
+
                     }
                 }
             }

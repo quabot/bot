@@ -15,18 +15,15 @@ module.exports = {
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                guildId: interaction.guild.id,
                 userId: interaction.user.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
                         userId: interaction.user.id,
-                        guildId: interaction.guild.id,
-                        guildName: mesinteractionsage.guild.name,
-                        outWallet: 0,
+                        outWallet: 250,
                         walletSize: 500,
-                        inWallet: 0,
+                        inWallet: 250,
                         lastUsed: "none"
                     });
                     newEco.save()
@@ -34,7 +31,8 @@ module.exports = {
                             console.log(err);
                             interaction.channel.send({ embeds: [errorMain] });
                         });
-                    return interaction.channel.send("You were added to the database! Please add users on messageCreate next time.")
+                        const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
+                        return interaction.channel.send({ embeds: [addedEmbed] });
                 }
             });
             let moneyGiven = 0;

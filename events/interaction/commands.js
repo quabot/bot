@@ -101,6 +101,35 @@ module.exports = {
 
                 command.execute(client, interaction);
 
+                const UserEco = require('../../schemas/UserEcoSchema');
+                const UserEcoDatabase = await UserEco.findOne({
+                    userId: interaction.user.id
+                }, (err, usereco) => {
+                    if (err) console.error(err);
+                    if (!usereco) {
+                        const newEco = new UserEco({
+                            userId: interaction.user.id,
+                            outWallet: 250,
+                            walletSize: 500,
+                            commandsUsed: 0,
+                            inWallet: 250,
+                            lastUsed: "none"
+                        });
+                        newEco.save()
+                            .catch(err => {
+                                console.log(err);
+                                
+                            });
+                        return;
+                    }
+                });
+
+                let commandsused = UserEcoDatabase.commandsUsed;
+                if (commandsused === undefined) commandsused = 0;
+
+                await UserEcoDatabase.updateOne({
+                    commandsUsed: commandsused + 1,
+                });
             }
 
             if (interaction.isButton()) {
