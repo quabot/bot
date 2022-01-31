@@ -2,41 +2,42 @@
     {
         "id": "1",
         "item": "Apple",
-        "description": "A juicy apple.",
-        "prize": "50",
-        "value": "10",
-        "emoji": ":apple:"
+        "description": "A apple that you can eat.",
+        "prize": 50,
+        "value": 10,
+        "emoji": ":apple:",
+        "max": "5"
     },
     {
         "id": "2",
         "item": "Book",
-        "description": "A book to read.",
-        "prize": "150",
-        "value": "30",
+        "description": "A book to read, makes you smarter.",
+        "prize": 150,
+        "value": 30,
         "emoji": ":book:"
     },
     {
         "id": "3",
         "item": "Clock",
         "description": "A clock to arrive on time for work.",
-        "prize": "250",
-        "value": "50",
+        "prize": 250,
+        "value": 50,
         "emoji": ":alarm_clock:"
     },
     {
         "id": "4",
         "item": "Simple Lock",
         "description": "A simple lock to secure your money.",
-        "prize": "250",
-        "value": "50",
+        "prize": 250,
+        "value": 50,
         "emoji": ":lock:"
     },
     {
         "id": "5",
         "item": "Laptop",
-        "description": "A powerfull laptop to go online.",
-        "prize": "1000",
-        "value": "300",
+        "description": "A simple laptop to do things online.",
+        "prize": 1000,
+        "value": 300,
         "emoji": ":computer:"
     },
     {

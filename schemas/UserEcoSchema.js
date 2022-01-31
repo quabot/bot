@@ -15,6 +15,10 @@ const reqNumber = {
     type: Number,
     required: true,
 }
+const falseArray = {
+    type: Array,
+    required: true,
+}
 
 const UserEcoSchema = new mongoose.Schema({
     userId: reqString,
@@ -30,6 +34,7 @@ const UserEcoSchema = new mongoose.Schema({
     lastRobbed: falseString,
     lastRobAny: falseString,
     commandsUsed: falseNumber,
+    shop: falseArray,
 });
 
 module.exports = mongoose.model('UserEco', UserEcoSchema);

@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const discord = require('discord.js')
 const { createTranscript } = require('discord-html-transcripts');
 
+const shop = require('../../validation/shop.json');
+
 const colors = require('../../files/colors.json');
 const { noPermission } = require('../../files/embeds/config');
 const { addedDatabase, errorMain } = require('../../files/embeds.js');
@@ -178,7 +180,9 @@ module.exports = {
                         lastLottery: new Date().getTime(),
                     });
                     return;
-                } else if (interaction.customId === `disable-lottery-${userId}`) {
+                }
+
+                if (interaction.customId === `disable-lottery-${userId}`) {
                     const buttonsLotteryDis = new discord.MessageActionRow()
                         .addComponents(
                             new discord.MessageButton()
@@ -194,7 +198,9 @@ module.exports = {
                         );
                     interaction.update({ components: [buttonsLotteryDis] });
                     return;
-                } else if (interaction.customId === `pickpocket-${userId}`) {
+                }
+
+                if (interaction.customId === `pickpocket-${userId}`) {
                     interaction.update({ components: [buttonsCrimeDis] });
                     if (UserEcoDatabase.lastCrime) {
                         let difference = new Date().getTime() / 1000 - UserEcoDatabase.lastCrime / 1000;
@@ -244,7 +250,9 @@ module.exports = {
                     });
 
                     return;
-                } else if (interaction.customId === `murder-${userId}`) {
+                }
+
+                if (interaction.customId === `murder-${userId}`) {
                     interaction.update({ components: [buttonsCrimeDis] });
 
                     if (UserEcoDatabase.lastCrime) {
@@ -297,7 +305,9 @@ module.exports = {
                     });
 
                     return;
-                } else if (interaction.customId === `robbery-${userId}`) {
+                }
+
+                if (interaction.customId === `robbery-${userId}`) {
                     interaction.update({ components: [buttonsCrimeDis] });
 
                     if (UserEcoDatabase.lastCrime) {
@@ -353,6 +363,86 @@ module.exports = {
                     });
 
                     return;
+                }
+            }
+
+            if (interaction.isSelectMenu()) {
+                const userId = interaction.user.id;
+                const UserEco = require('../../schemas/UserEcoSchema');
+                const UserEcoDatabase = await UserEco.findOne({
+                    userId: interaction.user.id
+                }, (err, usereco) => {
+                    if (err) console.error(err);
+                    if (!usereco) {
+                        const newEco = new UserEco({
+                            userId: interaction.user.id,
+                            outWallet: 0,
+                            walletSize: 500,
+                            inWallet: 0,
+                            lastUsed: "none"
+                        });
+                        newEco.save()
+                            .catch(err => {
+                                console.log(err);
+                                interaction.channel.send({ embeds: [errorMain] });
+                            });
+                        const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
+                        return interaction.channel.send({ embeds: [addedEmbed] });
+                    }
+                });
+                if (interaction.values[0] === `shop0`) {
+
+                    if (UserEcoDatabase.outWallet < parseInt(shop[0].prize)) {
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`No money!`)
+                            .setDescription(`You need \`⑩ ${shop[0].prize}\` to buy **${shop[0].emoji} ${shop[0].item}**!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                        return;
+                    }
+
+                    const array = UserEcoDatabase.shop;
+                    const item = array.find(item => item.name === `${shop[0].item}`);
+                    if (item) {
+                        const updatedArray = array.map(item => {
+                            if (item.name === `${shop[0].item}`) {
+                                return { ...item, count: item.count + 1 }
+                            }
+
+                            return item;
+                        });
+                        await UserEcoDatabase.updateOne({
+                            shop: updatedArray,
+                            outWallet: UserEcoDatabase.outWallet - shop[0].prize,
+                        });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
+                            .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[0].emoji} ${shop[0].item}**!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                    } else {
+                        const array = [
+                            {
+                                id: "1",
+                                name: `${shop[0].item}`,
+                                count: 1,
+                            }
+                        ]
+
+                        await UserEcoDatabase.updateOne({
+                            shop: array,
+                            outWallet: UserEcoDatabase.outWallet - shop[0].prize,
+                        });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
+                            .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                    }
+
                 }
             }
 

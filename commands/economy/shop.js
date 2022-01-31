@@ -46,27 +46,27 @@ module.exports = {
                         .setMaxValues(1)
                         .addOptions([
                             {
-                                label: `ICON HERE ${shop[0].item}`,
+                                label: `🍎 ${shop[0].item}`,
                                 description: `${shop[0].description}`,
                                 value: 'shop0',
                             },
                             {
-                                label: `${shop[1].item}`,
+                                label: `📖 ${shop[1].item}`,
                                 description: `${shop[1].description}`,
                                 value: 'shop1',
                             },
                             {
-                                label: `${shop[2].item}`,
+                                label: `⏰ ${shop[2].item}`,
                                 description: `${shop[2].description}`,
                                 value: 'shop2',
                             },
                             {
-                                label: `${shop[3].item}`,
+                                label: `🔒 ${shop[3].item}`,
                                 description: `${shop[3].description}`,
                                 value: 'shop3',
                             },
                             {
-                                label: `${shop[4].item}`,
+                                label: `💻 ${shop[4].item}`,
                                 description: `${shop[4].description}`,
                                 value: 'shop4',
                             },
@@ -78,12 +78,12 @@ module.exports = {
                     new discord.MessageButton()
                         .setCustomId('page1dis')
                         .setDisabled(true)
-                        .setLabel('🡰')
-                        .setStyle('PRIMARY'),
+                        .setLabel('⬅️')
+                        .setStyle('SECONDARY'),
                     new discord.MessageButton()
                         .setCustomId('page1next')
-                        .setLabel('🡲')
-                        .setStyle('PRIMARY'),
+                        .setLabel('➡️')
+                        .setStyle('SECONDARY'),
                 );
 
             const shopPage1Embed = new discord.MessageEmbed()
