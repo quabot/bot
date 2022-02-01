@@ -39,8 +39,8 @@ module.exports = {
 
             if (UserEcoDatabase.lastMeme) {
                 let difference = new Date().getTime() / 1000 - UserEcoDatabase.lastMeme / 1000;
-                if (difference < 180) {
-                    let nextTime = parseInt(UserEcoDatabase.lastMeme) + 180000;
+                if (difference < 120) {
+                    let nextTime = parseInt(UserEcoDatabase.lastMeme) + 120000;
                     var timestamp = nextTime - new Date().getTime();
                     var date = new Date(timestamp);
                     const timeLeft =  date.getMinutes() + " minutes and " + date.getSeconds() + " seconds";

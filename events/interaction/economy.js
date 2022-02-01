@@ -403,29 +403,60 @@ module.exports = {
                     }
 
                     const array = UserEcoDatabase.shop;
-                    const item = array.find(item => item.name === `${shop[0].item}`);
-                    if (item) {
-                        const updatedArray = array.map(item => {
-                            if (item.name === `${shop[0].item}`) {
-                                return { ...item, count: item.count + 1 }
-                            }
+                    if (array) {
+                        const item = array.find(item => item.name === `${shop[0].item}`);
+                        if (item) {
+                            if (item.count + 1 > shop[0].max) {
+                                const embed = new discord.MessageEmbed()
+                                    .setTitle(`Too many!`)
+                                    .setDescription(`You can only purchase \`${shop[0].max}\` of **${shop[0].emoji} ${shop[0].item}**!`)
+                                    .setColor(colors.COLOR)
+                                    .setTimestamp()
+                                interaction.reply({ ephemeral: true, embeds: [embed] });
+                                return;
 
-                            return item;
-                        });
-                        await UserEcoDatabase.updateOne({
-                            shop: updatedArray,
-                            outWallet: UserEcoDatabase.outWallet - shop[0].prize,
-                        });
-                        const embed = new discord.MessageEmbed()
-                            .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
-                            .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[0].emoji} ${shop[0].item}**!`)
-                            .setColor(colors.COLOR)
-                            .setTimestamp()
-                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                            }
+                            const updatedArray = array.map(item => {
+                                if (item.name === `${shop[0].item}`) {
+                                    return { ...item, count: item.count + 1 }
+                                }
+
+                                return item;
+                            });
+                            await UserEcoDatabase.updateOne({
+                                shop: updatedArray,
+                                outWallet: UserEcoDatabase.outWallet - shop[0].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[0].emoji} ${shop[0].item}**!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        } else {
+                            array.push(
+                                {
+                                    id: "2",
+                                    name: `${shop[0].item}`,
+                                    count: 1,
+                                }
+                            )
+
+                            await UserEcoDatabase.updateOne({
+                                shop: array,
+                                outWallet: UserEcoDatabase.outWallet - shop[0].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        }
                     } else {
                         const array = [
                             {
-                                id: "1",
+                                id: "2",
                                 name: `${shop[0].item}`,
                                 count: 1,
                             }
@@ -443,6 +474,354 @@ module.exports = {
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                     }
 
+                }
+
+                if (interaction.values[0] === `shop1`) {
+
+                    if (UserEcoDatabase.outWallet < parseInt(shop[1].prize)) {
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`No money!`)
+                            .setDescription(`You need \`⑩ ${shop[1].prize}\` to buy **${shop[1].emoji} ${shop[1].item}**!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                        return;
+                    }
+
+                    const array = UserEcoDatabase.shop;
+                    if (array) {
+                        const item = array.find(item => item.name === `${shop[1].item}`);
+                        if (item) {
+                            const updatedArray = array.map(item => {
+                                if (item.name === `${shop[1].item}`) {
+                                    return { ...item, count: item.count + 1 }
+                                }
+
+                                return item;
+                            });
+
+                            if (item.count + 1 > shop[1].max) {
+                                const embed = new discord.MessageEmbed()
+                                    .setTitle(`Too many!`)
+                                    .setDescription(`You can only purchase \`${shop[1].max}\` of **${shop[1].emoji} ${shop[1].item}**!`)
+                                    .setColor(colors.COLOR)
+                                    .setTimestamp()
+                                interaction.reply({ ephemeral: true, embeds: [embed] });
+                                return;
+
+                            }
+
+                            await UserEcoDatabase.updateOne({
+                                shop: updatedArray,
+                                outWallet: UserEcoDatabase.outWallet - shop[1].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[1].emoji} ${shop[1].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[1].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[1].emoji} ${shop[1].item}**!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        } else {
+                            array.push(
+                                {
+                                    id: "2",
+                                    name: `${shop[1].item}`,
+                                    count: 1,
+                                }
+                            )
+
+                            await UserEcoDatabase.updateOne({
+                                shop: array,
+                                outWallet: UserEcoDatabase.outWallet - shop[1].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[1].emoji} ${shop[1].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[1].prize}\`!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        }
+                    } else {
+                        const array = [
+                            {
+                                id: "2",
+                                name: `${shop[1].item}`,
+                                count: 1,
+                            }
+                        ]
+
+                        await UserEcoDatabase.updateOne({
+                            shop: array,
+                            outWallet: UserEcoDatabase.outWallet - shop[1].prize,
+                        });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`Bought 1x ${shop[1].emoji} ${shop[1].item}`)
+                            .setDescription(`This transaction cost you \`⑩ ${shop[1].prize}\`!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                    }
+                }
+
+                if (interaction.values[0] === `shop2`) {
+
+                    if (UserEcoDatabase.outWallet < parseInt(shop[2].prize)) {
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`No money!`)
+                            .setDescription(`You need \`⑩ ${shop[2].prize}\` to buy **${shop[2].emoji} ${shop[2].item}**!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                        return;
+                    }
+
+                    const array = UserEcoDatabase.shop;
+                    if (array) {
+                        const item = array.find(item => item.name === `${shop[2].item}`);
+                        if (item) {
+                            const updatedArray = array.map(item => {
+                                if (item.name === `${shop[2].item}`) {
+                                    return { ...item, count: item.count + 1 }
+                                }
+
+                                return item;
+                            });
+
+                            if (item.count + 1 > shop[2].max) {
+                                const embed = new discord.MessageEmbed()
+                                    .setTitle(`Too many!`)
+                                    .setDescription(`You can only purchase \`${shop[2].max}\` of **${shop[2].emoji} ${shop[2].item}**!`)
+                                    .setColor(colors.COLOR)
+                                    .setTimestamp()
+                                interaction.reply({ ephemeral: true, embeds: [embed] });
+                                return;
+
+                            }
+
+                            await UserEcoDatabase.updateOne({
+                                shop: updatedArray,
+                                outWallet: UserEcoDatabase.outWallet - shop[2].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[2].emoji} ${shop[2].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[2].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[2].emoji} ${shop[2].item}**!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        } else {
+                            array.push(
+                                {
+                                    id: "2",
+                                    name: `${shop[2].item}`,
+                                    count: 1,
+                                }
+                            )
+
+                            await UserEcoDatabase.updateOne({
+                                shop: array,
+                                outWallet: UserEcoDatabase.outWallet - shop[2].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[2].emoji} ${shop[2].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[2].prize}\`!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        }
+                    } else {
+                        const array = [
+                            {
+                                id: "2",
+                                name: `${shop[2].item}`,
+                                count: 1,
+                            }
+                        ]
+
+                        await UserEcoDatabase.updateOne({
+                            shop: array,
+                            outWallet: UserEcoDatabase.outWallet - shop[2].prize,
+                        });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`Bought 1x ${shop[2].emoji} ${shop[2].item}`)
+                            .setDescription(`This transaction cost you \`⑩ ${shop[2].prize}\`!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                    }
+                }
+
+                if (interaction.values[0] === `shop3`) {
+
+                    if (UserEcoDatabase.outWallet < parseInt(shop[3].prize)) {
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`No money!`)
+                            .setDescription(`You need \`⑩ ${shop[3].prize}\` to buy **${shop[3].emoji} ${shop[3].item}**!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                        return;
+                    }
+
+                    const array = UserEcoDatabase.shop;
+                    if (array) {
+                        const item = array.find(item => item.name === `${shop[3].item}`);
+                        if (item) {
+                            const updatedArray = array.map(item => {
+                                if (item.name === `${shop[3].item}`) {
+                                    return { ...item, count: item.count + 1 }
+                                }
+
+                                return item;
+                            });
+
+                            if (item.count + 1 > shop[3].max) {
+                                const embed = new discord.MessageEmbed()
+                                    .setTitle(`Too many!`)
+                                    .setDescription(`You can only purchase \`${shop[3].max}\` of **${shop[3].emoji} ${shop[3].item}**!`)
+                                    .setColor(colors.COLOR)
+                                    .setTimestamp()
+                                interaction.reply({ ephemeral: true, embeds: [embed] });
+                                return;
+
+                            }
+
+                            await UserEcoDatabase.updateOne({
+                                shop: updatedArray,
+                                outWallet: UserEcoDatabase.outWallet - shop[3].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[3].emoji} ${shop[3].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[3].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[3].emoji} ${shop[3].item}**!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        } else {
+                            array.push(
+                                {
+                                    id: "2",
+                                    name: `${shop[3].item}`,
+                                    count: 1,
+                                }
+                            )
+
+                            await UserEcoDatabase.updateOne({
+                                shop: array,
+                                outWallet: UserEcoDatabase.outWallet - shop[3].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[3].emoji} ${shop[3].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[3].prize}\`!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        }
+                    } else {
+                        const array = [
+                            {
+                                id: "2",
+                                name: `${shop[3].item}`,
+                                count: 1,
+                            }
+                        ]
+
+                        await UserEcoDatabase.updateOne({
+                            shop: array,
+                            outWallet: UserEcoDatabase.outWallet - shop[3].prize,
+                        });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`Bought 1x ${shop[3].emoji} ${shop[3].item}`)
+                            .setDescription(`This transaction cost you \`⑩ ${shop[3].prize}\`!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                    }
+                }
+
+                if (interaction.values[0] === `shop4`) {
+
+                    if (UserEcoDatabase.outWallet < parseInt(shop[4].prize)) {
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`No money!`)
+                            .setDescription(`You need \`⑩ ${shop[4].prize}\` to buy **${shop[4].emoji} ${shop[4].item}**!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                        return;
+                    }
+
+                    const array = UserEcoDatabase.shop;
+                    if (array) {
+                        const item = array.find(item => item.name === `${shop[4].item}`);
+                        if (item) {
+                            const updatedArray = array.map(item => {
+                                if (item.name === `${shop[4].item}`) {
+                                    return { ...item, count: item.count + 1 }
+                                }
+
+                                return item;
+                            });
+
+                            if (item.count + 1 > shop[4].max) {
+                                const embed = new discord.MessageEmbed()
+                                    .setTitle(`Too many!`)
+                                    .setDescription(`You can only purchase \`${shop[4].max}\` of **${shop[4].emoji} ${shop[4].item}**!`)
+                                    .setColor(colors.COLOR)
+                                    .setTimestamp()
+                                interaction.reply({ ephemeral: true, embeds: [embed] });
+                                return;
+
+                            }
+
+                            await UserEcoDatabase.updateOne({
+                                shop: updatedArray,
+                                outWallet: UserEcoDatabase.outWallet - shop[4].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[4].emoji} ${shop[4].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[4].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[4].emoji} ${shop[4].item}**!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        } else {
+                            array.push(
+                                {
+                                    id: "2",
+                                    name: `${shop[4].item}`,
+                                    count: 1,
+                                }
+                            )
+
+                            await UserEcoDatabase.updateOne({
+                                shop: array,
+                                outWallet: UserEcoDatabase.outWallet - shop[4].prize,
+                            });
+                            const embed = new discord.MessageEmbed()
+                                .setTitle(`Bought 1x ${shop[4].emoji} ${shop[4].item}`)
+                                .setDescription(`This transaction cost you \`⑩ ${shop[4].prize}\`!`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            interaction.reply({ ephemeral: true, embeds: [embed] });
+                        }
+                    } else {
+                        const array = [
+                            {
+                                id: "2",
+                                name: `${shop[4].item}`,
+                                count: 1,
+                            }
+                        ]
+
+                        await UserEcoDatabase.updateOne({
+                            shop: array,
+                            outWallet: UserEcoDatabase.outWallet - shop[4].prize,
+                        });
+                        const embed = new discord.MessageEmbed()
+                            .setTitle(`Bought 1x ${shop[4].emoji} ${shop[4].item}`)
+                            .setDescription(`This transaction cost you \`⑩ ${shop[4].prize}\`!`)
+                            .setColor(colors.COLOR)
+                            .setTimestamp()
+                        interaction.reply({ ephemeral: true, embeds: [embed] });
+                    }
                 }
             }
 

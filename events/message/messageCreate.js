@@ -29,13 +29,6 @@ module.exports = {
         }
 
         try {
-            let content = message.content;
-            if (content.startsWith("!" || "?" || "$" || ".")) {
-                let commandName = content.substring(1)
-
-                if (Commands.includes(commandName)) return message.reply(":robot: Please use a `/` to use my commands!");
-            }
-
 
             const User = require('../../schemas/UserSchema');
             const userDatabase = await User.findOne({

@@ -6,7 +6,7 @@
         "prize": 50,
         "value": 10,
         "emoji": ":apple:",
-        "max": "5"
+        "max": 5
     },
     {
         "id": "2",
@@ -14,7 +14,8 @@
         "description": "A book to read, makes you smarter.",
         "prize": 150,
         "value": 30,
-        "emoji": ":book:"
+        "emoji": ":book:",
+        "max": 2
     },
     {
         "id": "3",
@@ -22,7 +23,8 @@
         "description": "A clock to arrive on time for work.",
         "prize": 250,
         "value": 50,
-        "emoji": ":alarm_clock:"
+        "emoji": ":alarm_clock:",
+        "max": 1
     },
     {
         "id": "4",
@@ -30,7 +32,8 @@
         "description": "A simple lock to secure your money.",
         "prize": 250,
         "value": 50,
-        "emoji": ":lock:"
+        "emoji": ":lock:",
+        "max": 1
     },
     {
         "id": "5",
@@ -38,7 +41,8 @@
         "description": "A simple laptop to do things online.",
         "prize": 1000,
         "value": 300,
-        "emoji": ":computer:"
+        "emoji": ":computer:",
+        "max": 1
     },
     {
         "id": "6",
