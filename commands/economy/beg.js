@@ -10,17 +10,19 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-    async execute(client, interaction) {
+     aliases: ['gimme'],
+     economy: true,
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -48,7 +50,7 @@ module.exports = {
                         .setTitle(`You are on cooldown!`)
                         .setColor(colors.COLOR)
                         .setDescription(`Wait **${timeLeft}** to beg for money again!`)
-                    interaction.reply({ embeds: [notValid]});
+                        message.reply({ embeds: [notValid],  allowedMentions: { repliedUser: false }});
                     return;
                 }
             }
@@ -56,7 +58,7 @@ module.exports = {
             let yes = Math.random();
             const lostarray = ["imagine begging", "go work you fool (coming soon)", "do something better with your life", "i have better things to do then give you money", "go away begger"]
             var lostmsg = lostarray[Math.floor(Math.random()*lostarray.length)];
-            const winarray = ["here you go take ", "ok here's ", "heres some money", "i hate beggers but here u go ", "thought it was funny"]
+            const winarray = ["here you go take ", "ok here's ", "heres some mone: ", "i hate beggers but here u go ", "thought it was funny"]
             var winmsg = winarray[Math.floor(Math.random()*winarray.length)];
             let randomCoins = Math.random() * 1000 + 100;
             randomCoins = Math.round(randomCoins)
@@ -69,14 +71,14 @@ module.exports = {
                     .setTimestamp()
                     .setDescription(`you got a total of **⑩ ${randomMoney.toLocaleString('us-US', {minimumFractionDigits: 0})}**`)
                     .setColor(colors.LIME)
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
             } else if (yes < 0.5) {
                 const embed = new discord.MessageEmbed()
                     .setTitle(`${lostmsg} `)
                     .setTimestamp()
                     .setDescription("You got a grand total of **⑩ 0**!")
                     .setColor(colors.RED)
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
             }
 
             let spaceAdd = moneyGiven / 40;

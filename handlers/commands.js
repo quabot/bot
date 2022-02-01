@@ -38,6 +38,7 @@ module.exports = async (client) => {
     consola.log(Table.toString());
 // ADD HOTFIX// ADD HOTFIX// ADD HOTFIX
     client.on('ready', async () => {
+        client.commands.set([]);
         client.guilds.cache.forEach((guild) => {
             guild.commands.set(CommandsArray).then(async (command) => {
                 const Roles = (commandName) => {

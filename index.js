@@ -3,7 +3,7 @@ const client = new Discord.Client({ intents: 6095, partials: ['MESSAGE', 'CHANNE
 require('dotenv').config()
 
 client.commands = new Discord.Collection();
-['commands', 'events'].forEach(handler => {
+['commands', 'events', 'text_commands'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
 });
 

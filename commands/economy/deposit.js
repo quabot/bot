@@ -18,6 +18,7 @@ module.exports = {
             required: true,
         },
     ],
+    economy: true,
     async execute(client, interaction) {
         try {
 

@@ -10,6 +10,7 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
+    economy: true,
     async execute(client, interaction) {
 
         try {

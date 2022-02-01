@@ -12,6 +12,7 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
+    economy: true,
     options: [
         {
             name: "item",

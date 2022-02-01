@@ -86,7 +86,7 @@ module.exports = {
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         swearEnabled: false,
-transcriptChannelID: "none"
+                        transcriptChannelID: "none"
                     });
                     newGuild.save()
                         .catch(err => {
@@ -103,9 +103,8 @@ transcriptChannelID: "none"
 
             const IDGuild = message.guild.id;
             const user = message.author;
-            const prefix = "/";
+            const prefix = "!";
 
-            //return;
             if (guildDatabase.swearEnabled === "true") {
                 const { Swears } = require('../../validation/swearwords');
                 let msg = message.content.toLowerCase();
@@ -167,9 +166,11 @@ transcriptChannelID: "none"
                         .setThumbnail(message.author.avatarURL())
                         .setTimestamp()
                         .setFooter("Continue to chat to level up further!")
-                    if (joinChannel) { return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] }).catch(err => {
-                        return;
-                    }) } else {
+                    if (joinChannel) {
+                        return joinChannel.send({ content: `${message.author}`, embeds: [levelUpEmbed] }).catch(err => {
+                            return;
+                        })
+                    } else {
                         message.channel.send({ content: `${message.author}`, embeds: [levelUpEmbed] }).catch(err => {
                             return;
                         });
