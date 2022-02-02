@@ -34,7 +34,7 @@ module.exports = {
                             closedTicketCategory: 'Tickets',
                             logEnabled: true,
                             musicEnabled: true,
-                            levelEnabled: true,
+                            levelEnabled: false,
                             reportEnabled: true,
                             suggestEnabled: true,
                             joinMessage: "Welcome {user} to **{guild-name}**!",

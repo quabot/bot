@@ -1,7 +1,7 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 
-const { errorMain } = require('../../files/embeds');
+const { errorMain } = require('../../../files/embeds');
 
 module.exports = {
     name: "withdraw",
@@ -15,7 +15,7 @@ module.exports = {
     async execute(client, message, args) {
         try {
 
-            const UserEco = require('../../schemas/UserEcoSchema');
+            const UserEco = require('../../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
                 userId: message.author.id
             }, (err, usereco) => {

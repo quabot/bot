@@ -3,7 +3,7 @@ const { Client } = require('discord.js');
 const { promisify } = require('util');
 const { glob } = require("glob");
 const Ascii = require('ascii-table');
-const consola = require('consola');
+const consola = require('consola');;
 
 const PG = promisify(glob);
 
@@ -15,37 +15,39 @@ module.exports = async (client) => {
     (await PG(`${process.cwd()}/Commands/*/*.js`)).map(async (file) => {
         const command = require(file);
 
-        if (command.economy) return;
-
         if (!command.name)
-            return Table.addRow(file.split("/")[7], "❌ FAILED", "Missing a name.");
+            return Table.addRow(file.split("/")[7], "❌FAILED", "Missing a name.");
+
         if (!command.description)
-            return Table.addRow(command.name, "❌ FAILED", "Missing a description.");
+            return Table.addRow(command.name, "❌FAILED", "Missing a description.");
+
         if (command.permission) {
             if (Perms.includes(command.permission))
                 command.defaultPermission = false;
             else
-                return Table.addRow(command.name, "❌ FAILED", "Permission is invalid.");
+                return Table.addRow(command.name, "❌FAILED", "Permission is invalid.");
         };
 
         client.commands.set(command.name, command)
         CommandsArray.push(command);
 
-        await Table.addRow(command.name, "✅SUCCESFULL");
+        await Table.addRow(command.name, "✅ SUCCESFULL");
 
     });
 
     consola.log(Table.toString());
-// ADD HOTFIX// ADD HOTFIX// ADD HOTFIX
+
+
+
+
     client.on('ready', async () => {
-        client.commands.set([]);
         client.guilds.cache.forEach((guild) => {
             guild.commands.set(CommandsArray).then(async (command) => {
                 const Roles = (commandName) => {
                     const cmdPerms = CommandsArray.find((c) => c.name === commandName).permission;
                     if (!cmdPerms) return null;
 
-                    return guild.roles.cache.filter((r) => r.permissions.has(cmdPerms) && !r.managed).first(10);
+                    return guild.roles.cache.filter((r) => r.permissions.has(cmdPerms))
                 }
 
                 const fullPermissions = command.reduce((accumulator, r) => {
@@ -59,11 +61,13 @@ module.exports = async (client) => {
                     return [...accumulator, { id: r.id, permissions }]
                 }, [])
 
-                await guild.commands.permissions.set({ fullPermissions });
-            })
-        })
-    });// ADD HOTFIX// ADD HOTFIX// ADD HOTFIX
-// ADD HOTFIX
+                await guild.commands.permissions.set({ fullPermissions })
+            }).catch(err => {
+                console.log(`Error with guild ${guild.name}! This is probably a lack of scopes.`);
+            });
+        });
+    });
+
     client.on('guildCreate', async (guild) => {
         guild.commands.set(CommandsArray).then(async (command) => {
             const Roles = (commandName) => {
@@ -85,6 +89,8 @@ module.exports = async (client) => {
             }, [])
 
             await guild.commands.permissions.set({ fullPermissions })
-        }) // ADD HOTFIX
-    })
+        }).catch(err => {
+            console.log(`Error with guild ${guild.name}! This is probably a lack of scopes.`);
+        });
+    });
 };

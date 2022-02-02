@@ -44,7 +44,7 @@ module.exports = {
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
                         musicEnabled: true,
-                        levelEnabled: true,
+                        levelEnabled: false,
                         reportEnabled: true,
                         suggestEnabled: true,
                         ticketEnabled: true,

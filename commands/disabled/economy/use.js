@@ -1,9 +1,10 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const moment = require('moment');
+const colors = require('../../../files/colors.json');
 
-const { errorMain } = require('../../files/embeds');
+const { errorMain } = require('../../../files/embeds');
 
-const shop = require('../../validation/shop.json');
+const shop = require('../../../validation/shop.json');
 
 module.exports = {
     name: "use",
@@ -19,7 +20,7 @@ module.exports = {
         try {
             let arguments = args.join(' ');
             if (!arguments) return message.reply({ content: "I don't think that item exists.", allowedMentions: { repliedUser: false } })
-            const UserEco = require('../../schemas/UserEcoSchema');
+            const UserEco = require('../../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
                 userId: message.author.id
             }, (err, usereco) => {
@@ -51,17 +52,15 @@ module.exports = {
             if (foundShop.usable === false) return message.reply({ content: "You can't use that here! Use it while working or something!", allowedMentions: { repliedUser: false } })
 
             if (foundItem.lastUsed) {
-                let difference = new Date().getTime() / 1000 - foundItem.lastUsed / 1000;
-                if (difference < foundShop.activeseconds) {
-                    let nextTime = parseInt(foundItem.lastUsed) + foundShop.active;
-                    var timestamp = nextTime - new Date().getTime();
-                    var date = new Date(timestamp);
-                    const timeLeft = date.getDay() + " days, " +date.getHours() + " hours, " + date.getMinutes() + " minutes and " + date.getSeconds() + " seconds";
-                    const notValid = new discord.MessageEmbed()
-                        .setTitle(`You still have that item active!`)
+                let timeinonehour = foundItem.lastUsed + foundShop.active;
+                if (new Date().getTime() < timeinonehour) {
+                    const timstamp = moment(timeinonehour);
+                    console.log(moment(timstamp).fromNow())
+                    const embed = new discord.MessageEmbed()
+                        .setTitle(`${foundShop.emoji} ${foundShop.item} is still active!`)
+                        .setDescription(`Use it again **${moment(timstamp).fromNow()}**`)
                         .setColor(colors.COLOR)
-                        .setDescription(`Wait **${timeLeft}** for ${foundShop.item} to run out.!`)
-                    message.reply({ embeds: [notValid], allowedMentions: { repliedUser: false } });
+                    message.reply({ embeds: [embed] });
                     return;
                 }
             }
@@ -83,6 +82,7 @@ module.exports = {
                     const embed = new discord.MessageEmbed()
                         .setTitle(`Activated ${foundShop.emoji} ${foundShop.item}`)
                         .setDescription(`This item will remain active for ${foundShop.activeformat}`)
+                        .addField("What does it do?", `${foundShop.whatdo}`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
                     message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });

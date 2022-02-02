@@ -2,10 +2,11 @@
     {
         "id": "1",
         "item": "Apple",
-        "description": "A apple that you can eat.",
+        "description": "A apple that you can eat, gives boosts.",
         "prize": 50,
         "value": 10,
         "emoji": ":apple:",
+        "whatdo": "This item gives you boosts; higher chances of winning the lottery, more daily coins and more money when begging or posting memes.",
         "max": 5,
         "active": 3600000,
         "activeseconds": 3600,
@@ -15,7 +16,7 @@
     {
         "id": "2",
         "item": "Book",
-        "description": "A book to read, makes you smarter.",
+        "description": "A book to read, makes you smarter when working and lets you do harder jobs.",
         "prize": 150,
         "value": 30,
         "emoji": ":book:",
@@ -52,7 +53,8 @@
         "prize": 1000,
         "value": 300,
         "emoji": ":computer:",
-        "max": 1
+        "max": 1,
+        "usable": false
     },
     {
         "id": "6",

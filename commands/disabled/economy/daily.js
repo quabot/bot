@@ -1,8 +1,8 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 
-const { errorMain } = require('../../files/embeds');
-
+const { errorMain } = require('../../../files/embeds');
+const shop = require('../../../validation/shop.json');
 module.exports = {
     name: "daily",
     description: "Get money every 24 hours.",
@@ -15,7 +15,7 @@ module.exports = {
     async execute(client, message) {
 
         try {
-            const UserEco = require('../../schemas/UserEcoSchema');
+            const UserEco = require('../../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
                 userId: message.author.id
             }, (err, usereco) => {
@@ -63,13 +63,29 @@ module.exports = {
             }
 
             moneyGiven = 5000;
+            const array = UserEcoDatabase.shop;
+            const appleArray = array.find(item => item.name === `Apple`);
+            const appleShop = shop.find(item => item.item === `Apple`);
+
+            if (array) {
+                if (appleArray.lastUsed) {
+                let timeinonehour = appleArray.lastUsed + appleShop.active;
+                if (new Date().getTime() < timeinonehour) moneyGiven = 5500;
+            }
+            }
 
             const embed = new discord.MessageEmbed()
                 .setTitle(`Daily money for ${message.author.username}!`)
                 .setColor(colors.COLOR)
-                .setDescription(`You were given **⑩ 5,000**!\nYou can claim money again in 24 hours.`)
+                .setDescription(`You were given **⑩ ${moneyGiven.toLocaleString()}**!\nYou can claim money again in 24 hours.`)
                 .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
                 .setTimestamp()
+            if (array) {
+                    if (appleArray.lastUsed) {
+                    let timeinonehour = appleArray.lastUsed + appleShop.active;
+                    if (new Date().getTime() < timeinonehour) embed.setFooter("5% boost active from 🍎 Apple")
+                }
+                }
             message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
 
             let spaceAdd = moneyGiven / 40;

@@ -1,7 +1,7 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../../../files/colors.json');
 
-const { errorMain } = require('../../files/embeds');
+const { errorMain } = require('../../../files/embeds');
 
 module.exports = {
     name: "rob",
@@ -15,7 +15,7 @@ module.exports = {
     async execute(client, message) {
 
         try {
-            const UserEco = require('../../schemas/UserEcoSchema');
+            const UserEco = require('../../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
                 userId: message.author.id
             }, (err, usereco) => {
@@ -95,7 +95,6 @@ module.exports = {
                 }
             }
 
-
             if (user.bot) {
                 const embed = new discord.MessageEmbed()
                     .setTitle("Leave the bots alone! They have feelings too.")
@@ -135,8 +134,81 @@ module.exports = {
                 return;
             }
 
+            const array = UserEcoDatabase.shop;
+            const appleArray = array.find(item => item.name === `Apple`);
+            const appleShop = shop.find(item => item.item === `Apple`);
+
+            if (array) {
+                if (appleArray.lastUsed) {
+                    let timeinonehour = appleArray.lastUsed + appleShop.active;
+                    if (new Date().getTime() < timeinonehour) {
+                        let maxToWin = OtherUserEcoDatabase.outWallet;
+                        const haveYouWon = Math.random(); // chance w apple: 55% win, 45% lose
+                        if (maxToWin > 5500) maxToWin = 5500;
+                        let moneyWon = Math.random() * maxToWin + 105;
+                        moneyWon = Math.round(moneyWon);
+                        let moneyTaken = moneyWon; // what other user will los
+                        let moneyLost = 0; // what you have lost if you lose
+            
+                        if (haveYouWon > 0.5) moneyTaken = 0;
+                        if (haveYouWon > 0.5) moneyWon = 0;
+            
+                        if (haveYouWon > 0.5) moneyLost = Math.round(Math.random() * 3000 / 2 + 1);
+                        if (haveYouWon > 0.5) {
+                            const notStolen = new discord.MessageEmbed()
+                                .setTitle(`${message.author.username}#${message.author.discriminator} tried to rob you!`)
+                                .setDescription(`${message.author} tried to rob you but failed. You now have an extra ⑩ ${moneyLost.toLocaleString('us-US', {minimumFractionDigits: 0})}!`)
+                                .setTimestamp()
+                                .setFooter("You are now protected for 5 minutes.")
+                                .setColor(colors.COLOR)
+                            user.send({ embeds: [notStolen] }).catch(err => {
+                                return;
+                            });
+                            const lost = new discord.MessageEmbed()
+                                .setTitle(`You got caught trying to steal from ${user.username}!`)
+                                .setDescription(`You had to pay ⑩ ${moneyLost.toLocaleString('us-US', {minimumFractionDigits: 0})} to ${user}`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            message.reply({ embeds: [lost],  allowedMentions: { repliedUser: false } });
+                        }
+            
+                        const spaceAdd = Math.round(moneyWon / 40);
+            
+                        if (haveYouWon < 0.5) {
+                            const stolen = new discord.MessageEmbed()
+                                .setTitle("You got robbed!")
+                                .setDescription(`${message.author} robbed you and stole ⑩ ${moneyWon.toLocaleString('us-US', {minimumFractionDigits: 0})}!`)
+                                .setTimestamp()
+                                .setFooter("You are now protected for 5 minutes.")
+                                .setColor(colors.COLOR)
+                            user.send({ embeds: [stolen] }).catch(err => {
+                                return;
+                            });
+                            const won = new discord.MessageEmbed()
+                                .setTitle(`You stole ⑩ ${moneyWon.toLocaleString('us-US', {minimumFractionDigits: 0})} from ${user.username}!`)
+                                .setDescription(`Because of this succesfull robbery, you got ⑩ ${spaceAdd.toLocaleString('us-US', {minimumFractionDigits: 0})} extra space in your bank.`)
+                                .setColor(colors.COLOR)
+                                .setTimestamp()
+                            message.reply({ embeds: [won],  allowedMentions: { repliedUser: false } });
+                        }
+            
+            
+                        await OtherUserEcoDatabase.updateOne({
+                            lastRobbed: new Date().getTime(),
+                            outWallet: OtherUserEcoDatabase.outWallet + moneyLost - moneyTaken,
+                        });
+            
+                        await UserEcoDatabase.updateOne({
+                            lastRobAny: new Date().getTime(),
+                            outWallet: UserEcoDatabase.outWallet - moneyLost + moneyTaken,
+                            walletSize: UserEcoDatabase.walletSize + spaceAdd,
+                        });
+                        return;
+                    }
+                }
+            }
             let maxToWin = OtherUserEcoDatabase.outWallet;
-            const haveYouWon = Math.random(); // chance: 58% win, 32% lose
+            const haveYouWon = Math.random(); // chance w apple: 55% win, 45% lose
             if (maxToWin > 5000) maxToWin = 5000;
             let moneyWon = Math.random() * maxToWin + 100;
             moneyWon = Math.round(moneyWon);
