@@ -11,17 +11,18 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     economy: true,
-    async execute(client, interaction) {
+    aliases: ['gamble-lottery'],
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -30,10 +31,10 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                         const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
             let moneyGiven = 0;
@@ -51,7 +52,7 @@ module.exports = {
                         .setTitle(`You are on cooldown!`)
                         .setColor(colors.COLOR)
                         .setDescription(`Wait **${timeLeft}** to play again!`)
-                    interaction.reply({ embeds: [notValid] });
+                    message.reply({ embeds: [notValid],  allowedMentions: { repliedUser: false } });
                     return;
                 }
             }
@@ -59,11 +60,11 @@ module.exports = {
             const buttonsLottery = new discord.MessageActionRow()
                 .addComponents(
                     new discord.MessageButton()
-                        .setCustomId(`lottery-${interaction.user.id}`)
+                        .setCustomId(`lottery-${message.author.id}`)
                         .setLabel('Continue')
                         .setStyle('SUCCESS'),
                     new discord.MessageButton()
-                        .setCustomId(`disable-lottery-${interaction.user.id}`)
+                        .setCustomId(`disable-lottery-${message.author.id}`)
                         .setLabel('Abort')
                         .setStyle('DANGER'),
                 );
@@ -73,7 +74,7 @@ module.exports = {
                     .setDescription("You need ⑩ 500 to play in the lottery.")
                     .setTimestamp()
                     .setColor(colors.COLOR)
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
                 return;
             }
 
@@ -82,7 +83,7 @@ module.exports = {
                 .setColor(colors.COLOR)
                 .setDescription("Pay ⑩ 500 to enter, if you win you get ⑩ 10,000!")
                 .setTimestamp()
-            interaction.reply({ embeds: [embed], components: [buttonsLottery] });
+            message.reply({ embeds: [embed], components: [buttonsLottery],  allowedMentions: { repliedUser: false } });
 
 
         } catch (e) {

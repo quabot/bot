@@ -7,21 +7,23 @@ module.exports = {
     name: "postmeme",
     description: "Post a meme for money.",
     /**
+
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
+    aliases: ['pm', 'meme-post', 'memepost'],
     economy: true,
-    async execute(client, interaction) {
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -30,10 +32,10 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                         const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
             let moneyGiven = 0;
@@ -49,7 +51,7 @@ module.exports = {
                         .setTitle(`You are on cooldown!`)
                         .setColor(colors.COLOR)
                         .setDescription(`Wait **${timeLeft}** to post memes again!`)
-                    interaction.reply({ embeds: [notValid]});
+                    message.reply({ embeds: [notValid],  allowedMentions: { repliedUser: false }});
                     return;
                 }
             }
@@ -70,14 +72,14 @@ module.exports = {
                     .setTimestamp()
                     .setDescription(`you earned a total of **⑩ ${randomMoney.toLocaleString('us-US', {minimumFractionDigits: 0})}**`)
                     .setColor(colors.LIME)
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
             } else if (yes < 0.5) {
                 const embed = new discord.MessageEmbed()
                     .setTitle(`${lostmsg} `)
                     .setTimestamp()
                     .setDescription("You earned a grand total of **⑩ 0**!")
                     .setColor(colors.RED)
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
             }
 
             let spaceAdd = moneyGiven / 40;

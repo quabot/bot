@@ -10,26 +10,19 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-     options: [
-        {
-            name: "amount",
-            description: "Amount to deposit.",
-            type: "STRING",
-            required: true,
-        },
-    ],
+    aliases: ['dep'],
     economy: true,
-    async execute(client, interaction) {
+    async execute(client, message, args) {
         try {
 
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -38,16 +31,16 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                         const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
 
-            const amountArgs = interaction.options.getString('amount');
+            const amountArgs = args[0];
 
-            if (amountArgs.length > 500) return interaction.reply({ ephemeral: true, content:"That amount is too much for our systems to handle!"});
+            if (amountArgs.length > 500) return message.reply({ content:"That amount is too much for our systems to handle!",  allowedMentions: { repliedUser: false }});
 
 
             if (amountArgs === "max" || amountArgs === "all") {
@@ -63,7 +56,7 @@ module.exports = {
                         .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${remaining.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] })
+                    message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: remaining,
@@ -77,7 +70,7 @@ module.exports = {
                         .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${something.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] })
+                    message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: UserEcoDatabase.outWallet - amount,
@@ -88,8 +81,8 @@ module.exports = {
                 return;
             } else {
                 let amount = amountArgs;
-                if (!amount) return interaction.reply({ content: "Please give an amount to deposit." });
-                if (isNaN(amount)) return interaction.reply({ content: "Please give an amount to deposit." });
+                if (!amount) return message.reply({ content: "Please give an amount to deposit.",  allowedMentions: { repliedUser: false } });
+                if (isNaN(amount)) return message.reply({ content: "Please give an amount to deposit.",  allowedMentions: { repliedUser: false } });
                 const freeSpace = UserEcoDatabase.walletSize - UserEcoDatabase.inWallet;
 
                 if (amount > UserEcoDatabase.outWallet) amount = UserEcoDatabase.outWallet;
@@ -104,7 +97,7 @@ module.exports = {
                         .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${remaining.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] })
+                    message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: remaining,
@@ -118,7 +111,7 @@ module.exports = {
                         .setDescription(`There's now **⑩ ${a.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${b.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(colors.COLOR)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] })
+                    message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({
                         outWallet: UserEcoDatabase.outWallet - parseInt(amount),

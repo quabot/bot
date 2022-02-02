@@ -13,17 +13,18 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     economy: true,
-    async execute(client, interaction) {
+    aliases: ['inv', 'items'],
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -32,16 +33,16 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                         const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
 
             const array = UserEcoDatabase.shop;
             const embed = new discord.MessageEmbed()
-                .setTitle(`${interaction.user.username}'s inventory`)
+                .setTitle(`${message.author.username}'s inventory`)
                 .setColor(colors.COLOR)
                 .setTimestamp()
 
@@ -52,7 +53,7 @@ module.exports = {
                 embed.addField(`${found.emoji} ${array[i].name} - \`${array[i].count}\``, `ID: ${found.id} - Price: \`⑩ ${found.prize}\``)
             }
 
-            interaction.reply({ embeds: [embed] }); 
+            message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } }); 
 
         } catch (e) {
             console.log(e);

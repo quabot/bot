@@ -79,11 +79,6 @@ module.exports = {
                         .setDisabled(true)
                         .setStyle('PRIMARY'),
                     new discord.MessageButton()
-                        .setCustomId(`fraud-${interaction.user.id}`)
-                        .setLabel('Fraud')
-                        .setDisabled(true)
-                        .setStyle('PRIMARY'),
-                    new discord.MessageButton()
                         .setCustomId(`cancel-crime-${interaction.user.id}`)
                         .setLabel('Abort')
                         .setDisabled(true)

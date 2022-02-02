@@ -10,26 +10,19 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-     options: [
-        {
-            name: "amount",
-            description: "Amount to withdraw.",
-            type: "STRING",
-            required: true,
-        },
-    ],
+    aliases: ['with'],
     economy: true,
-    async execute(client, interaction) {
+    async execute(client, message, args) {
         try {
 
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -38,14 +31,14 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                         const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
             
-            const argsWithdraw = interaction.options.getString('amount');
+            const argsWithdraw = args[0];
 
             if (argsWithdraw === "max" || argsWithdraw === "all") {
                 let amount = UserEcoDatabase.inWallet;
@@ -57,7 +50,7 @@ module.exports = {
                     .setDescription(`There's now **⑩ 0** in your wallet and **⑩ ${a.toLocaleString('us-US', {minimumFractionDigits: 0})}** in your pocket.`)
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] })
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                 await UserEcoDatabase.updateOne({
                     outWallet: UserEcoDatabase.outWallet + amount,
@@ -67,9 +60,9 @@ module.exports = {
 
                 return;
             } else {
-                let amount = argsWithdraw;
-                if (!amount) return interaction.reply({ content: "Please give an amount to deposit." });
-                if (isNaN(amount)) return interaction.reply({ content: "Please give an amount to deposit." });
+                let amount = Math.round(argsWithdraw);
+                if (!amount) return message.reply({ content: "Please give an amount to deposit.",  allowedMentions: { repliedUser: false } });
+                if (isNaN(amount)) return message.reply({ content: "Please give an amount to deposit.",  allowedMentions: { repliedUser: false } });
 
                 if (amount > UserEcoDatabase.inWallet) amount = UserEcoDatabase.inWallet;
 
@@ -81,7 +74,7 @@ module.exports = {
                     .setDescription(`There's now **⑩ ${a.toLocaleString('us-US', {minimumFractionDigits: 0})}** in your wallet and **⑩ ${b.toLocaleString('us-US', {minimumFractionDigits: 0})}** in your pocket.`)
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] })
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                 await UserEcoDatabase.updateOne({
                     outWallet: UserEcoDatabase.outWallet + parseInt(amount),

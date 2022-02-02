@@ -6,7 +6,11 @@
         "prize": 50,
         "value": 10,
         "emoji": ":apple:",
-        "max": 5
+        "max": 5,
+        "active": 3600000,
+        "activeseconds": 3600,
+        "activeformat": "1 hour",
+        "usable": true
     },
     {
         "id": "2",
@@ -15,7 +19,8 @@
         "prize": 150,
         "value": 30,
         "emoji": ":book:",
-        "max": 2
+        "max": 2,
+        "usable": false
     },
     {
         "id": "3",
@@ -24,7 +29,8 @@
         "prize": 250,
         "value": 50,
         "emoji": ":alarm_clock:",
-        "max": 1
+        "max": 1,
+        "usable": false
     },
     {
         "id": "4",
@@ -33,7 +39,11 @@
         "prize": 250,
         "value": 50,
         "emoji": ":lock:",
-        "max": 1
+        "max": 1,
+        "active": 604800000,
+        "activeseconds": 604800,
+        "activeformat": "1 week",
+        "usable": true
     },
     {
         "id": "5",

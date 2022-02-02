@@ -11,17 +11,18 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     economy: true,
-    async execute(client, interaction) {
+    aliases: ['theft, murder, fraud'],
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -30,10 +31,10 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                     const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
-                    return interaction.channel.send({ embeds: [addedEmbed] });
+                    return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
 
@@ -48,7 +49,7 @@ module.exports = {
                         .setTitle(`You are on cooldown!`)
                         .setColor(colors.COLOR)
                         .setDescription(`Wait **${timeLeft}** to commit crimes again!`)
-                    interaction.reply({ embeds: [notValid] });
+                    message.reply({ embeds: [notValid],  allowedMentions: { repliedUser: false } });
                     return;
                 }
             }
@@ -56,19 +57,19 @@ module.exports = {
             const buttonsCrime = new discord.MessageActionRow()
                 .addComponents(
                     new discord.MessageButton()
-                        .setCustomId(`pickpocket-${interaction.user.id}`)
+                        .setCustomId(`pickpocket-${message.author.id}`)
                         .setLabel('Pickpocket')
                         .setStyle('PRIMARY'),
                     new discord.MessageButton()
-                        .setCustomId(`murder-${interaction.user.id}`)
+                        .setCustomId(`murder-${message.author.id}`)
                         .setLabel('Murder')
                         .setStyle('PRIMARY'),
                     new discord.MessageButton()
-                        .setCustomId(`robbery-${interaction.user.id}`)
+                        .setCustomId(`robbery-${message.author.id}`)
                         .setLabel('Robbery')
                         .setStyle('PRIMARY'),
                     new discord.MessageButton()
-                        .setCustomId(`cancel-crime-${interaction.user.id}`)
+                        .setCustomId(`cancel-crime-${message.author.id}`)
                         .setLabel('Abort')
                         .setStyle('DANGER'),
                 );
@@ -77,7 +78,7 @@ module.exports = {
                 .setDescription('click the buttons to do that!')
                 .setColor(colors.COLOR)
                 .setTimestamp()
-            interaction.reply({ embeds: [embed], components: [buttonsCrime] })
+            message.reply({ embeds: [embed], components: [buttonsCrime],  allowedMentions: { repliedUser: false } })
 
         } catch (e) {
             console.log(e);

@@ -12,17 +12,18 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     economy: true,
-    async execute(client, interaction) {
+    aliases: ['buy'],
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -97,7 +98,7 @@ module.exports = {
                 .addField(`${shop[4].emoji} ${shop[4].item} - \`⑩ ${shop[4].prize}\``, `${shop[4].description}`)
                 .setTimestamp()
                 .setColor(colors.COLOR)
-            interaction.reply({ embeds: [shopPage1Embed], components: [shopPage1Select, shopPage1Buttons] });
+            message.reply({ embeds: [shopPage1Embed], components: [shopPage1Select, shopPage1Buttons],  allowedMentions: { repliedUser: false } });
         } catch (e) {
             console.log(e);
             return;

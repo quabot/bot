@@ -63,7 +63,7 @@ module.exports = {
                     const bio = interaction.options.getString("bio");
                     const embed = new discord.MessageEmbed()
                         .setTitle("Set your bio!")
-                        .setDescription("Use `/profile` to view your bio!")
+                        .setDescription("Use `!profile` to view your bio!")
                         .setFooter("TIP: We support nitro emojis in bios.")
                         .setColor(colors.COLOR)
                         .setTimestamp()

@@ -9,12 +9,12 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(message, client) {
-        const guildId = message.guild.id;
 
-        if (guildId === null) return;
 
         try {
+            const guildId = message.guild.id;
 
+            if (guildId === null) return;
             const prefix = "!";
 
             if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -29,7 +29,6 @@ module.exports = {
 
 
         } catch (e) {
-            console.log(e);
             return;
         }
 

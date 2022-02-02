@@ -19,7 +19,6 @@ module.exports = {
             required: false,
         }
     ],
-    economy: true,
     async execute(client, interaction) {
 
         const user = interaction.options.getMember('user');

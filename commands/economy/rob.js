@@ -10,26 +10,19 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
-    options: [
-        {
-            name: "user",
-            description: "The user you want to rob.",
-            type: "USER",
-            required: true,
-        }
-    ],
+    aliases: ['steal', 'rob-user'],
     economy: true,
-    async execute(client, interaction) {
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -45,7 +38,8 @@ module.exports = {
                 }
             });
 
-            const user = interaction.options.getMember('user');
+            const user = message.mentions.users.first();
+            if (!user) return message.reply("you need to give a user to rob")
             const OtherUserEcoDatabase = await UserEco.findOne({
                 userId: user.id
             }, (err, usereco) => {
@@ -61,10 +55,10 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                         const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("Added the other user to the database.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
 
@@ -79,7 +73,7 @@ module.exports = {
                         .setTitle(`You are on cooldown!`)
                         .setColor(colors.COLOR)
                         .setDescription(`Wait **${timeLeft}** to rob someone again!`)
-                    interaction.reply({ embeds: [notValid]});
+                    message.reply({ embeds: [notValid],  allowedMentions: { repliedUser: false }});
                     return;
                 }
             }
@@ -93,31 +87,31 @@ module.exports = {
                     var date = new Date(timestamp);
                     const timeLeft =  date.getMinutes() + " minutes and " + date.getSeconds() + " seconds";
                     const notValid = new discord.MessageEmbed()
-                        .setTitle(`Leave ${user.user.username} alone!`)
+                        .setTitle(`Leave ${user.username} alone!`)
                         .setColor(colors.COLOR)
                         .setDescription(`Wait **${timeLeft}** to rob ${user.user.username} again!`)
-                    interaction.reply({ embeds: [notValid]});
+                    message.reply({ embeds: [notValid],  allowedMentions: { repliedUser: false }});
                     return;
                 }
             }
 
 
-            if (user.user.bot) {
+            if (user.bot) {
                 const embed = new discord.MessageEmbed()
                     .setTitle("Leave the bots alone! They have feelings too.")
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
                 return;
             }
 
 
-            if (user === interaction.user) {
+            if (user === message.author) {
                 const embed = new discord.MessageEmbed()
                     .setTitle("You cannot rob yourself!")
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
                 return;
             }
 
@@ -133,11 +127,11 @@ module.exports = {
 
             if (OtherUserEcoDatabase.outWallet < 500) {
                 const embed = new discord.MessageEmbed()
-                    .setTitle(`${user.user.username}#${user.user.discriminator} doesn't have enough money!`)
+                    .setTitle(`${user.username}#${user.discriminator} doesn't have enough money!`)
                     .setDescription("It wouldn't be worth the risk to rob them.")
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] });
+                message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
                 return;
             }
 
@@ -155,8 +149,8 @@ module.exports = {
             if (haveYouWon > 0.5) moneyLost = Math.round(Math.random() * 3000 / 2 + 1);
             if (haveYouWon > 0.5) {
                 const notStolen = new discord.MessageEmbed()
-                    .setTitle(`${interaction.user.username}#${interaction.user.discriminator} tried to rob you!`)
-                    .setDescription(`${interaction.user} tried to rob you but failed. You now have an extra ⑩ ${moneyLost.toLocaleString('us-US', {minimumFractionDigits: 0})}!`)
+                    .setTitle(`${message.author.username}#${message.author.discriminator} tried to rob you!`)
+                    .setDescription(`${message.author} tried to rob you but failed. You now have an extra ⑩ ${moneyLost.toLocaleString('us-US', {minimumFractionDigits: 0})}!`)
                     .setTimestamp()
                     .setFooter("You are now protected for 5 minutes.")
                     .setColor(colors.COLOR)
@@ -164,11 +158,11 @@ module.exports = {
                     return;
                 });
                 const lost = new discord.MessageEmbed()
-                    .setTitle(`You got caught trying to steal from ${user.user.username}!`)
+                    .setTitle(`You got caught trying to steal from ${user.username}!`)
                     .setDescription(`You had to pay ⑩ ${moneyLost.toLocaleString('us-US', {minimumFractionDigits: 0})} to ${user}`)
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                interaction.reply({ embeds: [lost] });
+                message.reply({ embeds: [lost],  allowedMentions: { repliedUser: false } });
             }
 
             const spaceAdd = Math.round(moneyWon / 40);
@@ -176,7 +170,7 @@ module.exports = {
             if (haveYouWon < 0.5) {
                 const stolen = new discord.MessageEmbed()
                     .setTitle("You got robbed!")
-                    .setDescription(`${interaction.user} robbed you and stole ⑩ ${moneyWon.toLocaleString('us-US', {minimumFractionDigits: 0})}!`)
+                    .setDescription(`${message.author} robbed you and stole ⑩ ${moneyWon.toLocaleString('us-US', {minimumFractionDigits: 0})}!`)
                     .setTimestamp()
                     .setFooter("You are now protected for 5 minutes.")
                     .setColor(colors.COLOR)
@@ -184,11 +178,11 @@ module.exports = {
                     return;
                 });
                 const won = new discord.MessageEmbed()
-                    .setTitle(`You stole ⑩ ${moneyWon.toLocaleString('us-US', {minimumFractionDigits: 0})} from ${user.user.username}!`)
+                    .setTitle(`You stole ⑩ ${moneyWon.toLocaleString('us-US', {minimumFractionDigits: 0})} from ${user.username}!`)
                     .setDescription(`Because of this succesfull robbery, you got ⑩ ${spaceAdd.toLocaleString('us-US', {minimumFractionDigits: 0})} extra space in your bank.`)
                     .setColor(colors.COLOR)
                     .setTimestamp()
-                interaction.reply({ embeds: [won] });
+                message.reply({ embeds: [won],  allowedMentions: { repliedUser: false } });
             }
 
 

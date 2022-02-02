@@ -10,18 +10,19 @@ module.exports = {
      * @param {Client} client 
      * @param {CommandInteraction} interaction
      */
+    aliases: ['freemoney'],
     economy: true,
-    async execute(client, interaction) {
+    async execute(client, message) {
 
         try {
             const UserEco = require('../../schemas/UserEcoSchema');
             const UserEcoDatabase = await UserEco.findOne({
-                userId: interaction.user.id
+                userId: message.author.id
             }, (err, usereco) => {
                 if (err) console.error(err);
                 if (!usereco) {
                     const newEco = new UserEco({
-                        userId: interaction.user.id,
+                        userId: message.author.id,
                         outWallet: 250,
                         walletSize: 500,
                         inWallet: 250,
@@ -30,10 +31,10 @@ module.exports = {
                     newEco.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [errorMain] });
+                            message.channel.send({ embeds: [errorMain] });
                         });
                         const addedEmbed = new discord.MessageEmbed().setColor(colors.COLOR).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return message.channel.send({ embeds: [addedEmbed] });
                 }
             });
             let moneyGiven = 0;
@@ -56,7 +57,7 @@ module.exports = {
                         .setDescription(`You can claim money again in **${timeLeft}**!`)
                         .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
                         .setTimestamp()
-                    interaction.reply({ embeds: [alreadyClaimed] })
+                    message.reply({ embeds: [alreadyClaimed],  allowedMentions: { repliedUser: false } })
                     return;
                 }
             }
@@ -64,12 +65,12 @@ module.exports = {
             moneyGiven = 5000;
 
             const embed = new discord.MessageEmbed()
-                .setTitle(`Daily money for ${interaction.user.username}!`)
+                .setTitle(`Daily money for ${message.author.username}!`)
                 .setColor(colors.COLOR)
                 .setDescription(`You were given **⑩ 5,000**!\nYou can claim money again in 24 hours.`)
                 .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
                 .setTimestamp()
-            interaction.reply({ embeds: [embed] });
+            message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
 
             let spaceAdd = moneyGiven / 40;
 
