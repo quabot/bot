@@ -1,0 +1,91 @@
+const { MessageEmbed } = require('discord.js')
+
+const { COLOR_MAIN } = require('../../files/colors.json')
+const { error, added } = require('../../embeds/general');
+const { ticketDis, notATicket } = require('../../embeds/support');
+
+const { createTranscript } = require('discord-html-transcripts');
+
+module.exports = {
+    name: "transcript",
+    description: "Make a ticket transcript.",
+    async execute(client, interaction) {
+
+        try {
+            const Guild = require('../../schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        logChannelID: "none",
+                        reportChannelID: "none",
+                        suggestChannelID: "none",
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        pollChannelID: "none",
+                        ticketCategory: "Tickets",
+                        closedTicketCategory: "Tickets",
+                        logEnabled: true,
+                        musicEnabled: true,
+                        levelEnabled: false,
+                        reportEnabled: true,
+                        suggestEnabled: true,
+                        ticketEnabled: true,
+                        welcomeEnabled: true,
+                        pollsEnabled: true,
+                        roleEnabled: true,
+                        mainRole: "Member",
+                        mutedRole: "Muted",
+                        joinMessage: "Welcome {user} to **{guild-name}**!",
+                        leaveMessage: "Goodbye {user}!",
+                        swearEnabled: false,
+                        transcriptChannelID: "none"
+                    });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                        });
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+
+            let cId = interaction.channel.name;
+            cId = cId.substring(7);
+
+            const Ticket = require('../../schemas/TicketSchema')
+            const TicketDB = await Ticket.findOne({
+                guildId: interaction.guild.id,
+                ticketId: cId,
+                channelId: interaction.channel.id,
+            }, (err, ticket) => {
+                if (err) return;
+                if (!ticket) return interaction.channel.send({ embeds: [notATicket] }).catch(err => console.log("err"))
+            }).clone().catch(function (err) { console.log(err) });
+            if (TicketDB === null) return;
+
+            const transcript = new MessageEmbed()
+                .setTitle("Transcript saved!")
+                .setDescription("Here is your transcript of this ticket. Download and open it to view it!")
+                .setColor(COLOR_MAIN)
+                .setTimestamp()
+            const attachement = await createTranscript(interaction.channel, {
+                limit: -2,
+                returnBuffer: false,
+                fileName: `ticket-${cId}.html`,
+            }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [transcript], components: [], files: [attachement] }).catch(err => console.log("Error!"));
+
+        } catch (e) {
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log("Error!"));;
+            return;
+        }
+    }
+}

@@ -1,0 +1,191 @@
+[
+    {
+        "question": "What was the Minecraft 1.13 update called?",
+        "answer1": "Update Aquatic",
+        "answer2": "The Aqua Update",
+        "answer3": "The ocean update",
+        "correct": "Update Aquatic"
+    },
+    {
+        "question": "What other country, besides the US, uses the US dollar as its official currency?",
+        "answer1": "Ecuador",
+        "answer2": "Mexico",
+        "answer3": "Canada",
+        "correct": "Ecuador"
+    },
+    {
+        "question": "What measurement scale is used to determine wind speed?",
+        "answer1": "Beaufort scale",
+        "answer2": "Richter scale",
+        "answer3": "Discord Canary",
+        "correct": "Synoptic scale"
+    },
+    {
+        "question": "What is the biggest country?",
+        "answer1": "United States",
+        "answer2": "China",
+        "answer3": "Russia",
+        "correct": "Russia"
+    },
+    {
+        "question": "How many continents are there?",
+        "answer1": "6",
+        "answer2": "7",
+        "answer3": "8",
+        "correct": "7"
+    },
+    {
+        "question": "What is the russian capital?",
+        "answer1": "Moscow",
+        "answer2": "St. Petersburg",
+        "answer3": "Omsk",
+        "correct": "Moscow"
+    },
+    {
+        "question": "What is the US capital?",
+        "answer1": "Los Angeles",
+        "answer2": "Washington D.C.",
+        "answer3": "Las Vegas",
+        "correct": "Washington D.C."
+    },
+    {
+        "question": "What is the japanese capital?",
+        "answer1": "Kyoto",
+        "answer2": "Tokyo",
+        "answer3": "Sendai",
+        "correct": "Tokyo"
+    },
+    {
+        "question": "What is the south-african capital?",
+        "answer1": "Johannesburg",
+        "answer2": "Bloemfontein and Pretoria",
+        "answer3": "Cape town, Bloemfontein and Pretoria",
+        "correct": "Cape town, Bloemfontein and Pretoria"
+    },
+    {
+        "question": "What year did discord create Discord Nitro?",
+        "answer1": "2016",
+        "answer2": "2017",
+        "answer3": "2018",
+        "correct": "2016"
+    },
+    {
+        "question": "The Statue of Liberty was a gift to the United States from which European country?",
+        "answer1": "Belgium",
+        "answer2": "Germany",
+        "answer3": "France",
+        "correct": "France"
+    },
+    {
+        "question": "What is the biggest discord bot?",
+        "answer1": "MEE6",
+        "answer2": "Dyno",
+        "answer3": "Rythm",
+        "correct": "MEE6"
+    },
+    {
+        "question": "What is the most common discord bot language?",
+        "answer1": "Discord.py",
+        "answer2": "Java Discord API",
+        "answer3": "Discord.js",
+        "correct": "Discord.js"
+    },
+    {
+        "question": "In which continent are Chile, Argentina and Brazil?",
+        "answer1": "North America",
+        "answer2": "South America",
+        "answer3": "Europe",
+        "correct": "South America"
+    },
+    {
+        "question": "The human body is made up of approximately how much water?",
+        "answer1": "50%",
+        "answer2": "60%",
+        "answer3": "70%",
+        "correct": "60%"
+    },
+    {
+        "question": "What is actually electricity?",
+        "answer1": "A flow of protons",
+        "answer2": "A flow of air",
+        "answer3": "A flow of electrons",
+        "correct": "A flow of electrons"
+    },
+    {
+        "question": "Wich of the following is not a US agency?",
+        "answer1": "FBI",
+        "answer2": "National Science Foundation",
+        "answer3": "DDA",
+        "correct": "DDA"
+    },
+    {
+        "question": "Which of the following disorders is the fear of being alone?",
+        "answer1": "Agoraphobia",
+        "answer2": "Aerophobia",
+        "answer3": "Acrophobia",
+        "correct": "Agoraphobia"
+    },
+    {
+        "question": "What is the name for the Jewish New Year?",
+        "answer1": "Hanukkah",
+        "answer2": "Yom Kippur",
+        "answer3": "Rosh Hashanah",
+        "correct": "Rosh Hashanah"
+    },
+    {
+        "question": "How many blue stripes are there on the U.S. flag?",
+        "answer1": "6",
+        "answer2": "9",
+        "answer3": "13",
+        "correct": "13"
+    },
+    {
+        "question": "Which planet is the hottest?",
+        "answer1": "Venus",
+        "answer2": "Saturn",
+        "answer3": "Mercury",
+        "correct": "correct"
+    },
+    {
+        "question": "Who was the only U.S. President to resign?",
+        "answer1": "Richard Nixon",
+        "answer2": "Herbert Hoover",
+        "answer3": "George W. Bush",
+        "correct": "Richard Nixon"
+    },
+    {
+        "question": "What does the “D” in “D-Day” stand for?",
+        "answer1": "Dooms",
+        "answer2": "Dark",
+        "answer3": "Day",
+        "correct": "Day"
+    },
+    {
+        "question": "In Pirates of the Caribbean, what was Captain Jack Sparrow’s ship’s name?",
+        "answer1": "The black pearl",
+        "answer2": "The blue earl",
+        "answer3": "The Boat",
+        "correct": "The black pearl"
+    },
+    {
+        "question": "What is the rarest blood type?",
+        "answer1": "AB Positive",
+        "answer2": "AB Negative",
+        "answer3": "A",
+        "correct": "AB Negative"
+    },
+    {
+        "question": "Which U.S. state is known as the sunflower state?",
+        "answer1": "Kansas",
+        "answer2": "Florida",
+        "answer3": "The Boat",
+        "correct": "undefined"
+    },
+    {
+        "question": "How many bones are there in the human body?",
+        "answer1": "193",
+        "answer2": "206",
+        "answer3": "234",
+        "correct": "206"
+    }
+]
