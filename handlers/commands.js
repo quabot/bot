@@ -15,6 +15,8 @@ module.exports = async (client) => {
     (await PG(`${process.cwd()}/Commands/*/*.js`)).map(async (file) => {
         const command = require(file);
 
+        if (command.economy) 
+            return;
         if (!command.name)
             return Table.addRow(file.split("/")[7], "❌FAILED", "Missing a name.");
 

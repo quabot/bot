@@ -36,7 +36,7 @@ const selectOther = new MessageActionRow()
                 },
                 {
                     label: '💸 Economy Prefix',
-                    description: 'Coming soon.',
+                    description: 'Change the economy prefix.',
                     value: 'eco_prefix',
                 },
             ]),

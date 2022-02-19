@@ -54,11 +54,13 @@ module.exports = {
                                     interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
                                 });
                         }
-                    }).catch(err => console.log("Error!"));
+                    }).clone().catch(function (err) { console.log(err) })
+                    .catch(err => console.log("Error!"));
+                    if (!userDatabase) return;
                     const bio = interaction.options.getString("bio");
                     const embed = new MessageEmbed()
                         .setTitle("Set your bio!")
-                        .setDescription("Use `!profile` to view your bio!")
+                        .setDescription("Use `/profile` to view your bio!")
                         .setFooter("TIP: We support nitro emojis in bios.")
                         .setColor(COLOR_MAIN)
                         .setTimestamp()

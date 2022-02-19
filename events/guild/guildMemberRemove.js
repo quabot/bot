@@ -93,7 +93,7 @@ module.exports = {
 
         let leavemessage = guildDatabase.leaveMessage;
 
-        if (leavemessage === undefined) leavemessage = "Welcome {user} to **{guild-name}**!";
+        if (leavemessage === undefined) leavemessage = "Goodbye {user}!";
 
         leavemessage = leavemessage.replace("{user}", member);
         leavemessage = leavemessage.replace("{user-name}", member.user.username);

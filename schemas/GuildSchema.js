@@ -30,6 +30,7 @@ const GuildSchema = new mongoose.Schema({
     leaveMessage: reqString,
     swearEnabled: reqString,
     transcriptChannelID: reqString,
+    prefix: reqString,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);

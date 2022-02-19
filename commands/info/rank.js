@@ -1,6 +1,6 @@
 const { fetch } = require('discord.js-leveling');
 const Levels = require('discord.js-leveling');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 
 const { error, added } = require('../../embeds/general');
 const { levelDisabled, noLeaderboard } = require('../../embeds/info');
@@ -51,7 +51,8 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
-                        transcriptChannelID: "none"
+                        transcriptChannelID: "none",
+                        prefix: "!",
                     });
                     newGuild.save()
                         .catch(err => {
@@ -67,13 +68,22 @@ module.exports = {
             const user = await fetch(target.id, interaction.guild.id);
             if (!user) return interaction.reply({ embeds: [noLeaderboard] }).catch(err => console.log("Error!"));
 
-            const embed = new MessageEmbed()
-                .setColor(COLOR_MAIN)
-                .setTitle(`${target.tag}'s rank:`)
-                .setThumbnail(target.avatarURL({ dynamic: true }))
-                .addField("Level", `${user.level}`, true)
-                .addField("XP", `${user.xp}/${Levels.xpFor(user.level + 1)}`, true)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+            const canvacord = require("canvacord");
+
+            const rank = new canvacord.Rank()
+                .setAvatar(target.displayAvatarURL({ format: 'jpg' }))
+                .setCurrentXP(user.xp)
+                .setRequiredXP(Levels.xpFor(user.level + 1))
+                .setProgressBar("#FFFFF", "COLOR")
+                .setUsername(target.username)
+                .setLevel(user.level)
+                .setDiscriminator(target.discriminator);
+
+            rank.build()
+                .then(buffer => {
+                    const attachment = new MessageAttachment(buffer, "RankCard.png");
+                    interaction.reply({ files: [attachment] }).catch(err => console.log("Error!"));
+                });
         } catch (e) {
             interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
             client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: leaderboard`)] }).catch(err => console.log("Error!"));;

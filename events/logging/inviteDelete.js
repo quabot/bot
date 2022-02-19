@@ -39,14 +39,13 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
-                        transcriptChannelID: "none"
+                        transcriptChannelID: "none",
+                        prefix: "!",
                     });
                     newGuild.save()
                         .catch(err => {
-                            console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-                        });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                            console.log(err);                        });
+                    return;
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -57,8 +56,8 @@ module.exports = {
                 if (err) console.error(err)
                 if (!events) {
                     const newEvents = new Events({
-                        guildId: newChannel.guild.id,
-                        guildName: newChannel.guild.name,
+                        guildId: invite.guild.id,
+                        guildName: invite.guild.name,
                         joinMessages: true,
                         leaveMessages: true,
                         channelCreateDelete: true,

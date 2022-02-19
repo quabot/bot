@@ -15,7 +15,7 @@ module.exports = {
             interaction.reply({ embeds: [empty] }).catch(err => console.log("Error!"));
             const startTime = new Date().getTime();
             const filter = m => interaction.user === m.author;
-            const collector = interaction.channel.createMessageCollector({ time: 15000, filter: filter }).catch(err => console.log("Error!"));;
+            const collector = interaction.channel.createMessageCollector({ time: 15000, filter: filter });
             collector.on('collect', m => {
                 empty2.setTitle("❌ Wrong sentence!");
                 if (m.content.length > 1024) return m.reply({ embeds: [empty2], allowedMentions: { repliedUser: false } }).catch(err => console.log("Error!"));;

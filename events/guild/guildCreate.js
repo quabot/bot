@@ -6,7 +6,7 @@ module.exports = {
     async execute(guild, client) {
         const guildId = guild.id;
         const guildName = guild.name;
-        
+
         if (guild.id === null) return;
         try {
             const Guild = require('../../schemas/GuildSchema');
@@ -38,8 +38,10 @@ module.exports = {
                         mainRole: "Member",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
+                        leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
-transcriptChannelID: "none"
+                        transcriptChannelID: "none",
+                        prefix: "!",
                     });
                     newGuild.save()
                         .catch(err => {
@@ -55,7 +57,7 @@ transcriptChannelID: "none"
             let channel = guild.channels.cache.filter(chx => chx.type === "GUILD_TEXT").find(x => x.position === 0);
 
             channel.send({ embeds: [guildAdd] }).catch(err => {
-                console.log(err); 
+                console.log(err);
                 return;
             });
 

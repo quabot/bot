@@ -6,6 +6,8 @@ const { COLOR_MAIN } = require('../../files/colors.json');
 const { closeConfirm, closed, close, deleteConfirm } = require('../../interactions/tickets');
 const { ticketDis, notATicket } = require('../../embeds/support');
 
+const { error, added } = require('../../embeds/general')
+
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
@@ -45,7 +47,8 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
-                        transcriptChannelID: "none"
+                        transcriptChannelID: "none",
+                        prefix: "!",
                     });
                     newGuild.save()
                         .catch(err => {

@@ -9,6 +9,7 @@ const { buttonsLevel } = require('../../interactions/config');
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
+
         if (interaction.guild.id === null) return;
 
         try {
@@ -46,7 +47,8 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
-                        transcriptChannelID: "none"
+                        transcriptChannelID: "none",
+                        prefix: "!",
                     });
                     newGuild.save()
                         .catch(err => {
@@ -184,6 +186,44 @@ module.exports = {
                             setTimeout(() => {
                                 m.channel.send({ embeds: [leaveEmbed] }).catch(err => console.log("Error!"));
                             }, 500);
+
+                            collector.stop();
+                            return;
+                        } else {
+                            if (m.author.bot) return;
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                        }
+                    });
+                }
+
+                if (interaction.values[0] === "eco_prefix") {
+
+                    let prefix = guildDatabase.prefix;
+                    if (!prefix) prefix = "!";
+
+                    const economy = new MessageEmbed()
+                        .setTitle("Change Prefix")
+                        .setDescription(`Send the new prefix within 60 seconds to change it. Currently: ${prefix}`)
+                        .setColor(COLOR_MAIN)
+                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [economy], ephemeral: true }).catch(err => console.log("Error!"));
+                    collector.on('collect', async m => {
+                        if (m) {
+                            const C = m.content;
+                            if (!C) return;
+                            if (m.content.length > 10) return m.reply("That prefix is too long.").catch(err => console.log("Error!"));
+
+                            await guildDatabase.updateOne({
+                                prefix: C
+                            });
+
+                            const updated = new MessageEmbed()
+                                .setTitle(":white_check_mark: Succes!")
+                                .setDescription(`Changed prefix to: ${C}`)
+                                .setColor(COLOR_MAIN)
+                            m.channel.send({ embeds: [updated] }).catch(err => console.log("Error!"));
 
                             collector.stop();
                             return;

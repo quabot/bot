@@ -41,7 +41,8 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
-                        transcriptChannelID: "none"
+                        transcriptChannelID: "none",
+                        prefix: "!",
                     });
                     newGuild.save()
                         .catch(err => {
@@ -57,6 +58,7 @@ module.exports = {
                 const collector = interaction.channel.createMessageCollector({ time: 15000 });
 
                 if (interaction.values[0] === "main_role") {
+                    if (!guildDatabase) return;
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
 
                     const mainRole = new MessageEmbed()

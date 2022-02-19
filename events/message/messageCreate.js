@@ -30,59 +30,59 @@ module.exports = {
 
         try {
 
-            const userMention = message.mentions.users.first();
-            if (!userMention) return;
-
             const User = require('../../schemas/UserSchema');
-            const userDatabase2 = await User.findOne({
-                userId: userMention.id,
-                guildId: message.guild.id,
-            }, (err, user) => {
-                if (err) console.error(err);
-                if (!user) {
-                    const newUser = new User({
-                        userId: userMention.id,
-                        guildId: message.guild.id,
-                        guildName: message.guild.name,
-                        typeScore: 0,
-                        kickCount: 0,
-                        banCount: 0,
-                        warnCount: 0,
-                        muteCount: 0,
-                        afk: false,
-                        afkStatus: "none",
-                    });
-                    newUser.save()
-                        .catch(err => {
-                            console.log(err);
+            const userMention = message.mentions.users.first();
+            if (userMention) {
+                const userDatabase2 = await User.findOne({
+                    userId: userMention.id,
+                    guildId: message.guild.id,
+                }, (err, user) => {
+                    if (err) console.error(err);
+                    if (!user) {
+                        const newUser = new User({
+                            userId: userMention.id,
+                            guildId: message.guild.id,
+                            guildName: message.guild.name,
+                            typeScore: 0,
+                            kickCount: 0,
+                            banCount: 0,
+                            warnCount: 0,
+                            muteCount: 0,
+                            afk: false,
+                            afkStatus: "none",
                         });
-                }
-            }).clone().catch(function (err) { console.log(err) });
-
-
-            if (userDatabase2.afk === true) {
-                if (userMention === message.author) {
-                    const embed = new MessageEmbed()
-                        .setDescription(`Removing your afk status!`)
-                        .setColor(COLOR_MAIN)
-                    message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } }).catch(err => {
+                        newUser.save()
+                            .catch(err => {
+                                console.log(err);
+                            });
+                    }
+                }).clone().catch(function (err) { console.log(err) });
+                if (userDatabase2) {
+                    if (userDatabase2.afk === true) {
+                        if (userMention === message.author) {
+                            const embed = new MessageEmbed()
+                                .setDescription(`Removing your afk status!`)
+                                .setColor(COLOR_MAIN)
+                            message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } }).catch(err => {
+                                return;
+                            })
+                            await userDatabase2.updateOne({
+                                afk: false
+                            });
+                            return;
+                        }
+                        const embed = new MessageEmbed()
+                            .setDescription(`${userMention} is afk!`)
+                            .setColor(COLOR_MAIN)
+                        if (userDatabase2.afkStatus !== "none") {
+                            embed.setDescription(`${userMention} is afk: **${userDatabase2.afkStatus}**`)
+                        }
+                        message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } }).catch(err => {
+                            return;
+                        })
                         return;
-                    })
-                    await userDatabase2.updateOne({
-                        afk: false
-                    });
-                    return;
+                    }
                 }
-                const embed = new MessageEmbed()
-                    .setDescription(`${userMention} is afk!`)
-                    .setColor(COLOR_MAIN)
-                if (userDatabase2.afkStatus !== "none") {
-                    embed.setDescription(`${userMention} is afk: **${userDatabase2.afkStatus}**`)
-                }
-                message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } }).catch(err => {
-                    return;
-                })
-                return;
             }
 
             const userDatabase = await User.findOne({
@@ -123,7 +123,6 @@ module.exports = {
                 });
                 return;
             }
-
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: message.guild.id,
@@ -155,7 +154,8 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
-                        transcriptChannelID: "none"
+                        transcriptChannelID: "none",
+                        prefix: "!",
                     });
                     newGuild.save()
                         .catch(err => {
@@ -196,10 +196,8 @@ module.exports = {
                         if (guildDatabase.logEnabled === "false") return;
                         if (logChannel) {
                             const embed = new MessageEmbed()
-                                .setTitle("Swear Filter Triggered")
-                                .addField("User", `${message.author}`)
-                                .addField("Swearword", `[View at own risk] ||${Swears[i]}||`)
-                                .setFooter(`ID: ${message.author.id}`)
+                                .setTitle("SWEAR DETECTED")
+                                .setDescription(`<:addfriend:941403540306423868> Member: ${message.author}\n\n<:thread:941403540327391282> Swearword: ${Swears[i]}`)
                                 .setColor(COLOR_MAIN)
                                 .setTimestamp()
                             logChannel.send({ embeds: [embed] }).catch(err => {
@@ -245,7 +243,7 @@ module.exports = {
                 }
             }
         } catch (e) {
-            console.log(e);
+            console.log(e)
             return;
         }
     }

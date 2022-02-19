@@ -2,6 +2,7 @@
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
+        if (!interaction.isCommand()) consola.info(`${interaction.customId} was used`);
         if (interaction.isCommand()) {
 
             const command = client.commands.get(interaction.commandName);
@@ -16,6 +17,7 @@ module.exports = {
             }) && client.commands.delete(interaction.commandName);
 
             command.execute(client, interaction);
+            consola.info(`/${command.name} was used`);
         }
     }
 }

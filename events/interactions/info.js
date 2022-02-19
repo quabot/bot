@@ -1,4 +1,4 @@
-const { fun, info, moderation, management, misc, support, music } = require('../../embeds/help');
+const { fun, info, moderation, management, misc, support, music, economy } = require('../../embeds/help');
 
 module.exports = {
     name: "interactionCreate",
@@ -10,7 +10,8 @@ module.exports = {
             if (interaction.values[0] === "moderation_commands") interaction.reply({ ephemeral: true, embeds: [moderation]}).catch(err => console.log("Error!"));
             if (interaction.values[0] === "management_commands") interaction.reply({ ephemeral: true, embeds: [management]}).catch(err => console.log("Error!"));;
             if (interaction.values[0] === "misc_commands") interaction.reply({ ephemeral: true, embeds: [misc]}).catch(err => console.log("Error!"));
-            if (interaction.values[0] === "support_commands") interaction.reply({ ephemeral: true, embeds: [support]}).catch(err => console.log("Error!"));      
+            if (interaction.values[0] === "support_commands") interaction.reply({ ephemeral: true, embeds: [support]}).catch(err => console.log("Error!"));    
+            if (interaction.values[0] === "economy_commands") interaction.reply({ ephemeral: true, embeds: [economy]}).catch(err => console.log("Error!"));        
         }
     }
 }

@@ -136,4 +136,13 @@ const management = new MessageEmbed()
     **/unlock** - Get bot ping.
 `)
 
-module.exports = { misc, support, fun, info, music, moderation, management };
+const economy = new MessageEmbed()
+.setColor(COLOR_MAIN)
+.setTitle("Economy Commands")
+.setTimestamp()
+.setThumbnail("https://i.imgur.com/jgdQUul.png")
+.setDescription(`These commands are used for the economy system.\n
+    /bal, /crime, /beg, /daily, /dep, /inv, /lottery, /pm, /rob, /shop, /use, /with
+`)
+
+module.exports = { economy, misc, support, fun, info, music, moderation, management };

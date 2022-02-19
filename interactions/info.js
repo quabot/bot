@@ -9,6 +9,11 @@ const help = new MessageActionRow()
             .setMaxValues(1)
             .addOptions([
                 {
+                    label: '💰 Economy Commands',
+                    description: 'These commands give acces to the economy system.',
+                    value: 'economy_commands', 
+                },
+                {
                     label: '😂 Fun Commands',
                     description: 'These commands give funny pictures, games and more.',
                     value: 'fun_commands',

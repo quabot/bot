@@ -5,6 +5,7 @@ const coin = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🪙 Flipping the
 const catScan = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔍 Searching for cat images!");
 const empty = new MessageEmbed().setColor(COLOR_MAIN).setTimestamp()
 const empty2 = new MessageEmbed().setColor(COLOR_MAIN)
+const empty3 = new MessageEmbed().setColor(COLOR_MAIN)
 const dogScan = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔍 Searching for dog images!");
 const memeScan = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔍 Searching for meme images!");
 const rps = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🪨 Rock, 📃 Paper, ✂️ Scissors!");
@@ -19,4 +20,4 @@ const lostScissors = new MessageEmbed().setColor(COLOR_MAIN).setTitle("You lost!
 const wonScissors = new MessageEmbed().setColor(COLOR_MAIN).setTitle("You won!").addField("My Choice", "✂️ Scissors", true).addField("Your Choice", "✂️ Scissors", true);
 const emptyReddit = new MessageEmbed().setColor(COLOR_MAIN).setTimestamp()
 
-module.exports = { emptyReddit, memeScan, dogScan, catScan, empty, empty2, coin, rps, lostRock, wonRock, tieRock, lostPaper, wonPaper, tiePaper, lostScissors, wonScissors, tieScissors }
+module.exports = { empty3, emptyReddit, memeScan, dogScan, catScan, empty, empty2, coin, rps, lostRock, wonRock, tieRock, lostPaper, wonPaper, tiePaper, lostScissors, wonScissors, tieScissors }

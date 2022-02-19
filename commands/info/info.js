@@ -18,13 +18,17 @@ module.exports = {
             let seconds = Math.floor(totalSeconds % 60);
             let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
 
+            const guilds = client.guilds.cache.size;
+            const users = client.users.cache.size;
+            const channels = client.channels.cache.size;
+            
             const embed = new MessageEmbed()
                 .setTitle(`${client.user.tag}`)
                 .setThumbnail("https://i.imgur.com/jgdQUul.png")
                 .addField("Version", `${VERSION}`)
-                .addField("Servers", `${client.guilds.cache.size}`)
-                .addField("Users", `${client.users.cache.size}`)
-                .addField("Channels", `${client.channels.cache.size}`)
+                .addField("Servers", `${guilds.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
+                .addField("Users", `${users.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
+                .addField("Channels", `${channels.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
                 .addField("Developers", "Joa_sss#0001\nThe Developer#0986")
                 .addField("Commands", `${CMD_AMOUNT}`)
                 .setFooter(`Uptime: ${uptime}`)
