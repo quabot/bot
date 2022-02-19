@@ -13,7 +13,7 @@ module.exports = {
         
         const canvacord = require("canvacord");
 
-        let avatar = user.displayAvatarURL({ dynamic: false, format: 'png' });
+        let avatar = user.displayAvatarURL({ dynamic: true, format: 'gif' });
         let image = await canvacord.Canvas.circle(avatar);
         let attachment = new MessageAttachment(image, "circle.gif");
         return message.channel.send({ files: [attachment] });
