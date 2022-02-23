@@ -74,7 +74,6 @@ module.exports = {
         "nig3r",
         "n1g3r",
         "n|gger",
-        "nig3",
         "n!ga",
         "n1ggr",
         "niggr",

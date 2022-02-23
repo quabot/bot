@@ -97,10 +97,10 @@ module.exports = {
                         newEco.save()
                             .catch(err => {
                                 console.log(err);
-                                interaction.channel.send({ embeds: [error] });
+                                interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
                             });
                         const addedEmbed = new discord.MessageEmbed().setColor(COLOR_MAIN).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return interaction.channel.send({ embeds: [addedEmbed] }).catch(err => console.log("Error!"));
                     }
                 }).clone().catch(function (err) { console.log(err) });
 
@@ -218,7 +218,7 @@ module.exports = {
                                 .setDisabled(true)
                                 .setStyle('DANGER'),
                         );
-                    interaction.update({ components: [buttonsLotteryDis] });
+                    interaction.update({ components: [buttonsLotteryDis] }).catch(err => console.log("Error!"));
                     return;
                 }
 
@@ -236,7 +236,7 @@ module.exports = {
                                 .setColor(COLOR_MAIN)
                                 .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
                                 .setDescription(`Wait **${timeLeft}** to commit crimes again!`)
-                            interaction.channel.send({ embeds: [notValid] });
+                            interaction.channel.send({ embeds: [notValid] }).catch(err => console.log("Error!"));
                             return;
                         }
                     }
@@ -255,14 +255,14 @@ module.exports = {
                             .setDescription("wow you're so succesfull")
                             .setColor(`GREEN`)
                             .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
-                        interaction.channel.send({ embeds: [embed] });
+                        interaction.channel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
                     } else if (yes < 0.4) {
                         const embed = new discord.MessageEmbed()
                             .setTitle("You got caught!")
                             .setDescription(`you had to pay ⑩ ${randomMoneyLost} to get out of jail.`)
                             .setColor(`RED`)
                             .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
-                        interaction.channel.send({ embeds: [embed] });
+                        interaction.channel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
                     }
                     let spaceAdd = moneyGiven / 40;
                     await UserEcoDatabase.updateOne({
@@ -275,7 +275,7 @@ module.exports = {
                 }
 
                 if (interaction.customId === `murder-${userId}`) {
-                    interaction.update({ components: [buttonsCrimeDis] });
+                    interaction.update({ components: [buttonsCrimeDis] }).catch(err => console.log("Error!"));
 
                     if (UserEcoDatabase.lastCrime) {
                         let difference = new Date().getTime() / 1000 - UserEcoDatabase.lastCrime / 1000;
@@ -289,7 +289,7 @@ module.exports = {
                                 .setColor(COLOR_MAIN)
                                 .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
                                 .setDescription(`Wait **${timeLeft}** to commit crimes again!`)
-                            interaction.channel.send({ embeds: [notValid] });
+                            interaction.channel.send({ embeds: [notValid] }).catch(err => console.log("Error!"));
                             return;
                         }
                     }
@@ -310,14 +310,14 @@ module.exports = {
                             .setDescription(`As a reward for killing them you recieved ⑩ ${randomMoneyWon}!`)
                             .setColor(`GREEN`)
                             .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
-                        interaction.channel.send({ embeds: [embed] });
+                        interaction.channel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
                     } else if (yes < 0.5) {
                         const embed = new discord.MessageEmbed()
                             .setTitle(`Your attempt to murder ${victim.user.username}#${victim.user.discriminator} failed!`)
                             .setDescription(`You had to pay ⑩ ${randomMoneyLost} to get out of jail.`)
                             .setColor(`RED`)
                             .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
-                        interaction.channel.send({ embeds: [embed] });
+                        interaction.channel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
                     }
                     let spaceAdd = moneyGiven / 40;
                     await UserEcoDatabase.updateOne({
@@ -330,7 +330,7 @@ module.exports = {
                 }
 
                 if (interaction.customId === `robbery-${userId}`) {
-                    interaction.update({ components: [buttonsCrimeDis] });
+                    interaction.update({ components: [buttonsCrimeDis] }).catch(err => console.log("Error!"));
 
                     if (UserEcoDatabase.lastCrime) {
                         let difference = new Date().getTime() / 1000 - UserEcoDatabase.lastCrime / 1000;
@@ -344,7 +344,7 @@ module.exports = {
                                 .setColor(COLOR_MAIN)
                                 .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
                                 .setDescription(`Wait **${timeLeft}** to commit crimes again!`)
-                            interaction.channel.send({ embeds: [notValid] });
+                            interaction.channel.send({ embeds: [notValid] }).catch(err => console.log("Error!"));
                             return;
                         }
                     }
@@ -368,14 +368,14 @@ module.exports = {
                             .setDescription(`You took off with ⑩ ${randomMoneyWon}!`)
                             .setColor(`GREEN`)
                             .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
-                        interaction.channel.send({ embeds: [embed] });
+                        interaction.channel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
                     } else if (yes < 0.5) {
                         const embed = new discord.MessageEmbed()
                             .setTitle(`Your attempt to rob ${victim} failed!`)
                             .setDescription(`You had to pay ⑩ ${randomMoneyLost} to get out of jail.`)
                             .setColor(`RED`)
                             .setFooter(`${interaction.user.username}#${interaction.user.discriminator}`)
-                        interaction.channel.send({ embeds: [embed] });
+                        interaction.channel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
                     }
                     let spaceAdd = moneyGiven / 40;
                     await UserEcoDatabase.updateOne({
@@ -406,10 +406,10 @@ module.exports = {
                         newEco.save()
                             .catch(err => {
                                 console.log(err);
-                                interaction.channel.send({ embeds: [error] });
+                                interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
                             });
                         const addedEmbed = new discord.MessageEmbed().setColor(COLOR_MAIN).setDescription("You can use economy commands now.")
-                        return interaction.channel.send({ embeds: [addedEmbed] });
+                        return interaction.channel.send({ embeds: [addedEmbed] }).catch(err => console.log("Error!"));
                     }
                 }).clone().catch(function (err) { console.log(err) });
                 if (interaction.values[0] === `shop0`) {
