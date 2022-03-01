@@ -24,10 +24,10 @@ module.exports = {
                 .addField("<:dnd:938818583939649556> Do Not Disturb:", `${dnd}`, true)
                 .addField("<:invisible:938818583864147988> Offline:", `${totalOffline}`, true)
                 .setFooter(`Total Members: ${totalMembers}`)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: cat`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: cat`)] }).catch(err => console.log(err));;
             return;
         }
     }

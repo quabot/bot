@@ -47,21 +47,21 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
-            if (guildDatabase.levelEnabled === "false") return interaction.reply({ embeds: [levelDisabled] }).catch(err => console.log("Error!"));
+            if (guildDatabase.levelEnabled === "false") return interaction.reply({ embeds: [levelDisabled] }).catch(err => console.log(err));
 
             const leaderboardRaw = await fetchLeaderboard(interaction.guild.id, 10);
-            if (leaderboardRaw.length < 1) return interaction.reply({ embeds: [noLeaderboard] }).catch(err => console.log("Error!"));
+            if (leaderboardRaw.length < 1) return interaction.reply({ embeds: [noLeaderboard] }).catch(err => console.log(err));
             const lb = await computeLeaderboard(client, leaderboardRaw, true);
             const leaderboard = lb.map(e => `${e.position}. **${e.username}#${e.discriminator}** | Level: \`${e.level}\` | \`XP: ${e.xp.toLocaleString()}\`\n`);
             interaction.reply({ embeds: [new MessageEmbed().setTitle(`${interaction.guild.name}'s Leaderboard`).setDescription(`${leaderboard}`).setColor(COLOR_MAIN)] });
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: leaderboard`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: leaderboard`)] }).catch(err => console.log(err));;
             return;
         }
     }

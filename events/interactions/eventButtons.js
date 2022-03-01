@@ -52,9 +52,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -85,287 +85,287 @@ module.exports = {
                     })
                     newEvents.save().catch(err => {
                         console.log(err)
-                        interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                        interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                     })
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }
             ).clone().catch(function (err) { console.log(err) });
 
             if (interaction.isButton()) {
                 if (interaction.customId === "enableJoinMsg") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         joinMessages: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled join messages.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableJoinMsg") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         joinMessages: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled join messages.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableLeaveMsg") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         leaveMessages: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled leave messages.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableLeaveMsg") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         leaveMessages: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled leave messages.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableChannelCD") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         channelCreateDelete: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled channel create and deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableChannelCD") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         channelCreateDelete: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled channel create and deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableChannelUpdate") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         channelUpdate: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled channel update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableChannelUpdate") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         channelUpdate: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled channel update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableEmoji") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         emojiCreateDelete: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled emoji creation and deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableEmoji") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         emojiCreateDelete: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled emoji creation and deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableEmojiU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         emojiUpdate: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled emoji update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableEmojiU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         emojiUpdate: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled emoji update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableInvite") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         inviteCreateDelete: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled invite creation and deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableInvite") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         inviteCreateDelete: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled invite creation and deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableMessageD") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         messageDelete: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled message deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableMessageD") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         messageDelete: false
                     });
                     toggledEmbed.setDescription("Succesfully disable message deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableMessageU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         messageUpdate: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled message update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableMessageU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         messageUpdate: false
                     });
                     toggledEmbed.setDescription("Succesfully disable message update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableRoleC") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         roleCreateDelete: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled role creation & deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableRoleC") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         roleCreateDelete: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled role creation & deletion logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableRoleU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         roleUpdate: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled role update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableRoleU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         roleUpdate: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled role update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableVoiceJL") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         voiceState: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled voice state logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableVoiceJL") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         voiceState: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled voice state logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableVoiceM") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         voiceMove: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled voice move logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableVoiceM") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         voiceMove: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled voice move logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableMemberU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         memberUpdate: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled member update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableMemberU") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         memberUpdate: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled member update logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableBotL") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         quabotLogging: true
                     });
                     toggledEmbed.setDescription("Succesfully enabled bot logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableBotL") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await eventsDatabase.updateOne({
                         quabotLogging: false
                     });
                     toggledEmbed.setDescription("Succesfully disabled bot logs.");
-                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [toggledEmbed], components: [disabled] }).catch(err => console.log(err));
                 }
             };
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
             return;
         }
     }

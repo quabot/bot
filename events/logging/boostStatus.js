@@ -45,9 +45,9 @@ module.exports  = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -71,10 +71,10 @@ module.exports  = {
                 .setColor(COLOR_MAIN)
                 .setTimestamp()
             if (!oldStatus && newStatus) {
-                logChannel.send({ embeds: [boostStatusEmbed]}).catch(err => console.log("Error!"));
+                logChannel.send({ embeds: [boostStatusEmbed]}).catch(err => console.log(err));
             }
             if (oldStatus && !newStatus) {
-                logChannel.send({ embeds: [boostStatusEmbed2]}).catch(err => console.log("Error!"));
+                logChannel.send({ embeds: [boostStatusEmbed2]}).catch(err => console.log(err));
             }
 
         } catch (e) {

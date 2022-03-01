@@ -30,14 +30,14 @@ module.exports = {
                 .addField(`Locale:`, `${interaction.guild.preferredLocale}`, true)
                 .addField(`Verification Level:`, `${interaction.guild.verificationLevel}`, true)
                 .addField(`Time Created:`, `${moment(interaction.guild.createdTimestamp).format('LT')} ${moment(interaction.guild.createdTimestamp).format('LL')} [${moment(interaction.guild.createdTimestamp).fromNow()}]`, true);
-            if (guild.description) embed.addField(`Description`, `${interaction.uild.description}`);
+            if (interaction.guild.description) embed.addField(`Description`, `${interaction.guild.description}`);
             if (roles.join(', ').length > 1024) embed.addField("Roles", `Please use \`/roles\` to get the full list of roles.`, true);
             if (roles.join(', ').length < 1024) embed.addField(`Roles [${roles.length - 1}]`, roles.join(', '));
 
-            interaction.reply({ embeds: [embed], split: true }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed], split: true }).catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
             return;
         }
     }

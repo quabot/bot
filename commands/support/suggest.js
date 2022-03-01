@@ -62,17 +62,17 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
             if (!guildDatabase) return;
 
-            if (guildDatabase.suggestEnabled === "false") return interaction.reply({ embeds: [suggestDis] }).catch(err => console.log("Error!"));
+            if (guildDatabase.suggestEnabled === "false") return interaction.reply({ embeds: [suggestDis] }).catch(err => console.log(err));
             const suggestChannel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
-            if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] }).catch(err => console.log("Error!"));
+            if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] }).catch(err => console.log(err));
 
             const Bot = require('../../schemas/BotSchema');
             const botSettings = await Bot.findOne({
@@ -121,13 +121,13 @@ module.exports = {
                     .catch(err => {
                         console.log(err);
                     });
-            }).catch(err => console.log("Error!"));
+            }).catch(err => console.log(err));
             const suggestionMade = new MessageEmbed()
                 .setTitle(":white_check_mark: Succes!")
                 .setDescription(`You have succesfully left a suggestion!`)
                 .setColor(`GREEN`)
                 .setTimestamp()
-            interaction.reply({ ephemeral: true, embeds: [suggestionMade] }).catch(err => console.log("Error!"));
+            interaction.reply({ ephemeral: true, embeds: [suggestionMade] }).catch(err => console.log(err));
 
             if (guildDatabase.logEnabled === "true") {
                 const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID);
@@ -140,11 +140,11 @@ module.exports = {
                     .addField(`User-Id`, `${interaction.user.id}`)
                     .setFooter(`ID: ${newSuggestId}`)
                     .setTimestamp()
-                logChannel.send({ embeds: [embed2] }).catch(err => console.log("Error!"));
+                logChannel.send({ embeds: [embed2] }).catch(err => console.log(err));
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
             return;
         }
     }

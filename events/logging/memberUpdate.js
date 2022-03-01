@@ -113,7 +113,7 @@ module.exports = {
                     .setTimestamp()
                     .setFooter(`User-ID: ${newMember.user.id}`)
                     .setColor(COLOR_MAIN)
-                logChannel.send({ embeds: [embedNickChange] }).catch(err => console.log("Error!"));
+                logChannel.send({ embeds: [embedNickChange] }).catch(err => console.log(err));
                 return;
             }
             if (oldMember._roles !== newMember._roles) {
@@ -125,7 +125,7 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setFooter(`User ID: ${newMember.id}`)
                         .setTimestamp();
-                    logChannel.send({ embeds: [roleRemoved] }).catch(err => console.log("Error!"));
+                    logChannel.send({ embeds: [roleRemoved] }).catch(err => console.log(err));
                 }
                 if (oldMember._roles < newMember._roles) {
                     const roleRemoved = new MessageEmbed()
@@ -135,7 +135,7 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setFooter(`User ID: ${newMember.id}`)
                         .setTimestamp();
-                    logChannel.send({ embeds: [roleRemoved] }).catch(err => console.log("Error!"));
+                    logChannel.send({ embeds: [roleRemoved] }).catch(err => console.log(err));
                 }
             }
         } catch (e) {

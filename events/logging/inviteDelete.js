@@ -101,7 +101,7 @@ module.exports = {
                         .addField("Channel", `<#${invite.channel.id}>`, true)
                         .setTimestamp()
                         .setColor(`RED`)
-                    logChannel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 };
             }
         } catch (e) {

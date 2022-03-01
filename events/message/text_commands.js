@@ -2,13 +2,15 @@ const config = require('../../files/settings.json');
 const mongoose = require('mongoose');
 const consola = require('consola');
 const Discord = require('discord.js');
-
+const { SlashCommands } = require('../../files/commands');
+const { COLOR_MAIN} = require('../../files/colors.json')
 module.exports = {
     name: "messageCreate",
     async execute(message, client) {
 
 
         try {
+            const { MessageEmbed } = require('discord.js')
             const guildId = message.guild.id;
 
             if (guildId === null) return;
@@ -59,12 +61,12 @@ module.exports = {
             
             let prefix = guildDatabase.prefix;
             if (!prefix) prefix = "!";
-
             if (!message.content.startsWith(prefix) || message.author.bot) return;
 
             const args = message.content.slice(prefix.length).split(/ +/);
             const cmd = args.shift().toLowerCase();
 
+            if (SlashCommands.includes(cmd)) return message.reply({ embeds: [new Discord.MessageEmbed().setColor(COLOR_MAIN).setDescription(`<:ezgif:941723896871276594> Please use a **/** to execute that command!\nExample: \`/${cmd}\``)], allowedMentions: {repliedUser: false} })
 
             const command = client.commands.get(cmd) ||
                 client.commands.find(a => a.aliases && a.aliases.includes(cmd));;
@@ -72,6 +74,7 @@ module.exports = {
             if (!command.economy) return;
             if (command) {
                 command.execute(client, message, args);
+                client.guilds.cache.get('847828281860423690').channels.cache.get('948192914603933716').send({ embeds: [new MessageEmbed().setDescription(`**${message.author.username}#${message.author.discriminator}** used **${command.name}** in **${message.guild.name}**`).setTimestamp()] }).catch(err => console.log(err));;
                 consola.info(`!${command.name} was used`);
             }
 

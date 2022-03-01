@@ -37,10 +37,10 @@ module.exports = {
             const reasonRaw = interaction.options.getString('reason');
             let reason = "No reason specified.";
 
-            if (!member) return interaction.reply({ embeds: [kickNoUser] }).catch(err => console.log("Error!"));
+            if (!member) return interaction.reply({ embeds: [kickNoUser] }).catch(err => console.log(err));
             if (reasonRaw) reason = reasonRaw;
 
-            if (!ms(time)) return interaction.reply({ embeds: [timoutTime] }).catch(err => console.log("Error!"));
+            if (!ms(time)) return interaction.reply({ embeds: [timoutTime] }).catch(err => console.log(err));
 
             const User = require('../../schemas/UserSchema');
             const userDatabase = await User.findOne({
@@ -58,14 +58,14 @@ module.exports = {
                         banCount: 0,
                         warnCount: 0,
                         muteCount: 0,
-                        afk: true,
+                        afk: false,
                         afkStatus: "none",
                         bio: "none",
                     });
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -95,7 +95,7 @@ module.exports = {
                 newUser.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                        interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                     });
             }
 
@@ -106,11 +106,11 @@ module.exports = {
                 .setFooter(`Timeout-ID: ${timeoutsCount + 1}`)
 
             member.timeout(ms(time), `${reason}`).catch(err => {
-                interaction.channel.send({ embeds: [kickImpossible] }).catch(err => console.log("Error!"));
+                interaction.channel.send({ embeds: [kickImpossible] }).catch(err => console.log(err));
                 let reason = ":x: Timeout failed.";
                 return;
             });
-            interaction.reply({ embeds: [userKicked], split: true }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [userKicked], split: true }).catch(err => console.log(err));
             const youWereKicked = new MessageEmbed()
                 .setDescription(`You were timed out on one of your servers, **${interaction.guild.name}**.`)
                 .addField("Timed Out By", `${interaction.user}`)
@@ -157,9 +157,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -178,7 +178,7 @@ module.exports = {
             newTimeout.save()
                 .catch(err => {
                     console.log(err);
-                    interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                 });
 
 
@@ -202,8 +202,8 @@ module.exports = {
             }
         } catch (e) {
 
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: ban`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: ban`)] }).catch(err => console.log(err));;
             return;
         }
     }

@@ -16,19 +16,19 @@ module.exports = {
     name: "messageCreate",
     async execute(message, args, client) {
 
-        if (message.guild === null) {
-            if (message.author.bot) return;
-            const embed = new MessageEmbed()
-                .setTitle("Hello!")
-                .setDescription("I'm QuaBot, a multipurpose bot with Music, Reaction Roles, moderation and a lot more! You can check my commands [here](https://quabot.net) and invite me [here](https://invite.quabot.net)!")
-                .setColor(COLOR_MAIN)
-                .setTimestamp()
-                .setThumbnail("https://i.imgur.com/jgdQUul.png")
-            message.channel.send({ embeds: [embed] });
-            return;
-        }
-
         try {
+
+            if (message.guild === null) {
+                if (message.author.bot) return;
+                const embed = new MessageEmbed()
+                    .setTitle("Hello!")
+                    .setDescription("I'm QuaBot, a multipurpose bot with Music, Reaction Roles, moderation and a lot more! You can check my commands [here](https://quabot.net) and invite me [here](https://invite.quabot.net)!")
+                    .setColor(COLOR_MAIN)
+                    .setTimestamp()
+                    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+                message.channel.send({ embeds: [embed] });
+                return;
+            }
 
             const User = require('../../schemas/UserSchema');
             const userMention = message.mentions.users.first();
@@ -100,7 +100,7 @@ module.exports = {
                         banCount: 0,
                         warnCount: 0,
                         muteCount: 0,
-                        afk: true,
+                        afk: false,
                         afkStatus: "none",
                         bio: "none",
                     });
@@ -243,7 +243,6 @@ module.exports = {
                 }
             }
         } catch (e) {
-            console.log(e)
             return;
         }
     }

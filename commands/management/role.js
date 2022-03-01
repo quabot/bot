@@ -101,8 +101,8 @@ module.exports = {
                                 .setTitle("Created role!")
                                 .setDescription("Succesfully created the role <@&" + role + ">!")
                                 .setTimestamp()
-                            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
-                        }).catch(err => console.log("Error!"));
+                            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+                        }).catch(err => console.log(err));
                     } else {
                         interaction.guild.roles.create({
                             name: `${name}`
@@ -112,21 +112,21 @@ module.exports = {
                                 .setTitle("Created role!")
                                 .setDescription("Succesfully created the role <@&" + role + ">!")
                                 .setTimestamp()
-                            interaction.reply({ embeds: [embedTwo] }).catch(err => console.log("Error!"));
-                        }).catch(err => console.log("Error!"));
+                            interaction.reply({ embeds: [embedTwo] }).catch(err => console.log(err));
+                        }).catch(err => console.log(err));
                     }
                     break;
                 }
                 case "delete": {
                     const role = interaction.options.getRole("role");
-                    role.delete().catch(err => console.log("Error!"));
+                    role.delete().catch(err => console.log(err));
 
                     const embed = new MessageEmbed()
                         .setTitle("Role Deleted!")
                         .setDescription(`Deleted role **${role.name}**!`)
                         .setColor(COLOR_MAIN)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     break;
                 }
                 case "add": {
@@ -139,16 +139,16 @@ module.exports = {
                             .setDescription(`Could not find that role!`)
                             .setColor(COLOR_MAIN)
                             .setTimestamp()
-                        interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                        interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                         return;
                     } else {
-                        memberTarget.roles.add(role).catch(err => console.log("Error!"));
+                        memberTarget.roles.add(role).catch(err => console.log(err));
                         const embed = new MessageEmbed()
                             .setTitle(":white_check_mark: Role granted!")
                             .setDescription(`Gave the role ${role} to ${user}!`)
                             .setColor(COLOR_MAIN)
                             .setTimestamp()
-                        interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                        interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     }
                     break;
                 }
@@ -162,24 +162,24 @@ module.exports = {
                             .setDescription(`Could not find a role with the name **${roleName}**!`)
                             .setColor(COLOR_MAIN)
                             .setTimestamp()
-                        interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                        interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                         return;
                     } else {
-                        memberTarget.roles.remove(role).catch(err => console.log("Error!"));
+                        memberTarget.roles.remove(role).catch(err => console.log(err));
                         const embed = new MessageEmbed()
                             .setTitle(":white_check_mark: Role removed!")
                             .setDescription(`Removed the role ${role} from ${user}!`)
                             .setColor(COLOR_MAIN)
                             .setTimestamp()
-                        interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                        interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     }
                     break;
                 }
             }
 
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: channel`)] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: channel`)] }).catch(err => console.log(err));
             return;
         }
     }

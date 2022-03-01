@@ -49,57 +49,57 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
 
             if (interaction.isButton()) {
                 if (interaction.customId === "enableLevel") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         levelEnabled: true
                     });
-                    interaction.update({ ephemeral: true, embeds: [levelEnabled], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [levelEnabled], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableLevel") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         levelEnabled: false,
                     });
-                    interaction.update({ ephemeral: true, embeds: [levelDisabled], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [levelDisabled], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableLogs") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         logEnabled: true
                     });
-                    interaction.update({ ephemeral: true, embeds: [logEnabled], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [logEnabled], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "disableLogs") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         logEnabled: false,
                     });
-                    interaction.update({ ephemeral: true, embeds: [logDisabled], components: [disabled] }).catch(err => console.log("Error!"));
+                    interaction.update({ ephemeral: true, embeds: [logDisabled], components: [disabled] }).catch(err => console.log(err));
                 }
 
                 if (interaction.customId === "enableRole") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.update({ ephemeral: true, embeds: [roleEnabled], components: [disabled] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.update({ ephemeral: true, embeds: [roleEnabled], components: [disabled] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         roleEnabled: true
                     });
                 }
 
                 if (interaction.customId === "disableRole") {
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.update({ ephemeral: true, embeds: [roleDisabled], components: [disabled] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.update({ ephemeral: true, embeds: [roleDisabled], components: [disabled] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         roleEnabled: false
                     });
@@ -230,8 +230,8 @@ module.exports = {
             }
 
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
             return;
         }
     }

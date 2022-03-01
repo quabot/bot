@@ -17,12 +17,12 @@ module.exports = {
                     messageId: interaction.message.id,
                 }, (err, rps) => {
                     if (err) console.error(err)
-                    if (!rps) return interaction.reply({ ephemeral: true, content: "This isn't your button!" }).catch(err => console.log("Error!"));
+                    if (!rps) return interaction.reply({ ephemeral: true, content: "This isn't your button!" }).catch(err => console.log(err));
                 }).clone().catch(function (err) { console.log(err) });
                 if (!rpsDatabase) return;
-                if (rpsDatabase.result === "rock") interaction.reply({ embeds: [tieRock], components: [rpsAgain] }).catch(err => console.log("Error!"));
-                else if (rpsDatabase.result === "paper") interaction.reply({ embeds: [lostRock], components: [rpsAgain], components: [rpsAgain] }).catch(err => console.log("Error!"));
-                else if (rpsDatabase.result === "scissors") interaction.reply({ embeds: [wonRock], components: [rpsAgain] }).catch(err => console.log("Error!"));
+                if (rpsDatabase.result === "rock") interaction.reply({ embeds: [tieRock], components: [rpsAgain] }).catch(err => console.log(err));
+                else if (rpsDatabase.result === "paper") interaction.reply({ embeds: [lostRock], components: [rpsAgain], components: [rpsAgain] }).catch(err => console.log(err));
+                else if (rpsDatabase.result === "scissors") interaction.reply({ embeds: [wonRock], components: [rpsAgain] }).catch(err => console.log(err));
                 await rpsDatabase.delete();
             }
 
@@ -36,12 +36,12 @@ module.exports = {
                     messageId: interaction.message.id,
                 }, (err, rps) => {
                     if (err) console.error(err)
-                    if (!rps) return interaction.reply({ ephemeral: true, content: "This isn't your button!" }).catch(err => console.log("Error!"));
+                    if (!rps) return interaction.reply({ ephemeral: true, content: "This isn't your button!" }).catch(err => console.log(err));
                 }).clone().catch(function (err) { console.log(err) });
                 if (!rpsDatabase) return;
-                if (rpsDatabase.result === "rock") interaction.reply({ embeds: [wonPaper], components: [rpsAgain] }).catch(err => console.log("Error!"));
-                else if (rpsDatabase.result === "paper") interaction.reply({ embeds: [tiePaper], components: [rpsAgain] }).catch(err => console.log("Error!"));
-                else if (rpsDatabase.result === "scissors") interaction.reply({ embeds: [lostPaper], components: [rpsAgain] }).catch(err => console.log("Error!"));
+                if (rpsDatabase.result === "rock") interaction.reply({ embeds: [wonPaper], components: [rpsAgain] }).catch(err => console.log(err));
+                else if (rpsDatabase.result === "paper") interaction.reply({ embeds: [tiePaper], components: [rpsAgain] }).catch(err => console.log(err));
+                else if (rpsDatabase.result === "scissors") interaction.reply({ embeds: [lostPaper], components: [rpsAgain] }).catch(err => console.log(err));
                 await rpsDatabase.delete();
             }
 
@@ -55,12 +55,12 @@ module.exports = {
                     messageId: interaction.message.id,
                 }, (err, rps) => {
                     if (err) console.error(err)
-                    if (!rps) return interaction.reply({ ephemeral: true, content: "This isn't your button!" }).catch(err => console.log("Error!"));
+                    if (!rps) return interaction.reply({ ephemeral: true, content: "This isn't your button!" }).catch(err => console.log(err));
                 }).clone().catch(function (err) { console.log(err) });
                 if (!rpsDatabase) return;
-                if (rpsDatabase.result === "rock") interaction.reply({ embeds: [lostScissors], components: [rpsAgain] }).catch(err => console.log("Error!"));
-                else if (rpsDatabase.result === "paper") interaction.reply({ embeds: [wonScissors], components: [rpsAgain] }).catch(err => console.log("Error!"));
-                else if (rpsDatabase.result === "scissors") interaction.reply({ embeds: [tieScissors], components: [rpsAgain] }).catch(err => console.log("Error!"));
+                if (rpsDatabase.result === "rock") interaction.reply({ embeds: [lostScissors], components: [rpsAgain] }).catch(err => console.log(err));
+                else if (rpsDatabase.result === "paper") interaction.reply({ embeds: [wonScissors], components: [rpsAgain] }).catch(err => console.log(err));
+                else if (rpsDatabase.result === "scissors") interaction.reply({ embeds: [tieScissors], components: [rpsAgain] }).catch(err => console.log(err));
                 await rpsDatabase.delete();
             }
 
@@ -69,7 +69,7 @@ module.exports = {
                     const { rpsButton } = require('../../interactions/fun');
                     const { rps } = require('../../embeds/fun');
 
-                    const message = await interaction.reply({ embeds: [rps], components: [rpsButton], fetchReply: true }).catch(err => console.log("Error!"));
+                    const message = await interaction.reply({ embeds: [rps], components: [rpsButton], fetchReply: true }).catch(err => console.log(err));
                     const options = ['rock', 'paper', 'scissors'];
                     const random = options[Math.floor(Math.random() * options.length)];
                     const rpsSchema = require('../../schemas/rpsSchema');
@@ -79,10 +79,10 @@ module.exports = {
                         result: random,
                         messageId: message.id,
                     });
-                    newRps.save().catch(err => console.log("Error!"));
+                    newRps.save().catch(err => console.log(err));
                 } catch (e) {
-                    interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-                    client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: dog`)] }).catch(err => console.log("Error!"));;
+                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                    client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: dog`)] }).catch(err => console.log(err));;
                     return;
                 }
             }
@@ -109,7 +109,7 @@ module.exports = {
                         .addField(`Answer`, `${answers.correct}`)
                         .setColor("GREEN")
                         .setTimestamp()
-                    interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log("Error!"));
+                    interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log(err));
                 } else {
                     const wrongEmbed = new MessageEmbed()
                         .setTitle(`You were wrong!`)
@@ -118,7 +118,7 @@ module.exports = {
                         .addField(`Your answer`, `${answers.answer1}`)
                         .setColor("RED")
                         .setTimestamp()
-                    interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log("Error!"));
+                    interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log(err));
                 }
             }
 
@@ -144,7 +144,7 @@ module.exports = {
                         .addField(`Answer`, `${answers.correct}`)
                         .setColor("GREEN")
                         .setTimestamp()
-                    interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log("Error!"));
+                    interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log(err));
                 } else {
                     const wrongEmbed = new MessageEmbed()
                         .setTitle(`You were wrong!`)
@@ -153,7 +153,7 @@ module.exports = {
                         .addField(`Your answer`, `${answers.answer2}`)
                         .setColor("RED")
                         .setTimestamp()
-                    interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log("Error!"));
+                    interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log(err));
                 }
             }
 
@@ -179,7 +179,7 @@ module.exports = {
                         .addField(`Answer`, `${answers.correct}`)
                         .setColor("GREEN")
                         .setTimestamp()
-                    interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log("Error!"));
+                    interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log(err));
                 } else {
                     const wrongEmbed = new MessageEmbed()
                         .setTitle(`You were wrong!`)
@@ -188,7 +188,7 @@ module.exports = {
                         .addField(`Your answer`, `${answers.answer3}`)
                         .setColor("RED")
                         .setTimestamp()
-                    interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log("Error!"));
+                    interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log(err));
                 }
             }
         }

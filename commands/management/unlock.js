@@ -56,9 +56,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -68,20 +68,20 @@ module.exports = {
             const role = interaction.guild.roles.cache.find(role => role.id === `${guildDatabase.mainRole}`);
 
             if (channel.type === "GUILD_TEXT") {
-                if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: true }).catch(err => console.log("Error!"));
-                channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: true }).catch(err => console.log("Error!"));
+                if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: true }).catch(err => console.log(err));
+                channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: true }).catch(err => console.log(err));
                 const locked = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔓 Channel unlocked!").addField("Unlocked by", `${interaction.user}`);
-                channel.send({ embeds: [locked] }).catch(err => console.log("Error!"));
+                channel.send({ embeds: [locked] }).catch(err => console.log(err));
                 const reply = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔓 Channel unlocked!").setDescription(`Succesfully unlocked ${channel}.`);
-                interaction.reply({ ephemeral: true, embeds: [reply] }).catch(err => console.log("Error!"));
+                interaction.reply({ ephemeral: true, embeds: [reply] }).catch(err => console.log(err));
 
             } else if (channel.type === "GUILD_VOICE") {
-                if (role) channel.permissionOverwrites.edit(role, { CONNECT: true, SPEAK: true }).catch(err => console.log("Error!"));
-                    channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: true, SPEAK: true }).catch(err => console.log("Error!"));
+                if (role) channel.permissionOverwrites.edit(role, { CONNECT: true, SPEAK: true }).catch(err => console.log(err));
+                    channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: true, SPEAK: true }).catch(err => console.log(err));
                     const reply = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔓 Voice Channel unlocked!").setDescription(`${channel}`).addField("Unlocked by", `${interaction.user}`);
-                    interaction.reply({ embeds: [reply] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [reply] }).catch(err => console.log(err));
             } else {
-                interaction.reply({ embeds: [noChannel] }).catch(err => console.log("Error!"));
+                interaction.reply({ embeds: [noChannel] }).catch(err => console.log(err));
             }
 
             if (!guildDatabase) return;
@@ -95,15 +95,15 @@ module.exports = {
                     .setTitle('🔓 Channel Unlocked')
                     .addField('Channel', `${channel}`)
                     .addField('Unlocked by', `${interaction.user}`)
-                logChannel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
+                logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
             } else {
                 return;
             }
 
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
             console.log(e)
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: lock`)] }).catch(err => console.log("Error!"));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: lock`)] }).catch(err => console.log(err));
             return;
         }
     }

@@ -62,7 +62,7 @@ module.exports = {
                             newUser.save()
                                 .catch(err => {
                                     console.log(err);
-                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                                 });
                         }
                     }).clone().catch(function (err) { console.log(err) });
@@ -75,7 +75,7 @@ module.exports = {
                             .setDescription("You can become afk again by using `/afk toggle` once more.")
                             .setColor(COLOR_MAIN)
                             .setTimestamp()
-                        interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                        interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                         return;
                     } else {
                         await userDatabase.updateOne({
@@ -86,7 +86,7 @@ module.exports = {
                             .setDescription("When you're mentioned, we will alert the person that mentioned you that you're afk. You can get out of AFK mode by chatting, or using `/afk toggle` again. You can add a message to your AFK status that will be sent when you're mentioned with `/afk status`!")
                             .setColor(COLOR_MAIN)
                             .setTimestamp()
-                        interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                        interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     }
                     break;
                 }
@@ -115,7 +115,7 @@ module.exports = {
                             newUser.save()
                                 .catch(err => {
                                     console.log(err);
-                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                                 });
                         }
                     }).clone().catch(function (err) { console.log(err) });
@@ -127,7 +127,7 @@ module.exports = {
                         .setDescription(`Your status message is now set to **${status}**! If you want to reset it, use \`/afk reset\`.`)
                         .setColor(COLOR_MAIN)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     break;
                 }
                 case "reset": {
@@ -154,7 +154,7 @@ module.exports = {
                             newUser.save()
                                 .catch(err => {
                                     console.log(err);
-                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                                 });
                         }
                     }).clone().catch(function (err) { console.log(err) });
@@ -167,13 +167,13 @@ module.exports = {
                         .setDescription(`Your status message has been disabled and you are no longer afk.`)
                         .setColor(COLOR_MAIN)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed3] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [embed3] }).catch(err => console.log(err));
                     break;
                 }
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: avatar`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: avatar`)] }).catch(err => console.log(err));;
             return;
         }
     }

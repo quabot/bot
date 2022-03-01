@@ -55,13 +55,13 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
 
             let cId = interaction.channel.name;
             cId = cId.substring(7);
@@ -73,7 +73,7 @@ module.exports = {
                 channelId: interaction.channel.id,
             }, (err, ticket) => {
                 if (err) return;
-                if (!ticket) return interaction.channel.send({ embeds: [notATicket] }).catch(err => console.log("Error!"));
+                if (!ticket) return interaction.channel.send({ embeds: [notATicket] }).catch(err => console.log(err));
             }).clone().catch(function (err) { console.log(err) });
 
             if (TicketDB === null) return;
@@ -87,11 +87,11 @@ module.exports = {
                 .setColor(COLOR_MAIN)
                 .setTimestamp()
                 .setDescription(`New ticket topic: **${interaction.options.getString("new-topic")}**!`)
-            interaction.reply({ embeds: [newTopic] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [newTopic] }).catch(err => console.log(err));
             
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
             return;
         }
     }

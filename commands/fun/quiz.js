@@ -15,7 +15,7 @@ module.exports = {
     async execute(client, interaction) {
         try {
             const item = quiz[Math.floor(Math.random() * quiz.length)];
-            if (!item) return interaction.reply({ ephemeral: true, content: "Could't find any quiz questions." }).catch(err => console.log("Error!"));;
+            if (!item) return interaction.reply({ ephemeral: true, content: "Could't find any quiz questions." }).catch(err => console.log(err));;
             const buttons = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
@@ -33,10 +33,10 @@ module.exports = {
                 );
 
             empty.setTitle("Answer this question").setDescription(`${item.question}`)
-            interaction.reply({ embeds: [empty], components: [buttons] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [empty], components: [buttons] }).catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: quiz`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: quiz`)] }).catch(err => console.log(err));;
             return;
         }
     }

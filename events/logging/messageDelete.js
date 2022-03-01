@@ -46,9 +46,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            message.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return message.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return message.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
          
@@ -79,9 +79,9 @@ module.exports = {
                     })
                     newEvents.save().catch(err => {
                         console.log(err)
-                        message.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                        message.channel.send({ embeds: [error] }).catch(err => console.log(err));
                     })
-                    return message.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return message.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }
             ).clone().catch(function (err) { console.log(err) });
@@ -119,7 +119,7 @@ module.exports = {
                     embed.addField(`**Attachment:**`, `${[item.url].join(" ")}`)
                 }
             }
-            logChannel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
+            logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {
             return;
         }

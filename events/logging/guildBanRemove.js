@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 
 const { error, added } = require('../../embeds/general');
-const { COLOR_MAIN } = require('../../../QuaBot-Code/files/colors.json');
+const { COLOR_MAIN } = require('../../files/colors.json');
 
 const guildUserBanEmbed = new MessageEmbed()
     .setTitle("User Unbanned")
@@ -103,7 +103,7 @@ module.exports = {
             guildUserBanEmbed.setDescription("User unbanned: " + `${paramater1.user.tag}`)
             guildUserBanEmbed.addField("User-ID", `${paramater1.user.id}`)
 
-            logChannel.send({ embeds: [guildUserBanEmbed] }).catch(err => console.log("Error!"));
+            logChannel.send({ embeds: [guildUserBanEmbed] }).catch(err => console.log(err));
         } catch (e) {
             console.log(e);
             return;

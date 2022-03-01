@@ -47,26 +47,26 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
-            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log("Error!"));
+            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log(err));
 
             const member = interaction.guild.members.cache.get(interaction.user.id);
-            if (!member.voice.channel) return interaction.reply({ embeds: [notVoice] }).catch(err => console.log("Error!"));
+            if (!member.voice.channel) return interaction.reply({ embeds: [notVoice] }).catch(err => console.log(err));
             const queue = client.player.getQueue(interaction);
-            if (!queue) return interaction.reply({ embeds: [noSongs] }).catch(err => console.log("Error!"));
+            if (!queue) return interaction.reply({ embeds: [noSongs] }).catch(err => console.log(err));
 
             const embed = new MessageEmbed()
                 .setColor(COLOR_MAIN)
                 .setTitle(`:white_check_mark: Toggled autoplay ${client.player.toggleAutoplay(interaction) ? "ON" : "OFF"}!`)
                 .setDescription('When enabled, it makes it so that when the queue finishes playing, it will find songs that are relatabe to the last song in queue!')
-            interaction.reply({ embeds: [embed], components: [skipButtons] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed], components: [skipButtons] }).catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: autoplay`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: autoplay`)] }).catch(err => console.log(err));;
             return;
         }
     }

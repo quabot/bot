@@ -19,9 +19,9 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`#${color}`)
                 .setColor(`${color}`)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {
-            interaction.reply({ ephemeral: true, content: ":x: Invalid hex string!" }).catch(err => console.log("Error!"));
+            interaction.reply({ ephemeral: true, content: ":x: Invalid hex string!" }).catch(err => console.log(err));
             return;
         }
     }

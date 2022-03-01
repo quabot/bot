@@ -26,17 +26,17 @@ module.exports = {
                     embed.addField("** **", `${secondHalfPt2.join(', ')}`);
                     embed.addField("", `${firstHalfPt3.join(', ')}`);
                     embed.addField("** **", `${secondHalfPt4.join(', ')}`);
-                    interaction.reply({ embeds: [embed], split: true }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [embed], split: true }).catch(err => console.log(err));
                     return;
                 }
                 embed.addField("Roles", `${firstHalf.join(', ')}`);
                 embed.addField("** **", `${secondHalf.join(', ')}`);
             } else embed.addField("Roles", `${roles.join(', ')}`);
 
-            interaction.reply({ embeds: [embed], split: true }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed], split: true }).catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: roles`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: roles`)] }).catch(err => console.log(err));;
             return;
         }
     }

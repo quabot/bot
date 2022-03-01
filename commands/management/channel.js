@@ -89,17 +89,17 @@ module.exports = {
               .setColor(COLOR_MAIN);
             if (options.description) embed.addField("Description", `${options.description}`)
             if (options.slowmode) embed.addField("Slowmode (seconds)", `${options.slowmode}`)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
-          }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+          }).catch(err => console.log(err));
           break;
         case "delete":
-          options.channel.delete().catch(err => console.log("Error!"));
+          options.channel.delete().catch(err => console.log(err));
           const embed2 = new MessageEmbed()
             .setTitle("Channel Deleted!")
             .setDescription(`Deleted the channel with the name: \`${options.channel.name}\`!`)
             .setTimestamp()
             .setColor(COLOR_MAIN);
-          interaction.reply({ embeds: [embed2] }).catch(err => console.log("Error!"));
+          interaction.reply({ embeds: [embed2] }).catch(err => console.log(err));
           break;
         case "slowmode":
           if (options.channel.type !== "GUILD_TEXT") {
@@ -108,22 +108,22 @@ module.exports = {
               .setDescription("You must specify a text channel.")
               .setTimestamp()
               .setColor(COLOR_MAIN)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
           }
           if (options.amount > 21600) options.amount = 21600;
           if (options.amount < 0) options.amount = 0;
-          options.channel.setRateLimitPerUser(options.amount).catch(err => console.log("Error!"));
+          options.channel.setRateLimitPerUser(options.amount).catch(err => console.log(err));
           const embed3 = new MessageEmbed()
             .setTitle("Slowmode set!")
             .setDescription(`Set the channel's slowmode to ${options.amount} seconds!`)
             .setTimestamp()
             .setColor(COLOR_MAIN)
-          interaction.reply({ embeds: [embed3] }).catch(err => console.log("Error!"));
+          interaction.reply({ embeds: [embed3] }).catch(err => console.log(err));
           break;
       }
     } catch (e) {
-        interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-        client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: channel`)] }).catch(err => console.log("Error!"));
+        interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+        client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: channel`)] }).catch(err => console.log(err));
         return;
     }
   }

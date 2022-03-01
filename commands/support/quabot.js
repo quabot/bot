@@ -33,8 +33,8 @@ module.exports = {
                     .addField(`Suggestion`, `${suggestion}`)
                     .setFooter("This is a quabot suggestion!")
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
-                client.guilds.cache.get('847828281860423690').channels.cache.get('940913767242403890').send({ embeds: [new MessageEmbed().setDescription(`${suggestion}`).setColor(COLOR_MAIN).setFooter(`Suggestion`)] }).catch(err => console.log("Error!"));
+                interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+                client.guilds.cache.get('847828281860423690').channels.cache.get('940913767242403890').send({ embeds: [new MessageEmbed().setDescription(`${suggestion}`).setColor(COLOR_MAIN).setFooter(`Suggestion`)] }).catch(err => console.log(err));
             }
             if (report) {
                 const embed = new MessageEmbed()
@@ -44,8 +44,8 @@ module.exports = {
                     .addField(`Bug`, `${report}`)
                     .setFooter("This is a quabot bug report!")
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
-                client.guilds.cache.get('847828281860423690').channels.cache.get('940914011271204895').send({ embeds: [new MessageEmbed().setDescription(`${report}`).setColor(COLOR_MAIN).setFooter(`Bug Report`)] }).catch(err => console.log("Error!"));
+                interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+                client.guilds.cache.get('847828281860423690').channels.cache.get('940914011271204895').send({ embeds: [new MessageEmbed().setDescription(`${report}`).setColor(COLOR_MAIN).setFooter(`Bug Report`)] }).catch(err => console.log(err));
             }
             if (!report && !suggestion) {
                 const embed = new MessageEmbed()
@@ -53,11 +53,11 @@ module.exports = {
                     .setTitle(":x: Nothing recieved!")
                     .setDescription("You can leave suggestions and bugreports with this command for the developers. We didn't recieve anything this time! Please try again!")
                     .setTimestamp()
-                interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
             return;
         }
     }

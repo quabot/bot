@@ -56,12 +56,12 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
-            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log("Error!"));
+            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log(err));
 
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member.voice.channel) return interaction.reply({ embeds: [NotInVC] });
@@ -70,8 +70,8 @@ module.exports = {
 
         
             const volumeNew = interaction.options.getInteger('seconds');
-            if (volumeNew <= 0) return interaction.reply({ content: "Please enter a value between 0-10000s!" }).catch(err => console.log("Error!"));
-            if (volumeNew >= 10000) return interaction.reply({ content: "Please enter a value between 0-10000s!" }).catch(err => console.log("Error!"));
+            if (volumeNew <= 0) return interaction.reply({ content: "Please enter a value between 0-10000s!" }).catch(err => console.log(err));
+            if (volumeNew >= 10000) return interaction.reply({ content: "Please enter a value between 0-10000s!" }).catch(err => console.log(err));
 
             client.player.seek(interaction, Number(volumeNew));
             const embed = new MessageEmbed()
@@ -81,8 +81,8 @@ module.exports = {
                 .setTimestamp()
             interaction.reply({ embeds: [embed] });
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: join`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: join`)] }).catch(err => console.log(err));;
             return;
         }
     }

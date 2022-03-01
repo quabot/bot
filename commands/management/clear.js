@@ -21,15 +21,15 @@ module.exports = {
 
         try {
             let amount = interaction.options.getInteger('amount');
-            if (!amount) return interaction.reply({ embeds: [noAmount] }).catch(err => console.log("Error!"));
+            if (!amount) return interaction.reply({ embeds: [noAmount] }).catch(err => console.log(err));
             if (amount <= 0) amount = 1;
             if (amount >= 201) amount = 200;
 
-            interaction.channel.bulkDelete(amount).catch(err => { return interaction.channel.send({ ephemeral: true, content: "I cannot delete messages older then 14 days." }).catch(err => console.log("Error!")); });
+            interaction.channel.bulkDelete(amount).catch(err => { return interaction.channel.send({ ephemeral: true, content: "I cannot delete messages older then 14 days." }).catch(err => console.log(err)); });
             const clearedAmount = new MessageEmbed()
                 .setDescription(`:white_check_mark: Succesfully cleared **${amount}** messages!`)
                 .setColor(COLOR_MAIN)
-            interaction.reply({ embeds: [clearedAmount] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [clearedAmount] }).catch(err => console.log(err));
 
             const Guild = require('../../schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
@@ -68,9 +68,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
             if (!guildDatabase) return;
@@ -84,13 +84,13 @@ module.exports = {
                     .addField('Channel', `${interaction.channel}`)
                     .addField('Amount', `${amount}`)
                     .addField("User", `${interaction.user}`)
-                logChannel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
+                logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
             } else {
                 return;
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
             return;
         }
     }

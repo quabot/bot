@@ -67,7 +67,7 @@ module.exports = {
                         newUser.save()
                             .catch(err => {
                                 console.log(err);
-                                interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                                interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                             });
                     }
                 }).clone().catch(function (err) { console.log(err) });
@@ -151,7 +151,7 @@ module.exports = {
                         newUser.save()
                             .catch(err => {
                                 console.log(err);
-                                interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                                interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                             });
                     }
                 }).clone().catch(function (err) { console.log(err) });

@@ -51,11 +51,11 @@ module.exports = {
                             newUser.save()
                                 .catch(err => {
                                     console.log(err);
-                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                                 });
                         }
                     }).clone().catch(function (err) { console.log(err) })
-                    .catch(err => console.log("Error!"));
+                    .catch(err => console.log(err));
                     if (!userDatabase) return;
                     const bio = interaction.options.getString("bio");
                     const embed = new MessageEmbed()
@@ -64,17 +64,17 @@ module.exports = {
                         .setFooter("TIP: We support nitro emojis in bios.")
                         .setColor(COLOR_MAIN)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
 
                     await userDatabase.updateOne({
                         bio: `${bio}`,
-                    }).catch(err => console.log("Error!"));
+                    }).catch(err => console.log(err));
                     break;
                 }
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: bio`)] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: bio`)] }).catch(err => console.log(err));
             return;
         }
     }

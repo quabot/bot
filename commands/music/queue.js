@@ -47,15 +47,15 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
-            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log("Error!"));
+            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log(err));
 
             const member = interaction.guild.members.cache.get(interaction.user.id);
-            if (!member.voice.channel) return interaction.reply({ embeds: [notVoice] }).catch(err => console.log("Error!"));
+            if (!member.voice.channel) return interaction.reply({ embeds: [notVoice] }).catch(err => console.log(err));
 
             const queue = client.player.getQueue(interaction);
             if (!queue) return interaction.reply({ embeds: [noSongs] });
@@ -69,10 +69,10 @@ module.exports = {
             if (queueTotal.length > 1024) {
                 embed.setDescription("Queue is too long to fit into a message embed!")
             } else { embed.setDescription(queueTotal); }
-            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: join`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: join`)] }).catch(err => console.log(err));;
             return;
         }
     }

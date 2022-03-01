@@ -53,9 +53,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -66,9 +66,9 @@ module.exports = {
                 if (interaction.customId === "ticket") {
                     const topic = "No topic specified.";
 
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
 
-                    const GIds = require('../../../QuaBot-Code/schemas/GuildIds');
+                    const GIds = require('../../schemas/GuildIds');
                     const GIdsDB = await GIds.findOne({
                         verifyToken: 1,
                         gId: interaction.guild.id
@@ -124,7 +124,7 @@ module.exports = {
                             .setColor(COLOR_MAIN)
                         channel.send({ embeds: [createdEmbed], components: [close] });
 
-                        const Ticket = require('../../../QuaBot-Code/schemas/TicketSchema')
+                        const Ticket = require('../../schemas/TicketSchema')
                         const newTicket = new Ticket({
                             guildId: interaction.guild.id,
                             memberId: interaction.user.id,
@@ -158,7 +158,7 @@ module.exports = {
                     });
                 }
                 if (interaction.customId === "close") {
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
                     const close = new MessageEmbed()
                         .setTitle("Close ticket")
                         .setDescription("Are you sure you want to close this ticket?")
@@ -167,7 +167,7 @@ module.exports = {
                     interaction.reply({ embeds: [close], components: [closeConfirm] })
                 }
                 if (interaction.customId === "closeconfirm") {
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
 
                     let closedName = guildDatabase.closedTicketCategory;
                     if (closedName === undefined) openedName = 'Closed Tickets';
@@ -237,7 +237,7 @@ module.exports = {
                     }
                 }
                 if (interaction.customId === "closecancel") {
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
                     const closeCancel = new MessageEmbed()
                         .setTitle(":x: Cancelled!")
                         .setDescription("Cancelled the closing of the ticket.")
@@ -246,7 +246,7 @@ module.exports = {
                     interaction.update({ embeds: [closeCancel], components: [] })
                 }
                 if (interaction.customId === "reopen") {
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
 
                     let openedName = guildDatabase.ticketCategory;
                     if (openedName === undefined) openedName = 'Tickets';
@@ -299,7 +299,7 @@ module.exports = {
 
                 }
                 if (interaction.customId === "transcript") {
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
                     let cId = interaction.channel.name;
                     cId = cId.substring(7);
                     const transcript = new MessageEmbed()
@@ -331,7 +331,7 @@ module.exports = {
                         transcriptChannel.send({ embeds: [transcriptembed], components: [], files: [attachementtranscript] })
                         
                     }
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
 
                     setTimeout(() => {
                         interaction.channel.delete();
@@ -359,7 +359,7 @@ module.exports = {
                     });
                 }
                 if (interaction.customId === "deletecancel") {
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
                     const deleteCancel = new MessageEmbed()
                         .setTitle(":x: Cancelled!")
                         .setDescription("Cancelled the deletion of the ticket.")
@@ -368,7 +368,7 @@ module.exports = {
                     interaction.update({ embeds: [deleteCancel], components: [] })
                 }
                 if (interaction.customId === "delete") {
-                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+                     if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
                     const deleteEmbed = new MessageEmbed()
                         .setTitle("Delete ticket")
                         .setDescription("Are you sure you want to delete this ticket?")

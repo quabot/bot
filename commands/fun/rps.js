@@ -9,7 +9,7 @@ module.exports = {
     description: "Play rock, paper, scissors.",
     async execute(client, interaction) {
         try {
-            const message = await interaction.reply({ embeds: [rps], components: [rpsButton], fetchReply: true }).catch(err => console.log("Error!"));
+            const message = await interaction.reply({ embeds: [rps], components: [rpsButton], fetchReply: true }).catch(err => console.log(err));
             const options = ['rock', 'paper', 'scissors'];
             const random = options[Math.floor(Math.random() * options.length)];
             const rpsSchema = require('../../schemas/rpsSchema');
@@ -18,10 +18,10 @@ module.exports = {
                 userId: interaction.user.id,
                 result: random,
                 messageId: message.id,});
-            newRps.save().catch(err => console.log("Error!"));
+            newRps.save().catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: rps`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: rps`)] }).catch(err => console.log(err));;
             return;
         }
     }

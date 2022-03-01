@@ -94,7 +94,7 @@ module.exports = {
             let memberTarget = member.guild.members.cache.get(member.id);
 
             if (mainRole) {
-                memberTarget.roles.add(mainRole.id).catch(err => console.log("Error!"));
+                memberTarget.roles.add(mainRole.id).catch(err => console.log(err));
             }
         }
         if (eventsDatabase.joinMessages === false) return;

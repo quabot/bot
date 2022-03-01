@@ -29,7 +29,7 @@ module.exports = {
             const reasonRaw = interaction.options.getString('reason');
             let reason = "No reason specified.";
 
-            if (!member) return interaction.reply({ embeds: [banNoUser] }).catch(err => console.log("Error!"));
+            if (!member) return interaction.reply({ embeds: [banNoUser] }).catch(err => console.log(err));
             if (reasonRaw) reason = reasonRaw;
 
             const userBanned = new MessageEmbed()
@@ -38,11 +38,11 @@ module.exports = {
                 .setColor(COLOR_MAIN)
 
             member.ban({ reason: reason }).catch(err => {
-                interaction.channel.send({ embeds: [banImpossible] }).catch(err => console.log("Error!"));
+                interaction.channel.send({ embeds: [banImpossible] }).catch(err => console.log(err));
                 let reason = ":x: Ban failed.";
                 return;
             });
-            interaction.reply({ embeds: [userBanned], split: true }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [userBanned], split: true }).catch(err => console.log(err));
             const youWereBanned = new MessageEmbed()
                 .setDescription(`You were banned from one of your servers, **${interaction.guild.name}**.`)
                 .addField("Banned By", `${interaction.user}`)
@@ -66,14 +66,14 @@ module.exports = {
                         banCount: 0,
                         warnCount: 0,
                         muteCount: 0,
-                        afk: true,
+                        afk: false,
                         afkStatus: "none",
                         bio: "none",
                     });
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -103,7 +103,7 @@ module.exports = {
                 newUser.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                        interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                     });
             }
 
@@ -144,9 +144,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -165,7 +165,7 @@ module.exports = {
             newBans.save()
                 .catch(err => {
                     console.log(err);
-                    interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                 });
 
 
@@ -187,8 +187,8 @@ module.exports = {
                 return;
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: ban`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: ban`)] }).catch(err => console.log(err));;
             return;
         }
     }

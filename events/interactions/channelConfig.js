@@ -52,9 +52,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
     
@@ -69,8 +69,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [log], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [log], ephemeral: true }).catch(err => console.log(err));
                     collector.on('collect', async m => {
                         if (m) {
                             const C = m.mentions.channels.first();
@@ -84,13 +84,13 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed log channel to ${C}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
 
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -104,8 +104,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ ephemeral: true, embeds: [level], components: [buttonsLevel] }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ ephemeral: true, embeds: [level], components: [buttonsLevel] }).catch(err => console.log(err));
                     collector.on('collect', async m => {
                         if (m) {
                             const D = m.mentions.channels.first();
@@ -117,12 +117,12 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed level up channel to ${D}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated2] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated2] }).catch(err => console.log(err));
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -136,8 +136,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [report], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [report], ephemeral: true }).catch(err => console.log(err));
                     collector.on('collect', async m => {
                         if (m) {
                             const D = m.mentions.channels.first();
@@ -150,13 +150,13 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed report channel to ${D}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated2] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated2] }).catch(err => console.log(err));
 
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -170,8 +170,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [suggest], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [suggest], ephemeral: true }).catch(err => console.log(err));
                     collector.on('collect', async m => {
                         if (m) {
                             const E = m.mentions.channels.first();
@@ -183,12 +183,12 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed suggestions channel to ${E}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated3] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated3] }).catch(err => console.log(err));
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -202,8 +202,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [welcome], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [welcome], ephemeral: true }).catch(err => console.log(err));
 
                     collector.on('collect', async m => {
                         if (m) {
@@ -216,12 +216,12 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed welcome channel to ${F}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated4] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated4] }).catch(err => console.log(err));
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -234,8 +234,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [transcript], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [transcript], ephemeral: true }).catch(err => console.log(err));
 
                     collector.on('collect', async m => {
                         if (m) {
@@ -248,12 +248,12 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed transcript logging channel to ${F}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated42] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated42] }).catch(err => console.log(err));
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -267,8 +267,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [ticket], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [ticket], ephemeral: true }).catch(err => console.log(err));
                     collector.on('collect', async m => {
                         if (m) {
                             if (m.author.bot) return;
@@ -280,12 +280,12 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed tickets category to ${m.content}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated5] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated5] }).catch(err => console.log(err));
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -299,8 +299,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [closed], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [closed], ephemeral: true }).catch(err => console.log(err));
                     collector.on('collect', async m => {
                         if (m) {
                             if (m.author.bot) return;
@@ -312,12 +312,12 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed closed tickets category to ${m.content}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated5] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated5] }).catch(err => console.log(err));
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
@@ -331,8 +331,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/jgdQUul.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log("Error!"));
-                    interaction.reply({ embeds: [poll], ephemeral: true }).catch(err => console.log("Error!"));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [poll], ephemeral: true }).catch(err => console.log(err));
                     collector.on('collect', async m => {
                         if (m) {
                             const C = m.mentions.channels.first();
@@ -344,20 +344,20 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed poll channel to ${C}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated] }).catch(err => console.log("Error!"));
+                            m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log("Error!"));
+                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
                         }
                     });
                 }
             }
 
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
             return;
         }
     }

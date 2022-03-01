@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const client = new discord.Client({ intents: 6095, partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 require('dotenv').config()
+const TicTacToe = require('discord-tictactoe');
 
 client.commands = new discord.Collection();
 ['commands', 'events', 'text_commands'].forEach(handler => {

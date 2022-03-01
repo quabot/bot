@@ -94,7 +94,7 @@ module.exports = {
 
                     if (mode === null) mode = 'normal';
 
-                    if (channel.type !== "GUILD_TEXT") return interaction.reply({ embeds: [noValidChannel] }).catch(err => console.log("Error!"));
+                    if (channel.type !== "GUILD_TEXT") return interaction.reply({ embeds: [noValidChannel] }).catch(err => console.log(err));
                     
 
                     channel.messages.fetch(message)
@@ -114,13 +114,13 @@ module.exports = {
                                     .setDescription(`Could not find that emoji! You can only react with default emojis.`)
                                     .setColor(COLOR_MAIN)
                                     .setTimestamp()
-                                interaction.channel.send({ embeds: [noRole] }).catch(err => console.log("Error!"));
+                                interaction.channel.send({ embeds: [noRole] }).catch(err => console.log(err));
                                 return;
                             })
-                            interaction.reply({ ephemeral: true, embeds: [embed] }).catch(err => console.log("Error!"));
+                            interaction.reply({ ephemeral: true, embeds: [embed] }).catch(err => console.log(err));
                         })
                         .catch(async err => {
-                            await interaction.channel.send({ embeds: [noMsgFound], fetchReply: true }).catch(err => console.log("Error!"));
+                            await interaction.channel.send({ embeds: [noMsgFound], fetchReply: true }).catch(err => console.log(err));
                             return;
                         })
 
@@ -137,7 +137,7 @@ module.exports = {
                     newReact.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
                 }
                     break;
@@ -151,7 +151,7 @@ module.exports = {
                         emoji: emoji,
                     }, (err, react) => {
                         if (err) return;
-                        if (!react) return interaction.channel.send("Could not find a message with that ID!").catch(err => console.log("Error!"));
+                        if (!react) return interaction.channel.send("Could not find a message with that ID!").catch(err => console.log(err));
                     });
                     const embed3 = new MessageEmbed()
                         .setTitle("Deleted the reaction role!")
@@ -159,7 +159,7 @@ module.exports = {
                         .addField("Emoji", `${emoji}`)
                         .setTimestamp()
                         .setColor(COLOR_MAIN)
-                    interaction.reply({ ephemeral: true, embeds: [embed3]}).catch(err => console.log("Error!"));
+                    interaction.reply({ ephemeral: true, embeds: [embed3]}).catch(err => console.log(err));
                 }
                     break;
                 case "list": {
@@ -169,7 +169,7 @@ module.exports = {
                     }, (err, react) => {
                         if (err) console.error(err);
                         if (!react) {
-                            return interaction.channel.send("There are no reaction roles.").catch(err => console.log("Error!"));
+                            return interaction.channel.send("There are no reaction roles.").catch(err => console.log(err));
                         }
                         return;
                     }).clone().catch(function (err) { console.log(err) });
@@ -181,14 +181,14 @@ module.exports = {
                         .setTimestamp()
                         .setDescription(`${reacts.join("\n\n")}`)
                     interaction.reply({ ephemeral: true, embeds: [reactEmbed] }).catch(err => {
-                        interaction.channel.send("The list is too long to be sent to this channel. Please contact the developers.").catch(err => console.log("Error!"));
+                        interaction.channel.send("The list is too long to be sent to this channel. Please contact the developers.").catch(err => console.log(err));
                     });
                 }
                     break;
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log("Error!"));
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
             return;
         }
     }

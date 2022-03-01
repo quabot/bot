@@ -55,13 +55,13 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log("Error!"));
+            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
 
             let ticketsCatName = guildDatabase.ticketCategory;
             if (ticketsCatName === "undefined") {
@@ -69,7 +69,7 @@ module.exports = {
             }
 
             let ticketCategory = interaction.guild.channels.cache.find(cat => cat.name === ticketsCatName);
-            if (ticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket] }).catch(err => console.log("Error!"));
+            if (ticketCategory.id !== interaction.channel.parentId) return interaction.reply({ embeds: [notATicket] }).catch(err => console.log(err));
 
             const user = interaction.options.getUser('user');
 
@@ -77,18 +77,18 @@ module.exports = {
                 SEND_MESSAGES: false,
                 VIEW_CHANNEL: false,
                 READ_MESSAGE_HISTORY: false
-            }).catch(err => console.log("Error!"));
+            }).catch(err => console.log(err));
 
             const embed = new MessageEmbed()
                 .setTitle(`:white_check_mark: Removing user...`)
                 .setDescription(`Removed ${user} from your support ticket!`)
                 .setTimestamp()
                 .setColor(COLOR_MAIN)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
 
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
             return;
         }
     }

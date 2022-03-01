@@ -104,7 +104,7 @@ module.exports = {
                         .addField("Created By", `<@${invite.inviter.id}>`, true)
                         .setTimestamp()
                         .setColor(`GREEN`)
-                    logChannel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 };
             }
         } catch (e) {

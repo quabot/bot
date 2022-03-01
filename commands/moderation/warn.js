@@ -38,10 +38,10 @@ module.exports = {
             const member = interaction.options.getMember('user');
 
             if (!member)
-                return interaction.reply({ content: kickNoUser }).catch(err => console.log("Error!"));
+                return interaction.reply({ content: kickNoUser }).catch(err => console.log(err));
 
             if (interaction.member.roles.highest.position < member.roles.highest.position)
-                return interaction.reply({ embeds: [kickImpossible] }).catch(err => console.log("Error!"));
+                return interaction.reply({ embeds: [kickImpossible] }).catch(err => console.log(err));
 
             const rRaw = interaction.options.getString('reason');
             if (rRaw.length > 1) reason = rRaw;
@@ -62,14 +62,14 @@ module.exports = {
                         banCount: 0,
                         warnCount: 0,
                         muteCount: 0,
-                        afk: true,
+                        afk: false,
                         afkStatus: "none",
                         bio: "none",
                     });
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -78,7 +78,7 @@ module.exports = {
                 .setDescription(`${member} was warned\nReason: **${reason}**`)
                 .setFooter(`Warn-ID: ${userDatabase.warnCount + 1}`)
                 .setColor(COLOR_MAIN);
-            interaction.reply({ embeds: [warnedEmbed] }).catch(err => console.log("Error!"));
+            interaction.reply({ embeds: [warnedEmbed] }).catch(err => console.log(err));
             const youWereWarned = new MessageEmbed()
                 .setDescription(`You were warned on one of your servers, **${interaction.guild.name}**.`)
                 .addField("Warned By", `${interaction.user}`)
@@ -86,7 +86,7 @@ module.exports = {
                 .setFooter(`Warn-ID: ${userDatabase.warnCount + 1}`)
                 .setColor(COLOR_MAIN);
             member.send({ embeds: [youWereWarned] }).catch(e => {
-                interaction.channel.send({ embeds: [unable] }).catch(err => console.log("Error!"));
+                interaction.channel.send({ embeds: [unable] }).catch(err => console.log(err));
             });
 
 
@@ -131,9 +131,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -169,12 +169,12 @@ module.exports = {
                         .addField('Warned by', `${interaction.user}`)
                         .addField('Reason', `${reason}`);
 
-                    return logChannel.send({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    return logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 };
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: warn`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: warn`)] }).catch(err => console.log(err));;
             return;
         }
     }

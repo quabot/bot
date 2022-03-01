@@ -33,6 +33,7 @@ const UserEcoSchema = new mongoose.Schema({
     lastBeg: falseString,
     lastRobbed: falseString,
     lastRobAny: falseString,
+    lastVote: falseString,
     commandsUsed: falseNumber,
     shop: falseArray,
 });

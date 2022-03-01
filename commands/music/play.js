@@ -53,12 +53,12 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
+                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log("Error!"));
+                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
                 }
             }).clone().catch(function (err) { console.log(err) });
-            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log("Error!"));
+            if (guildDatabase.musicEnabled === "false") return interaction.reply({ embeds: [musicDisabled] }).catch(err => console.log(err));
 
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member.voice.channel) return interaction.reply({ embeds: [notVoice] });
@@ -67,13 +67,13 @@ module.exports = {
             const song = interaction.options.getString('song');
             client.player.playVoiceChannel(voiceChannel, song, {
                 textChannel: interaction.channel,
-            }).catch(err => console.log("Error!"));
+            }).catch(err => console.log(err));
             
-            interaction.reply("** **").catch(err => console.log("Error!"));
-            interaction.deleteReply().catch(err => console.log("Error!"));
+            interaction.reply("** **").catch(err => console.log(err));
+            interaction.deleteReply().catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: cat`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: cat`)] }).catch(err => console.log(err));;
             return;
         }
     }

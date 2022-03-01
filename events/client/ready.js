@@ -1,7 +1,7 @@
 const consola = require('consola');
 const { connect } = require('mongoose');
 const { setURL } = require("discord.js-leveling");
-const { VERSION } = require('../../files/settings.json');
+const { CMD_AMOUNT, VERSION } = require('../../files/settings.json');
 require('dotenv').config();
 
 module.exports = {
@@ -26,9 +26,13 @@ module.exports = {
             }, 12000);
 
             setTimeout(function () {
+                client.user.setActivity(`${CMD_AMOUNT} commands | /help`, { type: "WATCHING" });
+            }, 18000);
+
+            setTimeout(function () {
                 client.user.setActivity(`${client.guilds.cache.size} servers |  /help`, { type: "WATCHING" });
                 loop()
-            }, 18000);
+            }, 24000);
         }());
     }
 }

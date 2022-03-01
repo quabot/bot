@@ -11,7 +11,8 @@
         "active": 3600000,
         "activeseconds": 3600,
         "activeformat": "1 hour",
-        "usable": true
+        "usable": true,
+        "sellable": true
     },
     {
         "id": "2",
@@ -21,7 +22,8 @@
         "value": 30,
         "emoji": ":book:",
         "max": 2,
-        "usable": false
+        "usable": false,
+        "sellable": true
     },
     {
         "id": "3",
@@ -31,7 +33,8 @@
         "value": 50,
         "emoji": ":alarm_clock:",
         "max": 1,
-        "usable": false
+        "usable": false,
+        "sellable": true
     },
     {
         "id": "4",
@@ -45,7 +48,8 @@
         "activeseconds": 604800,
         "activeformat": "1 week",
         "usable": true,
-        "whatdo": "This item remains active for 1 week, during this time it will protect your wallet from a robbery once."
+        "whatdo": "This item remains active for 1 week, during this time it will protect your wallet from a robbery once.",
+        "sellable": true
     },
     {
         "id": "5",
@@ -55,7 +59,8 @@
         "value": 300,
         "emoji": ":computer:",
         "max": 1,
-        "usable": false
+        "usable": false,
+        "sellable": false
     },
     {
         "id": "6",

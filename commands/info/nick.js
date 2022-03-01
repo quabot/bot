@@ -26,27 +26,27 @@ module.exports = {
             const member = interaction.member;
             const user = interaction.options.getMember('user');
             const newNick = interaction.options.getString('new-nick');
-            if (newNick.length > 32) return interaction.reply({ embeds: [nickLength] }).catch(err => console.log("Error!"));
+            if (newNick.length > 32) return interaction.reply({ embeds: [nickLength] }).catch(err => console.log(err));
 
             if (member.permissions.has("MANAGE_NICKNAMES")) {
                 if (user) {
-                    if (user.permissions.has('ADMINISTRATOR')) return interaction.reply({ embeds: [nickNoPerms] }).catch(err => console.log("Error!"));;
+                    if (user.permissions.has('ADMINISTRATOR')) return interaction.reply({ embeds: [nickNoPerms] }).catch(err => console.log(err));;
                     user.setNickname(`${newNick}`);
                     const embed = new MessageEmbed()
                         .setTitle(":white_check_mark: Changed nickname!")
                         .setDescription(`Changed ${user}'s nickname to **${newNick}**.`)
                         .setColor(COLOR_MAIN)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                 } else {
-                    if (member.permissions.has('ADMINISTRATOR')) return interaction.reply({ embeds: [nickNoPerms] }).catch(err => console.log("Error!"));
+                    if (member.permissions.has('ADMINISTRATOR')) return interaction.reply({ embeds: [nickNoPerms] }).catch(err => console.log(err));
                     member.setNickname(`${newNick}`);
                     const embed = new MessageEmbed()
                         .setTitle(":white_check_mark: Changed nickname!")
                         .setDescription(`Changed your nickname to **${newNick}**.`)
                         .setColor(COLOR_MAIN)
                         .setTimestamp()
-                    interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                    interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                 }
             } else {
                 if (member.permissions.has('ADMINISTRATOR')) return interaction.reply({ embeds: [nickNoPerms] });
@@ -56,11 +56,11 @@ module.exports = {
                     .setDescription(`Changed your nickname to **${newNick}**.`)
                     .setColor(COLOR_MAIN)
                     .setTimestamp();
-                interaction.reply({ embeds: [embed] }).catch(err => console.log("Error!"));
+                interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log("Error!"));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: nick`)] }).catch(err => console.log("Error!"));;
+            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: nick`)] }).catch(err => console.log(err));;
             return;
         }
     }
