@@ -195,7 +195,7 @@ module.exports = {
                     .addField('Timed Out by', `${interaction.user}`)
                     .addField('Duration', `${time}`)
                     .addField('Reason', `${reason}`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed], split: true })
             } else {
                 return;

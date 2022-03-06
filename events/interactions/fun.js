@@ -108,7 +108,7 @@ module.exports = {
                         .setDescription(`**Question:**\n${answers.question}`)
                         .addField(`Answer`, `${answers.correct}`)
                         .setColor("GREEN")
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log(err));
                 } else {
                     const wrongEmbed = new MessageEmbed()
@@ -117,7 +117,7 @@ module.exports = {
                         .addField(`Correct Answer`, `${answers.correct}`)
                         .addField(`Your answer`, `${answers.answer1}`)
                         .setColor("RED")
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log(err));
                 }
             }
@@ -143,7 +143,7 @@ module.exports = {
                         .setDescription(`**Question:**\n${answers.question}`)
                         .addField(`Answer`, `${answers.correct}`)
                         .setColor("GREEN")
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log(err));
                 } else {
                     const wrongEmbed = new MessageEmbed()
@@ -152,7 +152,7 @@ module.exports = {
                         .addField(`Correct Answer`, `${answers.correct}`)
                         .addField(`Your answer`, `${answers.answer2}`)
                         .setColor("RED")
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log(err));
                 }
             }
@@ -178,7 +178,7 @@ module.exports = {
                         .setDescription(`**Question:**\n${answers.question}`)
                         .addField(`Answer`, `${answers.correct}`)
                         .setColor("GREEN")
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [correctEmbed], components: [] }).catch(err => console.log(err));
                 } else {
                     const wrongEmbed = new MessageEmbed()
@@ -187,7 +187,7 @@ module.exports = {
                         .addField(`Correct Answer`, `${answers.correct}`)
                         .addField(`Your answer`, `${answers.answer3}`)
                         .setColor("RED")
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [wrongEmbed], components: [] }).catch(err => console.log(err));
                 }
             }

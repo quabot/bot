@@ -96,7 +96,7 @@ module.exports = {
                     .addField("Level XP", `${user.xp}/${Levels.xpFor(user.level + 1)}`, true)
                     .addField("Misc", `\`${a.toLocaleString('us-US', { minimumFractionDigits: 0 })}\` commands used`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 interaction.reply({ embeds: [profile] }).catch(e => console.log("Failed to DM"));
             } catch (e) {
                 console.log(e);
@@ -179,7 +179,7 @@ module.exports = {
                     .addField("Level XP", `${userLevel.xp}/${Levels.xpFor(userLevel.level + 1)}`, true)
                     .addField("Misc", `\`${a.toLocaleString('us-US', { minimumFractionDigits: 0 })}\` commands used`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 interaction.reply({ embeds: [profile] }).catch(e => console.log("Failed to DM"));
             } catch (e) {
                 console.log(e);

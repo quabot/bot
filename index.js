@@ -28,7 +28,7 @@ client.player.on('playSong', (queue, song) => {
         .setTitle("Now Playing")
         .setColor(COLOR_MAIN)
         .setDescription(`${song.name}`)
-        .setTimestamp()
+        
         .setThumbnail(song.thumbnail)
         .addField("Views", `${song.views}`, true)
         .addField("Likes", `${song.likes}`, true)
@@ -46,7 +46,7 @@ client.player.on("addSong", (queue, song) => {
         .setTitle("Song added to the queue")
         .setThumbnail(song.thumbnail)
         .setDescription(`${song.name}`)
-        .setTimestamp()
+        
         .addField("Added by", `${song.user}`, true)
         .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
         .addField("Duration", `${song.formattedDuration}`, true)
@@ -56,14 +56,14 @@ client.player.on('error', (channel, err) => {
     console.log(err)
     const musicErrorEmbed = new MessageEmbed()
         .setTitle(":x: There was an error!")
-        .setTimestamp()
+        
         .setColor(COLOR_MAIN)
     channel.send({ embeds: [musicErrorEmbed] });
 });
 client.player.on('finish', queue => {
     const finishQueueEmbed = new MessageEmbed()
         .setTitle(":x: There are no more songs in queue, leaving voice channel!")
-        .setTimestamp()
+        
         .setColor(COLOR_MAIN)
     queue.textChannel.send({ embeds: [finishQueueEmbed] });
 });
@@ -75,6 +75,6 @@ client.player.on('noRelated', queue => {
     const noRelatedEmbed = new MessageEmbed()
         .setTitle(":x: Could not find any related songs, queue ended!")
         .setColor(COLOR_MAIN)
-        .setTimestamp()
+        
     queue.textChannel.send({ embeds: [noRelatedEmbed] });
 });

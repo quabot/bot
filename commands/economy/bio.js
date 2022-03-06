@@ -63,7 +63,7 @@ module.exports = {
                         .setDescription("Use `/profile` to view your bio!")
                         .setFooter("TIP: We support nitro emojis in bios.")
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
 
                     await userDatabase.updateOne({

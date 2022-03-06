@@ -79,7 +79,7 @@ module.exports = {
                         .setDescription(`This item will remain active for ${foundShop.activeformat}`)
                         .addField("What does it do?", `${foundShop.whatdo}`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
                 }
             } else {

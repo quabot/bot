@@ -82,7 +82,7 @@ module.exports = {
                         .addField("Variables to use", "**{user}** - mentions the user\n**{user-name}** - The users name\n**{user-discriminator}** - Sends the users discriminator\n**{guild-name}** - Sends the guild name\n**{members}** - Guild's membercount.")
                         .addField("Current message", `${joinmessage}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [welcome], ephemeral: true }).catch(err => console.log(err));
@@ -150,7 +150,7 @@ module.exports = {
                         .addField("Variables to use", "**{user}** - mentions the user\n**{user-name}** - The users name\n**{user-discriminator}** - Sends the users discriminator\n**{guild-name}** - Sends the guild name\n**{members}** - Current guild member count.")
                         .addField("Current message", `${leavemessage}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [welcome], ephemeral: true }).catch(err => console.log(err));
@@ -205,7 +205,7 @@ module.exports = {
                         .setTitle("Change Prefix")
                         .setDescription(`Send the new prefix within 60 seconds to change it. Currently: ${prefix}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [economy], ephemeral: true }).catch(err => console.log(err));

@@ -66,7 +66,7 @@ module.exports = {
                         .setDescription("Mention the new role within 15 seconds to change it.")
                         .addField("Current value", `<${guildDatabase.mainRole}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     interaction.reply({ embeds: [mainRole], ephemeral: true }).catch(err => console.log(err));
 

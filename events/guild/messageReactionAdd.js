@@ -33,7 +33,7 @@ module.exports = {
                     .setTitle(":x: No Role!")
                     .setDescription(`Could not find a role with the id **${reactList.role}**! Deleted this reaction role.`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 reaction.message.reply({ ephemeral: true, embeds: [noRole] });
                 React.deleteOne({
                     guildId: reaction.message.guildId,

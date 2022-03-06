@@ -75,7 +75,7 @@ module.exports = {
                             if (yes > 0.45) {
                                 const embed = new discord.MessageEmbed()
                                     .setTitle(`${winmsg} ${randomMoney.toLocaleString('us-US', { minimumFractionDigits: 0 })} ⑩`)
-                                    .setTimestamp()
+                                    
                                     .setDescription(`You got a total of **⑩ ${randomMoney.toLocaleString('us-US', { minimumFractionDigits: 0 })}**`)
                                     .setColor(`GREEN`)
                                     .setFooter("5% boost active from 🍎 Apple")
@@ -83,7 +83,7 @@ module.exports = {
                             } else if (yes < 0.45) {
                                 const embed = new discord.MessageEmbed()
                                     .setTitle(`${lostmsg} `)
-                                    .setTimestamp()
+                                    
                                     .setDescription("You got a total of **⑩ 0**!")
                                     .setFooter("5% boost active from 🍎 Apple")
                                     .setColor("RED")
@@ -117,14 +117,14 @@ module.exports = {
             if (yes > 0.5) {
                 const embed = new discord.MessageEmbed()
                     .setTitle(`${winmsg} ${randomMoney.toLocaleString('us-US', { minimumFractionDigits: 0 })} ⑩`)
-                    .setTimestamp()
+                    
                     .setDescription(`you got a total of **⑩ ${randomMoney.toLocaleString('us-US', { minimumFractionDigits: 0 })}**`)
                     .setColor("GREEN")
                 message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             } else if (yes < 0.5) {
                 const embed = new discord.MessageEmbed()
                     .setTitle(`${lostmsg} `)
-                    .setTimestamp()
+                    
                     .setDescription("You got a grand total of **⑩ 0**!")
                     .setColor("RED")
                 message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });

@@ -92,7 +92,7 @@ module.exports = {
                 .addField(`${shop[2].emoji} ${shop[2].item} - \`⑩ ${shop[2].prize}\``, `${shop[2].description}`)
                 .addField(`${shop[3].emoji} ${shop[3].item} - \`⑩ ${shop[3].prize}\``, `${shop[3].description}`)
                 .addField(`${shop[4].emoji} ${shop[4].item} - \`⑩ ${shop[4].prize}\``, `${shop[4].description}`)
-                .setTimestamp()
+                
                 .setColor(COLOR_MAIN)
             message.reply({ embeds: [shopPage1Embed], components: [shopPage1Select, shopPage1Buttons],  allowedMentions: { repliedUser: false } });
         } catch (e) {

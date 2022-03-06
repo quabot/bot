@@ -45,7 +45,7 @@ module.exports = {
                     .setColor(COLOR_MAIN)
                     .setDescription(`Bank: ⑩ ${inWallet.toLocaleString('us-US', { minimumFractionDigits: 0 })}/${walletSize.toLocaleString('us-US', { minimumFractionDigits: 0 })} \`${Math.round(inWallet / walletSize * 100)}%\`
                     Pocket: ⑩ ${outWallet.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false }})
             } else {
                 const UserEco = require('../../schemas/UserEcoSchema');
@@ -79,7 +79,7 @@ module.exports = {
                     .setColor(COLOR_MAIN)
                     .setDescription(`Bank: ⑩ ${inWallet.toLocaleString('us-US', { minimumFractionDigits: 0 })}/${walletSize.toLocaleString('us-US', { minimumFractionDigits: 0 })} \`${Math.round(inWallet / walletSize * 100)}%\`
                     Pocket: ⑩ ${outWallet.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
             }
         } catch (e) {

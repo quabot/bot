@@ -99,7 +99,7 @@ module.exports = {
                         .setTitle("Invite Deletd!")
                         .addField("Code", `${invite.code}`, true)
                         .addField("Channel", `<#${invite.channel.id}>`, true)
-                        .setTimestamp()
+                        
                         .setColor(`RED`)
                     logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 };

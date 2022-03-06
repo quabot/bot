@@ -61,7 +61,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the levels system.")
                         .addField("Current value", `${guildDatabase.levelEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [levels], components: [buttonsLevels] }).catch(err => console.log(err));
@@ -73,7 +73,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the swear filter.")
                         .addField("Current value", `${guildDatabase.swearEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [swear], components: [buttonsSwear] }).catch(err => console.log(err));
@@ -85,7 +85,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable guild events logging.")
                         .addField("Current value", `${guildDatabase.logEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [logs], components: [buttonsLogs] }).catch(err => console.log(err));
@@ -97,7 +97,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable join roles.")
                         .addField("Current value", `${guildDatabase.roleEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [role], components: [buttonsRole] }).catch(err => console.log(err));
@@ -109,7 +109,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable all music commands.")
                         .addField("Current value", `${guildDatabase.musicEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [music], components: [buttonsMusic] }).catch(err => console.log(err));
@@ -121,7 +121,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable reports for this guild.")
                         .addField("Current value", `${guildDatabase.reportEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [reports], components: [buttonsReport] }).catch(err => console.log(err));
@@ -133,7 +133,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable suggestions for this guild.")
                         .addField("Current value", `${guildDatabase.suggestEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [suggest], components: [buttonsSuggest] }).catch(err => console.log(err));
@@ -145,7 +145,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable tickets for this guild.")
                         .addField("Current value", `${guildDatabase.ticketEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [ticket], components: [buttonsTicket] }).catch(err => console.log(err));
@@ -157,7 +157,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable welcome messages for this guild.")
                         .addField("Current value", `${guildDatabase.welcomeEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [welcome], components: [buttonsWelcome] }).catch(err => console.log(err));
@@ -169,7 +169,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable polls for this guild.")
                         .addField("Current value", `${guildDatabase.pollsEnabled}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [poll], components: [buttonsPoll] }).catch(err => console.log(err));

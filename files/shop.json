@@ -17,7 +17,7 @@
     {
         "id": "2",
         "item": "Book",
-        "description": "Books will be used in the next economy update.",
+        "description": "This item has not been implemented yet. 🚫",
         "prize": 150,
         "value": 30,
         "emoji": ":book:",
@@ -28,7 +28,7 @@
     {
         "id": "3",
         "item": "Clock",
-        "description": "Clocks will be used in the next economy update.",
+        "description": "This item has not been implemented yet. 🚫",
         "prize": 250,
         "value": 50,
         "emoji": ":alarm_clock:",

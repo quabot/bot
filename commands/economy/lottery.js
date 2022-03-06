@@ -69,7 +69,7 @@ module.exports = {
                 const embed = new discord.MessageEmbed()
                     .setTitle("You don't have the money!")
                     .setDescription("You need ⑩ 500 to play in the lottery.")
-                    .setTimestamp()
+                    
                     .setColor(COLOR_MAIN)
                 message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } });
                 return;
@@ -79,7 +79,7 @@ module.exports = {
                 .setTitle(`Play in the lottery`)
                 .setColor(COLOR_MAIN)
                 .setDescription("Pay ⑩ 500 to enter, if you win you get ⑩ 10,000!")
-                .setTimestamp()
+                
             message.reply({ embeds: [embed], components: [buttonsLottery],  allowedMentions: { repliedUser: false } });
 
         } catch (e) {

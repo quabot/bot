@@ -80,7 +80,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`:white_check_mark: Adding user...`)
                 .setDescription(`Adding ${user} to your support ticket!`)
-                .setTimestamp()
+                
                 .setColor(COLOR_MAIN)
             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
 

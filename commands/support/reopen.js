@@ -82,7 +82,7 @@ module.exports = {
                     .setColor(COLOR_MAIN)
                     .setTitle('Creating a category!')
                     .setDescription('The categegory for opened tickets does not exist. Creating one now...')
-                    .setTimestamp()
+                    
                 interaction.reply({ embeds: [embedTicketsCreate] }).catch(err => console.log(err));
                 return
             }
@@ -102,7 +102,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle("Re-Opened Ticket!")
                 .setDescription("Close it with the button below this message.")
-                .setTimestamp()
+                
                 .setColor(COLOR_MAIN);
             interaction.reply({ embeds: [embed], components: [close] }).catch(err => console.log(err));
 

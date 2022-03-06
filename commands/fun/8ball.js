@@ -24,7 +24,7 @@ module.exports = {
                 .addField("Question", `${question}`, true)
                 .addField('8ball', `${random}`)
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {
             interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));

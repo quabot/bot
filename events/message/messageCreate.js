@@ -24,8 +24,8 @@ module.exports = {
                     .setTitle("Hello!")
                     .setDescription("I'm QuaBot, a multipurpose bot with Music, Reaction Roles, moderation and a lot more! You can check my commands [here](https://quabot.net) and invite me [here](https://invite.quabot.net)!")
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
-                    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+                    
+                    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
                 message.channel.send({ embeds: [embed] });
                 return;
             }
@@ -199,7 +199,7 @@ module.exports = {
                                 .setTitle("SWEAR DETECTED")
                                 .setDescription(`<:addfriend:941403540306423868> Member: ${message.author}\n\n<:thread:941403540327391282> Swearword: ${Swears[i]}`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             logChannel.send({ embeds: [embed] }).catch(err => {
                                 console.log("Delete swearfilter error.");
                             });

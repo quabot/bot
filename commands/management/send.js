@@ -103,7 +103,7 @@ module.exports = {
                     const message = new MessageEmbed()
                         .setDescription(`Reply with the message you want to send to ${channel} within 60 seconds.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [message] }).catch(err => console.log(err));
 
                     const filter = m => interaction.user === m.author;

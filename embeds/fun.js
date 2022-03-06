@@ -3,7 +3,7 @@ const { COLOR_MAIN } = require('../files/colors.json');
 
 const coin = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🪙 Flipping the coin!");
 const catScan = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔍 Searching for cat images!");
-const empty = new MessageEmbed().setColor(COLOR_MAIN).setTimestamp()
+const empty = new MessageEmbed().setColor(COLOR_MAIN)
 const empty2 = new MessageEmbed().setColor(COLOR_MAIN)
 const empty3 = new MessageEmbed().setColor(COLOR_MAIN)
 const dogScan = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔍 Searching for dog images!");
@@ -18,6 +18,6 @@ const lostPaper = new MessageEmbed().setColor(COLOR_MAIN).setTitle("You lost!").
 const tieScissors = new MessageEmbed().setColor(COLOR_MAIN).setTitle("Tie!").addField("My Choice", "✂️ Scissors", true).addField("Your Choice", "✂️ Scissors", true);
 const lostScissors = new MessageEmbed().setColor(COLOR_MAIN).setTitle("You lost!").addField("My Choice", "🪨 Rock", true).addField("Your Choice", "✂️ Scissors", true);
 const wonScissors = new MessageEmbed().setColor(COLOR_MAIN).setTitle("You won!").addField("My Choice", "✂️ Scissors", true).addField("Your Choice", "✂️ Scissors", true);
-const emptyReddit = new MessageEmbed().setColor(COLOR_MAIN).setTimestamp()
+const emptyReddit = new MessageEmbed().setColor(COLOR_MAIN)
 
 module.exports = { empty3, emptyReddit, memeScan, dogScan, catScan, empty, empty2, coin, rps, lostRock, wonRock, tieRock, lostPaper, wonPaper, tiePaper, lostScissors, wonScissors, tieScissors }

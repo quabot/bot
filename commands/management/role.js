@@ -100,7 +100,7 @@ module.exports = {
                                 .setColor(COLOR_MAIN)
                                 .setTitle("Created role!")
                                 .setDescription("Succesfully created the role <@&" + role + ">!")
-                                .setTimestamp()
+                                
                             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                         }).catch(err => console.log(err));
                     } else {
@@ -111,7 +111,7 @@ module.exports = {
                                 .setColor(COLOR_MAIN)
                                 .setTitle("Created role!")
                                 .setDescription("Succesfully created the role <@&" + role + ">!")
-                                .setTimestamp()
+                                
                             interaction.reply({ embeds: [embedTwo] }).catch(err => console.log(err));
                         }).catch(err => console.log(err));
                     }
@@ -125,7 +125,7 @@ module.exports = {
                         .setTitle("Role Deleted!")
                         .setDescription(`Deleted role **${role.name}**!`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     break;
                 }
@@ -138,7 +138,7 @@ module.exports = {
                             .setTitle(":x: No Role!")
                             .setDescription(`Could not find that role!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                         return;
                     } else {
@@ -147,7 +147,7 @@ module.exports = {
                             .setTitle(":white_check_mark: Role granted!")
                             .setDescription(`Gave the role ${role} to ${user}!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     }
                     break;
@@ -161,7 +161,7 @@ module.exports = {
                             .setTitle(":x: No Role!")
                             .setDescription(`Could not find a role with the name **${roleName}**!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                         return;
                     } else {
@@ -170,7 +170,7 @@ module.exports = {
                             .setTitle(":white_check_mark: Role removed!")
                             .setDescription(`Removed the role ${role} from ${user}!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     }
                     break;

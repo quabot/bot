@@ -74,7 +74,7 @@ module.exports =
                     .setTitle("Music Filters")
                     .setColor(COLOR_MAIN)
                     .setDescription(`- off\n- 3d\n- bassboost\n- echo\n- karaoke\n- nightcore\n- vaporwave \n- flanger\n- gate\n- haas\n- reverse\n- surround\n- mcompnad\n- phaser\n- tremolo\n- earway`)
-                    .setTimestamp();
+                    ;
 
                 if (type === "off" && queue.filters?.length) queue.setFilter(false);
                 else if (Object.keys(client.player.filters).includes(type)) queue.setFilter(type)
@@ -83,7 +83,7 @@ module.exports =
                     .setTitle("Current Filters")
                     .setColor(COLOR_MAIN)
                     .setDescription(`\`${queue.filters.join(", ") || "Off"}\``)
-                    .setTimestamp()
+                    
                 interaction.reply({ embeds: [currentFilters] }).catch(err => console.log(err));
             } catch (e) {
                 interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));

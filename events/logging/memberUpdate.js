@@ -110,7 +110,7 @@ module.exports = {
                     .addField("Old Nickname", `${oldNick}`)
                     .addField("New Nickname", `${newNick}`)
                     .addField("User", `${newMember}`)
-                    .setTimestamp()
+                    
                     .setFooter(`User-ID: ${newMember.user.id}`)
                     .setColor(COLOR_MAIN)
                 logChannel.send({ embeds: [embedNickChange] }).catch(err => console.log(err));
@@ -124,7 +124,7 @@ module.exports = {
                         .setDescription(`<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`)
                         .setColor(COLOR_MAIN)
                         .setFooter(`User ID: ${newMember.id}`)
-                        .setTimestamp();
+                        ;
                     logChannel.send({ embeds: [roleRemoved] }).catch(err => console.log(err));
                 }
                 if (oldMember._roles < newMember._roles) {
@@ -134,7 +134,7 @@ module.exports = {
                         .setDescription(`<@&${newMember._roles.filter(n => !oldMember._roles.includes(n)).join('>\n<@&')}>`)
                         .setColor(COLOR_MAIN)
                         .setFooter(`User ID: ${newMember.id}`)
-                        .setTimestamp();
+                        ;
                     logChannel.send({ embeds: [roleRemoved] }).catch(err => console.log(err));
                 }
             }

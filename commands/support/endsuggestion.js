@@ -5,7 +5,7 @@ const { error, added } = require('../../embeds/general');
 const noSuggestChannelConfigured = new MessageEmbed()
     .setTitle(":x: There is no suggestions channel setup!")
     .setColor(COLOR_MAIN)
-    .setTimestamp()
+    
 
 const { suggestDis } = require('../../embeds/support');
 
@@ -110,14 +110,14 @@ module.exports = {
                                 .setDescription(`Voting has closed, the suggestion has ${result}!`)
                                 .addField(`Suggestion`, `${suggestionContent}`)
                                 .setFooter(`Voting for this suggestion has closed! • Suggestion ID: ${suggestionId}`)
-                                .setTimestamp()
+                                
                                 .setColor(COLOR_MAIN)
                             message.edit({ embeds: [winEmbed] }).catch(err => console.log(err));
                             const replyEmbed = new MessageEmbed()
                                 .setTitle(`Suggestion Ended`)
                                 .setDescription(`Voting for the suggestion ended, the suggestion ${result}!`)
                                 .addField(`Suggestion`, `${suggestionContent}`)
-                                .setTimestamp()
+                                
                                 .setColor(COLOR_MAIN)
                             interaction.reply({ embeds: [replyEmbed] }).catch(err => console.log(err));
                         });
@@ -138,7 +138,7 @@ module.exports = {
                     .addField(`Suggestion ID`, `${suggestionId}`)
                     .addField("Message ID", `${msgId}`)
                     .addField("Ended by", `${interaction.user}`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed2] }).catch(err => console.log(err));
             }
         } catch (e) {

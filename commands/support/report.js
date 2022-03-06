@@ -78,7 +78,7 @@ module.exports = {
                 .setTitle("New Report")
                 .addField("Reported By:", `${interaction.user}`, true)
                 .addField("Report", `${content}`)
-                .setTimestamp()
+                
                 .setFooter(`${interaction.guild.name}`)
             reportsChannel.send({ embeds: [embed] }).catch(err => console.log(err));
 

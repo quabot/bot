@@ -36,7 +36,7 @@ module.exports = {
             }).clone().catch(function (err) { console.log(err) });
             let moneyGiven = 0;
 
-            if (UserEcoDatabase.lastMeme) {
+            if (!UserEcoDatabase.lastMeme) {
                 let difference = new Date().getTime() / 1000 - UserEcoDatabase.lastMeme / 1000;
                 if (difference < 120) {
                     let nextTime = parseInt(UserEcoDatabase.lastMeme) + 120000;
@@ -60,7 +60,7 @@ module.exports = {
                 if (!laptopArray) {
                     const embed = new discord.MessageEmbed()
                         .setTitle(`You don't own a laptop!`)
-                        .setTimestamp()
+                        
                         .setDescription(`Purchase a laptop from **!shop** and start posting memes.`)
                         .setColor("BLUE")
                     message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
@@ -69,12 +69,36 @@ module.exports = {
                 if (laptopArray.count !== 1) {
                     const embed = new discord.MessageEmbed()
                         .setTitle(`You don't own a laptop!`)
-                        .setTimestamp()
+                        
                         .setDescription(`Purchase a laptop from **!shop** and start posting memes.`)
                         .setColor("BLUE")
                     message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
                     return;
                 }
+            }
+
+            const rnd = Math.random();
+            if (rnd < 0.1) {
+                if (array) {
+                    const laptopArray = array.find(item => item.name === `Laptop`);
+                    if (laptopArray) {
+                        const updatedArray = array.map(item => {
+                            if (item.name.toLowerCase() === `laptop`) {
+                                return { ...item, count: item.count - 1 }
+                            }
+                            return item;
+                        });
+                        await UserEcoDatabase.updateOne({
+                            shop: updatedArray,
+                        });
+                        const embed = new discord.MessageEmbed()
+                            .setDescription(`💻 Your laptop broke! Purchase a new one with **/shop**`)
+                            .setColor(COLOR_MAIN)
+                            
+                        message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
+                    }
+                }
+                return;
             }
 
             if (array) {
@@ -96,7 +120,7 @@ module.exports = {
                             if (yes > 0.5) {
                                 const embed = new discord.MessageEmbed()
                                     .setTitle(`${randomViews.toLocaleString('us-US', { minimumFractionDigits: 0 })} people ${winmsg}`)
-                                    .setTimestamp()
+                                    
                                     .setDescription(`you earned a total of **⑩ ${randomMoney.toLocaleString('us-US', { minimumFractionDigits: 0 })}**`)
                                     .setColor("GREEN")
                                     .setFooter("5% boost active from 🍎 Apple")
@@ -104,7 +128,7 @@ module.exports = {
                             } else if (yes < 0.5) {
                                 const embed = new discord.MessageEmbed()
                                     .setTitle(`${lostmsg} `)
-                                    .setTimestamp()
+                                    
                                     .setDescription("You earned a grand total of **⑩ 0**!")
                                     .setColor(`RED`)
                                     .setFooter("5% boost active from 🍎 Apple")
@@ -137,14 +161,14 @@ module.exports = {
             if (yes > 0.5) {
                 const embed = new discord.MessageEmbed()
                     .setTitle(`${randomViews.toLocaleString('us-US', { minimumFractionDigits: 0 })} people ${winmsg}`)
-                    .setTimestamp()
+                    
                     .setDescription(`you earned a total of **⑩ ${randomMoney.toLocaleString('us-US', { minimumFractionDigits: 0 })}**`)
                     .setColor("GREEN")
                 message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
             } else if (yes < 0.5) {
                 const embed = new discord.MessageEmbed()
                     .setTitle(`${lostmsg} `)
-                    .setTimestamp()
+                    
                     .setDescription("You earned a grand total of **⑩ 0**!")
                     .setColor("RED")
                 message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });

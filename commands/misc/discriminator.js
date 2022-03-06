@@ -19,7 +19,7 @@ module.exports = {
         try {
             const replyInv = new MessageEmbed()
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
                 .setTitle(`:x: Invalid discriminator`)
             let discriminator = interaction.options.getString('discriminator');
 
@@ -36,14 +36,14 @@ module.exports = {
             if (matches.length === 0) {
                 const replyelse = new MessageEmbed()
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
                 .setTitle(`:x: No-one with that discriminator!`)
                 .setFooter(`${interaction.guild.memberCount} users scanned`)
                 return interaction.reply({ ephemeral: true, embeds: [replyelse] }).catch(err => console.log(err));
             }
             const reply = new MessageEmbed()
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
                 .setTitle(`All users with the discriminator #${discriminator}!`)
                 .setDescription(`${matches.join("\n")}`)
                 .setFooter(`${interaction.guild.memberCount} users scanned`)

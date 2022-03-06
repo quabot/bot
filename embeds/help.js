@@ -4,8 +4,8 @@ const { COLOR_MAIN } = require('../files/colors.json');
 const misc = new MessageEmbed()
     .setColor(COLOR_MAIN)
     .setTitle("Misc Commands")
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setTimestamp()
+    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
+    
     .setDescription(`These commands are just general commands that dont fit the descrition of the ones above.\n
     **/afk** - Set your afk status.
     **/avatar** - Get a user's avatar.
@@ -23,8 +23,8 @@ const misc = new MessageEmbed()
 const support = new MessageEmbed()
     .setColor(COLOR_MAIN)
     .setTitle("Support Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+    
+    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
     .setDescription(`These commands can be used by members to seek support, make suggestions and more.\n
     **/add** - Add a user to your ticket.
     **/close** - Close a ticket.
@@ -44,8 +44,8 @@ const support = new MessageEmbed()
 const fun = new MessageEmbed()
     .setColor(COLOR_MAIN)
     .setTitle("Fun Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+    
+    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
     .setDescription(`These commands give funny pictures, games and more.\n
     **/cat** - Get an image of a cat.
     **/coin** - Flip a coin.
@@ -59,8 +59,8 @@ const fun = new MessageEmbed()
 const info = new MessageEmbed()
     .setColor(COLOR_MAIN)
     .setTitle("Info Commands")
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setTimestamp()
+    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
+    
     .setDescription(`These commands are used to get information about loads of different things.\n    
     **/announcement** - Latest quabot news.
     **/help** - List commands and their descriptions.
@@ -82,8 +82,8 @@ const info = new MessageEmbed()
 const music = new MessageEmbed()
     .setColor(COLOR_MAIN)
     .setTitle("Music Commands")
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
-    .setTimestamp()
+    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
+    
     .setDescription(`These commands are all commands related to music.\n
     **/autoplay** - Toggle autoplay.
     **/nowplaying** - Information about the playing song.
@@ -105,8 +105,8 @@ const music = new MessageEmbed()
 const moderation = new MessageEmbed()
     .setColor(COLOR_MAIN)
     .setTitle("Moderation Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+    
+    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
     .setDescription(`These commands are used to punish users and moderate the server.\n
     **/ban** - Ban a member.
     **/kick** - Kick a member.
@@ -123,8 +123,8 @@ const moderation = new MessageEmbed()
 const management = new MessageEmbed()
     .setColor(COLOR_MAIN)
     .setTitle("Management Commands")
-    .setTimestamp()
-    .setThumbnail("https://i.imgur.com/jgdQUul.png")
+    
+    .setThumbnail("https://i.imgur.com/0vCe2oB.png")
     .setDescription(`These commands are used by managers to clear channels, start giveaways and more.\n
     **/admin** - Send a "open ticket" message.
     **/clear** - Clear an amount of messages.
@@ -139,8 +139,8 @@ const management = new MessageEmbed()
 const economy = new MessageEmbed()
 .setColor(COLOR_MAIN)
 .setTitle("Economy Commands")
-.setTimestamp()
-.setThumbnail("https://i.imgur.com/jgdQUul.png")
+
+.setThumbnail("https://i.imgur.com/0vCe2oB.png")
 .setDescription(`These commands are used for the economy system.\n
     /bal, /crime, /beg, /daily, /dep, /inv, /lottery, /pm, /rob, /shop, /use, /with
 `)

@@ -70,7 +70,7 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setDescription(`You were given **⑩ 5,000**!\nYou can claim vote money again in 12 hours.`)
                         .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
-                        .setTimestamp()
+                        
 
                     message.channel.send({ embeds: [embed]});
 

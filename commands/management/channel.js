@@ -85,7 +85,7 @@ module.exports = {
             const embed = new MessageEmbed()
               .setTitle("Channel Created!")
               .setDescription(`Created the channel: ${ch}!`)
-              .setTimestamp()
+              
               .setColor(COLOR_MAIN);
             if (options.description) embed.addField("Description", `${options.description}`)
             if (options.slowmode) embed.addField("Slowmode (seconds)", `${options.slowmode}`)
@@ -97,7 +97,7 @@ module.exports = {
           const embed2 = new MessageEmbed()
             .setTitle("Channel Deleted!")
             .setDescription(`Deleted the channel with the name: \`${options.channel.name}\`!`)
-            .setTimestamp()
+            
             .setColor(COLOR_MAIN);
           interaction.reply({ embeds: [embed2] }).catch(err => console.log(err));
           break;
@@ -106,7 +106,7 @@ module.exports = {
             const embed = new MessageEmbed()
               .setTitle("Invalid Channel!")
               .setDescription("You must specify a text channel.")
-              .setTimestamp()
+              
               .setColor(COLOR_MAIN)
             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
           }
@@ -116,7 +116,7 @@ module.exports = {
           const embed3 = new MessageEmbed()
             .setTitle("Slowmode set!")
             .setDescription(`Set the channel's slowmode to ${options.amount} seconds!`)
-            .setTimestamp()
+            
             .setColor(COLOR_MAIN)
           interaction.reply({ embeds: [embed3] }).catch(err => console.log(err));
           break;

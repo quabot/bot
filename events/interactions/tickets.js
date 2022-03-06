@@ -107,7 +107,7 @@ module.exports = {
                             .setColor(`GREEN`)
                             .setTitle('Creating a category!')
                             .setDescription('The tickets categegory does not exist. Creating one now...')
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embedTicketsCreate] })
                         return
                     }
@@ -120,7 +120,7 @@ module.exports = {
                             .addField(`Creator`, `${interaction.user}`)
                             .addField(`Topic`, `${topic}`)
                             .setFooter("Close the ticket with the button below this message!")
-                            .setTimestamp()
+                            
                             .setColor(COLOR_MAIN)
                         channel.send({ embeds: [createdEmbed], components: [close] });
 
@@ -152,7 +152,7 @@ module.exports = {
                                 .setTitle("Created your ticket :white_check_mark:")
                                 .setDescription("You can find it here: <#" + channel + ">")
                                 .addField("Topic", `${topic}`)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] })
                         }, 300);
                     });
@@ -163,7 +163,7 @@ module.exports = {
                         .setTitle("Close ticket")
                         .setDescription("Are you sure you want to close this ticket?")
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [close], components: [closeConfirm] })
                 }
                 if (interaction.customId === "closeconfirm") {
@@ -179,7 +179,7 @@ module.exports = {
                             .setColor(`GREEN`)
                             .setTitle('Creating a category!')
                             .setDescription('The categegory for closed tickets does not exist. Creating one now...')
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embedTicketsCreate] })
                         return
                     }
@@ -218,7 +218,7 @@ module.exports = {
                     const embed = new MessageEmbed()
                         .setTitle("Closed Ticket!")
                         .setDescription("Reopen it, delete it, or get the transcript with the buttons below this message.")
-                        .setTimestamp()
+                        
                         .setColor(COLOR_MAIN);
                     interaction.update({ embeds: [embed], components: [closed] });
                     
@@ -242,7 +242,7 @@ module.exports = {
                         .setTitle(":x: Cancelled!")
                         .setDescription("Cancelled the closing of the ticket.")
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [closeCancel], components: [] })
                 }
                 if (interaction.customId === "reopen") {
@@ -258,7 +258,7 @@ module.exports = {
                             .setColor(`GREEN`)
                             .setTitle('Creating a category!')
                             .setDescription('The categegory for opened tickets does not exist. Creating one now...')
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embedTicketsCreate] })
                         return
                     }
@@ -293,7 +293,7 @@ module.exports = {
                     const embed = new MessageEmbed()
                         .setTitle("Re-Opened Ticket!")
                         .setDescription("Close it with the button below this message.")
-                        .setTimestamp()
+                        
                         .setColor(COLOR_MAIN);
                     interaction.update({ embeds: [embed], components: [close] });
 
@@ -306,7 +306,7 @@ module.exports = {
                         .setTitle("Transcript saved!")
                         .setDescription("Here is your transcript of this ticket. Download and open it to view it!")
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     const attachement = await createTranscript(interaction.channel, {
                         limit: -2,
                         returnBuffer: false,
@@ -340,7 +340,7 @@ module.exports = {
                     const embed = new MessageEmbed()
                         .setTitle("Deleting ticket!")
                         .setDescription("This cannot be undone. Creating final transcript and logging it now...")
-                        .setTimestamp()
+                        
                         .setColor(COLOR_MAIN);
                     interaction.update({ embeds: [embed], components: [] });
 
@@ -364,7 +364,7 @@ module.exports = {
                         .setTitle(":x: Cancelled!")
                         .setDescription("Cancelled the deletion of the ticket.")
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.update({ embeds: [deleteCancel], components: [] })
                 }
                 if (interaction.customId === "delete") {
@@ -373,7 +373,7 @@ module.exports = {
                         .setTitle("Delete ticket")
                         .setDescription("Are you sure you want to delete this ticket?")
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [deleteEmbed], components: [deleteConfirm] })
                 }
             }

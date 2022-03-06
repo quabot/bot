@@ -74,7 +74,7 @@ module.exports = {
                             .setTitle("You are now no longer afk!")
                             .setDescription("You can become afk again by using `/afk toggle` once more.")
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                         return;
                     } else {
@@ -85,7 +85,7 @@ module.exports = {
                             .setTitle("You are now afk!")
                             .setDescription("When you're mentioned, we will alert the person that mentioned you that you're afk. You can get out of AFK mode by chatting, or using `/afk toggle` again. You can add a message to your AFK status that will be sent when you're mentioned with `/afk status`!")
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     }
                     break;
@@ -126,7 +126,7 @@ module.exports = {
                         .setTitle("Status set!")
                         .setDescription(`Your status message is now set to **${status}**! If you want to reset it, use \`/afk reset\`.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                     break;
                 }
@@ -166,7 +166,7 @@ module.exports = {
                         .setTitle("Status reset!")
                         .setDescription(`Your status message has been disabled and you are no longer afk.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [embed3] }).catch(err => console.log(err));
                     break;
                 }

@@ -60,7 +60,7 @@ module.exports = {
                 .setTitle("Delete ticket")
                 .setDescription("Are you sure you want to delete this ticket?")
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             interaction.reply({ embeds: [deleteEmbed], components: [deleteConfirm] }).catch(err => console.log(err));
 
         } catch (e) {

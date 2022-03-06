@@ -104,7 +104,7 @@ module.exports = {
                     .addField("Member", `<@${newState.id}>`)
                     .addField("Voice Channel", `<#${newState.channelId}>`)
                     .setColor(`GREEN`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 return;
             }
@@ -116,7 +116,7 @@ module.exports = {
                     .addField("Member", `<@${newState.id}>`)
                     .addField("Voice Channel", `<#${oldState.channelId}>`)
                     .setColor(`RED`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 return;
             }
@@ -129,7 +129,7 @@ module.exports = {
                     .addField("Moved from", `<#${oldState.channelId}>`)
                     .addField("Moved to", `<#${newState.channelId}>`)
                     .setColor(`YELLOW`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 return;
             }

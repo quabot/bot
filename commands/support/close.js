@@ -59,7 +59,7 @@ module.exports = {
                 .setTitle("Close ticket")
                 .setDescription("Are you sure you want to close this ticket?")
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             interaction.reply({ embeds: [close], components: [closeConfirm] }).catch(err => console.log(err));
 
         } catch (e) {

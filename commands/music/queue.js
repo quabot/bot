@@ -65,7 +65,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle("Current Queue:")
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             if (queueTotal.length > 1024) {
                 embed.setDescription("Queue is too long to fit into a message embed!")
             } else { embed.setDescription(queueTotal); }

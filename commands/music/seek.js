@@ -78,7 +78,7 @@ module.exports = {
                 .setTitle("Seeked song!")
                 .setDescription(`Seeked song to: **${Number(volumeNew)}**`)
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             interaction.reply({ embeds: [embed] });
         } catch (e) {
             interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));

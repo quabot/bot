@@ -102,7 +102,7 @@ module.exports = {
                     .setColor(`GREEN`)
                     .setTitle('Creating a category!')
                     .setDescription('The tickets categegory does not exist. Creating one now...')
-                    .setTimestamp()
+                    
                 interaction.reply({ embeds: [embedTicketsCreate] }).catch(err => console.log(err));
                 return;
             }
@@ -115,7 +115,7 @@ module.exports = {
                     .addField(`Creator`, `${interaction.user}`)
                     .addField(`Topic`, `${topic}`)
                     .setFooter("Close the ticket with the button below this message!")
-                    .setTimestamp()
+                    
                     .setColor(COLOR_MAIN)
                 channel.send({ embeds: [createdEmbed], components: [close] }).catch(err => console.log(" "));
 
@@ -147,7 +147,7 @@ module.exports = {
                         .setTitle(`Created your ticket! :white_check_mark:`)
                         .setDescription("You can find it here: <#" + channel + `>, , ${interaction.user}!`)
                         .addField("Topic", `${topic}`)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [embed] }).catch(err => {
                         interaction.channel.send({ embeds: [embed] });
                     });

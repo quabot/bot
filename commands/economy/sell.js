@@ -67,7 +67,7 @@ module.exports = {
                         .setTitle(`Sold ${foundShop.emoji} ${foundShop.item}`)
                         .setDescription(`You recieved ⑩ ${foundShop.value} for it.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
                 }
             } else {

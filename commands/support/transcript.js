@@ -75,7 +75,7 @@ module.exports = {
                 .setTitle("Transcript saved!")
                 .setDescription("Here is your transcript of this ticket. Download and open it to view it!")
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             const attachement = await createTranscript(interaction.channel, {
                 limit: -2,
                 returnBuffer: false,

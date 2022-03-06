@@ -39,7 +39,7 @@ module.exports = {
             const embed = new discord.MessageEmbed()
                 .setTitle(`${message.author.username}'s inventory`)
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
 
             if (array.length === 0) embed.setDescription("You don't own any items! Buy them with `!shop`.")
 

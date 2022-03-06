@@ -64,12 +64,12 @@ module.exports  = {
                 .setTitle('Boost Added')
                 .setDescription(`${newMember} has boosted the server!`)
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             const boostStatusEmbed2 = new MessageEmbed()
                 .setTitle('Boost Removed')
                 .setDescription(`${newMember} has stopped boosting the server!`)
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             if (!oldStatus && newStatus) {
                 logChannel.send({ embeds: [boostStatusEmbed]}).catch(err => console.log(err));
             }

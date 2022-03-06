@@ -85,7 +85,7 @@ module.exports = {
             const newTopic = new MessageEmbed()
                 .setTitle("Topic changed")
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
                 .setDescription(`New ticket topic: **${interaction.options.getString("new-topic")}**!`)
             interaction.reply({ embeds: [newTopic] }).catch(err => console.log(err));
             

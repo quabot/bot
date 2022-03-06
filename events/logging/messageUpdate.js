@@ -118,7 +118,7 @@ module.exports = {
                                 .addField("Swearword", `${Swears[i]}`)
                                 .setFooter(`ID: ${newMessage.author.id}`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             logChannel.send({ embeds: [embed] }).catch(err => {
                                 console.log("Delete swearfilter error.");
                             });
@@ -135,7 +135,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setTitle("💬 Message Updated!")
-                .setTimestamp()
+                
                 .setFooter(`Message-ID: ${oldMessage.id}`)
                 .setColor(COLOR_MAIN);
 

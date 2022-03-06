@@ -82,7 +82,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`:white_check_mark: Removing user...`)
                 .setDescription(`Removed ${user} from your support ticket!`)
-                .setTimestamp()
+                
                 .setColor(COLOR_MAIN)
             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
 

@@ -419,7 +419,7 @@ module.exports = {
                             .setTitle(`No money!`)
                             .setDescription(`You need \`⑩ ${shop[0].prize}\` to buy **${shop[0].emoji} ${shop[0].item}**!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                         return;
                     }
@@ -433,7 +433,7 @@ module.exports = {
                                     .setTitle(`Too many!`)
                                     .setDescription(`You can only purchase \`${shop[0].max}\` of **${shop[0].emoji} ${shop[0].item}**!`)
                                     .setColor(COLOR_MAIN)
-                                    .setTimestamp()
+                                    
                                 interaction.reply({ ephemeral: true, embeds: [embed] });
                                 return;
 
@@ -453,7 +453,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[0].emoji} ${shop[0].item}**!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         } else {
                             array.push(
@@ -472,7 +472,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         }
                     } else {
@@ -492,7 +492,7 @@ module.exports = {
                             .setTitle(`Bought 1x ${shop[0].emoji} ${shop[0].item}`)
                             .setDescription(`This transaction cost you \`⑩ ${shop[0].prize}\`!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                     }
 
@@ -505,7 +505,7 @@ module.exports = {
                             .setTitle(`No money!`)
                             .setDescription(`You need \`⑩ ${shop[1].prize}\` to buy **${shop[1].emoji} ${shop[1].item}**!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                         return;
                     }
@@ -527,7 +527,7 @@ module.exports = {
                                     .setTitle(`Too many!`)
                                     .setDescription(`You can only purchase \`${shop[1].max}\` of **${shop[1].emoji} ${shop[1].item}**!`)
                                     .setColor(COLOR_MAIN)
-                                    .setTimestamp()
+                                    
                                 interaction.reply({ ephemeral: true, embeds: [embed] });
                                 return;
 
@@ -541,7 +541,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[1].emoji} ${shop[1].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[1].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[1].emoji} ${shop[1].item}**!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         } else {
                             array.push(
@@ -560,7 +560,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[1].emoji} ${shop[1].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[1].prize}\`!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         }
                     } else {
@@ -580,7 +580,7 @@ module.exports = {
                             .setTitle(`Bought 1x ${shop[1].emoji} ${shop[1].item}`)
                             .setDescription(`This transaction cost you \`⑩ ${shop[1].prize}\`!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                     }
                 }
@@ -592,7 +592,7 @@ module.exports = {
                             .setTitle(`No money!`)
                             .setDescription(`You need \`⑩ ${shop[2].prize}\` to buy **${shop[2].emoji} ${shop[2].item}**!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                         return;
                     }
@@ -614,7 +614,7 @@ module.exports = {
                                     .setTitle(`Too many!`)
                                     .setDescription(`You can only purchase \`${shop[2].max}\` of **${shop[2].emoji} ${shop[2].item}**!`)
                                     .setColor(COLOR_MAIN)
-                                    .setTimestamp()
+                                    
                                 interaction.reply({ ephemeral: true, embeds: [embed] });
                                 return;
 
@@ -628,7 +628,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[2].emoji} ${shop[2].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[2].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[2].emoji} ${shop[2].item}**!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         } else {
                             array.push(
@@ -647,7 +647,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[2].emoji} ${shop[2].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[2].prize}\`!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         }
                     } else {
@@ -667,7 +667,7 @@ module.exports = {
                             .setTitle(`Bought 1x ${shop[2].emoji} ${shop[2].item}`)
                             .setDescription(`This transaction cost you \`⑩ ${shop[2].prize}\`!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                     }
                 }
@@ -679,7 +679,7 @@ module.exports = {
                             .setTitle(`No money!`)
                             .setDescription(`You need \`⑩ ${shop[3].prize}\` to buy **${shop[3].emoji} ${shop[3].item}**!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                         return;
                     }
@@ -701,7 +701,7 @@ module.exports = {
                                     .setTitle(`Too many!`)
                                     .setDescription(`You can only purchase \`${shop[3].max}\` of **${shop[3].emoji} ${shop[3].item}**!`)
                                     .setColor(COLOR_MAIN)
-                                    .setTimestamp()
+                                    
                                 interaction.reply({ ephemeral: true, embeds: [embed] });
                                 return;
 
@@ -715,7 +715,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[3].emoji} ${shop[3].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[3].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[3].emoji} ${shop[3].item}**!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         } else {
                             array.push(
@@ -734,7 +734,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[3].emoji} ${shop[3].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[3].prize}\`!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         }
                     } else {
@@ -754,7 +754,7 @@ module.exports = {
                             .setTitle(`Bought 1x ${shop[3].emoji} ${shop[3].item}`)
                             .setDescription(`This transaction cost you \`⑩ ${shop[3].prize}\`!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                     }
                 }
@@ -766,7 +766,7 @@ module.exports = {
                             .setTitle(`No money!`)
                             .setDescription(`You need \`⑩ ${shop[4].prize}\` to buy **${shop[4].emoji} ${shop[4].item}**!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                         return;
                     }
@@ -788,7 +788,7 @@ module.exports = {
                                     .setTitle(`Too many!`)
                                     .setDescription(`You can only purchase \`${shop[4].max}\` of **${shop[4].emoji} ${shop[4].item}**!`)
                                     .setColor(COLOR_MAIN)
-                                    .setTimestamp()
+                                    
                                 interaction.reply({ ephemeral: true, embeds: [embed] });
                                 return;
 
@@ -802,7 +802,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[4].emoji} ${shop[4].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[4].prize}\`!\nYou now have \`${item.count + 1}\` of **${shop[4].emoji} ${shop[4].item}**!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         } else {
                             array.push(
@@ -821,7 +821,7 @@ module.exports = {
                                 .setTitle(`Bought 1x ${shop[4].emoji} ${shop[4].item}`)
                                 .setDescription(`This transaction cost you \`⑩ ${shop[4].prize}\`!`)
                                 .setColor(COLOR_MAIN)
-                                .setTimestamp()
+                                
                             interaction.reply({ ephemeral: true, embeds: [embed] });
                         }
                     } else {
@@ -841,7 +841,7 @@ module.exports = {
                             .setTitle(`Bought 1x ${shop[4].emoji} ${shop[4].item}`)
                             .setDescription(`This transaction cost you \`⑩ ${shop[4].prize}\`!`)
                             .setColor(COLOR_MAIN)
-                            .setTimestamp()
+                            
                         interaction.reply({ ephemeral: true, embeds: [embed] });
                     }
                 }

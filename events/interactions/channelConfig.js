@@ -67,7 +67,7 @@ module.exports = {
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.logChannelID}>`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [log], ephemeral: true }).catch(err => console.log(err));
@@ -102,7 +102,7 @@ module.exports = {
                         .setDescription("Mention the new channel within 15 seconds to change it, or click the button to disable this channel, level up messages would then be sent in the channel the user is in at that time.")
                         .addField("Current value", `${guildDatabase.levelChannelID}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [level], components: [buttonsLevel] }).catch(err => console.log(err));
@@ -134,7 +134,7 @@ module.exports = {
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.reportChannelID}>`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [report], ephemeral: true }).catch(err => console.log(err));
@@ -168,7 +168,7 @@ module.exports = {
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.suggestChannelID}>`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [suggest], ephemeral: true }).catch(err => console.log(err));
@@ -200,7 +200,7 @@ module.exports = {
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.welcomeChannelID}>`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [welcome], ephemeral: true }).catch(err => console.log(err));
@@ -232,7 +232,7 @@ module.exports = {
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.transcriptChannelID}>`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [transcript], ephemeral: true }).catch(err => console.log(err));
@@ -265,7 +265,7 @@ module.exports = {
                         .setDescription("Send the new channel name within 15 seconds to change it.")
                         .addField("Current value", `${guildDatabase.ticketCategory}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [ticket], ephemeral: true }).catch(err => console.log(err));
@@ -297,7 +297,7 @@ module.exports = {
                         .setDescription("Send the new category name within 15 seconds to change it.")
                         .addField("Current value", `${guildDatabase.closedTicketCategory}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [closed], ephemeral: true }).catch(err => console.log(err));
@@ -329,7 +329,7 @@ module.exports = {
                         .setDescription("Mention the new channel within 15 seconds to change it.")
                         .addField("Current value", `<#${guildDatabase.pollChannelID}>`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ embeds: [poll], ephemeral: true }).catch(err => console.log(err));

@@ -31,7 +31,7 @@ module.exports = {
                 .addField("Status:", `${user.status}`, true) //add game                
                 .addField("Joined The Server On:", `${moment.utc(GuildMember.joinedTimestamp).format("dddd, MMMM Do, YYYY")}`, true)
                 .addField("Account Created On:", `${moment.utc(user.createdAt).format("dddd, MMMM Do,    YYYY")}`, true)
-                .setTimestamp();
+                ;
             if (user.bot === "true") embed.setDescription(`This user is a bot.`)
             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {

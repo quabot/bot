@@ -53,7 +53,7 @@ module.exports = {
                         .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
                         .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${remaining.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({
@@ -67,7 +67,7 @@ module.exports = {
                         .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
                         .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${something.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({
@@ -94,7 +94,7 @@ module.exports = {
                         .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
                         .setDescription(`There's now **⑩ ${inwalletAmount.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${remaining.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({
@@ -108,7 +108,7 @@ module.exports = {
                         .setTitle(`Deposited ⑩ ${amount.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
                         .setDescription(`There's now **⑩ ${a.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your wallet and **⑩ ${b.toLocaleString('us-US', { minimumFractionDigits: 0 })}** in your pocket.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     message.reply({ embeds: [embed],  allowedMentions: { repliedUser: false } })
 
                     await UserEcoDatabase.updateOne({

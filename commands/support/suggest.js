@@ -5,7 +5,7 @@ const { error, added } = require('../../embeds/general');
 const noSuggestChannelConfigured = new MessageEmbed()
     .setTitle(":x: There is no suggestions channel setup!")
     .setColor(COLOR_MAIN)
-    .setTimestamp()
+    
 
 const { suggestDis } = require('../../embeds/support');
 
@@ -104,7 +104,7 @@ module.exports = {
                 .addField('Suggested by', `${interaction.user}`)
                 .addField(`Suggestion`, `${suggestion}`)
                 .setFooter(`Vote on this suggestion with the 🟢 and 🔴 emojis! • Suggestion ID: ${newSuggestId}`)
-                .setTimestamp()
+                
                 .setColor(`GREEN`)
             suggestChannel.send({ embeds: [embed] }).then(m => {
                 m.react('🟢');
@@ -126,7 +126,7 @@ module.exports = {
                 .setTitle(":white_check_mark: Succes!")
                 .setDescription(`You have succesfully left a suggestion!`)
                 .setColor(`GREEN`)
-                .setTimestamp()
+                
             interaction.reply({ ephemeral: true, embeds: [suggestionMade] }).catch(err => console.log(err));
 
             if (guildDatabase.logEnabled === "true") {
@@ -139,7 +139,7 @@ module.exports = {
                     .addField(`Suggestion`, `${suggestion}`)
                     .addField(`User-Id`, `${interaction.user.id}`)
                     .setFooter(`ID: ${newSuggestId}`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed2] }).catch(err => console.log(err));
             }
         } catch (e) {

@@ -101,7 +101,7 @@ module.exports = {
                         .setTitle("Emoji Deleted!")
                         .addField('Emoji Name', `${emoji.name}`)
                         .setFooter(`Emoji-ID: ${emoji.id}`, `${emoji.url}`)
-                        .setTimestamp()
+                        
                         .setColor(`RED`)
                     logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 };

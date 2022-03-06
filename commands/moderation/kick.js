@@ -182,7 +182,7 @@ module.exports = {
                     .addField('User ID', `${member.id}`)
                     .addField('Kicked by', `${interaction.user}`)
                     .addField('Reason', `${reason}`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed], split: true })
             } else {
                 return;

@@ -11,7 +11,7 @@ module.exports = {
         try {
             const embed = new MessageEmbed()
                 .setTitle(`${client.user.tag}`)
-                .setThumbnail("https://i.imgur.com/jgdQUul.png")
+                .setThumbnail("https://i.imgur.com/0vCe2oB.png")
                 .addField("Memory", "1GB", true)
                 .addField("Version", VERSION, true)
                 .addField("Commands", CMD_AMOUNT, true)

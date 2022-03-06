@@ -6,7 +6,7 @@ const { COLOR_MAIN } = require('../../files/colors.json');
 const guildUserBanEmbed = new MessageEmbed()
     .setTitle("User Banned")
     .setColor(`RED`)
-    .setTimestamp()
+    
 
 module.exports = {
     name: "guildBanAdd",

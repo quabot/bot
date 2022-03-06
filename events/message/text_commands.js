@@ -74,7 +74,7 @@ module.exports = {
             if (!command.economy) return;
             if (command) {
                 command.execute(client, message, args);
-                client.guilds.cache.get('847828281860423690').channels.cache.get('948192914603933716').send({ embeds: [new MessageEmbed().setDescription(`**${message.author.username}#${message.author.discriminator}** used **${command.name}** in **${message.guild.name}**`).setTimestamp()] }).catch(err => console.log(err));;
+                client.guilds.cache.get('847828281860423690').channels.cache.get('948192914603933716').send({ embeds: [new MessageEmbed().setDescription(`**${message.author.username}#${message.author.discriminator}** used **${command.name}** in **${message.guild.name}**`)] }).catch(err => console.log(err));;
                 consola.info(`!${command.name} was used`);
             }
 

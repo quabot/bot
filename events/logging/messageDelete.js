@@ -96,7 +96,7 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setTitle("🗑️ Message Deleted!")
-                .setTimestamp()
+                
                 .setFooter(`Message-ID: ${message.id}`)
                 .setColor(`YELLOW`);
             

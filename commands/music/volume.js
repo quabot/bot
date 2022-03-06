@@ -78,7 +78,7 @@ module.exports = {
                     .setTitle("🔊 Changed the volume!")
                     .setDescription(`${volumeNew}`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {
             interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));

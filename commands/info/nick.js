@@ -36,7 +36,7 @@ module.exports = {
                         .setTitle(":white_check_mark: Changed nickname!")
                         .setDescription(`Changed ${user}'s nickname to **${newNick}**.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                 } else {
                     if (member.permissions.has('ADMINISTRATOR')) return interaction.reply({ embeds: [nickNoPerms] }).catch(err => console.log(err));
@@ -45,7 +45,7 @@ module.exports = {
                         .setTitle(":white_check_mark: Changed nickname!")
                         .setDescription(`Changed your nickname to **${newNick}**.`)
                         .setColor(COLOR_MAIN)
-                        .setTimestamp()
+                        
                     interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
                 }
             } else {
@@ -55,7 +55,7 @@ module.exports = {
                     .setTitle(":white_check_mark: Changed nickname!")
                     .setDescription(`Changed your nickname to **${newNick}**.`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp();
+                    ;
                 interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
             }
         } catch (e) {

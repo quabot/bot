@@ -101,7 +101,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the join messages (not leave).")
                         .addField("Currently", `${eventsDatabase.joinMessages}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [join], components: [buttonsJoin] }).catch(err => console.log(err));
@@ -113,7 +113,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the leave messages (not join).")
                         .addField("Currently", `${eventsDatabase.leaveMessages}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [leave], components: [buttonsLeave] }).catch(err => console.log(err));
@@ -125,7 +125,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the create and delete logs.")
                         .addField("Currently", `${eventsDatabase.channelCreateDelete}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [delcrea], components: [buttonsCreate] }).catch(err => console.log(err));
@@ -137,7 +137,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the channel update logs.")
                         .addField("Currently", `${eventsDatabase.channelUpdate}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [update], components: [buttonsUpdate] }).catch(err => console.log(err));
@@ -149,7 +149,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the emoji c & d logs.")
                         .addField("Currently", `${eventsDatabase.emojiCreateDelete}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [emoji], components: [buttonsEmoji] }).catch(err => console.log(err));
@@ -161,7 +161,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the emoji update logs.")
                         .addField("Currently", `${eventsDatabase.emojiUpdate}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [emojiU], components: [buttonsEmojiU] }).catch(err => console.log(err));
@@ -173,7 +173,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the invite creation & deletion logs.")
                         .addField("Currently", `${eventsDatabase.inviteCreateDelete }`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [inviteCD], components: [buttonsInvite] }).catch(err => console.log(err));
@@ -185,7 +185,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the message delete logs.")
                         .addField("Currently", `${eventsDatabase.messageDelete }`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [messageDelete], components: [buttonsMessageD] }).catch(err => console.log(err));
@@ -197,7 +197,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the message update logs.")
                         .addField("Currently", `${eventsDatabase.messageUpdate}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [messageUpdate], components: [buttonsMessageU] }).catch(err => console.log(err));
@@ -210,7 +210,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the role create & delete logs.")
                         .addField("Currently", `${eventsDatabase.roleCreateDelete}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [roleDeletUpdate], components: [buttonsRoleC] }).catch(err => console.log(err));
@@ -222,7 +222,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the role update logs.")
                         .addField("Currently", `${eventsDatabase.roleUpdate}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [roleUpdate], components: [buttonsRoleU] }).catch(err => console.log(err));
@@ -234,7 +234,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the voice join & leave logs.")
                         .addField("Currently", `${eventsDatabase.voiceState}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [voicejoinLeave], components: [buttonsVoiceJL] }).catch(err => console.log(err));
@@ -246,7 +246,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the voice move logs.")
                         .addField("Currently", `${eventsDatabase.voiceMove}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [voiceMove], components: [buttonsVoiceM] }).catch(err => console.log(err));
@@ -258,7 +258,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the member update logs. [nick, role given/removed]")
                         .addField("Currently", `${eventsDatabase.memberUpdate}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [memberUpdate], components: [buttonsMemberU] }).catch(err => console.log(err));
@@ -270,7 +270,7 @@ module.exports = {
                         .setDescription("Use the buttons to enable/disable the bot logs.")
                         .addField("Currently", `${eventsDatabase.quabotLogging}`)
                         .setColor(COLOR_MAIN)
-                        .setThumbnail("https://i.imgur.com/jgdQUul.png");
+                        .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     interaction.reply({ ephemeral: true, embeds: [quabotLog], components: [buttonsBotLogs] }).catch(err => console.log(err));

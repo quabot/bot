@@ -53,7 +53,7 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setDescription(`You can claim money again in **${timeLeft}**!`)
                         .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
-                        .setTimestamp()
+                        
                     message.reply({ embeds: [alreadyClaimed], allowedMentions: { repliedUser: false } })
                     return;
                 }
@@ -79,7 +79,7 @@ module.exports = {
                 .setColor(COLOR_MAIN)
                 .setDescription(`You were given **⑩ ${moneyGiven.toLocaleString()}**!\nYou can claim money again in 24 hours.`)
                 .addField("Links", "[Discord](https://discord.gg/Nwu9DNjYa9) - [Invite me](https://invite.quabot.net) - [Website](https://quabot.net)")
-                .setTimestamp()
+                
             if (array) {
                 if (appleArray) {
                     if (appleArray.lastUsed) {

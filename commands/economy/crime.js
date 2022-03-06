@@ -73,7 +73,7 @@ module.exports = {
                 .setTitle('Do you wanna commit some crimes?')
                 .setDescription('click the buttons to do that!')
                 .setColor(COLOR_MAIN)
-                .setTimestamp()
+                
             message.reply({ embeds: [embed], components: [buttonsCrime],  allowedMentions: { repliedUser: false } })
 
         } catch (e) {

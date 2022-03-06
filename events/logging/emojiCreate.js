@@ -101,7 +101,7 @@ module.exports = {
                         .setTitle("Emoji Created!")
                         .addField('Emoji Name', `${emoji.name}`)
                         .setFooter(`Emoji-ID: ${emoji.id}`, `${emoji.url}`)
-                        .setTimestamp()
+                        
                         .setColor(`GREEN`)
                     logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 };

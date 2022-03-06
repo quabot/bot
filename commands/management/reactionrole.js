@@ -4,7 +4,7 @@ const { error, added } = require('../../embeds/general');
 const { noChannel } = require('../../embeds/management');
 const { COLOR_MAIN } = require('../../files/colors.json');
 
-const noMsgFound = new MessageEmbed().setTitle("Could not find that message!").setDescription("Please send one first.").setColor(COLOR_MAIN).setTimestamp()
+const noMsgFound = new MessageEmbed().setTitle("Could not find that message!").setDescription("Please send one first.").setColor(COLOR_MAIN)
 
 module.exports = {
     name: "reactionrole",
@@ -106,14 +106,14 @@ module.exports = {
                                 .addField("Channel", `${channel}`, true)
                                 .addField("Role", `${role}`, true)
                                 .addField("Mode", `${mode}`, true)
-                                .setTimestamp()
+                                
                                 .setColor(COLOR_MAIN)
                             message.react(`${emoji}`).catch(err => {
                                 const noRole = new MessageEmbed()
                                     .setTitle(":x: No Emoji!")
                                     .setDescription(`Could not find that emoji! You can only react with default emojis.`)
                                     .setColor(COLOR_MAIN)
-                                    .setTimestamp()
+                                    
                                 interaction.channel.send({ embeds: [noRole] }).catch(err => console.log(err));
                                 return;
                             })
@@ -157,7 +157,7 @@ module.exports = {
                         .setTitle("Deleted the reaction role!")
                         .addField("ID", `${messageId}`)
                         .addField("Emoji", `${emoji}`)
-                        .setTimestamp()
+                        
                         .setColor(COLOR_MAIN)
                     interaction.reply({ ephemeral: true, embeds: [embed3]}).catch(err => console.log(err));
                 }
@@ -178,7 +178,7 @@ module.exports = {
                     const reactEmbed = new MessageEmbed()
                         .setColor(COLOR_MAIN)
                         .setTitle(`${interaction.guild.name} Reaction Roles`)
-                        .setTimestamp()
+                        
                         .setDescription(`${reacts.join("\n\n")}`)
                     interaction.reply({ ephemeral: true, embeds: [reactEmbed] }).catch(err => {
                         interaction.channel.send("The list is too long to be sent to this channel. Please contact the developers.").catch(err => console.log(err));

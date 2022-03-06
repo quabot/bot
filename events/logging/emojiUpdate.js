@@ -102,7 +102,7 @@ module.exports = {
                         .addField('Old Name', `${oldEmoji.name}`, true)
                         .addField('New Name', `${newEmoji.name}`, true)
                         .setFooter(`Emoji-ID: ${newEmoji.id}`, `${newEmoji.url}`)
-                        .setTimestamp()
+                        
                         .setColor(`YELLOW`)
                     logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                 };

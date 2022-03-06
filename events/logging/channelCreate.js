@@ -103,7 +103,7 @@ module.exports = {
                             .setTitle('<:channel:941403540352565259> Text Channel Created!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
-                            .setTimestamp()
+                            
                         logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                     };
                 }
@@ -117,7 +117,7 @@ module.exports = {
                             .setTitle('<:ezgif:941408409469718569> Announcement Channel Created!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
-                            .setTimestamp()
+                            
                         logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                     };
                 }
@@ -131,7 +131,7 @@ module.exports = {
                             .setTitle('<:stage:941403540067340299> Stage Channel Created!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
-                            .setTimestamp()
+                            
                         logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                     };
                 }
@@ -144,7 +144,7 @@ module.exports = {
                             .setTitle('Category Created!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
-                            .setTimestamp()
+                            
                         logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                     };
                 }
@@ -158,7 +158,7 @@ module.exports = {
                             .setTitle('<:ezgif:941408710008381530> Voice Channel Created!')
                             .addField('Name', `${channel.name}`)
                             .addField('ID', `${channel.id}`)
-                            .setTimestamp()
+                            
                         logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
                     };
                 }

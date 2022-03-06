@@ -77,7 +77,7 @@ module.exports = {
                     .setTitle(":repeat:  Changed repeat mode!")
                     .setDescription(`${mode}`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 interaction.reply({ embeds: [embed] });
             } else {
                 return interaction.reply({ content: "No valid mode found.", components: [skipButtons] });

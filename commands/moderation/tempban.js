@@ -209,7 +209,7 @@ module.exports = {
                     .addField('User ID', `${member.id}`)
                     .addField('Banned by', `${interaction.user}`)
                     .addField('Reason', `${reason}`)
-                    .setTimestamp()
+                    
                 logChannel.send({ embeds: [embed], split: true }).catch(err => console.log(err));
             } else {
                 return;

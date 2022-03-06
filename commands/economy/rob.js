@@ -97,7 +97,7 @@ module.exports = {
                 const embed = new discord.MessageEmbed()
                     .setTitle("Leave the bots alone! They have feelings too.")
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
                 return;
             }
@@ -106,7 +106,7 @@ module.exports = {
                 const embed = new discord.MessageEmbed()
                     .setTitle("You cannot rob yourself!")
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
                 return;
             }
@@ -116,7 +116,7 @@ module.exports = {
                     .setTitle("You need atleast ⑩ 500 to rob someone!")
                     .setDescription("Check your bank and withdraw the money in there.")
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [embed] });
                 return;
             }
@@ -126,7 +126,7 @@ module.exports = {
                     .setTitle(`${user.username}#${user.discriminator} doesn't have enough money!`)
                     .setDescription("It wouldn't be worth the risk to rob them.")
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
                 return;
             }
@@ -150,7 +150,7 @@ module.exports = {
                                 const lockActive = new discord.MessageEmbed()
                                     .setTitle(`🔒 ${user.username}#${user.discriminator} has a lock active!`)
                                     .setDescription(`You couldn't get to their wallet in time.`)
-                                    .setTimestamp()
+                                    
                                     .setColor(COLOR_MAIN)
                                 message.reply({ embeds: [lockActive], allowedMentions: { repliedUser: false } });
 
@@ -194,7 +194,7 @@ module.exports = {
                                 const notStolen = new discord.MessageEmbed()
                                     .setTitle(`${message.author.username}#${message.author.discriminator} tried to rob you!`)
                                     .setDescription(`${message.author} tried to rob you but failed. You now have an extra ⑩ ${moneyLost.toLocaleString('us-US', { minimumFractionDigits: 0 })}!`)
-                                    .setTimestamp()
+                                    
                                     .setFooter("You are now protected for 5 minutes.")
                                     .setColor(COLOR_MAIN)
                                 user.send({ embeds: [notStolen] }).catch(err => {
@@ -205,7 +205,7 @@ module.exports = {
                                     .setDescription(`You had to pay ⑩ ${moneyLost.toLocaleString('us-US', { minimumFractionDigits: 0 })} to ${user}`)
                                     .setColor(COLOR_MAIN)
                                     .setFooter("5% boost active from 🍎 Apple")
-                                    .setTimestamp()
+                                    
                                 message.reply({ embeds: [lost], allowedMentions: { repliedUser: false } });
                             }
 
@@ -215,7 +215,7 @@ module.exports = {
                                 const stolen = new discord.MessageEmbed()
                                     .setTitle("You got robbed!")
                                     .setDescription(`${message.author} robbed you and stole ⑩ ${moneyWon.toLocaleString('us-US', { minimumFractionDigits: 0 })}!`)
-                                    .setTimestamp()
+                                    
                                     .setFooter("You are now protected for 5 minutes.")
                                     .setColor(COLOR_MAIN)
                                 user.send({ embeds: [stolen] }).catch(err => {
@@ -226,7 +226,7 @@ module.exports = {
                                     .setDescription(`Because of this succesfull robbery, you got ⑩ ${spaceAdd.toLocaleString('us-US', { minimumFractionDigits: 0 })} extra space in your bank.`)
                                     .setColor(COLOR_MAIN)
                                     .setFooter("5% boost active from 🍎 Apple")
-                                    .setTimestamp()
+                                    
                                 message.reply({ embeds: [won], allowedMentions: { repliedUser: false } });
                             }
 
@@ -263,7 +263,7 @@ module.exports = {
                 const notStolen = new discord.MessageEmbed()
                     .setTitle(`${message.author.username}#${message.author.discriminator} tried to rob you!`)
                     .setDescription(`${message.author} tried to rob you but failed. You now have an extra ⑩ ${moneyLost.toLocaleString('us-US', { minimumFractionDigits: 0 })}!`)
-                    .setTimestamp()
+                    
                     .setFooter("You are now protected for 5 minutes.")
                     .setColor(COLOR_MAIN)
                 user.send({ embeds: [notStolen] }).catch(err => {
@@ -273,7 +273,7 @@ module.exports = {
                     .setTitle(`You got caught trying to steal from ${user.username}!`)
                     .setDescription(`You had to pay ⑩ ${moneyLost.toLocaleString('us-US', { minimumFractionDigits: 0 })} to ${user}`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [lost], allowedMentions: { repliedUser: false } });
             }
 
@@ -283,7 +283,7 @@ module.exports = {
                 const stolen = new discord.MessageEmbed()
                     .setTitle("You got robbed!")
                     .setDescription(`${message.author} robbed you and stole ⑩ ${moneyWon.toLocaleString('us-US', { minimumFractionDigits: 0 })}!`)
-                    .setTimestamp()
+                    
                     .setFooter("You are now protected for 5 minutes.")
                     .setColor(COLOR_MAIN)
                 user.send({ embeds: [stolen] }).catch(err => {
@@ -293,7 +293,7 @@ module.exports = {
                     .setTitle(`You stole ⑩ ${moneyWon.toLocaleString('us-US', { minimumFractionDigits: 0 })} from ${user.username}!`)
                     .setDescription(`Because of this succesfull robbery, you got ⑩ ${spaceAdd.toLocaleString('us-US', { minimumFractionDigits: 0 })} extra space in your bank.`)
                     .setColor(COLOR_MAIN)
-                    .setTimestamp()
+                    
                 message.reply({ embeds: [won], allowedMentions: { repliedUser: false } });
             }
 

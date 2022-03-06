@@ -11,9 +11,9 @@ module.exports = {
         try {
             const embed = new MessageEmbed()
                 .setDescription(`QuaBot has been online since <t:${parseInt(client.readyTimestamp / 1000)}:R>. [Statistics](https://status.watchbot.app/bot/845603702210953246)`)
-                .setAuthor("QuaBot", "https://i.imgur.com/jgdQUul.png")
+                .setAuthor("QuaBot", "https://i.imgur.com/0vCe2oB.png")
                 .setColor(COLOR_MAIN)
-                .setTimestamp();
+                ;
             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
         } catch (e) {
             interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
