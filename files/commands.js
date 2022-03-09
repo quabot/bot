@@ -26,7 +26,6 @@ module.exports = {
         "support",
         "uptime",
         "userinfo",
-        "vote",
         "wiki",
         "channel",
         "clear",
