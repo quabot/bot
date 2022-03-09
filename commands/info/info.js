@@ -29,7 +29,7 @@ module.exports = {
                 .addField("Servers", `${guilds.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
                 .addField("Users", `${users.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
                 .addField("Channels", `${channels.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
-                .addField("Developers", "Joa_sss#0001\nDolentec#3474")
+                .addField("Developers", "Zaphyr#0001\nDolentec#3474")
                 .addField("Commands", `${CMD_AMOUNT}`)
                 .setFooter(`Uptime: ${uptime}`)
                 .setColor(COLOR_MAIN)
