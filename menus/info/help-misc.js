@@ -13,7 +13,7 @@ module.exports = {
                     **/servericon** - Get the servericon.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .setColor(color)
-            ]
+            ], ephemeral: true
         });
     }
 }

@@ -17,7 +17,7 @@ module.exports = {
                     **/userinfo** - Info about a user.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .setColor(color)
-            ]
+            ], ephemeral: true
         });
     }
 }

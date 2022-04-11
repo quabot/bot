@@ -6,9 +6,10 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
             const embed = new MessageEmbed()
-                .setTitle(`${client.user.username}'s Ping`)
-                .setDescription(`\`${client.ws.ping}ms\``)
+                .setTitle(`Roles  of ${interaction.guild.name}`)
                 .setColor(color)
+
+            const roles = interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
 
             if (roles.join(', ').length > 1024) {
                 const half = Math.ceil(roles.length / 2);

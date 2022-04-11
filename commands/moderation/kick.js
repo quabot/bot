@@ -1,19 +1,19 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: "ban",
-    description: 'Ban a user.',
+    name: "kick",
+    description: 'Kick a user.',
     permission: "BAN_MEMBERS",
     options: [
         {
             name: "user",
-            description: "The user you want to ban.",
+            description: "The user you want to kick.",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "Why you want to ban that user.",
+            description: "Why you want to kick that user.",
             type: "STRING",
             required: false,
         }
@@ -29,7 +29,7 @@ module.exports = {
             if (!member) return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`Please give a member to ban.`)
+                        .setDescription(`Please give a member to kick.`)
                         .setColor(color)
                 ]
             }).catch(err => console.log(err));
@@ -37,20 +37,24 @@ module.exports = {
             member.send({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle(`You were banned`)
-                        .setDescription(`You were banned from one of your servers, **${interaction.guild.name}**.
-                        **Banned by:** ${interaction.user}
+                        .setTitle(`You were kicked`)
+                        .setDescription(`You were kicked from one of your servers, **${interaction.guild.name}**.
+                        **Kicked by:** ${interaction.user}
                         **Reason:** ${reason}`)
                         .setTimestamp()
                         .setColor(color)
                 ]
-            }).catch(err => {if (err.code !== 50007)console.log(err)});
+            }).catch(err => {
+                if (err.code !== 50007) {
+                    console.log(err);
+                }
+            });
 
-            member.ban({ reason: reason }).catch(err => {
+            member.kick({ reason: reason }).catch(err => {
                 if (err.code === 50013) return interaction.channel.send({
                     embeds: [
                         new MessageEmbed()
-                            .setDescription(`I do not have permission to ban that user.`)
+                            .setDescription(`I do not have permission to kick that user.`)
                             .setColor(color)
                     ]
                 }).catch(err => console.log(err));
@@ -59,7 +63,7 @@ module.exports = {
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle(`User Banned`)
+                        .setTitle(`User Kicked`)
                         .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
                         .setColor(color)
                 ]
@@ -76,8 +80,8 @@ module.exports = {
                         userId: member.id,
                         guildId: interaction.guild.id,
                         guildName: interaction.guild.name,
-                        banCount: 1,
-                        kickCount: 0,
+                        banCount: 0,
+                        kickCount: 1,
                         timeoutCount: 0,
                         warnCount: 0,
                         updateNotify: true,
@@ -94,7 +98,7 @@ module.exports = {
 
             if (userDatabase) {
                 await userDatabase.updateOne({
-                    banCount: userDatabase.banCount + 1,
+                    kickCount: userDatabase.kickCount + 1,
                 });
             }
 
@@ -129,21 +133,20 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            let bans = userDatabase.banCount + 1;
-            if (!bans) bans = 1;
-            const Bans = require('../../structures/schemas/BanSchema');
-            const newBans = new Bans({
+            let kicks = userDatabase.kickCount + 1;
+            if (!kicks) kicks = 1;
+            const Kicks = require('../../structures/schemas/KickSchema');
+            const newKicks = new Kicks({
                 guildId: interaction.guild.id,
                 guildName: interaction.guild.name,
                 userId: member.id,
-                banReason: `${reason}`,
-                banTime: new Date().getTime(),
-                banId: bans,
-                bannedBy: interaction.user.id,
-                banChannel: interaction.channel.id,
+                kickReason: `${reason}`,
+                kickId: kicks,
+                kickedBy: interaction.user.id,
+                kickChannel: interaction.channel.id,
                 active: true,
             });
-            newBans.save()
+            newKicks.save()
                 .catch(err => {
                     console.log(err);
                     interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));

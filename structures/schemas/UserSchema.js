@@ -7,28 +7,22 @@ const reqNumber = {
     type: Number,
     required: true,
 }
-const falseBool = {
+const reqBool = {
     type: Boolean,
-    required: false,
-}
-const falseString = {
-    type: String,
-    required: false,
+    required: true,
 }
 
 const UserSchema = new mongoose.Schema({
     userId: reqString,
     guildId: reqString,
     guildName: reqString,
-    typeScore: reqNumber,
-    kickCount: reqNumber,
     banCount: reqNumber,
-    muteCount: reqNumber,
+    kickCount: reqNumber,
+    timeoutCount: reqNumber,
     warnCount: reqNumber,
-    
-    afk: falseBool,
-    afkStatus: falseString,
-    bio: falseString,
+    updateNotify: reqBool,
+    afk: reqBool,
+    afkMessage: reqString,
 });
 
 module.exports = mongoose.model('User', UserSchema);

@@ -16,7 +16,7 @@ module.exports = {
                     **/type** - Play a speed-typing game.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .setColor(color)
-            ]
+            ], ephemeral: true
         });
     }
 }
