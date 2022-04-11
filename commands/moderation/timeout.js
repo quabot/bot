@@ -1,19 +1,26 @@
 const { MessageEmbed } = require('discord.js');
+const ms = require('ms');
 
 module.exports = {
-    name: "ban",
-    description: 'Ban a user.',
-    permission: "BAN_MEMBERS",
+    name: "timeout",
+    description: "Timeout a user.",
+    permission: "MODERATE_MEMBERS",
     options: [
         {
             name: "user",
-            description: "The user you want to ban.",
+            description: "User to timeout",
             type: "USER",
             required: true,
         },
         {
+            name: "time",
+            description: "Time to timeout",
+            type: "STRING",
+            required: true,
+        },
+        {
             name: "reason",
-            description: "Why you want to ban that user.",
+            description: "Reason for timeout",
             type: "STRING",
             required: false,
         }
@@ -23,13 +30,23 @@ module.exports = {
 
             let member = interaction.options.getMember('user');
             let reason = interaction.options.getString('reason');
+            const time = interaction.options.getString('time');
             if (!reason) reason = "No reason specified.";
             if (reason.length > 1000) reason = "No reason specified.";
 
             if (!member) return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`Please give a member to ban.`)
+                        .setDescription(`Please give a member to timeout.`)
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
+
+
+            if (!ms(time)) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`Please give a time to timeout that member for.`)
                         .setColor(color)
                 ]
             }).catch(err => console.log(err));
@@ -37,20 +54,21 @@ module.exports = {
             member.send({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle(`You were banned`)
-                        .setDescription(`You were banned from one of your servers, **${interaction.guild.name}**.
-                        **Banned by:** ${interaction.user}
+                        .setTitle(`You were timed out`)
+                        .setDescription(`You were timed out on one of your servers, **${interaction.guild.name}**.
+                        **Timed out by:** ${interaction.user}
+                        **Duration:** ${time}
                         **Reason:** ${reason}`)
                         .setTimestamp()
                         .setColor(color)
                 ]
-            }).catch(err => {if (err.code !== 50007)console.log(err)});
+            }).catch(err => { if (err.code !== 50007) console.log(err) });
 
-            member.ban({ reason: reason }).catch(err => {
+            member.timeout(ms(time), `${reason}`).catch(err => {
                 if (err.code === 50013) return interaction.channel.send({
                     embeds: [
                         new MessageEmbed()
-                            .setDescription(`I do not have permission to ban that user.`)
+                            .setDescription(`I do not have permission to timeout that user.`)
                             .setColor(color)
                     ]
                 }).catch(err => console.log(err));
@@ -59,8 +77,8 @@ module.exports = {
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle(`User Banned`)
-                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
+                        .setTitle(`User Timed Out`)
+                        .setDescription(`**User:** ${member}\n**Duration:** ${time}\n**Reason:** ${reason}`)
                         .setColor(color)
                 ]
             }).catch(err => console.log(err));
@@ -76,9 +94,9 @@ module.exports = {
                         userId: member.id,
                         guildId: interaction.guild.id,
                         guildName: interaction.guild.name,
-                        banCount: 1,
+                        banCount: 0,
                         kickCount: 0,
-                        timeoutCount: 0,
+                        timeoutCount: 1,
                         warnCount: 0,
                         updateNotify: true,
                         afk: false,
@@ -94,7 +112,7 @@ module.exports = {
 
             if (userDatabase) {
                 await userDatabase.updateOne({
-                    banCount: userDatabase.banCount + 1,
+                    timeoutCount: userDatabase.timeoutCount + 1,
                 });
             }
 
@@ -129,27 +147,25 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            let bans;
-
-            if (userDatabase) bans = userDatabase.banCount + 1;
-            
-            if (!bans) bans = 1;
-            const Bans = require('../../structures/schemas/BanSchema');
-            const newBans = new Bans({
+            let timeouts;
+            if (userDatabase) timeouts = userDatabase.timeoutCount;
+            if (!timeouts) timeouts = 1;
+            const Timeouts = require('../../structures/schemas/TimeoutSchema');
+            const newTimeout = new Timeouts({
                 guildId: interaction.guild.id,
                 guildName: interaction.guild.name,
                 userId: member.id,
-                banReason: `${reason}`,
-                banTime: new Date().getTime(),
-                banId: bans,
-                bannedBy: interaction.user.id,
-                banChannel: interaction.channel.id,
+                timeoutReason: `${reason}`,
+                timeoutId: timeouts,
+                timedoutTime: new Date().getTime(),
+                timedoutBy: interaction.user.id,
+                timeoutChannel: interaction.channel.id,
                 active: true,
             });
-            newBans.save()
+            newTimeout.save()
                 .catch(err => {
                     console.log(err);
-                    interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
                 });
 
         } catch (e) {

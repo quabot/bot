@@ -133,7 +133,9 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            let kicks = userDatabase.kickCount + 1;
+            let kicks;
+
+            if (userDatabase) kicks = userDatabase.kickCount + 1;
             if (!kicks) kicks = 1;
             const Kicks = require('../../structures/schemas/KickSchema');
             const newKicks = new Kicks({
