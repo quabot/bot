@@ -1,43 +1,41 @@
-const { MessageActionRow, MessageButton } = require("discord.js");
-
-const colors = require('../../files/colors.json');
-const quiz = require('../../files/quiz.json');
-const { empty } = require("../../embeds/fun");
-const { error } = require("../../embeds/general");
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const quiz = require('../../structures/files/quiz.json');
 
 module.exports = {
     name: "quiz",
-    description: "Play a nice quiz.",
-    /**
-     * @param {Client} client 
-     * @param {CommandInteraction} interaction
-     */
-    async execute(client, interaction) {
+    description: "Play a quiz.",
+    async execute(client, interaction, color) {
         try {
-            const item = quiz[Math.floor(Math.random() * quiz.length)];
-            if (!item) return interaction.reply({ ephemeral: true, content: "Could't find any quiz questions." }).catch(err => console.log(err));;
-            const buttons = new MessageActionRow()
-                .addComponents(
-                    new MessageButton()
-                        .setCustomId('answer1')
-                        .setLabel(`${item.answer1}`)
-                        .setStyle('SUCCESS'),
-                    new MessageButton()
-                        .setCustomId('answer2')
-                        .setLabel(`${item.answer2}`)
-                        .setStyle('PRIMARY'),
-                    new MessageButton()
-                        .setCustomId('answer3')
-                        .setLabel(`${item.answer3}`)
-                        .setStyle('DANGER'),
-                );
 
-            empty.setTitle("Answer this question").setDescription(`${item.question}`)
-            interaction.reply({ embeds: [empty], components: [buttons] }).catch(err => console.log(err));
+            const quizItem = quiz[Math.floor(Math.random() * quiz.length)];
+            if (!quizItem) return interaction.reply({ embeds: [new MessageEmbed().setColor(color).setDescription(`Could not find any quiz questions.`)], ephemeral: true });
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor(color)
+                        .setDescription(`${quizItem.question}`)
+                ],
+                components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId('quiz1')
+                                .setLabel(`${quizItem.quiz1}`)
+                                .setStyle('SUCCESS'),
+                            new MessageButton()
+                                .setCustomId('quiz2')
+                                .setLabel(`${quizItem.quiz2}`)
+                                .setStyle('PRIMARY'),
+                            new MessageButton()
+                                .setCustomId('quiz3')
+                                .setLabel(`${quizItem.quiz3}`)
+                                .setStyle('DANGER')
+                        )
+                ]
+            }).catch(err => console.log(err));
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: quiz`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("957024489638621185").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

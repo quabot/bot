@@ -1,195 +1,64 @@
 const { MessageEmbed } = require('discord.js');
 
-const { error, added } = require('../../embeds/general');
-const { banNoUser, banImpossible } = require('../../embeds/moderation');
-const { COLOR_MAIN } = require('../../files/colors.json');
-
-
 module.exports = {
     name: "ban",
-    description: "Ban a member.",
+    description: 'Ban a user.',
     permission: "BAN_MEMBERS",
     options: [
         {
             name: "user",
-            description: "User to ban",
+            description: "The user you want to ban.",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "Reason for ban",
+            description: "Why you want to ban that user.",
             type: "STRING",
             required: false,
         }
     ],
-    async execute(client, interaction) {
+    async execute(client, interaction, color) {
         try {
-            const member = interaction.options.getMember('user');
-            const reasonRaw = interaction.options.getString('reason');
-            let reason = "No reason specified.";
 
-            if (!member) return interaction.reply({ embeds: [banNoUser] }).catch(err => console.log(err));
-            if (reasonRaw) reason = reasonRaw;
+            let member = interaction.options.getMember('user');
+            let reason = interaction.options.getString('reason');
+            if (!reason) reason = "No reason specified.";
 
-            const userBanned = new MessageEmbed()
-                .setTitle(":white_check_mark: User Banned")
-                .setDescription(`${member} was banned.\n**Reason:** ${reason}`)
-                .setColor(COLOR_MAIN)
+            if (!member) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`Please give a member to ban.`)
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
 
+            // ban and error codes
             member.ban({ reason: reason }).catch(err => {
-                interaction.channel.send({ embeds: [banImpossible] }).catch(err => console.log(err));
-                let reason = ":x: Ban failed.";
-                return;
-            });
-            interaction.reply({ embeds: [userBanned], split: true }).catch(err => console.log(err));
-            const youWereBanned = new MessageEmbed()
-                .setDescription(`You were banned from one of your servers, **${interaction.guild.name}**.`)
-                .addField("Banned By", `${interaction.user}`)
-                .addField("Reason", `${reason}`)
-                .setColor(COLOR_MAIN);
-            member.send({ embeds: [youWereBanned] }).catch(e => console.log("Failed to DM"));
-
-            const User = require('../../schemas/UserSchema');
-            const userDatabase = await User.findOne({
-                userId: interaction.user.id,
-                guildId: interaction.guild.id,
-            }, (err, user) => {
-                if (err) console.error(err);
-                if (!user) {
-                    const newUser = new User({
-                        userId: interaction.user.id,
-                        guildId: interaction.guild.id,
-                        guildName: interaction.guild.name,
-                        typeScore: 0,
-                        kickCount: 0,
-                        banCount: 0,
-                        warnCount: 0,
-                        muteCount: 0,
-                        afk: false,
-                        afkStatus: "none",
-                        bio: "none",
-                    });
-                    newUser.save()
-                        .catch(err => {
-                            console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-                        });
+                if (err.code === 50013) {
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`I do not have permission to ban that user.`)
+                                .setColor(color)
+                        ]
+                    }).catch(err => console.log(err));
+                    return;
                 }
-            }).clone().catch(function (err) { console.log(err) });
-            let bansCount;
-            if (userDatabase) bansCount = userDatabase.banCount;
-            if (!userDatabase) bansCount = 0;
-            if (bansCount === undefined) bansCount = 0;
-            if (userDatabase) {
-                await userDatabase.updateOne({
-                    banCount: bansCount + 1
-                });
-            }
-            if (!userDatabase) {
-                const newUser = new User({
-                    userId: interaction.user.id,
-                    guildId: interaction.guild.id,
-                    guildName: interaction.guild.name,
-                    typeScore: 0,
-                    kickCount: 0,
-                    banCount: 0,
-                    warnCount: 0,
-                    muteCount: 0,
-                    afk: true,
-                    afkStatus: "none",
-                    bio: "none",
-                });
-                newUser.save()
-                    .catch(err => {
-                        console.log(err);
-                        interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-                    });
-            }
+            })
 
-            const Guild = require('../../schemas/GuildSchema');
-            const guildDatabase = await Guild.findOne({
-                guildId: interaction.guild.id,
-            }, (err, guild) => {
-                if (err) console.error(err);
-                if (!guild) {
-                    const newGuild = new Guild({
-                        guildId: interaction.guild.id,
-                        guildName: interaction.guild.name,
-                        logChannelID: "none",
-                        reportChannelID: "none",
-                        suggestChannelID: "none",
-                        welcomeChannelID: "none",
-                        levelChannelID: "none",
-                        pollChannelID: "none",
-                        ticketCategory: "Tickets",
-                        closedTicketCategory: "Tickets",
-                        logEnabled: true,
-                        musicEnabled: true,
-                        levelEnabled: false,
-                        reportEnabled: true,
-                        suggestEnabled: true,
-                        ticketEnabled: true,
-                        welcomeEnabled: true,
-                        pollsEnabled: true,
-                        roleEnabled: true,
-                        mainRole: "Member",
-                        mutedRole: "Muted",
-                        joinMessage: "Welcome {user} to **{guild-name}**!",
-                        leaveMessage: "Goodbye {user}!",
-                        swearEnabled: false,
-                        transcriptChannelID: "none",
-                        prefix: "!",
-                    });
-                    newGuild.save()
-                        .catch(err => {
-                            console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-                        });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
-                }
-            }).clone().catch(function (err) { console.log(err) });
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(`${client.user.username}'s Ping`)
+                        .setDescription(`\`${client.ws.ping}ms\``)
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
 
-            const Bans = require('../../schemas/BanSchema');
-            const newBans = new Bans({
-                guildId: interaction.guild.id,
-                guildName: interaction.guild.name,
-                userId: member.id,
-                banReason: `${reason}`,
-                banTime: new Date().getTime(),
-                banId: bansCount + 1,
-                bannedBy: interaction.user.id,
-                banChannel: interaction.channel.id,
-                active: true,
-            });
-            newBans.save()
-                .catch(err => {
-                    console.log(err);
-                    interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-                });
-
-
-            if (!guildDatabase) return;
-            if (guildDatabase.logEnabled === "true") {
-                const logChannel = interaction.guild.channels.cache.get(guildDatabase.logChannelID)
-                if (!logChannel) return;
-
-                const embed = new MessageEmbed()
-                    .setColor(`RED`)
-                    .setTitle('🔨 User Banned')
-                    .addField('Username', `${member.user.username}`)
-                    .addField('User ID', `${member.id}`)
-                    .addField('Banned by', `${interaction.user}`)
-                    .addField('Reason', `${reason}`)
-                    
-                logChannel.send({ embeds: [embed], split: true })
-            } else {
-                return;
-            }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: ban`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

@@ -1,23 +1,23 @@
 const { MessageEmbed } = require('discord.js');
 
-const { error, added } = require('../../embeds/general');
-const { pingGet } = require('../../embeds/info');
-const { COLOR_MAIN } = require('../../files/colors.json');
-
 module.exports = {
     name: "ping",
-    description: "Your ping.",
-    async execute(client, interaction) {
-
+    description: 'Bot ping.',
+    async execute(client, interaction, color) {
         try {
-            interaction.reply({ embeds: [pingGet] }).then(m => {
-                pingGet.setTitle(`:white_check_mark: Your current ping is: **${client.ws.ping}ms**.`);
-                interaction.editReply({ embeds: [pingGet] }).catch(err => console.log(err));
-            }).catch(err => console.log(err));
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                        .setTitle(`${client.user.username}'s Ping`)
+                        .setDescription(`\`${client.ws.ping}ms\``)
+                        .setColor(color)
+                    ]
+                }).catch(err => console.log(err));
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: nick`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

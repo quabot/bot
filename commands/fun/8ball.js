@@ -1,35 +1,29 @@
-const discord = require('discord.js');
-const balloptions = require('../../files/8ballOptions.json');
-const { COLOR_MAIN } = require('../../files/colors.json')
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: "8ball",
-    description: "Ask the bot about your future",
+    description: "Ask a question, get an answer.",
     options: [
         {
             name: "question",
-            description: "What is your question",
+            description: "What is your question?",
             type: "STRING",
             required: true
         },
     ],
-    async execute(client, interaction) {
+    async execute(client, interaction, color) {
 
-        try {
-            const question = interaction.options.getString("question");
-            const random = balloptions[Math.floor(Math.random() * balloptions.length)]
+        const question = interaction.options.getString("question");
 
-            const embed = new discord.MessageEmbed()
-                .setDescription(`${interaction.user}'s 8ball`)
-                .addField("Question", `${question}`, true)
-                .addField('8ball', `${random}`)
-                .setColor(COLOR_MAIN)
-                
-            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
-        } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: coin`)] }).catch(err => console.log(err));;
-            return;
-        }
+        const options = require('../../structures/files/8ball.json');
+        const randomOption = options[Math.floor(Math.random() * options.length)]
+
+        interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription(`**${question}**\n${randomOption}`)
+                    .setColor(color)
+            ]
+        }).catch(err => console.log(err));
     }
 }

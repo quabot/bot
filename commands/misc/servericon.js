@@ -1,20 +1,23 @@
 const { MessageEmbed } = require('discord.js');
 
-const { error } = require('../../embeds/general');
-const { COLOR_MAIN } = require('../../files/colors.json');
-
 module.exports = {
     name: "servericon",
-    description: "Server's icon.",
-    async execute(client, interaction) {
+    description: 'Guild\'s icon.',
+    async execute(client, interaction, color) {
         try {
-            const membersEmbed = new MessageEmbed().setColor(COLOR_MAIN).setImage(interaction.guild.iconURL({ dynamic: true })).setTitle(`${interaction.guild.name}`)
-            if (!interaction.guild.iconURL({ dynamic: true })) membersEmbed.setDescription("This guild does not have an icon.");
-            interaction.reply({ embeds: [membersEmbed] }).catch(err => console.log(err));
+
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setImage(interaction.guild.iconURL({ dynamic: true }))
+                        .setTitle(`${interaction.guild.name}`)
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: bio`)] }).catch(err => console.log(err));
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

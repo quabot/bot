@@ -1,43 +1,50 @@
-const { MessageEmbed, GuildMember } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-
-const { error, added } = require('../../embeds/general');
-const { COLOR_MAIN } = require('../../files/colors.json');
 
 module.exports = {
     name: "userinfo",
-    description: "Information about a user.",
+    description: "Info about a user.",
     options: [
         {
             name: "user",
-            description: "User to get info about",
+            description: "User to get the info of",
             type: "USER",
-            required: false,
         }
     ],
-    async execute(client, interaction) {
+    async execute(client, interaction, color) {
 
         try {
-            let user = interaction.options.getUser('user') || interaction.user;
-            if (user.bot = "false") user.bot = "False";
-            if (user.status = "online") user.status = "Online";
+
+            let user = interaction.options.getUser('user');
+            if (!user) user = interaction.user;
+            let member = interaction.options.getMember("user");
+            if (!member) member = interaction.member;
+
+            var roles = `<@&${member._roles.map(role => role.toString()).join('>, <@&')}>`;
+
             const embed = new MessageEmbed()
-                .setAuthor(user.username + '#' + user.discriminator, user.displayAvatarURL)
-                .setColor(COLOR_MAIN)
+                .addField('User <:MembersIcon:959741227689988196>', `${user}`, true)
+                .addField('Discriminator <:ChannelIcon:959741807380557845>', `\`#${user.discriminator}\``, true)
+                .addField('ID <:IdIcon:960591936840957962>', `\`${user.id}\``, true)
+                .addField('Joined server on', `<t:${member.joinedTimestamp}:R>`, true)
+                .addField('Joined Discord on', `<t:${user.createdAt}:R>`, true)
+                .setFooter(`${user.username}#${user.discriminator}`, user.avatarURL({ dynamic: true }))
+                .setTimestamp()
                 .setThumbnail(user.avatarURL({ dynamic: true }))
-                .addField(`${user.tag}`, `${user}`, true)
-                .addField("ID:", `${user.id}`, true)
-                .addField("Nickname", `${GuildMember.nickname}`, true)
-                .addField("Status:", `${user.status}`, true) //add game                
-                .addField("Joined The Server On:", `${moment.utc(GuildMember.joinedTimestamp).format("dddd, MMMM Do, YYYY")}`, true)
-                .addField("Account Created On:", `${moment.utc(user.createdAt).format("dddd, MMMM Do,    YYYY")}`, true)
-                ;
-            if (user.bot === "true") embed.setDescription(`This user is a bot.`)
+                .setColor(color);
+
+            if (member.premiumSinceTimestamp) embed.addField("Booster Since <:BoostIcon:959748299911479306>", `\`${moment(member.premiumSinceTimestamp).format('MMM DD YYYY')}\``, true);
+            if (member.nickname) embed.addField("Nickname", `\`${member.nickname}\``, true);
+            if (user.bot) embed.addField('Bot', `\`${user.bot}\``, true);
+            if (roles.length < 1024) {
+                if (member._roles.length !== 0) embed.addField("Roles <:RolesIcon:959764812068450318>", `<@&${member._roles.map(role => role.toString()).join('>, <@&')}>`, true);
+            }
+
             interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

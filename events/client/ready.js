@@ -1,38 +1,29 @@
-const consola = require('consola');
+const { CMD_AMOUNT } = require('../../structures/settings.json');
 const { connect } = require('mongoose');
-const { setURL } = require("discord.js-leveling");
-const { CMD_AMOUNT, VERSION } = require('../../files/settings.json');
-require('dotenv').config();
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: "ready",
     once: true,
     execute(client) {
-        consola.log(`\n${client.user.username.toUpperCase()}#${client.user.discriminator}\nServers: ${client.guilds.cache.size}\nUsers: ${client.users.cache.size}\nChannels: ${client.channels.cache.size}\nVersion: ${VERSION}`);
+        function setActivity(status) { client.user.setActivity(status, { type: "WATCHING" }); }
+        (function loop() {
+            setTimeout(function () { setActivity(`${client.users.cache.size} users |  /help`) }, 6000);
+            setTimeout(function () { setActivity(`quabot.net | /help`) }, 12000);
+            setTimeout(function () { setActivity(`${CMD_AMOUNT} commands | /help`) }, 18000);
+            setTimeout(function () {
+                setActivity(`${client.guilds.cache.size} servers |  /help`);
+                loop()
+            }, 24000);
+        }());
 
         connect(process.env.DATABASE_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-        }).catch((err) => consola.error(err));
-        setURL(process.env.DATABASE_URL);
+        }).catch((err) => console.error(err));
 
-        (function loop() {
-            setTimeout(function () {
-                client.user.setActivity(`${client.users.cache.size} users |  /help`, { type: "WATCHING" });
-            }, 6000);
+        client.guilds.cache.get('957024489638621185').channels.cache.get('957210942674972682').send({ embeds: [new MessageEmbed().setDescription(`**${client.user.username}** has been restarted.`)] }).catch(err => console.log(err));
 
-            setTimeout(function () {
-                client.user.setActivity(`quabot.net | /help`, { type: "WATCHING" });
-            }, 12000);
-
-            setTimeout(function () {
-                client.user.setActivity(`${CMD_AMOUNT} commands | /help`, { type: "WATCHING" });
-            }, 18000);
-
-            setTimeout(function () {
-                client.user.setActivity(`${client.guilds.cache.size} servers |  /help`, { type: "WATCHING" });
-                loop()
-            }, 24000);
-        }());
+        consola.success("Ready");
     }
 }
