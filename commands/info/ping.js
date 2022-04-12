@@ -9,8 +9,7 @@ module.exports = {
                 interaction.reply({
                     embeds: [
                         new MessageEmbed()
-                        .setTitle(`${client.user.username}'s Ping`)
-                        .setDescription(`\`${client.ws.ping}ms\``)
+                        .setDescription(`🏓 \`${client.ws.ping}ms\``)
                         .setColor(color)
                     ]
                 }).catch(err => console.log(err));

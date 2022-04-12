@@ -11,6 +11,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle(`${client.user.username} Info`)
+                        .setThumbnail(client.user.avatarURL({ dynamic: true }))
                         .addField("Memory Usage", `\`${Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)}MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``, true)
                         .addField("Uptime", `<t:${parseInt(client.readyTimestamp / 1000)}:R>`, true)
                         .addField('\u200b', '\u200b', true)
@@ -23,7 +24,7 @@ module.exports = {
                         .addField("CPU", "```AMD Ryzen 5 2600```", true)
                         .addField('\u200b', '\u200b', true)
                         .addField('\u200b', '\u200b', true)
-                        .addField("Platform", `\`${process.platform('win32', 'Windows').replace('linux', 'Linux')}\``, true)
+                        .addField("Platform", `\`${process.platform.replace('win32', 'Windows')}\``, true)
                         .addField("Ping", `\`${client.ws.ping}ms\``, true)
                         .addField('\u200b', '\u200b', true)
                         .setColor(color)

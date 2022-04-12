@@ -10,7 +10,7 @@ module.exports = {
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`${flip}!`)
+                        .setDescription(`🪙 ${flip}!`)
                         .setColor(color)
                 ]
             }).catch(err => console.log(err));

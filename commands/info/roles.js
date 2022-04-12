@@ -6,7 +6,6 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
             const embed = new MessageEmbed()
-                .setTitle(`Roles  of ${interaction.guild.name}`)
                 .setColor(color)
 
             const roles = interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
@@ -23,16 +22,16 @@ module.exports = {
                     const half2 = Math.ceil(secondHalf.length / 2);
                     let firstHalfPt3 = secondHalf.splice(0, half2);
                     let secondHalfPt4 = secondHalf.splice(-half2);
-                    embed.addField("Roles", `${firstHalfPt2.join(', ')}`);
+                    embed.addField("Roles <:RolesIcon:959764812068450318>", `${firstHalfPt2.join(', ')}`);
                     embed.addField("** **", `${secondHalfPt2.join(', ')}`);
                     embed.addField("", `${firstHalfPt3.join(', ')}`);
                     embed.addField("** **", `${secondHalfPt4.join(', ')}`);
                     interaction.reply({ embeds: [embed], split: true }).catch(err => console.log(err));
                     return;
                 }
-                embed.addField("Roles", `${firstHalf.join(', ')}`);
+                embed.addField("Roles <:RolesIcon:959764812068450318>", `${firstHalf.join(', ')}`);
                 embed.addField("** **", `${secondHalf.join(', ')}`);
-            } else embed.addField("Roles", `${roles.join(', ')}`);
+            } else embed.addField("Roles <:RolesIcon:959764812068450318>", `${roles.join(', ')}`);
 
             interaction.reply({
                 embeds: [embed]
