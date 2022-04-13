@@ -23,18 +23,23 @@ module.exports = {
                                 .addOptions([
                                     {
                                         label: '😂 Fun Commands',
-                                        description: 'This is a description',
+                                        description: 'Play a game, get a meme or ask a question, these are the fun commands.',
                                         value: 'fun_commands',
                                     },
                                     {
                                         label: '📄 Info Commands',
-                                        description: 'This is also a description',
+                                        description: 'Bot status, ping, info about a user, these are the info commands.',
                                         value: 'info_commands',
                                     },
                                     {
                                         label: '👍 Misc Commands',
-                                        description: 'This is also a description',
+                                        description: 'See the servericon or avatar, these are the misc commands.',
                                         value: 'misc_commands',
+                                    },
+                                    {
+                                        label: '🔨 Moderation Commands',
+                                        description: 'Ban users, warn them and so much more, these are the moderation commands.',
+                                        value: 'moderation_commands',
                                     },
                                 ]),
                         )

@@ -15,6 +15,7 @@ const KickSchema = new mongoose.Schema({
     kickReason: reqString,
     kickId: reqString,
     kickedBy: reqString,
+    kickTime: reqString,
     kickChannel: reqString,
     active: reqBool,
 });

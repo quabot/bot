@@ -56,15 +56,6 @@ module.exports = {
                 }).catch(err => console.log(err));
             });
 
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle(`User Banned`)
-                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
-                        .setColor(color)
-                ]
-            }).catch(err => console.log(err));
-
             const User = require('../../structures/schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: member.id,
@@ -98,6 +89,22 @@ module.exports = {
                 });
             }
 
+            let bans;
+
+            if (userDatabase) bans = userDatabase.banCount + 1;
+            
+            if (!bans) bans = 1;
+
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(`User Banned`)
+                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
+                        .setColor(color)
+                        .setFooter(`Ban-Id: ${bans}`)
+                ]
+            }).catch(err => console.log(err));
+
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: interaction.guild.id,
@@ -129,11 +136,6 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            let bans;
-
-            if (userDatabase) bans = userDatabase.banCount + 1;
-            
-            if (!bans) bans = 1;
             const Bans = require('../../structures/schemas/BanSchema');
             const newBans = new Bans({
                 guildId: interaction.guild.id,

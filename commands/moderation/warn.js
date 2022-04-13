@@ -45,15 +45,6 @@ module.exports = {
                 ]
             }).catch(err => { if (err.code !== 50007) console.log(err) });
 
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle(`User Warned`)
-                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
-                        .setColor(color)
-                ]
-            }).catch(err => console.log(err));
-
             const User = require('../../structures/schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: member.id,
@@ -87,6 +78,22 @@ module.exports = {
                 });
             }
 
+            let warns;
+
+            if (userDatabase) warns = userDatabase.warnCount + 1;
+
+            if (!warns) warns = 1;
+
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(`User Warned`)
+                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
+                        .setColor(color)
+                        .setFooter(`Warn-Id: ${warns}`)
+                ]
+            }).catch(err => console.log(err));
+
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: interaction.guild.id,
@@ -118,11 +125,6 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            let warns;
-
-            if (userDatabase) warns = userDatabase.warnCount + 1;
-
-            if (!warns) warns = 1;
             const Warns = require('../../structures/schemas/WarnSchema');
             const newWarn = new Warns({
                 guildId: interaction.guild.id,

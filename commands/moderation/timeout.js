@@ -74,15 +74,6 @@ module.exports = {
                 }).catch(err => console.log(err));
             });
 
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle(`User Timed Out`)
-                        .setDescription(`**User:** ${member}\n**Duration:** ${time}\n**Reason:** ${reason}`)
-                        .setColor(color)
-                ]
-            }).catch(err => console.log(err));
-
             const User = require('../../structures/schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: member.id,
@@ -116,6 +107,22 @@ module.exports = {
                 });
             }
 
+            let timeouts;
+
+            if (userDatabase) timeouts = userDatabase.timeoutCount;
+
+            if (!timeouts) timeouts = 1;
+
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(`User Timed Out`)
+                        .setDescription(`**User:** ${member}\n**Duration:** ${time}\n**Reason:** ${reason}`)
+                        .setColor(color)
+                        .setFooter(`Timeout-Id: ${timeouts}`)
+                ]
+            }).catch(err => console.log(err));
+
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: interaction.guild.id,
@@ -147,9 +154,6 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            let timeouts;
-            if (userDatabase) timeouts = userDatabase.timeoutCount;
-            if (!timeouts) timeouts = 1;
             const Timeouts = require('../../structures/schemas/TimeoutSchema');
             const newTimeout = new Timeouts({
                 guildId: interaction.guild.id,

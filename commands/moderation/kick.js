@@ -60,15 +60,6 @@ module.exports = {
                 }).catch(err => console.log(err));
             });
 
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle(`User Kicked`)
-                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
-                        .setColor(color)
-                ]
-            }).catch(err => console.log(err));
-
             const User = require('../../structures/schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: member.id,
@@ -102,6 +93,21 @@ module.exports = {
                 });
             }
 
+            let kicks;
+
+            if (userDatabase) kicks = userDatabase.kickCount + 1;
+            if (!kicks) kicks = 1;
+
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(`User Kicked`)
+                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
+                        .setColor(color)
+                        .setFooter(`Kick-Id: ${kicks}`)
+                ]
+            }).catch(err => console.log(err));
+
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: interaction.guild.id,
@@ -133,16 +139,13 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            let kicks;
-
-            if (userDatabase) kicks = userDatabase.kickCount + 1;
-            if (!kicks) kicks = 1;
             const Kicks = require('../../structures/schemas/KickSchema');
             const newKicks = new Kicks({
                 guildId: interaction.guild.id,
                 guildName: interaction.guild.name,
                 userId: member.id,
                 kickReason: `${reason}`,
+                kickTime: new Date().getTime(),
                 kickId: kicks,
                 kickedBy: interaction.user.id,
                 kickChannel: interaction.channel.id,
