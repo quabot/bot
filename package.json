@@ -22,6 +22,7 @@
   "dependencies": {
     "@distube/soundcloud": "^1.1.0",
     "@distube/spotify": "^1.2.0",
+    "@distube/ytdl-core": "^4.11.3",
     "ascii-table": "^0.0.9",
     "canvacord": "^5.2.3",
     "canvas": "^2.9.0",
@@ -32,8 +33,10 @@
     "discord.js-leveling": "^5.4.0",
     "distube": "^3.3.1-1",
     "dotenv": "^10.0.0",
+    "ffmpeg-static": "^4.4.1",
     "fs": "^0.0.1-security",
     "glob": "^7.2.0",
+    "libsodium-wrappers": "^0.7.10",
     "memejs": "^1.2.3",
     "moment": "^2.29.1",
     "mongoose": "^6.1.8",
@@ -41,6 +44,8 @@
     "node-fetch": "^2.6.7",
     "opusscript": "^0.0.8",
     "os": "^0.1.2",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "yt-search": "^2.10.3",
+    "ytdl-core": "^4.11.0"
   }
 }
