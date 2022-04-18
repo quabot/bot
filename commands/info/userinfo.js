@@ -20,14 +20,16 @@ module.exports = {
             let member = interaction.options.getMember("user");
             if (!member) member = interaction.member;
 
+            console.log(member)
+
             var roles = `<@&${member._roles.map(role => role.toString()).join('>, <@&')}>`;
 
             const embed = new MessageEmbed()
                 .addField('User <:MembersIcon:959741227689988196>', `${user}`, true)
                 .addField('Discriminator <:ChannelIcon:959741807380557845>', `\`#${user.discriminator}\``, true)
                 .addField('ID <:IdIcon:960591936840957962>', `\`${user.id}\``, true)
-                .addField('Joined server on <:AddIcon:963355747209576498>', `<t:${member.joinedTimestamp}:R>`, true)
-                .addField('Joined Discord on <:AddIcon:963355747209576498>', `<t:${user.createdAt}:R>`, true)
+                .addField('Joined server on <:AddIcon:963355747209576498>', `<t:${Math.round(member.joinedTimestamp / 1000)}:R>`, true)
+                .addField('Joined Discord on <:AddIcon:963355747209576498>', `<t:${parseInt(user.createdTimestamp / 1000)}:R>`, true)
                 .setFooter(`${user.username}#${user.discriminator}`, user.avatarURL({ dynamic: true }))
                 .setTimestamp()
                 .setThumbnail(user.avatarURL({ dynamic: true }))
