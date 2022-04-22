@@ -74,17 +74,81 @@ module.exports = {
                     });
 
                     const voiceChannel = member.voice.channel;
-                    client.distube.playVoiceChannel(voiceChannel, `${search}`, {
+                    client.distube.play(voiceChannel, `${search}`, {
                         textChannel: interaction.channel,
                     }).catch(err => console.log(err));
 
                     break;
 
                 case 'skip':
+                    const queue = client.distube.getQueue(interaction);
+                    if (!queue) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription("🎵 There are no songs playing!")
+                                .setColor(color)
+                        ]
+                    });
 
+                    if (!queue.songs[1]) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription("🎵 There is no next song!")
+                                .setColor(color)
+                        ]
+                    });
+
+                    client.distube.skip(queue);
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription("⏭️ Skipped a song!")
+                                .setColor(color)
+                        ]
+                    });
                     break;
 
                 case 'options':
+                    const option = interaction.options.getString("option");
+
+                    switch (option) {
+
+                        case 'stop':
+                            const queueStop = client.distube.getQueue(interaction);
+
+                            if (!queueStop) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            });
+
+                            client.distube.stop(queueStop);
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("⏹️ Stopped the stream and left the voice channel!")
+                                        .setColor(color)
+                                ]
+                            });
+                            break;
+
+                        case 'queue':
+                            const queueQueue = client.distube.getQueue(interaction);
+
+                            if (!queueQueue) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            });
+
+                            
+                            break;
+
+                    }
 
                     break;
             }
