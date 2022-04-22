@@ -24,7 +24,7 @@ module.exports = {
                     let secondHalfPt4 = secondHalf.splice(-half2);
                     embed.addField("Roles <:RolesIcon:959764812068450318>", `${firstHalfPt2.join(', ')}`);
                     embed.addField("** **", `${secondHalfPt2.join(', ')}`);
-                    embed.addField("", `${firstHalfPt3.join(', ')}`);
+                    embed.addField("** **", `${firstHalfPt3.join(', ')}`);
                     embed.addField("** **", `${secondHalfPt4.join(', ')}`);
                     interaction.reply({ embeds: [embed], split: true }).catch(err => console.log(err));
                     return;

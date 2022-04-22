@@ -47,24 +47,47 @@ module.exports = {
                 ]
             });
 
-            if (interaction.guild.me.voice.channelId) {
-                console.log("in vc fucker")
-            }
             if (member.voice.channelId !== interaction.guild.me.voice.channelId) {
                 if (interaction.guild.me.voice.channelId) {
-                    console.log("not same vc")
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`We're not in the same voice channel! Join <#${interaction.guild.me.voice.channelId}> to use that command.`)
+                                .setColor(color)
+                        ]
+                    }).catch(err => console.log(err));
+                    return;
                 }
             }
-            if (member.voice.channelId === interaction.guild.me.voice.channelId) {
-                console.log("same vc")
+
+            const subCmd = interaction.options.getSubcommand();
+
+            switch (subCmd) {
+                case 'play':
+                    const search = interaction.options.getString("search");
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription("✅ Request recieved!")
+                                .setColor(color)
+                        ]
+                    });
+
+                    const voiceChannel = member.voice.channel;
+                    client.distube.playVoiceChannel(voiceChannel, `${search}`, {
+                        textChannel: interaction.channel,
+                    }).catch(err => console.log(err));
+
+                    break;
+
+                case 'skip':
+
+                    break;
+
+                case 'options':
+
+                    break;
             }
-
-            
-            const voiceChannel = member.voice.channel;
-            client.distube.playVoiceChannel(voiceChannel, "Daft punk", {
-                textChannel: interaction.channel,
-            }).catch(err => console.log(err));
-
         } catch (e) {
             console.log(e);
             client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
