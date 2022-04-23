@@ -1,43 +1,39 @@
 const { MessageEmbed } = require('discord.js');
-
-const { error } = require('../../embeds/general');
-const { VERSION, CMD_AMOUNT } = require('../../files/settings.json');
-const { COLOR_MAIN } = require('../../files/colors.json');
+const os = require('os');
 
 module.exports = {
     name: "info",
-    description: "QuaBot info.",
-    async execute(client, interaction) {
+    description: 'Bot info.',
+    async execute(client, interaction, color) {
         try {
-            let totalSeconds = (client.uptime / 1000);
-            let days = Math.floor(totalSeconds / 86400);
-            totalSeconds %= 86400;
-            let hours = Math.floor(totalSeconds / 3600);
-            totalSeconds %= 3600;
-            let minutes = Math.floor(totalSeconds / 60);
-            let seconds = Math.floor(totalSeconds % 60);
-            let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
 
-            const guilds = client.guilds.cache.size;
-            const users = client.users.cache.size;
-            const channels = client.channels.cache.size;
-            
-            const embed = new MessageEmbed()
-                .setTitle(`${client.user.tag}`)
-                .setThumbnail("https://i.imgur.com/0vCe2oB.png")
-                .addField("Version", `${VERSION}`)
-                .addField("Servers", `${guilds.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
-                .addField("Users", `${users.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
-                .addField("Channels", `${channels.toLocaleString('us-US', { minimumFractionDigits: 0 })}`)
-                .addField("Developers", "Zaphyr#0001\nDolentec#3474")
-                .addField("Commands", `${CMD_AMOUNT}`)
-                .setFooter(`Uptime: ${uptime}`)
-                .setColor(COLOR_MAIN)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(`${client.user.username} Info`)
+                        .setThumbnail(client.user.avatarURL({ dynamic: true }))
+                        .addField("Memory Usage", `\`${Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)}MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``, true)
+                        .addField("Uptime", `<t:${parseInt(client.readyTimestamp / 1000)}:R>`, true)
+                        .addField('\u200b', '\u200b', true)
+                        .addField("Users", `\`${client.users.cache.size}\``, true)
+                        .addField("Servers", `\`${client.guilds.cache.size}\``, true)
+                        .addField('\u200b', '\u200b', true)
+                        .addField("Discord.js", `\`${require('../../package.json').dependencies['discord.js']}\``, true)
+                        .addField("Node.js", `\`${process.version}\``, true)
+                        .addField('\u200b', '\u200b', true)
+                        .addField("CPU", "```AMD Ryzen 5 2600```", true)
+                        .addField('\u200b', '\u200b', true)
+                        .addField('\u200b', '\u200b', true)
+                        .addField("Platform", `\`${process.platform.replace('win32', 'Windows')}\``, true)
+                        .addField("Ping", `\`${client.ws.ping}ms\``, true)
+                        .addField('\u200b', '\u200b', true)
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: info`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

@@ -1,46 +1,65 @@
-const { MessageEmbed } = require('discord.js');
-
-const { error } = require('../../embeds/general');
-const { empty, empty2 } = require('../../embeds/fun');
-const options = require('../../files/sentences.json');
-const { COLOR_MAIN } = require('../../files/colors.json');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     name: "type",
-    description: "Play a typing game.",
-    async execute(client, interaction) {
+    description: "Play a speed-typing game.",
+    async execute(client, interaction, color) {
         try {
-            const random = options[Math.floor(Math.random() * options.length)];
-            empty.setTitle("Type this sentence within 15 seconds.").setDescription(`\`${random}\``);
-            interaction.reply({ embeds: [empty] }).catch(err => console.log(err));
+
+            const listSentences = require('../../../../Discord Bot/structures/files/sentences.json');
+            const randomSentence = listSentences[Math.floor(Math.random() * listSentences.length)];
             const startTime = new Date().getTime();
-            const filter = m => interaction.user === m.author;
-            const collector = interaction.channel.createMessageCollector({ time: 15000, filter: filter });
+
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle("Type this sentence within 15 seconds!")
+                        .addField("Sentence", `${randomSentence}`)
+                        .setColor(color)
+                ],
+                components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId('typeStop')
+                                .setLabel('Stop')
+                                .setStyle('SECONDARY')
+                        )
+                ]
+            }).catch(err => console.log(err));
+
+            const filter = m => m.author === interaction.user;
+            const collector = interaction.channel.createMessageCollector({ filter, time: 15000 });
             collector.on('collect', m => {
-                empty2.setTitle("❌ Wrong sentence!");
-                if (m.content.length > 1024) return m.reply({ embeds: [empty2], allowedMentions: { repliedUser: false } }).catch(err => console.log(err));;
-                if (m.content === random) {
-                    const timeSpent = new Date().getTime() - startTime;
-                    const timeDate = new Date(timeSpent);
-                    const seconds = timeDate.getSeconds();
-                    const embed =  new MessageEmbed().setTitle("✅ Correct!").addField(`Sentence`, `\`${random}\``).addField("Time Spent", `\`${seconds}\` seconds`).setColor(COLOR_MAIN);
-                    m.reply({ embeds: [embed], allowedMentions: { repliedUser: false } }).catch(err => console.log(err));;
-                    collector.stop();
-                    return;
+                const seconds = new Date(new Date().getTime() - startTime).getSeconds();
+                collector.stop();
+                if (m.content === randomSentence) {
+                    m.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Correct!")
+                                .setDescription(`${m.author} typed the sentence in \`${seconds}\` seconds!`)
+                                .addField("Sentence", `${randomSentence}`)
+                                .setColor("GREEN")
+                        ],
+                    }).catch(err => console.log(err));
                 } else {
-                    const timeSpent = new Date().getTime() - startTime;
-                    const timeDate = new Date(timeSpent);
-                    const seconds = timeDate.getSeconds();
-                    empty2.addField("Sentence", `${random}** **`).addField("Your Answer", `${m.content}** **`).addField("Time Spent", `\`${seconds}\` seconds`);
-                    m.reply({ embeds: [empty2], allowedMentions: { repliedUser: false } }).catch(err => console.log(err));;
-                    collector.stop();
-                    return;
+                    m.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Incorrect!")
+                                .setDescription(`${m.author} failed to type the correct sentence in \`${seconds}\` seconds!`)
+                                .addField("Sentence", `${randomSentence}`)
+                                .addField("Your Answer", `${m.content}`)
+                                .setColor("RED")
+                        ],
+                    }).catch(err => console.log(err));
                 }
             });
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: type`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

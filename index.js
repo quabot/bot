@@ -1,80 +1,32 @@
-const discord = require('discord.js');
-const client = new discord.Client({ intents: 6095, partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
-require('dotenv').config()
-const TicTacToe = require('discord-tictactoe');
+const { Client, Collection } = require('discord.js');
+const client = new Client({ intents: 32767 });
+require('dotenv').config();
 
-client.commands = new discord.Collection();
-['commands', 'events', 'text_commands'].forEach(handler => {
-    require(`./handlers/${handler}`)(client, discord);
+const { promisify } = require('util');
+const { glob } = require("glob");
+const Ascii = require('ascii-table');
+const PG = promisify(glob);
+const consola = require('consola');
+
+const discord = require('discord.js');
+client.commands = new Collection();
+client.buttons = new Collection();
+client.menus = new Collection();
+['commands', 'buttons', 'events', 'menus'].forEach(handler => {
+    require(`./structures/handlers/${handler}`)(client, PG, Ascii, consola);
 });
 
-client.login(process.env.TOKEN);
-
-const DisTube = require("distube");
+const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
-const { playButtons } = require('./interactions/music');
-const { COLOR_MAIN } = require('./files/colors.json');
-const { MessageEmbed } = require('discord.js');
-client.player = new DisTube.default(client, {
+
+client.distube = new DisTube(client, {
     leaveOnEmpty: true,
     leaveOnFinish: true,
     leaveOnStop: true,
     plugins: [new SpotifyPlugin(), new SoundCloudPlugin()],
     updateYouTubeDL: false,
 });
-client.player.on('playSong', (queue, song) => {
-    const playingEmbed = new MessageEmbed()
-        .setTitle("Now Playing")
-        .setColor(COLOR_MAIN)
-        .setDescription(`${song.name}`)
-        
-        .setThumbnail(song.thumbnail)
-        .addField("Views", `${song.views}`, true)
-        .addField("Likes", `${song.likes}`, true)
-        .addField("Added by", `${song.user}`, true)
-        .addField("Volume", `\`${queue.volume}%\``, true)
-        .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
-        .addField("Autoplay", `\`${queue.autoplay}\``, true)
-        .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
-        .addField("Duration", `\`${(Math.floor(queue.currentTime / 1000 / 60 * 100) / 100).toString().replace(".", ":")}/${song.formattedDuration}\``, true)
-    queue.textChannel.send({ embeds: [playingEmbed], components: [playButtons] });
-});
-client.player.on("addSong", (queue, song) => {
-    const embed = new MessageEmbed()
-        .setColor(COLOR_MAIN)
-        .setTitle("Song added to the queue")
-        .setThumbnail(song.thumbnail)
-        .setDescription(`${song.name}`)
-        
-        .addField("Added by", `${song.user}`, true)
-        .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
-        .addField("Duration", `${song.formattedDuration}`, true)
-    queue.textChannel.send({ embeds: [embed] });
-});
-client.player.on('error', (channel, err) => {
-    console.log(err)
-    const musicErrorEmbed = new MessageEmbed()
-        .setTitle(":x: There was an error!")
-        
-        .setColor(COLOR_MAIN)
-    channel.send({ embeds: [musicErrorEmbed] });
-});
-client.player.on('finish', queue => {
-    const finishQueueEmbed = new MessageEmbed()
-        .setTitle(":x: There are no more songs in queue, leaving voice channel!")
-        
-        .setColor(COLOR_MAIN)
-    queue.textChannel.send({ embeds: [finishQueueEmbed] });
-});
-client.player.on('initQueue', queue => {
-    queue.autoplay = false,
-        queue.volume = 50
-});
-client.player.on('noRelated', queue => {
-    const noRelatedEmbed = new MessageEmbed()
-        .setTitle(":x: Could not find any related songs, queue ended!")
-        .setColor(COLOR_MAIN)
-        
-    queue.textChannel.send({ embeds: [noRelatedEmbed] });
-});
+module.exports = client;
+
+client.login(process.env.TOKEN);

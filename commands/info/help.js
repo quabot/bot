@@ -1,17 +1,54 @@
-const { error } = require('../../embeds/general');
-const { main } = require('../../embeds/info');
-const { help } = require('../../interactions/info');
+const { MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
 
 module.exports = {
     name: "help",
-    description: "List of all quabot commands.",
-    async execute(client, interaction) {
+    description: "Bot commands.",
+    async execute(client, interaction, color) {
         try {
-            interaction.reply({ embeds: [main], components: [help] }).catch(err => console.log(err));
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(`QuaBot Commands`)
+                        .setDescription(`Select an item from the dropdown below this message to view the commands in that category.`)
+                        .addField("Quick Links", "[Invite](https://invite.quabot.net) - [Discord](https://discord.quabot.net) - [Website](https://quabot.net)")
+                        .setThumbnail(client.user.avatarURL({ dynamic: true }))
+                        .setColor(color)
+                ],
+                components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageSelectMenu()
+                                .setCustomId('select')
+                                .setPlaceholder('Select a category')
+                                .addOptions([
+                                    {
+                                        label: '😂 Fun Commands',
+                                        description: 'Play a game, get a meme or ask a question, these are the fun commands.',
+                                        value: 'fun_commands',
+                                    },
+                                    {
+                                        label: '📄 Info Commands',
+                                        description: 'Bot status, ping, info about a user, these are the info commands.',
+                                        value: 'info_commands',
+                                    },
+                                    {
+                                        label: '👍 Misc Commands',
+                                        description: 'See the servericon or avatar, these are the misc commands.',
+                                        value: 'misc_commands',
+                                    },
+                                    {
+                                        label: '🔨 Moderation Commands',
+                                        description: 'Ban users, warn them and so much more, these are the moderation commands.',
+                                        value: 'moderation_commands',
+                                    },
+                                ]),
+                        )
+                ]
+            }).catch(err => console.log(err));
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: cat`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

@@ -1,35 +1,89 @@
 const { MessageEmbed } = require('discord.js');
 const { meme } = require('memejs');
 
-const { empty2, emptyReddit } = require('../../embeds/fun');
-const { error } = require('../../embeds/general');
-
 module.exports = {
     name: "reddit",
-    description: "Get a meme from a subreddit.",
+    description: "description",
     options: [
         {
-            name: 'subreddit',
-            description: "A subreddit to get a meme from.",
-            required: true,
-            type: 'STRING',
+            name: "cat",
+            description: "Get an image of a cat.",
+            type: "SUB_COMMAND",
         },
+        {
+            name: "dog",
+            description: "Get an image of a dog.",
+            type: "SUB_COMMAND",
+        },
+        {
+            name: "meme",
+            description: "Get a meme from reddit.",
+            type: "SUB_COMMAND",
+        },
+
     ],
-    async execute(client, interaction) {
+    async execute(client, interaction, color) {
+
         try {
-            const reddit = interaction.options.getString('subreddit');
-            empty2.setTitle(`🔍 Scanning r/${reddit} for memes!`)
-            interaction.reply({ ephemeral: true, embeds: [empty2] }).catch(err => console.log(err));
-            meme(`${reddit}`, function (err, data) {
-                error.setDescription("Could not find that subreddit.");
-                if (err) return interaction.editReply({ embeds: [error] }).catch(err => console.log(err));
-                emptyReddit.setTitle(`${data.title}`).setImage(`${data.url}`).setFooter(`r/${data.subreddit}`);
-                interaction.editReply({ embeds: [emptyReddit] }).catch(err => console.log(err));
-            });
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription("Getting your image ready...")
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
+
+            const Sub = interaction.options.getSubcommand();
+            switch (Sub) {
+                case 'cat':
+                    meme('cats', function (err, data) {
+                        if (!data) return;
+                        interaction.editReply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle(`${data.title}`)
+                                    .setImage(`${data.url}`)
+                                    .setFooter(`r/${data.subreddit}`)
+                                    .setColor(color)
+                            ]
+                        }).catch(err => console.log(err));
+                    });
+                    break;
+
+                case 'dog':
+                    meme('dogpictures', function (err, data) {
+                        if (!data) return;
+                        interaction.editReply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle(`${data.title}`)
+                                    .setImage(`${data.url}`)
+                                    .setFooter(`r/${data.subreddit}`)
+                                    .setColor(color)
+                            ]
+                        }).catch(err => console.log(err));
+                    });
+                    break;
+
+                case 'meme':
+                    meme('meme', function (err, data) {
+                        if (!data) return;
+                        interaction.editReply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle(`${data.title}`)
+                                    .setImage(`${data.url}`)
+                                    .setFooter(`r/${data.subreddit}`)
+                                    .setColor(color)
+                            ]
+                        }).catch(err => console.log(err));
+                    });
+                    break;
+            }
+
         } catch (e) {
-            interaction.channel.send({ ephemeral: true, embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: reddit`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

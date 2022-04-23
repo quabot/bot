@@ -1,44 +1,41 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
-const { error, added } = require('../../embeds/general');
-const { COLOR_MAIN } = require('../../files/colors.json');
-
 module.exports = {
     name: "serverinfo",
-    description: "Server information.",
-    async execute(client, interaction) {
+    description: "Server\'s info.",
+    async execute(client, interaction, color) {
 
         try {
-            const roles = interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
-            const members = interaction.guild.members.cache;
-            const channels = interaction.guild.channels.cache;
-            const emojis = interaction.guild.emojis.cache;
-            const stickers = interaction.guild.stickers.cache;
+
+            let boostTier = interaction.guild.premiumTier;
+            if (boostTier === "TIER_1") boostTier = "Tier 1";
+            if (boostTier === "TIER_2") boostTier = "Tier 2";
+            if (boostTier === "TIER_3") boostTier = "Tier 3";
+
+            let roles = `${interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString()).join(', ')}`;
 
             const embed = new MessageEmbed()
-                .setTitle(`${interaction.guild.name} server info`)
+                .setColor(color)
+                .setTitle(`${interaction.guild.name}`)
                 .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
-                .addField(`Channels:`, `${channels.size}`, true)
-                .addField(`Text Channels:`, `${channels.filter(channel => channel.type === "GUILD_TEXT").size}`, true)
-                .addField(`Voice channels:`, `${channels.filter(channel => channel.type === "GUILD_VOICE").size}`, true)
-                .addField(`Boosts:`, `${interaction.guild.premiumSubscriptionCount || '0'}`, true)
-                .addField(`Emojis & Stickers:`, `\`${emojis.size}\`/\`${stickers.size}\``, true)
-                .addField(`Owner:`, `<@${interaction.guild.ownerId}>`, true)
-                .addField(`Members:`, `${members.size}`, true)
-                .setColor(COLOR_MAIN)
-                .addField(`Locale:`, `${interaction.guild.preferredLocale}`, true)
-                .addField(`Verification Level:`, `${interaction.guild.verificationLevel}`, true)
-                .addField(`Time Created:`, `${moment(interaction.guild.createdTimestamp).format('LT')} ${moment(interaction.guild.createdTimestamp).format('LL')} [${moment(interaction.guild.createdTimestamp).fromNow()}]`, true);
-            if (interaction.guild.description) embed.addField(`Description`, `${interaction.guild.description}`);
-            if (roles.join(', ').length > 1024) embed.addField("Roles", `Please use \`/roles\` to get the full list of roles.`, true);
-            if (roles.join(', ').length < 1024) embed.addField(`Roles [${roles.length - 1}]`, roles.join(', '));
+                .addField("Members <:MembersIcon:959741227689988196>", `${interaction.guild.memberCount}`, true)
+                .addField("Text Channels <:ChannelIcon:959741807380557845>", `${interaction.guild.channels.cache.filter(channel => channel.type === "GUILD_TEXT").size}`, true)
+                .addField("Voice Channels <:VoiceIcon:959742741217148938>", `${interaction.guild.channels.cache.filter(channel => channel.type === "GUILD_VOICE").size}`, true)
+                .addField("Categories <:CategoryIcon:959745537232474123>", `${interaction.guild.channels.cache.filter(channel => channel.type === "GUILD_CATEGORY").size}`, true)
+                .addField("Boost Tier <:BoostIcon:959748299911479306>", `${boostTier}`, true)
+                .addField("Owner <:OwnerIcon:959757089025163295>", `<@${interaction.guild.ownerId}>`, true)
+                .addField("Emojis <:EmojiIcon:959757571927998544>", `${interaction.guild.emojis.cache.size}`, true)
+                .addField("Stickers <:StickerIcon:959758865652662314>", `${interaction.guild.stickers.cache.size}`, true)
+                .addField("Created <:CreatedIcon:959759880418369596>", `${moment(interaction.guild.createdTimestamp).format('dddd')} ${moment(interaction.guild.createdTimestamp).format('LL')} [${moment(interaction.guild.createdTimestamp).fromNow()}]`, true)
+                .addField("Description <:DescriptionIcon:959760258337738832>", `${interaction.guild.description}`, false)
 
-            interaction.reply({ embeds: [embed], split: true }).catch(err => console.log(err));
+            if (roles.length < 1023) embed.addField("Roles <:RolesIcon:959764812068450318>", `${roles}`, false)
+            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

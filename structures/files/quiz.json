@@ -1,0 +1,191 @@
+[
+    {
+        "question": "What was the Minecraft 1.13 update called?",
+        "quiz1": "Update Aquatic",
+        "quiz2": "The Aqua Update",
+        "quiz3": "The ocean update",
+        "correct": "Update Aquatic"
+    },
+    {
+        "question": "What other country, besides the US, uses the __US__ dollar as its official currency?",
+        "quiz1": "Ecuador",
+        "quiz2": "Mexico",
+        "quiz3": "Canada",
+        "correct": "Ecuador"
+    },
+    {
+        "question": "What measurement scale is used to determine wind speed?",
+        "quiz1": "Beaufort scale",
+        "quiz2": "Richter scale",
+        "quiz3": "Discord Canary",
+        "correct": "Synoptic scale"
+    },
+    {
+        "question": "What is the biggest country?",
+        "quiz1": "United States",
+        "quiz2": "China",
+        "quiz3": "Russia",
+        "correct": "Russia"
+    },
+    {
+        "question": "How many continents are there?",
+        "quiz1": "6",
+        "quiz2": "7",
+        "quiz3": "8",
+        "correct": "7"
+    },
+    {
+        "question": "What is the russian capital?",
+        "quiz1": "Moscow",
+        "quiz2": "St. Petersburg",
+        "quiz3": "Omsk",
+        "correct": "Moscow"
+    },
+    {
+        "question": "What is the US capital?",
+        "quiz1": "Los Angeles",
+        "quiz2": "Washington D.C.",
+        "quiz3": "Las Vegas",
+        "correct": "Washington D.C."
+    },
+    {
+        "question": "What is the japanese capital?",
+        "quiz1": "Kyoto",
+        "quiz2": "Tokyo",
+        "quiz3": "Sendai",
+        "correct": "Tokyo"
+    },
+    {
+        "question": "What is the south-african capital?",
+        "quiz1": "Johannesburg",
+        "quiz2": "Bloemfontein and Pretoria",
+        "quiz3": "Cape town, Bloemfontein and Pretoria",
+        "correct": "Cape town, Bloemfontein and Pretoria"
+    },
+    {
+        "question": "What year did discord create Discord Nitro?",
+        "quiz1": "2016",
+        "quiz2": "2017",
+        "quiz3": "2018",
+        "correct": "2016"
+    },
+    {
+        "question": "The Statue of Liberty was a gift to the United States from which European country?",
+        "quiz1": "Belgium",
+        "quiz2": "Germany",
+        "quiz3": "France",
+        "correct": "France"
+    },
+    {
+        "question": "What is the biggest discord bot?",
+        "quiz1": "MEE6",
+        "quiz2": "Dyno",
+        "quiz3": "Rythm",
+        "correct": "MEE6"
+    },
+    {
+        "question": "What is the most common discord bot language?",
+        "quiz1": "Discord.py",
+        "quiz2": "Java Discord API",
+        "quiz3": "Discord.js",
+        "correct": "Discord.js"
+    },
+    {
+        "question": "In which continent are Chile, Argentina and Brazil?",
+        "quiz1": "North America",
+        "quiz2": "South America",
+        "quiz3": "Europe",
+        "correct": "South America"
+    },
+    {
+        "question": "The human body is made up of approximately how much water?",
+        "quiz1": "50%",
+        "quiz2": "60%",
+        "quiz3": "70%",
+        "correct": "60%"
+    },
+    {
+        "question": "What is actually electricity?",
+        "quiz1": "A flow of protons",
+        "quiz2": "A flow of air",
+        "quiz3": "A flow of electrons",
+        "correct": "A flow of electrons"
+    },
+    {
+        "question": "Wich of the following is not a US agency?",
+        "quiz1": "FBI",
+        "quiz2": "National Science Foundation",
+        "quiz3": "DDA",
+        "correct": "DDA"
+    },
+    {
+        "question": "Which of the following disorders is the fear of being alone?",
+        "quiz1": "Agoraphobia",
+        "quiz2": "Aerophobia",
+        "quiz3": "Acrophobia",
+        "correct": "Agoraphobia"
+    },
+    {
+        "question": "What is the name for the Jewish New Year?",
+        "quiz1": "Hanukkah",
+        "quiz2": "Yom Kippur",
+        "quiz3": "Rosh Hashanah",
+        "correct": "Rosh Hashanah"
+    },
+    {
+        "question": "How many blue stripes are there on the U.S. flag?",
+        "quiz1": "6",
+        "quiz2": "9",
+        "quiz3": "13",
+        "correct": "13"
+    },
+    {
+        "question": "Which planet is the hottest?",
+        "quiz1": "Venus",
+        "quiz2": "Saturn",
+        "quiz3": "Mercury",
+        "correct": "correct"
+    },
+    {
+        "question": "Who was the only U.S. President to resign?",
+        "quiz1": "Richard Nixon",
+        "quiz2": "Herbert Hoover",
+        "quiz3": "George W. Bush",
+        "correct": "Richard Nixon"
+    },
+    {
+        "question": "What does the “D” in “D-Day” stand for?",
+        "quiz1": "Dooms",
+        "quiz2": "Dark",
+        "quiz3": "Day",
+        "correct": "Day"
+    },
+    {
+        "question": "In Pirates of the Caribbean, what was Captain Jack Sparrow’s ship’s name?",
+        "quiz1": "The black pearl",
+        "quiz2": "The blue earl",
+        "quiz3": "The Boat",
+        "correct": "The black pearl"
+    },
+    {
+        "question": "What is the rarest blood type?",
+        "quiz1": "AB Positive",
+        "quiz2": "AB Negative",
+        "quiz3": "A",
+        "correct": "AB Negative"
+    },
+    {
+        "question": "Which U.S. state is known as the sunflower state?",
+        "quiz1": "Kansas",
+        "quiz2": "Florida",
+        "quiz3": "The Boat",
+        "correct": "undefined"
+    },
+    {
+        "question": "How many bones are there in the human body?",
+        "quiz1": "193",
+        "quiz2": "206",
+        "quiz3": "234",
+        "correct": "206"
+    }
+]

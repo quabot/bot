@@ -1,28 +1,39 @@
-const { MessageEmbed } = require('discord.js');
-
-const { rpsButton } = require('../../interactions/fun');
-const { error } = require('../../embeds/general');
-const { rps } = require('../../embeds/fun');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     name: "rps",
-    description: "Play rock, paper, scissors.",
-    async execute(client, interaction) {
+    description: "Play a game of rock, paper, scissors.",
+    async execute(client, interaction, color) {
         try {
-            const message = await interaction.reply({ embeds: [rps], components: [rpsButton], fetchReply: true }).catch(err => console.log(err));
-            const options = ['rock', 'paper', 'scissors'];
-            const random = options[Math.floor(Math.random() * options.length)];
-            const rpsSchema = require('../../schemas/rpsSchema');
-            const newRps = new rpsSchema({
-                guildId: interaction.guild.id,
-                userId: interaction.user.id,
-                result: random,
-                messageId: message.id,});
-            newRps.save().catch(err => console.log(err));
+
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`Rock, paper, scissors?`)
+                        .setColor(color)
+                ],
+                components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId('rock')
+                                .setLabel('🪨 Rock')
+                                .setStyle('PRIMARY'),
+                            new MessageButton()
+                                .setCustomId('paper')
+                                .setLabel('📃 Paper')
+                                .setStyle('SECONDARY'),
+                            new MessageButton()
+                                .setCustomId('scissors')
+                                .setLabel('✂️ Scissors')
+                                .setStyle('SUCCESS')
+                        )
+                ]
+            }).catch(err => console.log(err));
+
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: rps`)] }).catch(err => console.log(err));;
-            return;
+            console.log(e);
+            client.guilds.cache.get("847828281860423690").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }
