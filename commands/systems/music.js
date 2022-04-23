@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
     name: "music",
@@ -39,26 +39,26 @@ module.exports = {
             // music enabled check
 
             const member = interaction.guild.members.cache.get(interaction.user.id);
-            if (!member.voice.channel) return interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setDescription(`Please join a voice channel to use the music commands.`)
-                        .setColor(color)
-                ]
-            });
+            // if (!member.voice.channel) return interaction.reply({
+            //     embeds: [
+            //         new MessageEmbed()
+            //             .setDescription(`Please join a voice channel to use the music commands.`)
+            //             .setColor(color)
+            //     ]
+            // });
 
-            if (member.voice.channelId !== interaction.guild.me.voice.channelId) {
-                if (interaction.guild.me.voice.channelId) {
-                    interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription(`We're not in the same voice channel! Join <#${interaction.guild.me.voice.channelId}> to use that command.`)
-                                .setColor(color)
-                        ]
-                    }).catch(err => console.log(err));
-                    return;
-                }
-            }
+            // if (member.voice.channelId !== interaction.guild.me.voice.channelId) {
+            //     if (interaction.guild.me.voice.channelId) {
+            //         interaction.reply({
+            //             embeds: [
+            //                 new MessageEmbed()
+            //                     .setDescription(`We're not in the same voice channel! Join <#${interaction.guild.me.voice.channelId}> to use that command.`)
+            //                     .setColor(color)
+            //             ]
+            //         }).catch(err => console.log(err));
+            //         return;
+            //     }
+            // }
 
             const subCmd = interaction.options.getSubcommand();
 
@@ -135,17 +135,15 @@ module.exports = {
                             break;
 
                         case 'queue':
-                            const queueQueue = client.distube.getQueue(interaction);
+                            const queue = client.distube.getQueue(interaction);
 
-                            if (!queueQueue) return interaction.reply({
+                            if (!queue) return interaction.reply({
                                 embeds: [
-                                    new MessageEmbed()
+                                  new MessageEmbed()
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
                             });
-
-                            
                             break;
 
                     }
