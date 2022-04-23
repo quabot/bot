@@ -5,7 +5,7 @@ const { COLOR_MAIN } = require('../../files/colors.json');
 
 const { noAmount } = require('../../embeds/management');
 
-module.exports = {
+/*module.exports = {
     name: "clear",
     description: "Clear a number of messages.",
     permission: "ADMINISTRATOR",
@@ -94,4 +94,4 @@ module.exports = {
             return;
         }
     }
-}
+}*/
