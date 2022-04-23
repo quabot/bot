@@ -255,6 +255,21 @@ module.exports = {
                                 ],
                                 components: [new MessageActionRow({ components: [repeatOff, repeatQueue, repeatOne] })]
                             });
+
+                            const collectorRepeat = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+
+                            collectorRepeat.on('collect', async interaction => {
+                                if (interaction.customId === repeatOffId) {
+                                    client.player.setRepeatMode(interaction, 0)
+                                    await interaction.update({
+                                        embeds: [
+                                            new MessageEmbed()
+                                                .setDescription("▶️ Turned repeat off!")
+                                                .setColor(color)
+                                        ]
+                                    });
+                                }
+                            });
                     }
 
                     break;
