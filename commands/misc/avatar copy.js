@@ -2,14 +2,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
     name: "tes",
-    description: 'Get a user\'s avatar.',
-    options: [
-        {
-            name: "user",
-            description: "Avatar to get.",
-            type: "USER",
-        }
-    ],
+    description: 'tsst command',
     async execute(client, interaction, color) {
         try {
 
