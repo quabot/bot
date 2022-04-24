@@ -31,7 +31,7 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            oldEmoji.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -45,7 +45,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor("YELLOW")
-                        .setTitle("Emoji Update!")
+                        .setTitle("Emoji Updated!")
                         .addField('Old Name', `${oldEmoji.name}`, true)
                         .addField('New Name', `${newEmoji.name}`, true)
                         .setFooter(`ID: ${newEmoji.id}`, `${newEmoji.url}`)

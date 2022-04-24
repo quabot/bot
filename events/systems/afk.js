@@ -1,0 +1,76 @@
+const { MessageEmbed, Message } = require('discord.js');
+
+module.exports = {
+    name: "messageCreate",
+    async execute(message, client, color) {
+        try {
+
+            const Guild = require('../../structures/schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: message.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: message.guild.id,
+                        guildName: message.guild.name,
+                        logChannelID: "none",
+                        suggestChannelID: "none",
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        logEnabled: true,
+                        levelEnabled: false,
+                        suggestEnabled: true,
+                        welcomeEnabled: true,
+                        roleEnabled: false,
+                        mainRole: "Member",
+                        joinMessage: "Welcome {user} to **{guild}**!",
+                        leaveMessage: "Goodbye {user}!",
+                        swearEnabled: false,
+                    });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            const User = require('../../structures/schemas/UserSchema');
+            const userDatabase = await User.findOne({
+                userId: message.author.id,
+                guildId: message.guild.id,
+            }, (err, user) => {
+                if (err) console.error(err);
+                if (!user) {
+                    const newUser = new User({
+                        userId: message.author.id,
+                        guildId: message.guild.id,
+                        guildName: message.guild.name,
+                        banCount: 0,
+                        kickCount: 0,
+                        timeoutCount: 0,
+                        warnCount: 0,
+                        updateNotify: true,
+                        afk: false,
+                        afkMessage: "none",
+                    });
+                    newUser.save()
+                        .catch(err => {
+                            console.log(err);
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            if (!userDatabase) return;
+
+            if (userDatabase.afk) {
+                // user is afk, make them no more afk and nickname reset (if its got the afk prefix)
+            }
+        } catch (e) {
+            console.log(e);
+            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Event: " + this.name)] });
+        }
+    }
+}
