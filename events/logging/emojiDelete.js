@@ -1,7 +1,7 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "emojiCreate",
+    name: "emojiDelete",
     async execute(emoji, client, color) {
         try {
 
@@ -44,8 +44,8 @@ module.exports = {
             channel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setColor("GREEN")
-                        .setTitle("Emoji Created!")
+                        .setColor("RED")
+                        .setTitle("Emoji Deleted!")
                         .addField('Emoji Name', `${emoji.name}`)
                         .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
                 ]

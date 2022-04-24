@@ -1,19 +1,19 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "emojiCreate",
-    async execute(emoji, client, color) {
+    name: "emojiUpdate",
+    async execute(oldEmoji, newEmoji, client, color) {
         try {
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: emoji.guild.id,
+                guildId: oldEmoji.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: emoji.guild.id,
-                        guildName: emoji.guild.name,
+                        guildId: oldEmoji.guild.id,
+                        guildName: oldEmoji.guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
@@ -38,16 +38,17 @@ module.exports = {
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
-            const channel = emoji.guild.channels.cache.get(guildDatabase.logChannelID);
+            const channel = oldEmoji.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
 
             channel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setColor("GREEN")
-                        .setTitle("Emoji Created!")
-                        .addField('Emoji Name', `${emoji.name}`)
-                        .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
+                        .setColor("YELLOW")
+                        .setTitle("Emoji Update!")
+                        .addField('Old Name', `${oldEmoji.name}`, true)
+                        .addField('New Name', `${newEmoji.name}`, true)
+                        .setFooter(`ID: ${newEmoji.id}`, `${newEmoji.url}`)
                 ]
             });
 
