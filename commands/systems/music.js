@@ -26,6 +26,7 @@ module.exports = {
                     { name: "stop", value: "stop" },
                     { name: "repeat", value: "repeat" },
                     { name: "volume", value: "volume" },
+                    { name: "pause", value: "pause" },
                     { name: "shuffle", value: "shuffle" },
                     { name: "resume", value: "resume" },
                     { name: "nowplaying", value: "nowplaying" },
@@ -223,7 +224,7 @@ module.exports = {
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
-                            });
+                            }).catch(err => console.log(err));
 
                             const repeatOffId = 'repeatOff'
                             const repeatQueueId = 'repeatQueue'
@@ -247,29 +248,228 @@ module.exports = {
                                 customId: repeatOneId
                             });
 
-                            interaction.reply({
+                            const repeatMessage = await interaction.reply({
                                 embeds: [
                                     new MessageEmbed()
                                         .setDescription("Select a repeat mode with the buttons below this message!")
                                         .setColor(color)
-                                ],
+                                ], fetchReply: true,
                                 components: [new MessageActionRow({ components: [repeatOff, repeatQueue, repeatOne] })]
-                            });
+                            }).catch(err => console.log(err));
 
-                            const collectorRepeat = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+                            const collectorRepeat = repeatMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
                             collectorRepeat.on('collect', async interaction => {
                                 if (interaction.customId === repeatOffId) {
-                                    client.player.setRepeatMode(interaction, 0)
+                                    client.distube.setRepeatMode(interaction, 0)
                                     await interaction.update({
                                         embeds: [
                                             new MessageEmbed()
                                                 .setDescription("▶️ Turned repeat off!")
                                                 .setColor(color)
-                                        ]
-                                    });
+                                        ], components: []
+                                    }).catch(err => console.log(err));
+                                } else if (interaction.customId === repeatOneId) {
+                                    client.distube.setRepeatMode(interaction, 1)
+                                    await interaction.update({
+                                        embeds: [
+                                            new MessageEmbed()
+                                                .setDescription("🔂 Repeating song!")
+                                                .setColor(color)
+                                        ], components: []
+                                    }).catch(err => console.log(err));
+                                } else if (interaction.customId === repeatQueueId) {
+                                    client.distube.setRepeatMode(interaction, 2)
+                                    await interaction.update({
+                                        embeds: [
+                                            new MessageEmbed()
+                                                .setDescription("🔁 Repeating queue!")
+                                                .setColor(color)
+                                        ], components: []
+                                    }).catch(err => console.log(err));
                                 }
                             });
+
+                        case 'volume':
+                            const queueVolume = client.distube.getQueue(interaction);
+                            if (!queueVolume) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+
+                            const volumePlus = 'volumeAdd'
+                            const volumeBasic = 'volumeReset'
+                            const volumeDown = 'volumeRemove'
+                            const volumeMinBtn = new MessageButton({
+                                style: 'SECONDARY',
+                                label: '-10%',
+                                emoji: '🔉',
+                                customId: volumeDown
+                            });
+                            const volumeResetBtn = new MessageButton({
+                                style: 'SECONDARY',
+                                label: 'Default',
+                                emoji: '🔈',
+                                customId: volumeBasic
+                            });
+                            const volumeAddBtn = new MessageButton({
+                                style: 'SECONDARY',
+                                label: '+10%',
+                                emoji: '🔊',
+                                customId: volumePlus
+                            });
+
+                            const volumeMessage = await interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("Change the volume with the buttons below this message!")
+                                        .setColor(color)
+                                ], fetchReply: true,
+                                components: [new MessageActionRow({ components: [volumeMinBtn, volumeResetBtn, volumeAddBtn] })]
+                            }).catch(err => console.log(err));
+
+                            const collectorVolume = volumeMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+
+                            collectorVolume.on('collect', async interaction => {
+
+                                if (interaction.customId === volumeDown) {
+                                    let newVol = queueVolume.volume - 10;
+                                    if (newVol < 0) newVol = 0;
+
+                                    client.distube.setVolume(interaction, newVol)
+
+                                    await interaction.update({
+                                        embeds: [
+                                            new MessageEmbed()
+                                                .setDescription(`🔉 Volume set to \`${newVol}%\``)
+                                                .setColor(color)
+                                        ]
+                                    }).catch(err => console.log(err));
+
+
+                                } else if (interaction.customId === volumeBasic) {
+
+                                    client.distube.setVolume(interaction, 50)
+
+                                    await interaction.update({
+                                        embeds: [
+                                            new MessageEmbed()
+                                                .setDescription(`🔈 Volume set to \`50%\``)
+                                                .setColor(color)
+                                        ]
+                                    }).catch(err => console.log(err));
+
+                                } else if (interaction.customId === volumePlus) {
+                                    let newVolAdd = queueVolume.volume + 10;
+                                    if (newVolAdd > 100) newVolAdd = 100;
+
+                                    client.distube.setVolume(interaction, newVolAdd)
+
+                                    await interaction.update({
+                                        embeds: [
+                                            new MessageEmbed()
+                                                .setDescription(`🔊 Volume set to \`${newVolAdd}%\``)
+                                                .setColor(color)
+                                        ]
+                                    }).catch(err => console.log(err));
+                                }
+                            });
+                            break;
+
+                        case 'shuffle':
+                            const queueShuffle = client.distube.getQueue(interaction);
+                            if (!queueShuffle) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+                            client.distube.shuffle(interaction);
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🔀 Shuffled the queue!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+
+                            break;
+
+                        case 'resume':
+                            const queueResume = client.distube.getQueue(interaction);
+                            if (!queueResume) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+
+
+                            client.distube.resume(interaction);
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("▶️ Resumed!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+                            break;
+
+                        case 'pause':
+                            const queuePause = client.distube.getQueue(interaction);
+                            if (!queuePause) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+
+
+                            client.distube.pause(interaction);
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("⏸️ Paused!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+                            break;
+
+                        case 'nowplaying':
+                            const queueNP = client.distube.getQueue(interaction);
+                            if (!queueNP) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            }).catch(err => console.log(err));
+
+                            let song = queueNP.songs[0];
+
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setTitle("Now Playing")
+                                        .setColor(color)
+                                        .setDescription(`${song.name}`)
+                                        .setThumbnail(song.thumbnail)
+                                        .addField("Added by", `${song.user}`, true)
+                                        .addField("Volume", `\`${queueNP.volume}%\``, true)
+                                        .addField("Queue", `${queueNP.songs.length} song(s)`, true)
+                                        .addField("Likes", `${song.likes}`, true)
+                                        .addField("Views", `${song.views}`, true)
+                                        .addField("Duration", `\`${song.formattedDuration}\``, true)
+                                ]
+                            }).catch(err => console.log(err));
+
+                            break;
                     }
 
                     break;

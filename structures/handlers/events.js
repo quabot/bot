@@ -1,3 +1,5 @@
+const { color } = require('../../structures/settings.json');
+
 module.exports = async (client, PG, Ascii, consola) => {
     const Table = new Ascii("Events");
 
@@ -5,9 +7,9 @@ module.exports = async (client, PG, Ascii, consola) => {
         const event = require(file);
 
         if(event.once) {
-            client.once(event.name, (...args) => event.execute(...args, client));
+            client.once(event.name, (...args) => event.execute(...args, client, color));
         } else {
-            client.on(event.name, (...args) => event.execute(...args, client));
+            client.on(event.name, (...args) => event.execute(...args, client, color));
         };
 
         await Table.addRow(event.name, "✅ SUCCESFULL");
