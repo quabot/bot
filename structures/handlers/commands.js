@@ -44,7 +44,7 @@ module.exports = async (client, PG, Ascii, consola) => {
 
                 await guild.commands.permissions.set({ fullPermissions })
             }).catch(err => {
-                console.error(err); //console.log(`⛔ Detected an issue with ${guild.name}!`);
+                console.log(`${err}`); // revert this agin
             });
         });
     });
