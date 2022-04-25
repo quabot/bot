@@ -24,6 +24,7 @@
     "@distube/spotify": "^1.2.0",
     "@distube/ytdl-core": "^4.11.3",
     "ascii-table": "^0.0.9",
+    "axios": "^0.27.0",
     "canvacord": "^5.2.3",
     "canvas": "^2.9.0",
     "consola": "^2.15.3",
@@ -45,6 +46,7 @@
     "opusscript": "^0.0.8",
     "os": "^0.1.2",
     "pg": "^8.7.1",
+    "snekfetch": "^4.0.4",
     "yt-search": "^2.10.3",
     "ytdl-core": "^4.11.0"
   }

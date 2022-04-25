@@ -44,7 +44,6 @@ module.exports = {
                         { name: "unqiue", value: "unqiue" },
                         { name: "verify", value: "verify" },
                         { name: "drop", value: "drop" },
-                        { name: "limit", value: "limit" },
                         { name: "binding", value: "binding" }
                     ]
                 }
