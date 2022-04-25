@@ -11,7 +11,6 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle(`${client.user.username} Info`)
-                        .setDescription("**THIS IS A BETA BOT ON A BETA RELEASE**")
                         .setThumbnail(client.user.avatarURL({ dynamic: true }))
                         .addField("Memory Usage", `\`${Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)}MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``, true)
                         .addField("Uptime", `<t:${parseInt(client.readyTimestamp / 1000)}:R>`, true)
