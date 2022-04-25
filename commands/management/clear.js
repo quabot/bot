@@ -22,18 +22,23 @@ module.exports = {
         try {
             let amount = interaction.options.getInteger('amount');
             let public = interaction.options.getBoolean('public');
-            
-            const size = await interaction.channel.bulkDelete(amount, true);
-            if (!public) { return interaction.reply({ content:`Deleted ${amount} messages.`, ephemeral: true}); }
-            else if (public) {
-                interaction.channel.send({
-                    embeds: [
-                        new MessageEmbed()
-                        .setTitle('Messages purged')
-                        .setDescription(`${amount} message(s) were purged from this channel by ${interaction.user}`)
-                        .setColor(color)
-                    ]
-                }); return interaction.reply({ content:`Deleted ${amount} messages.`, ephemeral: true});
+
+            if (amount > 0) {
+                const size = await interaction.channel.bulkDelete(amount, true);
+                if (public) {
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                            .setTitle('Messages purged')
+                            .setDescription(`${amount} message(s) were purged from this channel by ${interaction.user}`)
+                            .setColor(color)
+                        ]
+                    });
+                } else {
+                    return interaction.reply({ content:`Deleted ${amount} messages.`, ephemeral: true});
+                }
+            } else {
+                return interaction.reply({ content:`You can't delete less than 1 message, idiot.`, ephemeral: true});
             }
         }
         catch (e) {
