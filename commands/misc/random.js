@@ -17,7 +17,7 @@ module.exports = {
             required: true,
         },
         {
-            name: "public",
+            name: "private",
             description: "Should QuaBot announce the result?",
             type: "BOOLEAN",
             required: false,
@@ -27,7 +27,7 @@ module.exports = {
         try {
             let min = interaction.options.getInteger('min');
             let max = interaction.options.getInteger('max');
-            let public = interaction.options.getBoolean('public');
+            let public = !interaction.options.getBoolean('private');
 
             let rmin = Math.ceil(min);
             let rmax = Math.floor(max);

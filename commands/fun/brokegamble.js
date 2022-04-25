@@ -5,7 +5,7 @@ module.exports = {
     description: 'Gamble, but without money.',
     options: [
         {
-            name: "public",
+            name: "private",
             description: "Should QuaBot announce the result?",
             type: "BOOLEAN",
             required: false,
@@ -13,7 +13,7 @@ module.exports = {
     ],
     async execute(client, interaction, color) {
         try {
-            let public = interaction.options.getBoolean('public');
+            let public = !interaction.options.getBoolean('private');
 
             let qbr = Math.floor(Math.random() * 10);
             let ur = Math.floor(Math.random() * 10);

@@ -12,16 +12,16 @@ module.exports = {
             required: true,
         },
         {
-            name: "public",
+            name: "private",
             description: "Should QuaBot announce that messages have been cleared?",
             type: "BOOLEAN",
-            required: true,
+            required: false,
         }
     ],
     async execute(client, interaction, color) {
         try {
             let amount = interaction.options.getInteger('amount');
-            let public = interaction.options.getBoolean('public');
+            let public = !interaction.options.getBoolean('private');
 
             if (amount > 0) {
                 const size = await interaction.channel.bulkDelete(amount, true);
