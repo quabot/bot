@@ -85,7 +85,30 @@ module.exports = {
     ],
     async execute(client, interaction, color) {
         try {
-            interaction.reply({ content: "Couldnt finish this in time", ephemeral: true })
+            const subCmd = interaction.options.getSubcommand();
+
+            switch (subCmd) {
+                case 'create':
+                    const channel = interaction.options.getChannel('channel');
+                    const message = interaction.options.getString('message');
+                    const role = interaction.options.getString('role');
+                    const emoji = interaction.options.getString('emoji');
+                    const mode = interaction.options.getString('mode');
+
+
+                    //channel type check
+                    // check if message exists if it doesnt ask to create
+                    // check if role permissions
+                    // check if emoji exists
+                    // if no mode set to normal
+                    break;
+
+                case 'list':
+                    break;
+
+                case 'remove':
+                    break;
+            }
         }
         catch (e) {
             console.log(e);

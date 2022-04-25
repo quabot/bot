@@ -7,7 +7,7 @@ module.exports = async (client, PG, Ascii, consola) => {
         if (!menuFile.value) return;
 
         client.menus.set(menuFile.value, menuFile);
-        Table.addRow(menuFile.value, "✅ SUCCESFULL");
+        Table.addRow(menuFile.value, "✅ SUCCES");
     });
     consola.log(Table.toString());
 }

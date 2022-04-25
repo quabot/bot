@@ -7,7 +7,7 @@ module.exports = async (client, PG, Ascii, consola) => {
         if (!buttonFile.id) return;
 
         client.buttons.set(buttonFile.id, buttonFile);
-        Table.addRow(buttonFile.id, "✅ SUCCESFULL");
+        Table.addRow(buttonFile.id, "✅ SUCCES");
     });
     consola.log(Table.toString());
 }

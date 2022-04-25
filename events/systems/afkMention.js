@@ -5,6 +5,8 @@ module.exports = {
     async execute(message, client, color) {
         try {
 
+            if (!message.guild) return;
+            
             let member = message.mentions.users.first();
 
             if (!member) return
