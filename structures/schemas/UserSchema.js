@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
     timeoutCount: reqNumber,
     warnCount: reqNumber,
     updateNotify: reqBool,
+    notifOpened: reqBool,
     afk: reqBool,
     afkMessage: reqString,
 });

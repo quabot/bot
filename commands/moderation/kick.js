@@ -75,7 +75,8 @@ module.exports = {
                         kickCount: 1,
                         timeoutCount: 0,
                         warnCount: 0,
-                        updateNotify: true,
+                        updateNotify: false,
+                        notifOpened: false,
                         afk: false,
                         afkMessage: "none",
                     });
