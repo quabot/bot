@@ -14,5 +14,5 @@ module.exports = async (client, PG, Ascii, consola) => {
 
         await Table.addRow(event.name, "✅ SUCCES");
     });
-    consola.log(Table.toString());
+    console.log(Table.toString());
 }
