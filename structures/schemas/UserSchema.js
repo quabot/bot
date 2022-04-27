@@ -22,6 +22,7 @@ const UserSchema = new mongoose.Schema({
     warnCount: reqNumber,
     updateNotify: reqBool,
     notifOpened: reqBool,
+    lastNotify: reqString,
     afk: reqBool,
     afkMessage: reqString,
 });

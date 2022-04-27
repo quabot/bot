@@ -55,6 +55,7 @@ module.exports = {
                         warnCount: 0,
                         updateNotify: false,
                         notifOpened: false,
+                        lastNotify: "none",
                         afk: false,
                         afkMessage: "none",
                     });

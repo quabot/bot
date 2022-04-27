@@ -62,6 +62,7 @@ module.exports = {
                         warnCount: 1,
                         updateNotify: false,
                         notifOpened: false,
+                        lastNotify: "none",
                         afk: false,
                         afkMessage: "none",
                     });

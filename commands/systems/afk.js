@@ -39,7 +39,7 @@ module.exports = {
                 if (err) console.error(err);
                 if (!user) {
                     const newUser = new User({
-                        userId: member.id,
+                        userId: interaction.user.id,
                         guildId: interaction.guild.id,
                         guildName: interaction.guild.name,
                         banCount: 0,
@@ -48,6 +48,7 @@ module.exports = {
                         warnCount: 0,
                         updateNotify: false,
                         notifOpened: false,
+                        lastNotify: "none",
                         afk: false,
                         afkMessage: "none",
                     });

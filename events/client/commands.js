@@ -4,7 +4,7 @@ const { color } = require('../../structures/settings.json');
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
-        const { MessageEmbed } = require('discord.js');
+        const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
         if (!interaction.isCommand()) {
             if (interaction.isSelectMenu()) {
                 consola.info(`${interaction.values[0]} was selected`);
@@ -26,6 +26,23 @@ module.exports = {
             command.execute(client, interaction, color);
             consola.info(`/${command.name} was used`);
             client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(err => console.log(err));
+
+            // get db
+            // get last notif (is its there)
+            // check if notifs are on
+            // check if notif should be sent
+            // send notif and store new data
+
+            interaction.channel.send({
+                content: "New update, check it out here: https://quabot.net/updates/latest",
+                components: [new MessageActionRow({
+                    components: [new MessageButton({
+                        style: 'PRIMARY',
+                        label: 'Mark as read',
+                        customId: "notifRead"
+                    })]
+                })]
+            }).catch(err => console.log(err));
         }
     }
 }
