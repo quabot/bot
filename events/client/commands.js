@@ -27,22 +27,67 @@ module.exports = {
             consola.info(`/${command.name} was used`);
             client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(err => console.log(err));
 
-            // get db
-            // get last notif (is its there)
-            // check if notifs are on
-            // check if notif should be sent
-            // send notif and store new data
+            const User = require('../../structures/schemas/UserSchema');
+            const userDatabase = await User.findOne({
+                userId: interaction.user.id,
+                guildId: interaction.guild.id,
+            }, (err, user) => {
+                if (err) console.error(err);
+                if (!user) {
+                    const newUser = new User({
+                        userId: interaction.user.id,
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        banCount: 0,
+                        kickCount: 0,
+                        timeoutCount: 0,
+                        warnCount: 0,
+                        updateNotify: true,
+                        lastNotify: "none",
+                        afk: false,
+                        afkMessage: "none",
+                    });
+                    newUser.save()
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
 
-            // interaction.channel.send({
-            //     content: "New update, check it out here: https://quabot.net/updates/latest",
-            //     components: [new MessageActionRow({
-            //         components: [new MessageButton({
-            //             style: 'PRIMARY',
-            //             label: 'Mark as read',
-            //             customId: "notifRead"
-            //         })]
-            //     })]
-            // }).catch(err => console.log(err));
+            if (!userDatabase) return;
+
+            let lastNotif = userDatabase.lastNotify;
+
+            if (userDatabase.updateNotify === false) return;
+
+            if (lastNotif !== "none" || lastNotif !== undefined) {
+                lastNotif = parseInt(lastNotif);
+                lastNotif = lastNotif;
+
+                let newNotif = 1651090867546; // SET THIS TO THE TIME THE NEW ANNOUNCEMENT CAME OUT (get it with new Date().getTime())
+
+                if (lastNotif > newNotif) return;
+            }
+
+            await userDatabase.updateOne({
+                lastNotify: new Date().getTime()
+            });
+
+            interaction.channel.send({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`> ${interaction.user}, new alert: QuaBot v3.0.0 has released! [Changes](https://quabot.net/)`)
+                        .setColor(color)
+                ],
+                components: [new MessageActionRow({
+                    components: [new MessageButton({
+                        style: 'PRIMARY',
+                        label: 'Mark as read',
+                        customId: "notifRead"
+                    })]
+                })]
+            }).catch(err => console.log(err));
         }
     }
 }

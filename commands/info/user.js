@@ -38,8 +38,7 @@ module.exports = {
                         kickCount: 0,
                         timeoutCount: 0,
                         warnCount: 0,
-                        updateNotify: false,
-                        notifOpened: false,
+                        updateNotify: true,
                         lastNotify: "none",
                         afk: false,
                         afkMessage: "none",
@@ -105,7 +104,6 @@ module.exports = {
 
                                 await userDatabase.updateOne({
                                     updateNotify: false,
-                        notifOpened: false,
                         lastNotify: "none",
                                 });
 
