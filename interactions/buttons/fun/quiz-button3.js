@@ -1,10 +1,10 @@
 module.exports = {
-    id: "quiz2",
-    execute(interaction, color) {
+    id: "quiz3",
+    execute(interaction, client, color) {
         const quizQuestion = interaction.message.embeds[0].description;
 
         const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-        const quiz = require('../../structures/files/quiz.json');
+        const quiz = require('../../../structures/files/quiz.json');
 
         function getQuizAnswers(desc) {
             return quiz.filter(function (quiz) { return quiz.question == desc; });
@@ -12,7 +12,7 @@ module.exports = {
 
         const quizItem = getQuizAnswers(quizQuestion)[0];
 
-        if (quizItem.quiz2 === quizItem.correct) {
+        if (quizItem.quiz3 === quizItem.correct) {
             interaction.update({
                 embeds: [
                     new MessageEmbed()
@@ -47,7 +47,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")
-                        .setDescription(`Wrong! The answer was **${quizItem.correct}**! \n**${interaction.user}** entered **${quizItem.quiz2}**!`)
+                        .setDescription(`Wrong! The answer was **${quizItem.correct}**! \n**${interaction.user}** entered **${quizItem.quiz3}**!`)
                         .addField("Question", `${quizQuestion}`)
                 ],
                 components: [

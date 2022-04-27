@@ -11,7 +11,8 @@ const consola = require('consola');
 client.commands = new Collection();
 client.buttons = new Collection();
 client.menus = new Collection();
-['commands', 'buttons', 'events', 'menus'].forEach(handler => {
+client.modals = new Collection();
+['commands', 'buttons', 'events', 'menus', 'modals'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client, PG, Ascii, consola);
 });
 

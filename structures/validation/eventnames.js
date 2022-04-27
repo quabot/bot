@@ -34,6 +34,7 @@ module.exports = {
         'messageCreate',
         'messageDelete',
         'messageDeleteBulk',
+        'modalSubmit',
         'messageReactionAdd',
         'messageReactionRemove',
         'messageReactionRemoveAll',

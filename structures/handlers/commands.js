@@ -23,7 +23,7 @@ module.exports = async (client, PG, Ascii, consola) => {
 
     client.on('ready', async () => {
         client.guilds.cache.forEach((guild) => {
-            guild.commands.set([]).then(async (command) => {
+            guild.commands.set(CommandsArray).then(async (command) => {
                 const Roles = (commandName) => {
                     const cmdPerms = CommandsArray.find((c) => c.name === commandName).permission;
                     if (!cmdPerms) return null;

@@ -1,6 +1,6 @@
 module.exports = async (client, PG, Ascii, consola) => {
     const Table = new Ascii("Menus");
-    const menusFolder = await PG(`${process.cwd()}/menus/**/*.js`);
+    const menusFolder = await PG(`${process.cwd()}/interactions/menus/**/*.js`);
 
     menusFolder.map(async (file) => {
         const menuFile = require(file);

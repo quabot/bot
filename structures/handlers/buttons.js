@@ -1,6 +1,6 @@
 module.exports = async (client, PG, Ascii, consola) => {
     const Table = new Ascii("Buttons");
-    const buttonsFolder = await PG(`${process.cwd()}/buttons/**/*.js`);
+    const buttonsFolder = await PG(`${process.cwd()}/interactions/buttons/**/*.js`);
 
     buttonsFolder.map(async (file) => {
         const buttonFile = require(file);

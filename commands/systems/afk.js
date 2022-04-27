@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { Modal, TextInputComponent, showModal } = require('discord-modals');
 
 module.exports = {
     name: "afk",
@@ -18,12 +19,6 @@ module.exports = {
             name: "set",
             description: "Set your afk status.",
             type: "SUB_COMMAND",
-            options: [{
-                name: "status",
-                description: "Set your new status.",
-                type: "STRING",
-                required: true,
-            }],
         }
     ],
     async execute(client, interaction, color) {
@@ -71,109 +66,106 @@ module.exports = {
             switch (subCmd) {
                 case 'settings':
 
-                        const afkTrueId = 'afkEn'
-                        const afkFalseId = 'afkDis'
-                        const afkResetId = 'afkReset'
-                        const enableAfk = new MessageButton({
-                            style: 'SUCCESS',
-                            label: 'Enable AFK',
-                            customId: afkTrueId
-                        });
-                        const disableAfk = new MessageButton({
-                            style: 'DANGER',
-                            label: 'Disable AFK',
-                            customId: afkFalseId
-                        });
-                        const resetAfk = new MessageButton({
-                            style: 'SECONDARY',
-                            label: 'Reset AFK',
-                            customId: afkResetId
-                        });
+                    const afkTrueId = 'afkEn'
+                    const afkFalseId = 'afkDis'
+                    const afkResetId = 'afkReset'
+                    const enableAfk = new MessageButton({
+                        style: 'SUCCESS',
+                        label: 'Enable AFK',
+                        customId: afkTrueId
+                    });
+                    const disableAfk = new MessageButton({
+                        style: 'DANGER',
+                        label: 'Disable AFK',
+                        customId: afkFalseId
+                    });
+                    const resetAfk = new MessageButton({
+                        style: 'SECONDARY',
+                        label: 'Reset AFK',
+                        customId: afkResetId
+                    });
 
-                        const afkMsg = await interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setDescription(`Pick your afk options below this message.`)
-                                    .setColor(color)
-                            ], ephemeral: true, fetchReply: true,
-                            components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                        }).catch(err => console.log(err));
+                    const afkMsg = await interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`Pick your afk options below this message.`)
+                                .setColor(color)
+                        ], ephemeral: true, fetchReply: true,
+                        components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
+                    }).catch(err => console.log(err));
 
-                        const collectorRepeat = afkMsg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+                    const collectorRepeat = afkMsg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
-                        collectorRepeat.on('collect', async interaction => {
-                            if (interaction.customId === afkFalseId) {
-                                await userDatabase.updateOne({
-                                    afk: false
-                                });
+                    collectorRepeat.on('collect', async interaction => {
+                        if (interaction.customId === afkFalseId) {
+                            await userDatabase.updateOne({
+                                afk: false
+                            });
 
-                                interaction.update({
-                                    embeds: [
-                                        new MessageEmbed()
-                                            .setDescription(`You are no longer afk.`)
-                                            .setColor(color)
-                                    ],
-                                    components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                                }).catch(err => console.log(err));
+                            interaction.update({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription(`You are no longer afk.`)
+                                        .setColor(color)
+                                ],
+                                components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
+                            }).catch(err => console.log(err));
 
-                            } else if (interaction.customId === afkResetId) {
-                                await userDatabase.updateOne({
-                                    afk: false,
-                                    afkMessage: "none",
-                                });
+                        } else if (interaction.customId === afkResetId) {
+                            await userDatabase.updateOne({
+                                afk: false,
+                                afkMessage: "none",
+                            });
 
-                                interaction.update({
-                                    embeds: [
-                                        new MessageEmbed()
-                                            .setDescription(`Reset your afk status & message.`)
-                                            .setColor(color)
-                                    ],
-                                    components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                                }).catch(err => console.log(err));
+                            interaction.update({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription(`Reset your afk status & message.`)
+                                        .setColor(color)
+                                ],
+                                components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
+                            }).catch(err => console.log(err));
 
-                            } else if (interaction.customId === afkTrueId) {
-                                await userDatabase.updateOne({
-                                    afk: true
-                                });
+                        } else if (interaction.customId === afkTrueId) {
+                            await userDatabase.updateOne({
+                                afk: true
+                            });
 
-                                interaction.update({
-                                    embeds: [
-                                        new MessageEmbed()
-                                            .setDescription(`You are now afk.`)
-                                            .setColor(color)
-                                    ],
-                                    components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                                }).catch(err => console.log(err));
-                            }
-                        });
+                            interaction.update({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription(`You are now afk.`)
+                                        .setColor(color)
+                                ],
+                                components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
+                            }).catch(err => console.log(err));
+                        }
+                    });
                     break;
 
                 case 'set':
 
-                    const status = interaction.options.getString("status");
+                    const setAfk = new Modal()
+                        .setCustomId('afk-set')
+                        .setTitle('Set your AFK message')
+                        .addComponents(
+                            new TextInputComponent()
+                                .setCustomId('afk-status')
+                                .setLabel('Enter your new status')
+                                .setStyle('SHORT')
+                                .setMinLength(1)
+                                .setMaxLength(150)
+                                .setPlaceholder('I\'m sleeping...')
+                                .setRequired(true)
+                        );
 
-                    if (status.length > 500) return interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription(`Your status message can only be 500 characters in length!`)
-                                .setColor(color)
-                        ], ephemeral: true
+                    showModal(setAfk, {
+                        client: client,
+                        interaction: interaction
                     });
-
-                    await userDatabase.updateOne({
-                        afkMessage: `${status}`
-                    });
-
-                    interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription(`Changed your afk message to: **${status}**`)
-                                .setColor(color)
-                        ], ephemeral: true
-                    }).catch(err => console.log(err));
 
                     break;
-            
+
                 case 'status':
                     let trueFalse = `${userDatabase.afk}`;
                     interaction.reply({
@@ -184,7 +176,7 @@ module.exports = {
                         ], ephemeral: true,
                     }).catch(err => console.log(err));
                     break;
-                }
+            }
 
         } catch (e) {
             console.log(e);
