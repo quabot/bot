@@ -8,13 +8,15 @@ const Ascii = require('ascii-table');
 const PG = promisify(glob);
 const consola = require('consola');
 
-const discord = require('discord.js');
 client.commands = new Collection();
 client.buttons = new Collection();
 client.menus = new Collection();
 ['commands', 'buttons', 'events', 'menus'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client, PG, Ascii, consola);
 });
+
+const discordModals = require('discord-modals');
+discordModals(client);
 
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");

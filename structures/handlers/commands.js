@@ -15,7 +15,7 @@ module.exports = async (client, PG, Ascii, consola) => {
         client.commands.set(command.name, command)
         CommandsArray.push(command);
 
-        await Table.addRow(command.name, "✅ SUCCES");
+        await Table.addRow(command.name, "✅ SUCCESS");
 
     });
 
@@ -23,7 +23,7 @@ module.exports = async (client, PG, Ascii, consola) => {
 
     client.on('ready', async () => {
         client.guilds.cache.forEach((guild) => {
-            client.application.commands.set(CommandsArray).then(async (command) => {
+            guild.commands.set([]).then(async (command) => {
                 const Roles = (commandName) => {
                     const cmdPerms = CommandsArray.find((c) => c.name === commandName).permission;
                     if (!cmdPerms) return null;
