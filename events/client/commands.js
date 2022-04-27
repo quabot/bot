@@ -33,16 +33,16 @@ module.exports = {
             // check if notif should be sent
             // send notif and store new data
 
-            interaction.channel.send({
-                content: "New update, check it out here: https://quabot.net/updates/latest",
-                components: [new MessageActionRow({
-                    components: [new MessageButton({
-                        style: 'PRIMARY',
-                        label: 'Mark as read',
-                        customId: "notifRead"
-                    })]
-                })]
-            }).catch(err => console.log(err));
+            // interaction.channel.send({
+            //     content: "New update, check it out here: https://quabot.net/updates/latest",
+            //     components: [new MessageActionRow({
+            //         components: [new MessageButton({
+            //             style: 'PRIMARY',
+            //             label: 'Mark as read',
+            //             customId: "notifRead"
+            //         })]
+            //     })]
+            // }).catch(err => console.log(err));
         }
     }
 }

@@ -1,5 +1,5 @@
 const { CommandInteraction, MessageEmbed, Client } = require('discord.js');
-const DB = require('../../structures/schemas/ModerationDB');
+const DB = require('../../../structures/schemas/ModerationDB');
 
 module.exports = {
     name: "automod",
