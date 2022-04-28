@@ -24,6 +24,7 @@ module.exports = {
             let public = !interaction.options.getBoolean('private');
 
             if (amount > 0) {
+                if (amount > 100) return interaction.reply({ content:`You can't delete more than 100 messages, idiot.`, ephemeral: true});
                 const size = await interaction.channel.bulkDelete(amount, true);
                 if (public) {
                     interaction.reply({
