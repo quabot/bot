@@ -26,6 +26,14 @@ module.exports = {
                 ]
             }).catch(err => console.log(err));
 
+            if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`You cannot remove a timeout from someone with a role higher than yours!`)
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
+
             member.send({
                 embeds: [
                     new MessageEmbed()
@@ -50,7 +58,7 @@ module.exports = {
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle(`User Timeout Removed!`)
+                        .setTitle(`Timeout Removed!`)
                         .setDescription(`**User:** ${member}`)
                         .setColor(color)
                 ]

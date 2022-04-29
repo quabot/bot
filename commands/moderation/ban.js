@@ -34,6 +34,14 @@ module.exports = {
                 ]
             }).catch(err => console.log(err));
 
+            if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`You cannot ban someone with a role higher than yours!`)
+                        .setColor(color)
+                ]
+            }).catch(err => console.log(err));
+
             member.send({
                 embeds: [
                     new MessageEmbed()
@@ -44,7 +52,7 @@ module.exports = {
                         .setTimestamp()
                         .setColor(color)
                 ]
-            }).catch(err => {if (err.code !== 50007)console.log(err)});
+            }).catch(err => { if (err.code !== 50007) console.log(err) });
 
             member.ban({ reason: reason }).catch(err => {
                 if (err.code === 50013) return interaction.channel.send({
@@ -93,16 +101,23 @@ module.exports = {
             let bans;
 
             if (userDatabase) bans = userDatabase.banCount + 1;
-            
+
             if (!bans) bans = 1;
 
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
                         .setTitle(`User Banned`)
-                        .setDescription(`**User:** ${member}\n**Reason:** ${reason}`)
+                        .setDescription(`**User:** ${member}`)
                         .setColor(color)
-                        .setFooter(`Ban-Id: ${bans}`)
+                        .addFields(
+                            { name: "Ban-ID", value: `${bans}`, inline: true },
+                            { name: "Ban Reason", value: `${reason}`, inline: true },
+                            { name: "\u200b", value: "\u200b", inline: true },
+                            { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
+                            { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
+                            { name: "\u200b", value: "\u200b", inline: true },
+                        )
                 ]
             }).catch(err => console.log(err));
 
