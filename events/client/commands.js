@@ -23,6 +23,12 @@ module.exports = {
                 ]
             }) && client.commands.delete(interaction.commandName);
 
+            if (command.permission) {
+                if (!interaction.member.permissions.has(command.permission)) {
+                    return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.`, ephemeral: true })
+                }
+            }
+
             command.execute(client, interaction, color);
             consola.info(`/${command.name} was used`);
             client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(err => console.log(err));
