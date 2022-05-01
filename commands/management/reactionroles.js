@@ -90,7 +90,7 @@ module.exports = {
                 case 'create':
                     const channel = interaction.options.getChannel('channel');
                     const message = interaction.options.getString('message');
-                    const role = interaction.options.getString('role');
+                    const role = interaction.options.getRole('role');
                     const emoji = interaction.options.getString('emoji');
                     const mode = interaction.options.getString('mode');
 
