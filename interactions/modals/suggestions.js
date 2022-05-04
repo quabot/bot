@@ -1,9 +1,9 @@
 const { MessageEmbed, GuildAuditLogs } = require("discord.js");
 
 module.exports = {
-    id: "afk-set",
+    id: "suggestion",
     async execute(modal, client, color) {
-        const newStatus = modal.getTextInputValue('suggestion');
+        const suggestion = modal.getTextInputValue('suggestion-box');
 
         await modal.deferReply({ ephemeral: true });
 
@@ -63,12 +63,26 @@ module.exports = {
             ], ephemeral: true
         }).catch(err => console.log(err));
 
-        modal.channel.send("a")
+        const msg = await channel.send({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle("New Suggestion!")
+                    .setTimestamp()
+                    .addFields(
+                        { name: "Suggestion", value: `${suggestion}`},
+                        { name: "Suggested by", value: `${modal.user}` }
+                    )
+                    .setFooter({ text: "Vote with the 🔴 and 🟢 below this message!"})
+                    .setColor(color)
+            ]
+        });
+        msg.react("🔴");
+        msg.react("🟢");
 
         modal.followUp({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`Changed your afk message to: **e**`)
+                    .setDescription(`Successfully left your suggestion. You can view it in ${channel}`)
                     .setColor(color)
             ], ephemeral: true
         }).catch(err => console.log(err));
