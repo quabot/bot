@@ -151,6 +151,7 @@ module.exports = {
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
+                        pollID: 0,
                         logEnabled: true,
                         levelEnabled: false,
                         suggestEnabled: true,

@@ -25,6 +25,7 @@ module.exports = {
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
+                        pollID: 0,
                         pollChannelID: "none",
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",

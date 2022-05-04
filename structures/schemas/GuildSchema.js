@@ -4,6 +4,11 @@ const reqString = {
     required: true,
 }
 
+const reqNum = {
+    type: Number,
+    required: true,
+}
+
 const GuildSchema = new mongoose.Schema({
     guildId: reqString,
     guildName: reqString,
@@ -12,6 +17,7 @@ const GuildSchema = new mongoose.Schema({
     welcomeChannelID: reqString,
     levelChannelID: reqString,
     // punishment channel id
+    pollID: reqString,
     logEnabled: reqString,
     levelEnabled: reqString,
     suggestEnabled: reqString,

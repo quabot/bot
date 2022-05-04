@@ -77,6 +77,46 @@ module.exports = {
 
             const subCmd = interaction.options.getSubcommand();
 
+            const Guild = require('../../structures/schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        logChannelID: "none",
+                        suggestChannelID: "none",
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        pollID: 0,
+                        logEnabled: true,
+                        levelEnabled: false,
+                        suggestEnabled: true,
+                        welcomeEnabled: true,
+                        roleEnabled: false,
+                        mainRole: "Member",
+                        joinMessage: "Welcome {user} to **{guild}**!",
+                        leaveMessage: "Goodbye {user}!",
+                        swearEnabled: false,
+                    });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            if (!guildDatabase) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`Added this server to the database! Please run that command again.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch(err => console.log(err));
+
             switch (subCmd) {
                 case 'create':
                     const channel = interaction.options.getChannel("channel");
@@ -126,7 +166,6 @@ module.exports = {
 
                     collectorRepeat.on('collect', async interaction => {
                         if (interaction.customId === "createPoll") {
-
                             const pollDetails = new Modal()
                                 .setCustomId('poll')
                                 .setTitle('Create a poll!')
@@ -137,7 +176,7 @@ module.exports = {
                                         .setStyle('SHORT')
                                         .setMinLength(1)
                                         .setMaxLength(200)
-                                        .setPlaceholder('Enter here')
+                                        .setPlaceholder('Should we start a giveaway?')
                                         .setRequired(true)
                                 )
 
@@ -145,15 +184,13 @@ module.exports = {
 
                                 pollDetails.addComponents(
                                     new TextInputComponent()
-                                        .setCustomId(`poll-${i}`)
-                                        .setLabel(`Enter choice ${i}`)
+                                        .setCustomId(`${i + 1}`)
+                                        .setLabel(`Enter choice ${i + 1}`)
                                         .setStyle('SHORT')
                                         .setMinLength(1)
                                         .setMaxLength(200)
-                                        .setPlaceholder('Enter here')
                                         .setRequired(true)
                                 )
-
                             }
 
                             showModal(pollDetails, {
@@ -163,6 +200,31 @@ module.exports = {
 
                         }
                     });
+
+                    // DISABLE BUTTON
+
+                    const pollId = parseInt(guildDatabase.pollID) + 1;
+                    await guildDatabase.updateOne({
+                        pollID: pollId,
+                    });
+
+                    const Poll = require('../../structures/schemas/PollSchema');
+                    const newPoll = new Poll({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        pollId: pollId,
+                        channelId: channel.id,
+                        msgId: "none",
+                        options: options,
+                        duration: duration,
+                        interactionId: msg.id,
+                        createdTime: new Date().getTime(),
+                    });
+                    newPoll.save()
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        });
 
                     break;
             }
