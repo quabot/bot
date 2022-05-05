@@ -2,6 +2,11 @@ const { CMD_AMOUNT } = require('../../structures/settings.json');
 const { connect } = require('mongoose');
 const { MessageEmbed } = require('discord.js');
 
+const osUtils = require("os-utils");
+const ms = require("ms");
+
+const DB = require('../../structures/schemas/ClientDB');
+
 module.exports = {
     name: "ready",
     once: true,
@@ -25,5 +30,23 @@ module.exports = {
         client.guilds.cache.get('957024489638621185').channels.cache.get('957210942674972682').send({ embeds: [new MessageEmbed().setDescription(`**${client.user.username}** has been restarted.`)] }).catch(err => console.log(err));
 
         consola.success("Ready");
+
+        let memArray = [];
+
+        setInterval(async () => {
+            memArray.push((osUtils.totalmem() - osUtils.freemem()) / 1024);
+
+            if (memArray.length >= 14) {
+                memArray.shift();
+            }
+
+            await DB.findOneAndUpdate({
+                Client: true,
+            }, {
+                Memory: memArray,
+            }, {
+                upsert: true,
+            });
+        }, ms("5s"));
     }
 }
