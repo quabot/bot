@@ -45,31 +45,31 @@ module.exports = {
             options: [
                 {
                     name: "id",
-                    type: "STRING",
+                    type: "INTEGER",
                     required: true,
                     description: "The poll id to end."
                 }
             ]
         },
-        {
-            name: "setduration",
-            description: "Set a new poll duration.",
-            type: "SUB_COMMAND",
-            options: [
-                {
-                    name: "id",
-                    type: "STRING",
-                    required: true,
-                    description: "The poll id to change the duration of."
-                },
-                {
-                    name: "new-duration",
-                    type: "STRING",
-                    required: true,
-                    description: "The new duration for the poll."
-                }
-            ]
-        }
+        // {
+        //     name: "setduration",
+        //     description: "Set a new poll duration.",
+        //     type: "SUB_COMMAND",
+        //     options: [
+        //         {
+        //             name: "id",
+        //             type: "INTEGER",
+        //             required: true,
+        //             description: "The poll id to change the duration of."
+        //         },
+        //         {
+        //             name: "new-duration",
+        //             type: "STRING",
+        //             required: true,
+        //             description: "The new duration for the poll."
+        //         }
+        //     ]
+        // }
     ],
     permission: "ADMINISTRATOR",
     async execute(client, interaction, color) {
@@ -77,6 +77,7 @@ module.exports = {
 
             const subCmd = interaction.options.getSubcommand();
 
+            const Poll = require('../../structures/schemas/PollSchema');
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: interaction.guild.id,
@@ -201,14 +202,12 @@ module.exports = {
                         }
                     });
 
-                    // DISABLE BUTTON
 
                     const pollId = parseInt(guildDatabase.pollID) + 1;
                     await guildDatabase.updateOne({
                         pollID: pollId,
                     });
 
-                    const Poll = require('../../structures/schemas/PollSchema');
                     const newPoll = new Poll({
                         guildId: interaction.guild.id,
                         guildName: interaction.guild.name,
@@ -219,6 +218,8 @@ module.exports = {
                         duration: duration,
                         interactionId: msg.id,
                         createdTime: new Date().getTime(),
+                        endTimestamp: "none",
+                        ended: false,
                     });
                     newPoll.save()
                         .catch(err => {
@@ -227,6 +228,37 @@ module.exports = {
                         });
 
                     break;
+
+                case 'end':
+                    const id = interaction.options.getInteger("id");
+
+                    const polldb2 = await Poll.findOne({
+                        guildId: interaction.guild.id,
+                        pollId: id,
+                    }, (err, poll) => {
+                        if (err) console.error(err);
+                        if (!poll) return;
+                    }).clone().catch(function (err) { console.log(err) });
+
+                    if (!polldb2) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`That poll does not exist.`)
+                                .setColor(color)
+                        ], ephemeral: true
+                    }).catch(err => console.log(err));
+
+                    await polldb2.updateOne({
+                        endTimestamp: new Date().getTime() + 3000
+                    });
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`Succesfully ended poll.`)
+                                .setColor(color)
+                        ], ephemeral: true
+                    }).catch(err => console.log(err));
             }
 
         } catch (e) {

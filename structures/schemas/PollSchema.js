@@ -9,6 +9,11 @@ const reqNum = {
     required: true,
 }
 
+const reqBool = {
+    type: Boolean,
+    required: true,
+}
+
 const PollSchema = new mongoose.Schema({
     guildId: reqString,
     guildName: reqString,
@@ -19,6 +24,8 @@ const PollSchema = new mongoose.Schema({
     duration: reqString,
     interactionId: reqString,
     createdTime: reqString,
+    endTimestamp: reqString,
+    ended: reqBool,
 });
 
 module.exports = mongoose.model('Poll', PollSchema);

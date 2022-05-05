@@ -42,8 +42,9 @@ module.exports = {
             .setDescription(`${description}`)
             .addFields(
                 { name: "Hosted by", value: `${modal.user}`, inline: true },
-                { name: "Ends in", value: `<t:${Math.round(parseInt(pollDatabase.createdTime) / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R>`, inline: true }
+                { name: "Ends in", value: `<t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R>`, inline: true }
             )
+            .setFooter(`ID: ${pollDatabase.pollId}`)
             .setTimestamp()
             .setColor(color);
 
@@ -60,17 +61,20 @@ module.exports = {
         for (let i = 0; i < pollDatabase.options; i++) {
             let b = `${i + 1}`;
 
-            console.log(b)
             msg.react(`${b.replace("1", "1️⃣").replace("2", "2️⃣").replace("3", "3️⃣").replace("4", "4️⃣")}`)
         }
 
         modal.followUp({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`Succesfully created a poll that ends <t:${Math.round(parseInt(pollDatabase.createdTime) / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R> in ${channel}!`)
+                    .setDescription(`Succesfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDatabase.pollId}`)
                     .setColor(color)
-                    .addFields({ name: "Duration", value: `<t:${Math.round(parseInt(pollDatabase.createdTime) / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R>` })
             ], ephemeral: true
         }).catch(err => console.log(err));
+
+        await pollDatabase.updateOne({
+            msgId: msg.id,
+            endTimestamp: Math.round(new Date().getTime()) + Math.round(ms(pollDatabase.duration)),
+        })
     }
 }
