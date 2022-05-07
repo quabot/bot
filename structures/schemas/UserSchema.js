@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
     lastNotify: reqString,
     afk: reqBool,
     afkMessage: reqString,
+    bio: reqString,
 });
 
 module.exports = mongoose.model('User', UserSchema);

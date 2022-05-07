@@ -58,6 +58,7 @@ module.exports = {
                         lastNotify: "none",
                         afk: false,
                         afkMessage: "none",
+                        bio: "none",
                     });
                     newUser.save()
                         .catch(err => {

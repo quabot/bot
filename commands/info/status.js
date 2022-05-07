@@ -197,7 +197,7 @@ module.exports = {
                         new MessageEmbed()
                             .setColor('RED')
                             .setTitle('🛑 No Data Found!')
-                            .setDescription('Please Wait For The Information To Be Collected!')
+                            .setDescription('Please wait, quabot was restarted and we\'re collecting data again!')
                     ],
                     ephemeral: true
                 }).catch(err => console.log(err));
@@ -217,10 +217,11 @@ module.exports = {
 
             const embed = new MessageEmbed()
                 .setTitle(`${client.user.username} Status`)
-                .setDescription(`**Client:** \`✅ ONLINE\` - \`${client.ws.ping}ms\`\n**Uptime:** <t:${parseInt(client.readyTimestamp / 1000)}:R>\n\n**Database:** ${dbConnection}\nAverage RAM Usage**: ${avgMem.toFixed(2)}GB`)
+                .setDescription(`**Client:** \`✅ ONLINE\` - \`${client.ws.ping}ms\`\n**Uptime:** <t:${parseInt(client.readyTimestamp / 1000)}:R>\n\n**Database:** ${dbConnection}\n\n**Average RAM Usage**: \`${avgMem.toFixed(2)}GB\``)
                 .setColor(embedColor)
                 .setImage('attachment://chart.png')
-            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+            interaction.reply({ embeds: [embed], files: [attachment], }).catch(err => console.log(err));
+
 
         } catch (e) {
             console.log(e);

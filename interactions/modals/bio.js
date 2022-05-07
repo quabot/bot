@@ -1,9 +1,9 @@
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    id: "afk-set",
+    id: "bio-set",
     async execute(modal, client, color) {
-        const newStatus = modal.getTextInputValue('afk-status');
+        const newBio = modal.getTextInputValue('bio');
 
         const User = require('../../structures/schemas/UserSchema');
         const userDatabase = await User.findOne({
@@ -46,13 +46,13 @@ module.exports = {
         }).catch(err => console.log(err));
 
         await userDatabase.updateOne({
-            afkMessage: `${newStatus}`
+            bio: `${newBio}`
         });
 
         modal.followUp({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`Changed your afk message to: **${newStatus}**`)
+                    .setDescription(`Changed your bio message to:\n${newBio}`)
                     .setColor(color)
             ], ephemeral: true
         }).catch(err => console.log(err));

@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const os = require('os');
+const { version } = require('../../structures/settings.json');
 
 module.exports = {
     name: "info",
@@ -22,7 +23,7 @@ module.exports = {
                         .addField("Node.js", `\`${process.version}\``, true)
                         .addField('\u200b', '\u200b', true)
                         .addField("CPU", "```AMD Ryzen 5 2600```", true)
-                        .addField('\u200b', '\u200b', true)
+                        .addField('Version', `\`${version}\``, true)
                         .addField('\u200b', '\u200b', true)
                         .addField("Platform", `\`${process.platform.replace('win32', 'Windows')}\``, true)
                         .addField("Ping", `\`${client.ws.ping}ms\``, true)

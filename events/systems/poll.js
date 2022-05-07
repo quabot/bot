@@ -14,7 +14,7 @@ module.exports = {
                     if (!poll) return;
                 }).clone().catch(function (err) { console.log(err) });
 
-                pollDatabase.forEach(item => {
+                pollDatabase.forEach(async item => {
                     if (item.endTimestamp < new Date().getTime() + 1000 && item.endTimestamp > new Date().getTime() - 1000) {
                         const guild = client.guilds.cache.get(`${item.guildId}`);
                         const channel = guild.channels.cache.get(`${item.channelId}`);
@@ -50,13 +50,19 @@ module.exports = {
                             });
                         });
 
-                        // remove schema
+                        const deleteDB = await Poll.deleteOne({
+                            guildId: `${item.guildId}`,
+                            channelId: `${item.channelId}`,
+                            msgId: `${item.msgId}`,
+                            pollId: `${item.pollId}`,
+                        }, (err, poll) => {
+                            if (err) console.error(err);
+                            if (!poll) return;
+                        }).clone().catch(function (err) { console.log(err) });
                     }
                 })
                 loop()
             }, 2000);
         }());
-
-        consola.success("Loaded poll system");
     }
 }

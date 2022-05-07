@@ -27,6 +27,9 @@ const GuildSchema = new mongoose.Schema({
     joinMessage: reqString,
     leaveMessage: reqString,
     swearEnabled: reqString,
+    levelCard: reqBool,
+    levelEmbed: reqBool,
+    levelMessage: reqString,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);
