@@ -9,6 +9,11 @@ const reqNum = {
     required: true,
 }
 
+const reqBool = {
+    type: Boolean,
+    required: true,
+}
+
 const GuildSchema = new mongoose.Schema({
     guildId: reqString,
     guildName: reqString,

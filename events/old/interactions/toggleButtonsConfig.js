@@ -44,6 +44,9 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
+                        levelCard: false,
+                        levelEmbed: true,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
                         transcriptChannelID: "none",
                         prefix: "!",
                     });
@@ -206,6 +209,9 @@ module.exports = {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] });
                     await guildDatabase.updateOne({
                         swearEnabled: false,
+                        levelCard: false,
+                        levelEmbed: true,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
                     });
                     interaction.update({ ephemeral: true, embeds: [swearDisabled], components: [disabled] });
                 }

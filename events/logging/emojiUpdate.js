@@ -28,6 +28,9 @@ module.exports = {
                         joinMessage: "Welcome {user} to **{guild}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
+                        levelCard: false,
+                        levelEmbed: true,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
                     });
                     newGuild.save()
                         .catch(err => {

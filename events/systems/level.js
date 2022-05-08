@@ -1,10 +1,10 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
+const canvacord = require('canvacord');
 
 module.exports = {
     name: "messageCreate",
     async execute(message, client, color) {
         try {
-
             // DM & Bot checks
             if (!message.guild) return;
             if (message.author.bot) return;
@@ -35,7 +35,7 @@ module.exports = {
                         swearEnabled: false,
                         levelCard: false,
                         levelEmbed: true,
-                        levelMessage: reqString,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
                     });
                     newGuild.save()
                         .catch(err => {
@@ -44,6 +44,8 @@ module.exports = {
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
+
+            if (!guildDatabase) return;
 
             if (guildDatabase.levelEnabled === "false") return;
 
@@ -77,39 +79,72 @@ module.exports = {
             var xp = levelDatabase.xp;
             var role = levelDatabase.role;
 
-            var reqXp = 1//level * 300 + 100;
-            var randXp = Math.floor(Math.random() * 30 + 1);
+            var reqXp = level * 300 + 100;
+            var randXp = Math.floor(Math.random() * 35 + 1);
 
             if (xp + randXp >= reqXp) {
                 levelDatabase.xp = 0;
                 levelDatabase.level += 1;
                 levelDatabase.save();
-                // check card
-                // embed toggle
-                // custom message
-                if (channel) {
-                    // if embed
-                    channel.send({
-                        embeds: [
-                            new MessageEmbed()
-                                .setColor(color)
-                                .setDescription(`${message.author} just leveled up to level **${levelDatabase.level}**, and has **${levelDatabase.xp}** XP!`)
-                                .setAuthor(`${message.author.tag} is now level ${levelDatabase.level}!`, message.author.avatarURL())
-                                .setThumbnail(message.author.avatarURL())
-                        ]
+
+                if (guildDatabase.levelCard === false) {
+                    if (channel !== undefined) {
+                        if (guildDatabase.levelEmbed === true) {
+                            channel.send({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`${message.author} just leveled up to level **${levelDatabase.level}**, and has **${levelDatabase.xp}** XP!`)
+                                        .setAuthor(`${message.author.tag} is now level ${levelDatabase.level}!`, message.author.avatarURL())
+                                        .setThumbnail(message.author.avatarURL())
+                                ]
+                            }).catch((err => { }));
+                        } else {
+                            let userMessage = guildDatabase.levelMessage;
+                            userMessage = userMessage.replace('{level}', `${levelDatabase.level}`);
+                            userMessage = userMessage.replace('{xp}', `${levelDatabase.xp}`);
+                            userMessage = userMessage.replace('{user}', `${message.author}`);
+                            userMessage = userMessage.replace('{username}', `${message.author.username}`);
+                            userMessage = userMessage.replace('{discriminator}', `${message.author.discriminator}`);
+                            userMessage = userMessage.replace('{guildname}', `${message.guild.name}`);
+                            channel.send(`${userMessage}`).catch((err => { }));
+                        }
+                    } else if (channel === undefined) {
+                        if (guildDatabase.levelEmbed === true) {
+                            message.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You just leveled up to level **${levelDatabase.level}**, and have **${levelDatabase.xp}** XP!`)
+                                ], allowedMentions: { repliedUser: false }
+                            }).catch((err => { }));
+                        } else {
+                            let userMessage = guildDatabase.levelMessage;
+                            userMessage = userMessage.replace('{level}', `${levelDatabase.level}`);
+                            userMessage = userMessage.replace('{xp}', `${levelDatabase.xp}`);
+                            userMessage = userMessage.replace('{user}', `${message.author}`);
+                            userMessage = userMessage.replace('{username}', `${message.author.username}`);
+                            userMessage = userMessage.replace('{discriminator}', `${message.author.discriminator}`);
+                            userMessage = userMessage.replace('{guildname}', `${message.guild.name}`);
+                            message.reply({ content: `${userMessage}`, allowedMentions: { repliedUser: false } }).catch((err => { }));
+                        }
+                    }
+                } else if (guildDatabase.levelCard === true) {
+                    const rankCard = new canvacord.Rank()
+                        .setAvatar(message.author.displayAvatarURL({ dynamic: false, format: 'png' }))
+                        .setCurrentXP(levelDatabase.xp)
+                        .setRequiredXP(levelDatabase.level * 300 + 100)
+                        .setProgressBar(color, 'COLOR', true)
+                        .setUsername(message.author.username)
+                        .setLevel(levelDatabase.level)
+                        .setDiscriminator(message.author.discriminator)
+                        .setRank(1, 'none', false)
+                    rankCard.build().then(data => {
+                        const attactment = new MessageAttachment(data, 'level.png')
+                        message.reply({ files: [attactment], allowedMentions: { repliedUser: false } }).catch((err => { }));
                     });
-                    // else message
-                } else {
-                    // if embed
-                    message.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setColor(color)
-                                .setDescription(`You just leveled up to level **${levelDatabase.level}**, and have **${levelDatabase.xp}** XP!`)
-                        ], allowedMentions: { repliedUser: false }
-                    });
-                    // else message
                 }
+
             } else {
                 levelDatabase.xp += randXp;
                 levelDatabase.save();

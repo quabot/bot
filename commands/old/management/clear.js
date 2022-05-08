@@ -63,6 +63,9 @@ const { noAmount } = require('../../embeds/management');
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
+                        levelCard: false,
+                        levelEmbed: true,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
                         transcriptChannelID: "none",
                         prefix: "!",
                     });
