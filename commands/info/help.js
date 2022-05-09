@@ -10,7 +10,7 @@ module.exports = {
                     new MessageEmbed()
                         .setTitle(`QuaBot Commands`)
                         .setDescription(`Select an item from the dropdown below this message to view the commands in that category.`)
-                        .addField("Quick Links", "[Invite](https://invite.quabot.net) - [Discord](https://discord.quabot.net) - [Website](https://quabot.net)")
+                        .addField("Quick Links", "[Invite](https://discord.com/oauth2/authorize?client_id=845603702210953246&permissions=275384757342&scope=bot%20applications.commands) - [Discord](https://discord.gg/9kPCU8GHSK) - [Website](https://quabot.net)")
                         .setThumbnail(client.user.avatarURL({ dynamic: true }))
                         .setColor(color)
                 ],

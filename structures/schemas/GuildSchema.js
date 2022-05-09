@@ -21,10 +21,11 @@ const GuildSchema = new mongoose.Schema({
     suggestChannelID: reqString,
     welcomeChannelID: reqString,
     levelChannelID: reqString,
-    // punishment channel id
+    punishmentChannelID: reqString,
     pollID: reqString,
     logEnabled: reqString,
     levelEnabled: reqString,
+    pollEnabled: reqString,
     suggestEnabled: reqString,
     welcomeEnabled: reqString,
     roleEnabled: reqString,

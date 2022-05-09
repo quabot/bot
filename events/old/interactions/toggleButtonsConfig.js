@@ -26,6 +26,7 @@ module.exports = {
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
+                        punishmentChannelID: "none",
                         pollID: 0,
                         pollChannelID: "none",
                         ticketCategory: "Tickets",
@@ -33,6 +34,7 @@ module.exports = {
                         logEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
+                        pollEnabled: true,
                         reportEnabled: true,
                         suggestEnabled: true,
                         ticketEnabled: true,
@@ -73,6 +75,7 @@ module.exports = {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         levelEnabled: false,
+                        pollEnabled: true,
                     });
                     interaction.update({ ephemeral: true, embeds: [levelDisabled], components: [disabled] }).catch(err => console.log(err));
                 }

@@ -27,6 +27,8 @@ module.exports = {
                     logEnabled: true,
                     musicEnabled: true,
                     levelEnabled: false,
+                        pollEnabled: true,
+                    
                     reportEnabled: true,
                     suggestEnabled: true,
                     ticketEnabled: true,

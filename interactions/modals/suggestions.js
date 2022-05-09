@@ -22,6 +22,8 @@ module.exports = {
                     levelChannelID: "none",
                     logEnabled: true,
                     levelEnabled: false,
+                        pollEnabled: true,
+                    
                     suggestEnabled: true,
                     welcomeEnabled: true,
                     roleEnabled: false,

@@ -90,9 +90,11 @@ module.exports = {
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
+                        punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
                         levelEnabled: false,
+                        pollEnabled: true,
                         suggestEnabled: true,
                         welcomeEnabled: true,
                         roleEnabled: false,
@@ -116,6 +118,14 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setDescription(`Added this server to the database! Please run that command again.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch(err => console.log(err));
+
+            if (guildDatabase.pollEnabled === "false") return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`Polls are disabled in this server! Ask an admin to enable them with \`/config general\``)
                         .setColor(color)
                 ], ephemeral: true
             }).catch(err => console.log(err));

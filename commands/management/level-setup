@@ -1,0 +1,73 @@
+const { MessageEmbed } = require('discord.js');
+
+module.exports = {
+    name: "config-level",
+    description: 'Configure the levels module.',
+    permission: "ADMINISTRATOR",
+    options: [
+        {
+            name: 'view',
+            description: 'View the current setup',
+            type: 'SUB_COMMAND'
+        },
+        {
+            name: 'rankcard',
+            description: 'Change the servers levelling display',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'enabled',
+                    description: 'Is the rank card enabled',
+                    type: 'BOOLEAN',
+                    required: true,
+                },
+            ],
+        },
+        {
+            name: 'add-reward',
+            description: 'Add a levelling reward',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'level',
+                    description: 'The level required to get this role',
+                    type: 'NUMBER',
+                    required: true,
+                },
+                {
+                    name: 'reward',
+                    description: 'The reward for reaching this level',
+                    type: 'ROLE',
+                    required: true,
+                },
+            ]
+        },
+        {
+            name: 'remove-reward',
+            description: 'Remove a leveling reward',
+            type: 'SUB_COMMAND',
+            options: [
+                {
+                    name: 'role',
+                    description: 'The role to remove',
+                    type: 'ROLE',
+                    required: true,
+                },
+            ],
+        },
+        {
+            name: "logging",
+            description: "Configure logging channels, what events to log and more.",
+            type: "SUB_COMMAND",
+        },
+
+    ],
+    async execute(client, interaction, color) {
+        try {
+
+        } catch (e) {
+            console.log(e);
+            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
+        }
+    }
+}

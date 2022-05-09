@@ -20,9 +20,11 @@ module.exports = {
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
+                        punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
                         levelEnabled: false,
+                        pollEnabled: true,
                         suggestEnabled: true,
                         welcomeEnabled: true,
                         roleEnabled: false,
@@ -53,7 +55,7 @@ module.exports = {
             if (guildDatabase.suggestEnabled === false) return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`Suggestions are disabled in this server!`)
+                    .setDescription(`Suggestions are disabled in this server! Ask an admin to enable them with \`/config general\``)
                         .setColor(color)
                 ], ephemeral: true
             }).catch(err => console.log(err));
