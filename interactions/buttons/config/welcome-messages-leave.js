@@ -1,8 +1,8 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const { Modal, TextInputComponent, showModal } = require('discord-modals');
 
 module.exports = {
-    value: "general_suggestions",
-    permission: "ADMINISTRATOR",
+    id: "welcome_messages_leave",
     async execute(interaction, client, color) {
 
         const Guild = require('../../../structures/schemas/GuildSchema');
@@ -22,11 +22,11 @@ module.exports = {
                     pollID: 0,
                     logEnabled: true,
                     levelEnabled: false,
-                        welcomeEmbed: true,
+                    welcomeEmbed: true,
                     pollEnabled: true,
                     suggestEnabled: true,
                     welcomeEnabled: true,
-                        leaveEnabled: true,
+                    leaveEnabled: true,
                     roleEnabled: false,
                     mainRole: "Member",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -39,7 +39,7 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
@@ -52,40 +52,49 @@ module.exports = {
             ]
         }).catch((err => { }));
 
-        var channel = interaction.guild.channels.cache.get(`${guildDatabase.suggestChannelID}`);
-
-        interaction.reply({
+        const msg = await interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setTitle(`Suggestions`)
-                    .setDescription(`Allow users to leave suggestions, that will be sent to a channel you can choose. Users can vote and it gives them a way to express their ideas.\n**Enable** this, **Disable** this or **Change** the channel with the buttons below this message.`)
-                    .setThumbnail(client.user.avatarURL({ dynamic: true }))
-                    .addFields(
-                        { name: "Channel", value: `${channel}`, inline: true },
-                        { name: "Enabled", value: `${guildDatabase.suggestEnabled}`, inline: true }
-                    )
+                    .setDescription(`**Click** the button below this message to enter the new leave message.\n**Valid Variables:**\n{guild} - Server's name.\n{user} - Mention's the user.\n{username} - User's username.\n{discriminator} - User's discriminator.\n{members} - Server's membercount.`)
                     .setColor(color)
-            ], ephemeral: true, components: [
+            ], ephemeral: true, fetchReply: true, components: [
                 new MessageActionRow({
                     components: [
                         new MessageButton({
                             style: 'PRIMARY',
-                            label: 'Change',
-                            customId: "general_suggestions_channel"
-                        }),
-                        new MessageButton({
-                            style: 'SUCCESS',
-                            label: 'Enable',
-                            customId: "general_suggestions_enable"
-                        }),
-                        new MessageButton({
-                            style: 'DANGER',
-                            label: 'Disable',
-                            customId: "general_suggestions_disable"
+                            label: 'Enter',
+                            customId: "welcome_messages_leave_modal"
                         }),
                     ]
                 })
             ]
+        });
+
+        const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+
+        collector.on('collect', async interaction => {
+            if (interaction.customId === "welcome_messages_leave_modal") {
+
+                const setLeave = new Modal()
+                    .setCustomId('welcome-message-leave')
+                    .setTitle('Set the new leave message')
+                    .addComponents(
+                        new TextInputComponent()
+                            .setCustomId('message')
+                            .setLabel('Enter your leave message')
+                            .setStyle('LONG')
+                            .setMinLength(1)
+                            .setMaxLength(400)
+                            .setPlaceholder('Valid Variables:\n{guild} - {user} - {username} - {discriminator} - {members}')
+                            .setRequired(true)
+                    );
+
+                showModal(setLeave, {
+                    client: client,
+                    interaction: interaction
+                });
+
+            }
         });
     }
 }

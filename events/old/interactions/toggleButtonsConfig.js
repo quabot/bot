@@ -34,11 +34,13 @@ module.exports = {
                         logEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
+                        welcomeEmbed: true,
                         pollEnabled: true,
                         reportEnabled: true,
                         suggestEnabled: true,
                         ticketEnabled: true,
                         welcomeEnabled: true,
+                        leaveEnabled: true,
                         pollsEnabled: true,
                         roleEnabled: true,
                         mainRole: "Member",
@@ -75,6 +77,7 @@ module.exports = {
                     if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
                     await guildDatabase.updateOne({
                         levelEnabled: false,
+                        welcomeEmbed: true,
                         pollEnabled: true,
                     });
                     interaction.update({ ephemeral: true, embeds: [levelDisabled], components: [disabled] }).catch(err => console.log(err));

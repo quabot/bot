@@ -3,6 +3,7 @@ const ms = require('ms');
 
 module.exports = {
     id: "poll",
+    permission: "ADMINISTRATOR",
     async execute(modal, client, color) {
         const question = modal.getTextInputValue('poll-question');
         let description;

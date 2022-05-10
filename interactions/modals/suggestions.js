@@ -22,10 +22,12 @@ module.exports = {
                     levelChannelID: "none",
                     logEnabled: true,
                     levelEnabled: false,
+                        welcomeEmbed: true,
                         pollEnabled: true,
                     
                     suggestEnabled: true,
                     welcomeEnabled: true,
+                        leaveEnabled: true,
                     roleEnabled: false,
                     mainRole: "Member",
                     joinMessage: "Welcome {user} to **{guild}**!",

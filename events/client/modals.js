@@ -7,8 +7,8 @@ module.exports = {
         const modalC = client.modals.get(modal.customId);
 
         if (!modalC) return;
-        if (modalC.permission && !interaction.member.permissions.has(modalC.permission))
-            return interaction.reply({
+        if (modalC.permission && !modal.member.permissions.has(modalC.permission))
+            return modal.reply({
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")
@@ -16,8 +16,8 @@ module.exports = {
                 ], ephemeral: true
             }).catch(err => console.warn(err));
 
-        if (modalC.ownerOnly && interaction.member.id !== interaction.guild.ownerId)
-            return interaction.reply({
+        if (modalC.ownerOnly && modal.member.id !== modal.guild.ownerId)
+            return modal.reply({
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")

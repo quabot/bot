@@ -1,8 +1,7 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-    value: "general_suggestions",
-    permission: "ADMINISTRATOR",
+    id: "welcome_messages_enable",
     async execute(interaction, client, color) {
 
         const Guild = require('../../../structures/schemas/GuildSchema');
@@ -52,40 +51,16 @@ module.exports = {
             ]
         }).catch((err => { }));
 
-        var channel = interaction.guild.channels.cache.get(`${guildDatabase.suggestChannelID}`);
-
         interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setTitle(`Suggestions`)
-                    .setDescription(`Allow users to leave suggestions, that will be sent to a channel you can choose. Users can vote and it gives them a way to express their ideas.\n**Enable** this, **Disable** this or **Change** the channel with the buttons below this message.`)
-                    .setThumbnail(client.user.avatarURL({ dynamic: true }))
-                    .addFields(
-                        { name: "Channel", value: `${channel}`, inline: true },
-                        { name: "Enabled", value: `${guildDatabase.suggestEnabled}`, inline: true }
-                    )
+                    .setDescription(`Enabled welcome embed.`)
                     .setColor(color)
-            ], ephemeral: true, components: [
-                new MessageActionRow({
-                    components: [
-                        new MessageButton({
-                            style: 'PRIMARY',
-                            label: 'Change',
-                            customId: "general_suggestions_channel"
-                        }),
-                        new MessageButton({
-                            style: 'SUCCESS',
-                            label: 'Enable',
-                            customId: "general_suggestions_enable"
-                        }),
-                        new MessageButton({
-                            style: 'DANGER',
-                            label: 'Disable',
-                            customId: "general_suggestions_disable"
-                        }),
-                    ]
-                })
-            ]
+            ], ephemeral: true,
+        });
+
+        await guildDatabase.updateOne({
+            welcomeEmbed: "true",
         });
     }
 }

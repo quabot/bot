@@ -1,24 +1,27 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
+const canvacord = require('canvacord');
 
 module.exports = {
-    name: "emojiDelete",
-    async execute(emoji, client, color) {
+    name: "guildMemberAdd",
+    async execute(member, client, color) {
         try {
+            // DM & Bot checks
+            if (!member.guild) return;
 
+            // Find the guild's database
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: emoji.guild.id,
+                guildId: member.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: emoji.guild.id,
-                        guildName: emoji.guild.name,
+                        guildId: member.guild.id,
+                        guildName: member.guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
-                        punishmentChannelID: "none",
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
@@ -40,25 +43,39 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            emoji.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
             if (!guildDatabase) return;
-            if (guildDatabase.logEnabled === false) return;
-            const channel = emoji.guild.channels.cache.get(guildDatabase.logChannelID);
-            if (!channel) return;
 
-            channel.send({
-                embeds: [
-                    new MessageEmbed()
-                        .setColor("RED")
-                        .setTitle("Emoji Deleted!")
-                        .addField('Emoji Name', `${emoji.name}`)
-                        .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
-                ]
-            });
+            if (guildDatabase.welcomeEnabled === "false") return;
+
+            const channel = member.guild.channels.cache.get(`${guildDatabase.welcomeChannelID}`);
+
+            let joinMessage = guildDatabase.joinMessage;
+            joinMessage = joinMessage.replace("{user}", `${member}`);
+            joinMessage = joinMessage.replace("{username}", `${member.username}`);
+            joinMessage = joinMessage.replace("{discriminator}", `${member.discriminator}`);
+            joinMessage = joinMessage.replace("{guildname}", `${member.guild.name}`);
+            joinMessage = joinMessage.replace("{guild}", `${member.guild.name}`);
+            joinMessage = joinMessage.replace("{members}", `${member.guild.memberCount}`);
+            joinMessage = joinMessage.replace("{membercount}", `${member.guild.memberCount}`);
+
+            if (guildDatabase.welcomeEmbed === "true") {
+                channel.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(`GREEN`)
+                            .setTimestamp()
+                            .setTitle('Member joined!')
+                            .setAuthor(`${member.user.tag} just joined!`, member.user.avatarURL())
+                            .setDescription(`${joinMessage}`)
+                    ]
+                }).catch((err => { }));
+            } else {
+                channel.send(`${joinMessage}`).catch((err => { }));
+            }
 
         } catch (e) {
             console.log(e);
