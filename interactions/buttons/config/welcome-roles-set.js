@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
-    id: "general_suggestions_channel",
+    id: "welcome_roles_set",
     async execute(interaction, client, color) {
 
         const Guild = require('../../../structures/schemas/GuildSchema');
@@ -21,11 +21,11 @@ module.exports = {
                     pollID: 0,
                     logEnabled: true,
                     levelEnabled: false,
-                        welcomeEmbed: true,
+                    welcomeEmbed: true,
                     pollEnabled: true,
                     suggestEnabled: true,
                     welcomeEnabled: true,
-                        leaveEnabled: true,
+                    leaveEnabled: true,
                     roleEnabled: false,
                     mainRole: "none",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -54,7 +54,7 @@ module.exports = {
         const msg = await interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`**Mention** the new suggestions channel within 15 seconds.`)
+                    .setDescription(`**Mention** the new role within 15 seconds.`)
                     .setColor(color)
             ], ephemeral: true, fetchReply: true, components: [
                 new MessageActionRow({
@@ -62,7 +62,7 @@ module.exports = {
                         new MessageButton({
                             style: 'DANGER',
                             label: 'Cancel',
-                            customId: "general_suggestions_channel_cancel"
+                            customId: "welcome_roles_set_cancel"
                         }),
                     ]
                 })
@@ -74,15 +74,15 @@ module.exports = {
 
         collector.on('collect', async m => {
             if (!m) return;
-            const channel = m.mentions.channels.first();
-            if (!channel) return;
+            const role = m.mentions.roles.first();
+            if (!role) return;
 
             await guildDatabase.updateOne({
-                suggestChannelID: channel
+                mainRole: role.id
             });
 
             const updated = new MessageEmbed()
-                .setDescription(`Succesfully changed the suggestions channel to ${channel}`)
+                .setDescription(`Succesfully changed the join role to ${role}`)
                 .setColor(color)
             m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
 
@@ -94,7 +94,7 @@ module.exports = {
         const collectorCancel = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
         collectorCancel.on('collect', async interaction => {
-            if (interaction.customId === "general_suggestions_channel_cancel") {
+            if (interaction.customId === "welcome_roles_set_cancel") {
 
                 collector.stop();
 

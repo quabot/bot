@@ -62,7 +62,7 @@ const { noAmount } = require('../../embeds/management');
                         leaveEnabled: true,
                         pollsEnabled: true,
                         roleEnabled: true,
-                        mainRole: "Member",
+                        mainRole: "none",
                         mutedRole: "Muted",
                         joinMessage: "Welcome {user} to **{guild-name}**!",
                         leaveMessage: "Goodbye {user}!",

@@ -87,7 +87,7 @@ module.exports = {
                         welcomeEnabled: true,
                         leaveEnabled: true,
                         roleEnabled: false,
-                        mainRole: "Member",
+                        mainRole: "none",
                         joinMessage: "Welcome {user} to **{guild}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,

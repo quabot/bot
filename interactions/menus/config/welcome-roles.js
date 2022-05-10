@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
-    value: "welcome_messages",
+    value: "welcome_roles",
     permission: "ADMINISTRATOR",
     async execute(interaction, client, color) {
 
@@ -52,34 +52,17 @@ module.exports = {
             ]
         }).catch((err => { }));
 
-        let joinMessage = guildDatabase.joinMessage;
-        joinMessage = joinMessage.replace("{user}", `${interaction.user}`);
-        joinMessage = joinMessage.replace("{username}", `${interaction.user.username}`);
-        joinMessage = joinMessage.replace("{discriminator}", `${interaction.user.discriminator}`);
-        joinMessage = joinMessage.replace("{guildname}", `${interaction.guild.name}`);
-        joinMessage = joinMessage.replace("{guild}", `${interaction.guild.name}`);
-        joinMessage = joinMessage.replace("{members}", `${interaction.guild.memberCount}`);
-        joinMessage = joinMessage.replace("{membercount}", `${interaction.guild.memberCount}`);
-
-        let leaveMessage = guildDatabase.leaveMessage;
-        leaveMessage = leaveMessage.replace("{user}", `${interaction.user}`);
-        leaveMessage = leaveMessage.replace("{username}", `${interaction.user.username}`);
-        leaveMessage = leaveMessage.replace("{discriminator}", `${interaction.user.discriminator}`);
-        leaveMessage = leaveMessage.replace("{guildname}", `${interaction.guild.name}`);
-        leaveMessage = leaveMessage.replace("{guild}", `${interaction.guild.name}`);
-        leaveMessage = leaveMessage.replace("{members}", `${interaction.guild.memberCount}`);
-        leaveMessage = leaveMessage.replace("{membercount}", `${interaction.guild.memberCount}`);
+        const role = interaction.guild.roles.cache.get(`${guildDatabase.mainRole}`);
 
         interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setTitle(`Welcome Messages`)
-                    .setDescription(`Change the welcome messages and leave messages that get sent on users leaves & joins. **Change** join and leave messages or **Toggle** these messages being sent in embeds.`)
+                    .setTitle(`Welcome Roles`)
+                    .setDescription(`When a user joins your server, they need a role. Give users roles on join with this module.\n**Enable**, **Disable** or **Change** the role with the buttons below this message.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .addFields(
-                        { name: "Welcome Message", value: `${joinMessage}`, inline: true },
-                        { name: "Leave Message", value: `${leaveMessage}`, inline: true },
-                        { name: "Embed Enabled", value: `${guildDatabase.welcomeEmbed}`, inline: true }
+                        { name: "Enabled", value: `${guildDatabase.roleEnabled}`, inline: true },
+                        { name: "Role", value: `${role}`, inline: true },
                     )
                     .setColor(color)
             ], ephemeral: true, components: [
@@ -87,23 +70,18 @@ module.exports = {
                     components: [
                         new MessageButton({
                             style: 'PRIMARY',
-                            label: 'Change Join Message',
-                            customId: "welcome_messages_join"
-                        }),
-                        new MessageButton({
-                            style: 'SECONDARY',
-                            label: 'Change Leave Message',
-                            customId: "welcome_messages_leave"
+                            label: 'Set',
+                            customId: "welcome_roles_set"
                         }),
                         new MessageButton({
                             style: 'SUCCESS',
-                            label: 'Enable Embed',
-                            customId: "welcome_messages_enable"
+                            label: 'Enable',
+                            customId: "welcome_roles_on"
                         }),
                         new MessageButton({
                             style: 'DANGER',
-                            label: 'Disable Embed',
-                            customId: "welcome_messages_disable"
+                            label: 'Disable',
+                            customId: "welcome_roles_off"
                         }),
                     ]
                 })

@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
-    value: "welcome_messages",
+    value: "welcome_toggles",
     permission: "ADMINISTRATOR",
     async execute(interaction, client, color) {
 
@@ -52,58 +52,39 @@ module.exports = {
             ]
         }).catch((err => { }));
 
-        let joinMessage = guildDatabase.joinMessage;
-        joinMessage = joinMessage.replace("{user}", `${interaction.user}`);
-        joinMessage = joinMessage.replace("{username}", `${interaction.user.username}`);
-        joinMessage = joinMessage.replace("{discriminator}", `${interaction.user.discriminator}`);
-        joinMessage = joinMessage.replace("{guildname}", `${interaction.guild.name}`);
-        joinMessage = joinMessage.replace("{guild}", `${interaction.guild.name}`);
-        joinMessage = joinMessage.replace("{members}", `${interaction.guild.memberCount}`);
-        joinMessage = joinMessage.replace("{membercount}", `${interaction.guild.memberCount}`);
-
-        let leaveMessage = guildDatabase.leaveMessage;
-        leaveMessage = leaveMessage.replace("{user}", `${interaction.user}`);
-        leaveMessage = leaveMessage.replace("{username}", `${interaction.user.username}`);
-        leaveMessage = leaveMessage.replace("{discriminator}", `${interaction.user.discriminator}`);
-        leaveMessage = leaveMessage.replace("{guildname}", `${interaction.guild.name}`);
-        leaveMessage = leaveMessage.replace("{guild}", `${interaction.guild.name}`);
-        leaveMessage = leaveMessage.replace("{members}", `${interaction.guild.memberCount}`);
-        leaveMessage = leaveMessage.replace("{membercount}", `${interaction.guild.memberCount}`);
-
         interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setTitle(`Welcome Messages`)
-                    .setDescription(`Change the welcome messages and leave messages that get sent on users leaves & joins. **Change** join and leave messages or **Toggle** these messages being sent in embeds.`)
+                    .setTitle(`Welcome Toggles`)
+                    .setDescription(`Toggle welcome messages, leave messages, both at the samee timee or just one with the buttons below. **Enable** or **Disable** welcome & leave messages.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .addFields(
-                        { name: "Welcome Message", value: `${joinMessage}`, inline: true },
-                        { name: "Leave Message", value: `${leaveMessage}`, inline: true },
-                        { name: "Embed Enabled", value: `${guildDatabase.welcomeEmbed}`, inline: true }
+                        { name: "Welcome", value: `${guildDatabase.welcomeEnabled}`, inline: true },
+                        { name: "Leave", value: `${guildDatabase.leaveEnabled}`, inline: true },
                     )
                     .setColor(color)
             ], ephemeral: true, components: [
                 new MessageActionRow({
                     components: [
                         new MessageButton({
-                            style: 'PRIMARY',
-                            label: 'Change Join Message',
-                            customId: "welcome_messages_join"
-                        }),
-                        new MessageButton({
-                            style: 'SECONDARY',
-                            label: 'Change Leave Message',
-                            customId: "welcome_messages_leave"
-                        }),
-                        new MessageButton({
                             style: 'SUCCESS',
-                            label: 'Enable Embed',
-                            customId: "welcome_messages_enable"
+                            label: 'Enable Welcome',
+                            customId: "welcome_messages_welcome_on"
                         }),
                         new MessageButton({
                             style: 'DANGER',
-                            label: 'Disable Embed',
-                            customId: "welcome_messages_disable"
+                            label: 'Disable Welcome',
+                            customId: "welcome_messages_welcome_off"
+                        }),
+                        new MessageButton({
+                            style: 'SUCCESS',
+                            label: 'Enable Leave',
+                            customId: "welcome_messages_leave_on"
+                        }),
+                        new MessageButton({
+                            style: 'DANGER',
+                            label: 'Disable Leave',
+                            customId: "welcome_messages_leave_off"
                         }),
                     ]
                 })

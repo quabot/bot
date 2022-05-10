@@ -32,7 +32,7 @@ module.exports = {
                         welcomeEnabled: true,
                         leaveEnabled: true,
                         roleEnabled: false,
-                        mainRole: "Member",
+                        mainRole: "none",
                         joinMessage: "Welcome {user} to **{guild}**!",
                         leaveMessage: "Goodbye {user}!",
                         swearEnabled: false,
@@ -75,6 +75,13 @@ module.exports = {
                 }).catch((err => { }));
             } else {
                 channel.send(`${joinMessage}`).catch((err => { }));
+            }
+
+            if (guildDatabase.roleEnabled === "true") {
+                const role = member.guild.roles.cache.get(`${guildDatabase.mainRole}`);
+                if (role) {
+                    member.roles.add(role.id).catch((err => { }));
+                }
             }
 
         } catch (e) {
