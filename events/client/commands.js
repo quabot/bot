@@ -33,6 +33,7 @@ module.exports = {
             consola.info(`/${command.name} was used`);
             client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(err => console.log(err));
 
+            return; // notification system is under maintenance
             const User = require('../../structures/schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: interaction.user.id,

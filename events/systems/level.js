@@ -145,7 +145,7 @@ module.exports = {
                         .setRank(1, 'none', false)
                     rankCard.build().then(data => {
                         const attactment = new MessageAttachment(data, 'level.png')
-                        message.reply({ files: [attactment], allowedMentions: { repliedUser: false } }).catch((err => { }));
+                        message.reply({ files: [attactment], content: "You just leveled up!", allowedMentions: { repliedUser: false } }).catch((err => { }));
                     });
                 }
 
@@ -155,6 +155,22 @@ module.exports = {
             }
 
             // check role (needs config first)
+            const Reward = require('../../structures/schemas/RewardSchema');
+            const nextCheck = await Reward.findOne({ guildId: message.guild.id, level: levelDatabase.level })
+            if (nextCheck) {
+                const levelRole = nextCheck.role.replace(/[<@!&>]/g, '')
+                const userLevel = await Level.findOne({ guildId: message.guild.id, userId: message.author.id })
+                const prevRoleId = userLevel.role
+                if (message.member.roles.cache.has(levelRole)) {
+                    return
+                } else {
+                    message.member.roles.remove(prevRoleId).catch((err => { }))
+                    message.member.roles.add(levelRole)
+
+                    userLevel.role = levelRole
+                    userLevel.save()
+                }
+            }
 
         } catch (e) {
             console.log(e);

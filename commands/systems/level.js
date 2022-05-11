@@ -97,7 +97,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor(color)
-                        .setDescription(`Levels are disabled in this server. Ask an admin to enable them with\`/config\`!`)
+                        .setDescription(`Levels are disabled in this server. Ask an admin to enable them with\`/config general\`!`)
                 ]
             }).catch((err => { }));
 
