@@ -1,8 +1,7 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
-const canvacord = require('canvacord');
 
 module.exports = {
-    name: "guildMemberAdd",
+    name: "guildMemberRemove",
     async execute(member, client, color) {
         try {
             // DM & Bot checks
@@ -49,39 +48,32 @@ module.exports = {
 
             if (!guildDatabase) return;
 
-            if (guildDatabase.welcomeEnabled === "false") return;
+            if (guildDatabase.leaveEnabled === "false") return;
 
             const channel = member.guild.channels.cache.get(`${guildDatabase.welcomeChannelID}`);
 
-            let joinMessage = guildDatabase.joinMessage;
-            joinMessage = joinMessage.replace("{user}", `${member}`);
-            joinMessage = joinMessage.replace("{username}", `${member.user.username}`);
-            joinMessage = joinMessage.replace("{discriminator}", `${member.user.discriminator}`);
-            joinMessage = joinMessage.replace("{guildname}", `${member.guild.name}`);
-            joinMessage = joinMessage.replace("{guild}", `${member.guild.name}`);
-            joinMessage = joinMessage.replace("{members}", `${member.guild.memberCount}`);
-            joinMessage = joinMessage.replace("{membercount}", `${member.guild.memberCount}`);
+            let leaveMessage = guildDatabase.leaveMessage;
+            leaveMessage = leaveMessage.replace("{user}", `${member}`);
+            leaveMessage = leaveMessage.replace("{username}", `${member.user.username}`);
+            leaveMessage = leaveMessage.replace("{discriminator}", `${member.user.discriminator}`);
+            leaveMessage = leaveMessage.replace("{guildname}", `${member.guild.name}`);
+            leaveMessage = leaveMessage.replace("{guild}", `${member.guild.name}`);
+            leaveMessage = leaveMessage.replace("{members}", `${member.guild.memberCount}`);
+            leaveMessage = leaveMessage.replace("{membercount}", `${member.guild.memberCount}`);
 
             if (guildDatabase.welcomeEmbed === "true") {
                 channel.send({
                     embeds: [
                         new MessageEmbed()
-                            .setColor(`GREEN`)
+                            .setColor(`RED`)
                             .setTimestamp()
-                            .setTitle('Member joined!')
-                            .setAuthor(`${member.user.tag} just joined!`, member.user.avatarURL())
-                            .setDescription(`${joinMessage}`)
+                            .setTitle('Member left!')
+                            .setAuthor(`${member.user.tag} left!`, member.user.avatarURL())
+                            .setDescription(`${leaveMessage}`)
                     ]
                 }).catch((err => { }));
             } else {
-                channel.send(`${joinMessage}`).catch((err => { }));
-            }
-
-            if (guildDatabase.roleEnabled === "true") {
-                const role = member.guild.roles.cache.get(`${guildDatabase.mainRole}`);
-                if (role) {
-                    member.roles.add(role.id).catch((err => { }));
-                }
+                channel.send(`${leaveMessage}`).catch((err => { }));
             }
 
         } catch (e) {
