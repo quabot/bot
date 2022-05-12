@@ -25,7 +25,7 @@ module.exports = {
                     .setDescription(`That poll does not exist.`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
 
         modal.fields.map(item => {
@@ -56,7 +56,7 @@ module.exports = {
                     .setDescription(`Could not find the channel.`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
         const msg = await channel.send({ embeds: [embed] }).catch(err => console.log(err))
 
         for (let i = 0; i < pollDatabase.options; i++) {
@@ -71,7 +71,7 @@ module.exports = {
                     .setDescription(`Succesfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDatabase.pollId}`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         await pollDatabase.updateOne({
             msgId: msg.id,

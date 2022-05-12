@@ -10,7 +10,7 @@ module.exports = {
                     .setColor(color)
             ],
             components: []
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         setTimeout(() => {
             interaction.message.edit({
@@ -19,7 +19,7 @@ module.exports = {
                         .setDescription("Stopped the game. Removing this message in 4 seconds...")
                         .setColor(color)
                 ],
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
             setTimeout(() => {
                 interaction.message.edit({
                     embeds: [
@@ -27,7 +27,7 @@ module.exports = {
                             .setDescription("Stopped the game. Removing this message in 3 seconds...")
                             .setColor(color)
                     ],
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
                 setTimeout(() => {
                     interaction.message.edit({
                         embeds: [
@@ -35,7 +35,7 @@ module.exports = {
                                 .setDescription("Stopped the game. Removing this message in 2 seconds...")
                                 .setColor(color)
                         ],
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
                     setTimeout(() => {
                         interaction.message.edit({
                             embeds: [
@@ -43,9 +43,9 @@ module.exports = {
                                     .setDescription("Stopped the game. Removing this message in 1 second...")
                                     .setColor(color)
                             ],
-                        }).catch(err => console.log(err));
+                        }).catch(( err => { } ))
                         setTimeout(() => {
-                            interaction.message.delete().catch(err => console.log(err));
+                            interaction.message.delete().catch(( err => { } ))
                         }, 1000);
 
                     }, 1000);

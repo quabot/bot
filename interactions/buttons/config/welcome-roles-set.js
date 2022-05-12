@@ -20,6 +20,7 @@ module.exports = {
                     punishmentChannelID: "none",
                     pollID: 0,
                     logEnabled: true,
+                    modEnabled: true,
                     levelEnabled: false,
                     welcomeEmbed: true,
                     pollEnabled: true,
@@ -38,7 +39,7 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
@@ -84,7 +85,7 @@ module.exports = {
             const updated = new MessageEmbed()
                 .setDescription(`Succesfully changed the join role to ${role}`)
                 .setColor(color)
-            m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
+            m.channel.send({ embeds: [updated] }).catch(( err => { } ))
 
             collector.stop();
             return;
@@ -104,7 +105,7 @@ module.exports = {
                             .setDescription(`Cancelled.`)
                             .setColor(color)
                     ], ephemeral: true, components: []
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
 
             }
         });

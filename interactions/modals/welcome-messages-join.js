@@ -22,6 +22,7 @@ module.exports = {
                     punishmentChannelID: "none",
                     pollID: 0,
                     logEnabled: true,
+                    modEnabled: true,
                     levelEnabled: false,
                     welcomeEmbed: true,
                     pollEnabled: true,

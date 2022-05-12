@@ -26,7 +26,7 @@ module.exports = {
                 newUser.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
@@ -38,7 +38,7 @@ module.exports = {
                     .setDescription(`We added you to the database! Please click that button again.`)
                     .setColor(COLOR)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         await userDatabase.updateOne({
             notifOpened: true,
@@ -50,6 +50,6 @@ module.exports = {
                     .setDescription(`Marked as read.\n**TIP:** You can disable update notifications with \`/user settings\``)
                     .setColor(COLOR)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
     }
 }

@@ -28,6 +28,7 @@ module.exports  = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -53,9 +54,9 @@ module.exports  = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                    return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -79,10 +80,10 @@ module.exports  = {
                 .setColor(COLOR_MAIN)
                 
             if (!oldStatus && newStatus) {
-                logChannel.send({ embeds: [boostStatusEmbed]}).catch(err => console.log(err));
+                logChannel.send({ embeds: [boostStatusEmbed]}).catch(( err => { } ))
             }
             if (oldStatus && !newStatus) {
-                logChannel.send({ embeds: [boostStatusEmbed2]}).catch(err => console.log(err));
+                logChannel.send({ embeds: [boostStatusEmbed2]}).catch(( err => { } ))
             }
 
         } catch (e) {

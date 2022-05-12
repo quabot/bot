@@ -7,7 +7,7 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setTitle(`Moderation Commands`)
-                    .setDescription(`Ban users, warn them and so much more, tthese are the moderation commands.
+                    .setDescription(`Ban users, warn them and so much more, these are the moderation commands.
                     **/ban** - Ban a user.
                     **/clear-punishment** - Clear a punsihment of a user.
                     **/find-punishment** - Find a punsihment of a user.

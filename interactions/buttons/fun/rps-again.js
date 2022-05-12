@@ -20,7 +20,7 @@ module.exports = {
                             .setStyle('SECONDARY'),
                     )
             ]
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         interaction.channel.send({
             embeds: [
@@ -45,6 +45,6 @@ module.exports = {
                             .setStyle('SUCCESS')
                     )
             ]
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
     }
 }

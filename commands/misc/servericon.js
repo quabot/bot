@@ -13,7 +13,7 @@ module.exports = {
                         .setTitle(`${interaction.guild.name}`)
                         .setColor(color)
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

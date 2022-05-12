@@ -21,12 +21,13 @@ module.exports = {
                     punishmentChannelID: "none",
                     pollID: 0,
                     logEnabled: true,
+                    modEnabled: true,
                     levelEnabled: false,
-                        welcomeEmbed: true,
+                    welcomeEmbed: true,
                     pollEnabled: true,
                     suggestEnabled: true,
                     welcomeEnabled: true,
-                        leaveEnabled: true,
+                    leaveEnabled: true,
                     roleEnabled: false,
                     mainRole: "none",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -39,7 +40,7 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });

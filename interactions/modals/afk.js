@@ -30,7 +30,7 @@ module.exports = {
                 newUser.save()
                     .catch(err => {
                         console.log(err);
-                        modal.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        modal.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
@@ -43,7 +43,7 @@ module.exports = {
                     .setDescription(`We added you to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         await userDatabase.updateOne({
             afkMessage: `${newStatus}`
@@ -55,6 +55,6 @@ module.exports = {
                     .setDescription(`Changed your afk message to: **${newStatus}**`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
     }
 }

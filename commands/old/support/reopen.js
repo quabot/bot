@@ -32,6 +32,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -57,13 +58,13 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                    return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(err => console.log(err));
+            if (guildDatabase.ticketEnabled === "false") return interaction.reply({ embeds: [ticketDis] }).catch(( err => { } ))
 
             let cId = interaction.channel.name;
             cId = cId.substring(7);
@@ -85,25 +86,25 @@ module.exports = {
             const category = interaction.guild.channels.cache.find(cat => cat.name === openedName);
 
             if (!category) {
-                interaction.guild.channels.create(openedName, { type: "GUILD_CATEGORY" }).catch(err => console.log(err));
+                interaction.guild.channels.create(openedName, { type: "GUILD_CATEGORY" }).catch(( err => { } ))
                 const embedTicketsCreate = new MessageEmbed()
                     .setColor(COLOR_MAIN)
                     .setTitle('Creating a category!')
                     .setDescription('The categegory for opened tickets does not exist. Creating one now...')
                     
-                interaction.reply({ embeds: [embedTicketsCreate] }).catch(err => console.log(err));
+                interaction.reply({ embeds: [embedTicketsCreate] }).catch(( err => { } ))
                 return
             }
 
-            interaction.channel.setParent(category).catch(err => console.log(err));
-            interaction.channel.setParent(category).catch(err => console.log(err));
+            interaction.channel.setParent(category).catch(( err => { } ))
+            interaction.channel.setParent(category).catch(( err => { } ))
             let userFound = interaction.guild.members.cache.get(`${TicketDB.memberId}`);
             setTimeout(() => {
                 interaction.channel.permissionOverwrites.edit(userFound, {
                     SEND_MESSAGES: true,
                     VIEW_CHANNEL: true,
                     READ_MESSAGE_HISTORY: true
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
             }, 1000);
 
 
@@ -112,14 +113,14 @@ module.exports = {
                 .setDescription("Close it with the button below this message.")
                 
                 .setColor(COLOR_MAIN);
-            interaction.reply({ embeds: [embed], components: [close] }).catch(err => console.log(err));
+            interaction.reply({ embeds: [embed], components: [close] }).catch(( err => { } ))
 
             await TicketDB.updateOne({
                 closed: false,
             });
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
+            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(( err => { } ));
             return;
         }
     }

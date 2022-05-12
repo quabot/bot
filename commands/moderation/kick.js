@@ -32,7 +32,7 @@ module.exports = {
                         .setDescription(`Please give a member to kick.`)
                         .setColor(color)
                 ]
-            }).catch(err => console.log(err));
+            }).catch((err => { }))
 
             if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.reply({
                 embeds: [
@@ -40,7 +40,7 @@ module.exports = {
                         .setDescription(`You cannot kick someone with a role higher than yours!`)
                         .setColor(color)
                 ]
-            }).catch(err => console.log(err));
+            }).catch((err => { }))
 
             member.send({
                 embeds: [
@@ -65,7 +65,7 @@ module.exports = {
                             .setDescription(`I do not have permission to kick that user.`)
                             .setColor(color)
                     ]
-                }).catch(err => console.log(err));
+                }).catch((err => { }))
             });
 
             const User = require('../../structures/schemas/UserSchema');
@@ -92,7 +92,7 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -123,7 +123,25 @@ module.exports = {
                             { name: "\u200b", value: "\u200b", inline: true },
                         )
                 ]
-            }).catch(err => console.log(err));
+            }).catch((err => { }))
+
+            const Kicks = require('../../structures/schemas/KickSchema');
+            const newKicks = new Kicks({
+                guildId: interaction.guild.id,
+                guildName: interaction.guild.name,
+                userId: member.id,
+                kickReason: `${reason}`,
+                kickTime: new Date().getTime(),
+                kickId: kicks,
+                kickedBy: interaction.user.id,
+                kickChannel: interaction.channel.id,
+                active: true,
+            });
+            newKicks.save()
+                .catch(err => {
+                    console.log(err);
+                    interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                });
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
@@ -141,6 +159,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -159,28 +178,34 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            const Kicks = require('../../structures/schemas/KickSchema');
-            const newKicks = new Kicks({
-                guildId: interaction.guild.id,
-                guildName: interaction.guild.name,
-                userId: member.id,
-                kickReason: `${reason}`,
-                kickTime: new Date().getTime(),
-                kickId: kicks,
-                kickedBy: interaction.user.id,
-                kickChannel: interaction.channel.id,
-                active: true,
-            });
-            newKicks.save()
-                .catch(err => {
-                    console.log(err);
-                    interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
-                });
+            if (!guildDatabase) return;
+            if (guildDatabase.modEnabled === "false") return;
+            const channel = interaction.guild.channels.cache.get(`${guildDatabase.punishmentChannelID}`);
+
+            if (channel.type !== "GUILD_TEXT" || channel.type !== "GUILD_NEWS")
+
+                channel.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor("ORANGE")
+                            .setTitle("Member Kicked")
+                            .addFields(
+                                { name: "Member", value: `${member}`, inline: true },
+                                { name: "Reason", value: `${reason}`, inline: true },
+                                { name: "\u200b", value: "\u200b", inline: true },
+                                { name: "Staff", value: `${interaction.user}`, inline: true },
+                                { name: "Channel", value: `${interaction.channel}`, inline: true },
+                                { name: "\u200b", value: "\u200b", inline: true },
+                            )
+                            .setTimestamp()
+                            .setFooter({ text: `Command: /${this.name}` })
+                    ]
+                }).catch((err => { }));
 
         } catch (e) {
             console.log(e);

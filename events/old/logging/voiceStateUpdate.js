@@ -33,6 +33,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -113,7 +114,7 @@ module.exports = {
                     .addField("Voice Channel", `<#${newState.channelId}>`)
                     .setColor(`GREEN`)
                     
-                logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
+                logChannel.send({ embeds: [embed] }).catch(( err => { } ))
                 return;
             }
 
@@ -125,7 +126,7 @@ module.exports = {
                     .addField("Voice Channel", `<#${oldState.channelId}>`)
                     .setColor(`RED`)
                     
-                logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
+                logChannel.send({ embeds: [embed] }).catch(( err => { } ))
                 return;
             }
 
@@ -138,7 +139,7 @@ module.exports = {
                     .addField("Moved to", `<#${newState.channelId}>`)
                     .setColor(`YELLOW`)
                     
-                logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
+                logChannel.send({ embeds: [embed] }).catch(( err => { } ))
                 return;
             }
         } catch (e) {

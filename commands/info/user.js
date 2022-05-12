@@ -45,7 +45,7 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -56,7 +56,7 @@ module.exports = {
                         .setDescription(`We added you to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
 
             switch (subCmd) {
@@ -80,12 +80,19 @@ module.exports = {
                                 .setFooter({ text: "Toggle these settings with the buttons below this message." })
                         ], ephemeral: true, fetchReply: true,
                         components: [new MessageActionRow({ components: [updateNotif] })]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     const collector = settingsMsg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
                     collector.on('collect', async interaction => {
                         if (interaction.customId === updateNotifId) {
+                            return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("⛔ This feature is disabled.")
+                                ], ephemeral: true,
+                            }).catch(( err => { } ));
+
                             if (userDatabase.updateNotify === true) {
 
                                 await userDatabase.updateOne({
@@ -97,12 +104,12 @@ module.exports = {
                                         new MessageEmbed()
                                             .setDescription("Disabled update notifications.")
                                     ], ephemeral: true,
-                                }).catch(err => console.log(err));
+                                }).catch(( err => { } ))
 
                             } else if (userDatabase.updateNotify === false) {
 
                                 await userDatabase.updateOne({
-                                    updateNotify: false,
+                                    updateNotify: true,
                                     lastNotify: "none",
                                 });
 
@@ -111,7 +118,7 @@ module.exports = {
                                         new MessageEmbed()
                                             .setDescription("Enabled update notifications.")
                                     ], ephemeral: true,
-                                }).catch(err => console.log(err));
+                                }).catch(( err => { } ))
 
                             } else {
                                 interaction.reply({
@@ -119,7 +126,7 @@ module.exports = {
                                         new MessageEmbed()
                                             .setDescription("There was an error - But: don't worry: just run the command again.")
                                     ], ephemeral: true,
-                                }).catch(err => console.log(err));
+                                }).catch(( err => { } ))
                             }
                         }
                     });

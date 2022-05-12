@@ -42,7 +42,7 @@ module.exports = {
                 if (member._roles.length !== 0) embed.addField("Roles <:RolesIcon:959764812068450318>", `<@&${member._roles.map(role => role.toString()).join('>, <@&')}>`, true);
             }
 
-            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+            interaction.reply({ embeds: [embed] }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

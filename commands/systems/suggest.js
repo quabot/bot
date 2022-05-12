@@ -23,6 +23,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
+                    modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -41,7 +42,7 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -52,7 +53,7 @@ module.exports = {
                         .setDescription(`Added this server to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             if (guildDatabase.suggestEnabled === false) return interaction.reply({
                 embeds: [
@@ -60,7 +61,7 @@ module.exports = {
                     .setDescription(`Suggestions are disabled in this server! Ask an admin to enable them with \`/config general\``)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             const channel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
             if (!channel) return interaction.reply({
@@ -69,7 +70,7 @@ module.exports = {
                         .setDescription("No suggestions channel setup!")
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             const leaveSuggest = new Modal()
                 .setCustomId('suggestion')

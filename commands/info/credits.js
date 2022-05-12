@@ -14,7 +14,7 @@ module.exports = {
                         .addField('foxl#3260', 'Developer')
                         .addField('Duckie#4174', 'Developer')
                         //.addField('Dolentec#3474', 'Tester, Helper')
-                        .addField('PizzaPuntThomas#4997', 'Tester, Helper')
+                        .addField('PizzaPuntThomas#4997', 'Tester, Developer')
                         .setFooter({ text: 'Thanks for using QuaBot!' })
                         .setColor(color)
                 ]

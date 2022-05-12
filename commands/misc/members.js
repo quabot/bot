@@ -14,7 +14,7 @@ module.exports = {
                         .setImage(interaction.guild.iconURL({ dynamic: true }))
                         .setColor(color)
                     ]
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

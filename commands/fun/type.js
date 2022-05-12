@@ -26,7 +26,7 @@ module.exports = {
                                 .setStyle('SECONDARY')
                         )
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             const filter = m => m.author === interaction.user;
             const collector = interaction.channel.createMessageCollector({ filter, time: 15000 });
@@ -42,7 +42,7 @@ module.exports = {
                                 .addField("Sentence", `${randomSentence}`)
                                 .setColor("GREEN")
                         ],
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
                 } else {
                     m.reply({
                         embeds: [
@@ -53,7 +53,7 @@ module.exports = {
                                 .addField("Your Answer", `${m.content}`)
                                 .setColor("RED")
                         ],
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
                 }
             });
 

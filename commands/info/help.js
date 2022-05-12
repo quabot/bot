@@ -41,10 +41,20 @@ module.exports = {
                                         description: 'Ban users, warn them and so much more, these are the moderation commands.',
                                         value: 'moderation_commands',
                                     },
+                                    {
+                                        label: '👨‍💼 Mangement Commands',
+                                        description: 'Configure QuaBot, lock a server down, these are the management commands.',
+                                        value: 'management_commands',
+                                    },
+                                    {
+                                        label: '⚙️ Other Commands',
+                                        description: 'View your XP, leave suggestions, listen to music and so much more, these are the other commands.',
+                                        value: 'system_commands',
+                                    },
                                 ]),
                         )
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

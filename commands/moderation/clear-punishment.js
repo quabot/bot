@@ -52,7 +52,7 @@ module.exports = {
                                 .setDescription(`Could not find that warning for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     interaction.reply({
                         embeds: [
@@ -60,7 +60,7 @@ module.exports = {
                                 .setDescription(`Cleared the warning succesfully.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     await warns.updateOne({
                         active: false,
@@ -81,7 +81,7 @@ module.exports = {
                                 .setDescription(`Could not find that ban for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     interaction.reply({
                         embeds: [
@@ -89,7 +89,7 @@ module.exports = {
                                 .setDescription(`Cleared the ban succesfully.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     await bans.updateOne({
                         active: false,
@@ -111,7 +111,7 @@ module.exports = {
                                 .setDescription(`Could not find that kick for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     interaction.reply({
                         embeds: [
@@ -119,7 +119,7 @@ module.exports = {
                                 .setDescription(`Cleared the kick succesfully.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     await kicks.updateOne({
                         active: false,
@@ -141,7 +141,7 @@ module.exports = {
                                 .setDescription(`Could not find that timeout for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     interaction.reply({
                         embeds: [
@@ -149,7 +149,7 @@ module.exports = {
                                 .setDescription(`Cleared the timeout succesfully.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch((err => { }))
 
                     await timeouts.updateOne({
                         active: false,

@@ -21,6 +21,7 @@ module.exports = {
                     welcomeChannelID: "none",
                     levelChannelID: "none",
                     logEnabled: true,
+                    modEnabled: true,
                     levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -37,7 +38,7 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        modal.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                        modal.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
@@ -48,7 +49,7 @@ module.exports = {
                     .setDescription(`Added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         if (guildDatabase.suggestEnabled === false) return modal.followUp({
             embeds: [
@@ -56,7 +57,7 @@ module.exports = {
                     .setDescription(`Suggestions are disabled in this server!`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         const channel = modal.guild.channels.cache.get(guildDatabase.suggestChannelID);
         if (!channel) return modal.followUp({
@@ -65,7 +66,7 @@ module.exports = {
                     .setDescription("No suggestions channel setup!")
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
 
         const msg = await channel.send({
             embeds: [
@@ -89,6 +90,6 @@ module.exports = {
                     .setDescription(`Successfully left your suggestion. You can view it in ${channel}`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
     }
 }

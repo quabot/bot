@@ -9,7 +9,7 @@ module.exports = {
             if (interaction.isSelectMenu()) {
                 consola.info(`${interaction.values[0]} was selected`);
             }
-            client.guilds.cache.get('957024489638621185').channels.cache.get('957024582794104862').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${interaction.customId}** in **${interaction.guild.name}**`)] }).catch(err => console.log(err));;
+            client.guilds.cache.get('957024489638621185').channels.cache.get('957024582794104862').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${interaction.customId}** in **${interaction.guild.name}**`)] }).catch(( err => { } ));
         }
         if (interaction.isCommand()) {
 
@@ -31,7 +31,7 @@ module.exports = {
 
             command.execute(client, interaction, color);
             consola.info(`/${command.name} was used`);
-            client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(err => console.log(err));
+            client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(( err => { } ))
 
             return; // notification system is under maintenance
             const User = require('../../structures/schemas/UserSchema');
@@ -58,7 +58,7 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -95,7 +95,7 @@ module.exports = {
                         customId: "notifRead"
                     })]
                 })]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
         }
     }
 }

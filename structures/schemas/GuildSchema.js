@@ -24,6 +24,7 @@ const GuildSchema = new mongoose.Schema({
     punishmentChannelID: reqString,
     pollID: reqString,
     logEnabled: reqString,
+    modEnabled: reqString,
     levelEnabled: reqString,
     pollEnabled: reqString,
     suggestEnabled: reqString,

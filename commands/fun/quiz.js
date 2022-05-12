@@ -32,7 +32,7 @@ module.exports = {
                                 .setStyle('DANGER')
                         )
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
         } catch (e) {
             console.log(e);
             client.guilds.cache.get("957024489638621185").channels.cache.get("938509157710061608").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });

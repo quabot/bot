@@ -26,7 +26,7 @@ module.exports = {
                             .setDescription(`It's a tie! We both picked scissors.`)
                             .setColor(color)
                     ], components: [playAgain]
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
 
                 break;
 
@@ -37,7 +37,7 @@ module.exports = {
                             .setDescription(`You lost! The correct answer was **paper**, ${interaction.user} picked **scissors**!`)
                             .setColor("RED")
                     ], components: [playAgain]
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
 
                 break;
 
@@ -48,7 +48,7 @@ module.exports = {
                             .setDescription(`You won! The correct answer was **rock**, ${interaction.user} picked **scissors**!`)
                             .setColor("GREEN")
                     ], components: [playAgain]
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
 
                 break;
         }

@@ -30,7 +30,7 @@ module.exports = {
                         .addField('\u200b', '\u200b', true)
                         .setColor(color)
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

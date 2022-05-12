@@ -31,7 +31,7 @@ module.exports = {
                 .addField("Description <:DescriptionIcon:959760258337738832>", `${interaction.guild.description}`, false)
 
             if (roles.length < 1023) embed.addField("Roles <:RolesIcon:959764812068450318>", `${roles}`, false)
-            interaction.reply({ embeds: [embed] }).catch(err => console.log(err));
+            interaction.reply({ embeds: [embed] }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

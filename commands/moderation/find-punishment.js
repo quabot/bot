@@ -52,7 +52,7 @@ module.exports = {
                                 .setDescription(`Could not find that warning for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     if (!warns.active) return interaction.reply({
                         embeds: [
@@ -60,7 +60,7 @@ module.exports = {
                                 .setDescription(`That warn has been cleared.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     var timestamp = parseInt(warns.warnTime);
                     var date = new Date(timestamp);
@@ -83,7 +83,7 @@ module.exports = {
                                 .addField("Warn Channel", `<#${warns.warnChannel}>`, true)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     break;
 
@@ -101,7 +101,7 @@ module.exports = {
                                 .setDescription(`Could not find that ban for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     if (!bans.active) return interaction.reply({
                         embeds: [
@@ -109,7 +109,7 @@ module.exports = {
                                 .setDescription(`That ban has been cleared.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     var timestamp = parseInt(bans.banTime);
                     var date = new Date(timestamp);
@@ -132,7 +132,7 @@ module.exports = {
                                 .addField("Ban Channel", `<#${bans.banChannel}>`, true)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     break;
 
@@ -150,7 +150,7 @@ module.exports = {
                                 .setDescription(`Could not find that kick for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     if (!kicks.active) return interaction.reply({
                         embeds: [
@@ -158,7 +158,7 @@ module.exports = {
                                 .setDescription(`That kick has been cleared.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     var timestamp = parseInt(kicks.kickTime);
                     var date = new Date(timestamp);
@@ -181,7 +181,7 @@ module.exports = {
                                 .addField("Kick Channel", `<#${kicks.kickChannel}>`, true)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     break;
 
@@ -199,7 +199,7 @@ module.exports = {
                                 .setDescription(`Could not find that timeout for ${user}.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     if (!timeouts.active) return interaction.reply({
                         embeds: [
@@ -207,7 +207,7 @@ module.exports = {
                                 .setDescription(`That timeout has been cleared.`)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     var timestamp = parseInt(timeouts.timedoutTime);
                     var date = new Date(timestamp);
@@ -230,7 +230,7 @@ module.exports = {
                                 .addField("Timeout Channel", `<#${timeouts.timeoutChannel}>`, true)
                                 .setColor(color)
                         ]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     break;
 

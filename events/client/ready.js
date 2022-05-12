@@ -22,7 +22,7 @@ module.exports = {
             useUnifiedTopology: true,
         }).catch((err) => console.error(err));
 
-        client.guilds.cache.get('957024489638621185').channels.cache.get('957210942674972682').send({ embeds: [new MessageEmbed().setDescription(`**${client.user.username}** has been restarted.`)] }).catch(err => console.log(err));
+        client.guilds.cache.get('957024489638621185').channels.cache.get('957210942674972682').send({ embeds: [new MessageEmbed().setDescription(`**${client.user.username}** has been restarted.`)] }).catch(( err => { } ))
 
         consola.success("Ready");
 

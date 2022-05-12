@@ -97,14 +97,14 @@ module.exports = {
                         const invalidText = new MessageEmbed()
                             .setDescription(`Invalid text channel.`)
                             .setColor(COLOR_MAIN)
-                        interaction.reply({ ephemeral: true, embeds: [invalidText] }).catch(err => console.log(err));
+                        interaction.reply({ ephemeral: true, embeds: [invalidText] }).catch(( err => { } ))
                         return;
                     }
                     const message = new MessageEmbed()
                         .setDescription(`Reply with the message you want to send to ${channel} within 60 seconds.`)
                         .setColor(COLOR_MAIN)
                         
-                    interaction.reply({ embeds: [message] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [message] }).catch(( err => { } ))
 
                     const filter = m => interaction.user === m.author;
                     const collector = interaction.channel.createMessageCollector({ filter, time: 60000 });
@@ -117,17 +117,17 @@ module.exports = {
                             const messageSentTooLong = new MessageEmbed()
                                 .setDescription(`Your message is too long to be sent.`)
                                 .setColor(COLOR_MAIN)
-                            if (m.content.length > 2000) return m.channel.send({ embeds: [messageSentTooLong] }).catch(err => console.log(err));
+                            if (m.content.length > 2000) return m.channel.send({ embeds: [messageSentTooLong] }).catch(( err => { } ))
                             channel.send(D)
                             const messageSent = new MessageEmbed()
                                 .setDescription(`Your message has been sent to ${channel}.`)
                                 .setColor(COLOR_MAIN)
-                            m.reply({ embeds: [messageSent], allowedMentions: {repliedUser: false} }).catch(err => console.log(err));
+                            m.reply({ embeds: [messageSent], allowedMentions: {repliedUser: false} }).catch(( err => { } ))
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut], allowedMentions: {repliedUser: false} }).catch(err => console.log(err));
+                            m.reply({ embeds: [timedOut], allowedMentions: {repliedUser: false} }).catch(( err => { } ))
                         }
                     });
                     break;
@@ -147,7 +147,7 @@ module.exports = {
                         const invalidText = new MessageEmbed()
                             .setDescription(`Invalid text channel.`)
                             .setColor(COLOR_MAIN)
-                        interaction.reply({ ephemeral: true, embeds: [invalidText] }).catch(err => console.log(err));
+                        interaction.reply({ ephemeral: true, embeds: [invalidText] }).catch(( err => { } ))
                         return;
                     }
 
@@ -162,14 +162,14 @@ module.exports = {
                     const messageSent = new MessageEmbed()
                         .setDescription(`Your embed has been sent to ${channel}.`)
                         .setColor(COLOR_MAIN)
-                    interaction.reply({ embeds: [messageSent] }).catch(err => console.log(err));
-                    channel.send({ embeds: [embed] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [messageSent] }).catch(( err => { } ))
+                    channel.send({ embeds: [embed] }).catch(( err => { } ))
                     break;
                 }
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: cat`)] }).catch(err => console.log(err));;
+            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: cat`)] }).catch(( err => { } ));
             return;
         }
     }

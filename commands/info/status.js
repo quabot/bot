@@ -200,7 +200,7 @@ module.exports = {
                             .setDescription('Please wait, quabot was restarted and we\'re collecting data again!')
                     ],
                     ephemeral: true
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
             
 
             require('../../events/client/ready');
@@ -220,7 +220,7 @@ module.exports = {
                 .setDescription(`**Client:** \`✅ ONLINE\` - \`${client.ws.ping}ms\`\n**Uptime:** <t:${parseInt(client.readyTimestamp / 1000)}:R>\n\n**Database:** ${dbConnection}\n\n**Average RAM Usage**: \`${avgMem.toFixed(2)}GB\``)
                 .setColor(embedColor)
                 .setImage('attachment://chart.png')
-            interaction.reply({ embeds: [embed], files: [attachment], }).catch(err => console.log(err));
+            interaction.reply({ embeds: [embed], files: [attachment], }).catch(( err => { } ))
 
 
         } catch (e) {

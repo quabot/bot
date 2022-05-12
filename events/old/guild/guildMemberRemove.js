@@ -25,6 +25,7 @@ module.exports = {
                     ticketCategory: "Tickets",
                     closedTicketCategory: "Tickets",
                     logEnabled: true,
+                    modEnabled: true,
                     musicEnabled: true,
                     levelEnabled: false,
                         welcomeEmbed: true,

@@ -51,6 +51,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -76,9 +77,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                    return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -93,46 +94,46 @@ module.exports = {
 
             if (channel.type === "GUILD_TEXT") {
                 if (ms(duration)) {
-                    if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false }).catch(err => console.log(err));
-                    channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: false }).catch(err => console.log(err));
+                    if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false }).catch(( err => { } ))
+                    channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: false }).catch(( err => { } ))
                     const locked = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔒 Channel locked!").addField("Locked by", `${interaction.user}`).addField("Duration", `${duration}`).addField("Reason", `${reason}`);
-                    channel.send({ embeds: [locked] }).catch(err => console.log(err));
+                    channel.send({ embeds: [locked] }).catch(( err => { } ))
                     const reply = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔒 Channel locked!").setDescription(`Succesfully locked ${channel} for ${duration}.`);
-                    interaction.reply({ ephemeral: true, embeds: [reply] }).catch(err => console.log(err));
+                    interaction.reply({ ephemeral: true, embeds: [reply] }).catch(( err => { } ))
                     setTimeout(function () {
-                        if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: true }).catch(err => console.log(err));
-                        channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: true }).catch(err => console.log(err));
+                        if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: true }).catch(( err => { } ))
+                        channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: true }).catch(( err => { } ))
                         const unlocked = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔓 Channel unlocked!").setDescription(`This channel was automatically unlocked after ${duration}.`);
-                        channel.send({ embeds: [unlocked] }).catch(err => console.log(err));
+                        channel.send({ embeds: [unlocked] }).catch(( err => { } ))
                     }, ms(duration));
                 } else {
-                    if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false }).catch(err => console.log(err));
-                    channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: false }).catch(err => console.log(err));
+                    if (role) channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false }).catch(( err => { } ))
+                    channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: false }).catch(( err => { } ))
                     const locked = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔒 Channel locked!").addField("Locked by", `${interaction.user}`).addField("Reason", `${reason}`);
-                    channel.send({ embeds: [locked] }).catch(err => console.log(err));
+                    channel.send({ embeds: [locked] }).catch(( err => { } ))
                     const reply = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔒 Channel locked!").setDescription(`Succesfully locked ${channel}.`);
-                    interaction.reply({ ephemeral: true, embeds: [reply] }).catch(err => console.log(err));
+                    interaction.reply({ ephemeral: true, embeds: [reply] }).catch(( err => { } ))
                 }
             } else if (channel.type === "GUILD_VOICE") {
                 if (ms(duration)) {
-                    if (role) channel.permissionOverwrites.edit(role, { CONNECT: false, SPEAK: false }).catch(err => console.log(err));
-                    channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: false, SPEAK: false }).catch(err => console.log(err));
+                    if (role) channel.permissionOverwrites.edit(role, { CONNECT: false, SPEAK: false }).catch(( err => { } ))
+                    channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: false, SPEAK: false }).catch(( err => { } ))
                     const reply = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔒 Voice Channel locked!").setDescription(`${channel}`).addField("Locked by", `${interaction.user}`).addField("Duration", `${duration}`).addField("Reason", `${reason}`);
-                    interaction.reply({ embeds: [reply] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [reply] }).catch(( err => { } ))
                     setTimeout(function () {
-                        if (role) channel.permissionOverwrites.edit(role, { CONNECT: true, SPEAK: true  }).catch(err => console.log(err));
-                        channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: false, SPEAK: true  }).catch(err => console.log(err));
+                        if (role) channel.permissionOverwrites.edit(role, { CONNECT: true, SPEAK: true  }).catch(( err => { } ))
+                        channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: false, SPEAK: true  }).catch(( err => { } ))
                         const unlocked = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔓 Voice channel unlocked!").setDescription(`${channel} was automatically unlocked after ${duration}.`);
-                        interaction.channel.send({ embeds: [unlocked] }).catch(err => console.log(err));
+                        interaction.channel.send({ embeds: [unlocked] }).catch(( err => { } ))
                     }, ms(duration));
                 } else {
-                    if (role) channel.permissionOverwrites.edit(role, { CONNECT: false, SPEAK: false }).catch(err => console.log(err));
-                    channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: false, SPEAK: false }).catch(err => console.log(err));
+                    if (role) channel.permissionOverwrites.edit(role, { CONNECT: false, SPEAK: false }).catch(( err => { } ))
+                    channel.permissionOverwrites.edit(interaction.guild.id, { CONNECT: false, SPEAK: false }).catch(( err => { } ))
                     const reply = new MessageEmbed().setColor(COLOR_MAIN).setTitle("🔒 Voice Channel locked!").setDescription(`${channel}`).addField("Locked by", `${interaction.user}`).addField("Duration", `${duration}`).addField("Reason", `${reason}`);
-                    interaction.reply({ embeds: [reply] }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [reply] }).catch(( err => { } ))
                 }
             } else {
-                interaction.reply({ embeds: [noChannel] }).catch(err => console.log(err));
+                interaction.reply({ embeds: [noChannel] }).catch(( err => { } ))
             }
 
             if (!guildDatabase) return;
@@ -148,15 +149,15 @@ module.exports = {
                     .addField('Locked by', `${interaction.user}`)
                     .addField("Reason", `${reason}`)
                 if (ms(duration)) embed.addField("Duration", `${duration}`);
-                logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
+                logChannel.send({ embeds: [embed] }).catch(( err => { } ))
             } else {
                 return;
             }
 
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
             console.log(e)
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: lock`)] }).catch(err => console.log(err));
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: lock`)] }).catch(( err => { } ))
             return;
         }
     }

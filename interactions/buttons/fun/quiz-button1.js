@@ -40,7 +40,7 @@ module.exports = {
                                 .setDisabled(true)
                         )
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
         } else {
             interaction.update({
@@ -70,7 +70,7 @@ module.exports = {
                                 .setDisabled(true)
                         )
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
         }
     }

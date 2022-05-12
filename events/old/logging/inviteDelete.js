@@ -28,6 +28,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -109,7 +110,7 @@ module.exports = {
                         .addField("Channel", `<#${invite.channel.id}>`, true)
                         
                         .setColor(`RED`)
-                    logChannel.send({ embeds: [embed] }).catch(err => console.log(err));
+                    logChannel.send({ embeds: [embed] }).catch(( err => { } ))
                 };
             }
         } catch (e) {

@@ -41,7 +41,7 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -52,7 +52,7 @@ module.exports = {
                         .setDescription(`Changed the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             let bio = userDatabase.bio;
             if (bio === "none") bio = "No bio configured. This can be done with `/user bio`."
@@ -75,7 +75,7 @@ module.exports = {
                         .setColor(color)
                         .setTimestamp()
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

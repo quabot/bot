@@ -30,6 +30,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -55,9 +56,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                    return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                 }
             }).clone().catch(function (err) { console.log(err) });
     
@@ -67,7 +68,7 @@ module.exports = {
 
                 if (interaction.values[0] === "main_role") {
                     if (!guildDatabase) return;
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
 
                     const mainRole = new MessageEmbed()
                         .setTitle("Change Main Role name")
@@ -76,7 +77,7 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    interaction.reply({ embeds: [mainRole], ephemeral: true }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [mainRole], ephemeral: true }).catch(( err => { } ))
 
                     collector.on('collect', async m => {
                         if (m) {
@@ -91,20 +92,20 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed main role to ${role}!`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
+                            m.channel.send({ embeds: [updated] }).catch(( err => { } ))
                             collector.stop();
 
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
+                            m.reply({ embeds: [timedOut] }).catch(( err => { } ))
                         }
                     });
                 }
             };
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
+            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(( err => { } ))
             return;
         }
     }

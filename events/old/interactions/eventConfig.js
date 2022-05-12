@@ -36,6 +36,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -61,9 +62,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                    return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -95,9 +96,9 @@ module.exports = {
                         })
                         newEvents.save().catch(err => {
                             console.log(err)
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         })
-                        return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                        return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                     }
                 }
             ).clone().catch(function (err) { console.log(err) });
@@ -111,8 +112,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [join], components: [buttonsJoin] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [join], components: [buttonsJoin] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "leave_messages") {
@@ -123,8 +124,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [leave], components: [buttonsLeave] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [leave], components: [buttonsLeave] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "channel_logging") {
@@ -135,8 +136,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [delcrea], components: [buttonsCreate] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [delcrea], components: [buttonsCreate] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "channel_updates") {
@@ -147,8 +148,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [update], components: [buttonsUpdate] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [update], components: [buttonsUpdate] }).catch(( err => { } ))
                 }
                 
                 if (interaction.values[0] === "emoji_cd") {
@@ -159,8 +160,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [emoji], components: [buttonsEmoji] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [emoji], components: [buttonsEmoji] }).catch(( err => { } ))
                 }
                                 
                 if (interaction.values[0] === "emoji_update") {
@@ -171,8 +172,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [emojiU], components: [buttonsEmojiU] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [emojiU], components: [buttonsEmojiU] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "invite_cd") {
@@ -183,8 +184,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [inviteCD], components: [buttonsInvite] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [inviteCD], components: [buttonsInvite] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "message_delete") {
@@ -195,8 +196,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [messageDelete], components: [buttonsMessageD] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [messageDelete], components: [buttonsMessageD] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "message_update") {
@@ -207,8 +208,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [messageUpdate], components: [buttonsMessageU] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [messageUpdate], components: [buttonsMessageU] }).catch(( err => { } ))
                 }
 
                 
@@ -220,8 +221,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [roleDeletUpdate], components: [buttonsRoleC] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [roleDeletUpdate], components: [buttonsRoleC] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "role_update") {
@@ -232,8 +233,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [roleUpdate], components: [buttonsRoleU] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [roleUpdate], components: [buttonsRoleU] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "voice_join") {
@@ -244,8 +245,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [voicejoinLeave], components: [buttonsVoiceJL] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [voicejoinLeave], components: [buttonsVoiceJL] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "voice_move") {
@@ -256,8 +257,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [voiceMove], components: [buttonsVoiceM] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [voiceMove], components: [buttonsVoiceM] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "member_update") {
@@ -268,8 +269,8 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [memberUpdate], components: [buttonsMemberU] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [memberUpdate], components: [buttonsMemberU] }).catch(( err => { } ))
                 }
 
                 if (interaction.values[0] === "log_bot") {
@@ -280,13 +281,13 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ ephemeral: true, embeds: [quabotLog], components: [buttonsBotLogs] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ ephemeral: true, embeds: [quabotLog], components: [buttonsBotLogs] }).catch(( err => { } ))
                 }
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
+            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(( err => { } ))
             return;
         }
     }

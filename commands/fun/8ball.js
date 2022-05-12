@@ -24,6 +24,6 @@ module.exports = {
                     .setDescription(`**${question}**\n${randomOption}`)
                     .setColor(color)
             ]
-        }).catch(err => console.log(err));
+        }).catch(( err => { } ))
     }
 }

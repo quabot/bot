@@ -35,6 +35,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -111,7 +112,7 @@ module.exports = {
             guildUserBanEmbed.setDescription("User unbanned: " + `${paramater1.user.tag}`)
             guildUserBanEmbed.addField("User-ID", `${paramater1.user.id}`)
 
-            logChannel.send({ embeds: [guildUserBanEmbed] }).catch(err => console.log(err));
+            logChannel.send({ embeds: [guildUserBanEmbed] }).catch(( err => { } ))
         } catch (e) {
             console.log(e);
             return;

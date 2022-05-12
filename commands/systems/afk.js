@@ -50,7 +50,7 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -61,7 +61,7 @@ module.exports = {
                         .setDescription(`We added you to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             switch (subCmd) {
                 case 'settings':
@@ -92,7 +92,7 @@ module.exports = {
                                 .setColor(color)
                         ], ephemeral: true, fetchReply: true,
                         components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     const collectorRepeat = afkMsg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
@@ -109,7 +109,7 @@ module.exports = {
                                         .setColor(color)
                                 ],
                                 components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                            }).catch(err => console.log(err));
+                            }).catch(( err => { } ))
 
                         } else if (interaction.customId === afkResetId) {
                             await userDatabase.updateOne({
@@ -124,7 +124,7 @@ module.exports = {
                                         .setColor(color)
                                 ],
                                 components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                            }).catch(err => console.log(err));
+                            }).catch(( err => { } ))
 
                         } else if (interaction.customId === afkTrueId) {
                             await userDatabase.updateOne({
@@ -138,7 +138,7 @@ module.exports = {
                                         .setColor(color)
                                 ],
                                 components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                            }).catch(err => console.log(err));
+                            }).catch(( err => { } ))
                         }
                     });
                     break;
@@ -174,7 +174,7 @@ module.exports = {
                                 .setDescription(`You are currently ${trueFalse.replace("true", "**afk**").replace("false", "**not afk**")}. Your afk status message is set to: **${userDatabase.afkMessage}**`)
                                 .setColor(color)
                         ], ephemeral: true,
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
                     break;
             }
 

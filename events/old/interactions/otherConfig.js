@@ -36,6 +36,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -61,9 +62,9 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                    return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -71,7 +72,7 @@ module.exports = {
             if (interaction.isSelectMenu()) {
                 if (interaction.values[0] === "welcome_msg") {
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
 
                     let joinmessage = guildDatabase.joinMessage;
 
@@ -92,13 +93,13 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ embeds: [welcome], ephemeral: true }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ embeds: [welcome], ephemeral: true }).catch(( err => { } ))
                     collector.on('collect', async m => {
                         if (m) {
                             const C = m.content;
                             if (!C) return;
-                            if (m.content.length > 1020) return m.reply("That message is too long.").catch(err => console.log(err));
+                            if (m.content.length > 1020) return m.reply("That message is too long.").catch(( err => { } ))
 
                             let newmsg = C;
 
@@ -118,27 +119,27 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed welcome message to: ${C}. Example in use:`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
+                            m.channel.send({ embeds: [updated] }).catch(( err => { } ))
 
                             const welcomeEmbed = new MessageEmbed()
                                 .setAuthor(`${m.author.tag} just joined!`, m.author.avatarURL())
                                 .setDescription(`${newmsg}`)
                                 .setColor(`GREEN`);
                             setTimeout(() => {
-                                m.channel.send({ embeds: [welcomeEmbed] }).catch(err => console.log(err));
+                                m.channel.send({ embeds: [welcomeEmbed] }).catch(( err => { } ))
                             }, 500);
 
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
+                            m.reply({ embeds: [timedOut] }).catch(( err => { } ))
                         }
                     });
                 }
                 if (interaction.values[0] === "leave_msg") {
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
 
                     let leavemessage = guildDatabase.leaveMessage;
 
@@ -160,13 +161,13 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ embeds: [welcome], ephemeral: true }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ embeds: [welcome], ephemeral: true }).catch(( err => { } ))
                     collector.on('collect', async m => {
                         if (m) {
                             const C = m.content;
                             if (!C) return;
-                            if (m.content.length > 1020) return m.reply("That message is too long.").catch(err => console.log(err));
+                            if (m.content.length > 1020) return m.reply("That message is too long.").catch(( err => { } ))
 
                             let newmsg = C;
 
@@ -185,21 +186,21 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed leave message to: ${C}. Example in use:`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
+                            m.channel.send({ embeds: [updated] }).catch(( err => { } ))
 
                             const leaveEmbed = new MessageEmbed()
                                 .setAuthor(`${m.author.tag} just left!`, m.author.avatarURL())
                                 .setDescription(`${newmsg}`)
                                 .setColor(`RED`);
                             setTimeout(() => {
-                                m.channel.send({ embeds: [leaveEmbed] }).catch(err => console.log(err));
+                                m.channel.send({ embeds: [leaveEmbed] }).catch(( err => { } ))
                             }, 500);
 
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
+                            m.reply({ embeds: [timedOut] }).catch(( err => { } ))
                         }
                     });
                 }
@@ -215,13 +216,13 @@ module.exports = {
                         .setColor(COLOR_MAIN)
                         .setThumbnail("https://i.imgur.com/0vCe2oB.png");
 
-                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(err => console.log(err));
-                    interaction.reply({ embeds: [economy], ephemeral: true }).catch(err => console.log(err));
+                    if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({ ephemeral: true, embeds: [noPermission] }).catch(( err => { } ))
+                    interaction.reply({ embeds: [economy], ephemeral: true }).catch(( err => { } ))
                     collector.on('collect', async m => {
                         if (m) {
                             const C = m.content;
                             if (!C) return;
-                            if (m.content.length > 10) return m.reply("That prefix is too long.").catch(err => console.log(err));
+                            if (m.content.length > 10) return m.reply("That prefix is too long.").catch(( err => { } ))
 
                             await guildDatabase.updateOne({
                                 prefix: C
@@ -231,21 +232,21 @@ module.exports = {
                                 .setTitle(":white_check_mark: Succes!")
                                 .setDescription(`Changed prefix to: ${C}`)
                                 .setColor(COLOR_MAIN)
-                            m.channel.send({ embeds: [updated] }).catch(err => console.log(err));
+                            m.channel.send({ embeds: [updated] }).catch(( err => { } ))
 
                             collector.stop();
                             return;
                         } else {
                             if (m.author.bot) return;
-                            m.reply({ embeds: [timedOut] }).catch(err => console.log(err));
+                            m.reply({ embeds: [timedOut] }).catch(( err => { } ))
                         }
                     });
                 }
             }
 
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(err => console.log(err));
+            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: clear`)] }).catch(( err => { } ))
             return;
         }
     }

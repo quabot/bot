@@ -46,6 +46,7 @@ module.exports = {
                         ticketCategory: "Tickets",
                         closedTicketCategory: "Tickets",
                         logEnabled: true,
+                    modEnabled: true,
                         musicEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
@@ -71,17 +72,17 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
                         });
-                    return interaction.channel.send({ embeds: [added] }).catch(err => console.log(err));
+                    return interaction.channel.send({ embeds: [added] }).catch(( err => { } ))
                 }
             }).clone().catch(function (err) { console.log(err) });
 
             if (!guildDatabase) return;
 
-            if (guildDatabase.suggestEnabled === "false") return interaction.reply({ embeds: [suggestDis] }).catch(err => console.log(err));
+            if (guildDatabase.suggestEnabled === "false") return interaction.reply({ embeds: [suggestDis] }).catch(( err => { } ))
             const suggestChannel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
-            if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] }).catch(err => console.log(err));
+            if (!suggestChannel) return interaction.reply({ embeds: [noSuggestChannelConfigured] }).catch(( err => { } ))
 
             const Ids = require('../../schemas/IdsSchema');
             const suggestDatabase = await Ids.findOne({
@@ -120,14 +121,14 @@ module.exports = {
                                 .setFooter(`Voting for this suggestion has closed! • Suggestion ID: ${suggestionId}`)
                                 
                                 .setColor(COLOR_MAIN)
-                            message.edit({ embeds: [winEmbed] }).catch(err => console.log(err));
+                            message.edit({ embeds: [winEmbed] }).catch(( err => { } ))
                             const replyEmbed = new MessageEmbed()
                                 .setTitle(`Suggestion Ended`)
                                 .setDescription(`Voting for the suggestion ended, the suggestion ${result}!`)
                                 .addField(`Suggestion`, `${suggestionContent}`)
                                 
                                 .setColor(COLOR_MAIN)
-                            interaction.reply({ embeds: [replyEmbed] }).catch(err => console.log(err));
+                            interaction.reply({ embeds: [replyEmbed] }).catch(( err => { } ))
                         });
                     });
                 })
@@ -147,11 +148,11 @@ module.exports = {
                     .addField("Message ID", `${msgId}`)
                     .addField("Ended by", `${interaction.user}`)
                     
-                logChannel.send({ embeds: [embed2] }).catch(err => console.log(err));
+                logChannel.send({ embeds: [embed2] }).catch(( err => { } ))
             }
         } catch (e) {
-            interaction.channel.send({ embeds: [error] }).catch(err => console.log(err));
-            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(err => console.log(err));;
+            interaction.channel.send({ embeds: [error] }).catch(( err => { } ))
+            client.guilds.cache.get('847828281860423690').channels.cache.get('938509157710061608').send({ embeds: [new MessageEmbed().setTitle(`Error!`).setDescription(`${e}`).setColor(`RED`).setFooter(`Command: serverinfo`)] }).catch(( err => { } ));
             return;
         }
     }

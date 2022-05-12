@@ -26,7 +26,7 @@ module.exports = {
                     embed.addField("** **", `${secondHalfPt2.join(', ')}`);
                     embed.addField("** **", `${firstHalfPt3.join(', ')}`);
                     embed.addField("** **", `${secondHalfPt4.join(', ')}`);
-                    interaction.reply({ embeds: [embed], split: true }).catch(err => console.log(err));
+                    interaction.reply({ embeds: [embed], split: true }).catch(( err => { } ))
                     return;
                 }
                 embed.addField("Roles <:RolesIcon:959764812068450318>", `${firstHalf.join(', ')}`);
@@ -35,7 +35,7 @@ module.exports = {
 
             interaction.reply({
                 embeds: [embed]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

@@ -31,7 +31,7 @@ module.exports = {
                         .setDescription("Getting your image ready...")
                         .setColor(color)
                 ]
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             const Sub = interaction.options.getSubcommand();
             switch (Sub) {
@@ -46,7 +46,7 @@ module.exports = {
                                     .setFooter(`r/${data.subreddit}`)
                                     .setColor(color)
                             ]
-                        }).catch(err => console.log(err));
+                        }).catch(( err => { } ))
                     });
                     break;
 
@@ -61,7 +61,7 @@ module.exports = {
                                     .setFooter(`r/${data.subreddit}`)
                                     .setColor(color)
                             ]
-                        }).catch(err => console.log(err));
+                        }).catch(( err => { } ))
                     });
                     break;
 
@@ -76,7 +76,7 @@ module.exports = {
                                     .setFooter(`r/${data.subreddit}`)
                                     .setColor(color)
                             ]
-                        }).catch(err => console.log(err));
+                        }).catch(( err => { } ))
                     });
                     break;
             }

@@ -12,7 +12,7 @@ module.exports = {
                         .setDescription(`🏓 \`${client.ws.ping}ms\``)
                         .setColor(color)
                     ]
-                }).catch(err => console.log(err));
+                }).catch(( err => { } ))
 
         } catch (e) {
             console.log(e);

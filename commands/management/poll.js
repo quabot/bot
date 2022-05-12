@@ -93,6 +93,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
+                    modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -111,7 +112,7 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -122,7 +123,7 @@ module.exports = {
                         .setDescription(`Added this server to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             if (guildDatabase.pollEnabled === "false") return interaction.reply({
                 embeds: [
@@ -130,7 +131,7 @@ module.exports = {
                         .setDescription(`Polls are disabled in this server! Ask an admin to enable them with \`/config general\``)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(err => console.log(err));
+            }).catch(( err => { } ))
 
             switch (subCmd) {
                 case 'create':
@@ -238,7 +239,7 @@ module.exports = {
                     newPoll.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(err => console.log(err));
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
 
                     break;
@@ -260,7 +261,7 @@ module.exports = {
                                 .setDescription(`That poll does not exist.`)
                                 .setColor(color)
                         ], ephemeral: true
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
 
                     await polldb2.updateOne({
                         endTimestamp: new Date().getTime() + 3000
@@ -272,7 +273,7 @@ module.exports = {
                                 .setDescription(`Succesfully ended poll.`)
                                 .setColor(color)
                         ], ephemeral: true
-                    }).catch(err => console.log(err));
+                    }).catch(( err => { } ))
             }
 
         } catch (e) {

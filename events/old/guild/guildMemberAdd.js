@@ -25,6 +25,7 @@ module.exports = {
                     ticketCategory: "Tickets",
                     closedTicketCategory: "Tickets",
                     logEnabled: true,
+                    modEnabled: true,
                     musicEnabled: true,
                     levelEnabled: false,
                         welcomeEmbed: true,
@@ -98,7 +99,7 @@ module.exports = {
             let memberTarget = member.guild.members.cache.get(member.id);
 
             if (mainRole) {
-                memberTarget.roles.add(mainRole.id).catch(err => console.log(err));
+                memberTarget.roles.add(mainRole.id).catch(( err => { } ))
             }
         }
         if (eventsDatabase.joinMessages === false) return;
