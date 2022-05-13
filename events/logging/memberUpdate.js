@@ -1,19 +1,19 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "emojiDelete",
-    async execute(emoji, client, color) {
+    name: "guildMemberUpdate",
+    async execute(oldMember, newMember, client, color) {
         try {
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: emoji.guild.id,
+                guildId: oldMember.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: emoji.guild.id,
-                        guildName: emoji.guild.name,
+                        guildId: oldMember.guild.id,
+                        guildName: oldMember.guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
@@ -40,23 +40,24 @@ module.exports = {
                     });
                     newGuild.save()
                         .catch(err => {
-                            console.log(err)});
+                            console.log(err);
+                        });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
-            const channel = emoji.guild.channels.cache.get(guildDatabase.logChannelID);
+            const channel = oldMember.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
-                guildId: emoji.guild.id,
+                guildId: oldMember.guild.id,
             }, (err, log) => {
                 if (err) console.error(err);
                 if (!log) {
                     const newLog = new Log({
-                        guildId: emoji.guild.id,
+                        guildId: oldMember.guild.id,
                         enabled: [
                             'emojiCreateDelete',
                             'emojiUpdate',
@@ -89,18 +90,60 @@ module.exports = {
 
             if (!logDatabase) return;
 
-            if (!logDatabase.enabled.includes("emojiCreateDelete")) return;
+            if (logDatabase.enabled.includes("roleAddRemove")) {
+                if (oldMember._roles !== newMember._roles) {
+                    if (oldMember.nickname === newMember.nickname) {
+                        if (oldMember._roles > newMember._roles) {
+                            channel.send({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setTitle('Role(s) Removed')
+                                        .addField("User", `${newMember}`)
+                                        .setDescription(`<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`)
+                                        .setColor(color)
+                                        .setFooter(`User ID: ${newMember.id}`)
 
-            channel.send({
-                embeds: [
-                    new MessageEmbed()
-                        .setColor("RED")
-                        .setTitle("Emoji Deleted!")
-                        .addField('Emoji Name', `${emoji.name}`)
-                        .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
-                ]
-            });
+                                ]
+                            }).catch((err => { }));
+                        }
+                        if (oldMember._roles < newMember._roles) {
+                            channel.send({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setTitle('Role(s) Given')
+                                        .addField("User", `${newMember}`)
+                                        .setDescription(`<@&${newMember._roles.filter(n => !oldMember._roles.includes(n)).join('>\n<@&')}>`)
+                                        .setColor(color)
+                                        .setFooter(`User ID: ${newMember.id}`)
+                                ]
+                            }).catch((err => { }));
+                        }
+                    }
+                }
+            }
 
+            if (logDatabase.enabled.includes("nickChange")) {
+                if (oldMember._roles === newMember._roles) {
+                    if (oldMember.nickname !== newMember.nickname) {
+                        let oldNick = oldMember.nickname;
+                        let newNick = newMember.nickname;
+                        if (oldNick === null) oldNick = "none";
+                        if (newNick === null) newNick = "none";
+
+                        channel.send({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle("Nickname changed")
+                                    .addField("Old Nickname", `${oldNick}`)
+                                    .addField("New Nickname", `${newNick}`)
+                                    .addField("User", `${newMember}`)
+                                    .setFooter({ text: `User-ID: ${newMember.user.id}` })
+                                    .setColor(color)
+                            ]
+                        }).catch((err => { }));
+                    }
+                }
+            }
         } catch (e) {
             console.log(e);
             client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Event: " + this.name)] });

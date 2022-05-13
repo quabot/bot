@@ -61,25 +61,28 @@ module.exports = {
             if (!log) {
                 const newLog = new Log({
                     guildId: interaction.guild.id,
-                    emojiCreateDelete: true,
-                    emojiUpdate: true,
-                    guildBanAdd: true,
-                    guildBanRemove: true,
-                    roleAddRemove: true,
-                    nickChange: true,
-                    boost: true,
-                    guildUpdate: true,
-                    inviteCreateDelete: true,
-                    messageDelete: true,
-
-                    messageUpdate: true,
-                    roleCreateDelete: true,
-                    roleUpdate: true,
-                    stickerCreateDelete: true,
-                    stickerUpdate: true,
-                    threadCreateDelete: true,
-                    voiceMove: false,
-                    voiceJoinLeave: false,
+                    enabled: [
+                        'emojiCreateDelete',
+                        'emojiUpdate',
+                        'guildBanAdd',
+                        'guildBanRemove',
+                        'roleAddRemove',
+                        'nickChange',
+                        'channelCreateDelete',
+                        'channelUpdate',
+                        'inviteCreateDelete',
+                        'messageDelete',
+                        'messageUpdate',
+                        'roleCreateDelete',
+                        'roleUpdate',
+                        'stickerCreateDelete',
+                        'stickerUpdate',
+                        'threadCreateDelete',
+                    ],
+                    disabled: [
+                        'voiceMove',
+                        'voiceJoinLeave',
+                    ]
                 });
                 newLog.save()
                     .catch(err => {
@@ -149,16 +152,16 @@ module.exports = {
                                     default: logDatabase.enabled.includes("nickChange")
                                 },
                                 {
-                                    label: 'Boosts',
-                                    description: 'Log when the server get\'s boosted.',
-                                    value: 'boost',
-                                    default: logDatabase.enabled.includes("boost")
+                                    label: 'Channel Create & Delete',
+                                    description: 'Log when channels get created or deleted.',
+                                    value: 'channelCreateDelete',
+                                    default: logDatabase.enabled.includes("channelCreateDelete")
                                 },
                                 {
-                                    label: 'Server Updates',
-                                    description: 'Log when the server get\'s changed/updated.',
-                                    value: 'guildUpdate',
-                                    default: logDatabase.enabled.includes("guildUpdate")
+                                    label: 'Channel Updates',
+                                    description: 'Log when channels get updated.',
+                                    value: 'channelUpdate',
+                                    default: logDatabase.enabled.includes("channelUpdate")
                                 },
                                 {
                                     label: 'Invite Create & Delete',
@@ -204,7 +207,7 @@ module.exports = {
                                 },
                                 {
                                     label: 'Thread Create & Delete',
-                                    description: 'Log when threads are created/delted.',
+                                    description: 'Log when threads are created/deleted.',
                                     value: 'threadCreateDelete',
                                     default: logDatabase.enabled.includes("threadCreateDelete")
                                 },

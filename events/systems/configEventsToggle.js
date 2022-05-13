@@ -59,8 +59,8 @@ module.exports = {
                 'guildBanRemove',
                 'roleAddRemove',
                 'nickChange',
-                'boost',
-                'guildUpdate',
+                'channelCreateDelete',
+                'channelUpdate',
                 'inviteCreateDelete',
                 'messageDelete',
                 'messageUpdate',
@@ -69,8 +69,6 @@ module.exports = {
                 'stickerCreateDelete',
                 'stickerUpdate',
                 'threadCreateDelete',
-                'voiceMove',
-                'voiceJoinLeave',
             ];
 
             let disabled = [];

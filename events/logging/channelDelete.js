@@ -1,24 +1,23 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "emojiDelete",
-    async execute(emoji, client, color) {
+    name: "channelDelete",
+    async execute(channel, client, color) {
         try {
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: emoji.guild.id,
+                guildId: channel.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: emoji.guild.id,
-                        guildName: emoji.guild.name,
+                        guildId: channel.guild.id,
+                        guildName: channel.guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
-                        punishmentChannelID: "none",
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
@@ -40,23 +39,24 @@ module.exports = {
                     });
                     newGuild.save()
                         .catch(err => {
-                            console.log(err)});
+                            console.log(err);
+                        });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
-            const channel = emoji.guild.channels.cache.get(guildDatabase.logChannelID);
-            if (!channel) return;
+            const sendCh = channel.guild.channels.cache.get(guildDatabase.logChannelID);
+            if (!sendCh) return;
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
-                guildId: emoji.guild.id,
+                guildId: channel.guild.id,
             }, (err, log) => {
                 if (err) console.error(err);
                 if (!log) {
                     const newLog = new Log({
-                        guildId: emoji.guild.id,
+                        guildId: channel.guild.id,
                         enabled: [
                             'emojiCreateDelete',
                             'emojiUpdate',
@@ -89,15 +89,17 @@ module.exports = {
 
             if (!logDatabase) return;
 
-            if (!logDatabase.enabled.includes("emojiCreateDelete")) return;
+            if (!logDatabase.enabled.includes("channelCreateDelete")) return;
 
-            channel.send({
+            if (channel.type === "GUILD_CATEGORY") return;
+            
+            sendCh.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")
-                        .setTitle("Emoji Deleted!")
-                        .addField('Emoji Name', `${emoji.name}`)
-                        .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
+                        .setTitle("Channel Deleted!")
+                        .addField('Name', `#${channel.name}`)
+                        .setFooter({ text: `ID: ${channel.id}` })
                 ]
             });
 
