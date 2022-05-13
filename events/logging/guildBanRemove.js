@@ -1,23 +1,24 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "emojiUpdate",
-    async execute(oldEmoji, newEmoji, client, color) {
+    name: "guildBanRemove",
+    async execute(ban, client, color) {
         try {
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: oldEmoji.guild.id,
+                guildId: ban.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: oldEmoji.guild.id,
-                        guildName: oldEmoji.guild.name,
+                        guildId: ban.guild.id,
+                        guildName: ban.guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
+                        punishmentChannelID: "none",
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
@@ -46,17 +47,17 @@ module.exports = {
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
-            const channel = oldEmoji.guild.channels.cache.get(guildDatabase.logChannelID);
+            const channel = ban.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
-                guildId: oldEmoji.guild.id,
+                guildId: ban.guild.id,
             }, (err, log) => {
                 if (err) console.error(err);
                 if (!log) {
                     const newLog = new Log({
-                        guildId: oldEmoji.guild.id,
+                        guildId: ban.guild.id,
                         enabled: [
                             'emojiCreateDelete',
                             'emojiUpdate',
@@ -89,16 +90,15 @@ module.exports = {
 
             if (!logDatabase) return;
 
-            if (!logDatabase.enabled.includes("emojiUpdate")) return;
+            if (!logDatabase.enabled.includes("guildBanRemove")) return;
 
             channel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setColor("YELLOW")
-                        .setTitle("Emoji Updated!")
-                        .addField('Old Name', `${oldEmoji.name}`, true)
-                        .addField('New Name', `${newEmoji.name}`, true)
-                        .setFooter(`ID: ${newEmoji.id}`, `${newEmoji.url}`)
+                        .setColor("GREEN")
+                        .setTitle("Member Unbanned!")
+                        .addField('Member', `${ban.user.tag}`)
+                        .setFooter(`ID: ${ban.user.id}`)
                 ]
             });
 

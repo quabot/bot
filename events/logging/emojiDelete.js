@@ -40,9 +40,7 @@ module.exports = {
                     });
                     newGuild.save()
                         .catch(err => {
-                            console.log(err);
-                            emoji.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
-                        });
+                            console.log(err)});
                 }
             }).clone().catch(function (err) { console.log(err) });
 
