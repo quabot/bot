@@ -57,25 +57,28 @@ module.exports = {
                 if (!log) {
                     const newLog = new Log({
                         guildId: emoji.guild.id,
-                        emojiCreateDelete: true,
-                        emojiUpdate: true,
-                        guildBanAdd: true,
-                        guildBanRemove: true,
-                        roleAddRemove: true,
-                        nickChange: true,
-                        boost: true,
-                        guildUpdate: true,
-                        inviteCreateDelete: true,
-                        messageDelete: true,
-                        
-                        messageUpdate: true,
-                        roleCreateDelete: true,
-                        roleUpdate: true,
-                        stickerCreateDelete: true,
-                        stickerUpdate: true,
-                        threadCreateDelete: true,
-                        voiceMove: false,
-                        voiceJoinLeave: false,
+                        enabled: [
+                            'emojiCreateDelete',
+                            'emojiUpdate',
+                            'guildBanAdd',
+                            'guildBanRemove',
+                            'roleAddRemove',
+                            'nickChange',
+                            'boost',
+                            'guildUpdate',
+                            'inviteCreateDelete',
+                            'messageDelete',
+                            'messageUpdate',
+                            'roleCreateDelete',
+                            'roleUpdate',
+                            'stickerCreateDelete',
+                            'stickerUpdate',
+                            'threadCreateDelete',
+                        ],
+                        disabled: [
+                            'voiceMove',
+                            'voiceJoinLeave',
+                        ]
                     });
                     newLog.save()
                         .catch(err => {
@@ -86,7 +89,7 @@ module.exports = {
 
             if (!logDatabase) return;
 
-            if (logDatabase.emojiCreateDelete === false) return;
+            if (!logDatabase.enabled.includes("emojiCreateDelete")) return;
 
             channel.send({
                 embeds: [

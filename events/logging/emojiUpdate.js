@@ -21,7 +21,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -40,7 +40,7 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            oldEmoji.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            oldEmoji.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -49,6 +49,48 @@ module.exports = {
             if (guildDatabase.logEnabled === false) return;
             const channel = oldEmoji.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
+
+            const Log = require('../../structures/schemas/LogSchema');
+            const logDatabase = await Log.findOne({
+                guildId: oldEmoji.guild.id,
+            }, (err, log) => {
+                if (err) console.error(err);
+                if (!log) {
+                    const newLog = new Log({
+                        guildId: oldEmoji.guild.id,
+                        enabled: [
+                            'emojiCreateDelete',
+                            'emojiUpdate',
+                            'guildBanAdd',
+                            'guildBanRemove',
+                            'roleAddRemove',
+                            'nickChange',
+                            'boost',
+                            'guildUpdate',
+                            'inviteCreateDelete',
+                            'messageDelete',
+                            'messageUpdate',
+                            'roleCreateDelete',
+                            'roleUpdate',
+                            'stickerCreateDelete',
+                            'stickerUpdate',
+                            'threadCreateDelete',
+                        ],
+                        disabled: [
+                            'voiceMove',
+                            'voiceJoinLeave',
+                        ]
+                    });
+                    newLog.save()
+                        .catch(err => {
+                            console.log(err);
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            if (!logDatabase) return;
+
+            if (!logDatabase.enabled.includes("emojiUpdate")) return;
 
             channel.send({
                 embeds: [
