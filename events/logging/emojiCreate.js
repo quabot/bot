@@ -21,7 +21,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -40,7 +40,6 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            emoji.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -49,6 +48,45 @@ module.exports = {
             if (guildDatabase.logEnabled === false) return;
             const channel = emoji.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
+
+            const Log = require('../../structures/schemas/LogSchema');
+            const logDatabase = await Log.findOne({
+                guildId: emoji.guild.id,
+            }, (err, log) => {
+                if (err) console.error(err);
+                if (!log) {
+                    const newLog = new Log({
+                        guildId: emoji.guild.id,
+                        emojiCreateDelete: true,
+                        emojiUpdate: true,
+                        guildBanAdd: true,
+                        guildBanRemove: true,
+                        roleAddRemove: true,
+                        nickChange: true,
+                        boost: true,
+                        guildUpdate: true,
+                        inviteCreateDelete: true,
+                        messageDelete: true,
+                        
+                        messageUpdate: true,
+                        roleCreateDelete: true,
+                        roleUpdate: true,
+                        stickerCreateDelete: true,
+                        stickerUpdate: true,
+                        threadCreateDelete: true,
+                        voiceMove: false,
+                        voiceJoinLeave: false,
+                    });
+                    newLog.save()
+                        .catch(err => {
+                            console.log(err);
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            if (!logDatabase) return;
+
+            if (logDatabase.emojiCreateDelete === false) return;
 
             channel.send({
                 embeds: [
@@ -59,8 +97,6 @@ module.exports = {
                         .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
                 ]
             });
-
-            // events db check
 
         } catch (e) {
             console.log(e);

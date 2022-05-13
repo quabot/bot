@@ -9,36 +9,15 @@ const reqNum = {
     required: true,
 }
 
-const reqBool = {
-    type: Boolean,
+const reqArray = {
+    type: Array,
     required: true,
 }
 
 const LogSchema = new mongoose.Schema({
     guildId: reqString,
-    logChannelID: reqString,
-    moderation: reqBool,
-    guildAdd: reqBool,
-    guildRemove: reqBool,
-    emojiCreateDelete: reqBool,
-    emojiUpdate: reqBool,
-    guildBanAdd: reqBool,
-    guildBanRemove: reqBool,
-    roleAdd: reqBool,
-    nickChange: reqBool,
-    boost: reqBool,
-    guildUpdate: reqBool,
-    inviteCreateDelete: reqBool,
-    messageDelete: reqBool,
-    messageDeleteBulk: reqBool,
-    messageUpdate: reqBool,
-    roleCreateDelete: reqBool,
-    roleUpdate: reqBool,
-    stickerCreateDelete: reqBool,
-    stickerUpdate: reqBool,
-    threadCreateDelete: reqBool,
-    voiceMove: reqBool,
-    voiceJoinLeave: reqBool,
+    enabled: reqArray,
+    disabled: reqArray,
 });
 
 module.exports = mongoose.model('Logs', LogSchema);

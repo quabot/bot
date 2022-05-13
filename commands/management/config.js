@@ -93,7 +93,7 @@ module.exports = {
                         ]
                     }).catch((err => { }));
                     break;
-            
+
                 case 'logging':
                     interaction.reply({
                         embeds: [
@@ -130,7 +130,7 @@ module.exports = {
                         ]
                     }).catch((err => { }));
                     break;
-                }
+            }
         } catch (e) {
             console.log(e);
             client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });

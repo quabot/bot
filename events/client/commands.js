@@ -4,6 +4,8 @@ const { color } = require('../../structures/settings.json');
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
+        if (interaction.customId === "events") return;
+        
         const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
         if (!interaction.isCommand()) {
             if (interaction.isSelectMenu()) {
