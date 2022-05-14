@@ -94,6 +94,13 @@ module.exports = {
                     const emoji = interaction.options.getString('emoji');
                     const mode = interaction.options.getString('mode');
 
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription("We have disabled that feature in this release.")
+                        ]
+                    }).catch((err => { }));
 
                     //channel type check
                     // check if message exists if it doesnt ask to create

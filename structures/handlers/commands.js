@@ -22,8 +22,6 @@ module.exports = async (client, PG, Ascii, consola) => {
     consola.log(Table.toString());
 
     client.on('ready', async () => {
-        client.guilds.cache.forEach((guild) => {
-            guild.commands.set(CommandsArray)
-        });
+        client.application.commands.set(CommandsArray);
     });
 };

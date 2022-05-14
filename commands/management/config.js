@@ -99,6 +99,15 @@ module.exports = {
                         embeds: [
                             new MessageEmbed()
                                 .setColor(color)
+                                .setDescription("We have disabled that feature in this release.")
+                        ]
+                    }).catch((err => { }));
+                    break;
+                    
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
                                 .setTitle(`${client.user.username} Welcome Configuration`)
                                 .addField("Quick Links", "[Invite](https://discord.com/oauth2/authorize?client_id=845603702210953246&permissions=275384757342&scope=bot%20applications.commands) - [Discord](https://discord.gg/9kPCU8GHSK) - [Website](https://quabot.net)")
                                 .setThumbnail(client.user.avatarURL({ dynamic: true }))
