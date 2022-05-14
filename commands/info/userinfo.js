@@ -20,8 +20,6 @@ module.exports = {
             let member = interaction.options.getMember("user");
             if (!member) member = interaction.member;
 
-            console.log(member)
-
             var roles = `<@&${member._roles.map(role => role.toString()).join('>, <@&')}>`;
 
             const embed = new MessageEmbed()
