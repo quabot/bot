@@ -84,7 +84,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -103,7 +103,6 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });

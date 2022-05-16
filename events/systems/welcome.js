@@ -25,7 +25,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -54,6 +54,8 @@ module.exports = {
 
             const channel = member.guild.channels.cache.get(`${guildDatabase.welcomeChannelID}`);
 
+            if (!channel) return;
+            
             let joinMessage = guildDatabase.joinMessage;
             joinMessage = joinMessage.replace("{user}", `${member}`);
             joinMessage = joinMessage.replace("{username}", `${member.user.username}`);

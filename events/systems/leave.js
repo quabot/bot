@@ -53,6 +53,8 @@ module.exports = {
 
             const channel = member.guild.channels.cache.get(`${guildDatabase.welcomeChannelID}`);
 
+            if (!channel) return;
+            
             let leaveMessage = guildDatabase.leaveMessage;
             leaveMessage = leaveMessage.replace("{user}", `${member}`);
             leaveMessage = leaveMessage.replace("{username}", `${member.user.username}`);
