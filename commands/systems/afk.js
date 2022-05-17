@@ -1,5 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { Modal, TextInputComponent, showModal } = require('discord-modals');
+const { MessageEmbed, MessageButton, MessageActionRow, Modal, TextInputComponent } = require('discord.js');
 
 module.exports = {
     name: "afk",
@@ -50,7 +49,7 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -61,7 +60,7 @@ module.exports = {
                         .setDescription(`We added you to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(( err => { } ))
+            }).catch((err => { }))
 
             switch (subCmd) {
                 case 'settings':
@@ -92,7 +91,7 @@ module.exports = {
                                 .setColor(color)
                         ], ephemeral: true, fetchReply: true,
                         components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                    }).catch(( err => { } ))
+                    }).catch((err => { }))
 
                     const collectorRepeat = afkMsg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
@@ -109,7 +108,7 @@ module.exports = {
                                         .setColor(color)
                                 ],
                                 components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                         } else if (interaction.customId === afkResetId) {
                             await userDatabase.updateOne({
@@ -124,7 +123,7 @@ module.exports = {
                                         .setColor(color)
                                 ],
                                 components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                         } else if (interaction.customId === afkTrueId) {
                             await userDatabase.updateOne({
@@ -138,31 +137,31 @@ module.exports = {
                                         .setColor(color)
                                 ],
                                 components: [new MessageActionRow({ components: [enableAfk, disableAfk, resetAfk] })]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
                         }
                     });
                     break;
 
                 case 'set':
 
-                    const setAfk = new Modal()
-                        .setCustomId('afk-set')
-                        .setTitle('Set your AFK message')
+                    const modal = new Modal()
+                        .setCustomId('myModal')
+                        .setTitle('My Modal')
+
+                    const afkRow = new MessageActionRow()
                         .addComponents(
                             new TextInputComponent()
                                 .setCustomId('afk-status')
-                                .setLabel('Enter your new status')
-                                .setStyle('SHORT')
+                                .setLabel("Enter your new status")
                                 .setMinLength(1)
                                 .setMaxLength(150)
                                 .setPlaceholder('I\'m sleeping...')
                                 .setRequired(true)
+                                .setStyle('SHORT')
                         );
+                    modal.addComponents(afkRow);
 
-                    showModal(setAfk, {
-                        client: client,
-                        interaction: interaction
-                    });
+                    await interaction.showModal(modal);
 
                     break;
 
@@ -174,7 +173,7 @@ module.exports = {
                                 .setDescription(`You are currently ${trueFalse.replace("true", "**afk**").replace("false", "**not afk**")}. Your afk status message is set to: **${userDatabase.afkMessage}**`)
                                 .setColor(color)
                         ], ephemeral: true,
-                    }).catch(( err => { } ))
+                    }).catch((err => { }))
                     break;
             }
 

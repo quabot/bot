@@ -16,9 +16,6 @@ client.modals = new Collection();
     require(`./structures/handlers/${handler}`)(client, PG, Ascii, consola);
 });
 
-const discordModals = require('discord-modals');
-discordModals(client);
-
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
