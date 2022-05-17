@@ -1,5 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
-const { Modal, TextInputComponent, showModal } = require('discord-modals');
+const { MessageEmbed, MessageButton, MessageActionRow, Modal, TextInputComponent, Message } = require('discord.js');
 
 module.exports = {
     id: "welcome_messages_join",
@@ -40,7 +39,7 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
@@ -76,24 +75,24 @@ module.exports = {
         collector.on('collect', async interaction => {
             if (interaction.customId === "welcome_messages_join_modal") {
 
-                const setWelcome = new Modal()
+                const modal = new Modal()
                     .setCustomId('welcome-message-join')
                     .setTitle('Set the new welcome message')
                     .addComponents(
-                        new TextInputComponent()
-                            .setCustomId('message')
-                            .setLabel('Enter your welcome message')
-                            .setStyle('LONG')
-                            .setMinLength(1)
-                            .setMaxLength(400)
-                            .setPlaceholder('Valid Variables:\n{guild} - {user} - {username} - {discriminator} - {members}')
-                            .setRequired(true)
+                        new MessageActionRow()
+                            .addComponents(
+                                new TextInputComponent()
+                                    .setCustomId('message')
+                                    .setLabel('Enter your welcome message')
+                                    .setStyle('PARAGRAPH')
+                                    .setMinLength(1)
+                                    .setMaxLength(400)
+                                    .setPlaceholder('Valid Variables:\n{guild} - {user} - {username} - {discriminator} - {members}')
+                                    .setRequired(true)
+                            )
                     );
 
-                showModal(setWelcome, {
-                    client: client,
-                    interaction: interaction
-                });
+                await interaction.showModal(modal);
 
             }
         });

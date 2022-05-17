@@ -3,18 +3,18 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     id: "welcome-message-join",
     permission: "ADMINISTRATOR",
-    async execute(modal, client, color) {
-        const msgNew = modal.getTextInputValue('message');
+    async execute(interaction, client, color) {
+        const msgNew = interaction.fields.getTextInputValue('message');
         
         const Guild = require('../../structures/schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
-            guildId: modal.guild.id,
+            guildId: interaction.guild.id,
         }, (err, guild) => {
             if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    guildId: modal.guild.id,
-                    guildName: modal.guild.name,
+                    guildId: interaction.guild.id,
+                    guildName: interaction.guild.name,
                     logChannelID: "none",
                     suggestChannelID: "none",
                     welcomeChannelID: "none",
@@ -45,9 +45,9 @@ module.exports = {
             }
         }).clone().catch(function (err) { console.log(err) });
 
-        await modal.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true });
 
-        if (!guildDatabase) return modal.followUp({
+        if (!guildDatabase) return interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setColor(color)
@@ -60,15 +60,15 @@ module.exports = {
         });
 
         let joinMessage = msgNew;
-        joinMessage = joinMessage.replace("{user}", `${modal.user}`);
-        joinMessage = joinMessage.replace("{username}", `${modal.user.username}`);
-        joinMessage = joinMessage.replace("{discriminator}", `${modal.user.discriminator}`);
-        joinMessage = joinMessage.replace("{guildname}", `${modal.guild.name}`);
-        joinMessage = joinMessage.replace("{guild}", `${modal.guild.name}`);
-        joinMessage = joinMessage.replace("{members}", `${modal.guild.memberCount}`);
-        joinMessage = joinMessage.replace("{membercount}", `${modal.guild.memberCount}`);
+        joinMessage = joinMessage.replace("{user}", `${interaction.user}`);
+        joinMessage = joinMessage.replace("{username}", `${interaction.user.username}`);
+        joinMessage = joinMessage.replace("{discriminator}", `${interaction.user.discriminator}`);
+        joinMessage = joinMessage.replace("{guildname}", `${interaction.guild.name}`);
+        joinMessage = joinMessage.replace("{guild}", `${interaction.guild.name}`);
+        joinMessage = joinMessage.replace("{members}", `${interaction.guild.memberCount}`);
+        joinMessage = joinMessage.replace("{membercount}", `${interaction.guild.memberCount}`);
 
-        modal.followUp({
+        interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setColor(color)
@@ -77,19 +77,19 @@ module.exports = {
         }).catch((err => { }));
 
         if (guildDatabase.welcomeEmbed === "true") {
-            modal.channel.send({
+            interaction.channel.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor(`GREEN`)
                         .setTimestamp()
                         .setTitle('Member joined!')
-                        .setAuthor(`${modal.user.tag} just joined!`, modal.user.avatarURL())
+                        .setAuthor(`${interaction.user.tag} just joined!`, interaction.user.avatarURL())
                         .setFooter("Example Message")
                         .setDescription(`${joinMessage}`)
                 ]
             }).catch((err => { }));
         } else {
-            modal.channel.send(`Example Message:\n${joinMessage}`).catch((err => { }));
+            interaction.channel.send(`Example Message:\n${joinMessage}`).catch((err => { }));
         }
     }
 }

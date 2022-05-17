@@ -1,5 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
-const { Modal, TextInputComponent, showModal } = require('discord-modals');
+const { MessageEmbed, MessageButton, MessageActionRow, Modal, TextInputComponent, Message } = require('discord.js');
 
 module.exports = {
     id: "welcome_messages_leave",
@@ -76,24 +75,24 @@ module.exports = {
         collector.on('collect', async interaction => {
             if (interaction.customId === "welcome_messages_leave_modal") {
 
-                const setLeave = new Modal()
+                const modal = new Modal()
                     .setCustomId('welcome-message-leave')
                     .setTitle('Set the new leave message')
                     .addComponents(
-                        new TextInputComponent()
-                            .setCustomId('message')
-                            .setLabel('Enter your leave message')
-                            .setStyle('LONG')
-                            .setMinLength(1)
-                            .setMaxLength(400)
-                            .setPlaceholder('Valid Variables:\n{guild} - {user} - {username} - {discriminator} - {members}')
-                            .setRequired(true)
+                        new MessageActionRow()
+                            .addComponents(
+                                new TextInputComponent()
+                                    .setCustomId('message')
+                                    .setLabel('Enter your leave message')
+                                    .setStyle('PARAGRAPH')
+                                    .setMinLength(1)
+                                    .setMaxLength(400)
+                                    .setPlaceholder('Valid Variables:\n{guild} - {user} - {username} - {discriminator} - {members}')
+                                    .setRequired(true)
+                            )
                     );
 
-                showModal(setLeave, {
-                    client: client,
-                    interaction: interaction
-                });
+                await interaction.showModal(modal);
 
             }
         });

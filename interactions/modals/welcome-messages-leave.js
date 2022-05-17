@@ -3,18 +3,18 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     id: "welcome-message-leave",
     permission: "ADMINISTRATOR",
-    async execute(modal, client, color) {
-        let msgNew = modal.getTextInputValue('message');
+    async execute(interaction, client, color) {
+        let msgNew = interaction.fields.getTextInputValue('message');
         
         const Guild = require('../../structures/schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
-            guildId: modal.guild.id,
+            guildId: interaction.guild.id,
         }, (err, guild) => {
             if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    guildId: modal.guild.id,
-                    guildName: modal.guild.name,
+                    guildId: interaction.guild.id,
+                    guildName: interaction.guild.name,
                     logChannelID: "none",
                     suggestChannelID: "none",
                     welcomeChannelID: "none",
@@ -45,9 +45,9 @@ module.exports = {
             }
         }).clone().catch(function (err) { console.log(err) });
 
-        await modal.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true });
 
-        if (!guildDatabase) return modal.followUp({
+        if (!guildDatabase) return interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setColor(color)
@@ -60,15 +60,15 @@ module.exports = {
         });
 
         let leaveMessage = msgNew;
-        leaveMessage = leaveMessage.replace("{user}", `${modal.user}`);
-        leaveMessage = leaveMessage.replace("{username}", `${modal.user.username}`);
-        leaveMessage = leaveMessage.replace("{discriminator}", `${modal.user.discriminator}`);
-        leaveMessage = leaveMessage.replace("{guildname}", `${modal.guild.name}`);
-        leaveMessage = leaveMessage.replace("{guild}", `${modal.guild.name}`);
-        leaveMessage = leaveMessage.replace("{members}", `${modal.guild.memberCount}`);
-        leaveMessage = leaveMessage.replace("{membercount}", `${modal.guild.memberCount}`);
+        leaveMessage = leaveMessage.replace("{user}", `${interaction.user}`);
+        leaveMessage = leaveMessage.replace("{username}", `${interaction.user.username}`);
+        leaveMessage = leaveMessage.replace("{discriminator}", `${interaction.user.discriminator}`);
+        leaveMessage = leaveMessage.replace("{guildname}", `${interaction.guild.name}`);
+        leaveMessage = leaveMessage.replace("{guild}", `${interaction.guild.name}`);
+        leaveMessage = leaveMessage.replace("{members}", `${interaction.guild.memberCount}`);
+        leaveMessage = leaveMessage.replace("{membercount}", `${interaction.guild.memberCount}`);
 
-        modal.followUp({
+        interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setColor(color)
@@ -77,19 +77,19 @@ module.exports = {
         }).catch((err => { }));
 
         if (guildDatabase.welcomeEmbed === "true") {
-            modal.channel.send({
+            interaction.channel.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor(`RED`)
                         .setTimestamp()
                         .setTitle('Member left!')
-                        .setAuthor(`${modal.user.tag} left!`, modal.user.avatarURL())
+                        .setAuthor(`${interaction.user.tag} left!`, interaction.user.avatarURL())
                         .setFooter("Example Message")
                         .setDescription(`${leaveMessage}`)
                 ]
             }).catch((err => { }));
         } else {
-            modal.channel.send(`Example Message:\n${leaveMessage}`).catch((err => { }));
+            interaction.channel.send(`Example Message:\n${leaveMessage}`).catch((err => { }));
         }
     }
 }
