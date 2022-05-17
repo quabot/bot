@@ -9,7 +9,10 @@ module.exports = {
         const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
         if (!interaction.isCommand()) {
             if (interaction.isSelectMenu()) {
-                consola.info(`${interaction.values[0]} was selected`);
+                consola.info(`${interaction.customId} was selected`);
+            }
+            if (interaction.isModalSubmit()) {
+                consola.info(`${interaction.customId} was submitted`);
             }
             client.guilds.cache.get('957024489638621185').channels.cache.get('957024582794104862').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${interaction.customId}** in **${interaction.guild.name}**`)] }).catch(( err => { } ));
         }

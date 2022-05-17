@@ -1,6 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const { Modal, TextInputComponent, showModal } = require('discord-modals');
-
+const { MessageEmbed, MessageButton, MessageActionRow, Modal, TextInputComponent } = require('discord.js');
 module.exports = {
     name: "user",
     description: 'Configure user preferences & settings.',
@@ -133,41 +131,22 @@ module.exports = {
                     break;
 
                 case 'bio':
-                    const setBio = new Modal()
-                        .setCustomId('bio-set')
-                        .setTitle('Set your profile bio.')
-                        .addComponents(
-                            new TextInputComponent()
-                                .setCustomId('bio')
-                                .setLabel('Enter your new bio for this server')
-                                .setStyle('LONG')
-                                .setMinLength(1)
-                                .setMaxLength(250)
-                                .setPlaceholder(`I'm ${interaction.user.username}, and...`)
-                                .setRequired(true)
-                        );
-
-                    showModal(setBio, {
-                        client: client,
-                        interaction: interaction
-                    });
 
                     const modal = new Modal()
                         .setCustomId('bio-set')
                         .setTitle('Set your profile bio.')
-
-                    const bioRow = new MessageActionRow()
                         .addComponents(
-                            new TextInputComponent()
-                                .setCustomId('bio')
-                                .setLabel('Enter your new bio for this server')
-                                .setStyle('PARAGRAPH')
-                                .setMinLength(1)
-                                .setMaxLength(250)
-                                .setPlaceholder(`I'm ${interaction.user.username}, and...`)
-                                .setRequired(true)
+                            new MessageActionRow().addComponents(
+                                new TextInputComponent()
+                                    .setCustomId('bio')
+                                    .setLabel('Enter your new bio for this server')
+                                    .setStyle('PARAGRAPH')
+                                    .setMinLength(1)
+                                    .setMaxLength(250)
+                                    .setPlaceholder(`I'm ${interaction.user.username}, and...`)
+                                    .setRequired(true)
+                            )
                         );
-                    modal.addComponents(bioRow);
 
                     await interaction.showModal(modal);
 

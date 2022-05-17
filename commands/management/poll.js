@@ -1,5 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow, Message } = require('discord.js');
-const { Modal, TextInputComponent, showModal } = require('discord-modals');
+const { MessageEmbed, MessageButton, MessageActionRow, Modal, TextInputComponent, Message } = require('discord.js');
 
 const ms = require('ms');
 
@@ -93,7 +92,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -112,7 +111,7 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -123,7 +122,7 @@ module.exports = {
                         .setDescription(`Added this server to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(( err => { } ))
+            }).catch((err => { }))
 
             if (guildDatabase.pollEnabled === "false") return interaction.reply({
                 embeds: [
@@ -131,7 +130,7 @@ module.exports = {
                         .setDescription(`Polls are disabled in this server! Ask an admin to enable them with \`/config general\``)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(( err => { } ))
+            }).catch((err => { }))
 
             switch (subCmd) {
                 case 'create':
@@ -182,9 +181,11 @@ module.exports = {
 
                     collectorRepeat.on('collect', async interaction => {
                         if (interaction.customId === "createPoll") {
-                            const pollDetails = new Modal()
+                            const modal = new Modal()
                                 .setCustomId('poll')
                                 .setTitle('Create a poll!')
+
+                            const pollRow = new MessageActionRow()
                                 .addComponents(
                                     new TextInputComponent()
                                         .setCustomId('poll-question')
@@ -194,25 +195,26 @@ module.exports = {
                                         .setMaxLength(200)
                                         .setPlaceholder('Should we start a giveaway?')
                                         .setRequired(true)
-                                )
+                                );
+
+                            modal.addComponents(pollRow);
 
                             for (let i = 0; i < options; i++) {
 
-                                pollDetails.addComponents(
-                                    new TextInputComponent()
-                                        .setCustomId(`${i + 1}`)
-                                        .setLabel(`Enter choice ${i + 1}`)
-                                        .setStyle('SHORT')
-                                        .setMinLength(1)
-                                        .setMaxLength(200)
-                                        .setRequired(true)
-                                )
+                                modal.addComponents(
+                                    new MessageActionRow()
+                                        .addComponents(
+                                            new TextInputComponent()
+                                                .setCustomId(`${i + 1}`)
+                                                .setLabel(`Enter choice ${i + 1}`)
+                                                .setStyle('SHORT')
+                                                .setMinLength(1)
+                                                .setMaxLength(200)
+                                                .setRequired(true)
+                                        ));
                             }
 
-                            showModal(pollDetails, {
-                                client: client,
-                                interaction: interaction
-                            });
+                            await interaction.showModal(modal);
 
                         }
                     });
@@ -239,7 +241,7 @@ module.exports = {
                     newPoll.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
 
                     break;
@@ -261,7 +263,7 @@ module.exports = {
                                 .setDescription(`That poll does not exist.`)
                                 .setColor(color)
                         ], ephemeral: true
-                    }).catch(( err => { } ))
+                    }).catch((err => { }))
 
                     await polldb2.updateOne({
                         endTimestamp: new Date().getTime() + 3000
@@ -273,7 +275,7 @@ module.exports = {
                                 .setDescription(`Succesfully ended poll.`)
                                 .setColor(color)
                         ], ephemeral: true
-                    }).catch(( err => { } ))
+                    }).catch((err => { }))
             }
 
         } catch (e) {
