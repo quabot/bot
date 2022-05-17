@@ -145,8 +145,8 @@ module.exports = {
                 case 'set':
 
                     const modal = new Modal()
-                        .setCustomId('myModal')
-                        .setTitle('My Modal')
+                        .setCustomId('afk-set')
+                        .setTitle('Set AFK status')
 
                     const afkRow = new MessageActionRow()
                         .addComponents(

@@ -45,7 +45,7 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -56,7 +56,7 @@ module.exports = {
                         .setDescription(`We added you to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(( err => { } ))
+            }).catch((err => { }))
 
 
             switch (subCmd) {
@@ -80,7 +80,7 @@ module.exports = {
                                 .setFooter({ text: "Toggle these settings with the buttons below this message." })
                         ], ephemeral: true, fetchReply: true,
                         components: [new MessageActionRow({ components: [updateNotif] })]
-                    }).catch(( err => { } ))
+                    }).catch((err => { }))
 
                     const collector = settingsMsg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
@@ -91,7 +91,7 @@ module.exports = {
                                     new MessageEmbed()
                                         .setDescription("⛔ This feature is disabled.")
                                 ], ephemeral: true,
-                            }).catch(( err => { } ));
+                            }).catch((err => { }));
 
                             if (userDatabase.updateNotify === true) {
 
@@ -104,7 +104,7 @@ module.exports = {
                                         new MessageEmbed()
                                             .setDescription("Disabled update notifications.")
                                     ], ephemeral: true,
-                                }).catch(( err => { } ))
+                                }).catch((err => { }))
 
                             } else if (userDatabase.updateNotify === false) {
 
@@ -118,7 +118,7 @@ module.exports = {
                                         new MessageEmbed()
                                             .setDescription("Enabled update notifications.")
                                     ], ephemeral: true,
-                                }).catch(( err => { } ))
+                                }).catch((err => { }))
 
                             } else {
                                 interaction.reply({
@@ -126,7 +126,7 @@ module.exports = {
                                         new MessageEmbed()
                                             .setDescription("There was an error - But: don't worry: just run the command again.")
                                     ], ephemeral: true,
-                                }).catch(( err => { } ))
+                                }).catch((err => { }))
                             }
                         }
                     });
@@ -151,6 +151,26 @@ module.exports = {
                         client: client,
                         interaction: interaction
                     });
+
+                    const modal = new Modal()
+                        .setCustomId('bio-set')
+                        .setTitle('Set your profile bio.')
+
+                    const bioRow = new MessageActionRow()
+                        .addComponents(
+                            new TextInputComponent()
+                                .setCustomId('bio')
+                                .setLabel('Enter your new bio for this server')
+                                .setStyle('PARAGRAPH')
+                                .setMinLength(1)
+                                .setMaxLength(250)
+                                .setPlaceholder(`I'm ${interaction.user.username}, and...`)
+                                .setRequired(true)
+                        );
+                    modal.addComponents(bioRow);
+
+                    await interaction.showModal(modal);
+
                     break;
             }
         } catch (e) {

@@ -5,7 +5,7 @@ module.exports = {
     async execute(message, client, color) {
         try {
 
-            if (message.author.bot) return;
+            //if (message.author.bot) return;
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({

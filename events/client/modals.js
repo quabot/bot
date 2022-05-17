@@ -1,14 +1,15 @@
-const { ButtonInteraction } = require('discord.js');
+const { ButtonInteraction, Interaction } = require('discord.js');
 const { color } = require('../../structures/settings.json');
 
 module.exports = {
-    name: "modalSubmit",
-    async execute(modal, client) {
-        const modalC = client.modals.get(modal.customId);
+    name: "interactionCreate",
+    async execute(interaction, client) {
+        if (!interaction.isModalSubmit()) return;
+        const modal = client.modals.get(interaction.customId);
 
-        if (!modalC) return;
-        if (modalC.permission && !modal.member.permissions.has(modalC.permission))
-            return modal.reply({
+        if (!modal) return;
+        if (modal.permission && !interaction.member.permissions.has(modal.permission))
+            return interaction.reply({
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")
@@ -16,7 +17,7 @@ module.exports = {
                 ], ephemeral: true
             }).catch(err => console.warn(err));
 
-        if (modalC.ownerOnly && modal.member.id !== modal.guild.ownerId)
+        if (modal.ownerOnly && modal.member.id !== modal.guild.ownerId)
             return modal.reply({
                 embeds: [
                     new MessageEmbed()
@@ -25,6 +26,6 @@ module.exports = {
                 ], ephemeral: true
             }).catch(err => console.warn(err));
 
-            modalC.execute(modal, client, color);
+            modal.execute(interaction, client, color);
     }
 }
