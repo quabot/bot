@@ -2,20 +2,20 @@ const { MessageEmbed, GuildAuditLogs } = require("discord.js");
 
 module.exports = {
     id: "suggestion",
-    async execute(modal, client, color) {
-        const suggestion = modal.getTextInputValue('suggestion-box');
+    async execute(interaction, client, color) {
+        const suggestion = interaction.fields.getTextInputValue('suggestion-box');
 
-        await modal.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true });
 
         const Guild = require('../../structures/schemas/GuildSchema');
         const guildDatabase = await Guild.findOne({
-            guildId: modal.guild.id,
+            guildId: interaction.guild.id,
         }, (err, guild) => {
             if (err) console.error(err);
             if (!guild) {
                 const newGuild = new Guild({
-                    guildId: modal.guild.id,
-                    guildName: modal.guild.name,
+                    guildId: interaction.guild.id,
+                    guildName: interaction.guild.name,
                     logChannelID: "none",
                     suggestChannelID: "none",
                     welcomeChannelID: "none",
@@ -23,12 +23,11 @@ module.exports = {
                     logEnabled: true,
                     modEnabled: true,
                     levelEnabled: false,
-                        welcomeEmbed: true,
-                        pollEnabled: true,
-                    
+                    welcomeEmbed: true,
+                    pollEnabled: true,
                     suggestEnabled: true,
                     welcomeEnabled: true,
-                        leaveEnabled: true,
+                    leaveEnabled: true,
                     roleEnabled: false,
                     mainRole: "none",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -38,35 +37,35 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        modal.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
 
-        if (!guildDatabase) return modal.followUp({
+        if (!guildDatabase) return interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setDescription(`Added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(( err => { } ))
+        }).catch((err => { }))
 
-        if (guildDatabase.suggestEnabled === false) return modal.followUp({
+        if (guildDatabase.suggestEnabled === false) return interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setDescription(`Suggestions are disabled in this server!`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(( err => { } ))
+        }).catch((err => { }))
 
-        const channel = modal.guild.channels.cache.get(guildDatabase.suggestChannelID);
-        if (!channel) return modal.followUp({
+        const channel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
+        if (!channel) return interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setDescription("No suggestions channel setup!")
                     .setColor(color)
             ], ephemeral: true
-        }).catch(( err => { } ))
+        }).catch((err => { }))
 
         const msg = await channel.send({
             embeds: [
@@ -74,22 +73,23 @@ module.exports = {
                     .setTitle("New Suggestion!")
                     .setTimestamp()
                     .addFields(
-                        { name: "Suggestion", value: `${suggestion}`},
-                        { name: "Suggested by", value: `${modal.user}` }
+                        { name: "Suggestion", value: `${suggestion}` },
+                        { name: "Suggested by", value: `${interaction.user}` }
                     )
-                    .setFooter({ text: "Vote with the 🔴 and 🟢 below this message!"})
+                    .setFooter({ text: "Vote with the 🟢 and 🔴 below this message!" })
                     .setColor(color)
             ]
         });
-        msg.react("🔴");
-        msg.react("🟢");
 
-        modal.followUp({
+        msg.react("🟢");
+        msg.react("🔴");
+
+        interaction.followUp({
             embeds: [
                 new MessageEmbed()
                     .setDescription(`Successfully left your suggestion. You can view it in ${channel}`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(( err => { } ))
+        }).catch((err => { }))
     }
 }

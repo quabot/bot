@@ -85,7 +85,7 @@ module.exports = {
             var role = levelDatabase.role;
 
             var reqXp = level * 300 + 100;
-            var randXp = Math.floor(Math.random() * 25 + 1);
+            var randXp = Math.floor(Math.random() * 30 + 1);
 
             if (xp + randXp >= reqXp) {
                 levelDatabase.xp = 0;
