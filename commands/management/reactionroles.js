@@ -40,11 +40,11 @@ module.exports = {
                     type: "STRING",
                     required: false,
                     choices: [
-                        { name: "normal", value: "normal" },
-                        { name: "unqiue", value: "unqiue" },
-                        { name: "verify", value: "verify" },
-                        { name: "drop", value: "drop" },
-                        { name: "binding", value: "binding" }
+                        { name: "Normal", value: "Normal" },
+                        { name: "Unique", value: "Unique" },
+                        { name: "Verify", value: "Verify" },
+                        { name: "Drop", value: "Drop" },
+                        { name: "Binding", value: "Binding" }
                     ]
                 }
             ],
@@ -92,9 +92,11 @@ module.exports = {
                     const message = interaction.options.getString('message');
                     const role = interaction.options.getRole('role');
                     const emoji = interaction.options.getString('emoji');
-                    const mode = interaction.options.getString('mode');
+                    let mode = interaction.options.getString('mode');
 
-                    interaction.reply({
+                    if (!mode) mode = "Normal";
+
+                    if (channel.type !== "GUILD_TEXT") return interaction.reply({
                         embeds: [
                             new MessageEmbed()
                                 .setColor(color)
@@ -102,11 +104,55 @@ module.exports = {
                         ]
                     }).catch((err => { }));
 
-                    //channel type check
-                    // check if message exists if it doesnt ask to create
-                    // check if role permissions
-                    // check if emoji exists
-                    // if no mode set to normal
+                    console.log(interaction.guild.me)
+
+                    console.log(interaction.guild.me.roles.highest.rawPosition)
+                    console.log(role.rawPosition)
+                    if (role.rawPosition > interaction.guild.me.roles.highest.rawPosition) return interaction.reply({
+                        ephemeral: true, embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription("I cannot give that role to users.")
+                        ]
+                    }).catch((err => { }));
+
+                    await interaction.deferReply({ ephemeral: true });
+
+                    channel.messages.fetch(message)
+                        .then(async message => {
+                            message.react(`${emoji}`).catch(err => {
+                                return interaction.followUp({
+                                    ephemeral: true, embeds: [
+                                        new MessageEmbed()
+                                            .setDescription(`Could not find that emoji! You can only react with default emojis.`)
+                                            .setColor(color)
+                                    ]
+                                }).catch((err => { }));
+                            });
+
+                            interaction.followUp({
+                                ephemeral: true, embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("Succesfully created a new reaction role.")
+                                        .addField("Emoji", `${emoji}`, true)
+                                        .addField("Channel", `${channel}`, true)
+                                        .addField("Role", `${role}`, true)
+                                        .addField("Mode", `${mode}`, true)
+                                        .setColor(color)
+                                ]
+                            }).catch((err => { }))
+                        })
+                        .catch(async err => {
+                            await interaction.followUp({
+                                ephemeral: true, embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription("Could not find that message.")
+                                ]
+                            }).catch((err => { }))
+                            return;
+                        });
+
                     break;
 
                 case 'list':
