@@ -41,7 +41,7 @@ module.exports = {
                     required: false,
                     choices: [
                         { name: "Normal", value: "Normal" },
-                        { name: "Unique", value: "Unique" },
+                        //{ name: "Unique", value: "Unique" },
                         { name: "Verify", value: "Verify" },
                         { name: "Drop", value: "Drop" },
                         { name: "Binding", value: "Binding" }
