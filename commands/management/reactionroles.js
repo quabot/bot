@@ -104,10 +104,6 @@ module.exports = {
                         ]
                     }).catch((err => { }));
 
-                    console.log(interaction.guild.me)
-
-                    console.log(interaction.guild.me.roles.highest.rawPosition)
-                    console.log(role.rawPosition)
                     if (role.rawPosition > interaction.guild.me.roles.highest.rawPosition) return interaction.reply({
                         ephemeral: true, embeds: [
                             new MessageEmbed()
@@ -179,19 +175,36 @@ module.exports = {
                         messageId: msg,
                     });
 
-                    console.log(reactionFound)
                     const list = reactionFound.map(item => `${item.emoji} - Mode: ${item.reactMode} - Role: <@&${item.role}>\n`)
 
                     interaction.reply({
                         embeds: [
                             new MessageEmbed()
                                 .setColor(color)
-                                .setDescription(`${list}`)
+                                .setDescription(`${list}** **`)
                         ]
                     }).catch(err => { });
                     break;
 
                 case 'remove':
+                    const msgId = interaction.options.getString("message");
+                    const roleId = interaction.options.getRole("role");
+
+                    const Reaction2 = require('../../structures/schemas/ReactionSchema');
+                    await Reaction2.deleteOne({
+                        guildId: interaction.guild.id,
+                        messageId: msgId,
+                        role: roleId.id,
+                    });
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription(`Deleted that reaction role.`)
+                        ]
+                    }).catch(err => { });
+
                     break;
             }
         }
