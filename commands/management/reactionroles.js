@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
     name: "reactionrole",
@@ -171,6 +171,24 @@ module.exports = {
                     break;
 
                 case 'list':
+                    const msg = interaction.options.getString("message");
+
+                    const Reaction = require('../../structures/schemas/ReactionSchema');
+                    const reactionFound = await Reaction.find({
+                        guildId: interaction.guild.id,
+                        messageId: msg,
+                    });
+
+                    console.log(reactionFound)
+                    const list = reactionFound.map(item => `${item.emoji} - Mode: ${item.reactMode} - Role: <@&${item.role}>\n`)
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription(`${list}`)
+                        ]
+                    }).catch(err => { });
                     break;
 
                 case 'remove':

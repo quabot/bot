@@ -13,13 +13,26 @@ module.exports = {
             });
 
             if (!reactionFound) return;
-            
+
             let mode = reactionFound.reactMode;
             let member = messageReaction.message.guild.members.cache.get(user.id);
 
             switch (mode) {
                 case "Normal":
                     member.roles.remove(reactionFound.role).catch((err => { }));
+                    break;
+
+                case "Verify":
+                    break;
+
+                case "Drop":
+                    member.roles.remove(reactionFound.role).catch((err => { }));
+                    break;
+
+                case "Binding":
+                    break;
+
+                case "Unique":
                     break;
             }
 

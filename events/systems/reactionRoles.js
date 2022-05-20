@@ -4,7 +4,7 @@ module.exports = {
     name: "messageReactionAdd",
     async execute(messageReaction, user, client, color) {
         try {
-
+            
             const Reaction = require('../../structures/schemas/ReactionSchema');
             const reactionFound = await Reaction.findOne({
                 guildId: messageReaction.message.guild.id,
@@ -13,13 +13,27 @@ module.exports = {
             });
 
             if (!reactionFound) return;
-            
+
             let mode = reactionFound.reactMode;
             let member = messageReaction.message.guild.members.cache.get(user.id);
 
             switch (mode) {
                 case "Normal":
                     member.roles.add(reactionFound.role).catch((err => { }));
+                    break;
+
+                case "Drop":
+                    break;
+
+                case "Verify":
+                    member.roles.add(reactionFound.role).catch((err => { }));
+                    break;
+
+                case "Binding":
+                    member.roles.add(reactionFound.role).catch((err => { }));
+                    break;
+
+                case "Unique":
                     break;
             }
 
