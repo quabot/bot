@@ -140,7 +140,23 @@ module.exports = {
                                         .addField("Mode", `${mode}`, true)
                                         .setColor(color)
                                 ]
-                            }).catch((err => { }))
+                            }).catch((err => { }));
+
+                            const Reaction = require('../../structures/schemas/ReactionSchema');
+                            const newReaction = new Reaction({
+                                guildId: interaction.guild.id,
+                                guildName: interaction.guild.name,
+                                messageId: message.id,
+                                emoji: emoji,
+                                reactMode: mode,
+                                role: role.id
+                            });
+                            newReaction.save()
+                                .catch(err => {
+                                    console.log(err);
+                                    interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                                });
+
                         })
                         .catch(async err => {
                             await interaction.followUp({
@@ -152,7 +168,6 @@ module.exports = {
                             }).catch((err => { }))
                             return;
                         });
-
                     break;
 
                 case 'list':

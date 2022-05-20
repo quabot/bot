@@ -1,7 +1,7 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "messageReactionAdd",
+    name: "messageReactionRemove",
     async execute(messageReaction, user, client, color) {
         try {
 
@@ -19,7 +19,7 @@ module.exports = {
 
             switch (mode) {
                 case "Normal":
-                    member.roles.add(reactionFound.role).catch((err => { }));
+                    member.roles.remove(reactionFound.role).catch((err => { }));
                     break;
             }
 
