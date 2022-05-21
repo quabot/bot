@@ -7,11 +7,12 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setTitle(`Management Commands`)
-                    .setDescription(`View your XP, leave suggestions, listen to music and so much more, these are the other commands.
-                    **/afk** - Set & toggle your afk status.
-                    **/level** - View your level, leaderboard & more.
-                    **/music** - Listen to music in your voice channel.
-                    **/suggest** - Leave a suggestion.`)
+                    .setDescription(`Configure QuaBot, lock a server down, these are the management commands.
+                    **/clear** - Clear an amount of messages.
+                    **/config-level** - Configure the levels module.
+                    **/config** - Configure QuaBot.
+                    **/poll** - Manage polls.
+                    **/reactionroles** - Mangage the reaction roles.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .setColor(color)
             ], ephemeral: true

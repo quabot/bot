@@ -7,11 +7,11 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setTitle(`Other Commands`)
-                    .setDescription(`See the servericon or avatar, these are the misc commands.
-                    **/avatar** - See a users' avatar.
-                    **/members** - Get the membercount.
-                    **/random** - Roll a random number between two integers.
-                    **/servericon** - Get the servericon.`)
+                    .setDescription(`View your XP, leave suggestions, listen to music and so much more, these are the other commands.
+                    **/afk** - Set & toggle your afk status.
+                    **/level** - View your level, leaderboard & more.
+                    **/music** - Listen to music in your voice channel.
+                    **/suggest** - Leave a suggestion.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .setColor(color)
             ], ephemeral: true
