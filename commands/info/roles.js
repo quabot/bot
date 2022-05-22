@@ -5,11 +5,14 @@ module.exports = {
     description: 'Server\'s roles.',
     async execute(client, interaction, color) {
         try {
+
+            // create the embed and fetch the roles.
             const embed = new MessageEmbed()
                 .setColor(color)
 
             const roles = interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
 
+            // fail saves to prevent the roles getting too long.
             if (roles.join(', ').length > 1024) {
                 const half = Math.ceil(roles.length / 2);
                 let firstHalf = roles.splice(0, half);
@@ -33,6 +36,7 @@ module.exports = {
                 embed.addField("** **", `${secondHalf.join(', ')}`);
             } else embed.addField("Roles <:RolesIcon:959764812068450318>", `${roles.join(', ')}`);
 
+            // send the embed
             interaction.reply({
                 embeds: [embed]
             }).catch(( err => { } ))

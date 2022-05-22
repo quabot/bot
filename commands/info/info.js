@@ -8,6 +8,7 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
+            // Sends the info embed.
             let users  = client.users.cache.size;
 
             interaction.reply({

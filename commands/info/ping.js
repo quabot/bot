@@ -6,13 +6,14 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
+            // Sends the ping embed.
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
                         .setDescription(`🏓 \`${client.ws.ping}ms\``)
                         .setColor(color)
-                    ]
-                }).catch(( err => { } ))
+                ]
+            }).catch((err => { }))
 
         } catch (e) {
             console.log(e);

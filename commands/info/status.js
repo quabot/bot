@@ -1,3 +1,4 @@
+//imports
 const { CommandInteraction, Client, MessageEmbed, MessageAttachment } = require("discord.js")
 const { connection } = require("mongoose");
 const { execute } = require("../../events/client/ready");
@@ -9,6 +10,7 @@ const moment = require("moment");
 require("../../Events/Client/ready");
 require("moment-duration-format");
 
+// Create the function to check what to use.
 function getPBar(percent) {
     let thick = Math.floor(percent / 5);
     let thin = Math.ceil((100 - percent) / 10) * 2;
@@ -27,6 +29,7 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
+            // get the memory
             const docs = await DB.findOne({
                 Client: true
             });
@@ -45,6 +48,7 @@ module.exports = {
             const mem11 = docs.Memory[11];
             const mem12 = docs.Memory[12];
 
+            // gets average and defines the colors
             const avgMem = (mem0 + mem1 + mem2 + mem3 + mem4 + mem5 + mem6 + mem7 + mem8 + mem9 + mem10 + mem11 + mem12) / 13;
 
             const colors = {
@@ -68,7 +72,9 @@ module.exports = {
                 },
             };
 
-            const memData = [
+            // declare data and labels.
+            const 
+            memData = [
                 mem0,
                 mem1,
                 mem2,
@@ -102,6 +108,7 @@ module.exports = {
             const width = 1500;
             const height = 720;
 
+            // generate the chart
             const plugin = {
                 id: 'mainBg',
                 beforeDraw: (chart) => {
@@ -141,6 +148,7 @@ module.exports = {
                 ],
             }
 
+            // more chart generation
             const chartConfig = {
                 type: "line",
                 data: chartData,
@@ -192,6 +200,7 @@ module.exports = {
             const attachment = new MessageAttachment(image, 'chart.png');
 
 
+            // return if there's no data
             if (!docs || docs.Memory.length < 12) return interaction.reply({
                     embeds: [
                         new MessageEmbed()
@@ -207,6 +216,7 @@ module.exports = {
 
             let embedColor;
 
+            // get the database status
             const mongoose = require('mongoose');
             let dbConnection;
             if (mongoose.connection.readyState === 0) { dbConnection = "<:dnd:938818583939649556>\`DISCONNECTED\`"; embedColor = "RED"; }
@@ -214,7 +224,7 @@ module.exports = {
             if (mongoose.connection.readyState === 2) { dbConnection = "<:idle:938818583864180796>\`CONNECTING\`"; embedColor = "YELLOW"; }
             if (mongoose.connection.readyState === 3) { dbConnection = "<:idle:938818583864180796>\`DISCONNECTING\`"; embedColor = "ORANGE"; }
 
-
+            // sends the embed
             const embed = new MessageEmbed()
                 .setTitle(`${client.user.username} Status`)
                 .setDescription(`**Client:** \`✅ ONLINE\` - \`${client.ws.ping}ms\`\n**Uptime:** <t:${parseInt(client.readyTimestamp / 1000)}:R>\n\n**Database:** ${dbConnection}\n\n**Average RAM Usage**: \`${avgMem.toFixed(2)}GB\``)

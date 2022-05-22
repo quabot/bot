@@ -19,6 +19,7 @@ module.exports = {
 
             const subCmd = interaction.options.getSubcommand()
 
+            // get the database
             const User = require('../../structures/schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: interaction.user.id,
@@ -48,6 +49,7 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
+            // failsaves
             if (!userDatabase) return interaction.reply({
                 embeds: [
                     new MessageEmbed()
@@ -57,9 +59,11 @@ module.exports = {
             }).catch((err => { }))
 
 
+            // handle the commands
             switch (subCmd) {
                 case 'settings':
 
+                    // create buttons and send message
                     const updateNotifId = 'updNotId';
                     const updateNotif = new MessageButton({
                         style: 'PRIMARY',
@@ -82,6 +86,7 @@ module.exports = {
 
                     const collector = settingsMsg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
+                    // listen for buttons and return
                     collector.on('collect', async interaction => {
                         if (interaction.customId === updateNotifId) {
                             return interaction.reply({
@@ -132,6 +137,7 @@ module.exports = {
 
                 case 'bio':
 
+                    // popup the modal
                     const modal = new Modal()
                         .setCustomId('bio-set')
                         .setTitle('Set your profile bio.')

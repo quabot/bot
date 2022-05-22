@@ -8,6 +8,7 @@ module.exports = {
 
         try {
 
+            // get the boosts, roles and send the embed
             let boostTier = interaction.guild.premiumTier;
             if (boostTier === "TIER_1") boostTier = "Tier 1";
             if (boostTier === "TIER_2") boostTier = "Tier 2";

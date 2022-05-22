@@ -15,6 +15,7 @@ module.exports = {
 
         try {
 
+            // var declarations
             let user = interaction.options.getUser('user');
             if (!user) user = interaction.user;
             let member = interaction.options.getMember("user");
@@ -22,6 +23,7 @@ module.exports = {
 
             var roles = `<@&${member._roles.map(role => role.toString()).join('>, <@&')}>`;
 
+            // create embed and add values
             const embed = new MessageEmbed()
                 .addField('User <:MembersIcon:959741227689988196>', `${user}`, true)
                 .addField('Discriminator <:ChannelIcon:959741807380557845>', `\`#${user.discriminator}\``, true)
@@ -40,7 +42,8 @@ module.exports = {
                 if (member._roles.length !== 0) embed.addField("Roles <:RolesIcon:959764812068450318>", `<@&${member._roles.map(role => role.toString()).join('>, <@&')}>`, true);
             }
 
-            interaction.reply({ embeds: [embed] }).catch(( err => { } ))
+            // send the embed
+            interaction.reply({ embeds: [embed] }).catch((err => { }))
 
         } catch (e) {
             console.log(e);

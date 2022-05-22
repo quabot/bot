@@ -17,6 +17,7 @@ module.exports = {
             let user = interaction.options.getMember('user');
             if (!user) user = interaction.member;
 
+            // get the database and failsaves
             const User = require('../../structures/schemas/UserSchema');
             const userDatabase = await User.findOne({
                 userId: user.id,
@@ -54,6 +55,7 @@ module.exports = {
                 ], ephemeral: true
             }).catch(( err => { } ))
 
+            // get the bio and send the message.
             let bio = userDatabase.bio;
             if (bio === "none") bio = "No bio configured. This can be done with `/user bio`."
 
