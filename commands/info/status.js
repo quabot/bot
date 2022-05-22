@@ -7,7 +7,7 @@ const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const DB = require('../../structures/schemas/ClientDB');
 const moment = require("moment");
 
-require("../../Events/Client/ready");
+require("../../events/client/ready");
 require("moment-duration-format");
 
 // Create the function to check what to use.
