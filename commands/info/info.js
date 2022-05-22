@@ -8,6 +8,8 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
+            let users  = client.users.cache.size;
+
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
@@ -16,7 +18,7 @@ module.exports = {
                         .addField("Memory Usage", `\`${Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)}MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``, true)
                         .addField("Uptime", `<t:${parseInt(client.readyTimestamp / 1000)}:R>`, true)
                         .addField('\u200b', '\u200b', true)
-                        .addField("Users", `\`${client.users.cache.size}\``, true)
+                        .addField("Users", `\`${users.toLocaleString()}\``, true)
                         .addField("Servers", `\`${client.guilds.cache.size}\``, true)
                         .addField('\u200b', '\u200b', true)
                         .addField("Discord.js", `\`${require('../../package.json').dependencies['discord.js']}\``, true)
