@@ -1,4 +1,4 @@
-const { ButtonInteraction } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { color } = require('../../structures/settings.json');
 
 module.exports = {

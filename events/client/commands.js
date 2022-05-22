@@ -1,4 +1,5 @@
 const consola = require('consola');
+const { MessageEmbed } = require('discord.js');
 const { color } = require('../../structures/settings.json');
 
 module.exports = {
