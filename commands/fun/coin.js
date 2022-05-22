@@ -5,6 +5,7 @@ module.exports = {
     description: "Flip a coin.",
     async execute(client, interaction, color) {
         try {
+            // Generates a random coin and sends it.
             const options = ['Heads', 'Tails'];
             const flip = options[Math.floor(Math.random() * options.length)];
             interaction.reply({

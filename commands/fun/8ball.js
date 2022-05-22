@@ -13,6 +13,7 @@ module.exports = {
     ],
     async execute(client, interaction, color) {
 
+        // Fetch the question and generate the 8ball answer.
         const question = interaction.options.getString("question");
 
         const options = require('../../structures/files/8ball.json');

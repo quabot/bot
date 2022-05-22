@@ -33,9 +33,11 @@ module.exports = {
                 ]
             }).catch(( err => { } ))
 
+            // Send the message based on the subreddit.
             const Sub = interaction.options.getSubcommand();
             switch (Sub) {
                 case 'cat':
+                    // Generate the meme from the subreddit and send it in an embed.
                     meme('cats', function (err, data) {
                         if (!data) return;
                         interaction.editReply({

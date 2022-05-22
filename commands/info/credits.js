@@ -5,6 +5,7 @@ module.exports = {
     description: 'View QuaBot\'s credits',
     async execute(client, interaction, color) {
         try {
+            // Sends the credits message.
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()

@@ -6,6 +6,7 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
+            // Send the rps message.
             interaction.reply({
                 embeds: [
                     new MessageEmbed()

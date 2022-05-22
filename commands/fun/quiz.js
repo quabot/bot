@@ -7,6 +7,7 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
+            // Generate the quiz question and send the message.
             const quizItem = quiz[Math.floor(Math.random() * quiz.length)];
             if (!quizItem) return interaction.reply({ embeds: [new MessageEmbed().setColor(color).setDescription(`Could not find any quiz questions.`)], ephemeral: true });
             interaction.reply({

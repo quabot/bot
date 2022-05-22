@@ -5,6 +5,8 @@ module.exports = {
     description: "Bot commands.",
     async execute(client, interaction, color) {
         try {
+
+            // Sends the help message with the correct menus.
             interaction.reply({
                 embeds: [
                     new MessageEmbed()

@@ -6,7 +6,8 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
-            const listSentences = require('../../../../Discord Bot/structures/files/sentences.json');
+            // Generate the sentence and send a message to the channel.
+            const listSentences = require('../../structures/files/sentences.json');
             const randomSentence = listSentences[Math.floor(Math.random() * listSentences.length)];
             const startTime = new Date().getTime();
 
@@ -28,11 +29,13 @@ module.exports = {
                 ]
             }).catch(( err => { } ))
 
+            // Create filters and collect messages.
             const filter = m => m.author === interaction.user;
             const collector = interaction.channel.createMessageCollector({ filter, time: 15000 });
             collector.on('collect', m => {
                 const seconds = new Date(new Date().getTime() - startTime).getSeconds();
                 collector.stop();
+                // Stop the collector, sends if the sentece was correct or not.
                 if (m.content === randomSentence) {
                     m.reply({
                         embeds: [

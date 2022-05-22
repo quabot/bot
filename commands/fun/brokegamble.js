@@ -15,6 +15,7 @@ module.exports = {
         try {
             let public = !interaction.options.getBoolean('private');
 
+            // Generate the gamble result
             let qbr = Math.floor(Math.random() * 10);
             let ur = Math.floor(Math.random() * 10);
             var result = 0;
@@ -24,6 +25,7 @@ module.exports = {
             else if (ur > qbr) { result = 2; }
             else { result = 3; }
 
+            // Sends the gamble results
             if (public) {
                 if (result === 0) { return interaction.reply({ embeds: [new MessageEmbed().setTitle('A drawer of gamblers').setDescription(`${interaction.user} gambled an *astounding*  $0 against me. We drew.\n\nQuaBot: ${qbr}\n${interaction.user}: ${ur}`).setColor(color)] }); }
                 else if (result === 1) { return interaction.reply({ embeds: [new MessageEmbed().setTitle('Ha L').setDescription(`${interaction.user} gambled an *astounding*  $0 against me. They lost. What an idiot.\n\nQuaBot: ${qbr}\n${interaction.user}: ${ur}`).setColor(color)] }); }
