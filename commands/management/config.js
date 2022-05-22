@@ -88,6 +88,11 @@ module.exports = {
                                                 description: 'Configure and toggle join roles.',
                                                 value: 'welcome_roles',
                                             },
+                                            {
+                                                label: '💬 Channels',
+                                                description: 'Configure the welcome channel.',
+                                                value: 'welcome_channels',
+                                            },
                                         ]),
                                 )
                         ]
