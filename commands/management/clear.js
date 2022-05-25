@@ -24,22 +24,33 @@ module.exports = {
             let public = !interaction.options.getBoolean('private');
 
             if (amount > 0) {
-                if (amount > 100) return interaction.reply({ content:`You can't delete more than 100 messages, idiot.`, ephemeral: true});
-                const size = await interaction.channel.bulkDelete(amount, true);
+                if (amount > 100) return interaction.reply({ content: `You can't delete more than 100 messages, idiot.`, ephemeral: true });
+                const size = await interaction.channel.bulkDelete(amount, true).catch(err => {
+                    if (err.code === 50013) {
+                        return interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle('Lack of permissions!')
+                                    .setDescription(`I need some more permissions to perform that command. I need the \`MANAGE MESSAGES\` or \`ADMINISTRATOR\` permissions for that.`)
+                                    .setColor(color)
+                            ]
+                        }).catch(( err => { } ));
+                    }
+                })
                 if (public) {
                     interaction.reply({
                         embeds: [
                             new MessageEmbed()
-                            .setTitle('Messages purged')
-                            .setDescription(`${amount} message(s) were purged from this channel by ${interaction.user}`)
-                            .setColor(color)
+                                .setTitle('Messages purged')
+                                .setDescription(`${amount} message(s) were purged from this channel by ${interaction.user}`)
+                                .setColor(color)
                         ]
-                    });
+                    }).catch(( err => { } ));
                 } else {
-                    return interaction.reply({ content:`Deleted ${amount} messages.`, ephemeral: true});
+                    return interaction.reply({ content: `Deleted ${amount} messages.`, ephemeral: true }).catch(( err => { } ));
                 }
             } else {
-                return interaction.reply({ content:`You can't delete less than 1 message, idiot.`, ephemeral: true});
+                return interaction.reply({ content: `You can't delete less than 1 message, idiot.`, ephemeral: true}).catch(( err => { } ));
             }
         }
         catch (e) {
