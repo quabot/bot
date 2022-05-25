@@ -1,9 +1,9 @@
 #!/bin/sh
-echo Starting bot...
+echo Bot starting...
 node .
 
 while true
 do
-  echo Restarting bot..
+  echo Bot Restarting...
   node .
 done

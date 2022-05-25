@@ -1,7 +1,6 @@
 @echo off
-color f
-echo Starting bot...
+echo Bot starting
 :main
 node .
-echo Restarting bot..
+echo Bot Restarting...
 goto main
