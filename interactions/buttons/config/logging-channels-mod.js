@@ -77,6 +77,7 @@ module.exports = {
             if (!m) return;
             const channel = m.mentions.channels.first();
             if (!channel) return;
+            if (channel.type === "GUILD_VOICE") return;
 
             await guildDatabase.updateOne({
                 punishmentChannelID: channel
