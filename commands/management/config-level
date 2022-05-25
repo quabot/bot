@@ -3,7 +3,7 @@ const RewardSchema = require('../../structures/schemas/RewardSchema');
 
 module.exports = {
     name: "config-level",
-    description: 'Configure the levels module.',
+    description: 'DEPRECATED SOON!',
     permission: "ADMINISTRATOR",
     options: [
         {
@@ -33,34 +33,41 @@ module.exports = {
             ],
         },
         {
-            name: 'add-reward',
-            description: 'Add a levelling reward',
-            type: 'SUB_COMMAND',
+            name: 'rewards',
+            description: 'Manage levelling rewards',
+            type: 'SUB_COMMAND_GROUP',
             options: [
                 {
-                    name: 'level',
-                    description: 'The level required to get this role',
-                    type: 'NUMBER',
-                    required: true,
+                    name: 'add-reward',
+                    description: 'Add a levelling reward',
+                    type: 'SUB_COMMAND',
+                    options: [
+                        {
+                            name: 'level',
+                            description: 'The level required to get this role',
+                            type: 'NUMBER',
+                            required: true,
+                        },
+                        {
+                            name: 'reward',
+                            description: 'The reward for reaching this level',
+                            type: 'ROLE',
+                            required: true,
+                        },
+                    ],
                 },
                 {
-                    name: 'role',
-                    description: 'The role reward for reaching this level',
-                    type: 'ROLE',
-                    required: true,
-                },
-            ]
-        },
-        {
-            name: 'remove-reward',
-            description: 'Remove a leveling reward',
-            type: 'SUB_COMMAND',
-            options: [
-                {
-                    name: 'role',
-                    description: 'The role to remove',
-                    type: 'ROLE',
-                    required: true,
+                    name: 'remove-reward',
+                    description: 'Remove a leveling reward',
+                    type: 'SUB_COMMAND',
+                    options: [
+                        {
+                            name: 'role',
+                            description: 'The role to remove',
+                            type: 'ROLE',
+                            required: true,
+                        },
+                    ],
                 },
             ],
         },
@@ -116,6 +123,7 @@ module.exports = {
             }).catch((err => { }));
 
             const subCmd = interaction.options.getSubcommand();
+            const subCmdGroup = interaction.options.getSubcommandGroup();
             switch (subCmd) {
                 case 'rank-card':
                     const newOption = interaction.options.getBoolean('enabled');
@@ -148,51 +156,56 @@ module.exports = {
                     }).catch((err => { }));
 
                     break;
-
-                case 'add-reward':
-                    const level = interaction.options.getNumber('level');
-                    const role = interaction.options.getRole('role');
-
-                    RewardSchema.create({
-                        guildId: interaction.guild.id,
-                        level: level,
-                        role: role
-                    });
-
-                    interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setColor(color)
-                                .setDescription(`Level **${level}** will now reward users with role **${role}**!`)
-                        ], ephemeral: true
-                    }).catch((err => { }));
-
-                    break;
-
-                case 'remove-reward':
-                    const remRole = interaction.options.getRole('role');
-
-                    const result = await RewardSchema.findOne({ guildId: interaction.guild.id, role: remRole })
-
-                    if (!result) return interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setColor(color)
-                                .setDescription(`No role reward with that role.`)
-                        ], ephemeral: true
-                    }).catch((err => { }));
-
-                    interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setColor(color)
-                                .setDescription(`Removed.`)
-                        ], ephemeral: true
-                    }).catch((err => { }));
-
-                    break;
-
             }
+
+            if (subCmdGroup === "rewards") {
+                switch (subCmd) {
+                    case 'add-reward':
+                        const level = interaction.options.getNumber('level');
+                        const role = interaction.options.getRole('reward');
+
+                        RewardSchema.create({
+                            guildId: interaction.guild.id,
+                            level: level,
+                            role: role
+                        });
+
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`Level **${level}** will now reward users with role **${role}**!`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+
+                        break;
+
+                    case 'remove-reward':
+                        const remRole = interaction.options.getRole('role');
+
+                        const result = await RewardSchema.findOne({ guildId: interaction.guild.id, role: remRole })
+
+                        if (!result) return interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`No role reward with that role.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`Removed.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+
+                        break;
+
+                }
+            }
+
         } catch (e) {
             console.log(e);
             client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
