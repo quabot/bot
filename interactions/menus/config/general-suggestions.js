@@ -63,7 +63,7 @@ module.exports = {
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .addFields(
                         { name: "Channel", value: `${channel}`, inline: true },
-                        { name: "Enabled", value: `${guildDatabase.suggestEnabled}`, inline: true }
+                        { name: "Enabled/Disabled", value: `${guildDatabase.suggestEnabled.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true }
                     )
                     .setColor(color)
             ], ephemeral: true, components: [

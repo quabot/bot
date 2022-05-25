@@ -60,8 +60,8 @@ module.exports = {
                     .setDescription(`Toggle welcome messages, leave messages, both at the samee timee or just one with the buttons below. **Enable** or **Disable** welcome & leave messages.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .addFields(
-                        { name: "Welcome", value: `${guildDatabase.welcomeEnabled}`, inline: true },
-                        { name: "Leave", value: `${guildDatabase.leaveEnabled}`, inline: true },
+                        { name: "Welcome", value: `${guildDatabase.welcomeEnabled.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true },
+                        { name: "Leave", value: `${guildDatabase.leaveEnabled.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true },
                     )
                     .setColor(color)
             ], ephemeral: true, components: [

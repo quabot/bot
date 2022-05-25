@@ -80,7 +80,7 @@ module.exports = {
                     .addFields(
                         { name: "Welcome Message", value: `${joinMessage}`, inline: true },
                         { name: "Leave Message", value: `${leaveMessage}`, inline: true },
-                        { name: "Embed Enabled", value: `${guildDatabase.welcomeEmbed}`, inline: true }
+                        { name: "Embed Enabled", value: `${guildDatabase.welcomeEmbed.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true }
                     )
                     .setColor(color)
             ], ephemeral: true, components: [

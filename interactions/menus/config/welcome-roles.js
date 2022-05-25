@@ -62,7 +62,7 @@ module.exports = {
                     .setDescription(`When a user joins your server, they need a role. Give users roles on join with this module.\n**Enable**, **Disable** or **Change** the role with the buttons below this message.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .addFields(
-                        { name: "Enabled", value: `${guildDatabase.roleEnabled}`, inline: true },
+                        { name: "Enabled/Disabled", value: `${guildDatabase.roleEnabled.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true },
                         { name: "Role", value: `${role}`, inline: true },
                     )
                     .setColor(color)

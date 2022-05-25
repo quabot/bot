@@ -23,11 +23,11 @@ module.exports = {
                     logEnabled: true,
                     modEnabled: true,
                     levelEnabled: false,
-                        welcomeEmbed: true,
+                    welcomeEmbed: true,
                     pollEnabled: true,
                     suggestEnabled: true,
                     welcomeEnabled: true,
-                        leaveEnabled: true,
+                    leaveEnabled: true,
                     roleEnabled: false,
                     mainRole: "none",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -60,7 +60,7 @@ module.exports = {
                     .setDescription(`Create polls that automatically end after a specified time. Add your own custom options and questions with modals.\n **Enable** or **Disable** this module with the buttons below this message.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .addFields(
-                        { name: "Enabled", value: `${guildDatabase.pollEnabled}`, inline: true }
+                        { name: "Enabled/Disabled", value: `${guildDatabase.pollEnabled.replace("false", "Disabled").replace("true", "Enabled") }`, inline: true }
                     )
                     .setColor(color)
             ], ephemeral: true, components: [

@@ -63,8 +63,8 @@ module.exports = {
                     .setDescription(`Toggle the logging in mod log channels, main log channels and more. \n**Enable** or **Disable** logging for both types of channels with the buttons below this message.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .addFields(
-                        { name: "Mod Logs", value: `${guildDatabase.logEnabled}`, inline: true },
-                        { name: "Main Logs", value: `${guildDatabase.modEnabled}`, inline: true }
+                        { name: "Mod Logs", value: `${guildDatabase.logEnabled.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true },
+                        { name: "Main Logs", value: `${guildDatabase.modEnabled.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true }
                     )
                     .setColor(color)
             ], ephemeral: true, components: [
