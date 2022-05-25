@@ -13,7 +13,7 @@ module.exports = {
                         .setDescription('Thanks to the people below for helping us make QuaBot a reality.')
                         .addField('Joa_sss#0001', 'Owner, Developer')
                         .addField('foxl#3260', 'Developer')
-                        .addField('Duckie#4174', 'Developer')
+                        //.addField('Duckie#4174', 'Developer')
                         //.addField('Dolentec#3474', 'Tester, Helper')
                         .addField('PizzaPuntThomas#4997', 'Tester, Developer')
                         .setFooter({ text: 'Thanks for using QuaBot!' })
