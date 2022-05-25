@@ -62,7 +62,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -98,7 +98,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor(color)
-                        .setDescription(`Levels are disabled in this server. Ask an admin to enable them with\`/config general\`!`)
+                        .setDescription(`Levels are disabled in this server. Ask an admin to enable them with\`/config-level\`!`)
                 ]
             }).catch((err => { }));
 

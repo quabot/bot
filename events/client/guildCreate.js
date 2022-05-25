@@ -7,6 +7,8 @@ module.exports = {
 
             var channel = guild.channels.cache.filter(ch => ch.type === "GUILD_TEXT").find(x => x.position === 0);
 
+            if (!channel) return;
+            
             channel.send(({
                 embeds: [
                     new MessageEmbed()

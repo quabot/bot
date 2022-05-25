@@ -25,7 +25,7 @@ module.exports = {
                         .addField("Discord.js", `\`${require('../../package.json').dependencies['discord.js']}\``, true)
                         .addField("Node.js", `\`${process.version}\``, true)
                         .addField('\u200b', '\u200b', true)
-                        .addField("CPU", "```AMD Ryzen 5 2600```", true)
+                        .addField("CPU", `\`\`\`${os.cpus()[0].model}\`\`\``, true)
                         .addField('Version', `\`${version}\``, true)
                         .addField('\u200b', '\u200b', true)
                         .addField("Platform", `\`${process.platform.replace('win32', 'Windows')}\``, true)
