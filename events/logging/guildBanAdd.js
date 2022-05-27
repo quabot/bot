@@ -49,6 +49,8 @@ module.exports = {
             if (guildDatabase.logEnabled === false) return;
             const channel = ban.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
+            if (channel.type === "GUILD_VOICE") return;
+            if (channel.type === "GUILD_STAGE_VOICE") return;
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({

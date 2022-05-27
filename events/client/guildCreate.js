@@ -8,6 +8,8 @@ module.exports = {
             var channel = guild.channels.cache.filter(ch => ch.type === "GUILD_TEXT").find(x => x.position === 0);
 
             if (!channel) return;
+            if (channel.type === "GUILD_VOICE") return;
+            if (channel.type === "GUILD_STAGE_VOICE") return;
             
             channel.send(({
                 embeds: [

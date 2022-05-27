@@ -79,6 +79,8 @@ module.exports = {
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
             if (channel.type === "GUILD_STAGE_VOICE") return;
+            if (channel.type === "GUILD_VOICE") return;
+            if (channel.type === "GUILD_STAGE_VOICE") return;
 
             await guildDatabase.updateOne({
                 logChannelID: channel

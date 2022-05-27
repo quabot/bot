@@ -77,6 +77,8 @@ module.exports = {
             if (!m) return;
             const channel = m.mentions.channels.first();
             if (!channel) return;
+            if (channel.type === "GUILD_VOICE") return;
+            if (channel.type === "GUILD_STAGE_VOICE") return;
 
             await guildDatabase.updateOne({
                 suggestChannelID: channel

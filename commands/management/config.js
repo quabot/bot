@@ -20,6 +20,11 @@ module.exports = {
             description: "Configure logging channels, what events to log and more.",
             type: "SUB_COMMAND",
         },
+        {
+            name: "level",
+            description: "Configure level settings, add role rewards and more.",
+            type: "SUB_COMMAND",
+        },
     ],
     async execute(client, interaction, color) {
         try {
@@ -108,7 +113,7 @@ module.exports = {
                         ]
                     }).catch((err => { }));
                     break;
-                    
+
                     interaction.reply({
                         embeds: [
                             new MessageEmbed()
@@ -144,6 +149,49 @@ module.exports = {
                         ]
                     }).catch((err => { }));
                     break;
+
+                case 'level':
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setTitle(`${client.user.username} level Configuration`)
+                                .addField("Quick Links", "[Invite](https://discord.com/oauth2/authorize?client_id=845603702210953246&permissions=275384757342&scope=bot%20applications.commands) - [Discord](https://discord.gg/9kPCU8GHSK) - [Website](https://quabot.net)")
+                                .setThumbnail(client.user.avatarURL({ dynamic: true }))
+                                .setDescription("Use the selector below this message to select a category.")
+                        ], components: [
+                            new MessageActionRow()
+                                .addComponents(
+                                    new MessageSelectMenu()
+                                        .setCustomId('welcome')
+                                        .setPlaceholder('Select a category')
+                                        .addOptions([
+                                            {
+                                                label: '✅ Toggles',
+                                                description: 'Toggle rank cards and levels in general',
+                                                value: 'level_toggles',
+                                            },
+                                            {
+                                                label: '💬 Messages',
+                                                description: 'Configure the custom level-up messages and toggle level-up embeds.',
+                                                value: 'level_messages',
+                                            },
+                                            {
+                                                label: '📄 Rewards',
+                                                description: 'Configure role rewards when reaching a certain level.',
+                                                value: 'level_rewards',
+                                            },
+                                            {
+                                                label: '💬 Channels',
+                                                description: 'Configure the level-up channel.',
+                                                value: 'level_channels',
+                                            },
+                                        ]),
+                                )
+                        ]
+                    }).catch((err => { }));
+                    break;
+
             }
         } catch (e) {
             console.log(e);

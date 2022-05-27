@@ -55,6 +55,8 @@ module.exports = {
             const channel = member.guild.channels.cache.get(`${guildDatabase.welcomeChannelID}`);
 
             if (!channel) return;
+            if (channel.type === "GUILD_VOICE") return;
+            if (channel.type === "GUILD_STAGE_VOICE") return;
             
             let joinMessage = guildDatabase.joinMessage;
             joinMessage = joinMessage.replace("{user}", `${member}`);
