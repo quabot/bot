@@ -144,7 +144,7 @@
         "quiz1": "Venus",
         "quiz2": "Saturn",
         "quiz3": "Mercury",
-        "correct": "correct"
+        "correct": "Venus"
     },
     {
         "question": "Who was the only U.S. President to resign?",
@@ -179,7 +179,7 @@
         "quiz1": "Kansas",
         "quiz2": "Florida",
         "quiz3": "The Boat",
-        "correct": "undefined"
+        "correct": "Kansas"
     },
     {
         "question": "How many bones are there in the human body?",

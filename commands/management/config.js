@@ -155,7 +155,7 @@ module.exports = {
                         embeds: [
                             new MessageEmbed()
                                 .setColor(color)
-                                .setTitle(`${client.user.username} level Configuration`)
+                                .setTitle(`${client.user.username} Levels Configuration`)
                                 .addField("Quick Links", "[Invite](https://discord.com/oauth2/authorize?client_id=845603702210953246&permissions=275384757342&scope=bot%20applications.commands) - [Discord](https://discord.gg/9kPCU8GHSK) - [Website](https://quabot.net)")
                                 .setThumbnail(client.user.avatarURL({ dynamic: true }))
                                 .setDescription("Use the selector below this message to select a category.")
@@ -163,7 +163,7 @@ module.exports = {
                             new MessageActionRow()
                                 .addComponents(
                                     new MessageSelectMenu()
-                                        .setCustomId('welcome')
+                                        .setCustomId('level')
                                         .setPlaceholder('Select a category')
                                         .addOptions([
                                             {
