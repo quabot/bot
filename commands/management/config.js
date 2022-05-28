@@ -199,5 +199,3 @@ module.exports = {
         }
     }
 }
-
-// Kijk, ik zie het een beetje zo: er zijn 2 soort groepen en een groot deel van de mensen in deze app komt nooit, en dus krijg je dan soort 2 groepen en ook als je ergens bent is het verdeeld, ik vind zelf sommige dingen
