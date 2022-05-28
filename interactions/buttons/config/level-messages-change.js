@@ -1,7 +1,7 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const { MessageEmbed, MessageButton, MessageActionRow, Modal, TextInputComponent, Message } = require('discord.js');
 
 module.exports = {
-    id: "welcome_channels_set",
+    id: "level_messages_change",
     async execute(interaction, client, color) {
 
         const Guild = require('../../../structures/schemas/GuildSchema');
@@ -39,7 +39,7 @@ module.exports = {
                 newGuild.save()
                     .catch(err => {
                         console.log(err);
-                        message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { console.log(err) });
@@ -55,59 +55,44 @@ module.exports = {
         const msg = await interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`**Mention** the new welcome log channel within 15 seconds.`)
+                    .setDescription(`**Click** the button below this message to enter the new level-up message.\n*Important note: This message will only be sent if the level embed is disabled.*\n**Valid Variables:**\n{guild} - Server's name.\n{user} - Mention's the user.\n{username} - User's username.\n{discriminator} - User's discriminator.\n{guild} - Server name.\n{level} - User's new level.\n{xp} - User's new XP.`)
                     .setColor(color)
             ], ephemeral: true, fetchReply: true, components: [
                 new MessageActionRow({
                     components: [
                         new MessageButton({
-                            style: 'DANGER',
-                            label: 'Cancel',
-                            customId: "welcome_channels_set_cancel"
+                            style: 'PRIMARY',
+                            label: 'Enter',
+                            customId: "level_messages_change_modal"
                         }),
                     ]
                 })
             ]
         });
 
-        const filter = m => interaction.user === m.author;
-        const collector = interaction.channel.createMessageCollector({ filter, time: 15000 });
+        const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
-        collector.on('collect', async m => {
-            if (!m) return;
-            const channel = m.mentions.channels.first();
-            if (!channel) return;
-            if (channel.type === "GUILD_VOICE") return;
-            if (channel.type === "GUILD_STAGE_VOICE") return;
+        collector.on('collect', async interaction => {
+            if (interaction.customId === "level_messages_change_modal") {
 
-            await guildDatabase.updateOne({
-                welcomeChannelID: channel
-            });
+                const modal = new Modal()
+                    .setCustomId('level-message-change')
+                    .setTitle('Set the new welcome message')
+                    .addComponents(
+                        new MessageActionRow()
+                            .addComponents(
+                                new TextInputComponent()
+                                    .setCustomId('message')
+                                    .setLabel('Enter your level-up message')
+                                    .setStyle('PARAGRAPH')
+                                    .setMinLength(1)
+                                    .setMaxLength(400)
+                                    .setPlaceholder("For the valid variables, see the previously sent embed.")
+                                    .setRequired(true)
+                            )
+                    );
 
-            const updated = new MessageEmbed()
-                .setDescription(`Succesfully changed the welcome channel to ${channel}`)
-                .setColor(color)
-            m.channel.send({ embeds: [updated] }).catch(( err => { } ))
-
-            collector.stop();
-            return;
-        });
-
-
-        const collectorCancel = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
-
-        collectorCancel.on('collect', async interaction => {
-            if (interaction.customId === "welcome_channels_set_cancel") {
-
-                collector.stop();
-
-                interaction.update({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription(`Cancelled.`)
-                            .setColor(color)
-                    ], ephemeral: true, components: []
-                }).catch(( err => { } ))
+                await interaction.showModal(modal);
 
             }
         });

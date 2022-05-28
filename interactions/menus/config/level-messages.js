@@ -1,7 +1,8 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
 module.exports = {
-    id: "welcome_channels_set",
+    value: "level_messages",
+    permission: "ADMINISTRATOR",
     async execute(interaction, client, color) {
 
         const Guild = require('../../../structures/schemas/GuildSchema');
@@ -52,64 +53,53 @@ module.exports = {
             ]
         }).catch((err => { }));
 
-        const msg = await interaction.reply({
+        var embed = `${guildDatabase.levelEmbed}`;
+
+        let levelMessage = `${guildDatabase.levelMessage}`;
+        levelMessage = levelMessage.replace("{user}", `${interaction.user}`);
+        levelMessage = levelMessage.replace("{username}", `${interaction.user.username}`);
+        levelMessage = levelMessage.replace("{discriminator}", `${interaction.user.discriminator}`);
+        levelMessage = levelMessage.replace("{level}", `3`);
+        levelMessage = levelMessage.replace("{xp}", `0`);
+        levelMessage = levelMessage.replace("{guild}", `${interaction.guild.name}`);
+
+        interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`**Mention** the new welcome log channel within 15 seconds.`)
+                    .setTitle(`Level Messages`)
+                    .setDescription(`Set the message that will be sent when a user level-ups, make it be in an embed or not. **Change** or **Reset** the message and **Enable** or **Disable** the embed with the buttons below this message.`)
+                    .setThumbnail(client.user.avatarURL({ dynamic: true }))
+                    .addFields(
+                        { name: "Message", value: `${levelMessage}`, inline: true },
+                        { name: "Embed", value: `${embed.replace("false", "Disabled").replace("true", "Enabled")}`, inline: true }
+                    )
                     .setColor(color)
-            ], ephemeral: true, fetchReply: true, components: [
+            ], ephemeral: true, components: [
                 new MessageActionRow({
                     components: [
                         new MessageButton({
+                            style: 'PRIMARY',
+                            label: 'Change',
+                            customId: "level_messages_change"
+                        }),
+                        new MessageButton({
+                            style: 'SECONDARY',
+                            label: 'Reset',
+                            customId: "level_messages_reset"
+                        }),
+                        new MessageButton({
+                            style: 'SUCCESS',
+                            label: 'Enable Embed',
+                            customId: "level_messages_embed_on"
+                        }),
+                        new MessageButton({
                             style: 'DANGER',
-                            label: 'Cancel',
-                            customId: "welcome_channels_set_cancel"
+                            label: 'Disable Embed',
+                            customId: "level_messages_embed_off"
                         }),
                     ]
                 })
             ]
-        });
-
-        const filter = m => interaction.user === m.author;
-        const collector = interaction.channel.createMessageCollector({ filter, time: 15000 });
-
-        collector.on('collect', async m => {
-            if (!m) return;
-            const channel = m.mentions.channels.first();
-            if (!channel) return;
-            if (channel.type === "GUILD_VOICE") return;
-            if (channel.type === "GUILD_STAGE_VOICE") return;
-
-            await guildDatabase.updateOne({
-                welcomeChannelID: channel
-            });
-
-            const updated = new MessageEmbed()
-                .setDescription(`Succesfully changed the welcome channel to ${channel}`)
-                .setColor(color)
-            m.channel.send({ embeds: [updated] }).catch(( err => { } ))
-
-            collector.stop();
-            return;
-        });
-
-
-        const collectorCancel = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
-
-        collectorCancel.on('collect', async interaction => {
-            if (interaction.customId === "welcome_channels_set_cancel") {
-
-                collector.stop();
-
-                interaction.update({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription(`Cancelled.`)
-                            .setColor(color)
-                    ], ephemeral: true, components: []
-                }).catch(( err => { } ))
-
-            }
         });
     }
 }
