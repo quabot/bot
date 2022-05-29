@@ -31,7 +31,7 @@ module.exports = {
 
             if (command.permission) {
                 if (!interaction.member.permissions.has(command.permission)) {
-                    return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.`, ephemeral: true })
+                    return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.\nYou need the permission: \`${command.permission}\` to do that`, ephemeral: true })
                 }
             }
 
