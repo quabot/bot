@@ -9,6 +9,8 @@ module.exports = {
 
             if (!channel) return;
             if (channel.type === "GUILD_CATEGORY") return;
+            if (channel.type === "GUILD_DIRECTORY") return;
+            if (channel.type === "GUILD_FORUM") return;
             if (channel.type === "GUILD_VOICE") return;
             if (channel.type === "GUILD_STAGE_VOICE") return;
             
