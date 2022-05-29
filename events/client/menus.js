@@ -13,7 +13,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")
-                        .setDescription("⛔ You do not have permission to use that menu.")
+                        .setDescription(`⛔ You do not have permission to use that menu.\nYou need the permission: \`${menu.permission}\` to do that.`)
                 ], ephemeral: true
             }).catch(err => console.warn(err));
 
