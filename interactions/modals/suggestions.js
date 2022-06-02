@@ -79,6 +79,14 @@ module.exports = {
                     .setFooter({ text: "Vote with the 🟢 and 🔴 below this message!" })
                     .setColor(color)
             ]
+        }).catch(err => {
+            interaction.followUp({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`I don't have the required permissions to send messages in that channel.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }))
         });
 
         msg.react("🟢");

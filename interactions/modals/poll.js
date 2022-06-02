@@ -57,7 +57,15 @@ module.exports = {
                     .setColor(color)
             ], ephemeral: true
         }).catch(( err => { } ))
-        const msg = await channel.send({ embeds: [embed] }).catch(err => console.log(err))
+        const msg = await channel.send({ embeds: [embed] }).catch(err => {
+            interaction.followUp({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`I don't have the required permissions to send messages in that channel.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }))
+        });
 
         for (let i = 0; i < pollDatabase.options; i++) {
             let b = `${i + 1}`;

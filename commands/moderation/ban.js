@@ -55,13 +55,15 @@ module.exports = {
             }).catch(err => { if (err.code !== 50007) console.log(err) });
 
             member.ban({ reason: reason }).catch(err => {
-                if (err.code === 50013) return interaction.channel.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription(`I do not have permission to ban that user.`)
-                            .setColor(color)
-                    ]
-                }).catch((err => { }))
+                if (err.code === 50013) {
+                    interaction.channel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`I do not have permission to ban that user.`)
+                                .setColor(color)
+                        ]
+                    }).catch((err => { }))
+                }
             });
 
             const User = require('../../structures/schemas/UserSchema');

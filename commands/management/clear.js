@@ -23,6 +23,13 @@ module.exports = {
             let amount = interaction.options.getInteger('amount');
             let public = !interaction.options.getBoolean('private');
 
+            
+            if (interaction.channel.type === "GUILD_CATEGORY") return;
+            if (interaction.channel.type === "GUILD_DIRECTORY") return;
+            if (interaction.channel.type === "GUILD_FORUM") return;
+            if (interaction.channel.type === "GUILD_VOICE") return;
+            if (interaction.channel.type === "GUILD_STAGE_VOICE") return;
+
             if (amount > 0) {
                 if (amount > 100) return interaction.reply({ content: `You can't delete more than 100 messages, idiot.`, ephemeral: true });
                 const size = await interaction.channel.bulkDelete(amount, true).catch(err => {

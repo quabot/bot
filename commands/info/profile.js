@@ -58,6 +58,7 @@ module.exports = {
             // get the bio and send the message.
             let bio = userDatabase.bio;
             if (bio === "none") bio = "No bio configured. This can be done with `/user bio`."
+            let notifs = `${userDatabase.updateNotify}`;
 
             interaction.reply({
                 embeds: [
@@ -72,7 +73,7 @@ module.exports = {
                         .setFooter(`${user.user.username}#${user.user.discriminator}`, user.user.avatarURL({ dynamic: true }))
                         .setDescription(`${bio}`)
                         .addFields(
-                            { name: "Update Notifications", value: `${userDatabase.updateNotify}`, inline: true }
+                            { name: "Update Notifications", value: `${notifs.replace("true", "Enabled").replace("false", "Disabled")}`, inline: true }
                         )
                         .setColor(color)
                         .setTimestamp()

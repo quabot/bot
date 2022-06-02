@@ -5,6 +5,8 @@ module.exports = {
     async execute(guild, client, color) {
         try {
 
+            client.guilds.cache.get("957024489638621185").channels.cache.get("979356759682613348").send({ embeds: [new MessageEmbed().setDescription(`QuaBot was added to **${guild.name}**. It has gained **${guild.memberCount}** members.`).setFooter("Server: " + guild.name).setTimestamp()] });
+
             var channel = guild.channels.cache.filter(ch => ch.type === "GUILD_TEXT").find(x => x.position === 0);
 
             if (!channel) return;
@@ -13,7 +15,7 @@ module.exports = {
             if (channel.type === "GUILD_FORUM") return;
             if (channel.type === "GUILD_VOICE") return;
             if (channel.type === "GUILD_STAGE_VOICE") return;
-            
+
             channel.send(({
                 embeds: [
                     new MessageEmbed()
