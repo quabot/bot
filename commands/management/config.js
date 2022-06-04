@@ -4,28 +4,6 @@ module.exports = {
     name: "config",
     description: 'Configure QuaBot.',
     permission: "ADMINISTRATOR",
-    options: [
-        {
-            name: "general",
-            description: "General configuration of channels & features.",
-            type: "SUB_COMMAND",
-        },
-        {
-            name: "welcome",
-            description: "Configure the welcome module.",
-            type: "SUB_COMMAND",
-        },
-        {
-            name: "logging",
-            description: "Configure logging channels, what events to log and more.",
-            type: "SUB_COMMAND",
-        },
-        {
-            name: "level",
-            description: "Configure level settings, add role rewards and more.",
-            type: "SUB_COMMAND",
-        },
-    ],
     async execute(client, interaction, color) {
         try {
 
@@ -37,7 +15,7 @@ module.exports = {
                         .setColor(color)
                 ], ephemeral: true
             }).catch((err) => { });
-            
+
             const subCmd = interaction.options.getSubcommand();
             switch (subCmd) {
                 case 'general':
