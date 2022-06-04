@@ -17,6 +17,7 @@ module.exports = {
                         guildName: interaction.guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
+                        logSuggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
                         punishmentChannelID: "none",
@@ -54,7 +55,7 @@ module.exports = {
                 ], ephemeral: true
             }).catch((err => { }))
 
-            if (guildDatabase.suggestEnabled === false) return interaction.reply({
+            if (guildDatabase.suggestEnabled === "false") return interaction.reply({
                 embeds: [
                     new MessageEmbed()
                         .setDescription(`Suggestions are disabled in this server! Ask an admin to enable them with \`/config general\``)

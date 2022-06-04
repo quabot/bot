@@ -18,6 +18,7 @@ module.exports = {
                     guildName: interaction.guild.name,
                     logChannelID: "none",
                     suggestChannelID: "none",
+                        logSuggestChannelID: "none",
                     welcomeChannelID: "none",
                     levelChannelID: "none",
                     logEnabled: true,
@@ -84,6 +85,29 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setDescription(`I don't have the required permissions to send messages in that channel.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }))
+        });
+
+        const suggestLogChannel = interaction.guild.channels.cache.get(guildDatabase.logSuggestChannelID);
+        suggestLogChannel.send({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle("New Suggestion!")
+                    .setTimestamp()
+                    .addFields(
+                        { name: "Suggestion", value: `${suggestion}` },
+                        { name: "Suggested by", value: `${interaction.user}` },
+                        { name: "Suggested in", value: `${interaction.channel}` }
+                    )
+                    .setColor(color)
+            ]
+        }).catch(err => {
+            interaction.followUp({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`I don't have the required permissions to send messages in the suggestions log channel. Please contact an admin.`)
                         .setColor(color)
                 ], ephemeral: true
             }).catch((err => { }))

@@ -18,6 +18,7 @@ module.exports = {
                         guildName: oldMessage.guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
+                        logSuggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
                         punishmentChannelID: "none",

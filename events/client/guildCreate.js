@@ -36,6 +36,7 @@ module.exports = {
                         guildName: guild.name,
                         logChannelID: "none",
                         suggestChannelID: "none",
+                        logSuggestChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
                         punishmentChannelID: "none",
