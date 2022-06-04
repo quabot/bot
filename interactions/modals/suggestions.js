@@ -91,28 +91,30 @@ module.exports = {
         });
 
         const suggestLogChannel = interaction.guild.channels.cache.get(guildDatabase.logSuggestChannelID);
-        suggestLogChannel.send({
-            embeds: [
-                new MessageEmbed()
-                    .setTitle("New Suggestion!")
-                    .setTimestamp()
-                    .addFields(
-                        { name: "Suggestion", value: `${suggestion}` },
-                        { name: "Suggested by", value: `${interaction.user}` },
-                        { name: "Suggested in", value: `${interaction.channel}` }
-                    )
-                    .setColor(color)
-            ]
-        }).catch(err => {
-            interaction.followUp({
+        if (suggestLogChannel) {
+            suggestLogChannel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`I don't have the required permissions to send messages in the suggestions log channel. Please contact an admin.`)
+                        .setTitle("New Suggestion!")
+                        .setTimestamp()
+                        .addFields(
+                            { name: "Suggestion", value: `${suggestion}` },
+                            { name: "Suggested by", value: `${interaction.user}` },
+                            { name: "Suggested in", value: `${interaction.channel}` }
+                        )
                         .setColor(color)
-                ], ephemeral: true
-            }).catch((err => { }))
-        });
-
+                ]
+            }).catch(err => {
+                interaction.followUp({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`I don't have the required permissions to send messages in the suggestions log channel. Please contact an admin.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }))
+            });
+        }
+        
         msg.react("🟢");
         msg.react("🔴");
 
