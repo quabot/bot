@@ -20,6 +20,7 @@ module.exports = {
                         logChannelID: "none",
                         suggestChannelID: "none",
                         logSuggestChannelID: "none",
+                        logPollChannelID: "none",
                         welcomeChannelID: "none",
                         levelChannelID: "none",
                         punishmentChannelID: "none",
