@@ -11,7 +11,7 @@ module.exports = {
                     new MessageEmbed()
                         .setDescription(`You can find our [dashboard](https://dashboard.quabot.net) at [dashboard.quabot.net](https://dashboard.quabot.net).`)
                         .setColor(color)
-                ], ephemeral: true
+                ], ephemeral: false
             }).catch((err) => { });
 
         } catch (e) {
