@@ -10,6 +10,43 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true });
 
+        const Guild = require('../../structures/schemas/GuildSchema');
+        const guildDatabase = await Guild.findOne({
+            guildId: interaction.guild.id,
+        }, (err, guild) => {
+            if (err) console.error(err);
+            if (!guild) {
+                const newGuild = new Guild({
+                    guildId: interaction.guild.id,
+                    guildName: interaction.guild.name,
+                    logChannelID: "none",
+                    suggestChannelID: "none",
+                    logSuggestChannelID: "none",
+                    logPollChannelID: "none",
+                    welcomeChannelID: "none",
+                    levelChannelID: "none",
+                    logEnabled: true,
+                    modEnabled: true,
+                    levelEnabled: false,
+                    welcomeEmbed: true,
+                    pollEnabled: true,
+                    suggestEnabled: true,
+                    welcomeEnabled: true,
+                    leaveEnabled: true,
+                    roleEnabled: false,
+                    mainRole: "none",
+                    joinMessage: "Welcome {user} to **{guild}**!",
+                    leaveMessage: "Goodbye {user}!",
+                    swearEnabled: false,
+                });
+                newGuild.save()
+                    .catch(err => {
+                        console.log(err);
+                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                    });
+            }
+        }).clone().catch(function (err) { console.log(err) });
+
         const Poll = require('../../structures/schemas/PollSchema');
         const pollDatabase = await Poll.findOne({
             guildId: interaction.guild.id,
@@ -25,7 +62,7 @@ module.exports = {
                     .setDescription(`That poll does not exist.`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(( err => { } ));
+        }).catch((err => { }));
 
         interaction.components.map(item => {
             if (item.components[0].customId === "poll-question") return;
@@ -56,16 +93,45 @@ module.exports = {
                     .setDescription(`Could not find the channel.`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(( err => { } ))
+        }).catch((err => { }))
         const msg = await channel.send({ embeds: [embed] }).catch(err => {
             interaction.followUp({
                 embeds: [
                     new MessageEmbed()
                         .setDescription(`I don't have the required permissions to send messages in that channel.`)
                         .setColor(color)
-                ], ephemeral: true
+                ], ephemeral: true, fetchReply: true
             }).catch((err => { }))
         });
+
+        if (!msg) return;
+
+        const pollLogChannel = interaction.guild.channels.cache.get(guildDatabase.logPollChannelID);
+        if (pollLogChannel) {
+            pollLogChannel.send({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle("New Poll!")
+                        .setTimestamp()
+                        .addFields(
+                            { name: "Question", value: `${question}` },
+                            { name: "Options", value: `${description}` },
+                            { name: "Created by", value: `${interaction.user}`, inline: true },
+                            { name: "Ends in", value: `<t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R>`, inline: true },
+                            { name: "Message", value: `[Click to jump](${msg.url})`, inline: true }
+                        )
+                        .setColor(color)
+                ]
+            }).catch(err => {
+                interaction.followUp({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`I don't have the required permissions to send messages in the suggestions log channel. Please contact an admin.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }))
+            });
+        }
 
         for (let i = 0; i < pollDatabase.options; i++) {
             let b = `${i + 1}`;
@@ -79,7 +145,7 @@ module.exports = {
                     .setDescription(`Succesfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDatabase.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDatabase.pollId}`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch(( err => { } ));
+        }).catch((err => { }));
 
         await pollDatabase.updateOne({
             msgId: msg.id,

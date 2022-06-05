@@ -18,8 +18,8 @@ module.exports = {
                     guildName: interaction.guild.name,
                     logChannelID: "none",
                     suggestChannelID: "none",
-                        logSuggestChannelID: "none",
-                        logPollChannelID: "none",
+                    logSuggestChannelID: "none",
+                    logPollChannelID: "none",
                     welcomeChannelID: "none",
                     levelChannelID: "none",
                     logEnabled: true,
@@ -80,7 +80,7 @@ module.exports = {
                     )
                     .setFooter({ text: "Vote with the 🟢 and 🔴 below this message!" })
                     .setColor(color)
-            ]
+            ], fetchReply: true
         }).catch(err => {
             interaction.followUp({
                 embeds: [
@@ -91,6 +91,8 @@ module.exports = {
             }).catch((err => { }))
         });
 
+        if (!msg) return;
+        
         const suggestLogChannel = interaction.guild.channels.cache.get(guildDatabase.logSuggestChannelID);
         if (suggestLogChannel) {
             suggestLogChannel.send({
@@ -100,8 +102,9 @@ module.exports = {
                         .setTimestamp()
                         .addFields(
                             { name: "Suggestion", value: `${suggestion}` },
-                            { name: "Suggested by", value: `${interaction.user}` },
-                            { name: "Suggested in", value: `${interaction.channel}` }
+                            { name: "Suggested by", value: `${interaction.user}`, inline: true },
+                            { name: "Suggested in", value: `${interaction.channel}`, inline: true },
+                            { name: "Message", value: `[Click to jump](${msg.url})`, inline: true }
                         )
                         .setColor(color)
                 ]
