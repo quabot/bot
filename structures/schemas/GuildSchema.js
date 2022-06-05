@@ -42,6 +42,10 @@ const GuildSchema = new mongoose.Schema({
     levelEmbed: reqBool,
     levelMessage: reqString,
     afkEnabled: reqString,
+    afkStatusAllowed: reqString,
+    musicEnabled: reqString,
+    musicOneChannelEnabled: reqString,
+    musicChannelID: reqString,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);
