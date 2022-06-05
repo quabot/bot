@@ -30,7 +30,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -49,7 +49,7 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -78,12 +78,15 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
             if (!userDatabase) return;
+
+            if (!guildDatabase) return;
+            if (guildDatabase.afkEnabled === "false") return;
 
             if (userDatabase.afk) {
                 await userDatabase.updateOne({
@@ -96,7 +99,7 @@ module.exports = {
                             .setDescription(`Removed your afk status.`)
                             .setColor(color)
                     ], ephemeral: true, allowedMentions: { repliedUser: false }
-                }).catch(( err => { } ))
+                }).catch((err => { }))
             }
 
         } catch (e) {
@@ -104,4 +107,4 @@ module.exports = {
             client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Event: " + this.name)] });
         }
     }
-}
+} 

@@ -6,7 +6,7 @@ module.exports = {
         try {
 
             if (!message.guild) return;
-            
+
             let member = message.mentions.users.first();
 
             if (!member) return
@@ -34,7 +34,7 @@ module.exports = {
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
-                    modEnabled: true,
+                        modEnabled: true,
                         levelEnabled: false,
                         welcomeEmbed: true,
                         pollEnabled: true,
@@ -53,7 +53,7 @@ module.exports = {
                     newGuild.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -82,22 +82,37 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
             if (!userDatabase) return;
 
-            if (userDatabase.afk) {
+            if (!guildDatabase) return;
+            if (guildDatabase.afkEnabled === "false") return;
 
-                message.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription(`${member} is currently afk!\n**${userDatabase.afkMessage}**`)
-                            .setColor(color)
-                    ], ephemeral: true, allowedMentions: { repliedUser: false }
-                }).catch(( err => { } ))
+            if (guildDatabase.afkStatusAllowed === "false") {
+                if (userDatabase.afk) {
+                    return message.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`${member} is afk!`)
+                                .setColor(color)
+                        ], ephemeral: true, allowedMentions: { repliedUser: false }
+                    }).catch((err => { }));
+                }
+            } else {
+                if (userDatabase.afk) {
+
+                    message.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`${member} is afk!\n**${userDatabase.afkMessage}**`)
+                                .setColor(color)
+                        ], ephemeral: true, allowedMentions: { repliedUser: false }
+                    }).catch((err => { }))
+                }
             }
 
         } catch (e) {

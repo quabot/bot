@@ -60,7 +60,70 @@ module.exports = {
                         .setDescription(`We added you to the database! Please run that command again.`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch((err => { }))
+            }).catch((err => { }));
+
+            const Guild = require('../../structures/schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        logChannelID: "none",
+                        afkStatusAllowed: "true",
+                        musicEnabled: "true",
+                        musicOneChannelEnabled: "false",
+                        musicChannelID: "none",
+                        suggestChannelID: "none",
+                        logSuggestChannelID: "none",
+                        logPollChannelID: "none",
+                        afkEnabled: true,
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        punishmentChannelID: "none",
+                        pollID: 0,
+                        logEnabled: true,
+                        modEnabled: true,
+                        levelEnabled: false,
+                        welcomeEmbed: true,
+                        pollEnabled: true,
+                        suggestEnabled: true,
+                        welcomeEnabled: true,
+                        leaveEnabled: true,
+                        roleEnabled: false,
+                        mainRole: "none",
+                        joinMessage: "Welcome {user} to **{guild}**!",
+                        leaveMessage: "Goodbye {user}!",
+                        swearEnabled: false,
+                        levelCard: false,
+                        levelEmbed: true,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
+                    });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            if (!guildDatabase) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`We added this server to the database! Please run that command again.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }));
+
+            if (guildDatabase.afkEnabled === "false") return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`The AFK module is disabled in this server.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }));
 
             switch (subCmd) {
                 case 'settings':
@@ -144,6 +207,14 @@ module.exports = {
 
                 case 'set':
 
+                    if (guildDatabase.afkStatusAllowed === "false") return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`This server does not allow you to set your afk status!`)
+                                .setColor(color)
+                        ], ephemeral: true,
+                    }).catch((err => { }));
+
                     const modal = new Modal()
                         .setCustomId('afk-set')
                         .setTitle('Set AFK status')
@@ -167,6 +238,14 @@ module.exports = {
 
                 case 'status':
                     let trueFalse = `${userDatabase.afk}`;
+                    if (guildDatabase.afkStatusAllowed === "false") return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                            .setDescription(`You are currently ${trueFalse.replace("true", "**afk**").replace("false", "**not afk**")}.`)
+                                .setColor(color)
+                        ], ephemeral: true,
+                    }).catch((err => { }));
+
                     interaction.reply({
                         embeds: [
                             new MessageEmbed()
