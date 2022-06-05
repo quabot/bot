@@ -41,6 +41,7 @@ const GuildSchema = new mongoose.Schema({
     levelCard: reqBool,
     levelEmbed: reqBool,
     levelMessage: reqString,
+    afkEnabled: reqString,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);

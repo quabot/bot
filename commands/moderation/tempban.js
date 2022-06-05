@@ -182,6 +182,7 @@ module.exports = {
                         suggestChannelID: "none",
                         logSuggestChannelID: "none",
                         logPollChannelID: "none",
+                        afkEnabled: true,
                         welcomeChannelID: "none",
                         levelChannelID: "none",
                         punishmentChannelID: "none",
