@@ -29,6 +29,7 @@ module.exports = {
                     logPollChannelID: "none",
                         afkEnabled: true,
                     welcomeChannelID: "none",
+                        leaveChannelID: "none",
                     levelChannelID: "none",
                     logEnabled: true,
                     modEnabled: true,

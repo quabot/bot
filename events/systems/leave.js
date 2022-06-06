@@ -27,6 +27,7 @@ module.exports = {
                         logPollChannelID: "none",
                         afkEnabled: true,
                         welcomeChannelID: "none",
+                        leaveChannelID: "none",
                         levelChannelID: "none",
                         punishmentChannelID: "none",
                         pollID: 0,
@@ -58,7 +59,7 @@ module.exports = {
 
             if (guildDatabase.leaveEnabled === "false") return;
 
-            const channel = member.guild.channels.cache.get(`${guildDatabase.welcomeChannelID}`);
+            const channel = member.guild.channels.cache.get(`${guildDatabase.leaveChannelID}`);
 
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
