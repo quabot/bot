@@ -19,7 +19,7 @@ client.distube
                     .addField("Queue", `${queue.songs.length} songs`, true)
                     .addField("Autoplay", `\`${queue.autoplay ? "Enabled" : "Disabled"}\``, true)
                     .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)]
-        });
+        }).catch((err) => { });
     })
 
     .on("addSong", (queue, song) => {
@@ -33,7 +33,7 @@ client.distube
                     .addField("Added by", `${song.user}`, true)
                     .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
                     .addField("Duration", `${song.formattedDuration}`, true)]
-        });
+        }).catch((err) => { });
     })
 
     .on('error', (channel, err) => {
@@ -44,7 +44,7 @@ client.distube
                     .setDescription(":x: There was an error with the music stream.")
                     .setColor(color)
             ]
-        });
+        }).catch((err) => { });
     })
 
     .on('finish', queue => {
@@ -54,7 +54,7 @@ client.distube
                     .setDescription(":x: There are no more songs in queue, leaving voice channel!")
                     .setColor(color)
             ]
-        });
+        }).catch((err) => { });
     })
     .on('initQueue', queue => {
         queue.autoplay = false,
@@ -68,5 +68,5 @@ client.distube
                     .setDescription(":x: Could not find any related songs, queue ended!")
                     .setColor(color)
             ]
-        });
+        }).catch((err) => { });
     });

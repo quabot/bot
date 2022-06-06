@@ -37,7 +37,69 @@ module.exports = {
     async execute(client, interaction, color) {
         try {
 
-            // music enabled check
+            const Guild = require('../../structures/schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        logChannelID: "none",
+                        afkStatusAllowed: "true",
+                        musicEnabled: "true",
+                        musicOneChannelEnabled: "false",
+                        musicChannelID: "none",
+                        suggestChannelID: "none",
+                        logSuggestChannelID: "none",
+                        logPollChannelID: "none",
+                        afkEnabled: true,
+                        welcomeChannelID: "none",
+                        levelChannelID: "none",
+                        punishmentChannelID: "none",
+                        pollID: 0,
+                        logEnabled: true,
+                        modEnabled: true,
+                        levelEnabled: false,
+                        welcomeEmbed: true,
+                        pollEnabled: true,
+                        suggestEnabled: true,
+                        welcomeEnabled: true,
+                        leaveEnabled: true,
+                        roleEnabled: false,
+                        mainRole: "none",
+                        joinMessage: "Welcome {user} to **{guild}**!",
+                        leaveMessage: "Goodbye {user}!",
+                        swearEnabled: false,
+                        levelCard: false,
+                        levelEmbed: true,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
+                    });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
+            if (!guildDatabase) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`We added this server to the database! Please run that command again.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }));
+
+
+            if (guildDatabase.musicEnabled === "false") return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`Music is disabled in this server.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }));
 
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member.voice.channel) return interaction.reply({
@@ -55,9 +117,27 @@ module.exports = {
                                 .setDescription(`We're not in the same voice channel! Join <#${interaction.guild.me.voice.channelId}> to use that command.`)
                                 .setColor(color)
                         ]
-                    }).catch(( err => { } ))
+                    }).catch((err => { }))
                     return;
                 }
+            }
+
+            if (guildDatabase.musicOneChannelEnabled === "true") {
+                const channel = interaction.guild.channels.cache.get(guildDatabase.musicChannelID);
+                if (!channel) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`One channel mode for music is enabled, but no channel was found! Please reconfigure this.`)
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+                if (member.voice.channelId !== guildDatabase.musicChannelID) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`You can only use music in ${channel}!`)
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
             }
 
             const subCmd = interaction.options.getSubcommand();
@@ -76,7 +156,7 @@ module.exports = {
                     const voiceChannel = member.voice.channel;
                     client.distube.play(voiceChannel, `${search}`, {
                         textChannel: interaction.channel,
-                    }).catch(( err => { } ))
+                    }).catch((err => { }))
 
                     break;
 
@@ -224,7 +304,7 @@ module.exports = {
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                             const repeatOffId = 'repeatOff'
                             const repeatQueueId = 'repeatQueue'
@@ -255,7 +335,7 @@ module.exports = {
                                         .setColor(color)
                                 ], fetchReply: true,
                                 components: [new MessageActionRow({ components: [repeatOff, repeatQueue, repeatOne] })]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                             const collectorRepeat = repeatMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
@@ -268,7 +348,7 @@ module.exports = {
                                                 .setDescription("▶️ Turned repeat off!")
                                                 .setColor(color)
                                         ], components: []
-                                    }).catch(( err => { } ))
+                                    }).catch((err => { }))
                                 } else if (interaction.customId === repeatOneId) {
                                     client.distube.setRepeatMode(interaction, 1)
                                     await interaction.update({
@@ -277,7 +357,7 @@ module.exports = {
                                                 .setDescription("🔂 Repeating song!")
                                                 .setColor(color)
                                         ], components: []
-                                    }).catch(( err => { } ))
+                                    }).catch((err => { }))
                                 } else if (interaction.customId === repeatQueueId) {
                                     client.distube.setRepeatMode(interaction, 2)
                                     await interaction.update({
@@ -286,7 +366,7 @@ module.exports = {
                                                 .setDescription("🔁 Repeating queue!")
                                                 .setColor(color)
                                         ], components: []
-                                    }).catch(( err => { } ))
+                                    }).catch((err => { }))
                                 }
                             });
 
@@ -298,7 +378,7 @@ module.exports = {
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                             const volumePlus = 'volumeAdd'
                             const volumeBasic = 'volumeReset'
@@ -329,7 +409,7 @@ module.exports = {
                                         .setColor(color)
                                 ], fetchReply: true,
                                 components: [new MessageActionRow({ components: [volumeMinBtn, volumeResetBtn, volumeAddBtn] })]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                             const collectorVolume = volumeMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
@@ -347,7 +427,7 @@ module.exports = {
                                                 .setDescription(`🔉 Volume set to \`${newVol}%\``)
                                                 .setColor(color)
                                         ]
-                                    }).catch(( err => { } ))
+                                    }).catch((err => { }))
 
 
                                 } else if (interaction.customId === volumeBasic) {
@@ -360,7 +440,7 @@ module.exports = {
                                                 .setDescription(`🔈 Volume set to \`50%\``)
                                                 .setColor(color)
                                         ]
-                                    }).catch(( err => { } ))
+                                    }).catch((err => { }))
 
                                 } else if (interaction.customId === volumePlus) {
                                     let newVolAdd = queueVolume.volume + 10;
@@ -374,7 +454,7 @@ module.exports = {
                                                 .setDescription(`🔊 Volume set to \`${newVolAdd}%\``)
                                                 .setColor(color)
                                         ]
-                                    }).catch(( err => { } ))
+                                    }).catch((err => { }))
                                 }
                             });
                             break;
@@ -387,7 +467,7 @@ module.exports = {
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
                             client.distube.shuffle(interaction);
                             interaction.reply({
                                 embeds: [
@@ -395,7 +475,7 @@ module.exports = {
                                         .setDescription("🔀 Shuffled the queue!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                             break;
 
@@ -407,7 +487,7 @@ module.exports = {
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
 
                             client.distube.resume(interaction);
@@ -417,7 +497,7 @@ module.exports = {
                                         .setDescription("▶️ Resumed!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
                             break;
 
                         case 'pause':
@@ -428,7 +508,7 @@ module.exports = {
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
 
                             client.distube.pause(interaction);
@@ -438,7 +518,7 @@ module.exports = {
                                         .setDescription("⏸️ Paused!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
                             break;
 
                         case 'nowplaying':
@@ -449,7 +529,7 @@ module.exports = {
                                         .setDescription("🎵 There are no songs playing!")
                                         .setColor(color)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                             let song = queueNP.songs[0];
 
@@ -467,7 +547,7 @@ module.exports = {
                                         .addField("Views", `${song.views}`, true)
                                         .addField("Duration", `\`${song.formattedDuration}\``, true)
                                 ]
-                            }).catch(( err => { } ))
+                            }).catch((err => { }))
 
                             break;
                     }
