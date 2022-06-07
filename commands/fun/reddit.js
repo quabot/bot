@@ -28,7 +28,7 @@ module.exports = {
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription("Getting your image ready...")
+                        .setDescription("<a:loading:647604616858566656>")
                         .setColor(color)
                 ]
             }).catch(( err => { } ))
@@ -43,9 +43,7 @@ module.exports = {
                         interaction.editReply({
                             embeds: [
                                 new MessageEmbed()
-                                    .setTitle(`${data.title}`)
                                     .setImage(`${data.url}`)
-                                    .setFooter(`r/${data.subreddit}`)
                                     .setColor(color)
                             ]
                         }).catch(( err => { } ))
@@ -58,9 +56,7 @@ module.exports = {
                         interaction.editReply({
                             embeds: [
                                 new MessageEmbed()
-                                    .setTitle(`${data.title}`)
                                     .setImage(`${data.url}`)
-                                    .setFooter(`r/${data.subreddit}`)
                                     .setColor(color)
                             ]
                         }).catch(( err => { } ))
@@ -73,9 +69,7 @@ module.exports = {
                         interaction.editReply({
                             embeds: [
                                 new MessageEmbed()
-                                    .setTitle(`${data.title}`)
                                     .setImage(`${data.url}`)
-                                    .setFooter(`r/${data.subreddit}`)
                                     .setColor(color)
                             ]
                         }).catch(( err => { } ))
