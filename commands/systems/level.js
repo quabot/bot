@@ -56,6 +56,13 @@ module.exports = {
                         guildId: interaction.guild.id,
                         guildName: interaction.guild.name,
                         logChannelID: "none",
+                        ticketCategory: "none",
+                        ticketClosedCategory: "none",
+                        ticketEnabled: true,
+                        ticketStaffPing: true,
+                        ticketTopicButton: true,
+                        ticketSupport: "none",
+                    ticketId: 1,
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -106,7 +113,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor(color)
-                        .setDescription(`Levels are disabled in this server. Ask an admin to enable them with\`/config-level\`!`)
+                        .setDescription(`Levels are disabled in this server. Ask an admin to enable them on [our dashboard](https://dashboard.quabot.net)!`)
                 ]
             }).catch((err => { }));
 

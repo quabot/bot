@@ -4,6 +4,11 @@ const reqString = {
     required: true,
 }
 
+const reqArray = {
+    type: Array,
+    required: true,
+}
+
 const reqNum = {
     type: Number,
     required: true,
@@ -47,6 +52,13 @@ const GuildSchema = new mongoose.Schema({
     musicEnabled: reqString,
     musicOneChannelEnabled: reqString,
     musicChannelID: reqString,
+    ticketCategory: reqString,
+    ticketClosedCategory: reqString,
+    ticketEnabled: reqBool,
+    ticketStaffPing: reqBool,
+    ticketTopicButton: reqBool,
+    ticketSupport: reqString,
+    ticketId: reqNum,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);
