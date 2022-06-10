@@ -122,7 +122,7 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setColor(color)
-                    .setDescription("This tickets' transcript is in the attachment. Open it in the browser to see it.")
+                    .setDescription("This ticket transcript is in the attachment. Open it in the browser to see it.")
             ],
             files: [attachment]
         }).catch((err => { console.error(err) }));
