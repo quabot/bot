@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions } = require('discord.js');
 
 module.exports = {
     name: "ticket",
@@ -37,6 +37,8 @@ module.exports = {
                     ticketTopicButton: true,
                     ticketSupport: "none",
                     ticketId: 1,
+                    ticketLogs: true,
+                    ticketChannelID: "none",
                     afkStatusAllowed: "true",
                     musicEnabled: "true",
                     musicOneChannelEnabled: "false",
@@ -103,7 +105,7 @@ module.exports = {
                 let role = interaction.guild.roles.cache.get(`${guildDatabase.ticketSupport}`);
 
                 const openCategory = interaction.guild.channels.cache.get(`${guildDatabase.ticketCategory}`);
-                // if no closed cat, set ticket to private in main with @Support error
+
                 if (!openCategory) return interaction.reply({
                     embeds: [
                         new MessageEmbed()
@@ -112,7 +114,9 @@ module.exports = {
                     ], ephemeral: true
                 }).catch((err => { }));
 
-                const channel = await interaction.guild.channels.create(`ticket-${guildDatabase.ticketId}`, {
+                let ticketId = parseInt(`${guildDatabase.ticketId}`) + 1;
+
+                const channel = await interaction.guild.channels.create(`ticket-${ticketId}`, {
                     type: "TEXT",
                     permissionOverwrites: [
                         {
@@ -121,13 +125,15 @@ module.exports = {
                         },
                         {
                             id: interaction.user.id,
-                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]
                         },
-
-                        // also add the staff roles
                     ]
                 });
 
+                channel.permissionOverwrites.create(role,
+                    { VIEW_CHANNEL: true, SEND_MESSAGES: true },
+                );
+                
                 channel.setParent(openCategory, { lockPermissions: false });
 
                 const embed = new MessageEmbed()
@@ -155,9 +161,6 @@ module.exports = {
 
                 if (role) channel.send(`${role}`);
 
-                let ticketId = parseInt(`${guildDatabase.ticketId}`) + 1;
-                console.log(ticketId)
-
                 const Ticket = require('../../structures/schemas/TicketSchema');
                 const newTicket = new Ticket({
                     guildId: interaction.guild.id,
@@ -165,6 +168,8 @@ module.exports = {
                     channelId: channel.id,
                     topic: subject,
                     closed: false,
+                    owner: interaction.user.id,
+                    users: [],
                 });
                 await newTicket.save();
 

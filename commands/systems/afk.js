@@ -79,6 +79,8 @@ module.exports = {
                         ticketTopicButton: true,
                         ticketSupport: "none",
                     ticketId: 1,
+                    ticketLogs: true,
+                    ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",

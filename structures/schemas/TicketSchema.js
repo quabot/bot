@@ -14,12 +14,19 @@ const reqBool = {
     required: true,
 }
 
+const reqArray = {
+    type: Array,
+    required: true,
+}
+
 const TicketSchema = new mongoose.Schema({
     guildId: reqString,
     ticketId: reqNum,
     channelId: reqString,
     topic: reqString,
     closed: reqBool,
+    owner: reqString,
+    users: reqArray,
 });
 
 module.exports = mongoose.model('Tickets', TicketSchema);
