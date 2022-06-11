@@ -1,5 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message } = require('discord.js');
-const closeTicket = require('../../interactions/buttons/tickets/close-ticket');
+const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
 
 module.exports = {
     name: "ticket",
@@ -53,6 +52,11 @@ module.exports = {
                     description: "The user to remove."
                 },
             ],
+        },
+        {
+            name: "message",
+            description: "Sends a ticket message.",
+            type: "SUB_COMMAND",
         },
     ],
     async execute(client, interaction, color) {
@@ -134,101 +138,100 @@ module.exports = {
         const Ticket = require('../../structures/schemas/TicketSchema');
         const subCmd = interaction.options.getSubcommand();
 
-
-        // ADMIN OVERRIDE ALLOWED PERMS!!
-        // disable buttons on delete cancel
-
-
         switch (subCmd) {
-            
+
             case "create":
 
-                let subject = interaction.options.getString("subject");
-                if (!subject) subject = "No subject specified.";
+                async function createTicket(guildDatabase, interaction) {
+                    let subject = interaction.options.getString("subject");
+                    if (!subject) subject = "No subject specified.";
 
-                let role = interaction.guild.roles.cache.get(`${guildDatabase.ticketSupport}`);
+                    let role = interaction.guild.roles.cache.get(`${guildDatabase.ticketSupport}`);
 
-                const openCategory = interaction.guild.channels.cache.get(`${guildDatabase.ticketCategory}`);
+                    const openCategory = interaction.guild.channels.cache.get(`${guildDatabase.ticketCategory}`);
 
-                if (!openCategory) return interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription(`Could not find a tickets category. Configure this in our [dashboard](https://dashboard.quabot.net)!`)
-                            .setColor(color)
-                    ], ephemeral: true
-                }).catch((err => { }));
+                    if (!openCategory) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`Could not find a tickets category. Configure this in our [dashboard](https://dashboard.quabot.net)!`)
+                                .setColor(color)
+                        ], ephemeral: true
+                    }).catch((err => { }));
 
-                let ticketId = parseInt(`${guildDatabase.ticketId}`) + 1;
+                    let ticketId = parseInt(`${guildDatabase.ticketId}`) + 1;
 
-                const channel = await interaction.guild.channels.create(`ticket-${ticketId}`, {
-                    type: "TEXT",
-                    permissionOverwrites: [
-                        {
-                            id: interaction.guild.id,
-                            deny: ["VIEW_CHANNEL", "SEND_MESSAGES"]
-                        },
-                        {
-                            id: interaction.user.id,
-                            allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]
-                        },
-                    ]
-                });
+                    const channel = await interaction.guild.channels.create(`ticket-${ticketId}`, {
+                        type: "TEXT",
+                        permissionOverwrites: [
+                            {
+                                id: interaction.guild.id,
+                                deny: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                            },
+                            {
+                                id: interaction.user.id,
+                                allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]
+                            },
+                        ]
+                    });
 
-                channel.permissionOverwrites.create(role,
-                    { VIEW_CHANNEL: true, SEND_MESSAGES: true },
-                );
+                    channel.permissionOverwrites.create(role,
+                        { VIEW_CHANNEL: true, SEND_MESSAGES: true },
+                    );
 
-                channel.setParent(openCategory, { lockPermissions: false });
+                    channel.setParent(openCategory, { lockPermissions: false });
 
-                const embed = new MessageEmbed()
-                    .setColor(color)
-                    .setTitle("New Ticket")
-                    .setDescription("Please wait, staff will be with you shortly.")
-                    .addFields(
-                        { name: "Topic", value: `${subject}`, inline: true },
-                        { name: "Created By", value: `${interaction.user}`, inline: true }
-                    )
-                    .setTimestamp()
+                    const embed = new MessageEmbed()
+                        .setColor(color)
+                        .setTitle("New Ticket")
+                        .setDescription("Please wait, staff will be with you shortly.")
+                        .addFields(
+                            { name: "Topic", value: `${subject}`, inline: true },
+                            { name: "Created By", value: `${interaction.user}`, inline: true }
+                        )
+                        .setTimestamp()
 
-                channel.send({
-                    embeds: [embed],
-                    components: [
-                        new MessageActionRow()
-                            .addComponents(
-                                new MessageButton()
-                                    .setCustomId('close-ticket')
-                                    .setLabel('🔒 Close')
-                                    .setStyle('DANGER')
-                            )
-                    ],
-                }).catch((err) => { });
+                    channel.send({
+                        embeds: [embed],
+                        components: [
+                            new MessageActionRow()
+                                .addComponents(
+                                    new MessageButton()
+                                        .setCustomId('close-ticket')
+                                        .setLabel('🔒 Close')
+                                        .setStyle('DANGER')
+                                )
+                        ],
+                    }).catch((err) => { });
 
-                if (role) channel.send(`${role}`);
+                    if (role) channel.send(`${role}`);
 
-                const newTicket = new Ticket({
-                    guildId: interaction.guild.id,
-                    ticketId: ticketId,
-                    channelId: channel.id,
-                    topic: subject,
-                    closed: false,
-                    owner: interaction.user.id,
-                    users: [],
-                });
-                await newTicket.save();
+                    const newTicket = new Ticket({
+                        guildId: interaction.guild.id,
+                        ticketId: ticketId,
+                        channelId: channel.id,
+                        topic: subject,
+                        closed: false,
+                        owner: interaction.user.id,
+                        users: [],
+                    });
+                    await newTicket.save();
 
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setTitle("Ticket Created")
-                            .setDescription(`Check it out here: ${channel}. Staff will be with you shortly!`)
-                            .setTimestamp()
-                    ]
-                }).catch((err) => { });
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setTitle("Ticket Created")
+                                .setDescription(`Check it out here: ${channel}. Staff will be with you shortly!`)
+                                .setTimestamp()
+                        ]
+                    }).catch((err) => { });
 
-                await guildDatabase.updateOne({
-                    ticketId: ticketId,
-                });
+                    await guildDatabase.updateOne({
+                        ticketId: ticketId,
+                    });
+                }
+
+                createTicket(guildDatabase, interaction);
 
                 break;
 
@@ -419,7 +422,7 @@ module.exports = {
                 for (var i = 0; i < users.length; i++) {
                     if (users[i] === `${member.id}`) {
                         users.splice(i, 1);
-                        i--; 
+                        i--;
                     }
                 }
 
@@ -443,6 +446,42 @@ module.exports = {
 
                 break;
 
+            case 'message':
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setDescription("You don't have permission to do that.")
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setDescription("You can dismiss this message.")
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                interaction.channel.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setTitle("Create ticket")
+                            .setDescription("Click on the button below this message to create a ticket.")
+                    ],
+                    components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setCustomId("create-ticket")
+                                    .setStyle("SECONDARY")
+                                    .setLabel("🎫 Ticket")
+                            )
+                    ]
+                }).catch((err => { }));
+
+                break;
         }
     }
 }
