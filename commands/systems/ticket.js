@@ -1,4 +1,5 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message } = require('discord.js');
+const closeTicket = require('../../interactions/buttons/tickets/close-ticket');
 
 module.exports = {
     name: "ticket",
@@ -16,6 +17,42 @@ module.exports = {
                     description: "The ticket topic."
                 }
             ]
+        },
+        {
+            name: "close",
+            description: "Close a ticket.",
+            type: "SUB_COMMAND",
+        },
+        {
+            name: "delete",
+            description: "Delete a ticket.",
+            type: "SUB_COMMAND",
+        },
+        {
+            name: "add",
+            description: "Add a user to the ticket.",
+            type: "SUB_COMMAND",
+            options: [
+                {
+                    name: "user",
+                    type: "USER",
+                    required: true,
+                    description: "The user to add."
+                },
+            ],
+        },
+        {
+            name: "remove",
+            description: "Remove a user from the ticket.",
+            type: "SUB_COMMAND",
+            options: [
+                {
+                    name: "user",
+                    type: "USER",
+                    required: true,
+                    description: "The user to remove."
+                },
+            ],
         },
     ],
     async execute(client, interaction, color) {
@@ -94,6 +131,7 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
+        const Ticket = require('../../structures/schemas/TicketSchema');
         const subCmd = interaction.options.getSubcommand();
 
         switch (subCmd) {
@@ -133,7 +171,7 @@ module.exports = {
                 channel.permissionOverwrites.create(role,
                     { VIEW_CHANNEL: true, SEND_MESSAGES: true },
                 );
-                
+
                 channel.setParent(openCategory, { lockPermissions: false });
 
                 const embed = new MessageEmbed()
@@ -161,7 +199,6 @@ module.exports = {
 
                 if (role) channel.send(`${role}`);
 
-                const Ticket = require('../../structures/schemas/TicketSchema');
                 const newTicket = new Ticket({
                     guildId: interaction.guild.id,
                     ticketId: ticketId,
@@ -188,6 +225,206 @@ module.exports = {
                 });
 
                 break;
+
+            case 'close':
+                const ticketFound = await Ticket.findOne({
+                    channelId: interaction.channel.id,
+                }, (err, ticket) => {
+                    if (err) console.error(err);
+                }).clone().catch(function (err) { console.log(err) });
+
+                if (!ticketFound) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`Could not find that ticket in our records.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                let valid = false;
+                if (ticketFound.owner === interaction.user.id) valid = true;
+                if (ticketFound.users.includes(interaction.user.id)) valid = true;
+
+                if (!valid) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setDescription("Close this ticket with the button below this message.")
+                    ], components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setStyle("SECONDARY")
+                                    .setCustomId("close-ticket")
+                                    .setLabel("🔒 Close")
+                            )
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case 'delete':
+                const ticketFound2 = await Ticket.findOne({
+                    channelId: interaction.channel.id,
+                }, (err, ticket) => {
+                    if (err) console.error(err);
+                }).clone().catch(function (err) { console.log(err) });
+
+                if (!ticketFound2) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`Could not find that ticket in our records.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                let valid2 = false;
+                if (ticketFound2.owner === interaction.user.id) valid2 = true;
+                if (ticketFound2.users.includes(interaction.user.id)) valid2 = true;
+
+                if (!valid2) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setDescription("Close this ticket with the button below this message.")
+                    ], components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setStyle("SECONDARY")
+                                    .setCustomId("delete-ticket")
+                                    .setLabel("🗑️ Delete")
+                            )
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case 'add':
+                const user = interaction.options.getUser("user");
+
+                const ticket = await Ticket.findOne({
+                    channelId: interaction.channel.id,
+                }, (err, ticket) => {
+                    if (err) console.error(err);
+                }).clone().catch(function (err) { console.log(err) });
+
+                if (!ticket) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`Could not find that ticket in our records.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                let allowed = false;
+                if (ticket.owner === interaction.user.id) allowed = true;
+                if (ticket.users.includes(interaction.user.id)) allowed = true;
+
+                if (!allowed) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                const array = ticket.users;
+
+                array.push(user.id)
+
+                await ticket.updateOne({
+                    users: array
+                });
+
+                interaction.channel.permissionOverwrites.edit(user,
+                    { VIEW_CHANNEL: true, SEND_MESSAGES: true },
+                ).catch((err => { }));
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setDescription(`Added ${user} to the ticket.`)
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case 'remove':
+                const member = interaction.options.getUser("user");
+
+                const TICKET = await Ticket.findOne({
+                    channelId: interaction.channel.id,
+                }, (err, ticket) => {
+                    if (err) console.error(err);
+                }).clone().catch(function (err) { console.log(err) });
+
+                if (!TICKET) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`Could not find that ticket in our records.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                let allowed2 = false;
+                if (TICKET.owner === interaction.user.id) allowed2 = true;
+                if (TICKET.users.includes(interaction.user.id)) allowed2 = true;
+
+                if (!allowed2) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                const users = TICKET.users;
+                console.log(users)
+                for (var i = 0; i < users.length; i++) {
+                    if (users[i] === `${member.id}`) {
+                        users.splice(i, 1);
+                        i--; 
+                    }
+                }
+
+                console.log(users)
+
+                await TICKET.updateOne({
+                    users: users
+                });
+
+                interaction.channel.permissionOverwrites.edit(member,
+                    { VIEW_CHANNEL: false, SEND_MESSAGES: false },
+                ).catch((err => { }));
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setDescription(`Removed ${member} from the ticket.`)
+                    ]
+                }).catch((err => { }));
+
+                break;
+
         }
     }
 }
