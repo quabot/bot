@@ -136,9 +136,11 @@ module.exports = {
 
 
         // ADMIN OVERRIDE ALLOWED PERMS!!
+        // disable buttons on delete cancel
 
-        
+
         switch (subCmd) {
+            
             case "create":
 
                 let subject = interaction.options.getString("subject");
@@ -248,6 +250,9 @@ module.exports = {
                 let valid = false;
                 if (ticketFound.owner === interaction.user.id) valid = true;
                 if (ticketFound.users.includes(interaction.user.id)) valid = true;
+                if (interaction.member.permissions.has("ADMINISTRATOR")) valid = true;
+                if (interaction.member.permissions.has("MANAGE_CHANNELS")) valid = true;
+                if (interaction.member.permissions.has("MANAGE_SERVER")) valid = true;
 
                 if (!valid) return interaction.reply({
                     embeds: [
@@ -293,6 +298,9 @@ module.exports = {
                 let valid2 = false;
                 if (ticketFound2.owner === interaction.user.id) valid2 = true;
                 if (ticketFound2.users.includes(interaction.user.id)) valid2 = true;
+                if (interaction.member.permissions.has("ADMINISTRATOR")) valid2 = true;
+                if (interaction.member.permissions.has("MANAGE_CHANNELS")) valid2 = true;
+                if (interaction.member.permissions.has("MANAGE_SERVER")) valid2 = true;
 
                 if (!valid2) return interaction.reply({
                     embeds: [
@@ -306,7 +314,7 @@ module.exports = {
                     embeds: [
                         new MessageEmbed()
                             .setColor(color)
-                            .setDescription("Close this ticket with the button below this message.")
+                            .setDescription("Delete this ticket with the button below this message.")
                     ], components: [
                         new MessageActionRow()
                             .addComponents(
@@ -340,6 +348,9 @@ module.exports = {
                 let allowed = false;
                 if (ticket.owner === interaction.user.id) allowed = true;
                 if (ticket.users.includes(interaction.user.id)) allowed = true;
+                if (interaction.member.permissions.has("ADMINISTRATOR")) allowed = true;
+                if (interaction.member.permissions.has("MANAGE_CHANNELS")) allowed = true;
+                if (interaction.member.permissions.has("MANAGE_SERVER")) allowed = true;
 
                 if (!allowed) return interaction.reply({
                     embeds: [
@@ -391,6 +402,9 @@ module.exports = {
                 let allowed2 = false;
                 if (TICKET.owner === interaction.user.id) allowed2 = true;
                 if (TICKET.users.includes(interaction.user.id)) allowed2 = true;
+                if (interaction.member.permissions.has("ADMINISTRATOR")) allowed2 = true;
+                if (interaction.member.permissions.has("MANAGE_CHANNELS")) allowed2 = true;
+                if (interaction.member.permissions.has("MANAGE_SERVER")) allowed2 = true;
 
                 if (!allowed2) return interaction.reply({
                     embeds: [

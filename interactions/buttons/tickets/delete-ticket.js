@@ -97,6 +97,9 @@ module.exports = {
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
         if (ticketFound.users.includes(interaction.user.id)) valid = true;
+        if (interaction.member.permissions.has("ADMINISTRATOR")) valid = true;
+        if (interaction.member.permissions.has("MANAGE_CHANNELS")) valid = true;
+        if (interaction.member.permissions.has("MANAGE_SERVER")) valid = true;
 
         if (!valid) return interaction.reply({
             embeds: [
@@ -143,6 +146,24 @@ module.exports = {
         collectorRepeat.on('collect', async interaction => {
             if (interaction.customId === "cancel-ticket") {
 
+                interaction.message.edit({
+                    components: [new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId('cancel-ticket')
+                                .setLabel('🚫 Cancel')
+                                .setStyle('DANGER')
+                                .setDisabled(true)
+                        )
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId('confirm-ticket')
+                                .setLabel('✅ Confirm')
+                                .setStyle('SUCCESS')
+                                .setDisabled(true)
+                        )
+                ]
+                })
                 interaction.reply({
                     embeds: [
                         new MessageEmbed()

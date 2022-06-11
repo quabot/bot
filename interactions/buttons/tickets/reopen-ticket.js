@@ -97,6 +97,9 @@ module.exports = {
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
         if (ticketFound.users.includes(interaction.user.id)) valid = true;
+        if (interaction.member.permissions.has("ADMINISTRATOR")) valid = true;
+        if (interaction.member.permissions.has("MANAGE_CHANNELS")) valid = true;
+        if (interaction.member.permissions.has("MANAGE_SERVER")) valid = true;
 
         if (!valid) return interaction.reply({
             embeds: [
