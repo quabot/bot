@@ -134,6 +134,10 @@ module.exports = {
         const Ticket = require('../../structures/schemas/TicketSchema');
         const subCmd = interaction.options.getSubcommand();
 
+
+        // ADMIN OVERRIDE ALLOWED PERMS!!
+
+        
         switch (subCmd) {
             case "create":
 
