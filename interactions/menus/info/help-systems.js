@@ -11,6 +11,7 @@ module.exports = {
                     **/afk** - Set & toggle your afk status.
                     **/level** - View your level, leaderboard & more.
                     **/music** - Listen to music in your voice channel.
+                    **/ticket** - Create tickets.
                     **/suggest** - Leave a suggestion.`)
                     .setThumbnail(client.user.avatarURL({ dynamic: true }))
                     .setColor(color)

@@ -135,6 +135,8 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
+        console.log(guildDatabase, guildDatabase.ticketEnabled)
+
         const Ticket = require('../../structures/schemas/TicketSchema');
         const subCmd = interaction.options.getSubcommand();
 

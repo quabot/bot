@@ -74,7 +74,7 @@ module.exports = {
             if (guildDatabase.suggestEnabled === "false") return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`Suggestions are disabled in this server! Ask an admin to enable them with \`/config general\``)
+                        .setDescription(`Suggestions are disabled in this server! Ask an admin to enable them with [the dashboard](https://dashboard.quabot.net).`)
                         .setColor(color)
                 ], ephemeral: true
             }).catch((err => { }))

@@ -204,7 +204,7 @@ module.exports = {
             .setTitle("Ticket Closed")
             .setDescription("Ticket transcript added as attachment.")
             .addFields(
-                { name: "User", value: `${interaction.user.id}`, inline: true },
+                { name: "User", value: `${interaction.user}`, inline: true },
                 { name: "Channel", value: `${interaction.channel.id}`, inline: true }
             );
 

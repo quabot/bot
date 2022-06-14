@@ -20,7 +20,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle('Thanks for adding QuaBot.')
-                        .setDescription("In order to get started, some features require setting-up to work. These include the Welcome module, logging module and some more. Type `/config` and use it and it's subcommands to set them up. If you have any questions [join our support server](https://discord.gg/9kPCU8GHSK)")
+                        .setDescription("In order to get started, some features require setting-up to work. These include the Welcome module, logging module and some more. Go to [our dashboard](https://dashboard.quabot.net) to configure everything. If you have any questions [join our support server](https://discord.gg/9kPCU8GHSK)")
                         .setColor(color)
                 ]
             })).catch((err => { }));
