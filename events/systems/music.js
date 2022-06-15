@@ -30,7 +30,7 @@ client.distube
                     .setTitle("Song added to the queue")
                     .setThumbnail(song.thumbnail)
                     .setDescription(`${song.name}`)
-                    .addField("Added by", `${song.user}`, true)
+                    .addField("Added by", `${song.member}`, true)
                     .addField("Queue", `${queue.songs.length} songs - \`${(Math.floor(queue.duration / 1000 / 60 * 100) / 100).toString().replace(".", ":")}\``, true)
                     .addField("Duration", `${song.formattedDuration}`, true)]
         }).catch((err) => { });

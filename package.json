@@ -53,6 +53,7 @@
     "perspective-api-client": "^3.1.0",
     "pg": "^8.7.1",
     "snekfetch": "^4.0.4",
+    "topgg-autoposter": "^2.0.1",
     "yt-search": "^2.10.3",
     "ytdl-core": "^4.11.0"
   }

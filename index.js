@@ -25,6 +25,14 @@ client.modals = new Collection();
     require(`./structures/handlers/${handler}`)(client, PG, Ascii, consola);
 });
 
+const { AutoPoster } = require('topgg-autoposter')
+
+const poster = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg0NTYwMzcwMjIxMDk1MzI0NiIsImJvdCI6dHJ1ZSwiaWF0IjoxNjQxMzAwNTQxfQ.MhZPKVmJ2RgoWVZ1x5ADwZZI0oMt2Aa2Z_sjDC_QzXY', client)
+
+poster.on('posted', (stats) => {
+  console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`)
+})
+
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
