@@ -76,13 +76,13 @@ module.exports = {
             if (channel.type === "GUILD_STAGE_VOICE") return;
             
             let joinMessage = guildDatabase.joinMessage;
-            joinMessage = joinMessage.replace("{user}", `${member}`);
-            joinMessage = joinMessage.replace("{username}", `${member.user.username}`);
-            joinMessage = joinMessage.replace("{discriminator}", `${member.user.discriminator}`);
-            joinMessage = joinMessage.replace("{guildname}", `${member.guild.name}`);
-            joinMessage = joinMessage.replace("{guild}", `${member.guild.name}`);
-            joinMessage = joinMessage.replace("{members}", `${member.guild.memberCount}`);
-            joinMessage = joinMessage.replace("{membercount}", `${member.guild.memberCount}`);
+            joinMessage = joinMessage.replaceAll("{user}", `${member}`);
+            joinMessage = joinMessage.replaceAll("{username}", `${member.user.username}`);
+            joinMessage = joinMessage.replaceAll("{discriminator}", `${member.user.discriminator}`);
+            joinMessage = joinMessage.replaceAll("{guildname}", `${member.guild.name}`);
+            joinMessage = joinMessage.replaceAll("{guild}", `${member.guild.name}`);
+            joinMessage = joinMessage.replaceAll("{members}", `${member.guild.memberCount}`);
+            joinMessage = joinMessage.replaceAll("{membercount}", `${member.guild.memberCount}`);
 
             if (guildDatabase.welcomeEmbed === "true") {
                 channel.send({

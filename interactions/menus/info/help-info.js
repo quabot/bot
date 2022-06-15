@@ -12,7 +12,6 @@ module.exports = {
                     **/help** - Bot commands.
                     **/info** - Bot info.
                     **/ping** - Bot ping.
-                    **/profile** - Get a user\'s profile.
                     **/roles** - Server\'s roles.
                     **/serverinfo** - Server\'s info.
                     **/status** - Bot status.

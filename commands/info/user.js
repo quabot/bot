@@ -4,11 +4,6 @@ module.exports = {
     description: 'Configure user preferences & settings.',
     options: [
         {
-            name: "bio",
-            description: "Set your profile bio.",
-            type: "SUB_COMMAND",
-        },
-        {
             name: "settings",
             description: "Configure your peferences & settings.",
             type: "SUB_COMMAND",
@@ -135,28 +130,6 @@ module.exports = {
                     });
                     break;
 
-                case 'bio':
-
-                    // popup the modal
-                    const modal = new Modal()
-                        .setCustomId('bio-set')
-                        .setTitle('Set your profile bio.')
-                        .addComponents(
-                            new MessageActionRow().addComponents(
-                                new TextInputComponent()
-                                    .setCustomId('bio')
-                                    .setLabel('Enter your new bio for this server')
-                                    .setStyle('PARAGRAPH')
-                                    .setMinLength(1)
-                                    .setMaxLength(250)
-                                    .setPlaceholder(`I'm ${interaction.user.username}, and...`)
-                                    .setRequired(true)
-                            )
-                        );
-
-                    await interaction.showModal(modal);
-
-                    break;
             }
         } catch (e) {
             console.log(e);

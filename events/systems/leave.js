@@ -75,13 +75,13 @@ module.exports = {
             if (channel.type === "GUILD_STAGE_VOICE") return;
             
             let leaveMessage = guildDatabase.leaveMessage;
-            leaveMessage = leaveMessage.replace("{user}", `${member}`);
-            leaveMessage = leaveMessage.replace("{username}", `${member.user.username}`);
-            leaveMessage = leaveMessage.replace("{discriminator}", `${member.user.discriminator}`);
-            leaveMessage = leaveMessage.replace("{guildname}", `${member.guild.name}`);
-            leaveMessage = leaveMessage.replace("{guild}", `${member.guild.name}`);
-            leaveMessage = leaveMessage.replace("{members}", `${member.guild.memberCount}`);
-            leaveMessage = leaveMessage.replace("{membercount}", `${member.guild.memberCount}`);
+            leaveMessage = leaveMessage.replaceAll("{user}", `${member}`);
+            leaveMessage = leaveMessage.replaceAll("{username}", `${member.user.username}`);
+            leaveMessage = leaveMessage.replaceAll("{discriminator}", `${member.user.discriminator}`);
+            leaveMessage = leaveMessage.replaceAll("{guildname}", `${member.guild.name}`);
+            leaveMessage = leaveMessage.replaceAll("{guild}", `${member.guild.name}`);
+            leaveMessage = leaveMessage.replaceAll("{members}", `${member.guild.memberCount}`);
+            leaveMessage = leaveMessage.replaceAll("{membercount}", `${member.guild.memberCount}`);
 
             if (guildDatabase.welcomeEmbed === "true") {
                 channel.send({
