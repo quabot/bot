@@ -16,6 +16,11 @@ module.exports = {
             type: "SUB_COMMAND",
         },
         {
+            name: "lyrics",
+            description: "Get a songs's lyrics.",
+            type: "SUB_COMMAND",
+        },
+        {
             name: "options",
             description: "Other options.",
             type: "SUB_COMMAND",
@@ -53,9 +58,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -168,6 +173,53 @@ module.exports = {
                         textChannel: interaction.channel,
                     }).catch((err => { }))
 
+                    break;
+
+                case 'lyrics':
+                    const queueLyrics = client.distube.getQueue(interaction);
+                    if (!queueLyrics) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription("🎵 There are no songs playing!")
+                                .setColor(color)
+                        ]
+                    }).catch((err => { }))
+
+                    let song = queueLyrics.songs[0];
+
+                    const Genius = require("genius-lyrics");
+                    const Lyrics = new Genius.Client();
+
+
+                    const searches = await Lyrics.songs.search(song.name).catch((err => {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription("🎶 Couldn't find lyrics for that song!")
+                                    .setColor(color)
+                            ]
+                        }).catch((err => { }))
+                    }));
+
+                    const firstSong = searches[0];
+                    const lyrics = await firstSong.lyrics();
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription("You can dismiss this message.")
+                        ], ephemeral: true
+                    }).catch((err => { }));
+
+                    interaction.channel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setTitle(`Lyrics for ${song.name}`)
+                                .setDescription(`${lyrics}`)
+                        ], ephemeral: true
+                    })
                     break;
 
                 case 'skip':
