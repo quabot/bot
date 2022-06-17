@@ -36,30 +36,20 @@ module.exports = {
             }
 
             command.execute(client, interaction, color);
+            if (!command.name) return;
             consola.info(`/${command.name} was used`);
             client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(( err => { } ))
 
-            return; // notification system is under maintenance
-            const User = require('../../structures/schemas/UserSchema');
-            const userDatabase = await User.findOne({
+            const GlobalUser = require('../../structures/schemas/GlobalUser');
+            const userDatabase = await GlobalUser.findOne({
                 userId: interaction.user.id,
-                guildId: interaction.guild.id,
             }, (err, user) => {
                 if (err) console.error(err);
                 if (!user) {
-                    const newUser = new User({
+                    const newUser = new GlobalUser({
                         userId: interaction.user.id,
-                        guildId: interaction.guild.id,
-                        guildName: interaction.guild.name,
-                        banCount: 0,
-                        kickCount: 0,
-                        timeoutCount: 0,
-                        warnCount: 0,
                         updateNotify: true,
                         lastNotify: "none",
-                        afk: false,
-                        afkMessage: "none",
-                        bio: "none",
                     });
                     newUser.save()
                         .catch(err => {
@@ -79,7 +69,7 @@ module.exports = {
                 lastNotif = parseInt(lastNotif);
                 lastNotif = lastNotif;
 
-                let newNotif = 1651090867546; // SET THIS TO THE TIME THE NEW ANNOUNCEMENT CAME OUT (get it with new Date().getTime())
+                let newNotif = 1655459772350; // SET THIS TO THE TIME THE NEW ANNOUNCEMENT CAME OUT (get it with new Date().getTime())
 
                 if (lastNotif > newNotif) return;
             }
@@ -91,7 +81,7 @@ module.exports = {
             interaction.channel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`> ${interaction.user}, new alert: QuaBot v3.0.0 has released! [Changes](https://quabot.net/)`)
+                        .setDescription(`> ${interaction.user}, new alert: QuaBot v3.0.3 has released! [Changes](https://quabot.net/)`)
                         .setColor(color)
                 ],
                 components: [new MessageActionRow({

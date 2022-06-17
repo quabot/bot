@@ -93,6 +93,25 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
+            const GlobalUser = require('../../structures/schemas/GlobalUser');
+            const generateUser = await GlobalUser.findOne({
+                userId: message.author.id,
+            }, (err, user) => {
+                if (err) console.error(err);
+                if (!user) {
+                    const newUser = new GlobalUser({
+                        userId: message.author.id,
+                        updateNotify: true,
+                        lastNotify: "none",
+                    });
+                    newUser.save()
+                        .catch(err => {
+                            console.log(err);
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
+
             if (!userDatabase) return;
 
             if (!guildDatabase) return;

@@ -15,31 +15,21 @@ module.exports = {
             const subCmd = interaction.options.getSubcommand()
 
             // get the database
-            const User = require('../../structures/schemas/UserSchema');
-            const userDatabase = await User.findOne({
+            const GlobalUser = require('../../../structures/schemas/GlobalUser');
+            const userDatabase = await GlobalUser.findOne({
                 userId: interaction.user.id,
-                guildId: interaction.guild.id,
             }, (err, user) => {
                 if (err) console.error(err);
                 if (!user) {
-                    const newUser = new User({
+                    const newUser = new GlobalUser({
                         userId: interaction.user.id,
-                        guildId: interaction.guild.id,
-                        guildName: interaction.guild.name,
-                        banCount: 0,
-                        kickCount: 0,
-                        timeoutCount: 0,
-                        warnCount: 0,
                         updateNotify: true,
                         lastNotify: "none",
-                        afk: false,
-                        afkMessage: "none",
-                        bio: "none",
                     });
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
@@ -84,12 +74,6 @@ module.exports = {
                     // listen for buttons and return
                     collector.on('collect', async interaction => {
                         if (interaction.customId === updateNotifId) {
-                            return interaction.reply({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setDescription("⛔ This feature is disabled.")
-                                ], ephemeral: true,
-                            }).catch((err => { }));
 
                             if (userDatabase.updateNotify === true) {
 

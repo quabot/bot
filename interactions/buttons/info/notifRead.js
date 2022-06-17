@@ -2,26 +2,17 @@ const { COLOR } = require('../../../structures/settings.json');
 module.exports = {
     id: "notifRead",
     async execute(interaction, color) {
-        const User = require('../../../structures/schemas/UserSchema');
-        const userDatabase = await User.findOne({
+       
+        const GlobalUser = require('../../../structures/schemas/GlobalUser');
+        const userDatabase = await GlobalUser.findOne({
             userId: interaction.user.id,
-            guildId: interaction.guild.id,
         }, (err, user) => {
             if (err) console.error(err);
             if (!user) {
-                const newUser = new User({
+                const newUser = new GlobalUser({
                     userId: interaction.user.id,
-                    guildId: interaction.guild.id,
-                    guildName: interaction.guild.name,
-                    banCount: 0,
-                    kickCount: 0,
-                    timeoutCount: 0,
-                    warnCount: 0,
-                    updateNotify: false,
-                    notifOpened: false,
-                        lastNotify: "none",
-                    afk: false,
-                    afkMessage: "none",
+                    updateNotify: true,
+                    lastNotify: "none",
                 });
                 newUser.save()
                     .catch(err => {

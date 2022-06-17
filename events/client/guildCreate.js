@@ -5,6 +5,9 @@ module.exports = {
     async execute(guild, client, color) {
         try {
 
+            if (!guild) return;
+            if (!guild.id) return;
+
             client.guilds.cache.get("957024489638621185").channels.cache.get("979356759682613348").send({ embeds: [new MessageEmbed().setDescription(`QuaBot was added to **${guild.name}**. It has gained **${guild.memberCount}** members.`).setFooter("Server: " + guild.name).setTimestamp()] });
 
             var channel = guild.channels.cache.filter(ch => ch.type === "GUILD_TEXT").find(x => x.position === 0);

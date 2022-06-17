@@ -53,11 +53,6 @@ module.exports = {
                 },
             ],
         },
-        {
-            name: "message",
-            description: "Sends a ticket message.",
-            type: "SUB_COMMAND",
-        },
     ],
     async execute(client, interaction, color) {
 
@@ -134,8 +129,6 @@ module.exports = {
                     .setColor(color)
             ], ephemeral: true
         }).catch((err => { }));
-
-        console.log(guildDatabase, guildDatabase.ticketEnabled)
 
         const Ticket = require('../../structures/schemas/TicketSchema');
         const subCmd = interaction.options.getSubcommand();
@@ -448,42 +441,6 @@ module.exports = {
 
                 break;
 
-            case 'message':
-                if (!interaction.member.permissions.has("ADMINISTRATOR")) return interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setDescription("You don't have permission to do that.")
-                    ], ephemeral: true
-                }).catch((err => { }));
-
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setDescription("You can dismiss this message.")
-                    ], ephemeral: true
-                }).catch((err => { }));
-
-                interaction.channel.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setTitle("Create ticket")
-                            .setDescription("Click on the button below this message to create a ticket.")
-                    ],
-                    components: [
-                        new MessageActionRow()
-                            .addComponents(
-                                new MessageButton()
-                                    .setCustomId("create-ticket")
-                                    .setStyle("SECONDARY")
-                                    .setLabel("🎫 Ticket")
-                            )
-                    ]
-                }).catch((err => { }));
-
-                break;
         }
     }
 }
