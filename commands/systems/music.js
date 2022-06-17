@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow, File } = require('discord.js');
 
 module.exports = {
     name: "music",
@@ -16,11 +16,6 @@ module.exports = {
             type: "SUB_COMMAND",
         },
         {
-            name: "lyrics",
-            description: "Get a songs's lyrics.",
-            type: "SUB_COMMAND",
-        },
-        {
             name: "options",
             description: "Other options.",
             type: "SUB_COMMAND",
@@ -34,6 +29,7 @@ module.exports = {
                     { name: "pause", value: "pause" },
                     { name: "shuffle", value: "shuffle" },
                     { name: "resume", value: "resume" },
+                    { name: "lyrics", value: "lyrics" },
                     { name: "nowplaying", value: "nowplaying" },
                 ]
             }],
@@ -175,53 +171,6 @@ module.exports = {
 
                     break;
 
-                case 'lyrics':
-                    const queueLyrics = client.distube.getQueue(interaction);
-                    if (!queueLyrics) return interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription("🎵 There are no songs playing!")
-                                .setColor(color)
-                        ]
-                    }).catch((err => { }))
-
-                    let song = queueLyrics.songs[0];
-
-                    const Genius = require("genius-lyrics");
-                    const Lyrics = new Genius.Client();
-
-
-                    const searches = await Lyrics.songs.search(song.name).catch((err => {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setDescription("🎶 Couldn't find lyrics for that song!")
-                                    .setColor(color)
-                            ]
-                        }).catch((err => { }))
-                    }));
-
-                    const firstSong = searches[0];
-                    const lyrics = await firstSong.lyrics();
-
-                    interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setColor(color)
-                                .setDescription("You can dismiss this message.")
-                        ], ephemeral: true
-                    }).catch((err => { }));
-
-                    interaction.channel.send({
-                        embeds: [
-                            new MessageEmbed()
-                                .setColor(color)
-                                .setTitle(`Lyrics for ${song.name}`)
-                                .setDescription(`${lyrics}`)
-                        ], ephemeral: true
-                    })
-                    break;
-
                 case 'skip':
                     const queue = client.distube.getQueue(interaction);
                     if (!queue) return interaction.reply({
@@ -254,6 +203,56 @@ module.exports = {
                     const option = interaction.options.getString("option");
 
                     switch (option) {
+
+                        case 'lyrics':
+                            const queueLyrics = client.distube.getQueue(interaction);
+                            if (!queueLyrics) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setDescription("🎵 There are no songs playing!")
+                                        .setColor(color)
+                                ]
+                            }).catch((err => { }))
+
+                            let song2 = queueLyrics.songs[0];
+
+                            const Genius = require("genius-lyrics");
+                            const Lyrics = new Genius.Client();
+
+                            const searches = await Lyrics.songs.search(song2.name).catch((err => {
+                                interaction.reply({
+                                    embeds: [
+                                        new MessageEmbed()
+                                            .setDescription("🎶 Couldn't find lyrics for that song!")
+                                            .setColor(color)
+                                    ]
+                                }).catch((err => { }))
+                            }));
+
+
+                            const firstSong = searches[0];
+                            const lyrics = await firstSong.lyrics();
+
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription("You can dismiss this message. If no lyrics show, they are too long.")
+                                ], ephemeral: true
+                            }).catch((err => { }));
+
+                            interaction.channel.send({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setTitle(`Lyrics for ${song2.name}`)
+                                        .setDescription(`${lyrics}`)
+                                ], ephemeral: true
+                            }).catch((err => {
+                                interaction.channel.send(`**Lyrics for ${song2.name}**\n\n${lyrics}`).catch((err => console.log(err)));
+                            }));
+                            break;
+
 
                         case 'stop':
                             const queueStop = client.distube.getQueue(interaction);

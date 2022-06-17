@@ -99,13 +99,6 @@ module.exports = {
                 channel.send(`${joinMessage}`).catch((err => { }));
             }
 
-            if (guildDatabase.roleEnabled === "true") {
-                const role = member.guild.roles.cache.get(`${guildDatabase.mainRole}`);
-                if (role) {
-                    member.roles.add(role.id).catch((err => { }));
-                }
-            }
-
         } catch (e) {
             console.log(e);
             client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Event: " + this.name)] });
