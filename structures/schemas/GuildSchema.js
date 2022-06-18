@@ -61,6 +61,8 @@ const GuildSchema = new mongoose.Schema({
     ticketId: reqNum,
     ticketLogs: reqBool,
     ticketChannelID: reqString,
+    membersChannel: reqString,
+    membersMessage: reqString,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);

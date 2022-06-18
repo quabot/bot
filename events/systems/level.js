@@ -58,6 +58,9 @@ module.exports = {
                         levelCard: false,
                         levelEmbed: true,
                         levelMessage: "{user} just leveled up to level **{level}**!",
+                        membersChannel: "none",
+                        membersMessage: "Members: {count}",
+                        memberEnabled: true
                     });
                     newGuild.save()
                         .catch(err => {
