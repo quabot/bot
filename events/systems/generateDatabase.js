@@ -23,9 +23,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -110,29 +110,52 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
-            if (!userDatabase) return;
 
-            if (!guildDatabase) return;
-            if (guildDatabase.afkEnabled === "false") return;
+            const Log = require('../../structures/schemas/LogSchema');
+            const logDatabase = await Log.findOne({
+                guildId: message.guild.id,
+            }, (err, log) => {
+                if (err) console.error(err);
+                if (!log) {
+                    const newLog = new Log({
+                        guildId: message.guild.id,
+                        enabled: [
+                            'emojiCreateDelete',
+                            'emojiUpdate',
+                            'guildBanAdd',
+                            'guildBanRemove',
+                            'roleAddRemove',
+                            'nickChange',
+                            'channelCreateDelete',
+                            'channelUpdate',
+                            'inviteCreateDelete',
+                            'messageDelete',
+                            'messageUpdate',
+                            'roleCreateDelete',
+                            'roleUpdate',
+                            'stickerCreateDelete',
+                            'stickerUpdate',
+                            'threadCreateDelete',
+                        ],
+                        disabled: [
+                            'voiceMove',
+                            'voiceJoinLeave',
+                        ]
+                    });
+                    newLog.save()
+                        .catch(err => {
+                            console.log(err);
+                        });
+                }
+            }).clone().catch(function (err) { console.log(err) });
 
-            if (userDatabase.afk) {
-                await userDatabase.updateOne({
-                    afk: false
-                });
+            console.log(logDatabase)
 
-                message.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription(`Removed your afk status.`)
-                            .setColor(color)
-                    ], ephemeral: true, allowedMentions: { repliedUser: false }
-                }).catch((err => { }))
-            }
 
         } catch (e) {
             console.log(e);
