@@ -21,9 +21,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -64,12 +64,12 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
+
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
+
             const channel = invite.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
-            if (channel.type === "GUILD_VOICE") return;
-            if (channel.type === "GUILD_STAGE_VOICE") return;
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
@@ -112,16 +112,13 @@ module.exports = {
             if (!logDatabase) return;
 
             if (!logDatabase.enabled.includes("inviteCreateDelete")) return;
-            
+
             channel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle("Invite Created!")
-                        .addField("Code", `[${invite.code}](https://discord.gg/${invite.code})`)
-                        .addField("Expires After", `${invite.maxAge / 60 / 60} hours`, true)
-                        .addField("Channel", `<#${invite.channel.id}>`, true)
-                        .addField("Created By", `<@${invite.inviter.id}>`, true)
+                        .setDescription(`**Invite Created**\n[discord.gg/${invite.code}](https://discord.gg/${invite.code})\n${invite.inviter} - ${invite.channel}\n\n**Expires after:**\n${invite.maxAge / 60 / 60} hours`)
                         .setColor("GREEN")
+                        .setTimestamp()
                 ]
             });
 

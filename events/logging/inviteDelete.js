@@ -21,9 +21,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -112,14 +112,13 @@ module.exports = {
             if (!logDatabase) return;
 
             if (!logDatabase.enabled.includes("inviteCreateDelete")) return;
-            
+
             channel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle("Invite Deleted!")
-                        .addField("Code", `${invite.code}`, true)
-                        .addField("Channel", `<#${invite.channel.id}>`, true)
-                        .setColor("RED")
+                    .setDescription(`**Invite Deleted**\ndiscord.gg/${invite.code}\n${invite.channel}`)
+                    .setColor("RED")
+                    .setTimestamp()
                 ]
             });
 
