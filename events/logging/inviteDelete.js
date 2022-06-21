@@ -117,7 +117,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                     .setDescription(`**Invite Deleted**\ndiscord.gg/${invite.code}\n${invite.channel}`)
-                    .setColor("RED")
+                    .setColor(color)
                     .setTimestamp()
                 ]
             });

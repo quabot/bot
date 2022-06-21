@@ -5,7 +5,8 @@ module.exports = {
     async execute(message, client, color) {
         try {
 
-            //if (message.author.bot) return;
+            if (!message) return;
+            if (message.author.bot) return;
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
@@ -23,9 +24,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -68,6 +69,7 @@ module.exports = {
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
+
             const channel = message.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
@@ -115,22 +117,22 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("messageDelete")) return;
 
-            const embed = new MessageEmbed()
-                .setTitle("Message Deleted!")
-                .setFooter({ text: `ID: ${message.id}` })
-                .setColor(`ORANGE`);
+            if (message.content === null) return;
+
+            let description = "**Message Deleted**";
 
             let content = String(message.content);
 
-            if (content.length > 1020) content = "Content longer than max characters!";
+            if (content.length > 1003) return;
 
-            if (message.content === null || message.content === '') { } else {
-                embed.addField("Content", `${content} ** **`);
-            }
-            embed.addField("Channel", `${message.channel} ** **`, true);
-            if (message.author === null || message.author === '') { } else {
-                embed.addField("Author", `${message.author} ** **`, true);
-            }
+            description = `${description}\n${content}`;
+
+            const embed = new MessageEmbed()
+                .setDescription(`${description}`)
+                .setFooter({ text: `User: ${message.author.tag}`, iconURL: `${message.author.avatarURL({ dynamic: true })}` })
+                .setColor(color);
+
+            embed.addField("Channel", `${message.channel}`, true);
 
             if (message.attachments !== null) {
                 message.attachments.map(getUrls);
@@ -139,10 +141,9 @@ module.exports = {
                 }
             }
 
-            channel.send({ embeds: [embed] });
+            channel.send({ embeds: [embed] }).catch((err => { }));
 
         } catch (e) {
-            console.log(e);
             client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Event: " + this.name)] });
         }
     }

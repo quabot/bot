@@ -117,7 +117,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setDescription(`**Invite Created**\n[discord.gg/${invite.code}](https://discord.gg/${invite.code})\n${invite.inviter} - ${invite.channel}\n\n**Expires after:**\n${invite.maxAge / 60 / 60} hours`)
-                        .setColor("GREEN")
+                        .setColor(color)
                         .setTimestamp()
                 ]
             });

@@ -114,8 +114,6 @@ module.exports = {
             if (!logDatabase) return;
             if (!logDatabase.enabled.includes("channelUpdate")) return;
 
-            console.log(logDatabase)
-
             // prevents console spam
             if (oldChannel.rawPosition !== newChannel.rawPosition && oldChannel.parentId === newChannel.parentId) return;
 
