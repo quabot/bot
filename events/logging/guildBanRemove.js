@@ -21,9 +21,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -67,6 +67,7 @@ module.exports = {
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
+
             const channel = ban.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
@@ -118,9 +119,8 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor("GREEN")
-                        .setTitle("Member Unbanned!")
-                        .addField('Member', `${ban.user.tag}`)
-                        .setFooter(`ID: ${ban.user.id}`)
+                        .setDescription(`**Member Unbanned**\n\`${ban.user.tag}\``)
+                        .setTimestamp()
                 ]
             });
 

@@ -122,7 +122,8 @@ module.exports = {
                     new MessageEmbed()
                         .setColor("YELLOW")
                         .setDescription(`**${word}Emoji edited**\n\`${oldEmoji.name}\` -> \`${newEmoji.name}\``)
-                        .setFooter(`ID: ${newEmoji.id}`, `${newEmoji.url}`)
+                        .setFooter({ text: `${newEmoji.name}`, iconURL: `${newEmoji.url}` })
+                        .setTimestamp()
                 ]
             });
 

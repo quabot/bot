@@ -114,56 +114,33 @@ module.exports = {
 
             if (logDatabase.enabled.includes("roleAddRemove")) {
                 if (oldMember._roles !== newMember._roles) {
-                    if (oldMember.nickname === newMember.nickname) {
-                        if (oldMember._roles > newMember._roles) {
-                            channel.send({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setTitle('Role(s) Removed')
-                                        .addField("User", `${newMember}`)
-                                        .setDescription(`<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`)
-                                        .setColor(color)
-                                        .setFooter(`User ID: ${newMember.id}`)
 
-                                ]
-                            }).catch((err => { }));
-                        }
-                        if (oldMember._roles < newMember._roles) {
-                            channel.send({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setTitle('Role(s) Given')
-                                        .addField("User", `${newMember}`)
-                                        .setDescription(`<@&${newMember._roles.filter(n => !oldMember._roles.includes(n)).join('>\n<@&')}>`)
-                                        .setColor(color)
-                                        .setFooter(`User ID: ${newMember.id}`)
-                                ]
-                            }).catch((err => { }));
-                        }
-                    }
-                }
-            }
+                    if (oldMember.nickname !== newMember.nickname) return;
+                    if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) return;
+                    if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) return;
+                    if (oldMember.avatar !== newMember.avatar) return;
 
-            if (logDatabase.enabled.includes("nickChange")) {
-                if (oldMember._roles === newMember._roles) {
-                    if (oldMember.nickname !== newMember.nickname) {
-                        let oldNick = oldMember.nickname;
-                        let newNick = newMember.nickname;
-                        if (oldNick === null) oldNick = "none";
-                        if (newNick === null) newNick = "none";
+                    let word;
+                    if (oldMember._roles.length > newMember._roles.length) word = "Removed";
+                    if (oldMember._roles.length < newMember._roles.length) word = "Given";
 
-                        channel.send({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setTitle("Nickname changed")
-                                    .addField("Old Nickname", `${oldNick}`)
-                                    .addField("New Nickname", `${newNick}`)
-                                    .addField("User", `${newMember}`)
-                                    .setFooter({ text: `User-ID: ${newMember.user.id}` })
-                                    .setColor(color)
-                            ]
-                        }).catch((err => { }));
-                    }
+                    let role;
+                    if (oldMember._roles < newMember._roles) role = `<@&${newMember._roles.filter(n => !oldMember._roles.includes(n)).join('>\n<@&')}>`;
+                    if (oldMember._roles > newMember._roles) role = `<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`;
+
+                    if (role === "<@&>") return;
+
+                    channel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`**Roles ${word}**\n${role}`)
+                                .setColor(color)
+                                .setTimestamp()
+                                .setFooter({ text: `User: ${newMember.user.tag}`, iconURL: `${newMember.user.avatarURL({ dynamic: true })}` })
+
+                        ]
+                    }).catch((err => { }));
+
                 }
             }
         } catch (e) {

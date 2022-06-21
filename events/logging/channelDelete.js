@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: "channelDelete",
@@ -21,9 +21,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -111,15 +111,21 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("channelCreateDelete")) return;
 
-            if (channel.type === "GUILD_CATEGORY") return;
-            
+            let title;
+            if (channel.type === "GUILD_TEXT") title = "Text Channel";
+            if (channel.type === "GUILD_VOICE") title = "Voice Channel";
+            if (channel.type === "GUILD_CATEGORY") title = "Category";
+            if (channel.type === "GUILD_NEWS") title = "News Channel";
+            if (channel.type === "GUILD_FORUM") title = "Forum Channel";
+            if (channel.type === "GUILD_STAGE_VOICE") title = "Stage Channel";
+            if (channel.type === "GUILD_DIRECTORY") title = "GUILD_DIRECTORY";
+
             sendCh.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")
-                        .setTitle("Channel Deleted!")
-                        .addField('Name', `#${channel.name}`)
-                        .setFooter({ text: `ID: ${channel.id}` })
+                        .setDescription(`**${title} Deleted**\n\`${channel.name}\``)
+                        .setTimestamp()
                 ]
             });
 

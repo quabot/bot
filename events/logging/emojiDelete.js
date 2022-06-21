@@ -120,7 +120,8 @@ module.exports = {
                     new MessageEmbed()
                         .setColor("RED")
                         .setDescription(`**Deleted${word}Emoji**\n\`${emoji.name}\``)
-                        .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
+                        .setTimestamp()
+                        .setFooter({ text: `${emoji.name}`, iconURL: `${emoji.url}` })
                 ]
             }).catch((err => { }));
 
