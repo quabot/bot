@@ -25,7 +25,7 @@ module.exports = {
                             .setDescription(`That user doesn't exist/isn't banned!`)
                             .setColor(color)
                     ]
-                }).catch(( err => { } ))
+                }).catch((err => { }))
                 return;
             });
 
@@ -42,7 +42,7 @@ module.exports = {
                         .setDescription(`**User:** <@${userid}>`)
                         .setColor(color)
                 ]
-            }).catch(( err => { } ));
+            }).catch((err => { }));
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
@@ -60,9 +60,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -108,6 +108,7 @@ module.exports = {
             if (guildDatabase.modEnabled === "false") return;
             const channel = interaction.guild.channels.cache.get(`${guildDatabase.punishmentChannelID}`);
 
+            if (!channel) return;
             if (channel.type !== "GUILD_TEXT" || channel.type !== "GUILD_NEWS")
 
                 channel.send({

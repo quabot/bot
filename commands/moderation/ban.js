@@ -140,9 +140,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -209,7 +209,6 @@ module.exports = {
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
             if (channel.type === "GUILD_STAGE_VOICE") return;
-
             if (channel.type !== "GUILD_TEXT" || channel.type !== "GUILD_NEWS")
 
                 channel.send({

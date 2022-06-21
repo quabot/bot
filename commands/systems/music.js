@@ -475,6 +475,8 @@ module.exports = {
                                 components: [new MessageActionRow({ components: [volumeMinBtn, volumeResetBtn, volumeAddBtn] })]
                             }).catch((err => { }))
 
+                            if (!volumeMessage) return;
+                            
                             const collectorVolume = volumeMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
                             collectorVolume.on('collect', async interaction => {

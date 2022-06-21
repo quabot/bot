@@ -21,9 +21,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -113,15 +113,16 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("emojiCreateDelete")) return;
 
+            let word = " ";
+            if (emoji.animated) word = " Animated ";
             channel.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor("GREEN")
-                        .setTitle("Emoji Created!")
-                        .addField('Emoji Name', `${emoji.name}`)
+                        .setDescription(`**New${word}Emoji**\n\`${emoji.name}\``)
                         .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
                 ]
-            });
+            }).catch((err => { }));
 
         } catch (e) {
             console.log(e);

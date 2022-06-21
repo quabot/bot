@@ -8,7 +8,7 @@ module.exports = {
             if (!message.guild.id) return;
 
             const Guild = require('../../structures/schemas/GuildSchema');
-            const guildDatabase = await Guild.findOne({
+            const generateGuild = await Guild.findOne({
                 guildId: message.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
@@ -68,7 +68,7 @@ module.exports = {
             }).clone().catch(function (err) { console.log(err) });
 
             const User = require('../../structures/schemas/UserSchema');
-            const userDatabase = await User.findOne({
+            const generateUser = await User.findOne({
                 userId: message.author.id,
                 guildId: message.guild.id,
             }, (err, user) => {
@@ -97,7 +97,7 @@ module.exports = {
             }).clone().catch(function (err) { console.log(err) });
 
             const GlobalUser = require('../../structures/schemas/GlobalUser');
-            const generateUser = await GlobalUser.findOne({
+            const generateGlobalUser = await GlobalUser.findOne({
                 userId: message.author.id,
             }, (err, user) => {
                 if (err) console.error(err);
@@ -117,7 +117,7 @@ module.exports = {
 
 
             const Log = require('../../structures/schemas/LogSchema');
-            const logDatabase = await Log.findOne({
+            const generateLog = await Log.findOne({
                 guildId: message.guild.id,
             }, (err, log) => {
                 if (err) console.error(err);
@@ -153,9 +153,6 @@ module.exports = {
                         });
                 }
             }).clone().catch(function (err) { console.log(err) });
-
-            console.log(logDatabase)
-
 
         } catch (e) {
             console.log(e);

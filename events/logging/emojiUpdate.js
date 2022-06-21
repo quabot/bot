@@ -21,9 +21,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -66,7 +66,9 @@ module.exports = {
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
+
             const channel = oldEmoji.guild.channels.cache.get(guildDatabase.logChannelID);
+
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
             if (channel.type === "GUILD_STAGE_VOICE") return;
@@ -113,13 +115,13 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("emojiUpdate")) return;
 
+            let word = "";
+            if (newEmoji.animated) word = " Animated ";
             channel.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor("YELLOW")
-                        .setTitle("Emoji Updated!")
-                        .addField('Old Name', `${oldEmoji.name}`, true)
-                        .addField('New Name', `${newEmoji.name}`, true)
+                        .setDescription(`**${word}Emoji edited**\n\`${oldEmoji.name}\` -> \`${newEmoji.name}\``)
                         .setFooter(`ID: ${newEmoji.id}`, `${newEmoji.url}`)
                 ]
             });

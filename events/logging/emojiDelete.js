@@ -21,9 +21,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -35,7 +35,6 @@ module.exports = {
                         welcomeChannelID: "none",
                         leaveChannelID: "none",
                         levelChannelID: "none",
-                        punishmentChannelID: "none",
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
@@ -60,7 +59,8 @@ module.exports = {
                     });
                     newGuild.save()
                         .catch(err => {
-                            console.log(err)});
+                            console.log(err);
+                        });
                 }
             }).clone().catch(function (err) { console.log(err) });
 
@@ -113,15 +113,16 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("emojiCreateDelete")) return;
 
+            let word = " ";
+            if (emoji.animated) word = " Animated ";
             channel.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor("RED")
-                        .setTitle("Emoji Deleted!")
-                        .addField('Emoji Name', `${emoji.name}`)
+                        .setDescription(`**Deleted${word}Emoji**\n\`${emoji.name}\``)
                         .setFooter(`ID: ${emoji.id}`, `${emoji.url}`)
                 ]
-            });
+            }).catch((err => { }));
 
         } catch (e) {
             console.log(e);

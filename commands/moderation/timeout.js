@@ -221,6 +221,8 @@ module.exports = {
             if (guildDatabase.modEnabled === "false") return;
             const channel = interaction.guild.channels.cache.get(`${guildDatabase.punishmentChannelID}`);
 
+            if (!channel) return;
+            
             if (channel.type !== "GUILD_TEXT" || channel.type !== "GUILD_NEWS")
 
                 channel.send({

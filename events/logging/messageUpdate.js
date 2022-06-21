@@ -5,8 +5,7 @@ module.exports = {
     async execute(oldMessage, newMessage, client, color) {
         try {
 
-            if (newMessage.author.bot) return;
-            
+
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
                 guildId: oldMessage.guild.id,
@@ -23,9 +22,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -66,6 +65,8 @@ module.exports = {
                 }
             }).clone().catch(function (err) { console.log(err) });
 
+            if (!newMessage.author) return;
+            if (newMessage.author.bot) return;
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
             const channel = oldMessage.guild.channels.cache.get(guildDatabase.logChannelID);
