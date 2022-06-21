@@ -126,7 +126,7 @@ module.exports = {
                         .setColor("GREEN")
                         .setDescription(`**${title} Created**\n${channel}`)
                         .setTimestamp()
-                        .setFooter({ text: `Channel Name: ${channel.name}`, iconURL: `${channel.guild.iconURL({ dynamic: true })}` })
+                        .setFooter({ text: `Channel Name: ${channel.name}` })
                 ]
             });
 
