@@ -130,15 +130,15 @@ module.exports = {
 
                     if (role === "<@&>") return;
 
-                    channel.send({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription(`**Roles ${word}**\n${role}`)
-                                .setColor(color)
-                                .setTimestamp()
-                                .setFooter({ text: `User: ${newMember.user.tag}`, iconURL: `${newMember.user.avatarURL({ dynamic: true })}` })
+                    const embed = new MessageEmbed()
+                        .setDescription(`**Roles ${word}**\n${role}`)
+                        .setColor(color)
+                        .setTimestamp()
 
-                        ]
+                    if (newMember.user.avatar) embed.setFooter({ text: `User: ${newMember.user.tag}`, iconURL: `${newMember.user.avatarURL({ dynamic: true })}` })
+
+                    channel.send({
+                        embeds: [embed]
                     }).catch((err => { }));
 
                 }

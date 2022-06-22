@@ -1,22 +1,19 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "messageDelete",
-    async execute(message, client, color) {
+    name: "voiceStateUpdate",
+    async execute(oldState, newState, client, color) {
         try {
-
-            if (!message) return;
-            if (message.author.bot) return;
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: message.guild.id,
+                guildId: newState.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: message.guild.id,
-                        guildName: message.guild.name,
+                        guildId: newState.guild.id,
+                        guildName: newState.guild.name,
                         logChannelID: "none",
                         ticketCategory: "none",
                         ticketClosedCategory: "none",
@@ -70,19 +67,19 @@ module.exports = {
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
 
-            const channel = message.guild.channels.cache.get(guildDatabase.logChannelID);
+            const channel = newState.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
             if (channel.type === "GUILD_STAGE_VOICE") return;
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
-                guildId: message.guild.id,
+                guildId: newState.guild.id,
             }, (err, log) => {
                 if (err) console.error(err);
                 if (!log) {
                     const newLog = new Log({
-                        guildId: message.guild.id,
+                        guildId: newState.guild.id,
                         enabled: [
                             'emojiCreateDelete',
                             'emojiUpdate',
@@ -115,38 +112,45 @@ module.exports = {
 
             if (!logDatabase) return;
 
-            if (!logDatabase.enabled.includes("messageDelete")) return;
+            if (!logDatabase.enabled.includes("voiceJoinLeave")) return;
 
-            if (message.content === null && message.attachments === null) return;
+            if (oldState.channelId && newState.channelId) return;
 
-            let description = "**Message Deleted**";
+            const user = newState.guild.members.cache.get(`${newState.id}`);
+            if (!user) return;
 
-            let content = String(message.content);
+            if (oldState.channelId) {
 
-            if (content === null) content = "";
+                const embed = new MessageEmbed()
+                    .setColor(color)
+                    .setDescription(`**${user} left <#${oldState.channelId}>**`)
+                    .setTimestamp()
 
-            if (content.length > 1003) return;
+                if (user.user.avatar) embed.setFooter({ text: `User: ${user.user.tag}`, iconURL: `${user.user.avatarURL({ dynamic: true })}` })
 
-            description = `${description}\n${content}`;
+                channel.send({
+                    embeds: [embed]
+                }).catch((err => { }));
 
-            const embed = new MessageEmbed()
-                .setDescription(`${description}`)
-                .setColor(color);
-
-            if (message.author.avatar) embed.setFooter({ text: `User: ${message.author.tag}`, iconURL: `${message.author.avatarURL({ dynamic: true })}` })
-
-            embed.addField("Channel", `${message.channel}`, true);
-
-            if (message.attachments !== null) {
-                message.attachments.map(getUrls);
-                function getUrls(item) {
-                    embed.addField(`**Attachment:**`, `${[item.url].join(" ")}`)
-                }
             }
 
-            channel.send({ embeds: [embed] }).catch((err => { }));
+            if (newState.channelId) {
+
+                const embed = new MessageEmbed()
+                    .setColor(color)
+                    .setDescription(`**${user} joined <#${newState.channelId}>**`)
+                    .setTimestamp()
+
+                if (user.user.avatar) embed.setFooter({ text: `User: ${user.user.tag}`, iconURL: `${user.user.avatarURL({ dynamic: true })}` })
+
+                channel.send({
+                    embeds: [embed]
+                }).catch((err => { }));
+
+            }
 
         } catch (e) {
+            console.log(e);
             client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Event: " + this.name)] });
         }
     }

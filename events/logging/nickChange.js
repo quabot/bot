@@ -125,14 +125,15 @@ module.exports = {
                     if (oldNick === null) oldNick = "none";
                     if (newNick === null) newNick = "none";
 
+                    const embed = new MessageEmbed()
+                        .setDescription(`**Nickname Changed**\n\`${oldNick}\` -> \`${newNick}\``)
+                        .setTimestamp()
+                        .setColor(color)
+
+                    if (newMember.user.avatar) embed.setFooter({ text: `User: ${newMember.user.tag}`, iconURL: `${newMember.user.avatarURL({ dynamic: true })}` });
+
                     channel.send({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription(`**Nickname Changed**\n\`${oldNick}\` -> \`${newNick}\``)
-                                .setTimestamp()
-                                .setFooter({ text: `User: ${newMember.user.tag}`, iconURL: `${newMember.user.avatarURL({ dynamic: true })}` })
-                                .setColor(color)
-                        ]
+                        embeds: [embed]
                     }).catch((err => console.log(err)));
                 }
             }
