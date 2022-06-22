@@ -85,7 +85,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
@@ -123,7 +123,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
         } catch (e) {
             console.log(e);

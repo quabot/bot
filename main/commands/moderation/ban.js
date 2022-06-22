@@ -93,7 +93,7 @@ module.exports = {
                             interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (userDatabase) {
                 await userDatabase.updateOne({
@@ -182,7 +182,7 @@ module.exports = {
                             interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             const Bans = require('../../structures/schemas/BanSchema');
             const newBans = new Bans({

@@ -42,7 +42,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (!logDatabase) return interaction.reply({
                 embeds: [

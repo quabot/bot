@@ -114,7 +114,7 @@ module.exports = {
                         interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
-        }).clone().catch(function (err) { console.log(err) });
+        }).clone().catch(function (err) {  });
 
 
         if (!guildDatabase) return interaction.reply({
@@ -238,7 +238,7 @@ module.exports = {
                     channelId: interaction.channel.id,
                 }, (err, ticket) => {
                     if (err) console.error(err);
-                }).clone().catch(function (err) { console.log(err) });
+                }).clone().catch(function (err) {  });
 
                 if (!ticketFound) return interaction.reply({
                     embeds: [
@@ -286,7 +286,7 @@ module.exports = {
                     channelId: interaction.channel.id,
                 }, (err, ticket) => {
                     if (err) console.error(err);
-                }).clone().catch(function (err) { console.log(err) });
+                }).clone().catch(function (err) {  });
 
                 if (!ticketFound2) return interaction.reply({
                     embeds: [
@@ -336,7 +336,7 @@ module.exports = {
                     channelId: interaction.channel.id,
                 }, (err, ticket) => {
                     if (err) console.error(err);
-                }).clone().catch(function (err) { console.log(err) });
+                }).clone().catch(function (err) {  });
 
                 if (!ticket) return interaction.reply({
                     embeds: [
@@ -390,7 +390,7 @@ module.exports = {
                     channelId: interaction.channel.id,
                 }, (err, ticket) => {
                     if (err) console.error(err);
-                }).clone().catch(function (err) { console.log(err) });
+                }).clone().catch(function (err) {  });
 
                 if (!TICKET) return interaction.reply({
                     embeds: [

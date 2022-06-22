@@ -40,6 +40,7 @@ module.exports = {
             consola.info(`/${command.name} was used`);
             client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(( err => { } ))
 
+            // alert system
             const GlobalUser = require('../../structures/schemas/GlobalUser');
             const userDatabase = await GlobalUser.findOne({
                 userId: interaction.user.id,
@@ -57,7 +58,7 @@ module.exports = {
                             interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (!userDatabase) return;
 
@@ -69,7 +70,7 @@ module.exports = {
                 lastNotif = parseInt(lastNotif);
                 lastNotif = lastNotif;
 
-                let newNotif = 1655459772350; // SET THIS TO THE TIME THE NEW ANNOUNCEMENT CAME OUT (get it with new Date().getTime())
+                let newNotif = 1655924671878; // SET THIS TO THE TIME THE NEW ANNOUNCEMENT CAME OUT (get it with new Date().getTime())
 
                 if (lastNotif > newNotif) return;
             }
@@ -81,7 +82,7 @@ module.exports = {
             interaction.channel.send({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`> ${interaction.user}, new alert: QuaBot v3.0.3 has released! [Changes](https://quabot.net/)`)
+                        .setDescription(`> ${interaction.user}, new alert: QuaBot v3.0.4 has been released! [Changes](https://discord.gg/dWQpJBegXv)`)
                         .setColor(color)
                 ],
                 components: [new MessageActionRow({

@@ -64,7 +64,7 @@ module.exports = {
                             interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (!guildDatabase) return interaction.reply({
                 embeds: [

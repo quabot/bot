@@ -62,7 +62,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
@@ -109,7 +109,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (!logDatabase) return;
 

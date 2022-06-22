@@ -63,7 +63,7 @@ module.exports = {
                         interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
-        }).clone().catch(function (err) { console.log(err) });
+        }).clone().catch(function (err) {  });
 
 
         if (!guildDatabase) return interaction.reply({
@@ -87,7 +87,7 @@ module.exports = {
             channelId: interaction.message.channel.id,
         }, (err, ticket) => {
             if (err) console.error(err);
-        }).clone().catch(function (err) { console.log(err) });
+        }).clone().catch(function (err) {  });
 
         if (!ticketFound) return interaction.reply({
             embeds: [
@@ -193,7 +193,7 @@ module.exports = {
                     channelId: interaction.message.channel.id,
                 }, (err, ticket) => {
                     if (err) console.error(err);
-                }).clone().catch(function (err) { console.log(err) });
+                }).clone().catch(function (err) {  });
 
                 channel.delete();
 

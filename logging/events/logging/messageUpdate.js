@@ -63,7 +63,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (!newMessage.author) return;
             if (newMessage.author.bot) return;
@@ -111,7 +111,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             if (!logDatabase) return;
 

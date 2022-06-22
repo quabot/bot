@@ -5,8 +5,6 @@ module.exports = {
     async execute(message, client, color) {
         try {
 
-            if (!message.guild.id) return;
-
             const Guild = require('../../structures/schemas/GuildSchema');
             const generateGuild = await Guild.findOne({
                 guildId: message.guild.id,
@@ -65,7 +63,7 @@ module.exports = {
                             message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) { });
 
             const User = require('../../structures/schemas/UserSchema');
             const generateUser = await User.findOne({
@@ -94,7 +92,7 @@ module.exports = {
                             message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
             const GlobalUser = require('../../structures/schemas/GlobalUser');
             const generateGlobalUser = await GlobalUser.findOne({
@@ -113,7 +111,7 @@ module.exports = {
                             message.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
 
             const Log = require('../../structures/schemas/LogSchema');
@@ -152,7 +150,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) { console.log(err) });
+            }).clone().catch(function (err) {  });
 
         } catch (e) {
             console.log(e);

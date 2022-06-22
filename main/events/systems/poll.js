@@ -12,7 +12,7 @@ module.exports = {
                 const pollDatabase = await Poll.find({}, (err, poll) => {
                     if (err) console.error(err);
                     if (!poll) return;
-                }).clone().catch(function (err) { console.log(err) });
+                }).clone().catch(function (err) {  });
 
                 pollDatabase.forEach(async item => {
                     if (item.endTimestamp < new Date().getTime() + 1000 && item.endTimestamp > new Date().getTime() - 1000) {
@@ -58,7 +58,7 @@ module.exports = {
                         }, (err, poll) => {
                             if (err) console.error(err);
                             if (!poll) return;
-                        }).clone().catch(function (err) { console.log(err) });
+                        }).clone().catch(function (err) {  });
                     }
                 })
                 loop()
