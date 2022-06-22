@@ -69,6 +69,7 @@ module.exports = {
             if (newMessage.author.bot) return;
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
+
             const channel = oldMessage.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
@@ -117,29 +118,44 @@ module.exports = {
             if (!logDatabase.enabled.includes("messageUpdate")) return;
 
             const embed = new MessageEmbed()
-                .setTitle("Message Edited!")
-                .setFooter({ text: `ID: ${newMessage.id}` })
+                .setDescription(`**Message Edited**\n${newMessage.channel}`)
                 .setColor(`YELLOW`);
 
             let Oldcontent = String(oldMessage.content);
             let Newcontent = String(newMessage.content);
 
-            if (Oldcontent.length > 1020) Oldcontent = "Old content longer than max characters! [Working on a fix]";
-            if (Newcontent.length > 1020) Newcontent = "Old content longer than max characters! [Working on a fix]";
+            if (Oldcontent.length > 1020) return;
+            if (Newcontent.length > 1020) return;
 
-            if (Oldcontent.content === null || Oldcontent.content === '') { } else {
-                embed.addField("Old Content", `${Oldcontent} ** **`);
+            if (Oldcontent.content === null || Oldcontent.content === '' && oldMessage.attachments === null && oldMessage.attachments === null) { return } else {
+                if (Newcontent.content !== null || Newcontent.content !== '') {
+                    if (Oldcontent === 'null' || Oldcontent === '') return;
+                    if (Newcontent === Oldcontent) return;
+                    embed.addField("Old Content", `${Oldcontent}`)
+                }
+            };
+
+
+            if (Newcontent.content === null || Newcontent.content === '' && newMessage.attachments === null && oldMessage.attachments === null) { return } else {
+                if (Newcontent.content !== null || Newcontent.content !== '') {
+                    if (Newcontent === 'null' || Newcontent === '') return;
+                    if (Newcontent === Oldcontent) return;
+                    embed.addField("New Content", `${Newcontent}`)
+                }
+            };
+
+            if (newMessage.author === null || newMessage.author === '' || newMessage.author.avatar === null) { } else {
+                embed.setFooter({ text: `User: ${newMessage.author.tag}`, iconURL: `${newMessage.author.avatarURL({ dynamic: true })}` })
             }
 
-            if (Newcontent.content === null || Newcontent.content === '') { } else {
-                embed.addField("New Content", `${Newcontent} ** **`);
-            }
-            embed.addField("Channel", `${newMessage.channel} ** **`, true);
-            if (newMessage.author === null || newMessage.author === '') { } else {
-                embed.addField("Author", `${newMessage.author} ** **`, true);
+            if (oldMessage.attachments !== null) {
+                oldMessage.attachments.map(getUrls);
+                function getUrls(item) {
+                    embed.addField(`**Attachments:**`, `${[item.url].join(" ")}`)
+                }
             }
 
-            channel.send({ embeds: [embed] });
+            channel.send({ embeds: [embed] }).catch((err => console.log(err)));
 
         } catch (e) {
             console.log(e);
