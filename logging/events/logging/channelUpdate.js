@@ -140,7 +140,7 @@ module.exports = {
             if (oldChannel.userLimit !== newChannel.userLimit) args = `${args}\n**User Limit:** \n\`${oldChannel.userLimit}\` -> \`${newChannel.userLimit}\``
             if (oldChannel.defaultAutoArchiveDuration !== newChannel.threads.defaultAutoArchiveDuration) args = `${args}\n**Auto Archive:** \n\`${oldChannel.defaultAutoArchiveDuration}s\` -> \`${newChannel.defaultAutoArchiveDuration}s\``;
             if (oldChannel.type !== newChannel.type) return;
-            if (oldChannel.permissionOverwrites !== newChannel.permissionOverwrites) return;
+            // if (oldChannel.permissionOverwrites !== newChannel.permissionOverwrites) return;
 
 
             const embed = new MessageEmbed()
@@ -148,7 +148,7 @@ module.exports = {
                 .setDescription(`**${type} Updated**\n${newChannel}\n${args}`)
                 .setTimestamp()
                 .setFooter({ text: `Channel Name: ${channel.name}` })
-            channel.send({ embeds: [embed] }).catch((err => { }));
+            channel.send({ embeds: [embed] }).catch((err => console.log(err)));
 
         } catch (e) {
             console.log(e);

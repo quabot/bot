@@ -113,7 +113,6 @@ module.exports = {
 
             if (!logDatabase) return;
 
-            console.log("TESt")
             let description = `**Role Edited**\n${newRole}`;
             if (oldRole.mentionable !== newRole.mentionable) description = `${description}\n\n**Mentionable**\n\`${oldRole.mentionable ? "Yes" : "No"}\` -> \`${newRole.mentionable ? "Yes" : "No"}\``;
             if (oldRole.name !== newRole.name) description = `${description}\n\n**Name:**\n\`${oldRole.name}\` -> \`${newRole.name}\``;
@@ -122,7 +121,6 @@ module.exports = {
             if (oldRole.icon !== newRole.icon) return;
             if (oldRole.managed !== newRole.managed) return;
 
-            console.log("TESt")
             const embed = new MessageEmbed()
                 .setColor(`${newRole.hexColor}`)
                 .setDescription(`${description}`)
@@ -138,7 +136,6 @@ module.exports = {
                 { name: "New Permissions", value: `\`${newPerms}\``, inline: true }
             );
 
-            console.log(description)
             if (logDatabase.enabled.includes("roleUpdate")) {
                 channel.send({
                     embeds: [embed]

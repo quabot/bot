@@ -4,6 +4,7 @@ const canvacord = require('canvacord');
 module.exports = {
     name: "guildMemberAdd",
     async execute(member, client, color) {
+        console.log("ASS")
         try {
             // DM & Bot checks
             if (!member.guild) return;
