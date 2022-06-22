@@ -73,22 +73,22 @@ module.exports = {
             };
 
             // declare data and labels.
-            const 
-            memData = [
-                mem0,
-                mem1,
-                mem2,
-                mem3,
-                mem4,
-                mem5,
-                mem6,
-                mem7,
-                mem8,
-                mem9,
-                mem10,
-                mem11,
-                mem12,
-            ];
+            const
+                memData = [
+                    mem0,
+                    mem1,
+                    mem2,
+                    mem3,
+                    mem4,
+                    mem5,
+                    mem6,
+                    mem7,
+                    mem8,
+                    mem9,
+                    mem10,
+                    mem11,
+                    mem12,
+                ];
 
             const labels = [
                 '60',
@@ -202,15 +202,15 @@ module.exports = {
 
             // return if there's no data
             if (!docs || docs.Memory.length < 12) return interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor('RED')
-                            .setTitle('🛑 No Data Found!')
-                            .setDescription('Please wait, quabot was restarted and we\'re collecting data again!')
-                    ],
-                    ephemeral: true
-                }).catch(( err => { } ))
-            
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('RED')
+                        .setTitle('🛑 No Data Found!')
+                        .setDescription('Please wait, quabot was restarted and we\'re collecting data again!')
+                ],
+                ephemeral: true
+            }).catch((err => { }))
+
 
             require('../../events/client/ready');
 
@@ -230,7 +230,7 @@ module.exports = {
                 .setDescription(`**Client:** \`✅ ONLINE\` - \`${client.ws.ping}ms\`\n**Uptime:** <t:${parseInt(client.readyTimestamp / 1000)}:R>\n\n**Database:** ${dbConnection}\n\n**Average RAM Usage**: \`${avgMem.toFixed(2)}GB\``)
                 .setColor(embedColor)
                 .setImage('attachment://chart.png')
-            interaction.reply({ embeds: [embed], files: [attachment], }).catch(( err => { } ))
+            interaction.reply({ embeds: [embed], files: [attachment], }).catch((err => { }))
 
 
         } catch (e) {
