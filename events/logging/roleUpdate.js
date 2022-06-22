@@ -1,19 +1,19 @@
 const { MessageEmbed, Message } = require('discord.js');
 
 module.exports = {
-    name: "roleCreate",
-    async execute(role, client, color) {
+    name: "roleUpdate",
+    async execute(oldRole, newRole, client, color) {
         try {
 
             const Guild = require('../../structures/schemas/GuildSchema');
             const guildDatabase = await Guild.findOne({
-                guildId: role.guild.id,
+                guildId: newRole.guild.id,
             }, (err, guild) => {
                 if (err) console.error(err);
                 if (!guild) {
                     const newGuild = new Guild({
-                        guildId: role.guild.id,
-                        guildName: role.guild.name,
+                        guildId: newRole.guild.id,
+                        guildName: newRole.guild.name,
                         logChannelID: "none",
                         ticketCategory: "none",
                         ticketClosedCategory: "none",
@@ -68,19 +68,19 @@ module.exports = {
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
 
-            const channel = role.guild.channels.cache.get(guildDatabase.logChannelID);
+            const channel = newRole.guild.channels.cache.get(guildDatabase.logChannelID);
             if (!channel) return;
             if (channel.type === "GUILD_VOICE") return;
             if (channel.type === "GUILD_STAGE_VOICE") return;
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
-                guildId: role.guild.id,
+                guildId: newRole.guild.id,
             }, (err, log) => {
                 if (err) console.error(err);
                 if (!log) {
                     const newLog = new Log({
-                        guildId: role.guild.id,
+                        guildId: newRole.guild.id,
                         enabled: [
                             'emojiCreateDelete',
                             'emojiUpdate',
@@ -113,21 +113,37 @@ module.exports = {
 
             if (!logDatabase) return;
 
-            let description = `**Role Created**\n${role}`;
-            let perms = role.permissions.toArray().join("\n")
-            let permsLength = String(perms);
-            if (permsLength.length < 971) description = `${description}\n\n**Permissions:**\n\`${perms}\``
+            console.log("TESt")
+            let description = `**Role Edited**\n${newRole}`;
+            if (oldRole.mentionable !== newRole.mentionable) description = `${description}\n\n**Mentionable**\n\`${oldRole.mentionable}\` -> \`${newRole.mentionable}\``;
+            if (oldRole.name !== newRole.name) description = `${description}\n\n**Name:**\n\`${oldRole.name}\` -> \`${newRole.name}\``;
+            if (oldRole.hoist !== newRole.hoist) description = `${description}\n\n**Seperated in sidebar**\n\`${oldRole.hoist}\` -> \`${newRole.hoist}\``;
+            if (oldRole.position !== newRole.position) return;
+            if (oldRole.icon !== newRole.icon) return;
+            if (oldRole.managed !== newRole.managed) return;
 
-            if (logDatabase.enabled.includes("roleCreateDelete")) {
+            console.log("TESt")
+            const embed = new MessageEmbed()
+                .setColor(`${newRole.hexColor}`)
+                .setDescription(`${description}`)
+                .setTimestamp()
+                .setFooter({ text: `${newRole.name}` });
+
+            let oldPerms = oldRole.permissions.toArray().join("\n");
+            let oldPermsLength = String(oldPerms);
+            let newPerms = newRole.permissions.toArray().join("\n");
+            let newPermsLength = String(newPerms);
+            if (oldPermsLength.length < 1024 && newPermsLength.length < 1024 && oldPerms !== newPerms) embed.addFields(
+                { name: "Old Permissions", value: `\`${oldPerms}\``, inline: true },
+                { name: "New Permissions", value: `\`${newPerms}\``, inline: true }
+            );
+
+            console.log(description)
+            if (logDatabase.enabled.includes("roleUpdate")) {
                 channel.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setDescription(`${description}`)
-                            .setTimestamp()
-                            .setFooter({ text: `Role Name: ${role.name}` })
-                    ]
-                }).catch((err => { }));
+                    embeds: [embed]
+                }).catch((err => console.log(err)));
+                console.log("TESt")
             }
         } catch (e) {
             console.log(e);
