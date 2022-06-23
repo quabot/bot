@@ -81,8 +81,6 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }))
 
-        console.log(guildDatabase)
-
         const channel = interaction.guild.channels.cache.get(guildDatabase.suggestChannelID);
         if (!channel) return interaction.reply({
             embeds: [

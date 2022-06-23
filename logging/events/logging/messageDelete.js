@@ -118,6 +118,7 @@ module.exports = {
             if (!logDatabase.enabled.includes("messageDelete")) return;
 
             if (message.content === null && message.attachments === null) return;
+            if (message.content === '' && message.attachments === null) return;
 
             let description = "**Message Deleted**";
 
