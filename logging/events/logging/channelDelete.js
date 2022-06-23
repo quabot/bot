@@ -123,7 +123,7 @@ module.exports = {
             sendCh.send({
                 embeds: [
                     new MessageEmbed()
-                        .setColor("RED")
+                        .setColor(color)
                         .setDescription(`**${title} Deleted**\n\`${channel.name}\``)
                         .setTimestamp()
                 ]

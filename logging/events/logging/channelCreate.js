@@ -123,7 +123,7 @@ module.exports = {
             sendCh.send({
                 embeds: [
                     new MessageEmbed()
-                        .setColor("GREEN")
+                        .setColor(color)
                         .setDescription(`**${title} Created**\n${channel}`)
                         .setTimestamp()
                         .setFooter({ text: `Channel Name: ${channel.name}` })
