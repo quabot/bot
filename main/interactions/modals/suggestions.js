@@ -1,4 +1,4 @@
-const { MessageEmbed, GuildAuditLogs } = require("discord.js");
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 
 module.exports = {
     id: "suggestion",
@@ -17,25 +17,25 @@ module.exports = {
                     guildId: interaction.guild.id,
                     guildName: interaction.guild.name,
                     logChannelID: "none",
-                        ticketCategory: "none",
-                        ticketClosedCategory: "none",
-                        ticketEnabled: true,
-                        ticketStaffPing: true,
-                        ticketTopicButton: true,
-                        ticketSupport: "none",
+                    ticketCategory: "none",
+                    ticketClosedCategory: "none",
+                    ticketEnabled: true,
+                    ticketStaffPing: true,
+                    ticketTopicButton: true,
+                    ticketSupport: "none",
                     ticketId: 1,
                     ticketLogs: true,
                     ticketChannelID: "none",
-                        afkStatusAllowed: "true",
-                        musicEnabled: "true",
-                        musicOneChannelEnabled: "false",
-                        musicChannelID: "none",
+                    afkStatusAllowed: "true",
+                    musicEnabled: "true",
+                    musicOneChannelEnabled: "false",
+                    musicChannelID: "none",
                     suggestChannelID: "none",
                     logSuggestChannelID: "none",
                     logPollChannelID: "none",
-                        afkEnabled: true,
+                    afkEnabled: true,
                     welcomeChannelID: "none",
-                        leaveChannelID: "none",
+                    leaveChannelID: "none",
                     levelChannelID: "none",
                     logEnabled: true,
                     modEnabled: true,
@@ -57,7 +57,7 @@ module.exports = {
                         interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
-        }).clone().catch(function (err) {  });
+        }).clone().catch(function (err) { });
 
         if (!guildDatabase) return interaction.followUp({
             embeds: [
@@ -107,7 +107,7 @@ module.exports = {
         });
 
         if (!msg) return;
-        
+
         const suggestLogChannel = interaction.guild.channels.cache.get(guildDatabase.logSuggestChannelID);
         if (suggestLogChannel) {
             suggestLogChannel.send({
@@ -122,7 +122,16 @@ module.exports = {
                             { name: "Message", value: `[Click to jump](${msg.url})`, inline: true }
                         )
                         .setColor(color)
-                ]
+                        .setFooter({ text: `${msg.id}` })
+                ], components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId('delete-suggestion')
+                                .setLabel('🗑️ Delete')
+                                .setStyle('DANGER')
+                        )
+                ],
             }).catch(err => {
                 interaction.followUp({
                     embeds: [
@@ -133,7 +142,7 @@ module.exports = {
                 }).catch((err => { }))
             });
         }
-        
+
         msg.react("🟢");
         msg.react("🔴");
 

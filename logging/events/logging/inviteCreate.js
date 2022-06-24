@@ -113,6 +113,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("inviteCreateDelete")) return;
 
+            console.log(`${this.name}`);
+            
             channel.send({
                 embeds: [
                     new MessageEmbed()

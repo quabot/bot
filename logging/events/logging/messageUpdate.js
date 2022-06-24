@@ -117,6 +117,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("messageUpdate")) return;
 
+            console.log(`${this.name}`);
+            
             const embed = new MessageEmbed()
                 .setDescription(`**Message Edited**\n${newMessage.channel}`)
                 .setColor(color);

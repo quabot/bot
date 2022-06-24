@@ -111,6 +111,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("channelCreateDelete")) return;
 
+            console.log(`${this.name}`);
+            
             let title;
             if (channel.type === "GUILD_TEXT") title = "Text Channel";
             if (channel.type === "GUILD_VOICE") title = "Voice Channel";

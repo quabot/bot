@@ -114,6 +114,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("threadCreateDelete")) return;
 
+            console.log(`${this.name}`);
+            
             let word = " ";
             if (thread.type === "GUILD_PUBLIC_THREAD") word = " Public ";
             if (thread.type === "GUILD_PRIVATE_THREAD") word = " Private ";

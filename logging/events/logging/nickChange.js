@@ -113,6 +113,9 @@ module.exports = {
             if (!logDatabase) return;
 
             if (logDatabase.enabled.includes("nickChange")) {
+                
+                console.log(`${this.name}`);
+                
                 if (oldMember.nickname !== newMember.nickname) {
 
                     if (oldMember._roles.length !== newMember._roles.length) return;

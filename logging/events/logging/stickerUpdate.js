@@ -114,6 +114,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("stickerUpdate")) return;
 
+            console.log(`${this.name}`);
+            
             let description = "**Sticker Edited**";
             if (oldSticker.name !== newSticker.name) description = `${description}\n\n**Name:**\n\`${oldSticker.name}\` -> \`${newSticker.name}\``
             if (oldSticker.description !== newSticker.description) description = `${description}\n\n**Description:**\n\`${oldSticker.description}\` -> \`${newSticker.description}\``

@@ -115,6 +115,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("guildBanRemove")) return;
 
+            console.log(`${this.name}`);
+            
             channel.send({
                 embeds: [
                     new MessageEmbed()

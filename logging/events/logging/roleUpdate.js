@@ -63,7 +63,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
@@ -109,7 +109,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             if (!logDatabase) return;
 
@@ -137,6 +137,10 @@ module.exports = {
             );
 
             if (logDatabase.enabled.includes("roleUpdate")) {
+
+                console.log(`${this.name}`);
+
+
                 channel.send({
                     embeds: [embed]
                 }).catch((err => console.log(err)));

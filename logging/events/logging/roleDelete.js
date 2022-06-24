@@ -63,7 +63,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             if (!guildDatabase) return;
             if (guildDatabase.logEnabled === false) return;
@@ -109,7 +109,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             if (!logDatabase) return;
 
@@ -117,6 +117,9 @@ module.exports = {
             let perms = role.permissions.toArray().join("\n");
 
             if (logDatabase.enabled.includes("roleCreateDelete")) {
+
+                console.log(`${this.name}`);
+
                 channel.send({
                     embeds: [
                         new MessageEmbed()

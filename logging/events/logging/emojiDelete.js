@@ -113,6 +113,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("emojiCreateDelete")) return;
 
+            console.log(`${this.name}`);
+            
             let word = " ";
             if (emoji.animated) word = " Animated ";
             channel.send({

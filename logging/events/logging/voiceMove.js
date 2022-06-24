@@ -114,6 +114,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("voiceMove")) return;
 
+            console.log(`${this.name}`);
+            
             if (!oldState.channelId) return;
             if (!newState.channelId) return;
 

@@ -114,6 +114,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("voiceJoinLeave")) return;
 
+            console.log(`${this.name}`);
+            
             if (oldState.channelId && newState.channelId) return;
 
             const user = newState.guild.members.cache.get(`${newState.id}`);

@@ -232,6 +232,8 @@ module.exports = {
                                 }).catch((err => { }))
                             }));
 
+                            if (!searches) return;
+
 
                             const firstSong = searches[0];
                             const lyrics = await firstSong.lyrics();

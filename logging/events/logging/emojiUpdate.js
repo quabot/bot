@@ -115,6 +115,8 @@ module.exports = {
 
             if (!logDatabase.enabled.includes("emojiUpdate")) return;
 
+            console.log(`${this.name}`);
+            
             let word = "";
             if (newEmoji.animated) word = " Animated ";
             channel.send({

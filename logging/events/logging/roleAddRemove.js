@@ -113,6 +113,9 @@ module.exports = {
             if (!logDatabase) return;
 
             if (logDatabase.enabled.includes("roleAddRemove")) {
+                
+                console.log(`${this.name}`);
+                
                 if (oldMember._roles !== newMember._roles) {
 
                     if (oldMember.nickname !== newMember.nickname) return;
