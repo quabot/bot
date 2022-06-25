@@ -93,9 +93,9 @@ module.exports = {
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
@@ -215,7 +215,7 @@ module.exports = {
                             interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             if (!guildDatabase) return interaction.reply({
                 embeds: [
@@ -356,7 +356,7 @@ module.exports = {
                     }, (err, poll) => {
                         if (err) console.error(err);
                         if (!poll) return;
-                    }).clone().catch(function (err) {  });
+                    }).clone().catch(function (err) { });
 
                     if (!polldb2) return interaction.reply({
                         embeds: [

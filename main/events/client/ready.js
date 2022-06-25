@@ -11,10 +11,11 @@ module.exports = {
             setTimeout(function () { setActivity(`${client.users.cache.size} users |  /help`) }, 6000);
             setTimeout(function () { setActivity(`quabot.net | /help`) }, 12000);
             setTimeout(function () { setActivity(`${CMD_AMOUNT} commands | /help`) }, 18000);
+            setTimeout(function () { setActivity(`Rewrite 1% | /help`) }, 24000);
             setTimeout(function () {
                 setActivity(`${client.guilds.cache.size} servers |  /help`);
                 loop()
-            }, 24000);
+            }, 30000);
         }());
 
         connect(process.env.DATABASE_URL, {

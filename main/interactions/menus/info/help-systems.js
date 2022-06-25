@@ -8,7 +8,6 @@ module.exports = {
                 new MessageEmbed()
                     .setTitle(`Other Commands`)
                     .setDescription(`View your XP, leave suggestions, listen to music and so much more, these are the other commands.
-                    **/afk** - Set & toggle your afk status.
                     **/level** - View your level, leaderboard & more.
                     **/music** - Listen to music in your voice channel.
                     **/ticket** - Create tickets.

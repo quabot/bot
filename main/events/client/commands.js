@@ -6,7 +6,7 @@ module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
         if (interaction.customId === "events") return;
-        
+
         const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
         if (!interaction.isCommand()) {
             if (interaction.isSelectMenu()) {
@@ -15,7 +15,7 @@ module.exports = {
             if (interaction.isModalSubmit()) {
                 consola.info(`${interaction.customId} was submitted`);
             }
-            client.guilds.cache.get('957024489638621185').channels.cache.get('957024582794104862').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${interaction.customId}** in **${interaction.guild.name}**`)] }).catch(( err => { } ));
+            client.guilds.cache.get('957024489638621185').channels.cache.get('957024582794104862').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${interaction.customId}** in **${interaction.guild.name}**`)] }).catch((err => { }));
         }
         if (interaction.isCommand()) {
 
@@ -35,10 +35,164 @@ module.exports = {
                 }
             }
 
+            const Guild = require('../../structures/schemas/GuildSchema');
+            const guildDatabase = await Guild.findOne({
+                guildId: interaction.guild.id,
+            }, (err, guild) => {
+                if (err) console.error(err);
+                if (!guild) {
+                    const newGuild = new Guild({
+                        guildId: interaction.guild.id,
+                        guildName: interaction.guild.name,
+                        logChannelID: "none",
+                        ticketCategory: "none",
+                        ticketClosedCategory: "none",
+                        ticketEnabled: true,
+                        levelRewards: [],
+                        ticketStaffPing: true,
+                        ticketTopicButton: true,
+                        ticketSupport: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
+                        afkStatusAllowed: "true",
+                        musicEnabled: "true",
+                        musicOneChannelEnabled: "false",
+                        musicChannelID: "none",
+                        suggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
+                        logsuggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
+                        logPollChannelID: "none",
+                        logSuggestChannelID: "none",
+                        afkEnabled: true,
+                        welcomeChannelID: "none",
+                        leaveChannelID: "none",
+                        levelChannelID: "none",
+                        funEnabled: true,
+                        infoEnabled: true,
+                        miscEnabled: true,
+                        moderationEnabled: true,
+                        managementEnabled: true,
+                        punishmentChannelID: "none",
+                        pollID: 0,
+                        logEnabled: true,
+                        modEnabled: true,
+                        levelEnabled: false,
+                        welcomeEmbed: true,
+                        pollEnabled: true,
+                        suggestEnabled: true,
+                        welcomeEnabled: true,
+                        leaveEnabled: true,
+                        roleEnabled: false,
+                        mainRole: "none",
+                        joinMessage: "Welcome {user} to **{guild}**!",
+                        leaveMessage: "Goodbye {user}!",
+                        swearEnabled: false,
+                        levelCard: false,
+                        levelEmbed: true,
+                        levelMessage: "{user} just leveled up to level **{level}**!",
+                        membersChannel: "none",
+                        membersMessage: "Members: {count}",
+                        memberEnabled: true
+                    });
+                    newGuild.save()
+                        .catch(err => {
+                            console.log(err);
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        });
+                }
+            }).clone().catch(function (err) { });
+
+            const alwaysOn = ['level', 'music', 'suggest', 'ticket', 'config', 'dashboard', 'credits', 'help', 'info', 'ping', 'status', 'user'];
+            const enabled = alwaysOn.concat(guildDatabase.funCommands, guildDatabase.infoCommands, guildDatabase.miscCommands, guildDatabase.moderationCommands, guildDatabase.managementCommands)
+
+            if (!enabled.includes(command.name)) {
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    return interaction.reply({ content: `That command is disabled.`, ephemeral: true }).catch((err => { }));
+                } else {
+                    return interaction.reply({ content: `That command is disabled. You can re-enable it [on our dashboard](https://dashboard.quabot.net).`, ephemeral: true }).catch((err => { }));
+                }
+
+                return;
+            }
+
             command.execute(client, interaction, color);
             if (!command.name) return;
             consola.info(`/${command.name} was used`);
-            client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch(( err => { } ))
+            client.guilds.cache.get('957024489638621185').channels.cache.get('957024490318094369').send({ embeds: [new MessageEmbed().setDescription(`**${interaction.user.username}#${interaction.user.discriminator}** used **${command.name}** in **${interaction.guild.name}**`)] }).catch((err => { }))
 
             // alert system
             const GlobalUser = require('../../structures/schemas/GlobalUser');
@@ -55,10 +209,10 @@ module.exports = {
                     newUser.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch(( err => { } ))
+                            interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             if (!userDatabase) return;
 
@@ -92,7 +246,7 @@ module.exports = {
                         customId: "notifRead"
                     })]
                 })]
-            }).catch(( err => { } ))
+            }).catch((err => { }))
         }
     }
 }

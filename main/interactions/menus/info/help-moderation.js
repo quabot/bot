@@ -9,8 +9,8 @@ module.exports = {
                     .setTitle(`Moderation Commands`)
                     .setDescription(`Ban users, warn them and so much more, these are the moderation commands.
                     **/ban** - Ban a user.
-                    **/clear-punishment** - Clear a punsihment of a user.
-                    **/find-punishment** - Find a punsihment of a user.
+                    **/clear-punishment** - Clear a punishment of a user.
+                    **/find-punishment** - Find a punishment of a user.
                     **/kick** - Kick a user.
                     **/tempban** - Tempban a user.
                     **/timeout** - Timeout a user.
