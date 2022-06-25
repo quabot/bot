@@ -1,0 +1,28 @@
+{
+  "name": "quabotv4",
+  "version": "4.0.0",
+  "description": "QuaBot v4.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joasss/QuaBot-Code.git"
+  },
+  "author": "QuaBot",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joasss/QuaBot-Code/issues"
+  },
+  "homepage": "https://github.com/Joasss/QuaBot-Code#readme",
+  "dependencies": {
+    "ascii-table": "^0.0.9",
+    "consola": "^2.15.3",
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1",
+    "glob": "^8.0.3",
+    "pg": "^8.7.3",
+    "util": "^0.12.4"
+  }
+}
