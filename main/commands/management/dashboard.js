@@ -9,7 +9,7 @@ module.exports = {
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`You can find our [dashboard](https://dashboard.quabot.net) at [dashboard.quabot.net](https://dashboard.quabot.net).`)
+                        .setDescription(`You can find our [dashboard](http://localhost:3000) at [dashboard.quabot.net](http://localhost:3000).`)
                         .setColor(color)
                 ], ephemeral: false
             }).catch((err) => { });

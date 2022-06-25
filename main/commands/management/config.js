@@ -11,7 +11,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle('We now have a dashboard!')
-                        .setDescription(`From now on, QuaBot is configured on our [dashboard](https://dashboard.quabot.net)! You can find it at [dashboard.quabot.net](https://dashboard.quabot.net).`)
+                        .setDescription(`From now on, QuaBot is configured on our [dashboard](http://localhost:3000)! You can find it at [dashboard.quabot.net](http://localhost:3000).`)
                         .setColor(color)
                 ], ephemeral: true
             }).catch((err) => { });

@@ -20,6 +20,7 @@ module.exports = {
                     ticketCategory: "none",
                     ticketClosedCategory: "none",
                     ticketEnabled: true,
+                        levelRewards: [],
                     ticketStaffPing: true,
                     ticketTopicButton: true,
                     ticketSupport: "none",
@@ -31,12 +32,92 @@ module.exports = {
                     musicOneChannelEnabled: "false",
                     musicChannelID: "none",
                     suggestChannelID: "none",
-                    logSuggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
+                    logsuggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
                     logPollChannelID: "none",
+                        logSuggestChannelID: "none",
                     afkEnabled: true,
                     welcomeChannelID: "none",
                     leaveChannelID: "none",
                     levelChannelID: "none",
+                        funEnabled: true,
+                        infoEnabled: true,
+                        miscEnabled: true,
+                        moderationEnabled: true,
+                        managementEnabled: true,
                     punishmentChannelID: "none",
                     pollID: 0,
                     logEnabled: true,
@@ -78,7 +159,7 @@ module.exports = {
         if (guildDatabase.suggestEnabled === "false") return interaction.followUp({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`Suggestions are disabled in this server! Ask an admin to enable them with [the dashboard](https://dashboard.quabot.net).`)
+                    .setDescription(`Suggestions are disabled in this server! Ask an admin to enable them with [the dashboard](http://localhost:3000).`)
                     .setColor(color)
             ], ephemeral: true
         }).catch((err => { }))
@@ -87,7 +168,7 @@ module.exports = {
         if (!channel) return interaction.followUp({
             embeds: [
                 new MessageEmbed()
-                    .setDescription("No suggestions channel setup! Configure this with [the dashboard](https://dashboard.quabot.net).")
+                    .setDescription("No suggestions channel setup! Configure this with [the dashboard](http://localhost:3000).")
                     .setColor(color)
             ], ephemeral: true
         }).catch((err => { }));

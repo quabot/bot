@@ -23,7 +23,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle('Thanks for adding QuaBot.')
-                        .setDescription("In order to get started, some features require setting-up to work. These include the Welcome module, logging module and some more. Go to [our dashboard](https://dashboard.quabot.net) to configure everything. If you have any questions [join our support server](https://discord.gg/9kPCU8GHSK)")
+                        .setDescription("In order to get started, some features require setting-up to work. These include the Welcome module, logging module and some more. Go to [our dashboard](http://localhost:3000) to configure everything. If you have any questions [join our support server](https://discord.gg/9kPCU8GHSK)")
                         .setColor(color)
                 ]
             })).catch((err => { }));
@@ -41,23 +41,104 @@ module.exports = {
                         ticketCategory: "none",
                         ticketClosedCategory: "none",
                         ticketEnabled: true,
+                        levelRewards: [],
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
-                    ticketId: 1,
-                    ticketLogs: true,
-                    ticketChannelID: "none",
+                        ticketId: 1,
+                        ticketLogs: true,
+                        ticketChannelID: "none",
                         afkStatusAllowed: "true",
                         musicEnabled: "true",
                         musicOneChannelEnabled: "false",
                         musicChannelID: "none",
                         suggestChannelID: "none",
-                        logSuggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
+                        logsuggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
                         logPollChannelID: "none",
+                        logSuggestChannelID: "none",
                         afkEnabled: true,
                         welcomeChannelID: "none",
                         leaveChannelID: "none",
                         levelChannelID: "none",
+                        funEnabled: true,
+                        infoEnabled: true,
+                        miscEnabled: true,
+                        moderationEnabled: true,
+                        managementEnabled: true,
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
@@ -85,7 +166,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             const Log = require('../../structures/schemas/LogSchema');
             const logDatabase = await Log.findOne({
@@ -123,7 +204,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
         } catch (e) {
             console.log(e);

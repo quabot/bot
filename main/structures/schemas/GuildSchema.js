@@ -34,6 +34,7 @@ const GuildSchema = new mongoose.Schema({
     logEnabled: reqString,
     modEnabled: reqString,
     levelEnabled: reqString,
+    levelRewards: reqArray,
     pollEnabled: reqString,
     suggestEnabled: reqString,
     welcomeEnabled: reqString,
@@ -63,6 +64,16 @@ const GuildSchema = new mongoose.Schema({
     ticketChannelID: reqString,
     membersChannel: reqString,
     membersMessage: reqString,
+    funCommands: reqArray,
+    infoCommands: reqArray,
+    miscCommands: reqArray,
+    moderationCommands: reqArray,
+    managementCommands: reqArray,
+    funEnabled: reqBool,
+    infoEnabled: reqBool,
+    miscEnabled: reqBool,
+    moderationEnabled: reqBool,
+    managementEnabled: reqBool,
 });
 
 module.exports = mongoose.model('Guild', GuildSchema);

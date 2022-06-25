@@ -22,6 +22,7 @@ module.exports = {
                         ticketCategory: "none",
                         ticketClosedCategory: "none",
                         ticketEnabled: true,
+                        levelRewards: [],
                         ticketStaffPing: true,
                         ticketTopicButton: true,
                         ticketSupport: "none",
@@ -33,12 +34,129 @@ module.exports = {
                         musicOneChannelEnabled: "false",
                         musicChannelID: "none",
                         suggestChannelID: "none",
-                        logSuggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
+                        logsuggestChannelID: "none",
+                        funCommands: [
+                            '8ball',
+                            'brokegamble',
+                            'coin',
+                            'quiz',
+                            'reddit',
+                            'rps',
+                            'type'
+                        ],
+                        infoCommands: [
+                            'roles',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        miscCommands: [
+                            'avatar',
+                            'members',
+                            'random',
+                            'servericon'
+                        ],
+                        moderationCommands: [
+                            'ban',
+                            'clear-punishment',
+                            'find-punishment',
+                            'kick',
+                            'tempban',
+                            'timeout',
+                            'unban',
+                            'untimeout',
+                            'warn'
+                        ],
+                        managementCommands: [
+                            'clear',
+                            'message',
+                            'poll',
+                            'reactionroles'
+                        ],
                         logPollChannelID: "none",
+                        logSuggestChannelID: "none",
                         afkEnabled: true,
                         welcomeChannelID: "none",
                         leaveChannelID: "none",
                         levelChannelID: "none",
+                        funEnabled: true,
+                        infoEnabled: true,
+                        miscEnabled: true,
+                        moderationEnabled: true,
+                        managementEnabled: true,
                         punishmentChannelID: "none",
                         pollID: 0,
                         logEnabled: true,
@@ -66,7 +184,7 @@ module.exports = {
                             console.log(err);
                         });
                 }
-            }).clone().catch(function (err) {  });
+            }).clone().catch(function (err) { });
 
             if (!guildDatabase) return;
 
@@ -75,12 +193,12 @@ module.exports = {
             const channel = member.guild.channels.cache.get(`${guildDatabase.membersChannel}`);
 
             if (!channel) return;
-            
+
             let name = guildDatabase.membersMessage;
             name = name.replace("{count}", `${member.guild.memberCount}`);
             name = name.replaceAll("{guild}", `${member.guild.name}`);
 
-            channel.setName(name).catch(( err => console.log(err) ));
+            channel.setName(name).catch((err => console.log(err)));
 
         } catch (e) {
             console.log(e);
