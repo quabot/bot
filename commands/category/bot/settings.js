@@ -1,9 +1,9 @@
 module.exports = {
     name: "settings",
-    command: "user",
+    command: "bot",
     async execute(client, interaction) {
 
-        interaction.reply("subcommand for `/user`")
+        interaction.reply("Subcommand for command `/bot`")
 
     }
 }
