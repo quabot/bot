@@ -1,9 +1,13 @@
+const consola = require('consola');
+
 module.exports = {
     name: "ready",
     once: true,
     execute(client) {
 
-        client.user.setActivity("Beta Build", { type: "WATCHING" });
+        
+
+        // set activity, database url and login msg
 
     }
 }

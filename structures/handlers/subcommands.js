@@ -11,8 +11,12 @@ module.exports = async (client, PG, Ascii, consola) => {
         if (subCommand === "main") return;
 
         const sub = require(file);
+
         if (!sub.name)
-           return Table.addRow(`${command}/${subCommand}`, "❌FAILED", "Add a name.");
+            return Table.addRow(`${command}/${subCommand}`, "❌FAILED", "Add a name.");
+
+        if (!sub.command)
+            return Table.addRow(file.split("/")[7], "❌FAILED", "No base command.");
 
         client.subcommands.set(`${command}/${subCommand}`, commandFile)
 
@@ -23,5 +27,3 @@ module.exports = async (client, PG, Ascii, consola) => {
     consola.log(Table.toString());
 
 };
-
-// combine commands & subcommands into 1 file

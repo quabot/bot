@@ -1,9 +1,0 @@
-module.exports = {
-    name: "settings",
-    command: "user",
-    async execute(client, interaction) {
-
-        interaction.reply("subcommand for `/user`")
-
-    }
-}
