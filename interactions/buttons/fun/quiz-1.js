@@ -30,8 +30,6 @@ module.exports = {
 
         if (!UserDatabase) return;
 
-        console.log(UserDatabase)
-
         if (quiz.option1 === quiz.answer) {
 
             interaction.update({
