@@ -3,7 +3,7 @@ module.exports = async (client, PG, Ascii, consola) => {
 
     CommandsArray = [];
 
-    (await PG(`${process.cwd().replace(/\\/g, "/")}/commands/*/*/main.js`)).map(async (file) => {
+    (await PG(`${process.cwd().replace(/\\/g, "/")}/commands/**/main.js`)).map(async (file) => {
         const command = require(file);
 
         if (!command.name)

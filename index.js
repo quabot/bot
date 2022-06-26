@@ -8,9 +8,10 @@ const Ascii = require('ascii-table');
 const PG = promisify(glob);
 const consola = require('consola');
 
+client.buttons = new Collection();
 client.commands = new Collection();
 client.subcommands = new Collection();
-['commands', 'events', 'subcommands'].forEach(handler => {
+['buttons', 'commands', 'events', 'subcommands'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client, PG, Ascii, consola);
 });
 
