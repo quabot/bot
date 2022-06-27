@@ -63,7 +63,7 @@ module.exports = {
                                 .setDisabled(true),
                         )
                 ]
-            }).catch((err => { } ));
+            }).catch((err => { }));
 
             await UserDatabase.updateOne({
                 quizScore: UserDatabase.quizScore + 1,
@@ -116,5 +116,28 @@ module.exports = {
                 quizLoses: UserDatabase.quizLoses + 1,
             });
         }
+
+        setTimeout(() => {
+            interaction.followUp({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor(color)
+                        .setDescription("Do you want to play again?")
+                ],
+                components: [
+                    new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId('quiz-replay')
+                                .setLabel(`Play Again`)
+                                .setStyle('PRIMARY'),
+                            new MessageButton()
+                                .setCustomId('quiz-stop')
+                                .setLabel(`End Interaction`)
+                                .setStyle('SECONDARY'),
+                        )
+                ]
+            }).catch((err => { }))
+        }, 1500);
     }
 }

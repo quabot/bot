@@ -44,7 +44,7 @@ module.exports = {
                 ], ephemeral: true
             }).catch(( err => { }));
 
-            command.execute(client, interaction, CustomizationDatabase.color);
+            command.execute(client, interaction, CustomizationDatabase.color) // catch errors
             if (!command.name) return;
 
             // log commands being used

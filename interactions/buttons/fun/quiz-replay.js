@@ -1,14 +1,14 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const quiz = require('../../../structures/files/quiz.json');
 
 module.exports = {
-    name: "quiz",
-    description: "Play a quiz",
-    async execute(client, interaction, color) {
+    id: "quiz-replay",
+    async execute(interaction, client, color) {
 
-        const quizItem = quiz[Math.floor(Math.random() * quiz.length)];
 
-        interaction.reply({
+        const quizQuestions = require('../../../structures/files/quiz.json');
+        const quizItem = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+
+        interaction.update({
             embeds: [
                 new MessageEmbed()
                     .setColor(color)
