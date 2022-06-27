@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-    id: "quiz-stop",
+    id: "stop",
     async execute(interaction, client, color) {
 
         interaction.update({

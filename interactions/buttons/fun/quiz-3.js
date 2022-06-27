@@ -135,7 +135,7 @@ module.exports = {
                                 .setLabel(`Play Again`)
                                 .setStyle('PRIMARY'),
                             new MessageButton()
-                                .setCustomId('quiz-stop')
+                                .setCustomId('stop')
                                 .setLabel(`End Interaction`)
                                 .setStyle('SECONDARY'),
                         )
