@@ -19,7 +19,7 @@ module.exports = {
             if (!data) return interaction.editReply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`Couldn't find any memes today!`)
+                        .setDescription(`<:error:990996645913194517> | Couldn't find any memes today!`)
                         .setColor(color)
                 ]
             }).catch((err => { }));

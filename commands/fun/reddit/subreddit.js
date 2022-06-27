@@ -21,7 +21,7 @@ module.exports = {
             if (!data) return interaction.editReply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`Couldn't find anything on that sub!`)
+                        .setDescription(`<:error:990996645913194517> | Couldn't find anything on that subreddit!`)
                         .setColor(color)
                 ], ephemeral: true
             }).catch((err => { }));

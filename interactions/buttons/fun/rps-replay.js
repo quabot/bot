@@ -27,7 +27,7 @@ module.exports = {
                             .setStyle('SUCCESS')
                     )
             ]
-        }).catch((err => { }));
+        }).catch((err => console.log(err)));
         
     }
 }

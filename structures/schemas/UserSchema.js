@@ -19,6 +19,9 @@ const UserSchema = new mongoose.Schema({
     typeScore: reqNum,
     typeWins: reqNum,
     typeLoses: reqNum,
+    rpsScore: reqNum,
+    rpsWins: reqNum,
+    rpsLoses: reqNum,
 });
 
 module.exports = mongoose.model('User', UserSchema);

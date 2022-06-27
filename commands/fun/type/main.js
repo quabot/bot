@@ -25,6 +25,9 @@ module.exports = {
                     typeScore: 0,
                     typeWins: 0,
                     typeLoses: 0,
+                    rpsScore: 0,
+                    rpsWins: 0,
+                    rpsLoses: 0,
                 });
                 newUser.save();
             }
