@@ -33,8 +33,5 @@ module.exports = {
             ]
         }).catch((err => { }))
 
-        // multiple choice
-        // with points
-
     }
 }
