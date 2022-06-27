@@ -16,6 +16,9 @@ const UserSchema = new mongoose.Schema({
     quizScore: reqNum,
     quizWins: reqNum,
     quizLoses: reqNum,
+    typeScore: reqNum,
+    typeWins: reqNum,
+    typeLoses: reqNum,
 });
 
 module.exports = mongoose.model('User', UserSchema);

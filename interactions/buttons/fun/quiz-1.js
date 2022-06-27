@@ -23,6 +23,9 @@ module.exports = {
                     quizScore: 0,
                     quizWins: 0,
                     quizLoses: 0,
+                    typeScore: 0,
+                    typeWins: 0,
+                    typeLoses: 0,
                 });
                 newUser.save();
             }
