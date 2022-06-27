@@ -22,6 +22,7 @@ module.exports = async (client, PG, Ascii, consola) => {
     consola.log(Table.toString());
 
     client.on('ready', async () => {
+        CommandsArray.sort();
        client.application.commands.set(CommandsArray);
     });
 };
