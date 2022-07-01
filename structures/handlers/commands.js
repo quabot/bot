@@ -12,6 +12,7 @@ module.exports = async (client, PG, Ascii, consola) => {
         if (!command.description)
             return Table.addRow(command.name, "❌FAILED", "Add a description.");
 
+
         client.commands.set(command.name, command)
         CommandsArray.push(command);
 
