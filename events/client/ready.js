@@ -25,7 +25,7 @@ module.exports = {
 
         consola.success(`Logged in as ${client.user.tag}`);
 
-        if (client.user.username !== "QuaBot") consola.warn("You are not logged in as QuaBot.")
+        if (client.user.username !== "QuaBot") consola.warn("You are not logged in as QuaBot.");
 
     }
 }
