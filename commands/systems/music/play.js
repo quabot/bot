@@ -45,15 +45,15 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        const gMember = interaction.guild.members.cache.get(interaction.user.id);
-        if (!gMember.voice.channel) return interaction.reply({
+        const member = interaction.guild.members.cache.get(interaction.user.id);
+        if (!member.voice.channel) return interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setDescription(`Please join a voice channel to use the music commands.`)
                     .setColor(color)
             ]
         })
-        if (gMember.voice.channelId !== interaction.guild.me.voice.channelId) {
+        if (member.voice.channelId !== interaction.guild.me.voice.channelId) {
             if (interaction.guild.me.voice.channelId) {
                 interaction.reply({
                     embeds: [
@@ -67,9 +67,9 @@ module.exports = {
         }
 
         const djRole = interaction.guild.roles.cache.get(MusicDatabase.djRole);
-        
+
         if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-            console.log("UR A DJ")
+            // They're a DJ
         } else {
             if (MusicDatabase.djOnly) {
                 interaction.reply({
@@ -82,10 +82,27 @@ module.exports = {
                 return;
             }
         }
-          
-        // one channel
 
-        const member = interaction.guild.members.cache.get(interaction.user.id);
+
+
+        if (MusicDatabase.oneChannelEnabled && MusicDatabase.oneChannel) {
+            const channel = interaction.guild.channels.cache.get(MusicDatabase.oneChannel);
+            if (!channel) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`One channel mode for music is enabled, but no channel was found! Please reconfigure this.`)
+                        .setColor(color)
+                ]
+            }).catch((err => { }));
+
+            if (member.voice.channelId !== guildDatabase.musicChannelID) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`You can only use music in ${channel}!`)
+                        .setColor(color)
+                ]
+            }).catch((err => { }));
+        } 
 
         const search = interaction.options.getString("search");
 
