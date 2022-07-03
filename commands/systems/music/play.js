@@ -83,8 +83,6 @@ module.exports = {
             }
         }
 
-
-
         if (MusicDatabase.oneChannelEnabled && MusicDatabase.oneChannel) {
             const channel = interaction.guild.channels.cache.get(MusicDatabase.oneChannel);
             if (!channel) return interaction.reply({
