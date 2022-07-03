@@ -1,6 +1,6 @@
 const consola = require('consola');
 const { connect } = require('mongoose');
-const { CMD_AMOUNT } = require('../../structures/settings.json');
+const { TESTING } = require('../../structures/settings.json');
 
 module.exports = {
     name: "ready",
@@ -16,7 +16,7 @@ module.exports = {
         (function loop() {
             setTimeout(function () { setActivity(`${client.users.cache.size} users |  /help`) }, 6000);
             setTimeout(function () { setActivity(`quabot.net | /help`) }, 12000);
-            setTimeout(function () { setActivity(`${CMD_AMOUNT} commands | /help`) }, 18000);
+            setTimeout(function () { setActivity(`${client.commands.size} commands | /help`) }, 18000);
             setTimeout(function () {
                 setActivity(`${client.guilds.cache.size} servers |  /help`);
                 loop()
@@ -25,7 +25,11 @@ module.exports = {
 
         consola.success(`Logged in as ${client.user.tag}`);
 
-        if (client.user.username !== "QuaBot") consola.warn("You are not logged in as QuaBot.");
+        if (TESTING) consola.info(`Testing mode enabled. This is not recommended for stable since it will spam warnings.`);
+
+        if (client.user.username !== "QuaBot" && !TESTING) consola.warn("You are not logged in as QuaBot.");
+
+        if (client.user.username !== "QuaBot Testing" && TESTING) consola.warn("You are not logged in as QuaBot Testing.");
 
     }
 }

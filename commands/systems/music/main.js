@@ -27,6 +27,7 @@ module.exports = {
             options: [{
                 name: "option", description: "Pick an option.", type: "STRING", required: true,
                 choices: [
+                    { name: "off", value: "false" },
                     { name: "3d", value: "3d" },
                     { name: "bassboost", value: "bassboost" },
                     { name: "echo", value: "echo" },
