@@ -104,7 +104,7 @@ module.exports = {
 
         const search = interaction.options.getString("search");
 
-        const searches = client.distube.SearchResult(search);
+        const searches = await interaction.client.distube.search(search);
         console.log(searches)
 
         interaction.reply({
