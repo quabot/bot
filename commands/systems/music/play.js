@@ -104,6 +104,9 @@ module.exports = {
 
         const search = interaction.options.getString("search");
 
+        const searches = client.distube.SearchResult(search);
+        console.log(searches)
+
         interaction.reply({
             embeds: [
                 new MessageEmbed()

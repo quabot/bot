@@ -12,6 +12,12 @@ module.exports = {
                     description: "The song name or spotify, youtube or soundcloud link - playlists are supported!",
                     type: "STRING",
                     required: true,
+                },
+                {
+                    name: "list-results",
+                    description: "Lists all results and lets you pick something.",
+                    type: "BOOLEAN",
+                    required: false,
                 }
             ]
         },
