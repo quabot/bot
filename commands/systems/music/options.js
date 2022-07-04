@@ -213,6 +213,237 @@ module.exports = {
                 });
 
                 break;
+
+            case "stop":
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlyStop) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queueStop = client.distube.getQueue(interaction);
+
+                if (!queueStop) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 | There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                client.distube.stop(queueStop);
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("⏹️ | Stopped the stream and left the voice channel!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case "repeat":
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlyRepeat) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queueRepeat = client.distube.getQueue(interaction);
+
+                const repeatMessage = await interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`Currently: \`${queueRepeat.repeatMode ? queueRepeat.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``)
+                            .setColor(color)
+                    ],
+                    components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setCustomId('repeat-off')
+                                    .setLabel('Off')
+                                    .setEmoji('▶️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('repeat-queue')
+                                    .setLabel('Queue')
+                                    .setEmoji('🔁')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('repeat-song')
+                                    .setLabel('Song')
+                                    .setEmoji('🔂')
+                                    .setStyle('SECONDARY'),
+                            )
+                    ], fetchReply: true
+                }).catch((err => { }));
+
+                const collectorRepeat = repeatMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+
+                collectorRepeat.on('collect', async interaction => {
+                    if (interaction.customId === "repeat-off") {
+                        client.distube.setRepeatMode(interaction, 0)
+                        await interaction.update({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription("▶️ Turned repeat off!")
+                                    .setColor(color)
+                            ], components: []
+                        }).catch((err => { }))
+                    } else if (interaction.customId === "repeat-song") {
+                        client.distube.setRepeatMode(interaction, 1)
+                        await interaction.update({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription("🔂 Repeating song!")
+                                    .setColor(color)
+                            ], components: []
+                        }).catch((err => { }))
+                    } else if (interaction.customId === "repeat-queue") {
+                        client.distube.setRepeatMode(interaction, 2)
+                        await interaction.update({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription("🔁 Repeating queue!")
+                                    .setColor(color)
+                            ], components: []
+                        }).catch((err => { }))
+                    }
+                });
+
+                break;
+
+            case 'volume':
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlyVolume) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queueVolume = client.distube.getQueue(interaction);
+                if (!queueVolume) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                const volumePlus = 'volumeAdd'
+                const volumeBasic = 'volumeReset'
+                const volumeDown = 'volumeRemove'
+                const volumeMinBtn = new MessageButton({
+                    style: 'SECONDARY',
+                    label: '-10%',
+                    emoji: '🔉',
+                    customId: volumeDown
+                });
+                const volumeResetBtn = new MessageButton({
+                    style: 'SECONDARY',
+                    label: 'Default',
+                    emoji: '🔈',
+                    customId: volumeBasic
+                });
+                const volumeAddBtn = new MessageButton({
+                    style: 'SECONDARY',
+                    label: '+10%',
+                    emoji: '🔊',
+                    customId: volumePlus
+                });
+
+                const volumeMessage = await interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("Change the volume with the buttons below this message!")
+                            .setColor(color)
+                    ], fetchReply: true,
+                    components: [new MessageActionRow({ components: [volumeMinBtn, volumeResetBtn, volumeAddBtn] })]
+                }).catch((err => { }))
+
+                if (!volumeMessage) return;
+
+                const collectorVolume = volumeMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+
+                collectorVolume.on('collect', async interaction => {
+
+                    if (interaction.customId === volumeDown) {
+                        let newVol = queueVolume.volume - 10;
+                        if (newVol < 0) newVol = 0;
+
+                        client.distube.setVolume(interaction, newVol)
+
+                        await interaction.update({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription(`🔉 Volume set to \`${newVol}%\``)
+                                    .setColor(color)
+                            ]
+                        }).catch((err => { }));
+
+
+                    } else if (interaction.customId === volumeBasic) {
+
+                        client.distube.setVolume(interaction, 50)
+
+                        await interaction.update({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription(`🔈 Volume set to \`50%\``)
+                                    .setColor(color)
+                            ]
+                        }).catch((err => { }));
+
+                    } else if (interaction.customId === volumePlus) {
+                        let newVolAdd = queueVolume.volume + 10;
+                        if (newVolAdd > 100) newVolAdd = 100;
+
+                        client.distube.setVolume(interaction, newVolAdd)
+
+                        await interaction.update({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription(`🔊 Volume set to \`${newVolAdd}%\``)
+                                    .setColor(color)
+                            ]
+                        }).catch((err => { }));
+                    }
+                });
+                break;
+        
         
             }
 

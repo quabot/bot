@@ -10,7 +10,7 @@ module.exports = async (client, PG, Ascii, consola) => {
             client.on(event.name, (...args) => event.execute(...args, client));
         };
 
-        await Table.addRow(event.name, "✅ SUCCES");
+        await Table.addRow(event.name, "✅ - SUCCES");
     });
     consola.log(Table.toString());
 }

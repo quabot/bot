@@ -132,7 +132,7 @@ module.exports = {
         }).catch((err => { }));
 
         const voiceChannel = member.voice.channel;
-        client.distube.play(voiceChannel, `${search}`, {
+        client.distube.play(voiceChannel, `https://open.spotify.com/playlist/5DgdArqHOU923AahhHrIED?si=53a9d4a4af83421f`, {
             textChannel: interaction.channel,
         }).catch((err => {
             interaction.reply({
