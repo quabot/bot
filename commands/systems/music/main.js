@@ -13,12 +13,19 @@ module.exports = {
                     type: "STRING",
                     required: true,
                 },
+            ]
+        },
+        {
+            name: "search",
+            description: "Search for a song and play a song of the results.",
+            type: "SUB_COMMAND",
+            options: [
                 {
-                    name: "list-results",
-                    description: "Lists all results and lets you pick something.",
-                    type: "BOOLEAN",
-                    required: false,
-                }
+                    name: "search",
+                    description: "The song name or spotify, youtube or soundcloud link - playlists are supported!",
+                    type: "STRING",
+                    required: true,
+                },
             ]
         },
         {
@@ -69,6 +76,7 @@ module.exports = {
                     { name: "seek", value: "seek" },
                     { name: "lyrics", value: "lyrics" },
                     { name: "nowplaying", value: "nowplaying" },
+                    { name: "autoplay", value: "autoplay" },
                 ]
             }],
         },

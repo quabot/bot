@@ -1,7 +1,5 @@
 const client = require('../../index');
-const { MessageEmbed } = require('discord.js');
-
-// TODO: COLORS, CHECK THE EMBEDS, FIX ANY WRONG VALUES AND ADD COMMAS
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 // Create the function to fetch the embed color.
 async function getColor(guildId) {
@@ -24,6 +22,30 @@ async function getColor(guildId) {
     return CustomizationDatabase.color;
 }
 
+const row = new MessageActionRow()
+    .addComponents(
+        new MessageButton()
+            .setCustomId('music-volume-down')
+            .setLabel('🔉')
+            .setStyle('SECONDARY'),
+        new MessageButton()
+            .setCustomId('music-volume-up')
+            .setLabel('🔊')
+            .setStyle('SECONDARY'),
+        new MessageButton()
+            .setCustomId('music-pause')
+            .setLabel('⏸️')
+            .setStyle('SECONDARY'),
+        new MessageButton()
+            .setCustomId('music-play')
+            .setLabel('▶️')
+            .setStyle('SECONDARY'),
+        new MessageButton()
+            .setCustomId('music-skip')
+            .setLabel('⏭️')
+            .setStyle('SECONDARY'),
+    );
+
 client.distube
     .on('playSong', async (queue, song) => {
 
@@ -42,7 +64,9 @@ client.distube
                     .addField("Volume", `\`${queue.volume}%\``, true)
                     .addField("Queue", `${queue.songs.length} song(s) - \`${queue.formattedDuration}\``, true)
                     .addField("Autoplay", `\`${queue.autoplay ? "Enabled" : "Disabled"}\``, true)
-                    .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)]
+                    .addField("Repeat", `\`${queue.repeatMode ? queue.repeatMode === 2 ? "Repeat Queue" : "Repeat Song" : "Off"}\``, true)
+            ],
+            components: [row]
         }).catch((err) => { });
     })
 
@@ -59,7 +83,9 @@ client.distube
                     .setDescription(`[${song.name}](${song.url})`)
                     .addField("Added by", `${song.member}`, true)
                     .addField("Queue", `${queue.songs.length} song(s) - \`${queue.formattedDuration}\``, true)
-                    .addField("Duration", `\`${song.formattedDuration}\``, true)]
+                    .addField("Duration", `\`${song.formattedDuration}\``, true)
+            ],
+            components: [row]
         }).catch((err) => { });
     })
 
@@ -97,7 +123,7 @@ client.distube
     .on('noRelated', async (queue) => {
 
         const color = await getColor(queue.textChannel.guildId);
-        
+
         queue.textChannel.send({
             embeds: [
                 new MessageEmbed()
