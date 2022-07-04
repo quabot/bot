@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-    name: "play",
+    name: "options",
     command: "music",
     async execute(client, interaction, color) {
 
@@ -89,16 +89,6 @@ module.exports = {
                 }).catch((err => { }));
                 return;
             }
-            if (MusicDatabase.djOnlyPlay) {
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                    ], ephemeral: true
-                }).catch((err => { }));
-                return;
-            }
         }
 
         if (MusicDatabase.oneChannelEnabled && MusicDatabase.oneChannel) {
@@ -120,29 +110,111 @@ module.exports = {
             }).catch((err => { }));
         }
 
-        const search = interaction.options.getString("search");
 
-        // Just run the first command
-        interaction.reply({
-            embeds: [
-                new MessageEmbed()
-                    .setDescription("▶️ | Request recieved!")
-                    .setColor(color)
-            ], ephemeral: true
-        }).catch((err => { }));
+        const option = interaction.options.getString("option");
 
-        const voiceChannel = member.voice.channel;
-        client.distube.play(voiceChannel, `${search}`, {
-            textChannel: interaction.channel,
-        }).catch((err => {
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setDescription("Couldn't find any songs!")
-                        .setColor(color)
-                ], ephemeral: true
-            }).catch((err => { }));
-        }));
+        switch (option) {
+
+            case "queue":
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlyQueue) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queue = client.distube.getQueue(interaction);
+
+                if (!queue) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 | There are no songs playing!")
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🔃 | Getting queue")
+                            .setColor(color)
+                    ], ephemeral: true
+                }).catch((err => { }));
+
+                const backId = 'backMusic'
+                const forwardId = 'forwardMusic'
+                const backButton = new MessageButton({
+                    style: 'SECONDARY',
+                    label: 'Back',
+                    emoji: '⬅️',
+                    customId: backId
+                });
+                const forwardButton = new MessageButton({
+                    style: 'SECONDARY',
+                    label: 'Forward',
+                    emoji: '➡️',
+                    customId: forwardId
+                });
+
+                const { user, channel } = interaction;
+                const songs = [...client.distube.getQueue(interaction).songs];
+
+                const makeEmbed = async start => {
+                    const current = songs.slice(start, start + 10);
+
+                    return new MessageEmbed({
+                        title: `Showing songs ${start + 1}-${start + current.length} out of ${songs.length
+                            }`,
+                        color: color,
+                        fields: await Promise.all(
+                            current.map(async (song, id) => ({
+                                name: `${id + start + 1}. ${song.name}`,
+                                value: `\`${song.formattedDuration}\` - [Link](${song.url})`
+                            }))
+                        )
+                    });
+                }
+
+                const canFit = songs.length <= 10
+                const msg = await channel.send({
+                    embeds: [await makeEmbed(0)],
+                    components: canFit
+                        ? []
+                        : [new MessageActionRow({ components: [forwardButton] })]
+                }).catch((err => { }));
+                if (canFit) return;
+
+                const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === user.id });
+
+                let currentIndex = 0
+                collector.on('collect', async interaction => {
+                    interaction.customId === backId ? (currentIndex -= 10) : (currentIndex += 10)
+                    await interaction.update({
+                        embeds: [await makeEmbed(currentIndex)],
+                        components: [
+                            new MessageActionRow({
+                                components: [
+                                    ...(currentIndex ? [backButton] : []),
+                                    ...(currentIndex + 10 < songs.length ? [forwardButton] : [])
+                                ]
+                            })
+                        ]
+                    }).catch((err => { }));
+                });
+
+                break;
+        
+            }
 
     }
 }

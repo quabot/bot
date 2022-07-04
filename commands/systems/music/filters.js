@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
     name: "filters",
@@ -19,11 +19,19 @@ module.exports = {
                     djRole: "none",
                     djEnabled: false,
                     djOnly: false,
-                    djOnlyStop: true,
+                    djOnlyStop: false,
                     djOnlySkip: false,
-                    djOnlyPause: true,
-                    djOnlyResume: true,
-                    djOnlyFilter: true,
+                    djOnlyPause: false,
+                    djOnlyResume: false,
+                    djOnlyFilter: false,
+                    djOnlyPlay: false,
+                    djOnlySearch: false,
+                    djOnlyQueue: false,
+                    djOnlyRepeat: false,
+                    djOnlyVolume: false,
+                    djOnlySeek: false,
+                    djOnlyShuffle: false,
+                    djOnlyAutoplay: false,
                 });
                 newMusic.save();
             }
@@ -122,6 +130,31 @@ module.exports = {
                 new MessageEmbed()
                     .setColor(color)
                     .setDescription("Current filter(s):\n`" + (setFilter.join("\n") || "Off") + "`")
+            ],
+            components: [
+                new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setCustomId('music-volume-down')
+                            .setLabel('🔉')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-volume-up')
+                            .setLabel('🔊')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-pause')
+                            .setLabel('⏸️')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-play')
+                            .setLabel('▶️')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-skip')
+                            .setLabel('⏭️')
+                            .setStyle('SECONDARY'),
+                    )
             ]
         }).catch((err => { }));
 

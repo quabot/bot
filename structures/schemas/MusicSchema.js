@@ -23,6 +23,14 @@ const MusicSchema = new mongoose.Schema({
     djOnlyPause: reqBool,
     djOnlyResume: reqBool,
     djOnlyFilter: reqBool,
+    djOnlyPlay: reqBool,
+    djOnlySearch: reqBool,
+    djOnlyQueue: reqBool,
+    djOnlyRepeat: reqBool,
+    djOnlyVolume: reqBool,
+    djOnlySeek: reqBool,
+    djOnlyShuffle: reqBool,
+    djOnlyAutoplay: reqBool,
 });
 
 module.exports = mongoose.model('Music', MusicSchema);

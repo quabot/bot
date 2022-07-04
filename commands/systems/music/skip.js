@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-    name: "play",
+    name: "skip",
     command: "music",
     async execute(client, interaction, color) {
 
@@ -89,7 +89,7 @@ module.exports = {
                 }).catch((err => { }));
                 return;
             }
-            if (MusicDatabase.djOnlyPlay) {
+            if (MusicDatabase.djOnlySkip) {
                 interaction.reply({
                     embeds: [
                         new MessageEmbed()
@@ -120,29 +120,56 @@ module.exports = {
             }).catch((err => { }));
         }
 
-        const search = interaction.options.getString("search");
+        const queue = client.distube.getQueue(interaction);
 
-        // Just run the first command
-        interaction.reply({
+        if (!queue) return interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setDescription("▶️ | Request recieved!")
+                    .setDescription("🎵 | There are no songs playing!")
                     .setColor(color)
             ], ephemeral: true
         }).catch((err => { }));
 
-        const voiceChannel = member.voice.channel;
-        client.distube.play(voiceChannel, `${search}`, {
-            textChannel: interaction.channel,
-        }).catch((err => {
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setDescription("Couldn't find any songs!")
-                        .setColor(color)
-                ], ephemeral: true
-            }).catch((err => { }));
-        }));
+        if (!queue.songs[1]) return interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription("🎵 | There is no next song!")
+                    .setColor(color)
+            ], ephemeral: true
+        }).catch((err => { }));
 
+        client.distube.skip(queue);
+        interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription("⏭️ | Skipped a song!")
+                    .setColor(color)
+            ],
+            components: [
+                new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setCustomId('music-volume-down')
+                            .setLabel('🔉')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-volume-up')
+                            .setLabel('🔊')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-pause')
+                            .setLabel('⏸️')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-play')
+                            .setLabel('▶️')
+                            .setStyle('SECONDARY'),
+                        new MessageButton()
+                            .setCustomId('music-skip')
+                            .setLabel('⏭️')
+                            .setStyle('SECONDARY'),
+                    )
+            ]
+        }).catch((err => { }));
     }
 }
