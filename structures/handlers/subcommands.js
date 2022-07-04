@@ -6,8 +6,8 @@ module.exports = async (client, PG, Ascii, consola) => {
     (await PG(`${process.cwd().replace(/\\/g, "/")}/commands/**/*.js`)).map(async (file) => {
 
         const commandFile = require(file);
-        const subCommand = `${file.split("/")[9]}`.slice(0, -3);
-        const command = file.split("/")[8];
+        const subCommand = `${file.split("/")[8]}`.slice(0, -3);
+        const command = file.split("/")[7];
         if (subCommand === "main") return;
 
         const sub = require(file);
