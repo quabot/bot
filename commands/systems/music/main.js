@@ -34,6 +34,11 @@ module.exports = {
             type: "SUB_COMMAND",
         },
         {
+            name: "stop",
+            description: "Stop the music stream.",
+            type: "SUB_COMMAND",
+        },
+        {
             name: "filters",
             description: "Set a music filter.",
             type: "SUB_COMMAND",

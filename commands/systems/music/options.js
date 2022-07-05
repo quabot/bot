@@ -214,45 +214,6 @@ module.exports = {
 
                 break;
 
-            case "stop":
-
-                // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlyStop) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
-                    }
-                }
-
-                const queueStop = client.distube.getQueue(interaction);
-
-                if (!queueStop) return interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription("🎵 | There are no songs playing!")
-                            .setColor(color)
-                    ]
-                }).catch((err => { }));
-
-                client.distube.stop(queueStop);
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setDescription("⏹️ | Stopped the stream and left the voice channel!")
-                            .setColor(color)
-                    ]
-                }).catch((err => { }));
-
-                break;
-
             case "repeat":
 
                 // DJ System
@@ -559,9 +520,135 @@ module.exports = {
 
                 break;
 
-            case "seek":
+            case 'seek':
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlySeek) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queueSeek = client.distube.getQueue(interaction);
+                if (!queueSeek) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                const Back60 = 'back60';
+                const Back10 = 'back10';
+                const Forward10 = 'forward10';
+                const Forward60 = 'forward60';
+
+                const back60Button = new MessageButton({
+                    style: 'SECONDARY',
+                    label: '60s',
+                    emoji: '⏪',
+                    customId: Back60
+                });
+
+                const back10Button = new MessageButton({
+                    style: 'SECONDARY',
+                    label: '10s',
+                    emoji: '⏪',
+                    customId: Back10
+                });
+
+                const forward10Button = new MessageButton({
+                    style: 'SECONDARY',
+                    label: '10s',
+                    emoji: '⏩',
+                    customId: Forward10
+                });
+
+                const forward60Button = new MessageButton({
+                    style: 'SECONDARY',
+                    label: '60s',
+                    emoji: '⏩',
+                    customId: Forward60
+                });
+
+                const seekMessage = await interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("Seek to a different point in the song with the buttons below this message.")
+                            .setColor(color)
+                    ], fetchReply: true, ephemeral: true
+                    components: [new MessageActionRow({ components: [back60Button, back10Button, forward10Button, forward60Button] })]
+                }).catch((err => { }))
+
+                if (!seekMessage) return;
+
+                const currentTime = queueSeek.currentTime;
+                if (!currentTime) return;
+
+                const collectorSeek = seekMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+
+                collectorSeek.on('collect', async interaction => {
+
+
+                    const customId = interaction.customId;
+                    switch (customId) {
+                        case Back60:
+
+                            let time = queueSeek.currentTime - 60;
+                            if (time < 0) time = 0;
+
+                            client.distube.seek(queueSeek, time);
+
+                            interaction.update({ components: [new MessageActionRow({ components: [back60Button, back10Button, forward10Button, forward60Button] })] })
+
+                            break;
+
+                        case Back10:
+
+                            let time10 = queueSeek.currentTime - 10;
+                            if (time10 < 0) time10 = 0;
+
+                            client.distube.seek(queueSeek, time10);
+
+                            interaction.update({ components: [new MessageActionRow({ components: [back60Button, back10Button, forward10Button, forward60Button] })] })
+
+                            break;
+
+                        case Forward10:
+
+                            let time3 = queueSeek.currentTime + 10;
+                            if (time3 < 0) time3 = 0;
+
+                            client.distube.seek(queueSeek, time3);
+
+                            interaction.update({ components: [new MessageActionRow({ components: [back60Button, back10Button, forward10Button, forward60Button] })] })
+
+                            break;
+
+                        case Forward60:
+
+                            let time60 = queueSeek.currentTime + 60;
+                            if (time60 < 0) time60 = 0;
+
+                            client.distube.seek(queueSeek, time60);
+
+                            interaction.update({ components: [new MessageActionRow({ components: [back60Button, back10Button, forward10Button, forward60Button] })] })
+
+                            break;
+
+                    }
+                });
                 break;
-                
+
         }
 
     }
