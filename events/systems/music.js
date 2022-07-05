@@ -85,7 +85,6 @@ client.distube
                     .setTitle("Song added to the queue")
                     .setThumbnail(song.thumbnail)
                     .setDescription(`[${song.name}](${song.url})`)
-                    .addField("Added by", `${song.member}`, true)
                     .addField("Queue", `${queue.songs.length} song(s) - \`${queue.formattedDuration}\``, true)
                     .addField("Duration", `\`${song.formattedDuration}\``, true)
             ],

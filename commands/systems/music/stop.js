@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-    name: "skip",
+    name: "stop",
     command: "music",
     async execute(client, interaction, color) {
 

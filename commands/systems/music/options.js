@@ -649,6 +649,102 @@ module.exports = {
                 });
                 break;
 
+                o
+
+            case "nowplaying":
+
+                const queueNP = client.distube.getQueue(interaction);
+                if (!queueNP) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }))
+
+                let song = queueNP.songs[0];
+
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Now Playing")
+                            .setColor(color)
+                            .setDescription(`${song.name}`)
+                            .setThumbnail(song.thumbnail)
+                            .addField("Volume", `\`${queueNP.volume}%\``, true)
+                            .addField("Queue", `${queueNP.formattedDuration} song(s)`, true)
+                            .addField("Likes", `${song.likes.toLocaleString()}`, true)
+                            .addField("Views", `${song.views.toLocaleString()}`, true)
+                            .addField("Duration", `\`${song.formattedDuration}\``, true)
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case 'autoplay':
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnly) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queueAP = client.distube.getQueue(interaction);
+
+                if (!queueAP) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                const autoPlayToggle = 'autoplay';
+
+                const autoPlayBtn = new MessageButton({
+                    style: 'PRIMARY',
+                    label: 'Toggle',
+                    customId: autoPlayToggle
+                });
+                
+                const autoPlayMessage = await interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription(`Autoplay is currently \`${queueAP.autoplay ? "enabled" : "disabled"}\``)
+                            .setColor(color)
+                    ], fetchReply: true,
+                    components: [new MessageActionRow({ components: [autoPlayBtn] })]
+                }).catch((err => { }))
+
+                if (!autoPlayMessage) return;
+
+                const collectorAutoplay = autoPlayMessage.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
+
+                collectorAutoplay.on('collect', async interaction => {
+                    if (interaction.customId === autoPlayToggle) {
+                        const mode = client.distube.toggleAutoplay(interaction);
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription(`Autoplay has been \`${mode? "enabled" : "disabled"}\``)
+                                    .setColor(color)
+                            ]
+                        }).catch((err => { }))
+                    }
+                });
+
+                break;
+
         }
 
     }

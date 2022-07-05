@@ -79,7 +79,6 @@ module.exports = {
                     { name: "shuffle", value: "shuffle" },
                     { name: "resume", value: "resume" },
                     { name: "seek", value: "seek" },
-                    { name: "lyrics", value: "lyrics" },
                     { name: "nowplaying", value: "nowplaying" },
                     { name: "autoplay", value: "autoplay" },
                 ]
