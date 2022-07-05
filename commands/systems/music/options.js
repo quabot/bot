@@ -585,7 +585,7 @@ module.exports = {
                         new MessageEmbed()
                             .setDescription("Seek to a different point in the song with the buttons below this message.")
                             .setColor(color)
-                    ], fetchReply: true, ephemeral: true
+                    ], fetchReply: true, ephemeral: true,
                     components: [new MessageActionRow({ components: [back60Button, back10Button, forward10Button, forward60Button] })]
                 }).catch((err => { }))
 
