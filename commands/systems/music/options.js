@@ -443,9 +443,126 @@ module.exports = {
                     }
                 });
                 break;
-        
-        
-            }
+
+            case "pause":
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlyPause) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queuePause = client.distube.getQueue(interaction);
+                if (!queuePause) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 | There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+
+                client.distube.pause(interaction);
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("⏸️ | Paused!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case "shuffle":
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlyShuffle) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queueShuffle = client.distube.getQueue(interaction);
+                if (!queueShuffle) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵| There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }))
+                client.distube.shuffle(interaction);
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🔀 | Shuffled the queue!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case "resume":
+
+                // DJ System
+                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                    // They're a DJ
+                } else {
+                    if (MusicDatabase.djOnlyResume) {
+                        interaction.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setColor(color)
+                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                            ], ephemeral: true
+                        }).catch((err => { }));
+                        return;
+                    }
+                }
+
+                const queueResume = client.distube.getQueue(interaction);
+                if (!queueResume) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("🎵 | There are no songs playing!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }))
+
+
+                client.distube.resume(interaction);
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("▶️ | Resumed!")
+                            .setColor(color)
+                    ]
+                }).catch((err => { }));
+
+                break;
+
+            case "seek":
+                break;
+                
+        }
 
     }
 }

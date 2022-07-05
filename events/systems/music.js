@@ -22,6 +22,10 @@ async function getColor(guildId) {
     return CustomizationDatabase.color;
 }
 
+module.exports = {
+    name: "musicEvents"
+}
+
 const row = new MessageActionRow()
     .addComponents(
         new MessageButton()

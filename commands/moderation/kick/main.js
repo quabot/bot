@@ -80,17 +80,19 @@ module.exports = {
         }
 
         if (didKick) {
-            if (!private) {member.send({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle(`<:error:990996645913194517> You were kicked`)
-                        .setDescription(`You were kicked from **${interaction.guild.name}**
+            if (!private) {
+                member.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle(`<:error:990996645913194517> You were kicked`)
+                            .setDescription(`You were kicked from **${interaction.guild.name}**
                     **Kicked by**: ${interaction.user}
                     **Reason**: ${reason}`)
-                        .setTimestamp()
-                        .setColor(color)
-                ]
-            }).catch(err => { if (err.code !== 50007) console.log(err) });}
+                            .setTimestamp()
+                            .setColor(color)
+                    ]
+                }).catch(err => { });
+            }
             interaction.reply({
                 embeds: [
                     new MessageEmbed()
