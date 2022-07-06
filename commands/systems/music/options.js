@@ -439,6 +439,30 @@ module.exports = {
                         new MessageEmbed()
                             .setDescription("⏸️ | Paused!")
                             .setColor(color)
+                    ], components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setCustomId('music-volume-down')
+                                    .setLabel('🔉')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-volume-up')
+                                    .setLabel('🔊')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-playpause')
+                                    .setLabel('⏯️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-stop')
+                                    .setLabel('⏹️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-skip')
+                                    .setLabel('⏭️')
+                                    .setStyle('SECONDARY'),
+                            )
                     ]
                 }).catch((err => { }));
 
@@ -476,6 +500,30 @@ module.exports = {
                         new MessageEmbed()
                             .setDescription("🔀 | Shuffled the queue!")
                             .setColor(color)
+                    ], components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setCustomId('music-volume-down')
+                                    .setLabel('🔉')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-volume-up')
+                                    .setLabel('🔊')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-playpause')
+                                    .setLabel('⏯️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-stop')
+                                    .setLabel('⏹️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-skip')
+                                    .setLabel('⏭️')
+                                    .setStyle('SECONDARY'),
+                            )
                     ]
                 }).catch((err => { }));
 
@@ -515,6 +563,30 @@ module.exports = {
                         new MessageEmbed()
                             .setDescription("▶️ | Resumed!")
                             .setColor(color)
+                    ], components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setCustomId('music-volume-down')
+                                    .setLabel('🔉')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-volume-up')
+                                    .setLabel('🔊')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-playpause')
+                                    .setLabel('⏯️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-stop')
+                                    .setLabel('⏹️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-skip')
+                                    .setLabel('⏭️')
+                                    .setStyle('SECONDARY'),
+                            )
                     ]
                 }).catch((err => { }));
 
@@ -676,6 +748,30 @@ module.exports = {
                             .addField("Likes", `${song.likes.toLocaleString()}`, true)
                             .addField("Views", `${song.views.toLocaleString()}`, true)
                             .addField("Duration", `\`${song.formattedDuration}\``, true)
+                    ], components: [
+                        new MessageActionRow()
+                            .addComponents(
+                                new MessageButton()
+                                    .setCustomId('music-volume-down')
+                                    .setLabel('🔉')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-volume-up')
+                                    .setLabel('🔊')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-playpause')
+                                    .setLabel('⏯️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-stop')
+                                    .setLabel('⏹️')
+                                    .setStyle('SECONDARY'),
+                                new MessageButton()
+                                    .setCustomId('music-skip')
+                                    .setLabel('⏭️')
+                                    .setStyle('SECONDARY'),
+                            )
                     ]
                 }).catch((err => { }));
 
@@ -716,7 +812,7 @@ module.exports = {
                     label: 'Toggle',
                     customId: autoPlayToggle
                 });
-                
+
                 const autoPlayMessage = await interaction.reply({
                     embeds: [
                         new MessageEmbed()
@@ -736,10 +832,10 @@ module.exports = {
                         interaction.reply({
                             embeds: [
                                 new MessageEmbed()
-                                    .setDescription(`Autoplay has been \`${mode? "enabled" : "disabled"}\``)
+                                    .setDescription(`Autoplay has been \`${mode ? "enabled" : "disabled"}\``)
                                     .setColor(color)
                             ]
-                        }).catch((err => { }))
+                        }).catch((err => { }));
                     }
                 });
 

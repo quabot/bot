@@ -143,12 +143,12 @@ module.exports = {
                             .setLabel('🔊')
                             .setStyle('SECONDARY'),
                         new MessageButton()
-                            .setCustomId('music-pause')
-                            .setLabel('⏸️')
+                            .setCustomId('music-playpause')
+                            .setLabel('⏯️')
                             .setStyle('SECONDARY'),
                         new MessageButton()
-                            .setCustomId('music-play')
-                            .setLabel('▶️')
+                            .setCustomId('music-stop')
+                            .setLabel('⏹️')
                             .setStyle('SECONDARY'),
                         new MessageButton()
                             .setCustomId('music-skip')
