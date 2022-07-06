@@ -176,8 +176,51 @@ module.exports = {
                 }
             }).clone().catch(function (err) { });
 
+            let funCmds = guildDatabase.funCommands ? guildDatabase.funCommands : [
+                '8ball',
+                'brokegamble',
+                'coin',
+                'quiz',
+                'reddit',
+                'rps',
+                'type'
+            ];
+
+            let infoCmds = guildDatabase.infoCommands ? guildDatabase.infoCommands : [
+                'roles',
+                'serverinfo',
+                'userinfo'
+            ];
+
+            let miscCommands = guildDatabase.miscCommands ? guildDatabase.miscCommands : [
+                'avatar',
+                'members',
+                'random',
+                'servericon'
+            ];
+
+            let modCommands = guildDatabase.moderationCommands ? guildDatabase.moderationCommands : [
+                'ban',
+                'clear-punishment',
+                'find-punishment',
+                'kick',
+                'tempban',
+                'timeout',
+                'unban',
+                'untimeout',
+                'warn'
+            ];
+
+            let manCommands = guildDatabase.managementCommands ? guildDatabase.managementCommands : [
+                'clear',
+                'message',
+                'poll',
+                'reactionroles'
+            ];
+
+
             const alwaysOn = ['level', 'music', 'suggest', 'ticket', 'config', 'dashboard', 'credits', 'help', 'info', 'ping', 'status', 'user'];
-            const enabled = alwaysOn.concat(guildDatabase.funCommands, guildDatabase.infoCommands, guildDatabase.miscCommands, guildDatabase.moderationCommands, guildDatabase.managementCommands)
+            const enabled = alwaysOn.concat(funCmds, infoCmds, miscCommands, modCommands, manCommands)
 
             if (!enabled.includes(command.name)) {
                 if (!interaction.member.permissions.has("ADMINISTRATOR")) {
