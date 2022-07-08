@@ -4,6 +4,7 @@ module.exports = {
     name: "kick",
     description: 'Kick a user.',
     permission: "KICK_MEMBERS",
+    permissions: ["SEND_MESSAGES", "KICK_MEMBERS"],
     options: [
         {
             name: "user",

@@ -4,6 +4,7 @@ const typeSentences = require('../../../structures/files/type.json');
 module.exports = {
     name: "type",
     description: "Play a typing game",
+    permissions: ["VIEW_CHANNEL", "SEND_MESSAGES"],
     async execute(client, interaction, color) {
 
         const sentence = typeSentences[Math.floor(Math.random() * typeSentences.length)];

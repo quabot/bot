@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: "purge",
     permission: "MANAGE_MESSAGES",
+    permissions: ["MANAGE_MESSAGES"],
     description: "Purge/clear/bulk delete some messages.",
     options: [
         {
