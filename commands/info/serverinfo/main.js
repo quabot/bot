@@ -5,7 +5,7 @@ const ms = require("ms");
 
 module.exports = {
     name: "serverinfo",
-    description: "Get some information about the server you're in.",
+    description: "Get information about the server.",
     async execute(client, interaction, color) {
 
         const embed = new MessageEmbed()
@@ -38,10 +38,6 @@ module.exports = {
             }
             )
             .setTimestamp();
-
-            console.log(interaction.guild.channels.cache.forEach(element => {
-                console.log(element.type)
-            }))
 
         if (interaction.guild.features.includes("COMMUNITY")) {
             embed.addFields(
