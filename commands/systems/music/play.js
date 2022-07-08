@@ -76,28 +76,30 @@ module.exports = {
 
         const djRole = interaction.guild.roles.cache.get(MusicDatabase.djRole);
 
-        if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-            // They're a DJ
-        } else {
-            if (MusicDatabase.djOnly) {
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                    ], ephemeral: true
-                }).catch((err => { }));
-                return;
-            }
-            if (MusicDatabase.djOnlyPlay) {
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                    ], ephemeral: true
-                }).catch((err => { }));
-                return;
+        if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+            if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                // They're a DJ
+            } else {
+                if (MusicDatabase.djOnly) {
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                        ], ephemeral: true
+                    }).catch((err => { }));
+                    return;
+                }
+                if (MusicDatabase.djOnlyPlay) {
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                        ], ephemeral: true
+                    }).catch((err => { }));
+                    return;
+                }
             }
         }
 
@@ -132,7 +134,7 @@ module.exports = {
         }).catch((err => { }));
 
         const voiceChannel = member.voice.channel;
-        client.distube.play(voiceChannel, `https://open.spotify.com/playlist/5DgdArqHOU923AahhHrIED?si=53a9d4a4af83421f`, {
+        client.distube.play(voiceChannel, `${search}`, {
             textChannel: interaction.channel,
         }).catch((err => {
             interaction.reply({

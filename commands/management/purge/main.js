@@ -32,7 +32,7 @@ module.exports = {
             if (interaction.channel.type === "GUILD_STAGE_VOICE") return;
 
             if (amount > 0) {
-                if (amount > 100) return interaction.reply({ content: `You can't delete more than 100 messages, idiot.`, ephemeral: true });
+                if (amount > 100) return interaction.reply({ content: `You can't delete more than 100 messages.`, ephemeral: true });
                 const size = await interaction.channel.bulkDelete(amount, true).catch(err => {
                     if (err.code === 50013) {
                         return interaction.reply({
@@ -58,7 +58,7 @@ module.exports = {
                     return interaction.reply({ content: `Deleted ${amount} messages.`, ephemeral: true }).catch(( err => { } ));
                 }
             } else {
-                return interaction.reply({ content: `You can't delete less than 1 message, idiot.`, ephemeral: true}).catch(( err => { } ));
+                return interaction.reply({ content: `You can't delete less than 1 message.`, ephemeral: true}).catch(( err => { } ));
             }
         }
         catch (e) {

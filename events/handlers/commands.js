@@ -1,4 +1,4 @@
-const { MessageEmbed} = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
@@ -14,12 +14,32 @@ module.exports = {
                         .setColor("RED")
                         .setTitle("⛔ An error occured while trying to run this command!")
                 ]
-            }).catch(( err => { })) && client.commands.delete(interaction.commandName);
+            }).catch((err => { })) && client.commands.delete(interaction.commandName);
 
             if (command.permission) {
                 if (!interaction.member.permissions.has(command.permission)) {
-                    return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.\nYou need the permission: \`${command.permission}\` to do that`, ephemeral: true })
+                    return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.\nYou need the permission: \`${command.permission}\` to do that`, ephemeral: true }).catch((err => { }));
                 }
+            }
+
+
+            // * Checks the bot's permissions.
+            if (command.permissions) {
+                let error = false;
+                command.permissions.forEach(permission => {
+                    if (!interaction.guild.me.permissions.has(permission)) error = true;
+                    if (!interaction.guild.me.permissionsIn(interaction.channel).has(permission)) error = true;
+                });
+
+                if (error) {
+                    interaction.reply({
+                        content:
+                            `I need the permission(s): \`${command.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
+                        , ephemeral: true
+                    }).catch((err => { }));
+                    return;
+                }
+
             }
 
             const Customization = require('../../structures/schemas/CustomizationSchema');
@@ -34,7 +54,7 @@ module.exports = {
                     });
                     newCustomization.save();
                 }
-            }).clone().catch(( err => { }));
+            }).clone().catch((err => { }));
 
             if (!CustomizationDatabase) return interaction.reply({
                 embeds: [
@@ -42,7 +62,7 @@ module.exports = {
                         .setColor("RED")
                         .setDescription("Unable to get this server's customization settings. Please try again.")
                 ], ephemeral: true
-            }).catch(( err => { }));
+            }).catch((err => { }));
 
             command.execute(client, interaction, CustomizationDatabase.color) // catch errors
             if (!command.name) return;

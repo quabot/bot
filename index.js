@@ -19,7 +19,7 @@ client.login(process.env.TOKEN);
 
 
 
-// Don't touch this! - Music System
+// ! Don't touch this! - Music System
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");

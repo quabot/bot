@@ -1,6 +1,7 @@
 module.exports = {
     name: "music",
     description: "Play music in any voice channel.",
+    permissions: ["SEND_MESSAGES"],
     options: [
         {
             name: "play",

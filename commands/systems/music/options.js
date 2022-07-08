@@ -76,18 +76,20 @@ module.exports = {
 
         const djRole = interaction.guild.roles.cache.get(MusicDatabase.djRole);
 
-        if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-            // They're a DJ
-        } else {
-            if (MusicDatabase.djOnly) {
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor(color)
-                            .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                    ], ephemeral: true
-                }).catch((err => { }));
-                return;
+        if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+            if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                // They're a DJ
+            } else {
+                if (MusicDatabase.djOnly) {
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                        ], ephemeral: true
+                    }).catch((err => { }));
+                    return;
+                }
             }
         }
 
@@ -118,18 +120,21 @@ module.exports = {
             case "queue":
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlyQueue) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnlyQueue) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
@@ -217,18 +222,20 @@ module.exports = {
             case "repeat":
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlyRepeat) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnlyRepeat) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
@@ -300,18 +307,20 @@ module.exports = {
             case 'volume':
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlyVolume) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnlyVolume) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
@@ -408,18 +417,20 @@ module.exports = {
             case "pause":
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlyPause) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnlyPause) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
@@ -471,18 +482,20 @@ module.exports = {
             case "shuffle":
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlyShuffle) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnlyShuffle) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
@@ -532,18 +545,20 @@ module.exports = {
             case "resume":
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlyResume) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnlyResume) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
@@ -595,18 +610,20 @@ module.exports = {
             case 'seek':
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnlySeek) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnlySeek) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
@@ -780,18 +797,20 @@ module.exports = {
             case 'autoplay':
 
                 // DJ System
-                if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
-                    // They're a DJ
-                } else {
-                    if (MusicDatabase.djOnly) {
-                        interaction.reply({
-                            embeds: [
-                                new MessageEmbed()
-                                    .setColor(color)
-                                    .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
-                            ], ephemeral: true
-                        }).catch((err => { }));
-                        return;
+                if (!interaction.member.permissions.has("ADMINISTRATOR")) {
+                    if (djRole && MusicDatabase.djEnabled && interaction.member.roles.cache.some(role => role === djRole)) {
+                        // They're a DJ
+                    } else {
+                        if (MusicDatabase.djOnly) {
+                            interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setColor(color)
+                                        .setDescription(`You are not a DJ! You need the ${djRole} role to perform this command.`)
+                                ], ephemeral: true
+                            }).catch((err => { }));
+                            return;
+                        }
                     }
                 }
 
