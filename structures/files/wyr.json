@@ -10,5 +10,9 @@
     {
         "option1": "speak extremely loud.",
         "option2": "speak extremely queit."
+    },
+    {
+        "option1": "know the place and time of your own death.",
+        "option2": "know the place and time of the death of the people around you."
     }
 ]
