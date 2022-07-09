@@ -76,6 +76,9 @@ module.exports = {
             }).catch((err => { }))
         }
 
+        // if member has admin return;
+        // if member = bot return;
+
         const Channel = require('../../../structures/schemas/ChannelSchema');
         const ChannelDatabase = await Channel.findOne({
             guildId: interaction.guild.id,
@@ -182,26 +185,28 @@ module.exports = {
 
         const channel = interaction.guild.channels.cache.get(`${ChannelDatabase.punishmentChannelId}`);
         if (channel) {
-            channel.send({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Member Banned")
-                        .setDescription(`**User**: ${member}`)
-                        .setColor(color)
-                        .addFields(
-                            { name: "Ban-ID", value: `${banId}`, inline: true },
-                            { name: "Reason", value: `${reason}`, inline: true },
-                            { name: "\u200b", value: "\u200b", inline: true },
-                            { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
-                            { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
-                            { name: "\u200b", value: "\u200b", inline: true },
-                            { name: "Banned By", value: `${interaction.user}`, inline: true },
-                            { name: "Banned In", value: `${interaction.channel}`, inline: true },
-                            { name: "\u200b", value: "\u200b", inline: true },
-                        )
-                        .setColor(color)
-                ],
-            }).catch((err => { }));
+            if (didBan) {
+                channel.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Member Banned")
+                            .setDescription(`**User**: ${member}`)
+                            .setColor(color)
+                            .addFields(
+                                { name: "Ban-ID", value: `${banId}`, inline: true },
+                                { name: "Reason", value: `${reason}`, inline: true },
+                                { name: "\u200b", value: "\u200b", inline: true },
+                                { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
+                                { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
+                                { name: "\u200b", value: "\u200b", inline: true },
+                                { name: "Banned By", value: `${interaction.user}`, inline: true },
+                                { name: "Banned In", value: `${interaction.channel}`, inline: true },
+                                { name: "\u200b", value: "\u200b", inline: true },
+                            )
+                            .setColor(color)
+                    ],
+                }).catch((err => { }));
+            }
         }
 
         await PunishmentIdDatabase.updateOne({
