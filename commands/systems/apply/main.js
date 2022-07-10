@@ -14,9 +14,12 @@ module.exports = {
     ],
     async execute(client, interaction, color) {
 
+        const id = interaction.options.getString("id");
+
         const Application = require('../../../structures/schemas/ApplicationSchema');
-        const ApplicationDatabase = await Application.find({
-            guildId: interaction.guild.id
+        const ApplicationDatabase = await Application.findOne({
+            guildId: interaction.guild.id,
+            applicationTextId: id,
         }, (err, application) => {
             if (err) console.log(err);
             if (!application) {
@@ -63,7 +66,7 @@ module.exports = {
 
         // check if the user has the permissions and remove those from the array beforehand
         const questions = ApplicationDatabase.applicationItems;
-        console.log(ApplicationDatabase.applicationItems)
+        console.log(ApplicationDatabase)
         console.log(questions)
         const { channel } = interaction;
 
