@@ -59,6 +59,7 @@ module.exports = {
         if (oldRole.name !== newRole.name) description = `${description}\n\n**Name:**\n\`${oldRole.name}\` -> \`${newRole.name}\``;
         if (oldRole.hoist !== newRole.hoist) description = `${description}\n\n**Seperated in sidebar**\n\`${oldRole.hoist ? "Yes" : "No"}\` -> \`${newRole.hoist ? "Yes" : "No"}\``;
         if (oldRole.position !== newRole.position) return;
+        if (oldRole.rawPosition !== newRole.rawPosition) return;
         if (oldRole.icon !== newRole.icon) return;
         if (oldRole.managed !== newRole.managed) return;
 
