@@ -23,7 +23,7 @@ module.exports = {
                             .setLabel('📃 Paper')
                             .setStyle('SECONDARY'),
                         new MessageButton()
-                            .setCustomId('rps-scissors')
+                            .setCustomId('create-ticket')
                             .setLabel('✂️ Scissors')
                             .setStyle('SUCCESS')
                     )
