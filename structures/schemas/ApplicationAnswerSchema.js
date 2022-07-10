@@ -28,4 +28,4 @@ const ApplicationAnswerSchema = new mongoose.Schema({
     applicationState: reqString,
 });
 
-module.exports = mongoose.model('Application-Answers', ApplicationAnswerSchema);
+module.exports = mongoose.model('Application-Answer', ApplicationAnswerSchema);
