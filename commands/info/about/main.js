@@ -13,6 +13,6 @@ module.exports = {
                     .setAuthor({ name: `QuaBot v${VERSION}`, iconURL: `${client.user.avatarURL({ dynamic: true })}` })
                     .setDescription(`Welcome to ur mom. this is a beta.`)
             ]
-        }).catch(( err => { } ));
+        }).catch((err => { }));
     }
 }
