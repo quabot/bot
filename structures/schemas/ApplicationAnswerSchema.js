@@ -22,7 +22,7 @@ const reqNum = {
 
 const ApplicationAnswerSchema = new mongoose.Schema({
     guildId: reqString,
-    applicationId: reqNum,
+    applicationId: reqString,
     applicationUserId: reqString,
     applicationAnswers: reqArray,
     applicationState: reqString,
