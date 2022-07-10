@@ -17,7 +17,8 @@ const reqBool = {
 
 const ApplicationConfigSchema = new mongoose.Schema({
     guildId: reqString,
-    applicationsEnabled: reqBool,
+    applicationEnabled: reqBool,
+    applicationReapply: reqBool,
     applicationLogChannelId: reqString,
     applicationAdminRole: reqString,
 });

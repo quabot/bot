@@ -5,6 +5,58 @@ module.exports = {
     command: "application",
     async execute(client, interaction, color) {
 
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
+        // ! check for perms
+        
         // Find the applications
         const Application = require('../../../structures/schemas/ApplicationSchema');
         const ApplicationDatabase = await Application.find({
