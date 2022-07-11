@@ -73,13 +73,15 @@ module.exports = {
             customId: submitId
         });
 
-        if (!interaction.member.permissions.has(ApplicationDatabase.requiredPermission)) return interaction.reply({
-            embeds: [
-                new MessageEmbed()
-                    .setDescription(`You do not have permisison to apply for that application.\nYou require ${ApplicationDatabase.requiredPermission} to apply for this application.`)
-                    .setColor(color)
-            ], ephemeral: true
-        }).catch((err => { }));
+        if (ApplicationDatabase.requiredPermission !== "none") {
+            if (!interaction.member.permissions.has(ApplicationDatabase.requiredPermission)) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`You do not have permisison to apply for that application.\nYou require ${ApplicationDatabase.requiredPermission} to apply for this application.`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }));
+        }
 
 
         // ! Check if they didnt answer already (answer once ) & check for reaplly
@@ -241,8 +243,6 @@ module.exports = {
                     guildId: interaction.guild,
                 }).clone().catch((err => { }));
 
-                console.log(foundUser)
-
                 if (foundAnswer) return interaction.reply({
                     embeds: [
                         new MessageEmbed()
@@ -362,21 +362,18 @@ module.exports = {
                             .setTitle("Application Answered")
                             .setTimestamp()
                             .setDescription(`${interaction.user} - \`${id}\`\nThey answered this application ${foundUserList.length} times before.\n\nIn order to review their answers, run **/application answers ${id} ${interaction.user}**`)
-                    ], componenets: [
-                        new MessageActionRow({
-                            compoennets: [
+                    ], components: [
+                        new MessageActionRow()
+                            .addComponents(
                                 new MessageButton()
-                                    .setStyle("SUCCESS")
-                                    .setLabel("Approve Application")
-                                    .setCustomId("application-approve")
-                                    .setEmoji("✅"),
+                                    .setCustomId('application-approve')
+                                    .setLabel('Approve')
+                                    .setStyle('SUCCESS'),
                                 new MessageButton()
-                                    .setStyle("DANGER")
-                                    .setLabel("Reject Application")
-                                    .setCustomId("application-reject")
-                                    .setEmoji("🚫"),
-                            ]
-                        })
+                                    .setCustomId('application-reject')
+                                    .setLabel('Deny')
+                                    .setStyle('DANGER')
+                            )
                     ]
                 }).catch((err => { }));
 
