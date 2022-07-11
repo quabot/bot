@@ -26,6 +26,7 @@ const ApplicationAnswerSchema = new mongoose.Schema({
     applicationUserId: reqString,
     applicationAnswers: reqArray,
     applicationState: reqString,
+    applicationTextId: reqString,
 });
 
 module.exports = mongoose.model('Application-Answer', ApplicationAnswerSchema);

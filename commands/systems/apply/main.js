@@ -73,8 +73,17 @@ module.exports = {
             customId: submitId
         });
 
-        // ! check for perms
-        
+        if (!interaction.member.permissions.has(ApplicationDatabase.requiredPermission)) return interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription(`You do not have permisison to apply for that application.\nYou require ${ApplicationDatabase.requiredPermission} to apply for this application.`)
+                    .setColor(color)
+            ], ephemeral: true
+        }).catch((err => { }));
+
+
+        // ! Check if they didnt answer already (answer once ) & check for reaplly
+
         const questions = ApplicationDatabase.applicationItems;
         await interaction.deferReply();
 
@@ -135,7 +144,6 @@ module.exports = {
 
         collector.on('collect', async interaction => {
 
-            // Lets you set the value.
             if (interaction.customId === doQuestionId) {
 
                 const filter = (interaction) => interaction.customId === 'aquestion';
@@ -228,6 +236,11 @@ module.exports = {
                     guildId: interaction.guild,
                 }).clone().catch((err => { }));
 
+                const foundUserList = await ApplicationAnswer.find({
+                    applicationUserId: interaction.user.id,
+                    guildId: interaction.guild,
+                }).clone().catch((err => { }));
+
                 console.log(foundUser)
 
                 if (foundAnswer) return interaction.reply({
@@ -251,11 +264,50 @@ module.exports = {
                 if (questions.length !== answers.length) return interaction.reply({
                     embeds: [
                         new MessageEmbed()
-                            .setDescription(`Please make sure to fill out all the questions.`)
+                            .setDescription(`Please make sure to fill out all the questions. (${answers.length}/${questions.length})`)
                             .setColor(color)
                     ],
                     ephemeral: true
-                }).catch((err => { }))
+                }).catch((err => { }));
+
+                const ApplicationConfig = require('../../../structures/schemas/ApplicationConfigSchema');
+                const ApplicationConfigDatabase = await ApplicationConfig.findOne({
+                    guildId: interaction.guild.id,
+                }, (err, config) => {
+                    if (err) console.log(err);
+                    if (!config) {
+                        const newConfig = new ApplicationConfig({
+                            guildId: interaction.guild.id,
+                            applicationEnabled: true,
+                            applicationReapply: false,
+                            applicationLogChannelId: "none",
+                            applicationAdminRole: "none",
+                        });
+                        newConfig.save();
+                    }
+                }).clone().catch((err => { }));
+
+                if (!ApplicationConfigDatabase) {
+                    return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`We just created a new database record! Please run that command again!`)
+                                .setColor(color)
+                        ], ephemeral: true
+                    }).catch((err => { }));
+                }
+
+                const applicationLogChannel = interaction.guild.channels.cache.get(`${ApplicationConfigDatabase.applicationLogChannelId}`);
+
+                if (!applicationLogChannel) {
+                    return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`Couldn't find a channel to log your application result. Please ask an admin to configure this on [our dashboard](https://dashboard.quabot.net).`)
+                                .setColor(color)
+                        ], ephemeral: true
+                    }).catch((err => { }));
+                }
 
                 await interaction.message.edit({
                     components: [
@@ -283,7 +335,7 @@ module.exports = {
                             ]
                         }))
                     ]
-                })
+                }).catch((err => { }));
 
                 const newApplication = new ApplicationAnswer({
                     guildId: interaction.guild.id,
@@ -291,16 +343,42 @@ module.exports = {
                     applicationUserId: interaction.user.id,
                     applicationAnswers: answers,
                     applicationState: "PENDING",
+                    applicationTextId: id
                 });
                 newApplication.save();
 
-                return interaction.reply({
+                interaction.reply({
                     embeds: [
                         new MessageEmbed()
                             .setDescription(`Thanks for your submission to the '${ApplicationDatabase.applicationName}' application!`)
                             .setColor(color)
                     ], ephemeral: true
                 }).catch(console.error);
+
+                applicationLogChannel.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor(color)
+                            .setTitle("Application Answered")
+                            .setTimestamp()
+                            .setDescription(`${interaction.user} - \`${id}\`\nThey answered this application ${foundUserList.length} times before.\n\nIn order to review their answers, run **/application answers ${id} ${interaction.user}**`)
+                    ], componenets: [
+                        new MessageActionRow({
+                            compoennets: [
+                                new MessageButton()
+                                    .setStyle("SUCCESS")
+                                    .setLabel("Approve Application")
+                                    .setCustomId("application-approve")
+                                    .setEmoji("✅"),
+                                new MessageButton()
+                                    .setStyle("DANGER")
+                                    .setLabel("Reject Application")
+                                    .setCustomId("application-reject")
+                                    .setEmoji("🚫"),
+                            ]
+                        })
+                    ]
+                }).catch((err => { }));
 
             } else {
                 interaction.customId === backId ? (currentIndex -= 1) : (currentIndex += 1)
