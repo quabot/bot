@@ -87,7 +87,7 @@ module.exports = {
         // ! Check if they didnt answer already (answer once ) & check for reaplly
 
         const questions = ApplicationDatabase.applicationItems;
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: true });
 
         let thisQuestion = null;
 
@@ -207,7 +207,7 @@ module.exports = {
                 // create the modal
                 const modal = new Modal()
                     .setCustomId('aquestion')
-                    .setTitle("Q" + (questions.indexOf(thisQuestion) + 1) + ": " + thisQuestion.question)
+                    .setTitle((questions.indexOf(thisQuestion) + 1) + ". " + thisQuestion.question)
                     .addComponents(
                         new MessageActionRow()
                             .addComponents(
