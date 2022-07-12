@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     name: "dashboard",
@@ -9,8 +9,16 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setColor(color)
-                    .setDescription("Check our dashboard at [dashboard.quabot.net](https://dashboard.quabot.net) and use it to configure settings.")
-            ], ephemeraL: true
+                    .setDescription("Here you go!")
+            ], ephemeral: true, components: [
+                new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setStyle("LINK")
+                            .setURL("https://dashboard.quabot.net")
+                            .setLabel("Link to our dashboard")
+                    )
+            ]
         }).catch(( err => { } ));
 
     }
