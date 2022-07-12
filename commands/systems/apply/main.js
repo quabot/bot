@@ -216,7 +216,7 @@ module.exports = {
                                     .setLabel('Your answer')
                                     .setStyle(thisQuestion.type)
                                     .setMinLength(1)
-                                    .setMaxLength(500)
+                                    .setMaxLength(350)
                                     .setPlaceholder('Your answer...')
                                     .setRequired(true)
                             )
