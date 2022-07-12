@@ -1,9 +1,10 @@
-const { MessageEmbed, Modal, MessageActionRow, TextInputComponent} = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: "suggest",
-    description: "Leave a suggestion.",
-    async execute(client, interaction, color) {
+    id: "suggestion",
+    async execute(interaction, client, color) {
+
+        const suggestion = interaction.fields.getTextInputValue('suggestion-box');
 
         //* Implement the suggestion config.
         const SuggestConfig = require('../../../structures/schemas/SuggestionConfigSchema');
@@ -53,26 +54,29 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        
-        //* Show the modal.
-        const modal = new Modal()
-            .setCustomId('suggestion')
-            .setTitle('Leave a suggestion')
-            .addComponents(
-                new MessageActionRow()
-                    .addComponents(
-                        new TextInputComponent()
-                            .setCustomId('suggestion-box')
-                            .setLabel('Your suggestion')
-                            .setStyle('PARAGRAPH')
-                            .setMinLength(1)
-                            .setMaxLength(300)
-                            .setPlaceholder('More voice channels!')
-                            .setRequired(true)
-                    )
-            );
+        const msg = await suggestChannel.send({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle("New Suggestion")
+                    .setDescription(`${suggestion}`)
+                    .setColor("GREEN")
+                    .addField("Suggested By", `${interaction.user}`)
+                    .setTimestamp()
+            ]
+        }).catch((err => { }));
 
-        await interaction.showModal(modal);
+        interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription(`Successfully left your suggestion. Check it out in ${suggestChannel}`)
+                    .setColor(color)
+            ], ephemeral: true
+        }).catch((err => { }));
+
+
+        // repply
+        //logging
+        // create db
 
     }
 }

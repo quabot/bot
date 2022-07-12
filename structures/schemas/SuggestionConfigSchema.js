@@ -17,6 +17,7 @@ const SuggestionConfigSchema = new mongoose.Schema({
     suggestChannelId: reqString,
     suggestLogChannelId: reqString,
     suggestReasonApproveDeny: reqBool,
+    suggestEmojiSet: reqString,
 });
 
 module.exports = mongoose.model('Suggestion-Config', SuggestionConfigSchema);

@@ -134,6 +134,7 @@ module.exports = {
         const canFit = questions.length <= 1;
         const msg = await interaction.editReply({
             embeds: [await makeEmbed(0)],
+            ephemeral: true,
             components: canFit
                 ? [new MessageActionRow({ components: [doQuestionButton, submitButton] })]
                 : [new MessageActionRow({ components: [forwardButton, doQuestionButton] })]
@@ -187,7 +188,8 @@ module.exports = {
                                         { name: `${interaction.message.embeds[0].fields[0].name}`, value: `${interaction.message.embeds[0].fields[0].value}` },
                                         { name: "Your Answer", value: `${interaction.fields.getTextInputValue('aquestion-answer')}` }
                                     )
-                            ]
+                            ],
+                            ephemeral: true
                         }).catch((err => { }));
 
                         // Thanks for your reply
@@ -214,7 +216,7 @@ module.exports = {
                                     .setLabel('Your answer')
                                     .setStyle(thisQuestion.type)
                                     .setMinLength(1)
-                                    .setMaxLength(1000)
+                                    .setMaxLength(500)
                                     .setPlaceholder('Your answer...')
                                     .setRequired(true)
                             )
