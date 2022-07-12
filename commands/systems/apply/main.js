@@ -151,7 +151,7 @@ module.exports = {
 
                 const filter = (interaction) => interaction.customId === 'aquestion';
 
-                interaction.awaitModalSubmit({ filter, time: 60_000 })
+                interaction.awaitModalSubmit({ filter, time: 600000 })
                     .then(interaction => {
 
                         /* Checks whether you've already answered this. If you have, it edits the answer instead. */
@@ -179,7 +179,7 @@ module.exports = {
                         }
 
                         // Displays your answer on the embed
-                        interaction.message.edit({
+                        interaction.update({
                             embeds: [
                                 new MessageEmbed()
                                     .setTitle(`${interaction.message.embeds[0].title}`)
@@ -193,7 +193,7 @@ module.exports = {
                         }).catch((err => console.log(err)));
 
                         // Thanks for your reply
-                        interaction.reply({
+                        interaction.followUp({
                             embeds: [
                                 new MessageEmbed()
                                     .setColor(color)
@@ -311,7 +311,7 @@ module.exports = {
                     }).catch((err => { }));
                 }
 
-                await interaction.message.edit({
+                await interaction.update({
                     components: [
                         new MessageActionRow(({
                             components: [
@@ -349,7 +349,7 @@ module.exports = {
                 });
                 newApplication.save();
 
-                interaction.reply({
+                interaction.followUp({
                     embeds: [
                         new MessageEmbed()
                             .setDescription(`Thanks for your submission to the '${ApplicationDatabase.applicationName}' application!`)
