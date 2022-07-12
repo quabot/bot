@@ -190,7 +190,7 @@ module.exports = {
                                     )
                             ],
                             ephemeral: true
-                        }).catch((err => { }));
+                        }).catch((err => console.log(err)));
 
                         // Thanks for your reply
                         interaction.reply({
