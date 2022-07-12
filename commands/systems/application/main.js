@@ -11,6 +11,25 @@ module.exports = {
             type: "SUB_COMMAND",
         },
         {
+            name: 'answers',
+            description: "List all responses for an application",
+            type: "SUB_COMMAND",
+            options: [
+                {
+                    name: "application_id",
+                    description: "Application text ID",
+                    type: "STRING",
+                    required: true
+                },
+                {
+                    name: "response_user",
+                    description: "The whose response you want to approve",
+                    type: "USER",
+                    required: true
+                }
+            ]
+        },
+        {
             name: "approve",
             description: "Approve a staff application",
             type: "SUB_COMMAND",
