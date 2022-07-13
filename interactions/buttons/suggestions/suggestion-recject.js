@@ -2,7 +2,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     //! ADMIN PERMISSION
-    id: "suggestion-approve",
+    id: "suggestion-reject",
     async execute(interaction, client, color) {
 
 
@@ -87,15 +87,15 @@ module.exports = {
             }).catch((err => { }));
 
             const member = interaction.guild.members.cache.get(`${suggestion.suggestionUserId}`);
-            
-            
+
+
             //* Update the suggestion & log message.
             await message.edit({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("New Suggestion!")
-                        .setColor("GREEN")
-                        .setDescription("This suggestion was approved.")
+                        .setColor("RED")
+                        .setDescription("This suggestion was rejected.")
                         .addField("Suggestion", `${suggestion.suggestion}`)
                         .addField("Suggested By", `${member}`)
                         .setTimestamp()
@@ -107,12 +107,12 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle("New Suggestion")
-                        .setColor("GREEN")
+                        .setColor("RED")
                         .addFields(
                             { name: 'Suggestion', value: `${suggestion.suggestion}` },
                             { name: 'Suggested By', value: `${member}`, inline: true },
-                            { name: 'State', value: `Approved`, inline: true },
-                            { name: 'Approved By', value: `${interaction.user}`, inline: true },
+                            { name: 'State', value: `Rejected`, inline: true },
+                            { name: 'Recjected By', value: `${interaction.user}`, inline: true },
                             { name: 'Message', value: `[Click to jump](${message.url})`, inline: true },
                         )
                         .setFooter({ text: `${suggestion.suggestId}` })
@@ -123,11 +123,11 @@ module.exports = {
                             new MessageButton()
                                 .setCustomId('suggestion-approve')
                                 .setLabel("Approve")
-                                .setDisabled(true)
                                 .setStyle("SUCCESS"),
                             new MessageButton()
                                 .setCustomId('suggestion-reject')
                                 .setLabel("Reject")
+                                .setDisabled(true)
                                 .setStyle("DANGER"),
                             new MessageButton()
                                 .setCustomId('suggestion-delete')
@@ -137,26 +137,26 @@ module.exports = {
                 ]
             }).catch((err => { }));
 
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setColor(color)
-                        .setDescription("Approved that suggestion.")
-                ], ephemeral: true
-            }).catch((err => { }));
-
             //* Get the member to DM them.
             if (member) member.send({
                 embeds: [
                     new MessageEmbed()
                         .setColor(color)
-                        .setTitle("Your suggestion was approved!")
-                        .setDescription(`Your suggestion in ${interaction.guild.name} was approved. Go check it out [here](${message.url})!`)
+                        .setTitle("Your suggestion was rejected!")
+                        .setDescription(`Your suggestion in ${interaction.guild.name} was rejected. Go check it out [here](${message.url})!`)
                 ]
             }).catch((err => { }));
 
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor(color)
+                        .setDescription("Rejected that suggestion.")
+                ], ephemeral: true
+            }).catch((err => { }));
+
             await suggestion.updateOne({
-                suggestionStatus: "APPROVED"
+                suggestionStatus: "REJECTED"
             });
 
         });

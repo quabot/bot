@@ -2,7 +2,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     //! ADMIN PERMISSION
-    id: "suggestion-approve",
+    id: "suggestion-delete",
     async execute(interaction, client, color) {
 
 
@@ -42,17 +42,6 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        //* Set the emoji sets.
-        const emojiSet = suggestConfig.suggestEmojiSet;
-        let emoji1 = "🔴";
-        let emoji2 = "🟢";
-
-        if (emojiSet === "checks") emoji1 = "❌";
-        if (emojiSet === "checks") emoji2 = "✅";
-
-        if (emojiSet === "arrows") emoji1 = "⬇️";
-        if (emojiSet === "arrows") emoji2 = "⬆️";
-
 
         //* Get the suggestionId & database record for that suggestion.
         const suggestionId = interaction.message.embeds[0].footer.text;
@@ -64,6 +53,7 @@ module.exports = {
         }, (err, suggest) => {
             if (err) console.log(err);
         }).clone().catch((err => { }));
+
 
         //* Get the suggestion channel.
         const channel = await interaction.guild.channels.cache.get(`${suggestConfig.suggestChannelId}`);
@@ -87,33 +77,22 @@ module.exports = {
             }).catch((err => { }));
 
             const member = interaction.guild.members.cache.get(`${suggestion.suggestionUserId}`);
+        
             
-            
-            //* Update the suggestion & log message.
-            await message.edit({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("New Suggestion!")
-                        .setColor("GREEN")
-                        .setDescription("This suggestion was approved.")
-                        .addField("Suggestion", `${suggestion.suggestion}`)
-                        .addField("Suggested By", `${member}`)
-                        .setTimestamp()
-                        .setFooter({ text: `Vote with the ${emoji2} and ${emoji1} below this message.` })
-                ]
-            }).catch((err => { }));
+            //* Delete the suggestion & update log message.
+            await message.delete().catch((err => { }));
 
             await interaction.message.edit({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("New Suggestion")
-                        .setColor("GREEN")
+                        .setColor("DARK_RED")
                         .addFields(
                             { name: 'Suggestion', value: `${suggestion.suggestion}` },
                             { name: 'Suggested By', value: `${member}`, inline: true },
-                            { name: 'State', value: `Approved`, inline: true },
-                            { name: 'Approved By', value: `${interaction.user}`, inline: true },
-                            { name: 'Message', value: `[Click to jump](${message.url})`, inline: true },
+                            { name: 'State', value: `Deleted`, inline: true },
+                            { name: 'Deleted By', value: `${interaction.user}`, inline: true },
+                            { name: 'Message', value: `Deleted`, inline: true },
                         )
                         .setFooter({ text: `${suggestion.suggestId}` })
                         .setTimestamp()
@@ -128,10 +107,12 @@ module.exports = {
                             new MessageButton()
                                 .setCustomId('suggestion-reject')
                                 .setLabel("Reject")
+                                .setDisabled(true)
                                 .setStyle("DANGER"),
                             new MessageButton()
                                 .setCustomId('suggestion-delete')
                                 .setLabel("Delete")
+                                .setDisabled(true)
                                 .setStyle("SECONDARY"),
                         )
                 ]
@@ -141,7 +122,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor(color)
-                        .setDescription("Approved that suggestion.")
+                        .setDescription("Deleted that suggestion.")
                 ], ephemeral: true
             }).catch((err => { }));
 
@@ -150,14 +131,17 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setColor(color)
-                        .setTitle("Your suggestion was approved!")
-                        .setDescription(`Your suggestion in ${interaction.guild.name} was approved. Go check it out [here](${message.url})!`)
+                        .setTitle("Your suggestion was deleted!")
+                        .setDescription(`Your suggestion in ${interaction.guild.name} was deleted.`)
                 ]
             }).catch((err => { }));
 
-            await suggestion.updateOne({
-                suggestionStatus: "APPROVED"
-            });
+            await Suggest.findOneAndDelete({
+                guildId: interaction.guild.id,
+                suggestId: suggestionId,
+            }, (err, suggest) => {
+                if (err) console.log(err);
+            }).clone().catch((err => { }));
 
         });
     }
