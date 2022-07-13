@@ -3,7 +3,6 @@
 
 const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError } = require('discord.js');
 
-
 // ! Required perms: ADMIN
 module.exports = {
     name: "answers",
