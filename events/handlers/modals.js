@@ -1,11 +1,9 @@
-const { ButtonInteraction, Interaction } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
-const { color } = require('../../structures/settings.json');
 
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
-        
+
         if (!interaction.isModalSubmit()) return;
         const modal = client.modals.get(interaction.customId);
 
@@ -27,7 +25,28 @@ module.exports = {
                         .setDescription("⛔ Only the owner can use that modal.")
                 ], ephemeral: true
             }).catch(err => console.warn(err));
+        const Customization = require('../../structures/schemas/CustomizationSchema');
+        const CustomizationDatabase = await Customization.findOne({
+            guildId: interaction.guild.id,
+        }, (err, customization) => {
+            if (err) console.log(err);
+            if (!customization) {
+                const newCustomization = new Customization({
+                    guildId: interaction.guild.id,
+                    color: "#3a5a74"
+                });
+                newCustomization.save();
+            }
+        }).clone().catch((err => { }));
 
-            modal.execute(interaction, client, color);
+        if (!CustomizationDatabase) return interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setColor("RED")
+                    .setDescription("Unable to get this server's customization settings. Please try again.")
+            ], ephemeral: true
+        }).catch((err => { }));
+
+        modal.execute(interaction, client, CustomizationDatabase.color);
     }
 }
