@@ -11,7 +11,7 @@ module.exports = {
             type: "SUB_COMMAND",
         },
         {
-            name: 'answers',
+            name: 'responses',
             description: "List all responses for an application",
             type: "SUB_COMMAND",
             options: [
@@ -25,24 +25,11 @@ module.exports = {
                     name: "response_user",
                     description: "The whose response you want to approve",
                     type: "USER",
-                    required: true
+                    required: false
                 }
             ]
-        },
-        {
-            name: "approve",
-            description: "Approve a staff application",
-            type: "SUB_COMMAND",
-        },
-        {
-            name: "deny",
-            description: "Deny a staff application",
-            type: "SUB_COMMAND",
         }
     ],
     async execute(client, interaction, color) {
-
-        // only 4 subcommands
-        
     }
 }
