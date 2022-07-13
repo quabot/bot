@@ -72,7 +72,7 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setTitle("New Suggestion!")
-                    .setColor("GREEN")
+                    .setColor("BLUE")
                     .addField("Suggestion", `${suggestion}`)
                     .addField("Suggested By", `${interaction.user}`)
                     .setTimestamp()
@@ -102,7 +102,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle("New Suggestion")
-                        .setColor("GREEN")
+                        .setColor("BLUE")
                         .addFields(
                             { name: 'Suggestion', value: `${suggestion}` },
                             { name: 'Suggested By', value: `${interaction.user}`, inline: true },
