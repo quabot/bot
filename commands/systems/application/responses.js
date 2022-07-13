@@ -40,7 +40,6 @@ module.exports = {
             }).catch((err => { }));
         }
 
-        const questions = ApplicationDatabase.applicationItems;
         const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswerSchema');
         var fal;
         if (responseUser !== null) {
@@ -100,16 +99,13 @@ module.exports = {
                 return a.question - b.question;
             });
 
-            console.log(ApplicationDatabase);
-
             thisResponse = current;
 
-            console.log(interaction.guild.members.cache.get(current.applicationUserId).user);
             var byStatementUser = interaction.guild.members.cache.get(current.applicationUserId).user;
             var byStatement = responseUser !== null ? responseUser.tag : byStatementUser.username+"#"+byStatementUser.discriminator;
 
             return new MessageEmbed({
-                title: `[${current.applicationState}] Response ${start + 1}/${foundUserList.length} by ${byStatement}`,
+                title: `[${current.applicationState.replace("PENDING", "Pending").replace("DENIED", "Denied").replace("APPROVED", "Approved")}] Response ${start + 1}/${foundUserList.length} by ${byStatement}`,
                 color: color,
                 fields: await Promise.all(
                     current.applicationAnswers.map(async (answer, id) => ({
@@ -139,13 +135,74 @@ module.exports = {
         let currentIndex = 0
         collector.on('collect', async interaction => {
             if (interaction.customId === approveId) {
+
                 /* Clicked approve */
                 thisResponse.applicationState = "APPROVED";
-                // do the same thing with ApplicationAnswers database, this only stores it in thisResponse.
+
+                const updateResponse = await ApplicationAnswer.findOne({
+                    guildId: thisResponse.guildId,
+                    applicationId: thisResponse.applicationId,
+                }, (err, reponse) => {
+                    if (err) console.log(err);
+                }).clone().catch((err => { }));
+                if (!updateResponse) return;
+
+                await updateResponse.updateOne({
+                    applicationState: "APPROVED"
+                });
+
+                const user = interaction.guild.members.cache.get(`${updateResponse.applicationUserId}`);
+                if (user) {
+                    user.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setTitle("Application Approved")
+                                .setDescription(`Your application was approved.`)
+                                .addFields(
+                                    { name: "Applied for", value: `${updateResponse.applicationTextId}`, inline: true },
+                                )
+                                .setFooter({ text: `${updateResponse.applicationId}` })
+                        ],
+                    }).catch(( err => { }));
+                }
+
+                const role = interaction.guild.roles.cache.get(`${ApplicationDatabase.applicationReward}`);
+                if (role) interaction.member.roles.add(`${ApplicationDatabase.applicationReward}`);
+                
             } else if (interaction.customId === denyId) {
+
                 /* Clicked deny */
                 thisResponse.applicationState = "DENIED";
-                // do the same thing with ApplicationAnswers database, this only stores it in thisResponse.
+
+                const updateResponse = await ApplicationAnswer.findOne({
+                    guildId: thisResponse.guildId,
+                    applicationId: thisResponse.applicationId,
+                }, (err, reponse) => {
+                    if (err) console.log(err);
+                }).clone().catch((err => { }));
+                if (!updateResponse) return;
+
+                await updateResponse.updateOne({
+                    applicationState: "DENIED"
+                });
+
+                const user = interaction.guild.members.cache.get(`${updateResponse.applicationUserId}`);
+                if (user) {
+                    user.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setTitle("Application Denied")
+                                .setDescription(`Your application was denied.`)
+                                .addFields(
+                                    { name: "Applied for", value: `${updateResponse.applicationTextId}`, inline: true },
+                                )
+                                .setFooter({ text: `${updateResponse.applicationId}` })
+                        ],
+                    }).catch(( err => { }));
+                }
+
             } else {
                 /* Clicked forwards or backwards */
                 interaction.customId === backId ? (currentIndex -= 1) : (currentIndex += 1)

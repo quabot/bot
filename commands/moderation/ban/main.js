@@ -122,6 +122,14 @@ module.exports = {
                 newPunishmentId.save();
             }
         }).clone().catch((err => { }));
+        
+        if (!PunishmentIdDatabase) return interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription(`We just created a new database record! Please run that command again :)`)
+                    .setColor(color)
+            ], ephemeral: true
+        }).catch((err => { }));
 
         const banId = PunishmentIdDatabase.banId ? PunishmentIdDatabase.banId + 1 : 1;
 

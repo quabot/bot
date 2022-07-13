@@ -121,6 +121,14 @@ module.exports = {
             }
         }).clone().catch((err => { }));
 
+        if (!PunishmentIdDatabase) return interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription(`We just created a new database record! Please run that command again :)`)
+                    .setColor(color)
+            ], ephemeral: true
+        }).catch((err => { }));
+
         const kickId = PunishmentIdDatabase.kickId ? PunishmentIdDatabase.kickId + 1 : 1;
 
         if (didKick) {

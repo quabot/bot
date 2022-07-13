@@ -67,6 +67,11 @@ module.exports = {
             label: 'Answer',
             customId: doQuestionId
         });
+        const doEditButton = new MessageButton({
+            style: 'PRIMARY',
+            label: 'Edit',
+            customId: doQuestionId
+        });
         const submitButton = new MessageButton({
             style: 'SUCCESS',
             label: 'Submit',
@@ -84,7 +89,37 @@ module.exports = {
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         // ! Check if they didnt answer already (answer once ) & check for reaplly
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         const questions = ApplicationDatabase.applicationItems;
         await interaction.deferReply({ ephemeral: true });
@@ -131,19 +166,25 @@ module.exports = {
             });
         }
 
+        let currentIndex = 0;
+
+        let currentIndexId = questions.indexOf(currentIndex);
+
+        let currentAnswer = false;
+
+        if (answers.find(item => item.question === currentIndexId)) currentAnswer = answers.find(item => item.question === currentIndexId);
+        
         const canFit = questions.length <= 1;
         const msg = await interaction.editReply({
             embeds: [await makeEmbed(0)],
             ephemeral: true,
             components: canFit
-                ? [new MessageActionRow({ components: [doQuestionButton, submitButton] })]
+                ? [new MessageActionRow({ components: [currentAnswer ? doEditButton : doQuestionButton, submitButton] })]
                 : [new MessageActionRow({ components: [forwardButton, doQuestionButton] })]
         })
         if (canFit) return;
 
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === user.id });
-
-        let currentIndex = 0;
 
         collector.on('collect', async interaction => {
 
@@ -178,6 +219,9 @@ module.exports = {
                             });
                         }
 
+                        if (answers.find(item => item.question === currentIndex)) currentAnswer = true;
+                        if (!answers.find(item => item.question === currentIndex)) currentAnswer = false;
+                        
                         // Displays your answer on the embed
                         interaction.update({
                             embeds: [
@@ -188,6 +232,16 @@ module.exports = {
                                         { name: `${interaction.message.embeds[0].fields[0].name}`, value: `${interaction.message.embeds[0].fields[0].value}` },
                                         { name: "Your Answer", value: `${interaction.fields.getTextInputValue('aquestion-answer')}` }
                                     )
+                            ],
+                            components: [
+                                new MessageActionRow({
+                                    components: [
+                                        ...(currentIndex ? [backButton] : []),
+                                        ...(currentIndex + 1 < questions.length ? [forwardButton] : []),
+                                        currentAnswer ? doEditButton : doQuestionButton,
+                                        ...(currentIndex + 1 === questions.length ? [submitButton] : []),
+                                    ]
+                                })
                             ],
                             ephemeral: true
                         }).catch((err => console.log(err)));
@@ -200,7 +254,7 @@ module.exports = {
                                     .setDescription("Thanks for your reponse! You can move on to the next question.")
                             ], ephemeral: true
                         }).catch((err => { }));
-
+                        
                     })
                     .catch(console.error);
 
@@ -341,7 +395,7 @@ module.exports = {
 
                 const newApplication = new ApplicationAnswer({
                     guildId: interaction.guild.id,
-                    applicationId: randomUUID(),
+                    applicationId: uuid,
                     applicationUserId: interaction.user.id,
                     applicationAnswers: answers,
                     applicationState: "PENDING",
@@ -356,6 +410,21 @@ module.exports = {
                             .setColor(color)
                     ], ephemeral: true
                 }).catch(console.error);
+
+                if (interaction.user) {
+                    interaction.user.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(color)
+                                .setTitle("Application Left")
+                                .setDescription(`Successfully applied for \`${id}\`. You will recieve an update when your application is reviewed..`)
+                                .addFields(
+                                    { name: "Applied for", value: `${id}`, inline: true },
+                                )
+                                .setFooter({ text: `${uuid}` })
+                        ],
+                    }).catch(( err => { }));
+                }
 
                 applicationLogChannel.send({
                     embeds: [
@@ -381,6 +450,8 @@ module.exports = {
 
             } else {
                 interaction.customId === backId ? (currentIndex -= 1) : (currentIndex += 1)
+                if (answers.find(item => item.question === currentIndex)) currentAnswer = true;
+                if (!answers.find(item => item.question === currentIndex)) currentAnswer = false;
                 await interaction.update({
                     embeds: [await makeEmbed(currentIndex)],
                     components: [
@@ -388,7 +459,7 @@ module.exports = {
                             components: [
                                 ...(currentIndex ? [backButton] : []),
                                 ...(currentIndex + 1 < questions.length ? [forwardButton] : []),
-                                doQuestionButton,
+                                currentAnswer ? doEditButton : doQuestionButton,
                                 ...(currentIndex + 1 === questions.length ? [submitButton] : []),
                             ]
                         })

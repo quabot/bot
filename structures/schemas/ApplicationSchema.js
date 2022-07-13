@@ -25,6 +25,7 @@ const ApplicationSchema = new mongoose.Schema({
     applicationNumId: reqNum,
     applicationTextId: reqString,
     applicationName: reqString,
+    applicationReward: reqString,
     applicationItems: reqArray,
     requiredPermission: reqString,
     applicationDescription: reqString,
