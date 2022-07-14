@@ -46,6 +46,7 @@ module.exports = {
         }).clone().catch(function (err) { });
 
         if (!newMessage.author) return;
+        if (newMessage.author.bot) return;
         if (!logDatabase) return;
         if (logDatabase.logEnabled === false) return;
 

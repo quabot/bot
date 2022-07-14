@@ -6,6 +6,7 @@ module.exports = {
     async execute(message, client, color) {
 
         if (!message) return;
+        if (message.author.bot) return;
 
         const Log = require('../../structures/schemas/LogSchema');
         const logDatabase = await Log.findOne({
