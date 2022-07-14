@@ -76,9 +76,6 @@ module.exports = {
             }).catch((err => { }))
         }
 
-        // if member has admin return;
-        // if member = bot return;
-
         const Channel = require('../../../structures/schemas/ChannelSchema');
         const ChannelDatabase = await Channel.findOne({
             guildId: interaction.guild.id,
