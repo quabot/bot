@@ -61,6 +61,7 @@ module.exports = {
 
         if (message.content === null && message.attachments === null) return;
         if (message.content === '' && message.attachments === null) return;
+        if (!message.content && !message.attachments) return;
 
         let description = "**Message Deleted**";
 

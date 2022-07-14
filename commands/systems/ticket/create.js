@@ -50,8 +50,8 @@ module.exports = {
         
         const Ticket = require('../../../structures/schemas/TicketSchema');
 
-        async function createTicket(ticketConfigDatabase, interaction) {
-            let subject = interaction.options.getString("subject");
+        async function createTicket(ticketConfigDatabase, interaction, topic) {
+            let subject = topic;
             if (!subject) subject = "No subject specified.";
 
             let role = interaction.guild.roles.cache.get(`${ticketConfigDatabase.ticketSupport}`);
@@ -139,7 +139,7 @@ module.exports = {
             });
         }
 
-        createTicket(ticketConfigDatabase, interaction);
+        createTicket(ticketConfigDatabase, interaction, interaction.options.getString("topic"));
 
         module.exports = { createTicket };
 

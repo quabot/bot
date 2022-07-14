@@ -109,6 +109,7 @@ module.exports = {
             ], fetchReply: true
         }).catch((err => { }));
 
+        if (!msg) return;
         const collectorRepeat = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
 
         collectorRepeat.on('collect', async interaction => {

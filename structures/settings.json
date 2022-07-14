@@ -1,4 +1,4 @@
 {
-    "VERSION": "4.0.0-dev",
-    "TESTING": false
+    "VERSION": "4.0.0",
+    "TESTING": true
 }

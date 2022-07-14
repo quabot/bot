@@ -1,7 +1,5 @@
 const { MessageEmbed, MessageActionRow, Modal, TextInputComponent, MessageButton, GuildScheduledEvent } = require('discord.js');
 
-const { createTicket } = require('../../../commands/systems/ticket/create');
-
 // create ticket
 module.exports = {
     id: "create-ticket",
@@ -50,33 +48,9 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        if (ticketConfigDatabase.ticketTopicButton === false) {
-            createTicket(ticketConfigDatabase, interaction);
-        } else {
-            const modal = new Modal()
-                .setCustomId('ticket')
-                .setTitle('Create a ticket')
-                .addComponents(
-                    new MessageActionRow()
-                        .addComponents(
-                            new TextInputComponent()
-                                .setCustomId('ticket-topic')
-                                .setLabel('Ticket Topic')
-                                .setStyle('SHORT')
-                                .setMinLength(1)
-                                .setMaxLength(300)
-                                .setPlaceholder('I have a question about...')
-                                .setRequired(true)
-                        )
-                );
-
-            await interaction.showModal(modal);
-        }
-
-        const Ticket = require('../../../structures/schemas/TicketSchema');
-
-        async function createTicket(ticketConfigDatabase, interaction) {
-            let subject = "No subject specified.";
+        async function createTicket(ticketConfigDatabase, interaction, topic) {
+            let subject = topic;
+            if (!subject) subject = "No subject specified.";
 
             let role = interaction.guild.roles.cache.get(`${ticketConfigDatabase.ticketSupport}`);
 
@@ -161,6 +135,30 @@ module.exports = {
             await ticketConfigDatabase.updateOne({
                 ticketId: ticketId,
             });
+        }
+
+        const Ticket = require('../../../structures/schemas/TicketSchema');
+        if (ticketConfigDatabase.ticketTopicButton === false) {
+            createTicket(ticketConfigDatabase, interaction, null);
+        } else {
+            const modal = new Modal()
+                .setCustomId('ticket')
+                .setTitle('Create a ticket')
+                .addComponents(
+                    new MessageActionRow()
+                        .addComponents(
+                            new TextInputComponent()
+                                .setCustomId('ticket-topic')
+                                .setLabel('Ticket Topic')
+                                .setStyle('SHORT')
+                                .setMinLength(1)
+                                .setMaxLength(300)
+                                .setPlaceholder('I have a question about...')
+                                .setRequired(true)
+                        )
+                );
+
+            await interaction.showModal(modal);
         }
 
     }

@@ -175,7 +175,7 @@ module.exports = {
             .setDescription("Ticket transcript added as attachment.")
             .addFields(
                 { name: "User", value: `${interaction.user}`, inline: true },
-                { name: "Channel", value: `${interaction.channel.id}`, inline: true }
+                { name: "Channel", value: `${interaction.channel} (#${interaction.channel.name})`, inline: true }
             );
 
         logChannel.send({ embeds: [embed], files: [attachment] }).catch((err => { }));
