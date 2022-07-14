@@ -1,15 +1,13 @@
-// ! add permissions for subcmds (answers, approve & deny)
-// ! Required perms: ADMIN
-
 const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError } = require('discord.js');
 
-// ! Required perms: ADMIN
 module.exports = {
     name: "responses",
+    permission: "ADMINISTRATOR",
+    permissions: ["SEND_MESSAGES"],
     command: "application",
     async execute(client, interaction, color) {
 
-        const appId = interaction.options.getString("application_id");
+        const appId = interaction.options.getString("application_id").toLowerCase();
         const responseUser = interaction.options.getUser("response_user") ? interaction.options.getUser("response_user") : null;
 
         // Find the applications
@@ -55,7 +53,7 @@ module.exports = {
                 applicationTextId: appId
             }).clone().catch((err => { }));
         }
-        const foundUserList = await fal;
+        const foundUserList = fal;
         if (!foundUserList || foundUserList.length === 0) return interaction.reply({ content: 'Couldn\'t find any responses by that user for that application' });
 
         const backId = 'backMusic'
@@ -102,16 +100,24 @@ module.exports = {
             thisResponse = current;
 
             var byStatementUser = interaction.guild.members.cache.get(current.applicationUserId).user;
-            var byStatement = responseUser !== null ? responseUser.tag : byStatementUser.username+"#"+byStatementUser.discriminator;
+            var byStatement = responseUser !== null ? responseUser.tag : byStatementUser.username + "#" + byStatementUser.discriminator;
 
             return new MessageEmbed({
                 title: `[${current.applicationState.replace("PENDING", "Pending").replace("DENIED", "Denied").replace("APPROVED", "Approved")}] Response ${start + 1}/${foundUserList.length} by ${byStatement}`,
                 color: color,
                 fields: await Promise.all(
-                    current.applicationAnswers.map(async (answer, id) => ({
-                        name: `${ApplicationDatabase.applicationItems[answer.question].question}`,
-                        value: `${answer.value}`
-                    }))
+                    current.applicationAnswers.map(async (answer, id) => {
+
+                        if (!ApplicationDatabase.applicationItems[answer.question]) return {
+                            name: `Error!`,
+                            value: `The application was edited, unable to display this entry.`
+                        }
+
+                        return {
+                            name: `${ApplicationDatabase.applicationItems[answer.question].question}`,
+                            value: `${answer.value}`
+                        }
+                    })
                 )
             });
         }
@@ -164,12 +170,12 @@ module.exports = {
                                 )
                                 .setFooter({ text: `${updateResponse.applicationId}` })
                         ],
-                    }).catch(( err => { }));
+                    }).catch((err => { }));
                 }
 
                 const role = interaction.guild.roles.cache.get(`${ApplicationDatabase.applicationReward}`);
                 if (role) interaction.member.roles.add(`${ApplicationDatabase.applicationReward}`);
-                
+
             } else if (interaction.customId === denyId) {
 
                 /* Clicked deny */
@@ -200,7 +206,7 @@ module.exports = {
                                 )
                                 .setFooter({ text: `${updateResponse.applicationId}` })
                         ],
-                    }).catch(( err => { }));
+                    }).catch((err => { }));
                 }
 
             } else {

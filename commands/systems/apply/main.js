@@ -17,7 +17,7 @@ module.exports = {
     ],
     async execute(client, interaction, color) {
 
-        const id = interaction.options.getString("id");
+        const id = interaction.options.getString("id").toLowerCase();
 
         const Application = require('../../../structures/schemas/ApplicationSchema');
         const ApplicationDatabase = await Application.findOne({
@@ -88,38 +88,50 @@ module.exports = {
             }).catch((err => { }));
         }
 
+        const ApplicationConfig = require('../../../structures/schemas/ApplicationConfigSchema');
+        const ApplicationConfigDatabase = await ApplicationConfig.findOne({
+            guildId: interaction.guild.id,
+        }, (err, config) => {
+            if (err) console.log(err);
+            if (!config) {
+                const newConfig = new ApplicationConfig({
+                    guildId: interaction.guild.id,
+                    applicationEnabled: true,
+                    applicationReapply: false,
+                    applicationLogChannelId: "none",
+                    applicationAdminRole: "none",
+                });
+                newConfig.save();
+            }
+        }).clone().catch((err => { }));
+
+        if (!ApplicationConfigDatabase) {
+            return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setDescription(`We just created a new database record! Please run that command again!`)
+                        .setColor(color)
+                ], ephemeral: true
+            }).catch((err => { }));
+        }
 
 
+        if (ApplicationDatabase.applicationMultipleAnswers === false) {
+            const AnswerFind = require('../../../structures/schemas/ApplicationAnswerSchema');
+            const answerFound = await AnswerFind.findOne({
+                applicationTextId: id,
+                guildId: interaction.guild.id,
+                applicationUserId: interaction.user.id,
+            });
 
+            if (answerFound) {
 
+                if (ApplicationConfigDatabase.applicationReapply === true && answerFound.applicationState === "DENIED") { } else {
+                    return interaction.reply({ content: "You cannot reapply for that application.", ephemeral: true }).catch((err => { }));
+                }
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        // ! Check if they didnt answer already (answer once ) & check for reaplly
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
         const questions = ApplicationDatabase.applicationItems;
         await interaction.deferReply({ ephemeral: true });
@@ -173,7 +185,7 @@ module.exports = {
         let currentAnswer = false;
 
         if (answers.find(item => item.question === currentIndexId)) currentAnswer = answers.find(item => item.question === currentIndexId);
-        
+
         const canFit = questions.length <= 1;
         const msg = await interaction.editReply({
             embeds: [await makeEmbed(0)],
@@ -221,7 +233,7 @@ module.exports = {
 
                         if (answers.find(item => item.question === currentIndex)) currentAnswer = true;
                         if (!answers.find(item => item.question === currentIndex)) currentAnswer = false;
-                        
+
                         // Displays your answer on the embed
                         interaction.update({
                             embeds: [
@@ -254,7 +266,7 @@ module.exports = {
                                     .setDescription("Thanks for your reponse! You can move on to the next question.")
                             ], ephemeral: true
                         }).catch((err => { }));
-                        
+
                     })
                     .catch(console.error);
 
@@ -326,33 +338,6 @@ module.exports = {
                     ephemeral: true
                 }).catch((err => { }));
 
-                const ApplicationConfig = require('../../../structures/schemas/ApplicationConfigSchema');
-                const ApplicationConfigDatabase = await ApplicationConfig.findOne({
-                    guildId: interaction.guild.id,
-                }, (err, config) => {
-                    if (err) console.log(err);
-                    if (!config) {
-                        const newConfig = new ApplicationConfig({
-                            guildId: interaction.guild.id,
-                            applicationEnabled: true,
-                            applicationReapply: false,
-                            applicationLogChannelId: "none",
-                            applicationAdminRole: "none",
-                        });
-                        newConfig.save();
-                    }
-                }).clone().catch((err => { }));
-
-                if (!ApplicationConfigDatabase) {
-                    return interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription(`We just created a new database record! Please run that command again!`)
-                                .setColor(color)
-                        ], ephemeral: true
-                    }).catch((err => { }));
-                }
-
                 const applicationLogChannel = interaction.guild.channels.cache.get(`${ApplicationConfigDatabase.applicationLogChannelId}`);
 
                 if (!applicationLogChannel) {
@@ -423,7 +408,7 @@ module.exports = {
                                 )
                                 .setFooter({ text: `${uuid}` })
                         ],
-                    }).catch(( err => { }));
+                    }).catch((err => { }));
                 }
 
                 applicationLogChannel.send({
@@ -432,24 +417,13 @@ module.exports = {
                             .setColor(color)
                             .setTitle("Application Answered")
                             .setTimestamp()
-                            .setDescription(`${interaction.user} - \`${id}\`\nThey answered this application ${foundUserList.length} times before.\n\nIn order to review their answers, run **/application answers ${id} ${interaction.user}**`)
-                    ], components: [
-                        new MessageActionRow()
-                            .addComponents(
-                                new MessageButton()
-                                    .setCustomId('application-approve')
-                                    .setLabel('Approve')
-                                    .setStyle('SUCCESS'),
-                                new MessageButton()
-                                    .setCustomId('application-reject')
-                                    .setLabel('Deny')
-                                    .setStyle('DANGER')
-                            )
+                            .setDescription(`${interaction.user} - \`${id}\`\nThey answered this application ${foundUserList.length} times before.\n\nIn order to review their answers, run \`/application reponses ${id} @${interaction.user.username}\``)
                     ]
                 }).catch((err => { }));
 
             } else {
                 interaction.customId === backId ? (currentIndex -= 1) : (currentIndex += 1)
+                if (interaction.customId === forwardId) interaction.followUp({ content: "Make sure to answer all the questions!", ephemeral: true })
                 if (answers.find(item => item.question === currentIndex)) currentAnswer = true;
                 if (!answers.find(item => item.question === currentIndex)) currentAnswer = false;
                 await interaction.update({

@@ -1,8 +1,8 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
-    //! ADMIN PERMISSION
     id: "suggestion-approve",
+    permission: "ADMINISTRATOR",
     async execute(interaction, client, color) {
 
 

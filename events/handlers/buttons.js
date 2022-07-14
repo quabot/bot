@@ -18,6 +18,25 @@ module.exports = {
                 ], ephemeral: true
             }).catch(err => console.warn(err));
 
+        // * Checks the bot's permissions.
+        if (button.permissions) {
+            let error = false;
+            button.permissions.forEach(permission => {
+                if (!interaction.guild.me.permissions.has(permission)) error = true;
+                if (!interaction.guild.me.permissionsIn(interaction.channel).has(permission)) error = true;
+            });
+
+            if (error) {
+                interaction.reply({
+                    content:
+                        `I need the permission(s): \`${button.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
+                    , ephemeral: true
+                }).catch((err => { }));
+                return;
+            }
+
+        }
+
         const Customization = require('../../structures/schemas/CustomizationSchema');
         const CustomizationDatabase = await Customization.findOne({
             guildId: interaction.guild.id,

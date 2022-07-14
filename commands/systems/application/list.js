@@ -3,60 +3,9 @@ const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Per
 module.exports = {
     name: "list",
     command: "application",
+    permission: "MANAGE_MESSAGES",
     async execute(client, interaction, color) {
 
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
-        // ! check for perms
-        
         // Find the applications
         const Application = require('../../../structures/schemas/ApplicationSchema');
         const ApplicationDatabase = await Application.find({
@@ -84,10 +33,7 @@ module.exports = {
             }).catch((err => { }));
         }
 
-        const embed = new MessageEmbed()
-            .setColor(color)
-            .setTitle("Application results")
-            .setTimestamp();
+        interaction.reply({ content: "Loading applications...", ephemeral: true }).catch((err => {}));
 
         const backId = 'backMusic'
         const forwardId = 'forwardMusic'
@@ -119,9 +65,9 @@ module.exports = {
                     current.map(async (application) => {
                         const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswerSchema');
                         const ApplicationAnswers = await ApplicationAnswer.find({
-                            guildId: interaction.guild.id, 
+                            guildId: interaction.guild.id,
                             applicationId: application.applicationNumId
-        }, (err, application) => {
+                        }, (err, application) => {
                             if (err) console.log(err);
                         }).clone().catch((err => { }));
 
