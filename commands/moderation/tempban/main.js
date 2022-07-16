@@ -1,8 +1,9 @@
 const { MessageEmbed } = require('discord.js');
+const ms = require('ms');
 
 module.exports = {
-    name: "ban",
-    description: 'Ban a user.',
+    name: "tempban",
+    description: 'Tempban a user.',
     permission: "BAN_MEMBERS",
     permissions: ["SEND_MESSAGES", "BAN_MEMBERS"],
     options: [
@@ -10,6 +11,12 @@ module.exports = {
             name: "user",
             description: "Who should QuaBot ban?",
             type: "USER",
+            required: true,
+        },
+        {
+            name: "duration",
+            description: "How long should they be banned?",
+            type: "STRING",
             required: true,
         },
         {
@@ -28,6 +35,7 @@ module.exports = {
     async execute(client, interaction, color) {
         let member = interaction.options.getMember('user');
         let reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : "No reason given";
+        let duration = interaction.options.getString('duration');
         let private = interaction.options.getBoolean('private') ? true : false;
         if (reason.length > 1000) reason = "No reason specified.";
         let didBan = true;
@@ -75,6 +83,14 @@ module.exports = {
                 ], ephemeral: private
             }).catch((err => { }))
         }
+
+        if (!ms(duration)) return interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription(`Please give a valid time! Eg. \`1h, 20s\``)
+                    .setColor(color)
+            ], ephemeral: private
+        }).catch((err => { }))
 
         const Channel = require('../../../structures/schemas/ChannelSchema');
         const ChannelDatabase = await Channel.findOne({
@@ -149,9 +165,10 @@ module.exports = {
                 member.send({
                     embeds: [
                         new MessageEmbed()
-                            .setTitle(`You were banned!`)
+                            .setTitle(`You were temp-banned!`)
                             .setDescription(`You were banned from **${interaction.guild.name}**
                     **Banned by**: ${interaction.user}
+                    **Ban Duration**: ${duration}
                     **Reason**: ${reason}`)
                             .setTimestamp()
                             .setColor(color)
@@ -161,13 +178,13 @@ module.exports = {
             await interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle(`User banned`)
+                        .setTitle(`User temp-banned`)
                         .setDescription(`**User**: ${member}`)
                         .setColor(color)
                         .addFields(
                             { name: "Ban-ID", value: `${banId}`, inline: true },
                             { name: "Reason", value: `${reason}`, inline: true },
-                            { name: "\u200b", value: "\u200b", inline: true },
+                            { name: "Duration", value: `${duration}`, inline: true },
                             { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
                             { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
                             { name: "\u200b", value: "\u200b", inline: true },
@@ -182,13 +199,13 @@ module.exports = {
                 channel.send({
                     embeds: [
                         new MessageEmbed()
-                            .setTitle("Member Banned")
+                            .setTitle("Member Tempbanned")
                             .setDescription(`**User**: ${member}`)
                             .setColor(color)
                             .addFields(
                                 { name: "Ban-ID", value: `${banId}`, inline: true },
                                 { name: "Reason", value: `${reason}`, inline: true },
-                                { name: "\u200b", value: "\u200b", inline: true },
+                                { name: "Duration", value: `${duration}`, inline: true },
                                 { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
                                 { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
                                 { name: "\u200b", value: "\u200b", inline: true },
@@ -206,15 +223,15 @@ module.exports = {
         const newPunishment = new Punishment({
             guildId: interaction.guild.id,
             userId: member.user.id,
-            type: "ban",
+            type: "tempban",
             punishmentId: banId,
             channelId: interaction.channel.id,
             userExecuteId: interaction.user.id,
             reason: reason,
-            time: new Date().getTime(),
+            time: new Date().getTime() + ms(duration),
         });
         newPunishment.save();
-
+ 
         await PunishmentIdDatabase.updateOne({
             banId: banId,
         });

@@ -131,6 +131,20 @@ module.exports = {
 
         const kickId = PunishmentIdDatabase.kickId ? PunishmentIdDatabase.kickId + 1 : 1;
 
+        await member.kick({ reason: reason }).catch(err => {
+            didKick = false;
+            if (err.code === 50013) {
+                return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("<:error:990996645913194517> Insufficcient permissions")
+                            .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
+                            .setColor(color)
+                    ], ephemeral: private
+                }).catch((err => { }))
+            }
+        });
+
         if (didKick) {
             if (!private) {
                 member.send({
@@ -163,20 +177,6 @@ module.exports = {
             }).catch((err => { }))
         }
 
-        member.kick({ reason: reason }).catch(err => {
-            didKick = false;
-            if (err.code === 50013) {
-                interaction.deleteReply();
-                return interaction.channel.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setTitle("<:error:990996645913194517> Insufficcient permissions")
-                            .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
-                            .setColor(color)
-                    ], ephemeral: private
-                }).catch((err => { }))
-            }
-        });
 
         const channel = interaction.guild.channels.cache.get(`${ChannelDatabase.punishmentChannelId}`);
         if (channel) {
@@ -207,7 +207,7 @@ module.exports = {
         const Punishment = require('../../../structures/schemas/PunishmentSchema');
         const newPunishment = new Punishment({
             guildId: interaction.guild.id,
-            userId: interaction.user.id,
+            userId: member.user.id,
             type: "kick",
             punishmentId: kickId,
             channelId: interaction.channel.id,

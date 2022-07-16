@@ -1,22 +1,21 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: "ban",
-    description: 'Ban a user.',
-    permission: "BAN_MEMBERS",
-    permissions: ["SEND_MESSAGES", "BAN_MEMBERS"],
+    name: "warn",
+    description: 'Warn a user.',
+    permission: "MODERATE_MEMBERS",
     options: [
         {
             name: "user",
-            description: "Who should QuaBot ban?",
+            description: "Who should QuaBot warn?",
             type: "USER",
             required: true,
         },
         {
             name: "reason",
-            description: "Why should that user be banned?",
+            description: "Why should that user be warned?",
             type: "STRING",
-            required: false,
+            required: true,
         },
         {
             name: "private",
@@ -27,50 +26,35 @@ module.exports = {
     ],
     async execute(client, interaction, color) {
         let member = interaction.options.getMember('user');
-        let reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : "No reason given";
+        let reason = interaction.options.getString('reason');
         let private = interaction.options.getBoolean('private') ? true : false;
         if (reason.length > 1000) reason = "No reason specified.";
-        let didBan = true;
 
         if (!member) {
-            didBan = false;
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to ban`)
+                        .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to warn.`)
                         .setColor(color)
                 ], ephemeral: private
             }).catch((err => { }))
         }
 
         if (member.id === interaction.member.id) {
-            didBan = false;
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't ban yourself!`)
+                        .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't warn yourself!`)
                         .setColor(color)
                 ], ephemeral: private
             }).catch((err => { }))
         }
 
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) {
-            didBan = false;
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot ban a user with roles higher than your own`)
-                        .setColor(color)
-                ], ephemeral: private
-            }).catch((err => { }))
-        }
-
-        if (member.roles.highest.rawPosition > interaction.guild.members.cache.get(client.user.id).roles.highest.rawPosition) {
-            didBan = false;
-            return interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nQuaBot does not have permission to ban that user - try moving the QuaBot role above all others`)
+                        .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot warn a user with roles higher than your own.`)
                         .setColor(color)
                 ], ephemeral: private
             }).catch((err => { }))
@@ -91,7 +75,6 @@ module.exports = {
         }).clone().catch((err => { }));
 
         if (!ChannelDatabase) {
-            didBan = false;
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
@@ -111,15 +94,15 @@ module.exports = {
                 const newPunishmentId = new PunishmentId({
                     guildId: interaction.guild.id,
                     userId: member.id,
-                    warnId: 0,
+                    warnId: 1,
                     kickId: 0,
-                    banId: 1,
+                    banId: 0,
                     timeoutId: 0,
                 });
                 newPunishmentId.save();
             }
         }).clone().catch((err => { }));
-        
+
         if (!PunishmentIdDatabase) return interaction.reply({
             embeds: [
                 new MessageEmbed()
@@ -128,86 +111,70 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        const banId = PunishmentIdDatabase.banId ? PunishmentIdDatabase.banId + 1 : 1;
+        const warnId = PunishmentIdDatabase.warnId ? PunishmentIdDatabase.warnId + 1 : 1;
 
-        await member.ban({ reason: reason }).catch(err => {
-            didBan = false;
-            if (err.code === 50013) {
-                return interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setTitle("<:error:990996645913194517> Insufficcient permissions")
-                            .setDescription(`QuaBot does not have permission to ban that user - try moving the QuaBot role above all others`)
-                            .setColor(color)
-                    ], ephemeral: private
-                }).catch((err => { }))
-            }
-        });
-
-        if (didBan) {
-            if (!private) {
-                member.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setTitle(`You were banned!`)
-                            .setDescription(`You were banned from **${interaction.guild.name}**
-                    **Banned by**: ${interaction.user}
-                    **Reason**: ${reason}`)
-                            .setTimestamp()
-                            .setColor(color)
-                    ]
-                }).catch(err => { });
-            }
-            await interaction.reply({
+        if (!private) {
+            member.send({
                 embeds: [
                     new MessageEmbed()
-                        .setTitle(`User banned`)
+                        .setTitle(`You were warned!`)
+                        .setDescription(`You were warned on **${interaction.guild.name}**
+                    **Warned by**: ${interaction.user}
+                    **Reason**: ${reason}`)
+                        .setTimestamp()
+                        .setColor(color)
+                ]
+            }).catch(err => { });
+        }
+        await interaction.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle(`User Warned`)
+                    .setDescription(`**User**: ${member}`)
+                    .setColor(color)
+                    .addFields(
+                        { name: "Warn-ID", value: `${warnId}`, inline: true },
+                        { name: "Reason", value: `${reason}`, inline: true },
+                        { name: "\u200b", value: "\u200b", inline: true },
+                        { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
+                        { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
+                        { name: "\u200b", value: "\u200b", inline: true },
+                    )
+            ], ephemeral: private, fetchReply: true
+        }).catch((err => { }))
+
+
+        const channel = interaction.guild.channels.cache.get(`${ChannelDatabase.punishmentChannelId}`);
+        if (channel) {
+            channel.send({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle("Member Warned")
                         .setDescription(`**User**: ${member}`)
                         .setColor(color)
                         .addFields(
-                            { name: "Ban-ID", value: `${banId}`, inline: true },
+                            { name: "Warn-ID", value: `${warnId}`, inline: true },
                             { name: "Reason", value: `${reason}`, inline: true },
                             { name: "\u200b", value: "\u200b", inline: true },
                             { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
                             { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
                             { name: "\u200b", value: "\u200b", inline: true },
+                            { name: "Warned By", value: `${interaction.user}`, inline: true },
+                            { name: "Warned In", value: `${interaction.channel}`, inline: true },
+                            { name: "\u200b", value: "\u200b", inline: true },
                         )
-                ], ephemeral: private, fetchReply: true
-            }).catch((err => { }))
+                        .setColor(color)
+                ],
+            }).catch((err => { }));
         }
 
-        const channel = interaction.guild.channels.cache.get(`${ChannelDatabase.punishmentChannelId}`);
-        if (channel) {
-            if (didBan) {
-                channel.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setTitle("Member Banned")
-                            .setDescription(`**User**: ${member}`)
-                            .setColor(color)
-                            .addFields(
-                                { name: "Ban-ID", value: `${banId}`, inline: true },
-                                { name: "Reason", value: `${reason}`, inline: true },
-                                { name: "\u200b", value: "\u200b", inline: true },
-                                { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
-                                { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
-                                { name: "\u200b", value: "\u200b", inline: true },
-                                { name: "Banned By", value: `${interaction.user}`, inline: true },
-                                { name: "Banned In", value: `${interaction.channel}`, inline: true },
-                                { name: "\u200b", value: "\u200b", inline: true },
-                            )
-                            .setColor(color)
-                    ],
-                }).catch((err => { }));
-            }
-        }
 
         const Punishment = require('../../../structures/schemas/PunishmentSchema');
         const newPunishment = new Punishment({
             guildId: interaction.guild.id,
             userId: member.user.id,
-            type: "ban",
-            punishmentId: banId,
+            type: "warn",
+            punishmentId: warnId,
             channelId: interaction.channel.id,
             userExecuteId: interaction.user.id,
             reason: reason,
@@ -216,7 +183,7 @@ module.exports = {
         newPunishment.save();
 
         await PunishmentIdDatabase.updateOne({
-            banId: banId,
+            warnId: warnId,
         });
 
     }
