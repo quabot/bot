@@ -11,6 +11,7 @@ module.exports = {
             required: true
         }
     ],
+    permission: "BAN_MEMBERS",
     async execute(client, interaction, color) {
 
         const userid = interaction.options.getString("user-id");

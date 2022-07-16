@@ -18,6 +18,7 @@ module.exports = {
             required: false
         }
     ],
+    permission: "MODERATE_MEMBERS",
     async execute(client, interaction, color) {
 
         const user = interaction.options.getMember("user");

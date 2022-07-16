@@ -3,6 +3,7 @@ const { MessageEmbed, MessageActionRow, MessageButton, Message } = require('disc
 module.exports = {
     name: "manage",
     command: "moderate",
+    permission: "MODERATE_MEMBERS",
     async execute(client, interaction, color) {
 
         interaction.reply({

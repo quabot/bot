@@ -4,6 +4,7 @@ const ms = require('ms');
 module.exports = {
     name: "moderate",
     description: "Manage punishments.",
+    permission: "MODERATE_MEMBERS",
     options: [
         {
             name: "find",

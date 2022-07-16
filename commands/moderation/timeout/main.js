@@ -4,6 +4,7 @@ const ms = require('ms');
 module.exports = {
     name: "timeout",
     description: "Timeout/mute a user.",
+    permission: "MODERATE_MEMBERS",
     options: [
         {
             name: "user",
