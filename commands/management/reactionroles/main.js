@@ -77,15 +77,36 @@ module.exports = {
                         { name: "Drop", value: "drop" },
                         { name: "Reversed", value: "reversed" },
                         { name: "Unique", value: "unique" },
+                        { name: "Binding", value: "binding" },
                     ],
                     required: false,
                 }
             ]
         },
         {
-            name: "edit",
-            description: "Coming soon TM",
-            type: "SUB_COMMAND"
+            name: "delete",
+            description: "Delete a reactionrole.",
+            type: "SUB_COMMAND",
+            options: [
+                {
+                    name: "message_id",
+                    description: "The message to remove the reactionrole of.",
+                    type: "STRING",
+                    required: true
+                },
+                {
+                    name: "role",
+                    description: "The role to remove.",
+                    type: "ROLE",
+                    required: true
+                },
+                {
+                    name: "emoji",
+                    description: "Emoji to remove.",
+                    type: "STRING",
+                    required: true
+                }
+            ]
         },
         {
             name: "list",

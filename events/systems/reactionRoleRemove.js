@@ -55,32 +55,17 @@ module.exports = {
                 });
                 if (!reactions) return;
 
-                let reactedCount = 0;
-                let itemsProcessed = 0;
 
-                const getUnique = new Promise((resolve, recject) => {
-                    reactions.forEach(async item => {
-                        itemsProcessed++;
+                let hasRole = false;
 
-                        const foundReaction = reaction.message.reactions.cache.get(`${item.emoji}`);
-
-                        if (!foundReaction) return;
-                        const foundUsers = await foundReaction.users.fetch()
-
-                        if (!foundUsers) return;
-
-                        const uFound = foundUsers.find(u => u.id === user.id);
-                        if (uFound) reactedCount++;
-
-                        if (reactions.length === itemsProcessed) setTimeout(() => resolve(), 3000);
-
-                    });
-                })
-
-                getUnique.then(() => {
-                    if (reactedCount >= 1) return;
-                    if (reactedCount === 0) member.roles.remove(role).catch((err => { }));
+                reactions.forEach(item => {
+                    const role = reaction.message.guild.roles.cache.get(item.roleId);
+                    const member = reaction.message.guild.members.cache.get(user.id);
+                    if (!role) return;
+                    if (member.roles.cache.some(role => role.id === `${item.roleId}`)) hasRole = true;
                 });
+
+                if (hasRole) member.roles.remove(role).catch((err => { }));
 
                 break;
 

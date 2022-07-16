@@ -100,6 +100,5 @@ module.exports = {
             });
         });
 
-        // on msg delete & role delete: delete the reaction role (save space)
     }
 }

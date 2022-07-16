@@ -1,4 +1,4 @@
-const { MessageEmbed, Interaction } = require('discord.js');
+const { MessageEmbed, Interaction, ReactionUserManager } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -57,34 +57,43 @@ module.exports = {
                     });
                     if (!reactions) return;
 
-                    let reactedCount = 0;
-                    let itemsProcessed = 0;
 
-                    const getUnique = new Promise((resolve, recject) => {
-                        reactions.forEach(async item => {
-                            itemsProcessed++;
+                    let hasRole = false;
 
-                            const foundReaction = reaction.message.reactions.cache.get(`${item.emoji}`);
-
-                            if (!foundReaction) return;
-                            const foundUsers = await foundReaction.users.fetch()
-
-                            if (!foundUsers) return;
-
-                            const uFound = foundUsers.find(u => u.id === user.id);
-                            if (uFound) reactedCount++;
-
-                            if (reactions.length === itemsProcessed) setTimeout(() => resolve(), 3000);
-                            
-                        });
-                    })
-
-                    getUnique.then(() => {
-                        if (reactedCount >= 2) return;
-                        if (reactedCount === 1) member.roles.add(role).catch((err => { }))
+                    reactions.forEach(item => {
+                        const role = reaction.message.guild.roles.cache.get(item.roleId);
+                        const member = reaction.message.guild.members.cache.get(user.id);
+                        if (!role) return;
+                        if (member.roles.cache.some(role => role.id === `${item.roleId}`)) hasRole = true;
                     });
 
+                    if (hasRole) return;
+                    if (!hasRole) member.roles.add(role).catch((err => { }));
+
                     break;
+
+                case "binding":
+                    const reactionsFound = await ReactionRoleSchema.find({
+                        guildId: reaction.message.guildId,
+                        messageId: reaction.message.id,
+                        mode: "unique"
+                    });
+                    if (!reactionsFound) return;
+
+
+                    let hasRoleBool = false;
+
+                    reactionsFound.forEach(item => {
+                        const role = reaction.message.guild.roles.cache.get(item.roleId);
+                        const member = reaction.message.guild.members.cache.get(user.id);
+                        if (!role) return;
+                        if (member.roles.cache.some(role => role.id === `${item.roleId}`)) hasRoleBool = true;
+                    });
+
+                    if (hasRoleBool) return;
+                    if (!hasRoleBool) member.roles.add(role).catch((err => { }));
+                    break;
+
 
             }
         }
