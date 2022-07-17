@@ -14,7 +14,7 @@ module.exports = {
                     guildId: member.guild.id,
                     joinEnabled: true,
                     leaveEnabled: true,
-                    messageEmbed: true,
+                    MessageEmbed: true,
                     joinColor: "GREEN",
                     leaveColor: "RED",
                     joinMessage: "Welcome {user} to **{guild}**!",

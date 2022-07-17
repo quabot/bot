@@ -1,3 +1,5 @@
+const { ApplicationCommandOptionType } = require('discord.js');
+
 module.exports = {
     name: "games",
     description: "Play games",
@@ -9,21 +11,21 @@ module.exports = {
                 {
                     name: "private",
                     description: "Should QuaBot announce the result?",
-                    type: "BOOLEAN",
+                    type: ApplicationCommandOptionType.Boolean,
                     required: false,
                 }
             ],
-            type: "SUB_COMMAND"
+            type: ApplicationCommandOptionType.Subcommand
         },
         {
             name: "coin",
             description: "Flip a coin",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
         },
         {
             name: "rps",
             description: "Play a game of Rock, Paper, Scissors.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
         },
     ],
     async execute(client, interaction, color) {

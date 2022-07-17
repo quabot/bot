@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: "rps",
@@ -7,25 +7,25 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`Rock, paper, scissors?`)
                     .setColor(color)
             ],
             components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('rps-rock')
                             .setLabel('🪨 Rock')
-                            .setStyle('PRIMARY'),
-                        new MessageButton()
+                            .setStyle(ButtonStyle.Primary),
+                        new ButtonBuilder()
                             .setCustomId('rps-paper')
                             .setLabel('📃 Paper')
-                            .setStyle('SECONDARY'),
-                        new MessageButton()
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
                             .setCustomId('create-ticket')
                             .setLabel('✂️ Scissors')
-                            .setStyle('SUCCESS')
+                            .setStyle(ButtonStyle.Success)
                     )
             ]
         }).catch((err => { }));

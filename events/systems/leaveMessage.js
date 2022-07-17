@@ -15,7 +15,7 @@ module.exports = {
                     guildId: member.guild.id,
                     joinEnabled: true,
                     leaveEnabled: true,
-                    messageEmbed: true,
+                    MessageEmbed: true,
                     joinColor: "GREEN",
                     leaveColor: "RED",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -69,7 +69,7 @@ module.exports = {
         leaveMessage = leaveMessage.replaceAll("{guild}", member.guild.name);
         leaveMessage = leaveMessage.replaceAll("{members}", member.guild.memberCount);
 
-        if (joinLeaveSettings.messageEmbed === true) {
+        if (joinLeaveSettings.MessageEmbed === true) {
 
             //* Define the messages and fix the variables
             let authorMsg = joinLeaveSettings.leaveEmbedAuthorText ? joinLeaveSettings.leaveEmbedAuthorText : "";

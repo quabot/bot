@@ -1,10 +1,10 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, InteractionType } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
 
-        if (!interaction.isModalSubmit()) return;
+        if (!interaction.type === InteractionType.ModalSubmit) return;
         const modal = client.modals.get(interaction.customId);
 
         if (!modal) return;

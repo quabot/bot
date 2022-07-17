@@ -1,11 +1,12 @@
+const { InteractionType, EmbedBuilder } = require('discord.js');
+
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
 
-        if (interaction.isCommand()) {
+        if (interaction.type === InteractionType.ApplicationCommand) {
 
             try {
-
                 const command = client.commands.get(interaction.commandName);
                 const subcommand = interaction.options.getSubcommand();
 
@@ -37,7 +38,7 @@ module.exports = {
 
                 if (!CustomizationDatabase) return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor("RED")
                             .setDescription("Unable to get this server's customization settings. Please try again.")
                     ], ephemeral: true

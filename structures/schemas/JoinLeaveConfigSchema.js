@@ -19,7 +19,7 @@ const ApplicationConfigSchema = new mongoose.Schema({
     guildId: reqString,
     joinEnabled: reqBool,
     leaveEnabled: reqBool,
-    messageEmbed: reqBool,
+    MessageEmbed: reqBool,
     joinColor: reqString,
     leaveColor: reqString,
     joinMessage: reqString,
