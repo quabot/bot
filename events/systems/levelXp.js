@@ -47,7 +47,7 @@ module.exports = {
                             levelCard: false,
                             levelRewards: [],
                         });
-                        newLevelConfig.save().clone().catch((err => { }));
+                        newLevelConfig.save();
                     }
                 }).clone().catch((err => { }));
 
