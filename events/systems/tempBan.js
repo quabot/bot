@@ -17,7 +17,7 @@ module.exports = {
                 if (banSchemas.length === 0) return;
 
                 banSchemas.forEach(async item => {
-                    if (item.time < new Date().getTime() + 1000 && item.time > new Date().getTime() - 1000) {
+                    if (item.time < new Date().getTime() + 5000 && item.time > new Date().getTime() - 5000) {
                         const guild = client.guilds.cache.get(`${item.guildId}`);
 
                         let userid = item.userId;
@@ -45,7 +45,7 @@ module.exports = {
                     }
                 })
                 loop()
-            }, 2000);
+            }, 10000);
         }());
     }
 }
