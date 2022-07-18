@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "unban",
@@ -19,7 +19,7 @@ module.exports = {
         let member = await interaction.guild.bans.fetch(userid).catch(err => {
             interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`That user doesn't exist/isn't banned!`)
                         .setColor(color)
                 ], ephemeral: true
@@ -33,7 +33,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setTitle(`User Unbanned!`)
                     .setDescription(`**User:** <@${userid}>`)
                     .setColor(color)

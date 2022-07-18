@@ -1,4 +1,4 @@
-const { MessageEmbed, Interaction } = require('discord.js');
+const { EmbedBuilder, Interaction } = require('discord.js');
 
 module.exports = {
     name: "guildMemberAdd",
@@ -14,7 +14,7 @@ module.exports = {
                     guildId: member.guild.id,
                     joinEnabled: true,
                     leaveEnabled: true,
-                    MessageEmbed: true,
+                    EmbedBuilder: true,
                     joinColor: "GREEN",
                     leaveColor: "RED",
                     joinMessage: "Welcome {user} to **{guild}**!",

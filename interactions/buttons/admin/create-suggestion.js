@@ -1,4 +1,4 @@
-const { MessageEmbed, Modal, MessageActionRow, TextInputComponent } = require('discord.js');
+const { EmbedBuilder, Modal, ActionRowBuilder, TextInputComponent } = require('discord.js');
 
 module.exports = {
     id: "create-suggestion",
@@ -26,7 +26,7 @@ module.exports = {
 
         if (!suggestConfig) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We just created a new database record! Please run that command again!`)
                     .setColor(color)
             ], ephemeral: true
@@ -34,7 +34,7 @@ module.exports = {
 
         if (!suggestConfig.suggestEnabled) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Suggestions are disabled in this server. Ask an admin to enable them on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -46,7 +46,7 @@ module.exports = {
 
         if (!suggestChannel) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Couldn't find a suggestion channel. Configure this on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -58,7 +58,7 @@ module.exports = {
             .setCustomId('suggestion')
             .setTitle('Leave a suggestion')
             .addComponents(
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
                         new TextInputComponent()
                             .setCustomId('suggestion-box')

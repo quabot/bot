@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { EmbedBuilder, MessageAttachment } = require("discord.js");
 
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const DB = require('../../../structures/schemas/ClientDB');
@@ -194,7 +194,7 @@ module.exports = {
 
             if (!docs || docs.Memory.length < 12) return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor('RED')
                         .setDescription('**<:error:990996645913194517> | No Data Found!**\nPlease wait, quabot was restarted and we\'re collecting data again!')
                 ],
@@ -213,7 +213,7 @@ module.exports = {
             if (mongoose.connection.readyState === 2) { dbConnection = "<:idle:938818583864180796>\`CONNECTING\`"; embedColor = "YELLOW"; }
             if (mongoose.connection.readyState === 3) { dbConnection = "<:idle:938818583864180796>\`DISCONNECTING\`"; embedColor = "ORANGE"; }
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setTitle(`${client.user.username} Status`)
                 .setDescription(`**Client:** \`✅ ONLINE\` - \`${client.ws.ping}ms\`\n**Uptime:** <t:${parseInt(client.readyTimestamp / 1000)}:R>\n\n**Database:** ${dbConnection}\n\n**Average RAM Usage**: \`${avgMem.toFixed(2)}GB\``)
                 .setColor(embedColor)
@@ -223,7 +223,7 @@ module.exports = {
 
         } catch (e) {
             console.log(e);
-            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
+            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new EmbedBuilder().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

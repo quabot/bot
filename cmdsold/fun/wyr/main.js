@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const wyr = require('../../../structures/files/wyr.json');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
 
         const msg = await interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription(`**Would you rather...**\n1️⃣ - ${wyrPicked.option1}\n2️⃣ - ${wyrPicked.option2}`)
                     .setFooter({ text: "Time limit: 1 minute" })
@@ -30,7 +30,7 @@ module.exports = {
             if (reaction.emoji.name === "1️⃣") {
                 reaction.message.edit({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor(color)
                             .setDescription(`You chose...\n\n1️⃣ ${wyrPicked.option1}`)
                     ],
@@ -39,7 +39,7 @@ module.exports = {
             } else if (reaction.emoji.name === "2️⃣") {
                 reaction.message.edit({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor(color)
                             .setDescription(`You chose...\n\n2️⃣ ${wyrPicked.option2}`)
                     ],

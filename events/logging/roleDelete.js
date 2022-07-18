@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "roleDelete",
@@ -61,7 +61,7 @@ module.exports = {
 
             channel.send({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor(`${role.hexColor}`)
                         .setDescription(`${description}`)
                         .setTimestamp()

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
 
         sendCh.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(await getColor(channel.guild.id))
                     .setDescription(`**${title} Deleted**\n\`${channel.name}\``)
                     .setTimestamp()

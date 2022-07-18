@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError } = require('discord.js');
 
 module.exports = {
     name: "list",
@@ -15,7 +15,7 @@ module.exports = {
             if (!application) {
                 return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`Could not find that application. Please create one on our [dashboard](https://dashboard.quabot.net)`)
                             .setColor(color)
                     ], ephemeral: true
@@ -26,7 +26,7 @@ module.exports = {
         if (!ApplicationDatabase) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`Could not find that application. Please create one on our [dashboard](https://dashboard.quabot.net)`)
                         .setColor(color)
                 ], ephemeral: true
@@ -37,13 +37,13 @@ module.exports = {
 
         const backId = 'backMusic'
         const forwardId = 'forwardMusic'
-        const backButton = new MessageButton({
+        const backButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Back',
             emoji: '⬅️',
             customId: backId
         });
-        const forwardButton = new MessageButton({
+        const forwardButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Forward',
             emoji: '➡️',
@@ -57,7 +57,7 @@ module.exports = {
         const makeEmbed = async start => {
             const current = applications.slice(start, start + 2);
 
-            return new MessageEmbed({
+            return new EmbedBuilder({
                 color: color,
                 title: `Showing applications ${start + 1}-${start + current.length} out of ${applications.length
                     }`,
@@ -87,7 +87,7 @@ module.exports = {
             embeds: [await makeEmbed(0)],
             components: canFit
                 ? []
-                : [new MessageActionRow({ components: [forwardButton] })]
+                : [new ActionRowBuilder({ components: [forwardButton] })]
         })
         if (canFit) return;
 
@@ -99,7 +99,7 @@ module.exports = {
             await interaction.update({
                 embeds: [await makeEmbed(currentIndex)],
                 components: [
-                    new MessageActionRow({
+                    new ActionRowBuilder({
                         components: [
                             ...(currentIndex ? [backButton] : []),
                             ...(currentIndex + 2 < applications.length ? [forwardButton] : [])

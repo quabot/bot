@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
 
 module.exports = {
     name: "ticket",

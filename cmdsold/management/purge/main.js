@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "purge",
@@ -38,7 +38,7 @@ module.exports = {
                     if (err.code === 50013) {
                         return interaction.reply({
                             embeds: [
-                                new MessageEmbed()
+                                new EmbedBuilder()
                                     .setTitle('Lack of permissions!')
                                     .setDescription(`I need some more permissions to perform that command. I need the \`MANAGE MESSAGES\` or \`ADMINISTRATOR\` permissions for that.`)
                                     .setColor(color)
@@ -49,7 +49,7 @@ module.exports = {
                 if (public) {
                     interaction.reply({
                         embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setTitle('Messages purged')
                                 .setDescription(`${amount} message(s) were purged from this channel by ${interaction.user}`)
                                 .setColor(color)
@@ -64,7 +64,7 @@ module.exports = {
         }
         catch (e) {
             console.log(e);
-            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
+            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new EmbedBuilder().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
         
     }

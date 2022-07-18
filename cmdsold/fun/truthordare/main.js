@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     name: "truthordare",
@@ -7,22 +7,22 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription(`**Truth or Dare**`)
             ],
             components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('tod-truth')
                             .setLabel(`Truth`)
                             .setStyle('DANGER'),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('tod-dare')
                             .setLabel(`Dare`)
                             .setStyle('SUCCESS'),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('tod-random')
                             .setLabel(`Random`)
                             .setStyle('PRIMARY')

@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "threadCreate",
@@ -63,7 +63,7 @@ module.exports = {
 
         channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor("GREEN")
                     .setDescription(`${description}`)
                     .setFooter({ text: `${thread.name}` })

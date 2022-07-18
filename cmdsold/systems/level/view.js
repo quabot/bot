@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { EmbedBuilder, MessageAttachment } = require('discord.js');
 const canvacord = require('canvacord');
 
 module.exports = {
@@ -59,7 +59,7 @@ module.exports = {
 
         if (!LevelConfigDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("We just created a new record! Please run that command again.")
             ], ephemeral: true
@@ -67,7 +67,7 @@ module.exports = {
 
         if (LevelConfigDatabase.levelEnabled === false) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Levels are disabled in this server. Enable them on [our dashboard](https://dashboard.quabot.net)")
             ], ephemeral: true
@@ -100,7 +100,7 @@ module.exports = {
             if (LevelConfigDatabase.levelUpEmbed === true) {
                 interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor(color)
                             .setTitle(`${user.username}'s level`)
                             .setThumbnail(user.avatarURL())

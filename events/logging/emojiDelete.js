@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "emojiDelete",
@@ -57,7 +57,7 @@ module.exports = {
             if (emoji.animated) word = " Animated ";
             channel.send({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor("RED")
                         .setDescription(`**Deleted${word}Emoji**\n\`${emoji.name}\``)
                         .setTimestamp()

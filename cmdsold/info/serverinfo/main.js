@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { EmbedBuilder, MessageAttachment } = require("discord.js");
 
 const moment = require("moment");
 const ms = require("ms");
@@ -8,7 +8,7 @@ module.exports = {
     description: "Get information about the server.",
     async execute(client, interaction, color) {
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setTitle(`Serverinfo`)
             .setColor(color)
             .setThumbnail(interaction.guild.iconURL({ dynamic: false, size: 1024 }))

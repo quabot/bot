@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const typeSentences = require('../../../structures/files/type.json');
 
 module.exports = {
@@ -36,14 +36,14 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`**Type this sentence within 10 seconds!**\n\`${sentence}\``)
                     .setColor(color)
             ],
             components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('stop')
                             .setLabel('Stop')
                             .setStyle('SECONDARY')
@@ -61,7 +61,7 @@ module.exports = {
             if (m.content === sentence) {
                 m.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`**Correct!**\n${m.author} typed the sentence in \`${seconds}\` seconds!`)
                             .addField("Sentence", `\`${sentence}\``)
                             .addFields(
@@ -72,9 +72,9 @@ module.exports = {
                             .setColor("GREEN")
                     ],
                     components: [
-                        new MessageActionRow()
+                        new ActionRowBuilder()
                             .addComponents(
-                                new MessageButton()
+                                new ButtonBuilder()
                                     .setCustomId('type-replay')
                                     .setLabel('Play Again')
                                     .setStyle('SECONDARY')
@@ -90,7 +90,7 @@ module.exports = {
             } else {
                 m.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`**Incorrect!**\n${m.author} failed to type the correct sentence in \`${seconds}\` seconds!`)
                             .addFields(
                                 { name: "Score", value: `${UserDatabase.typeScore - 1}`, inline: true },
@@ -102,9 +102,9 @@ module.exports = {
                             .setColor("RED")
                     ],
                     components: [
-                        new MessageActionRow()
+                        new ActionRowBuilder()
                             .addComponents(
-                                new MessageButton()
+                                new ButtonBuilder()
                                     .setCustomId('type-replay')
                                     .setLabel('Play Again')
                                     .setStyle('SECONDARY')

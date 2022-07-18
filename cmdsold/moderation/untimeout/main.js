@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to remove a timeout from.`)
                         .setColor(color)
                 ], ephemeral: private
@@ -40,7 +40,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't remove a timeout from yourself!`)
                         .setColor(color)
                 ], ephemeral: private
@@ -51,7 +51,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot remove a timeout from a user with roles higher than your own.`)
                         .setColor(color)
                 ], ephemeral: private
@@ -62,7 +62,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("<:error:990996645913194517> Insufficcient permissions")
                         .setDescription(`QuaBot does not have permission to remove a timeout from that user - try moving the QuaBot role above all others.`)
                         .setColor(color)
@@ -88,7 +88,7 @@ module.exports = {
             didKick = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`We just created a new database record! Please run that command again :)`)
                         .setColor(color)
                 ], ephemeral: true
@@ -99,7 +99,7 @@ module.exports = {
             didTimeout = false;
             if (err.code === 50013) return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("<:error:990996645913194517> Insufficcient permissions")
                         .setDescription(`QuaBot does not have permission to remove a timeout from that user - try moving the QuaBot role above all others`)
                         .setColor(color)
@@ -111,7 +111,7 @@ module.exports = {
             if (!private) {
                 user.send({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setTitle(`Your timeout was removed`)
                             .setDescription(`Your timeout was removed on **${interaction.guild.name}**
                     **Removed by**: ${interaction.user}
@@ -123,7 +123,7 @@ module.exports = {
             }
             await interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle(`User Timeout Removed`)
                         .setDescription(`**User**: ${user}`)
                         .setColor(color)
@@ -136,7 +136,7 @@ module.exports = {
             if (didTimeout) {
                 channel.send({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setTitle(`User Timeout Removed`)
                             .setDescription(`**User**: ${user}`)
                             .setColor(color)

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     id: "message-tickets",
@@ -26,7 +26,7 @@ module.exports = {
                 newTicketConfig.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        interaction.channel.send({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { });
@@ -34,7 +34,7 @@ module.exports = {
 
         if (!ticketConfigDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
@@ -42,7 +42,7 @@ module.exports = {
 
         if (ticketConfigDatabase.ticketEnabled === false) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`The tickets module is disabled in this server.`)
                     .setColor(color)
             ], ephemeral: true
@@ -51,7 +51,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("You can dismiss this message.")
             ], ephemeral: true
@@ -59,15 +59,15 @@ module.exports = {
 
         interaction.channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setTitle("Create ticket")
                     .setDescription("Click on the button below this message to create a ticket.")
             ],
             components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId("create-ticket")
                             .setStyle("SECONDARY")
                             .setLabel("🎫 Ticket")

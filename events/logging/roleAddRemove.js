@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -72,7 +72,7 @@ module.exports = {
 
                 if (role === "<@&>") return;
 
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setDescription(`**Roles ${word}**\n${role}`)
                     .setColor(await getColor(newMember.guild.id))
                     .setTimestamp()

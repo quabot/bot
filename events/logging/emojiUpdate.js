@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "emojiUpdate",
@@ -59,7 +59,7 @@ module.exports = {
         if (newEmoji.animated) word = " Animated ";
         channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor("YELLOW")
                     .setDescription(`**${word}Emoji edited**\n\`${oldEmoji.name}\` -> \`${newEmoji.name}\``)
                     .setFooter({ text: `${newEmoji.name}`, iconURL: `${newEmoji.url}` })

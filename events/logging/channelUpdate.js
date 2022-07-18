@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -84,7 +84,7 @@ module.exports = {
         //if (oldChannel.permissionOverwrites !== newChannel.permissionOverwrites) return;
 
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(await getColor(oldChannel.guild.id))
             .setDescription(`**${type} Updated**\n${newChannel}\n${args}`)
             .setTimestamp()

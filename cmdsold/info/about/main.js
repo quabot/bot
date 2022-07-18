@@ -1,5 +1,5 @@
 const { VERSION } = require('../../../structures/settings.json');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     name: "about",
@@ -8,7 +8,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setAuthor({ name: `QuaBot v${VERSION}`, iconURL: `${client.user.avatarURL({ dynamic: true })}` })
                     .setDescription(`Welcome to ur mom. this is a beta.`)

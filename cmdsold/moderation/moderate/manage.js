@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "manage",
@@ -8,7 +8,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("To delete and view punishments, use our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true

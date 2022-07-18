@@ -1,4 +1,4 @@
-const { MessageEmbed, Interaction } = require('discord.js');
+const { EmbedBuilder, Interaction } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager, Modal, TextInputComponent } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager, Modal, TextInputComponent } = require('discord.js');
 const { randomUUID } = require('node:crypto');
 const { v4: uuidv4 } = require('uuid');
 const wait = require('node:timers/promises').setTimeout;
@@ -28,7 +28,7 @@ module.exports = {
             if (!application) {
                 return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`Could not find that application. Please create one on our [dashboard](https://dashboard.quabot.net)`)
                             .setColor(color)
                     ], ephemeral: true
@@ -39,7 +39,7 @@ module.exports = {
         if (!ApplicationDatabase) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`Could not find that application. Please create one on our [dashboard](https://dashboard.quabot.net)`)
                         .setColor(color)
                 ], ephemeral: true
@@ -50,29 +50,29 @@ module.exports = {
         const forwardId = 'forwardMusic'
         const doQuestionId = 'doQuestionApplicaiton'
         const submitId = 'submitApplication'
-        const backButton = new MessageButton({
+        const backButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Back',
             emoji: '⬅️',
             customId: backId
         });
-        const forwardButton = new MessageButton({
+        const forwardButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Forward',
             emoji: '➡️',
             customId: forwardId
         });
-        const doQuestionButton = new MessageButton({
+        const doQuestionButton = new ButtonBuilder({
             style: 'PRIMARY',
             label: 'Answer',
             customId: doQuestionId
         });
-        const doEditButton = new MessageButton({
+        const doEditButton = new ButtonBuilder({
             style: 'PRIMARY',
             label: 'Edit',
             customId: doQuestionId
         });
-        const submitButton = new MessageButton({
+        const submitButton = new ButtonBuilder({
             style: 'SUCCESS',
             label: 'Submit',
             customId: submitId
@@ -81,7 +81,7 @@ module.exports = {
         if (ApplicationDatabase.requiredPermission !== "none") {
             if (!interaction.member.permissions.has(ApplicationDatabase.requiredPermission)) return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`You do not have permisison to apply for that application.\nYou require ${ApplicationDatabase.requiredPermission} to apply for this application.`)
                         .setColor(color)
                 ], ephemeral: true
@@ -108,7 +108,7 @@ module.exports = {
         if (!ApplicationConfigDatabase) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`We just created a new database record! Please run that command again!`)
                         .setColor(color)
                 ], ephemeral: true
@@ -143,7 +143,7 @@ module.exports = {
         const makeEmbed = async start => {
             const current = questions.slice(start, start + 1);
 
-            return new MessageEmbed({
+            return new EmbedBuilder({
                 color: color,
                 title: `Question ${start + 1}/${questions.length}`,
                 fields: await Promise.all(
@@ -191,8 +191,8 @@ module.exports = {
             embeds: [await makeEmbed(0)],
             ephemeral: true,
             components: canFit
-                ? [new MessageActionRow({ components: [currentAnswer ? doEditButton : doQuestionButton, submitButton] })]
-                : [new MessageActionRow({ components: [forwardButton, doQuestionButton] })]
+                ? [new ActionRowBuilder({ components: [currentAnswer ? doEditButton : doQuestionButton, submitButton] })]
+                : [new ActionRowBuilder({ components: [forwardButton, doQuestionButton] })]
         })
         if (canFit) return;
 
@@ -237,7 +237,7 @@ module.exports = {
                         // Displays your answer on the embed
                         interaction.update({
                             embeds: [
-                                new MessageEmbed()
+                                new EmbedBuilder()
                                     .setTitle(`${interaction.message.embeds[0].title}`)
                                     .setColor(color)
                                     .addFields(
@@ -246,7 +246,7 @@ module.exports = {
                                     )
                             ],
                             components: [
-                                new MessageActionRow({
+                                new ActionRowBuilder({
                                     components: [
                                         ...(currentIndex ? [backButton] : []),
                                         ...(currentIndex + 1 < questions.length ? [forwardButton] : []),
@@ -261,7 +261,7 @@ module.exports = {
                         // Thanks for your reply
                         interaction.followUp({
                             embeds: [
-                                new MessageEmbed()
+                                new EmbedBuilder()
                                     .setColor(color)
                                     .setDescription("Thanks for your reponse! You can move on to the next question.")
                             ], ephemeral: true
@@ -275,7 +275,7 @@ module.exports = {
                     .setCustomId('aquestion')
                     .setTitle((questions.indexOf(thisQuestion) + 1) + ". " + thisQuestion.question)
                     .addComponents(
-                        new MessageActionRow()
+                        new ActionRowBuilder()
                             .addComponents(
                                 new TextInputComponent()
                                     .setCustomId('aquestion-answer')
@@ -313,7 +313,7 @@ module.exports = {
 
                 if (foundAnswer) return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`There was an error with the UUID. Please try again.`)
                             .setColor(color)
                     ],
@@ -322,7 +322,7 @@ module.exports = {
 
                 if (ApplicationDatabase.applicationMultipleAnswers === false && foundUser) return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`You can only apply once.`)
                             .setColor(color)
                     ],
@@ -331,7 +331,7 @@ module.exports = {
 
                 if (questions.length !== answers.length) return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`Please make sure to fill out all the questions. (${answers.length}/${questions.length})`)
                             .setColor(color)
                     ],
@@ -343,7 +343,7 @@ module.exports = {
                 if (!applicationLogChannel) {
                     return interaction.reply({
                         embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setDescription(`Couldn't find a channel to log your application result. Please ask an admin to configure this on [our dashboard](https://dashboard.quabot.net).`)
                                 .setColor(color)
                         ], ephemeral: true
@@ -352,22 +352,22 @@ module.exports = {
 
                 await interaction.update({
                     components: [
-                        new MessageActionRow(({
+                        new ActionRowBuilder(({
                             components: [
-                                new MessageButton({
+                                new ButtonBuilder({
                                     style: 'SECONDARY',
                                     label: 'Back',
                                     emoji: '⬅️',
                                     customId: "disabled1",
                                     disabled: true
                                 }),
-                                new MessageButton({
+                                new ButtonBuilder({
                                     style: 'PRIMARY',
                                     label: 'Answer',
                                     customId: "disabled2",
                                     disabled: true
                                 }),
-                                new MessageButton({
+                                new ButtonBuilder({
                                     style: 'SUCCESS',
                                     label: 'Submit',
                                     customId: "disabled3",
@@ -390,7 +390,7 @@ module.exports = {
 
                 interaction.followUp({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`Thanks for your submission to the '${ApplicationDatabase.applicationName}' application!`)
                             .setColor(color)
                     ], ephemeral: true
@@ -399,7 +399,7 @@ module.exports = {
                 if (interaction.user) {
                     interaction.user.send({
                         embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setColor(color)
                                 .setTitle("Application Left")
                                 .setDescription(`Successfully applied for \`${id}\`. You will recieve an update when your application is reviewed..`)
@@ -413,7 +413,7 @@ module.exports = {
 
                 applicationLogChannel.send({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor(color)
                             .setTitle("Application Answered")
                             .setTimestamp()
@@ -429,7 +429,7 @@ module.exports = {
                 await interaction.update({
                     embeds: [await makeEmbed(currentIndex)],
                     components: [
-                        new MessageActionRow({
+                        new ActionRowBuilder({
                             components: [
                                 ...(currentIndex ? [backButton] : []),
                                 ...(currentIndex + 1 < questions.length ? [forwardButton] : []),

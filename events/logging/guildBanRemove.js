@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "guildBanRemove",
@@ -57,7 +57,7 @@ module.exports = {
 
         channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor("GREEN")
                     .setDescription(`**Member Unbanned**\n\`${ban.user.tag}\``)
                     .setTimestamp()

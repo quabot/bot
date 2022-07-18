@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "support",
@@ -7,7 +7,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription("Join our [support server here](https://discord.gg/HhPtvhPU2n). And [invite the bot here](https://invite.quabot.net).")
                     .setColor(color)
             ], ephemeral: true

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "kick",
@@ -36,7 +36,7 @@ module.exports = {
             didKick = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to kick`)
                         .setColor(color)
                 ], ephemeral: private
@@ -47,7 +47,7 @@ module.exports = {
             didKick = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't kick yourself!`)
                         .setColor(color)
                 ], ephemeral: private
@@ -58,7 +58,7 @@ module.exports = {
             didKick = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                     .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot kick a user with roles higher than your own`)
                     .setColor(color)
                 ], ephemeral: private
@@ -69,7 +69,7 @@ module.exports = {
             didKick = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("<:error:990996645913194517> Insufficcient permissions")
                         .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
                         .setColor(color)
@@ -95,7 +95,7 @@ module.exports = {
             didKick = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`We just created a new database record! Please run that command again :)`)
                         .setColor(color)
                 ], ephemeral: true
@@ -123,7 +123,7 @@ module.exports = {
 
         if (!PunishmentIdDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We just created a new database record! Please run that command again :)`)
                     .setColor(color)
             ], ephemeral: true
@@ -136,7 +136,7 @@ module.exports = {
             if (err.code === 50013) {
                 return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setTitle("<:error:990996645913194517> Insufficcient permissions")
                             .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
                             .setColor(color)
@@ -149,7 +149,7 @@ module.exports = {
             if (!private) {
                 member.send({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setTitle(`You were kicked`)
                             .setDescription(`You were kicked from **${interaction.guild.name}**
                     **Kicked by**: ${interaction.user}
@@ -161,7 +161,7 @@ module.exports = {
             }
             await interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle(`User kicked`)
                         .setDescription(`**User**: ${member}`)
                         .setColor(color)
@@ -183,7 +183,7 @@ module.exports = {
             if (didKick) {
                 channel.send({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setTitle("Member Kicked")
                             .setDescription(`**User**: ${member}`)
                             .setColor(color)

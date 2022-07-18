@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -66,7 +66,7 @@ module.exports = {
                 if (oldNick === null) oldNick = "none";
                 if (newNick === null) newNick = "none";
 
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setDescription(`**Nickname Changed**\n\`${oldNick}\` -> \`${newNick}\``)
                     .setTimestamp()
                     .setColor(await getColor(oldMember.guild.id))

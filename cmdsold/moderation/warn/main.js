@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "warn",
@@ -33,7 +33,7 @@ module.exports = {
         if (!member) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to warn.`)
                         .setColor(color)
                 ], ephemeral: private
@@ -43,7 +43,7 @@ module.exports = {
         if (member.id === interaction.member.id) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't warn yourself!`)
                         .setColor(color)
                 ], ephemeral: private
@@ -53,7 +53,7 @@ module.exports = {
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot warn a user with roles higher than your own.`)
                         .setColor(color)
                 ], ephemeral: private
@@ -77,7 +77,7 @@ module.exports = {
         if (!ChannelDatabase) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`We just created a new database record! Please run that command again :)`)
                         .setColor(color)
                 ], ephemeral: true
@@ -105,7 +105,7 @@ module.exports = {
 
         if (!PunishmentIdDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We just created a new database record! Please run that command again :)`)
                     .setColor(color)
             ], ephemeral: true
@@ -116,7 +116,7 @@ module.exports = {
         if (!private) {
             member.send({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle(`You were warned!`)
                         .setDescription(`You were warned on **${interaction.guild.name}**
                     **Warned by**: ${interaction.user}
@@ -128,7 +128,7 @@ module.exports = {
         }
         await interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setTitle(`User Warned`)
                     .setDescription(`**User**: ${member}`)
                     .setColor(color)
@@ -148,7 +148,7 @@ module.exports = {
         if (channel) {
             channel.send({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("Member Warned")
                         .setDescription(`**User**: ${member}`)
                         .setColor(color)

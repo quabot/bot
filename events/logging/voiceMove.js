@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
         const user = newState.guild.members.cache.get(`${newState.id}`);
         if (!user) return;
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(await getColor(newState.guild.id))
             .setDescription(`**${user} switched from <#${oldState.channelId}> to <#${newState.channelId}>**`)
             .setTimestamp()

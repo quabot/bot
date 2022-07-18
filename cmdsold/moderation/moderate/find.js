@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "find",
@@ -33,7 +33,7 @@ module.exports = {
 
         if (found.length === 0) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Couldn't find any punishments that matched those criteria!")
             ], ephemeral: true
@@ -45,13 +45,13 @@ module.exports = {
 
         const backId = 'backRR'
         const forwardId = 'forwardRR'
-        const backButton = new MessageButton({
+        const backButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Back',
             emoji: '⬅️',
             customId: backId
         });
-        const forwardButton = new MessageButton({
+        const forwardButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Forward',
             emoji: '➡️',
@@ -63,7 +63,7 @@ module.exports = {
         const makeEmbed = async start => {
             const current = found.slice(start, start + 3);
 
-            return new MessageEmbed({
+            return new EmbedBuilder({
                 title: `Punishments ${start + 1}-${start + current.length}/${found.length
                     }`,
                 color: color,
@@ -81,7 +81,7 @@ module.exports = {
             embeds: [await makeEmbed(0)], fetchReply: true,
             components: canFit
                 ? []
-                : [new MessageActionRow({ components: [forwardButton] })]
+                : [new ActionRowBuilder({ components: [forwardButton] })]
         })
         if (canFit) return;
 
@@ -93,7 +93,7 @@ module.exports = {
             await interaction.update({
                 embeds: [await makeEmbed(currentIndex)],
                 components: [
-                    new MessageActionRow({
+                    new ActionRowBuilder({
                         components: [
                             ...(currentIndex ? [backButton] : []),
                             ...(currentIndex + 3 < found.length ? [forwardButton] : [])

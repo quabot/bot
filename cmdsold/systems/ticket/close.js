@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
 
 module.exports = {
     name: "close",
@@ -26,7 +26,7 @@ module.exports = {
                 newTicketConfig.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        interaction.channel.send({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { });
@@ -34,7 +34,7 @@ module.exports = {
 
         if (!ticketConfigDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
@@ -42,7 +42,7 @@ module.exports = {
 
         if (ticketConfigDatabase.ticketEnabled === false) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`The tickets module is disabled in this server.`)
                     .setColor(color)
             ], ephemeral: true
@@ -58,7 +58,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`Could not find that ticket in our records.`)
                     .setColor(color)
             ], ephemeral: true
@@ -73,7 +73,7 @@ module.exports = {
 
         if (!valid) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
                     .setColor(color)
             ], ephemeral: true
@@ -81,13 +81,13 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Close this ticket with the button below this message.")
             ], components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setStyle("SECONDARY")
                             .setCustomId("close-ticket")
                             .setLabel("🔒 Close")

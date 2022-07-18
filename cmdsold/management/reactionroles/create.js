@@ -1,5 +1,5 @@
 
-const { MessageEmbed, MessageActionRow, MessageButton, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "create",
@@ -17,7 +17,7 @@ module.exports = {
 
         if (channel.type !== "GUILD_TEXT") return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Please give a valid text channel.")
             ], ephemeral: true
@@ -25,7 +25,7 @@ module.exports = {
 
         if (role.rawPosition > interaction.guild.me.roles.highest.rawPosition) return interaction.reply({
             ephemeral: true, embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("I cannot give that role to users.")
             ], ephemeral: true
@@ -42,7 +42,7 @@ module.exports = {
 
         if (found) return interaction.followUp({
             ephemeral: true, embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`That reactionrole already exists!`)
                     .setColor(color)
             ]
@@ -56,7 +56,7 @@ module.exports = {
                     error = true
                     return interaction.followUp({
                         ephemeral: true, embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setDescription(`Could not find that emoji! You can only use default emojis at this time.`)
                                 .setColor(color)
                         ]
@@ -66,7 +66,7 @@ module.exports = {
                 if (!error) {
                     interaction.followUp({
                         ephemeral: true, embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setDescription("Succesfully created a new reaction role.")
                                 .addField("Emoji", `${emoji}`, true)
                                 .addField("Channel", `${channel}`, true)
@@ -89,14 +89,14 @@ module.exports = {
                     newReaction.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.followUp({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                            interaction.followUp({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                         });
                 }
             })
             .catch(async err => {
                 await interaction.followUp({
                     ephemeral: true, embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor(color)
                             .setDescription("Could not find that message.")
                     ]

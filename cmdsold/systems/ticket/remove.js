@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
 
 module.exports = {
     name: "remove",
@@ -26,7 +26,7 @@ module.exports = {
                 newTicketConfig.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        interaction.channel.send({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { });
@@ -34,7 +34,7 @@ module.exports = {
 
         if (!ticketConfigDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
@@ -42,7 +42,7 @@ module.exports = {
 
         if (ticketConfigDatabase.ticketEnabled === false) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`The tickets module is disabled in this server.`)
                     .setColor(color)
             ], ephemeral: true
@@ -60,7 +60,7 @@ module.exports = {
 
         if (!ticket) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`Could not find that ticket in our records.`)
                     .setColor(color)
             ], ephemeral: true
@@ -75,7 +75,7 @@ module.exports = {
 
         if (!allowed) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
                     .setColor(color)
             ], ephemeral: true
@@ -83,7 +83,7 @@ module.exports = {
 
         if (!ticket.users.includes(member.id)) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`That user is not in this ticket!`)
                     .setColor(color)
             ], ephemeral: true
@@ -107,7 +107,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription(`Removed ${member} from the ticket.`)
             ]

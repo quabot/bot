@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
@@ -12,7 +12,7 @@ module.exports = {
         if (button.permission && !interaction.member.permissions.has(button.permission))
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor("RED")
                         .setDescription(`⛔ You do not have permission to use that button.\nYou need the permission: \`${button.permission}\` to do that`)
                 ], ephemeral: true
@@ -53,7 +53,7 @@ module.exports = {
 
         if (!CustomizationDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor("RED")
                     .setDescription("Unable to get this server's customization settings. Please try again.")
             ], ephemeral: true

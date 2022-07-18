@@ -1,4 +1,4 @@
-const { MessageEmbed, Interaction } = require('discord.js');
+const { EmbedBuilder, Interaction } = require('discord.js');
 
 module.exports = {
     name: "guildMemberAdd",
@@ -14,7 +14,7 @@ module.exports = {
                     guildId: member.guild.id,
                     joinEnabled: true,
                     leaveEnabled: true,
-                    MessageEmbed: true,
+                    EmbedBuilder: true,
                     joinColor: "GREEN",
                     leaveColor: "RED",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -74,7 +74,7 @@ module.exports = {
             dmTitle = dmTitle.replaceAll("{guild}", member.guild.name);
             dmTitle = dmTitle.replaceAll("{members}", member.guild.memberCount);
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setDescription(dmMessage)
                 .setColor(joinLeaveSettings.joinDMColor)
                 .setTimestamp();

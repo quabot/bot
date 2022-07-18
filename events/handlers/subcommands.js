@@ -12,7 +12,7 @@ module.exports = {
 
                 if (!command) return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor("RED")
                             .setTitle("⛔ An error occured while trying to run this command!")
                     ]

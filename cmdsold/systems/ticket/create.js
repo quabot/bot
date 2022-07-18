@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager } = require('discord.js');
 
 module.exports = {
     name: "create",
@@ -26,7 +26,7 @@ module.exports = {
                 newTicketConfig.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        interaction.channel.send({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { });
@@ -34,7 +34,7 @@ module.exports = {
 
         if (!ticketConfigDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
@@ -42,7 +42,7 @@ module.exports = {
 
         if (ticketConfigDatabase.ticketEnabled === false) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`The tickets module is disabled in this server.`)
                     .setColor(color)
             ], ephemeral: true
@@ -60,7 +60,7 @@ module.exports = {
 
             if (!openCategory) return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`Could not find a tickets category. Configure this in our [dashboard](https://dashboard.quabot.net)!`)
                         .setColor(color)
                 ], ephemeral: true
@@ -88,7 +88,7 @@ module.exports = {
 
             channel.setParent(openCategory, { lockPermissions: false });
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(color)
                 .setTitle("New Ticket")
                 .setDescription("Please wait, staff will be with you shortly.")
@@ -101,9 +101,9 @@ module.exports = {
             channel.send({
                 embeds: [embed],
                 components: [
-                    new MessageActionRow()
+                    new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('close-ticket')
                                 .setLabel('🔒 Close')
                                 .setStyle('DANGER')
@@ -126,7 +126,7 @@ module.exports = {
 
             interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor(color)
                         .setTitle("Ticket Created")
                         .setDescription(`Check it out here: ${channel}. Staff will be with you shortly!`)

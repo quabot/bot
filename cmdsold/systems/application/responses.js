@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError } = require('discord.js');
 
 module.exports = {
     name: "responses",
@@ -20,7 +20,7 @@ module.exports = {
             if (!application) {
                 return interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`Could not find that application. Please create one on our [dashboard](https://dashboard.quabot.net)`)
                             .setColor(color)
                     ], ephemeral: true
@@ -31,7 +31,7 @@ module.exports = {
         if (!ApplicationDatabase) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`Could not find that application. Please create one on our [dashboard](https://dashboard.quabot.net)`)
                         .setColor(color)
                 ], ephemeral: true
@@ -60,25 +60,25 @@ module.exports = {
         const forwardId = 'forwardMusic'
         const approveId = 'approveResponse'
         const denyId = 'denyResponse'
-        const backButton = new MessageButton({
+        const backButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Back',
             emoji: '⬅️',
             customId: backId
         });
-        const forwardButton = new MessageButton({
+        const forwardButton = new ButtonBuilder({
             style: 'SECONDARY',
             label: 'Forward',
             emoji: '➡️',
             customId: forwardId
         });
-        const approveButton = new MessageButton({
+        const approveButton = new ButtonBuilder({
             style: 'SUCCESS',
             label: 'Approve',
             emoji: '✅',
             customId: approveId
         });
-        const denyButton = new MessageButton({
+        const denyButton = new ButtonBuilder({
             style: 'DANGER',
             label: 'Deny',
             emoji: '❎',
@@ -102,7 +102,7 @@ module.exports = {
             var byStatementUser = interaction.guild.members.cache.get(current.applicationUserId).user;
             var byStatement = responseUser !== null ? responseUser.tag : byStatementUser.username + "#" + byStatementUser.discriminator;
 
-            return new MessageEmbed({
+            return new EmbedBuilder({
                 title: `[${current.applicationState.replace("PENDING", "Pending").replace("DENIED", "Denied").replace("APPROVED", "Approved")}] Response ${start + 1}/${foundUserList.length} by ${byStatement}`,
                 color: color,
                 fields: await Promise.all(
@@ -126,7 +126,7 @@ module.exports = {
         const msg = await interaction.editReply({
             embeds: [await makeEmbed(0)],
             components: [
-                new MessageActionRow({
+                new ActionRowBuilder({
                     components: [
                         ...(canFit ? [] : [forwardButton]),
                         ...(thisResponse.applicationState === "PENDING" ? [approveButton, denyButton] : []),
@@ -161,7 +161,7 @@ module.exports = {
                 if (user) {
                     user.send({
                         embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setColor(color)
                                 .setTitle("Application Approved")
                                 .setDescription(`Your application was approved.`)
@@ -197,7 +197,7 @@ module.exports = {
                 if (user) {
                     user.send({
                         embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setColor(color)
                                 .setTitle("Application Denied")
                                 .setDescription(`Your application was denied.`)
@@ -216,7 +216,7 @@ module.exports = {
             await interaction.update({
                 embeds: [await makeEmbed(currentIndex)],
                 components: [
-                    new MessageActionRow({
+                    new ActionRowBuilder({
                         components: [
                             ...(currentIndex ? [backButton] : []),
                             ...(currentIndex + 1 < foundUserList.length ? [forwardButton] : []),

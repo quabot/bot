@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, Colors, ButtonStyle } = require('discord.js');
 
 module.exports = {
     id: "rps-paper",
@@ -36,25 +36,25 @@ module.exports = {
             case "rock":
                 interaction.update({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`You won! I picked **rock**, ${interaction.user} picked **paper**!`)
-                            .setColor("GREEN")
+                            .setColor(Colors.Green)
                             .addFields(
                                 { name: "Score", value: `\`${UserDatabase.rpsScore + 1}\``, inline: true },
                                 { name: "Total Wins", value: `\`${UserDatabase.rpsWins + 1}\``, inline: true },
                                 { name: "Total Loses", value: `\`${UserDatabase.rpsLoses}\``, inline: true }
                             )
                     ], components: [
-                        new MessageActionRow()
+                        new ActionRowBuilder()
                             .addComponents(
-                                new MessageButton()
+                                new ButtonBuilder()
                                     .setCustomId('rps-replay')
                                     .setLabel('Retry')
-                                    .setStyle('PRIMARY'),
-                                new MessageButton()
+                                    .setStyle(ButtonStyle.Primary),
+                                new ButtonBuilder()
                                     .setCustomId('stop')
                                     .setLabel('Stop')
-                                    .setStyle('SECONDARY'),
+                                    .setStyle(ButtonStyle.Secondary),
                             )
                     ]
                 }).catch((err => { }));
@@ -69,7 +69,7 @@ module.exports = {
             case "paper":
                 interaction.update({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`It's  tie, we both picked paper!`)
                             .setColor(color)
                             .addFields(
@@ -78,16 +78,16 @@ module.exports = {
                                 { name: "Total Loses", value: `\`${UserDatabase.rpsLoses}\``, inline: true }
                             )
                     ], components: [
-                        new MessageActionRow()
+                        new ActionRowBuilder()
                             .addComponents(
-                                new MessageButton()
+                                new ButtonBuilder()
                                     .setCustomId('rps-replay')
                                     .setLabel('Retry')
-                                    .setStyle('PRIMARY'),
-                                new MessageButton()
+                                    .setStyle(ButtonStyle.Primary),
+                                new ButtonBuilder()
                                     .setCustomId('stop')
                                     .setLabel('Stop')
-                                    .setStyle('SECONDARY'),
+                                    .setStyle(ButtonStyle.Secondary),
                             )
                     ]
                 }).catch((err => { }))
@@ -97,25 +97,25 @@ module.exports = {
             case "scissors":
                 interaction.update({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setDescription(`You lost! I picked **scissors**, ${interaction.user} picked **paper**!`)
-                            .setColor("RED")
+                            .setColor(Colors.Red)
                             .addFields(
                                 { name: "Score", value: `\`${UserDatabase.rpsScore - 1}\``, inline: true },
                                 { name: "Total Wins", value: `\`${UserDatabase.rpsWins}\``, inline: true },
                                 { name: "Total Loses", value: `\`${UserDatabase.rpsLoses + 1}\``, inline: true }
                             )
                     ], components: [
-                        new MessageActionRow()
+                        new ActionRowBuilder()
                             .addComponents(
-                                new MessageButton()
+                                new ButtonBuilder()
                                     .setCustomId('rps-replay')
                                     .setLabel('Retry')
-                                    .setStyle('PRIMARY'),
-                                new MessageButton()
+                                    .setStyle(ButtonStyle.Primary),
+                                new ButtonBuilder()
                                     .setCustomId('stop')
                                     .setLabel('Stop')
-                                    .setStyle('SECONDARY'),
+                                    .setStyle(ButtonStyle.Secondary),
                             )]
                 }).catch((err => { }));
 

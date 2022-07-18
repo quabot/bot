@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "reactionroles",

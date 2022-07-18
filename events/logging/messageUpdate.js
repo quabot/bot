@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -58,7 +58,7 @@ module.exports = {
         if (!logDatabase.enabledEvents.includes("messageUpdate")) return;
 
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setDescription(`**Message Edited**\n${newMessage.channel}`)
             .setColor(await getColor(newMessage.guild.id));
 

@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -73,7 +73,7 @@ module.exports = {
 
         description = `${description}\n${content}`;
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setDescription(`${description}`)
             .setColor(await getColor(message.guild.id));
 

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 // transcript ticket
 module.exports = {
@@ -26,14 +26,14 @@ module.exports = {
                 newTicketConfig.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        interaction.channel.send({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { });
 
         if (!ticketConfigDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
@@ -41,7 +41,7 @@ module.exports = {
 
         if (ticketConfigDatabase.ticketEnabled === false) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`The tickets module is disabled in this server.`)
                     .setColor(color)
             ], ephemeral: true
@@ -56,7 +56,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`Could not find that ticket in our records.`)
                     .setColor(color)
             ], ephemeral: true
@@ -71,7 +71,7 @@ module.exports = {
 
         if (!valid) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
                     .setColor(color)
             ], ephemeral: true
@@ -80,7 +80,7 @@ module.exports = {
         const channel = interaction.guild.channels.cache.get(`${ticketFound.channelId}`);
         if (!channel) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Could not find that channel. This is a bug. Please make a new ticket.")
             ]
@@ -91,7 +91,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("This ticket transcript is in the attachment. Open it in the browser to see it.")
             ],

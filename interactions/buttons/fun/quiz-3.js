@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     id: "quiz-3",
@@ -40,7 +40,7 @@ module.exports = {
 
             interaction.update({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor(color)
                         .setDescription(`**${question}**\n${interaction.user} got the correct answer!`)
                         .addFields(
@@ -50,19 +50,19 @@ module.exports = {
                         )
                 ],
                 components: [
-                    new MessageActionRow()
+                    new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('quiz-1')
                                 .setLabel(`${quiz.option1}`)
                                 .setStyle('SECONDARY')
                                 .setDisabled(true),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('quiz-2')
                                 .setLabel(`${quiz.option2}`)
                                 .setStyle('SECONDARY')
                                 .setDisabled(true),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('quiz-3')
                                 .setLabel(`${quiz.option3}`)
                                 .setStyle('SUCCESS')
@@ -86,7 +86,7 @@ module.exports = {
 
             interaction.update({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor(color)
                         .setDescription(`**${question}**\n${interaction.user} entered the incorrect answer!`)
                         .addFields(
@@ -96,19 +96,19 @@ module.exports = {
                         )
                 ],
                 components: [
-                    new MessageActionRow()
+                    new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('quiz-1')
                                 .setLabel(`${quiz.option1}`)
                                 .setStyle(styleFirst)
                                 .setDisabled(true),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('quiz-2')
                                 .setLabel(`${quiz.option2}`)
                                 .setStyle(styleSecond)
                                 .setDisabled(true),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('quiz-3')
                                 .setLabel(`${quiz.option3}`)
                                 .setStyle('DANGER')
@@ -126,18 +126,18 @@ module.exports = {
         setTimeout(() => {
             interaction.followUp({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor(color)
                         .setDescription("Do you want to play again?")
                 ],
                 components: [
-                    new MessageActionRow()
+                    new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('quiz-replay')
                                 .setLabel(`Play Again`)
                                 .setStyle('PRIMARY'),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('stop')
                                 .setLabel(`End Interaction`)
                                 .setStyle('SECONDARY'),

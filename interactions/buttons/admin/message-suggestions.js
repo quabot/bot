@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     id: "message-suggestions",
@@ -27,7 +27,7 @@ module.exports = {
 
         if (!suggestConfig) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We just created a new database record! Please run that command again!`)
                     .setColor(color)
             ], ephemeral: true
@@ -35,7 +35,7 @@ module.exports = {
 
         if (!suggestConfig.suggestEnabled) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Suggestions are disabled in this server. Ask an admin to enable them on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -47,7 +47,7 @@ module.exports = {
 
         if (!suggestChannel) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Couldn't find a suggestion channel. Configure this on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -56,7 +56,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("You can dismiss this message.")
             ], ephemeral: true
@@ -64,15 +64,15 @@ module.exports = {
 
         interaction.channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setTitle("Create suggestion")
                     .setDescription("Click on the button below this message to leave a suggestion.")
             ],
             components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId("create-suggestion")
                             .setStyle("SECONDARY")
                             .setLabel("💡 Suggest")

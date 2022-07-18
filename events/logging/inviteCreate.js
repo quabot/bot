@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -56,7 +56,7 @@ module.exports = {
 
         channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`**Invite Created**\n[discord.gg/${invite.code}](https://discord.gg/${invite.code})\n${invite.inviter} - ${invite.channel}\n\n**Expires after:**\n${invite.maxAge / 60 / 60} hours`)
                     .setColor(await getColor(invite.guild.id))
                     .setTimestamp()

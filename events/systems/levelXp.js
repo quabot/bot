@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { EmbedBuilder, MessageAttachment } = require('discord.js');
 const { messageArray } = require('../..');
 const { getColor } = require('../../structures/files/contants');
 const canvacord = require('canvacord');
@@ -113,7 +113,7 @@ module.exports = {
                         if (LevelConfigDatabase.levelUpEmbed === true) {
                             levelChannel.send({
                                 embeds: [
-                                    new MessageEmbed()
+                                    new EmbedBuilder()
                                         .setColor(color)
                                         .setTimestamp()
                                         .setDescription(`${levelMessage}`)

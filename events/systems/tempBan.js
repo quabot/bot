@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "ready",
@@ -35,7 +35,7 @@ module.exports = {
                         if (channel) {
                             channel.send({
                                 embeds: [
-                                    new MessageEmbed()
+                                    new EmbedBuilder()
                                         .setTitle(`User Unbanned!`)
                                         .setDescription(`**User:** <@${userid}>\n**Reason**: Automated unban after being tempbanned.`)
                                         .setColor(color)

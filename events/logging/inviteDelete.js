@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -57,7 +57,7 @@ module.exports = {
 
         channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`**Invite Deleted**\ndiscord.gg/${invite.code}\n${invite.channel}`)
                     .setColor(await getColor(invite.guild.id))
                     .setTimestamp()

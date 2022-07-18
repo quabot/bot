@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -64,7 +64,7 @@ module.exports = {
 
         if (oldState.channelId) {
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(await getColor(newState.guild.id))
                 .setDescription(`**${user} left <#${oldState.channelId}>**`)
                 .setTimestamp()
@@ -79,7 +79,7 @@ module.exports = {
 
         if (newState.channelId) {
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(await getColor(newState.guild.id))
                 .setDescription(`**${user} joined <#${newState.channelId}>**`)
                 .setTimestamp()

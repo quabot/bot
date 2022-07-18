@@ -1,4 +1,4 @@
-const { MessageEmbed, InteractionType } = require('discord.js');
+const { EmbedBuilder, InteractionType } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
@@ -11,7 +11,7 @@ module.exports = {
         if (modal.permission && !interaction.member.permissions.has(modal.permission))
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor("RED")
                         .setDescription(`⛔ You do not have permission to use that modal.\nYou need the permission: \`${modal.permission}\` to do that`)
                 ], ephemeral: true
@@ -39,7 +39,7 @@ module.exports = {
         if (modal.ownerOnly && modal.member.id !== modal.guild.ownerId)
             return modal.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor("RED")
                         .setDescription("⛔ Only the owner can use that modal.")
                 ], ephemeral: true
@@ -60,7 +60,7 @@ module.exports = {
 
         if (!CustomizationDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor("RED")
                     .setDescription("Unable to get this server's customization settings. Please try again.")
             ], ephemeral: true

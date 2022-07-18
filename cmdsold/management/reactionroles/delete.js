@@ -1,5 +1,5 @@
 
-const { MessageEmbed, MessageActionRow, MessageButton, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "delete",
@@ -22,7 +22,7 @@ module.exports = {
 
         if (!found) return interaction.followUp({
             ephemeral: true, embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`That reactionrole doesn't exist!`)
                     .setColor(color)
             ]
@@ -37,7 +37,7 @@ module.exports = {
 
         if (found) return interaction.followUp({
             ephemeral: true, embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription("Deleted the reactionrole.")
                     .setColor(color)
             ]

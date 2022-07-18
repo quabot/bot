@@ -1,4 +1,4 @@
-const { MessageEmbed, Interaction } = require('discord.js');
+const { EmbedBuilder, Interaction } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
                     guildId: member.guild.id,
                     joinEnabled: true,
                     leaveEnabled: true,
-                    MessageEmbed: true,
+                    EmbedBuilder: true,
                     joinColor: "GREEN",
                     leaveColor: "RED",
                     joinMessage: "Welcome {user} to **{guild}**!",
@@ -69,7 +69,7 @@ module.exports = {
         leaveMessage = leaveMessage.replaceAll("{guild}", member.guild.name);
         leaveMessage = leaveMessage.replaceAll("{members}", member.guild.memberCount);
 
-        if (joinLeaveSettings.MessageEmbed === true) {
+        if (joinLeaveSettings.EmbedBuilder === true) {
 
             //* Define the messages and fix the variables
             let authorMsg = joinLeaveSettings.leaveEmbedAuthorText ? joinLeaveSettings.leaveEmbedAuthorText : "";
@@ -104,7 +104,7 @@ module.exports = {
             leaveTitle = leaveTitle.replaceAll("{guild}", member.guild.name);
             leaveTitle = leaveTitle.replaceAll("{members}", member.guild.memberCount);
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setDescription(leaveMessage)
                 .setColor(joinLeaveSettings.leaveColor)
                 .setTimestamp();

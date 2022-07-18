@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { EmbedBuilder, MessageAttachment } = require("discord.js");
 
 const moment = require("moment");
 const ms = require("ms");
@@ -47,7 +47,7 @@ module.exports = {
             if (userObject.flags.toArray().includes(e.name)) badges.push(e.emoji);
           });
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(await getHexColor(user))
             .setThumbnail(`${user.user.displayAvatarURL({ dynamic: true, size: 1024, })}`)
             .addFields({

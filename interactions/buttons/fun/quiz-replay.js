@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     id: "quiz-replay",
@@ -10,22 +10,22 @@ module.exports = {
 
         interaction.update({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription(`${quizItem.question}`)
             ],
             components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('quiz-1')
                             .setLabel(`${quizItem.option1}`)
                             .setStyle('SECONDARY'),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('quiz-2')
                             .setLabel(`${quizItem.option2}`)
                             .setStyle('SECONDARY'),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('quiz-3')
                             .setLabel(`${quizItem.option3}`)
                             .setStyle('SECONDARY')

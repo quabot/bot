@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const { randomUUID } = require('node:crypto');
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
 
         if (!suggestConfig) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We just created a new database record! Please run that command again!`)
                     .setColor(color)
             ], ephemeral: true
@@ -37,7 +37,7 @@ module.exports = {
 
         if (!suggestConfig.suggestEnabled) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Suggestions are disabled in this server. Ask an admin to enable them on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -49,7 +49,7 @@ module.exports = {
 
         if (!suggestChannel) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Couldn't find a suggestion channel. Configure this on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -70,7 +70,7 @@ module.exports = {
         //* Send the message and reply to the user.
         const msg = await suggestChannel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setTitle("New Suggestion!")
                     .setColor("BLUE")
                     .addField("Suggestion", `${suggestion}`)
@@ -85,7 +85,7 @@ module.exports = {
 
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`Successfully left your suggestion. Check it out in ${suggestChannel}`)
                     .setColor(color)
             ], ephemeral: true
@@ -100,7 +100,7 @@ module.exports = {
 
             suggestLogChannel.send({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("New Suggestion")
                         .setColor("BLUE")
                         .addFields(
@@ -112,17 +112,17 @@ module.exports = {
                         .setFooter({ text: `${uuid}` })
                         .setTimestamp()
                 ], components: [
-                    new MessageActionRow()
+                    new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('suggestion-approve')
                                 .setLabel("Approve")
                                 .setStyle("SUCCESS"),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('suggestion-reject')
                                 .setLabel("Reject")
                                 .setStyle("DANGER"),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('suggestion-delete')
                                 .setLabel("Delete")
                                 .setStyle("SECONDARY"),

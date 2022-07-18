@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = {
     id: "suggestion-approve",
@@ -28,7 +28,7 @@ module.exports = {
 
         if (!suggestConfig) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We just created a new database record! Please run that command again!`)
                     .setColor(color)
             ], ephemeral: true
@@ -36,7 +36,7 @@ module.exports = {
 
         if (!suggestConfig.suggestEnabled) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Suggestions are disabled in this server. Ask an admin to enable them on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -70,7 +70,7 @@ module.exports = {
 
         if (!channel) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Couldn't find a suggestion channel. Configure this on our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
@@ -80,7 +80,7 @@ module.exports = {
 
             if (!message) return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`Couldn't find the message beloning to that suggestion! Are you sure it wasn't deleted?`)
                         .setColor(color)
                 ], ephemeral: true
@@ -92,7 +92,7 @@ module.exports = {
             //* Update the suggestion & log message.
             await message.edit({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("New Suggestion!")
                         .setColor("GREEN")
                         .setDescription("This suggestion was approved.")
@@ -105,7 +105,7 @@ module.exports = {
 
             await interaction.message.edit({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("New Suggestion")
                         .setColor("GREEN")
                         .addFields(
@@ -118,18 +118,18 @@ module.exports = {
                         .setFooter({ text: `${suggestion.suggestId}` })
                         .setTimestamp()
                 ], components: [
-                    new MessageActionRow()
+                    new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('suggestion-approve')
                                 .setLabel("Approve")
                                 .setDisabled(true)
                                 .setStyle("SUCCESS"),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('suggestion-reject')
                                 .setLabel("Reject")
                                 .setStyle("DANGER"),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('suggestion-delete')
                                 .setLabel("Delete")
                                 .setStyle("SECONDARY"),
@@ -139,7 +139,7 @@ module.exports = {
 
             interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor(color)
                         .setDescription("Approved that suggestion.")
                 ], ephemeral: true
@@ -148,7 +148,7 @@ module.exports = {
             //* Get the member to DM them.
             if (member) member.send({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor(color)
                         .setTitle("Your suggestion was approved!")
                         .setDescription(`Your suggestion in ${interaction.guild.name} was approved. Go check it out [here](${message.url})!`)

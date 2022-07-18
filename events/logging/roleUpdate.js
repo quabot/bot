@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 
 module.exports = {
     name: "roleUpdate",
@@ -63,7 +63,7 @@ module.exports = {
         if (oldRole.icon !== newRole.icon) return;
         if (oldRole.managed !== newRole.managed) return;
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(`${newRole.hexColor}`)
             .setDescription(`${description}`)
             .setTimestamp()

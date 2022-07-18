@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "stickerDelete",
@@ -58,7 +58,7 @@ module.exports = {
 
         channel.send({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor("RED")
                     .setDescription(`**Removed Sticker**\n\`${sticker.name}\`\n${sticker.description}`)
                     .setTimestamp()

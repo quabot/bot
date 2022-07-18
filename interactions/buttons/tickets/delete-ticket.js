@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 // delete ticket
 module.exports = {
@@ -26,14 +26,14 @@ module.exports = {
                 newTicketConfig.save()
                     .catch(err => {
                         console.log(err);
-                        interaction.channel.send({ embeds: [new MessageEmbed().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
+                        interaction.channel.send({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((err => { }))
                     });
             }
         }).clone().catch(function (err) { });
 
         if (!ticketConfigDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We added this server to the database! Please run that command again.`)
                     .setColor(color)
             ], ephemeral: true
@@ -41,7 +41,7 @@ module.exports = {
 
         if (ticketConfigDatabase.ticketEnabled === false) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`The tickets module is disabled in this server.`)
                     .setColor(color)
             ], ephemeral: true
@@ -56,7 +56,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`Could not find that ticket in our records.`)
                     .setColor(color)
             ], ephemeral: true
@@ -71,7 +71,7 @@ module.exports = {
 
         if (!valid) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`This is not your ticket! You must be added to the ticket to use that button.`)
                     .setColor(color)
             ], ephemeral: true
@@ -80,7 +80,7 @@ module.exports = {
         const channel = interaction.guild.channels.cache.get(`${ticketFound.channelId}`);
         if (!channel) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Could not find that channel. This is a bug. Please make a new ticket.")
             ]
@@ -88,20 +88,20 @@ module.exports = {
 
         const msg = await interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(color)
                     .setDescription("Are you sure you want to delete this ticket?")
             ],
             components: [
-                new MessageActionRow()
+                new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('cancel-ticket')
                             .setLabel('🚫 Cancel')
                             .setStyle('DANGER')
                     )
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('confirm-ticket')
                             .setLabel('✅ Confirm')
                             .setStyle('SUCCESS')
@@ -116,16 +116,16 @@ module.exports = {
             if (interaction.customId === "cancel-ticket") {
 
                 interaction.message.edit({
-                    components: [new MessageActionRow()
+                    components: [new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('cancel-ticket')
                                 .setLabel('🚫 Cancel')
                                 .setStyle('DANGER')
                                 .setDisabled(true)
                         )
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('confirm-ticket')
                                 .setLabel('✅ Confirm')
                                 .setStyle('SUCCESS')
@@ -135,7 +135,7 @@ module.exports = {
                 })
                 interaction.reply({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setColor(color)
                             .setDescription("Cancelled the ticket deletion.")
                     ]
@@ -166,7 +166,7 @@ module.exports = {
                 const logChannel = interaction.guild.channels.cache.get(`${ticketConfigDatabase.ticketChannelID}`);
                 if (!logChannel) return;
                 if (ticketConfigDatabase.ticketLogs === false) return;
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setColor(color)
                     .setTitle("Ticket Deleted")
                     .setDescription("Ticket transcript added as attachment.")

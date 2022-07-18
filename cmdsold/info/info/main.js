@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const os = require('os');
 const { VERSION } = require('../../../structures/settings.json');
 
@@ -12,7 +12,7 @@ module.exports = {
 
             interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle(`${client.user.username} Info`)
                         .setThumbnail(client.user.avatarURL({ dynamic: true }))
                         .addField("Memory Usage", `\`${Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)}MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``, true)
@@ -36,7 +36,7 @@ module.exports = {
 
         } catch (e) {
             console.log(e);
-            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new MessageEmbed().setDescription(`${e}`).setFooter("Command: " + this.name)] });
+            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new EmbedBuilder().setDescription(`${e}`).setFooter("Command: " + this.name)] });
         }
     }
 }

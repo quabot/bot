@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
@@ -43,7 +43,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to timeout.`)
                         .setColor(color)
                 ], ephemeral: private
@@ -54,7 +54,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't timeout yourself!`)
                         .setColor(color)
                 ], ephemeral: private
@@ -65,7 +65,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot timeout a user with roles higher than your own.`)
                         .setColor(color)
                 ], ephemeral: private
@@ -76,7 +76,7 @@ module.exports = {
             didTimeout = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("<:error:990996645913194517> Insufficcient permissions")
                         .setDescription(`QuaBot does not have permission to timeout that user - try moving the QuaBot role above all others.`)
                         .setColor(color)
@@ -86,7 +86,7 @@ module.exports = {
 
         if (!ms(duration)) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`Please give a valid time! Eg. \`1h, 20s\``)
                     .setColor(color)
             ], ephemeral: private
@@ -111,7 +111,7 @@ module.exports = {
             didKick = false;
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setDescription(`We just created a new database record! Please run that command again :)`)
                         .setColor(color)
                 ], ephemeral: true
@@ -139,7 +139,7 @@ module.exports = {
 
         if (!PunishmentIdDatabase) return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setDescription(`We just created a new database record! Please run that command again :)`)
                     .setColor(color)
             ], ephemeral: true
@@ -152,7 +152,7 @@ module.exports = {
             didTimeout = false;
             if (err.code === 50013) return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle("<:error:990996645913194517> Insufficcient permissions")
                         .setDescription(`QuaBot does not have permission to timeout that user - try moving the QuaBot role above all others`)
                         .setColor(color)
@@ -164,7 +164,7 @@ module.exports = {
             if (!private) {
                 user.send({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setTitle(`You were timed-out`)
                             .setDescription(`You were Timed-out on **${interaction.guild.name}**
                     **Timed-out by**: ${interaction.user}
@@ -177,7 +177,7 @@ module.exports = {
             }
             await interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setTitle(`User Timed-Out`)
                         .setDescription(`**User**: ${user}`)
                         .setColor(color)
@@ -198,7 +198,7 @@ module.exports = {
             if (didTimeout) {
                 channel.send({
                     embeds: [
-                        new MessageEmbed()
+                        new EmbedBuilder()
                             .setTitle("User Timed-Out")
                             .setDescription(`**User**: ${user}`)
                             .setColor(color)
