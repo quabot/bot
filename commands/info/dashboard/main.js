@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: "dashboard",
@@ -14,7 +14,7 @@ module.exports = {
                 new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setStyle("LINK")
+                            .setStyle(ButtonStyle.Link)
                             .setURL("https://dashboard.quabot.net")
                             .setLabel("Link to our dashboard")
                     )
