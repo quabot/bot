@@ -1,4 +1,4 @@
-const { EmbedBuilder, MessageAttachment } = require('discord.js');
+const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const canvacord = require('canvacord');
 
 module.exports = {
@@ -84,7 +84,7 @@ module.exports = {
                 .setDiscriminator(user.discriminator)
                 .setRank(1, 'none', false)
             rankCard.build().then(data => {
-                const attactment = new MessageAttachment(data, 'levelcard.png')
+                const attactment = new AttachmentBuilder(data, 'levelcard.png')
                 interaction.reply({ files: [attactment] }).catch((err => { }));
             });
         } else {

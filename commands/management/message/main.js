@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: "message",
@@ -21,12 +21,12 @@ module.exports = {
                             .setLabel("Suggestions")
                             .setCustomId("message-suggestions")
                             .setEmoji("💡")
-                            .setStyle("PRIMARY"),
+                            .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
                             .setLabel("Tickets")
                             .setCustomId("message-tickets")
                             .setEmoji("🎫")
-                            .setStyle("SECONDARY"),
+                            .setStyle(ButtonStyle.Secondary),
                     )
             ]
         }).catch((err => { }));

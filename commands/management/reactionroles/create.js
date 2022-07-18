@@ -1,5 +1,5 @@
 
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ChannelType } = require('discord.js');
 
 module.exports = {
     name: "create",
@@ -14,8 +14,7 @@ module.exports = {
         const mode = interaction.options.getString("mode") ? interaction.options.getString("mode") : "normal";
 
 
-
-        if (channel.type !== "GUILD_TEXT") return interaction.reply({
+        if (channel.type !== ChannelType.GuildText) return interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setColor(color)
@@ -23,7 +22,7 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        if (role.rawPosition > interaction.guild.me.roles.highest.rawPosition) return interaction.reply({
+        if (role.rawPosition > interaction.guild.members.me.roles.highest.rawPosition) return interaction.reply({
             ephemeral: true, embeds: [
                 new EmbedBuilder()
                     .setColor(color)
@@ -50,7 +49,7 @@ module.exports = {
 
         let error = false;
 
-        channel.messages.fetch(message_id)
+        channel.messages.fetch({ message: message_id })
             .then(async message => {
                 await message.react(`${emoji}`).catch(err => {
                     error = true
@@ -68,11 +67,13 @@ module.exports = {
                         ephemeral: true, embeds: [
                             new EmbedBuilder()
                                 .setDescription("Succesfully created a new reaction role.")
-                                .addField("Emoji", `${emoji}`, true)
-                                .addField("Channel", `${channel}`, true)
-                                .addField("Role", `${role}`, true)
-                                .addField("Mode", `${mode}`, true)
-                                .addField("Required Permission", `${permission}`, true)
+                                .addFields(
+                                    { name: "Emoji", value: `${emoji}`, inline: true },
+                                    { name: "Channel", value: `${channel}`, inline: true },
+                                    { name: "Role", value: `${role}`, inline: true },
+                                    { name: "Mode", value: `${mode}`, inline: true },
+                                    { name: "Required Permission", value: `${permission}`, inline: true },
+                                )
                                 .setColor(color)
                         ]
                     }).catch((err => { }));
@@ -100,7 +101,7 @@ module.exports = {
                             .setColor(color)
                             .setDescription("Could not find that message.")
                     ]
-                }).catch((err => { }))
+                }).catch((err => { }));
                 return;
             });
 

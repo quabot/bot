@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     id: "message-suggestions",
@@ -74,7 +74,7 @@ module.exports = {
                     .addComponents(
                         new ButtonBuilder()
                             .setCustomId("create-suggestion")
-                            .setStyle("SECONDARY")
+                            .setStyle(ButtonStyle.Secondary)
                             .setLabel("💡 Suggest")
                     )
             ]

@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: "reactionroles",
@@ -8,36 +8,36 @@ module.exports = {
         {
             name: "create",
             description: "Create reactionroles.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: "channel",
                     description: "Channel where the message is located.",
-                    type: "CHANNEL",
+                    type: ApplicationCommandOptionType.Channel,
                     required: true,
                 },
                 {
                     name: "message",
                     description: "Message id of the message.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                 },
                 {
                     name: "role",
                     description: "Role to use.",
-                    type: "ROLE",
+                    type: ApplicationCommandOptionType.Role,
                     required: true,
                 },
                 {
                     name: "emoji",
                     description: "Emoji to use.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true,
                 },
                 {
                     name: "permission",
                     description: "Required permission for this reactionrole.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: false,
                     choices: [
                         { name: "Create Instant Invite", value: "CREATE_INSTANT_INVITE" },
@@ -70,7 +70,7 @@ module.exports = {
                 {
                     name: "mode",
                     description: "Reactionrole mode (default = normal).",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: [
                         { name: "Normal", value: "normal" },
                         { name: "Verify", value: "verify" },
@@ -86,24 +86,24 @@ module.exports = {
         {
             name: "delete",
             description: "Delete a reactionrole.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: "message_id",
                     description: "The message to remove the reactionrole of.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: "role",
                     description: "The role to remove.",
-                    type: "ROLE",
+                    type: ApplicationCommandOptionType.Role,
                     required: true
                 },
                 {
                     name: "emoji",
                     description: "Emoji to remove.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]
@@ -111,24 +111,24 @@ module.exports = {
         {
             name: "list",
             description: "List all reactionroles.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: "message_id",
                     description: "The message to list the reactionroles for.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: false
                 },
                 {
                     name: "role",
                     description: "The role to list the reactionroles for.",
-                    type: "ROLE",
+                    type: ApplicationCommandOptionType.Role,
                     required: false
                 },
                 {
                     name: "channel",
                     description: "The channel to list the reactionroles for.",
-                    type: "CHANNEL",
+                    type: ApplicationCommandOptionType.Channel,
                     required: false
                 }
             ]

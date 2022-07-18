@@ -1,4 +1,4 @@
-const { EmbedBuilder, MessageAttachment } = require("discord.js");
+const { EmbedBuilder, AttachmentBuilder, ChannelType } = require("discord.js");
 
 const moment = require("moment");
 const ms = require("ms");
@@ -46,12 +46,12 @@ module.exports = {
                     value:
                         `
                                  **• Total**: ${interaction.guild.channels.cache.size}
-                                 **• Text**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_TEXT").size}
-                                 **• Categories**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_CATEGORY").size}
-                                 **• Voice**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_VOICE").size}
-                                 **• News**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_NEWS").size}
-                                 **• Stages**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_STAGE_VOICE").size}
-                                 **• Threads**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_PUBLIC_THREAD").size + interaction.guild.channels.cache.filter((c) => c.type === "GUILD_PRIVATE_THREAD").size}
+                                 **• Text**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildText).size}
+                                 **• Categories**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildCategory).size}
+                                 **• Voice**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildVoice).size}
+                                 **• News**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildNews).size}
+                                 **• Stages**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildStageVoice).size}
+                                 **• Threads**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildPublicThread).size + interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildPrivateThread).size}
                                  `,
                     inline: false,
                 }
@@ -63,10 +63,10 @@ module.exports = {
                     value:
                         `
                                  **• Total**: ${interaction.guild.channels.cache.size}
-                                 **• Text**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_TEXT").size}
-                                 **• Categories**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_CATEGORY").size}
-                                 **• Voice**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_VOICE").size}
-                                 **• Threads**: ${interaction.guild.channels.cache.filter((c) => c.type === "GUILD_PUBLIC_THREAD").size + interaction.guild.channels.cache.filter((c) => c.type === "GUILD_PRIVATE_THREAD").size}
+                                 **• Text**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildText).size}
+                                 **• Categories**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildCategory).size}
+                                 **• Voice**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildVoice).size}
+                                 **• Threads**: ${interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildPublicThread).size + interaction.guild.channels.cache.filter((c) => c.type === ChannelType.GuildPrivateThread).size}
                                  `,
                     inline: false,
                 }

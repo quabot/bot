@@ -1,4 +1,4 @@
-const { EmbedBuilder, Interaction, ReactionUserManager } = require('discord.js');
+const { MessageEmbed, Interaction, ReactionUserManager } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
@@ -15,6 +15,7 @@ module.exports = {
         }).clone().catch((err => { }));
 
         if (!reactionRole) return;
+
 
         const role = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
         const member = reaction.message.guild.members.cache.get(`${user.id}`);

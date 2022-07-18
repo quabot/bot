@@ -1,5 +1,5 @@
-const { Client, Collection } = require('discord.js');
-const client = new Client({ intents: 114383, partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const { Client, Collection, Partials } = require('discord.js');
+const client = new Client({ intents: 3258319, partials: [Partials.Channel, Partials.Reaction, Partials.Message] });
 require('dotenv').config();
 
 const { promisify } = require('util');

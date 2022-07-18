@@ -1,4 +1,4 @@
-const { EmbedBuilder, MessageAttachment } = require("discord.js");
+const { EmbedBuilder, AttachmentBuilder, Colors } = require("discord.js");
 
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const DB = require('../../../structures/schemas/ClientDB');
@@ -23,7 +23,6 @@ module.exports = {
     name: "status",
     description: 'Bot status.',
     async execute(client, interaction, color) {
-        try {
 
             const docs = await DB.findOne({
                 Client: true
@@ -189,13 +188,13 @@ module.exports = {
             }
 
             const image = await canvas.renderToBuffer(chartConfig);
-            const attachment = new MessageAttachment(image, 'chart.png');
+            const attachment = new AttachmentBuilder(image, 'chart.png');
 
 
             if (!docs || docs.Memory.length < 12) return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('RED')
+                        .setColor(Colors.Red)
                         .setDescription('**<:error:990996645913194517> | No Data Found!**\nPlease wait, quabot was restarted and we\'re collecting data again!')
                 ],
                 ephemeral: true
@@ -208,22 +207,17 @@ module.exports = {
 
             const mongoose = require('mongoose');
             let dbConnection;
-            if (mongoose.connection.readyState === 0) { dbConnection = "<:dnd:938818583939649556>\`DISCONNECTED\`"; embedColor = "RED"; }
-            if (mongoose.connection.readyState === 1) { dbConnection = "<:online:938818583868366858>\`CONNECTED\`"; embedColor = "GREEN"; }
-            if (mongoose.connection.readyState === 2) { dbConnection = "<:idle:938818583864180796>\`CONNECTING\`"; embedColor = "YELLOW"; }
-            if (mongoose.connection.readyState === 3) { dbConnection = "<:idle:938818583864180796>\`DISCONNECTING\`"; embedColor = "ORANGE"; }
+            if (mongoose.connection.readyState === 0) { dbConnection = "<:dnd:938818583939649556>\`DISCONNECTED\`"; embedColor = Colors.Red; }
+            if (mongoose.connection.readyState === 1) { dbConnection = "<:online:938818583868366858>\`CONNECTED\`"; embedColor = Colors.Green; }
+            if (mongoose.connection.readyState === 2) { dbConnection = "<:idle:938818583864180796>\`CONNECTING\`"; embedColor = Colors.Yellow; }
+            if (mongoose.connection.readyState === 3) { dbConnection = "<:idle:938818583864180796>\`DISCONNECTING\`"; embedColor = Colors.Orange; }
 
             const embed = new EmbedBuilder()
                 .setTitle(`${client.user.username} Status`)
                 .setDescription(`**Client:** \`✅ ONLINE\` - \`${client.ws.ping}ms\`\n**Uptime:** <t:${parseInt(client.readyTimestamp / 1000)}:R>\n\n**Database:** ${dbConnection}\n\n**Average RAM Usage**: \`${avgMem.toFixed(2)}GB\``)
                 .setColor(embedColor)
                 .setImage('attachment://chart.png')
-            interaction.reply({ embeds: [embed], files: [attachment], }).catch((err => { }))
+            interaction.reply({ embeds: [embed], files: [attachment] }).catch((err => { }))
 
-
-        } catch (e) {
-            console.log(e);
-            client.guilds.cache.get("957024489638621185").channels.cache.get("957024594181644338").send({ embeds: [new EmbedBuilder().setDescription(`${e}`).setFooter("Command: " + this.name)] });
-        }
     }
 }

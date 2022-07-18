@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     id: "message-tickets",
@@ -69,7 +69,7 @@ module.exports = {
                     .addComponents(
                         new ButtonBuilder()
                             .setCustomId("create-ticket")
-                            .setStyle("SECONDARY")
+                            .setStyle(ButtonStyle.Secondary)
                             .setLabel("🎫 Ticket")
                     )
             ]

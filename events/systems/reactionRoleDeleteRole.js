@@ -10,7 +10,6 @@ module.exports = {
             roleId: role.id,
         });
 
-        console.log(found)
         if (found) {
             found.forEach(async item => {
                 await Reaction.findOneAndDelete({
