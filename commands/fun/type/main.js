@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
 const typeSentences = require('../../../structures/files/type.json');
 
 module.exports = {
@@ -48,7 +48,7 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId('stop')
                             .setLabel('Stop')
-                            .setStyle('SECONDARY')
+                            .setStyle(ButtonStyle.Danger)
                     )
             ]
         }).catch((err => { }));
@@ -65,13 +65,13 @@ module.exports = {
                     embeds: [
                         new EmbedBuilder()
                             .setDescription(`**Correct!**\n${m.author} typed the sentence in \`${seconds}\` seconds!`)
-                            .addField("Sentence", `\`${sentence}\``)
                             .addFields(
+                                { name: "Sentence", value: `\`${sentence}\`` },
                                 { name: "Score", value: `${UserDatabase.typeScore + 1}`, inline: true },
                                 { name: "Total Wins", value: `${UserDatabase.typeWins + 1}`, inline: true },
                                 { name: "Total Loses", value: `${UserDatabase.typeLoses}`, inline: true },
                             )
-                            .setColor("GREEN")
+                            .setColor(Colors.Green)
                     ],
                     components: [
                         new ActionRowBuilder()
@@ -79,7 +79,7 @@ module.exports = {
                                 new ButtonBuilder()
                                     .setCustomId('type-replay')
                                     .setLabel('Play Again')
-                                    .setStyle('SECONDARY')
+                                    .setStyle(ButtonStyle.Secondary)
                             )
                     ]
                 }).catch((err => { }));
@@ -98,10 +98,10 @@ module.exports = {
                                 { name: "Score", value: `${UserDatabase.typeScore - 1}`, inline: true },
                                 { name: "Total Wins", value: `${UserDatabase.typeWins}`, inline: true },
                                 { name: "Total Loses", value: `${UserDatabase.typeLoses + 1}`, inline: true },
+                                { name: "Sentence", value: `\`${sentence}\``, inline: true },
+                                { name: "Their Answer", value: `\`${m.content}\``, inline: true },
                             )
-                            .addField("Sentence", `\`${sentence}\``, true)
-                            .addField("Their Answer", `\`${m.content}\``, true)
-                            .setColor("RED")
+                            .setColor(Colors.Red)
                     ],
                     components: [
                         new ActionRowBuilder()
@@ -109,7 +109,7 @@ module.exports = {
                                 new ButtonBuilder()
                                     .setCustomId('type-replay')
                                     .setLabel('Play Again')
-                                    .setStyle('SECONDARY')
+                                    .setStyle(ButtonStyle.Secondary)
                             )
                     ]
                 }).catch((err => { }));

@@ -27,8 +27,8 @@ module.exports = {
             if (command.permissions) {
                 let error = false;
                 command.permissions.forEach(permission => {
-                    if (!interaction.guild.me.permissions.has(permission)) error = true;
-                    if (!interaction.guild.me.permissionsIn(interaction.channel).has(permission)) error = true;
+                    if (!interaction.guild.members.me.permissions.has(permission)) error = true;
+                    if (!interaction.guild.members.me.permissionsIn(interaction.channel).has(permission)) error = true;
                 });
 
                 if (error) {

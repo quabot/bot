@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     id: "quiz-replay",
@@ -20,15 +20,15 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId('quiz-1')
                             .setLabel(`${quizItem.option1}`)
-                            .setStyle('SECONDARY'),
+                            .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
                             .setCustomId('quiz-2')
                             .setLabel(`${quizItem.option2}`)
-                            .setStyle('SECONDARY'),
+                            .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
                             .setCustomId('quiz-3')
                             .setLabel(`${quizItem.option3}`)
-                            .setStyle('SECONDARY')
+                            .setStyle(ButtonStyle.Secondary)
                     )
             ]
         }).catch((err => { }));

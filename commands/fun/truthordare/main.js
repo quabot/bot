@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: "truthordare",
@@ -17,15 +17,15 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId('tod-truth')
                             .setLabel(`Truth`)
-                            .setStyle('DANGER'),
+                            .setStyle(ButtonStyle.Danger),
                         new ButtonBuilder()
                             .setCustomId('tod-dare')
                             .setLabel(`Dare`)
-                            .setStyle('SUCCESS'),
+                            .setStyle(ButtonStyle.Success),
                         new ButtonBuilder()
                             .setCustomId('tod-random')
                             .setLabel(`Random`)
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                     )
             ]
         }).catch((err => console.log(err)));

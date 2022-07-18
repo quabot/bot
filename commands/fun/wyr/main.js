@@ -35,7 +35,7 @@ module.exports = {
                             .setDescription(`You chose...\n\n1️⃣ ${wyrPicked.option1}`)
                     ],
                 }).catch((err => { }));
-                çollector.stop();
+                collector.stop();
             } else if (reaction.emoji.name === "2️⃣") {
                 reaction.message.edit({
                     embeds: [
@@ -44,7 +44,7 @@ module.exports = {
                             .setDescription(`You chose...\n\n2️⃣ ${wyrPicked.option2}`)
                     ],
                 }).catch((err => { }));
-                çollector.stop();
+                collector.stop();
             }
         });
 

@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
 const dareOptions = require('../../../structures/files/dare.json');
 
 module.exports = {
@@ -21,15 +21,15 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId('tod-truth')
                             .setLabel(`Truth`)
-                            .setStyle('DANGER'),
+                            .setStyle(ButtonStyle.Danger),
                         new ButtonBuilder()
                             .setCustomId('tod-dare')
                             .setLabel(`Dare`)
-                            .setStyle('SUCCESS'),
+                            .setStyle(ButtonStyle.Success),
                         new ButtonBuilder()
                             .setCustomId('tod-random')
                             .setLabel(`Random`)
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                     )
             ]
         }).catch(( err => { } ));

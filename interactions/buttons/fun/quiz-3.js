@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require('discord.js');
 
 module.exports = {
     id: "quiz-3",
@@ -41,7 +41,7 @@ module.exports = {
             interaction.update({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor(color)
+                        .setColor(Colors.Green)
                         .setDescription(`**${question}**\n${interaction.user} got the correct answer!`)
                         .addFields(
                             { name: "Score", value: `\`${UserDatabase.quizScore + 1}\``, inline: true },
@@ -55,17 +55,17 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('quiz-1')
                                 .setLabel(`${quiz.option1}`)
-                                .setStyle('SECONDARY')
+                                .setStyle(ButtonStyle.Secondary)
                                 .setDisabled(true),
                             new ButtonBuilder()
                                 .setCustomId('quiz-2')
                                 .setLabel(`${quiz.option2}`)
-                                .setStyle('SECONDARY')
+                                .setStyle(ButtonStyle.Secondary)
                                 .setDisabled(true),
                             new ButtonBuilder()
                                 .setCustomId('quiz-3')
                                 .setLabel(`${quiz.option3}`)
-                                .setStyle('SUCCESS')
+                                .setStyle(ButtonStyle.Secondary)
                                 .setDisabled(true),
                         )
                 ]
@@ -78,16 +78,13 @@ module.exports = {
 
         } else {
 
-            let styleFirst = "SECONDARY";
-            let styleSecond = "SECONDARY";
-
-            if (quiz.option1 === quiz.answer) styleFirst = "SUCCESS";
-            if (quiz.option2 === quiz.answer) styleSecond = "SUCCESS";
+            let styleFirst = quiz.option1 === quiz.answer ? ButtonStyle.Success : ButtonStyle.Secondary;
+            let styleSecond = quiz.option2 === quiz.answer ? ButtonStyle.Success : ButtonStyle.Secondary;
 
             interaction.update({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor(color)
+                        .setColor(Colors.Red)
                         .setDescription(`**${question}**\n${interaction.user} entered the incorrect answer!`)
                         .addFields(
                             { name: "Score", value: `\`${UserDatabase.quizScore - 1}\``, inline: true },
@@ -111,7 +108,7 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('quiz-3')
                                 .setLabel(`${quiz.option3}`)
-                                .setStyle('DANGER')
+                                .setStyle(ButtonStyle.Danger)
                                 .setDisabled(true),
                         )
                 ]
@@ -136,11 +133,11 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('quiz-replay')
                                 .setLabel(`Play Again`)
-                                .setStyle('PRIMARY'),
+                                .setStyle(ButtonStyle.Primary),
                             new ButtonBuilder()
                                 .setCustomId('stop')
                                 .setLabel(`End Interaction`)
-                                .setStyle('SECONDARY'),
+                                .setStyle(ButtonStyle.Secondary),
                         )
                 ]
             }).catch((err => { }))
