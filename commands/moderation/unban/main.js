@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: "unban",
@@ -7,7 +7,7 @@ module.exports = {
         {
             name: "user-id",
             description: "The ID of the user to unban.",
-            type: "STRING",
+            type: ApplicationCommandOptionType.String,
             required: true
         }
     ],

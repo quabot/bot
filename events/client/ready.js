@@ -1,4 +1,5 @@
 const consola = require('consola');
+const { ActivityType } = require('discord.js');
 const { connect } = require('mongoose');
 const { TESTING } = require('../../structures/settings.json');
 
@@ -12,7 +13,12 @@ module.exports = {
             useUnifiedTopology: true,
         }).catch((err) => console.error(err)).then((db) => consola.info(`Connected to database ${db.connections[0].name}.`))
 
-        function setActivity(status) { client.user.setActivity(status, { type: "WATCHING" }); }
+        function setActivity(status) {
+            client.user.setActivity({
+                type: ActivityType.Watching,
+                name: `${status}`,
+            });
+        }
         (function loop() {
             setTimeout(function () { setActivity(`${client.users.cache.size} users |  /help`) }, 6000);
             setTimeout(function () { setActivity(`quabot.net | /help`) }, 12000);
@@ -36,7 +42,7 @@ module.exports = {
             const poster = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg0NTYwMzcwMjIxMDk1MzI0NiIsImJvdCI6dHJ1ZSwiaWF0IjoxNjQxMzAwNTQxfQ.MhZPKVmJ2RgoWVZ1x5ADwZZI0oMt2Aa2Z_sjDC_QzXY', client);
 
             poster.on('posted', (stats) => {
-              console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`)
+                console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`)
             });
         }
     }

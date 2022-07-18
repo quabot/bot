@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
@@ -8,13 +8,13 @@ module.exports = {
         {
             name: "user",
             description: "The user to timeout.",
-            type: "USER",
+            type: ApplicationCommandOptionType.User,
             required: true
         },
         {
             name: "private",
             description: "Should the timeout be announced?",
-            type: "BOOLEAN",
+            type: ApplicationCommandOptionType.Boolean,
             required: false
         }
     ],

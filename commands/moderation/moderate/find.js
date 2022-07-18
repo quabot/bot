@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ButtonStyle, Colors } = require('discord.js');
 
 module.exports = {
     name: "find",
@@ -46,13 +46,13 @@ module.exports = {
         const backId = 'backRR'
         const forwardId = 'forwardRR'
         const backButton = new ButtonBuilder({
-            style: 'SECONDARY',
-            label: 'Back',
+            style: ButtonStyle.Secondary,
+            label: 'Backward',
             emoji: '⬅️',
             customId: backId
         });
         const forwardButton = new ButtonBuilder({
-            style: 'SECONDARY',
+            style: ButtonStyle.Secondary,
             label: 'Forward',
             emoji: '➡️',
             customId: forwardId
@@ -66,10 +66,10 @@ module.exports = {
             return new EmbedBuilder({
                 title: `Punishments ${start + 1}-${start + current.length}/${found.length
                     }`,
-                color: color,
+                color: Colors.Green,
                 fields: await Promise.all(
                     current.map(async (item) => ({
-                        name: `${item.punishmentId} | \`${item.type}\` - `,
+                        name: `${item.punishmentId} | \`${item.type}\``,
                         value: `Staff: <@${item.userExecuteId}> | User: <@${item.userId}> - Reason: ${item.reason}`
                     }))
                 )

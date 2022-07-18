@@ -1,96 +1,81 @@
-const { EmbedBuilder } = require('discord.js');
-const ms = require('ms');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
-    name: "tempban",
-    description: 'Tempban a user.',
-    permission: "BAN_MEMBERS",
-    permissions: ["SEND_MESSAGES", "BAN_MEMBERS"],
+    name: "kick",
+    description: 'Kick a user.',
+    permission: "KICK_MEMBERS",
+    permissions: ["SEND_MESSAGES", "KICK_MEMBERS"],
     options: [
         {
             name: "user",
-            description: "Who should QuaBot ban?",
-            type: "USER",
-            required: true,
-        },
-        {
-            name: "duration",
-            description: "How long should they be banned?",
-            type: "STRING",
+            description: "Who should QuaBot kick?",
+            type: ApplicationCommandOptionType.User,
             required: true,
         },
         {
             name: "reason",
-            description: "Why should that user be banned?",
-            type: "STRING",
+            description: "Why should that user be kicked?",
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: "private",
             description: "Should QuaBot hide this command being performed?",
-            type: "BOOLEAN",
+            type: ApplicationCommandOptionType.Boolean,
             required: false,
         }
     ],
     async execute(client, interaction, color) {
         let member = interaction.options.getMember('user');
         let reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : "No reason given";
-        let duration = interaction.options.getString('duration');
         let private = interaction.options.getBoolean('private') ? true : false;
         if (reason.length > 1000) reason = "No reason specified.";
-        let didBan = true;
+        let didKick = true;
 
         if (!member) {
-            didBan = false;
+            didKick = false;
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to ban`)
+                        .setDescription(`**<:error:990996645913194517> Unspecified argument**\nPlease specify a user to kick`)
                         .setColor(color)
                 ], ephemeral: private
             }).catch((err => { }))
         }
 
         if (member.id === interaction.member.id) {
-            didBan = false;
+            didKick = false;
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't ban yourself!`)
+                        .setDescription(`**<:error:990996645913194517> What are you trying to do?**\nYou can't kick yourself!`)
                         .setColor(color)
                 ], ephemeral: private
             }).catch((err => { }))
         }
 
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) {
-            didBan = false;
+            didKick = false;
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot ban a user with roles higher than your own`)
-                        .setColor(color)
+                    .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nYou cannot kick a user with roles higher than your own`)
+                    .setColor(color)
                 ], ephemeral: private
             }).catch((err => { }))
         }
 
         if (member.roles.highest.rawPosition > interaction.guild.members.cache.get(client.user.id).roles.highest.rawPosition) {
-            didBan = false;
+            didKick = false;
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`**<:error:990996645913194517> Insufficcient permissions**\nQuaBot does not have permission to ban that user - try moving the QuaBot role above all others`)
+                        .setTitle("<:error:990996645913194517> Insufficcient permissions")
+                        .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
                         .setColor(color)
                 ], ephemeral: private
             }).catch((err => { }))
         }
-
-        if (!ms(duration)) return interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription(`Please give a valid time! Eg. \`1h, 20s\``)
-                    .setColor(color)
-            ], ephemeral: private
-        }).catch((err => { }))
 
         const Channel = require('../../../structures/schemas/ChannelSchema');
         const ChannelDatabase = await Channel.findOne({
@@ -107,7 +92,7 @@ module.exports = {
         }).clone().catch((err => { }));
 
         if (!ChannelDatabase) {
-            didBan = false;
+            didKick = false;
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -128,14 +113,14 @@ module.exports = {
                     guildId: interaction.guild.id,
                     userId: member.id,
                     warnId: 0,
-                    kickId: 0,
-                    banId: 1,
+                    kickId: 1,
+                    banId: 0,
                     timeoutId: 0,
                 });
                 newPunishmentId.save();
             }
         }).clone().catch((err => { }));
-        
+
         if (!PunishmentIdDatabase) return interaction.reply({
             embeds: [
                 new EmbedBuilder()
@@ -144,31 +129,30 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        const banId = PunishmentIdDatabase.banId ? PunishmentIdDatabase.banId + 1 : 1;
+        const kickId = PunishmentIdDatabase.kickId ? PunishmentIdDatabase.kickId + 1 : 1;
 
-        await member.ban({ reason: reason }).catch(err => {
-            didBan = false;
+        await member.kick({ reason: reason }).catch(err => {
+            didKick = false;
             if (err.code === 50013) {
                 return interaction.reply({
                     embeds: [
                         new EmbedBuilder()
                             .setTitle("<:error:990996645913194517> Insufficcient permissions")
-                            .setDescription(`QuaBot does not have permission to ban that user - try moving the QuaBot role above all others`)
+                            .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
                             .setColor(color)
                     ], ephemeral: private
                 }).catch((err => { }))
             }
         });
 
-        if (didBan) {
+        if (didKick) {
             if (!private) {
                 member.send({
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle(`You were temp-banned!`)
-                            .setDescription(`You were banned from **${interaction.guild.name}**
-                    **Banned by**: ${interaction.user}
-                    **Ban Duration**: ${duration}
+                            .setTitle(`You were kicked`)
+                            .setDescription(`You were kicked from **${interaction.guild.name}**
+                    **Kicked by**: ${interaction.user}
                     **Reason**: ${reason}`)
                             .setTimestamp()
                             .setColor(color)
@@ -178,13 +162,13 @@ module.exports = {
             await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle(`User temp-banned`)
+                        .setTitle(`User kicked`)
                         .setDescription(`**User**: ${member}`)
                         .setColor(color)
                         .addFields(
-                            { name: "Ban-ID", value: `${banId}`, inline: true },
+                            { name: "Kick-ID", value: `${kickId}`, inline: true },
                             { name: "Reason", value: `${reason}`, inline: true },
-                            { name: "Duration", value: `${duration}`, inline: true },
+                            { name: "\u200b", value: "\u200b", inline: true },
                             { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
                             { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
                             { name: "\u200b", value: "\u200b", inline: true },
@@ -193,24 +177,25 @@ module.exports = {
             }).catch((err => { }))
         }
 
+
         const channel = interaction.guild.channels.cache.get(`${ChannelDatabase.punishmentChannelId}`);
         if (channel) {
-            if (didBan) {
+            if (didKick) {
                 channel.send({
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle("Member Tempbanned")
+                            .setTitle("Member Kicked")
                             .setDescription(`**User**: ${member}`)
                             .setColor(color)
                             .addFields(
-                                { name: "Ban-ID", value: `${banId}`, inline: true },
+                                { name: "Kick-ID", value: `${kickId}`, inline: true },
                                 { name: "Reason", value: `${reason}`, inline: true },
-                                { name: "Duration", value: `${duration}`, inline: true },
+                                { name: "\u200b", value: "\u200b", inline: true },
                                 { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
                                 { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
                                 { name: "\u200b", value: "\u200b", inline: true },
-                                { name: "Banned By", value: `${interaction.user}`, inline: true },
-                                { name: "Banned In", value: `${interaction.channel}`, inline: true },
+                                { name: "Kicked By", value: `${interaction.user}`, inline: true },
+                                { name: "Kicked In", value: `${interaction.channel}`, inline: true },
                                 { name: "\u200b", value: "\u200b", inline: true },
                             )
                             .setColor(color)
@@ -223,18 +208,18 @@ module.exports = {
         const newPunishment = new Punishment({
             guildId: interaction.guild.id,
             userId: member.user.id,
-            type: "tempban",
-            punishmentId: banId,
+            type: "kick",
+            punishmentId: kickId,
             channelId: interaction.channel.id,
             userExecuteId: interaction.user.id,
             reason: reason,
-            time: new Date().getTime() + ms(duration),
+            time: new Date().getTime(),
         });
         newPunishment.save();
- 
-        await PunishmentIdDatabase.updateOne({
-            banId: banId,
-        });
 
+        await PunishmentIdDatabase.updateOne({
+            kickId: kickId,
+        });
+        
     }
 }

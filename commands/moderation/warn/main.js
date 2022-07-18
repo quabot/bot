@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: "warn",
@@ -8,19 +8,19 @@ module.exports = {
         {
             name: "user",
             description: "Who should QuaBot warn?",
-            type: "USER",
+            type: ApplicationCommandOptionType.User,
             required: true,
         },
         {
             name: "reason",
             description: "Why should that user be warned?",
-            type: "STRING",
+            type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
             name: "private",
             description: "Should QuaBot hide this command being performed?",
-            type: "BOOLEAN",
+            type: ApplicationCommandOptionType.Boolean,
             required: false,
         }
     ],

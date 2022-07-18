@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
@@ -9,12 +9,12 @@ module.exports = {
         {
             name: "find",
             description: "Find and list punishments.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: "punishment",
                     description: "The punishment to view.",
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     required: false,
                     choices: [
                         { name: "Kick", value: "kick" },
@@ -27,13 +27,13 @@ module.exports = {
                 {
                     name: "user",
                     description: "The user to view.",
-                    type: "USER",
+                    type: ApplicationCommandOptionType.User,
                     required: false
                 },
                 {
                     name: "staff-member",
                     description: "The staff member that executed the infractions.",
-                    type: "USER",
+                    type: ApplicationCommandOptionType.User,
                     required: false
                 }
             ]
@@ -41,7 +41,7 @@ module.exports = {
         {
             name: "manage",
             description: "Manage punishments.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
         },
     ],
     async execute(client, interaction, color) {}
