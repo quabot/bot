@@ -70,10 +70,7 @@ module.exports = {
     
                 }
 
-                console.log(subCommand.command, interaction.commandName, subCommand.name, interaction.options.getSubcommand(), CustomizationDatabase.color)
-
                 if (subCommand.command === interaction.commandName && subCommand.name === interaction.options.getSubcommand() && CustomizationDatabase.color) {
-                    console.log("SEX")
                     subCommand.execute(client, interaction, CustomizationDatabase.color);
                 }
 

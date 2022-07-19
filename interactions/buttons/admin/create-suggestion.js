@@ -1,4 +1,4 @@
-const { EmbedBuilder, Modal, ActionRowBuilder, TextInputComponent } = require('discord.js');
+const { EmbedBuilder, Modal, ActionRowBuilder, TextInputComponent, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 
 module.exports = {
     id: "create-suggestion",
@@ -54,18 +54,18 @@ module.exports = {
 
 
         //* Show the modal.
-        const modal = new Modal()
+        const modal = new ModalBuilder()
             .setCustomId('suggestion')
             .setTitle('Leave a suggestion')
             .addComponents(
                 new ActionRowBuilder()
                     .addComponents(
-                        new TextInputComponent()
+                        new TextInputBuilder()
                             .setCustomId('suggestion-box')
                             .setLabel('Your suggestion')
-                            .setStyle('PARAGRAPH')
+                            .setStyle(TextInputStyle.Paragraph)
                             .setMinLength(1)
-                            .setMaxLength(300)
+                            .setMaxLength(600)
                             .setPlaceholder('More voice channels!')
                             .setRequired(true)
                     )

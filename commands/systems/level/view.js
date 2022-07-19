@@ -88,7 +88,7 @@ module.exports = {
                 interaction.reply({ files: [attactment] }).catch((err => { }));
             });
         } else {
-            let levelUpMsg = `${LevelConfigDatabase.levelUpMessage}`;
+            let levelUpMsg = `{user} is level **{level}** with **{xp}** xp!`;
             levelUpMsg = levelUpMsg.replaceAll("{user}", `${user}`)
             levelUpMsg = levelUpMsg.replaceAll("{username}", `${user.username}`)
             levelUpMsg = levelUpMsg.replaceAll("{tag}", `${user.tag}`)

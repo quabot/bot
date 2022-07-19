@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require('discord.js');
 
 module.exports = {
     id: "suggestion-reject",
@@ -94,10 +94,12 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setTitle("New Suggestion!")
-                        .setColor("RED")
+                        .setColor(Colors.Red)
                         .setDescription("This suggestion was rejected.")
-                        .addField("Suggestion", `${suggestion.suggestion}`)
-                        .addField("Suggested By", `${member}`)
+                        .addFields(
+                            { name: "Suggestion", value: `${suggestion.suggestion}` },
+                            { name: "Suggested By", value: `${member}` },
+                        )
                         .setTimestamp()
                         .setFooter({ text: `Vote with the ${emoji2} and ${emoji1} below this message.` })
                 ]
@@ -107,7 +109,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setTitle("New Suggestion")
-                        .setColor("RED")
+                        .setColor(Colors.Red)
                         .addFields(
                             { name: 'Suggestion', value: `${suggestion.suggestion}` },
                             { name: 'Suggested By', value: `${member}`, inline: true },
@@ -123,16 +125,16 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('suggestion-approve')
                                 .setLabel("Approve")
-                                .setStyle("SUCCESS"),
+                                .setStyle(ButtonStyle.Success),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-reject')
                                 .setLabel("Reject")
                                 .setDisabled(true)
-                                .setStyle("DANGER"),
+                                .setStyle(ButtonStyle.Danger),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-delete')
                                 .setLabel("Delete")
-                                .setStyle("SECONDARY"),
+                                .setStyle(ButtonStyle.Secondary),
                         )
                 ]
             }).catch((err => { }));

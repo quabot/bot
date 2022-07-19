@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
 const { randomUUID } = require('node:crypto');
 
 module.exports = {
@@ -72,9 +72,11 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setTitle("New Suggestion!")
-                    .setColor("BLUE")
-                    .addField("Suggestion", `${suggestion}`)
-                    .addField("Suggested By", `${interaction.user}`)
+                    .setColor(Colors.Blue)
+                    .addFields(
+                         { name: "Suggestion", value: `${suggestion}` },
+                         { name: "Suggested By", value: `${interaction.user}` }
+                    )
                     .setTimestamp()
                     .setFooter({ text: `Vote with the ${emoji2} and ${emoji1} below this message.`})
             ]
@@ -102,7 +104,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setTitle("New Suggestion")
-                        .setColor("BLUE")
+                        .setColor(Colors.Blue)
                         .addFields(
                             { name: 'Suggestion', value: `${suggestion}` },
                             { name: 'Suggested By', value: `${interaction.user}`, inline: true },
@@ -117,15 +119,15 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('suggestion-approve')
                                 .setLabel("Approve")
-                                .setStyle("SUCCESS"),
+                                .setStyle(ButtonStyle.Success),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-reject')
                                 .setLabel("Reject")
-                                .setStyle("DANGER"),
+                                .setStyle(ButtonStyle.Danger),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-delete')
                                 .setLabel("Delete")
-                                .setStyle("SECONDARY"),
+                                .setStyle(ButtonStyle.Secondary),
                         )
                 ]
             })

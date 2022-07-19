@@ -1,3 +1,5 @@
+const { ApplicationCommandOptionType } = require("discord.js");
+
 module.exports = {
     name: "level",
     description: "Level Module",
@@ -5,26 +7,26 @@ module.exports = {
         {
             name: "view",
             description: "View yours or someone else's XP & Level.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: "user",
                     description: "User to find.",
                     required: false,
-                    type: "USER",
+                    type: ApplicationCommandOptionType.User,
                 }
             ]
         },
         {
             name: "leaderboard",
             description: "Get the top 15 users.",
-            type: "SUB_COMMAND",
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: "type",
                     description: "Sort by XP or Level.",
                     required: true,
-                    type: "STRING",
+                    type: ApplicationCommandOptionType.String,
                     choices: [
                         { name: "Xp", value: "xp" },
                         { name: "Level", value: "level" },

@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require('discord.js');
 
 module.exports = {
     id: "suggestion-delete",
@@ -86,7 +86,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setTitle("New Suggestion")
-                        .setColor("DARK_RED")
+                        .setColor(Colors.DarkRed)
                         .addFields(
                             { name: 'Suggestion', value: `${suggestion.suggestion}` },
                             { name: 'Suggested By', value: `${member}`, inline: true },
@@ -103,17 +103,17 @@ module.exports = {
                                 .setCustomId('suggestion-approve')
                                 .setLabel("Approve")
                                 .setDisabled(true)
-                                .setStyle("SUCCESS"),
+                                .setStyle(ButtonStyle.Success),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-reject')
                                 .setLabel("Reject")
                                 .setDisabled(true)
-                                .setStyle("DANGER"),
+                                .setStyle(ButtonStyle.Danger),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-delete')
                                 .setLabel("Delete")
                                 .setDisabled(true)
-                                .setStyle("SECONDARY"),
+                                .setStyle(ButtonStyle.Secondary),
                         )
                 ]
             }).catch((err => { }));
