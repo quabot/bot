@@ -20,7 +20,7 @@ module.exports = {
 
                 if (!subcommand) return;
 
-                const subCommand = client.subcommands.get(`${interaction.commandName}/${subcommand}`);
+                const subCommand = client.subcommands.get(`${interaction.commandName}/${subcommand}`)
 
                 const Customization = require('../../structures/schemas/CustomizationSchema');
                 const CustomizationDatabase = await Customization.findOne({
@@ -55,8 +55,8 @@ module.exports = {
                 if (subCommand.permissions) {
                     let error = false;
                     subCommand.permissions.forEach(permission => {
-                        if (!interaction.guild.me.permissions.has(permission)) error = true;
-                        if (!interaction.guild.me.permissionsIn(interaction.channel).has(permission)) error = true;
+                        if (!interaction.guild.members.me.permissions.has(permission)) error = true;
+                        if (!interaction.guild.members.me.permissionsIn(interaction.channel).has(permission)) error = true;
                     });
     
                     if (error) {
@@ -70,7 +70,10 @@ module.exports = {
     
                 }
 
+                console.log(subCommand.command, interaction.commandName, subCommand.name, interaction.options.getSubcommand(), CustomizationDatabase.color)
+
                 if (subCommand.command === interaction.commandName && subCommand.name === interaction.options.getSubcommand() && CustomizationDatabase.color) {
+                    console.log("SEX")
                     subCommand.execute(client, interaction, CustomizationDatabase.color);
                 }
 
