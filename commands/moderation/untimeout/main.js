@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
             required: false
         }
     ],
-    permission: "MODERATE_MEMBERS",
+    permission: PermissionFlagsBits.ModerateMembers,
     async execute(client, interaction, color) {
 
         const user = interaction.options.getMember("user");

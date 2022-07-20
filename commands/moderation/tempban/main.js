@@ -1,11 +1,11 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
     name: "tempban",
     description: 'Tempban a user.',
-    permission: "BAN_MEMBERS",
-    permissions: ["SEND_MESSAGES", "BAN_MEMBERS"],
+    permission: PermissionFlagsBits.BanMembers,
+    permissions: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.BanMembers],
     options: [
         {
             name: "user",

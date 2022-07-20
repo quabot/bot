@@ -1,9 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "reactionroles",
     description: "Create, edit and list reactionroles.",
-    permission: "ADMINISTRATOR",
+    permission: PermissionFlagsBits.Administrator,
     options: [
         {
             name: "create",

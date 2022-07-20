@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits, ButtonStyle } = require('discord.js');
 
 // delete ticket
 module.exports = {
@@ -65,9 +65,9 @@ module.exports = {
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
         if (ticketFound.users.includes(interaction.user.id)) valid = true;
-        if (interaction.member.permissions.has("ADMINISTRATOR")) valid = true;
-        if (interaction.member.permissions.has("MANAGE_CHANNELS")) valid = true;
-        if (interaction.member.permissions.has("MANAGE_SERVER")) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
 
         if (!valid) return interaction.reply({
             embeds: [
@@ -98,13 +98,13 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId('cancel-ticket')
                             .setLabel('🚫 Cancel')
-                            .setStyle('DANGER')
+                            .setStyle(ButtonStyle.Danger)
                     )
                     .addComponents(
                         new ButtonBuilder()
                             .setCustomId('confirm-ticket')
                             .setLabel('✅ Confirm')
-                            .setStyle('SUCCESS')
+                            .setStyle(ButtonStyle.Success)
                     )
             ], fetchReply: true
         }).catch((err => { }));
@@ -121,14 +121,14 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('cancel-ticket')
                                 .setLabel('🚫 Cancel')
-                                .setStyle('DANGER')
+                                .setStyle(ButtonStyle.Danger)
                                 .setDisabled(true)
                         )
                         .addComponents(
                             new ButtonBuilder()
                                 .setCustomId('confirm-ticket')
                                 .setLabel('✅ Confirm')
-                                .setStyle('SUCCESS')
+                                .setStyle(ButtonStyle.Success)
                                 .setDisabled(true)
                         )
                 ]

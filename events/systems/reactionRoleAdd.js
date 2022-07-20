@@ -21,6 +21,7 @@ module.exports = {
         const member = reaction.message.guild.members.cache.get(`${user.id}`);
         if (!role) return;
 
+        //! fix the permissions system
         if (reactionRole.reqPermission !== "None") {
             if (!member.permissions.has(reactionRole.reqPermission)) return;
         }

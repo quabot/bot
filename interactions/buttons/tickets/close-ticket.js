@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits, ButtonStyle } = require('discord.js');
 
 // close ticket
 module.exports = {
@@ -30,8 +30,6 @@ module.exports = {
                     });
             }
         }).clone().catch(function (err) { });
-
-
 
         if (!ticketConfigDatabase) return interaction.reply({
             embeds: [
@@ -67,9 +65,9 @@ module.exports = {
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
         if (ticketFound.users.includes(interaction.user.id)) valid = true;
-        if (interaction.member.permissions.has("ADMINISTRATOR")) valid = true;
-        if (interaction.member.permissions.has("MANAGE_CHANNELS")) valid = true;
-        if (interaction.member.permissions.has("MANAGE_SERVER")) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
 
         if (!valid) return interaction.reply({
             embeds: [
@@ -102,12 +100,12 @@ module.exports = {
         channel.setParent(closedCategory, { lockPermissions: false }).catch((err => { }));
 
         channel.permissionOverwrites.edit(ticketFound.owner,
-            { VIEW_CHANNEL: true, SEND_MESSAGES: false },
+            { ViewChannel: true, SendMessages: false },
         ).catch((err => { }));
 
         ticketFound.users.forEach(user => {
             channel.permissionOverwrites.edit(user,
-                { VIEW_CHANNEL: true, SEND_MESSAGES: false },
+                { ViewChannel: true, SendMessages: false },
             ).catch((err => { }));
         });
 
@@ -118,7 +116,7 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId('close-ticket')
                             .setLabel('🔒 Close')
-                            .setStyle('DANGER')
+                            .setStyle(ButtonStyle.Danger)
                             .setDisabled(true)
                     )
             ],
@@ -137,19 +135,19 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId('reopen-ticket')
                             .setLabel('🔓 Reopen')
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                     )
                     .addComponents(
                         new ButtonBuilder()
                             .setCustomId('delete-ticket')
                             .setLabel('🗑️ Delete')
-                            .setStyle('DANGER')
+                            .setStyle(ButtonStyle.Danger)
                     )
                     .addComponents(
                         new ButtonBuilder()
                             .setCustomId('transcript-ticket')
                             .setLabel('📝 Transcipt')
-                            .setStyle('SUCCESS')
+                            .setStyle(ButtonStyle.Success)
                     )
             ],
         }).catch((err => { console.error(err) }));

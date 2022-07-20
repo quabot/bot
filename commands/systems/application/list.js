@@ -1,9 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "list",
     command: "application",
-    permission: "MANAGE_MESSAGES",
+    permission: PermissionFlagsBits.ManageMessages,
     async execute(client, interaction, color) {
 
         //* Find the applications

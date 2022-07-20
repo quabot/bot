@@ -1,9 +1,9 @@
-const { EmbedBuilder, ApplicationCommandOptionType, ChannelType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, ChannelType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "purge",
-    permission: "MANAGE_MESSAGES",
-    permissions: ["MANAGE_MESSAGES"],
+    permission: PermissionFlagsBits.ManageMessages,
+    permissions: [PermissionFlagsBits.ManageChannels],
     description: "Purge/clear/bulk delete some messages.",
     options: [
         {

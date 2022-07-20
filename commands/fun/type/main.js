@@ -1,10 +1,10 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, PermissionFlagsBits } = require('discord.js');
 const typeSentences = require('../../../structures/files/type.json');
 
 module.exports = {
     name: "type",
     description: "Play a typing game",
-    permissions: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+    permissions: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
     async execute(client, interaction, color) {
 
         const sentence = typeSentences[Math.floor(Math.random() * typeSentences.length)];

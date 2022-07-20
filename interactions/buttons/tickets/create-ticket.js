@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, Modal, TextInputComponent, ButtonBuilder, GuildScheduledEvent } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, Modal, TextInputComponent, ButtonBuilder, GuildScheduledEvent, ButtonStyle, TextInputStyle, ChannelType, PermissionFlagsBits } = require('discord.js');
 
 // create ticket
 module.exports = {
@@ -66,22 +66,23 @@ module.exports = {
 
             let ticketId = parseInt(`${ticketConfigDatabase.ticketId}`) + 1;
 
-            const channel = await interaction.guild.channels.create(`ticket-${ticketId}`, {
-                type: "TEXT",
+            const channel = await interaction.guild.channels.create({
+                name: `ticket-${ticketId}`,
+                type: ChannelType.GuildText,
                 permissionOverwrites: [
                     {
                         id: interaction.guild.id,
-                        deny: ["VIEW_CHANNEL", "SEND_MESSAGES"]
+                        deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
                     },
                     {
                         id: interaction.user.id,
-                        allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]
+                        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory]
                     },
                 ]
             });
 
             channel.permissionOverwrites.create(role,
-                { VIEW_CHANNEL: true, SEND_MESSAGES: true },
+                { ViewChannel: true, SendMessages: true },
             );
 
             channel.setParent(openCategory, { lockPermissions: false });
@@ -104,7 +105,7 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('close-ticket')
                                 .setLabel('🔒 Close')
-                                .setStyle('DANGER')
+                                .setStyle(ButtonStyle.Danger)
                         )
                 ],
             }).catch((err) => { });
@@ -150,7 +151,7 @@ module.exports = {
                             new TextInputComponent()
                                 .setCustomId('ticket-topic')
                                 .setLabel('Ticket Topic')
-                                .setStyle('SHORT')
+                                .setStyle(TextInputStyle.Short)
                                 .setMinLength(1)
                                 .setMaxLength(300)
                                 .setPlaceholder('I have a question about...')

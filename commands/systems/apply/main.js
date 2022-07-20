@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType, ButtonStyle, Colors, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType, ButtonStyle, Colors, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits } = require('discord.js');
 const { randomUUID } = require('node:crypto');
 const { v4: uuidv4 } = require('uuid');
 const wait = require('node:timers/promises').setTimeout;
@@ -6,7 +6,7 @@ const wait = require('node:timers/promises').setTimeout;
 module.exports = {
     name: "apply",
     description: 'Staff applications.',
-    permissions: ["MANAGE_CHANNELS", "SEND_MESSAGES"],
+    permissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.SendMessages],
     options: [
         {
             name: "id",

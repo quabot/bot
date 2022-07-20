@@ -1,9 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "application",
     description: 'Staff applications.',
-    permissions: ["MANAGE_CHANNELS", "SEND_MESSAGES"],
+    permissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.SendMessages],
     options: [
         {
             name: "list",
@@ -32,3 +32,4 @@ module.exports = {
     ],
     async execute(client, interaction, color) {}
 }
+

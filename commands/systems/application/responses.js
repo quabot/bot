@@ -1,10 +1,10 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError, ButtonStyle, Colors } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Permissions, Message, MessageManager, DiscordAPIError, ButtonStyle, Colors, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "responses",
     command: "application",
-    permission: "ADMINISTRATOR",
-    permissions: ["SEND_MESSAGES"],
+    permission: PermissionFlagsBits.Administrator,
+    permissions: [PermissionFlagsBits.SendMessages],
     async execute(client, interaction, color) {
 
 

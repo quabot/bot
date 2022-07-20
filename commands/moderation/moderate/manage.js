@@ -1,9 +1,9 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "manage",
     command: "moderate",
-    permission: "MODERATE_MEMBERS",
+    permission: PermissionFlagsBits.ModerateMembers,
     async execute(client, interaction, color) {
 
         interaction.reply({

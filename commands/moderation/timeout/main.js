@@ -1,10 +1,10 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
     name: "timeout",
     description: "Timeout/mute a user.",
-    permission: "MODERATE_MEMBERS",
+    permission: PermissionFlagsBits.ModerateMembers,
     options: [
         {
             name: "user",

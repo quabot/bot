@@ -1,10 +1,10 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
     name: "moderate",
     description: "Manage punishments.",
-    permission: "MODERATE_MEMBERS",
+    permission: PermissionFlagsBits.ModerateMembers,
     options: [
         {
             name: "find",

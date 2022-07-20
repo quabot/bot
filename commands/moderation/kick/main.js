@@ -1,10 +1,10 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "kick",
     description: 'Kick a user.',
-    permission: "KICK_MEMBERS",
-    permissions: ["SEND_MESSAGES", "KICK_MEMBERS"],
+    permission: PermissionFlagsBits.KickMembers,
+    permissions: [PermissionFlagsBits.SendMessages, PermissionFlagsBits.KickMembers],
     options: [
         {
             name: "user",

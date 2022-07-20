@@ -1,10 +1,10 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "message",
     description: "Send messages for tickets & suggestions.",
-    permission: "ADMINISTRATOR",
-    permissions: ["SEND_MESSAGES"],
+    permission: PermissionFlagsBits.Administrator,
+    permissions: [PermissionFlagsBits.SendMessages],
     async execute(client, interaction, color) {
 
         const msg = await interaction.reply({

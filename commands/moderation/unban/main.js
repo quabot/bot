@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: "unban",
@@ -11,7 +11,7 @@ module.exports = {
             required: true
         }
     ],
-    permission: "BAN_MEMBERS",
+    permission: PermissionFlagsBits.BanMembers,
     async execute(client, interaction, color) {
 
         const userid = interaction.options.getString("user-id");

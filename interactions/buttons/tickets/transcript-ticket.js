@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits } = require('discord.js');
 
 // transcript ticket
 module.exports = {
@@ -65,9 +65,9 @@ module.exports = {
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
         if (ticketFound.users.includes(interaction.user.id)) valid = true;
-        if (interaction.member.permissions.has("ADMINISTRATOR")) valid = true;
-        if (interaction.member.permissions.has("MANAGE_CHANNELS")) valid = true;
-        if (interaction.member.permissions.has("MANAGE_SERVER")) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
 
         if (!valid) return interaction.reply({
             embeds: [
