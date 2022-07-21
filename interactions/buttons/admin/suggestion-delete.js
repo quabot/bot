@@ -1,8 +1,8 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     id: "suggestion-delete",
-    permission: "ADMINISTRATOR",
+    permission: PermissionFlagsBits.Administrator,
     async execute(interaction, client, color) {
 
 

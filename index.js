@@ -16,7 +16,4 @@ client.subcommands = new Collection();
     require(`./structures/handlers/${handler}`)(client, PG, Ascii, consola);
 });
 
-let messageArray = [];
-module.exports = { messageArray }
-
 client.login(process.env.TOKEN);

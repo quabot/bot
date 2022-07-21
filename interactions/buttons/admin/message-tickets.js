@@ -1,8 +1,8 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     id: "message-tickets",
-    permission: "ADMINISTRATOR",
+    permission: PermissionFlagsBits.Administrator,
     async execute(interaction, client, color) {
 
         const TicketConfig = require('../../../structures/schemas/TicketConfigSchema');

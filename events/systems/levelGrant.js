@@ -1,16 +1,23 @@
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { messageArray } = require('../..');
 const { getColor } = require('../../structures/files/contants');
 const canvacord = require('canvacord');
 
 module.exports = {
-    name: "ready",
-    async execute(client) {
+    name: "messageCreate",
+    async execute(message, client) {
 
-        async function executeXPGranting() {
-            messageArray.forEach(async (msg) => {
+        if (message.author.bot) return;
 
-                const Level = require('../../structures/schemas/LevelSchema');
+        if (messageArray.find(item => item.userId === message.author.id && item.guildId === message.guild.id)) return;
+
+        let msg = {
+            content_length: message.content.length,
+            guildId: message.guild.id,
+            userId: message.author.id,
+            channelId: message.channel.id
+        };
+
+        const Level = require('../../structures/schemas/LevelSchema');
                 const LevelDatabase = await Level.findOne({
                     guildId: msg.guildId,
                     userId: msg.userId
@@ -144,20 +151,6 @@ module.exports = {
                         LevelDatabase.role = levelRole;
                         try { await LevelDatabase.save().catch((err => { }));; } catch (e) { return }
                     }
-
-
                 }
-            });
-        }
-
-        (function loop() {
-            setTimeout(async function () {
-                
-                executeXPGranting();
-                messageArray.length = [];
-
-                loop()
-            }, 20 * 1000);
-        }());
     }
 }

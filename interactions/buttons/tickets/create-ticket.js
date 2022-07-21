@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, Modal, TextInputComponent, ButtonBuilder, GuildScheduledEvent, ButtonStyle, TextInputStyle, ChannelType, PermissionFlagsBits } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, Modal, TextInputComponent, ButtonBuilder, GuildScheduledEvent, ButtonStyle, TextInputStyle, ChannelType, PermissionFlagsBits, ModalBuilder, TextInputBuilder } = require('discord.js');
 
 // create ticket
 module.exports = {
@@ -142,13 +142,13 @@ module.exports = {
         if (ticketConfigDatabase.ticketTopicButton === false) {
             createTicket(ticketConfigDatabase, interaction, null);
         } else {
-            const modal = new Modal()
+            const modal = new ModalBuilder()
                 .setCustomId('ticket')
                 .setTitle('Create a ticket')
                 .addComponents(
                     new ActionRowBuilder()
                         .addComponents(
-                            new TextInputComponent()
+                            new TextInputBuilder()
                                 .setCustomId('ticket-topic')
                                 .setLabel('Ticket Topic')
                                 .setStyle(TextInputStyle.Short)

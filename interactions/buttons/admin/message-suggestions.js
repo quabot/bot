@@ -1,8 +1,8 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     id: "message-suggestions",
-    permission: "ADMINISTRATOR",
+    permission: PermissionFlagsBits.Administrator,
     async execute(interaction, client, color) {
 
         //* Implement the suggestion config.
