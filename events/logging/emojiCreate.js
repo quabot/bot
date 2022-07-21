@@ -1,4 +1,5 @@
-const { EmbedBuilder, Message } = require('discord.js');
+const { EmbedBuilder, Message, Colors } = require('discord.js');
+const { logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "emojiCreate",
@@ -48,8 +49,7 @@ module.exports = {
             if (logDatabase.logEnabled === false) return;
             const channel = emoji.guild.channels.cache.get(logDatabase.logChannelId);
             if (!channel) return;
-            if (channel.type === "GUILD_VOICE") return;
-            if (channel.type === "GUILD_STAGE_VOICE") return;
+            if (logChannelBlackList.includes(channel.type)) return;
 
             if (!logDatabase.enabledEvents.includes("emojiCreateDelete")) return;
             
@@ -58,12 +58,11 @@ module.exports = {
             channel.send({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor("GREEN")
+                        .setColor(Colors.Green)
                         .setDescription(`**New${word}Emoji**\n\`${emoji.name}\``)
                         .setTimestamp()
                         .setFooter({ text: `${emoji.name}`, iconURL: `${emoji.url}` })
                 ]
-            }).catch((err => { }));
-
+            }).catch((err => { })).catch((err => { }));
     }
 }

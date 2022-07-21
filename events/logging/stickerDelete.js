@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, Colors } = require('discord.js');
+const { logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "stickerDelete",
@@ -49,8 +50,7 @@ module.exports = {
 
         const channel = sticker.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase) return;
 
@@ -59,7 +59,7 @@ module.exports = {
         channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor("RED")
+                    .setColor(Colors.Red)
                     .setDescription(`**Removed Sticker**\n\`${sticker.name}\`\n${sticker.description}`)
                     .setTimestamp()
             ]

@@ -1,3 +1,5 @@
+const { ChannelType } = require('discord.js');
+
 // Create the function to fetch the embed color.
 async function getColor(guildId) {
     const Customization = require('../../structures/schemas/CustomizationSchema');
@@ -19,4 +21,15 @@ async function getColor(guildId) {
     return CustomizationDatabase.color;
 }
 
-module.exports = { getColor }
+
+const logChannelBlackList = [
+    ChannelType.DM,
+    ChannelType.GroupDM,
+    ChannelType.GuildCategory,
+    ChannelType.GuildDirectory,
+    ChannelType.GuildForum,
+    ChannelType.GuildStageVoice,
+    ChannelType.GuildVoice,
+]
+
+module.exports = { getColor, logChannelBlackList }

@@ -1,5 +1,5 @@
 const { EmbedBuilder, Message } = require('discord.js');
-const { getColor } = require('../../structures/files/contants');
+const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "messageDelete",
@@ -52,8 +52,7 @@ module.exports = {
 
         const channel = message.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase) return;
 
@@ -79,16 +78,14 @@ module.exports = {
 
         if (message.author.avatar) embed.setFooter({ text: `User: ${message.author.tag}`, iconURL: `${message.author.avatarURL({ dynamic: true })}` })
 
-        embed.addField("Channel", `${message.channel}`, true);
+        embed.addFields({ name: "Channel", value: `${message.channel}`, inline: true });
 
         if (message.attachments !== null) {
             message.attachments.map(getUrls);
             function getUrls(item) {
-                embed.addField(`**Attachment:**`, `${[item.url].join(" ")}`)
+                embed.addFields({ name: `**Attachment:**`, value: `${[item.url].join(" ")}` })
             }
         }
-
         channel.send({ embeds: [embed] }).catch((err => { }));
-
     }
 }

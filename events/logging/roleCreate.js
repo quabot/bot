@@ -1,5 +1,5 @@
 const { EmbedBuilder, Message } = require('discord.js');
-const { getColor } = require('../../structures/files/contants');
+const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "roleCreate",
@@ -50,8 +50,7 @@ module.exports = {
 
         const channel = role.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         let description = `**Role Created**\n${role}`;
         let perms = role.permissions.toArray().join("\n")

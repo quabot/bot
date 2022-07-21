@@ -1,5 +1,5 @@
-const { EmbedBuilder, Message } = require('discord.js');
-const { getColor } = require('../../structures/files/contants');
+const { EmbedBuilder, Message, ChannelType } = require('discord.js');
+const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "channelUpdate",
@@ -50,8 +50,7 @@ module.exports = {
 
         const channel = oldChannel.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase.enabledEvents.includes("channelUpdate")) return;
 
@@ -60,13 +59,13 @@ module.exports = {
 
         // sets channel type var
         let type;
-        if (newChannel.type === "GUILD_TEXT") type = "Text Channel";
-        if (newChannel.type === "GUILD_VOICE") type = "Voice Channel";
-        if (newChannel.type === "GUILD_CATEGORY") type = "Category";
-        if (newChannel.type === "GUILD_NEWS") type = "News Channel";
-        if (newChannel.type === "GUILD_FORUM") type = "Forum Channel";
-        if (newChannel.type === "GUILD_STAGE_VOICE") type = "Stage Channel";
-        if (newChannel.type === "GUILD_DIRECTORY") type = "GUILD_DIRECTORY";
+        if (newChannel.type === ChannelType.GuildText) type = "Text Channel";
+        if (newChannel.type === ChannelType.GuildVoice) type = "Voice Channel";
+        if (newChannel.type === ChannelType.GuildCategory) type = "Category";
+        if (newChannel.type === ChannelType.GuildNews) type = "News Channel";
+        if (newChannel.type === ChannelType.GuildForum) type = "Forum Channel";
+        if (newChannel.type === ChannelType.GuildStageVoice) type = "Stage Channel";
+        if (newChannel.type === ChannelType.GuildDirectory) type = "Directory Channel";
         let args = "";
 
         // actual args
@@ -81,15 +80,12 @@ module.exports = {
         if (oldChannel.userLimit !== newChannel.userLimit) args = `${args}\n**User Limit:** \n\`${oldChannel.userLimit}\` -> \`${newChannel.userLimit}\``
         if (oldChannel.defaultAutoArchiveDuration !== newChannel.threads.defaultAutoArchiveDuration) args = `${args}\n**Auto Archive:** \n\`${oldChannel.defaultAutoArchiveDuration}s\` -> \`${newChannel.defaultAutoArchiveDuration}s\``;
         if (oldChannel.type !== newChannel.type) return;
-        //if (oldChannel.permissionOverwrites !== newChannel.permissionOverwrites) return;
-
 
         const embed = new EmbedBuilder()
             .setColor(await getColor(oldChannel.guild.id))
             .setDescription(`**${type} Updated**\n${newChannel}\n${args}`)
             .setTimestamp()
             .setFooter({ text: `Channel Name: ${channel.name}` })
-        channel.send({ embeds: [embed] }).catch((err => console.log(err)));
-
+        channel.send({ embeds: [embed] }).catch((err => { }));
     }
 }

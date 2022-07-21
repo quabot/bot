@@ -1,5 +1,5 @@
-const { EmbedBuilder } = require('discord.js');
-const { getColor } = require('../../structures/files/contants');
+const { EmbedBuilder, ChannelType } = require('discord.js');
+const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "channelCreate",
@@ -49,17 +49,18 @@ module.exports = {
         if (logDatabase.logEnabled === false) return;
         const sendCh = channel.guild.channels.cache.get(logDatabase.logChannelId);
         if (!sendCh) return;
+        if (logChannelBlackList.includes(sendCh.type)) return;
 
         if (!logDatabase.enabledEvents.includes("channelCreateDelete")) return;
 
         let title;
-        if (channel.type === "GUILD_TEXT") title = "Text Channel";
-        if (channel.type === "GUILD_VOICE") title = "Voice Channel";
-        if (channel.type === "GUILD_CATEGORY") title = "Category";
-        if (channel.type === "GUILD_NEWS") title = "News Channel";
-        if (channel.type === "GUILD_FORUM") title = "Forum Channel";
-        if (channel.type === "GUILD_STAGE_VOICE") title = "Stage Channel";
-        if (channel.type === "GUILD_DIRECTORY") title = "GUILD_DIRECTORY";
+        if (channel.type === ChannelType.GuildText) title = "Text Channel";
+        if (channel.type === ChannelType.GuildVoice) title = "Voice Channel";
+        if (channel.type === ChannelType.GuildCategory) title = "Category";
+        if (channel.type === ChannelType.GuildNews) title = "News Channel";
+        if (channel.type === ChannelType.GuildForum) title = "Forum Channel";
+        if (channel.type === ChannelType.GuildStageVoice) title = "Stage Channel";
+        if (channel.type === ChannelType.GuildDirectory) title = "Directory Channel";
 
         sendCh.send({
             embeds: [
@@ -69,7 +70,6 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({ text: `Channel Name: ${channel.name}` })
             ]
-        });
-
+        }).catch((err => { }));
     }
 }

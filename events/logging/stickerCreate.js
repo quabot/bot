@@ -1,4 +1,4 @@
-const { EmbedBuilder, Message } = require('discord.js');
+const { EmbedBuilder, Message, Colors } = require('discord.js');
 
 module.exports = {
     name: "stickerCreate",
@@ -59,7 +59,7 @@ module.exports = {
         channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor("GREEN")
+                    .setColor(Colors.Green)
                     .setDescription(`**New Sticker**\n\`${sticker.name}\`\n${sticker.description}`)
                     .setTimestamp()
             ]

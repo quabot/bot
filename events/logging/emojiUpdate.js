@@ -1,4 +1,5 @@
-const { EmbedBuilder, Message } = require('discord.js');
+const { EmbedBuilder, Message, Colors } = require('discord.js');
+const { logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "emojiUpdate",
@@ -50,8 +51,7 @@ module.exports = {
         const channel = oldEmoji.guild.channels.cache.get(logDatabase.logChannelId);
 
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase.enabledEvents.includes("emojiUpdate")) return;
 
@@ -60,12 +60,11 @@ module.exports = {
         channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor("YELLOW")
+                    .setColor(Colors.Yellow)
                     .setDescription(`**${word}Emoji edited**\n\`${oldEmoji.name}\` -> \`${newEmoji.name}\``)
                     .setFooter({ text: `${newEmoji.name}`, iconURL: `${newEmoji.url}` })
                     .setTimestamp()
             ]
-        });
-
+        }).catch((err => { }));
     }
 }

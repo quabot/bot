@@ -1,4 +1,5 @@
-const { EmbedBuilder, Message } = require('discord.js');
+const { EmbedBuilder, Message, Colors } = require('discord.js');
+const { logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "threadCreate",
@@ -49,8 +50,7 @@ module.exports = {
 
         const channel = thread.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase.enabledEvents.includes("threadCreateDelete")) return;
 
@@ -64,7 +64,7 @@ module.exports = {
         channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor("GREEN")
+                    .setColor(Colors.Green)
                     .setDescription(`${description}`)
                     .setFooter({ text: `${thread.name}` })
                     .setTimestamp()

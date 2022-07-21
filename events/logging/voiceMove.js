@@ -1,5 +1,5 @@
 const { EmbedBuilder, Message } = require('discord.js');
-const { getColor } = require('../../structures/files/contants');
+const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "voiceStateUpdate",
@@ -50,8 +50,7 @@ module.exports = {
 
         const channel = newState.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase) return;
 

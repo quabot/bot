@@ -1,5 +1,5 @@
 const { EmbedBuilder, Message } = require('discord.js');
-const { getColor } = require('../../structures/files/contants');
+const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "inviteCreate",
@@ -51,6 +51,7 @@ module.exports = {
 
         const channel = invite.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase.enabledEvents.includes("inviteCreateDelete")) return;
 
@@ -61,7 +62,7 @@ module.exports = {
                     .setColor(await getColor(invite.guild.id))
                     .setTimestamp()
             ]
-        });
+        }).catch((err => { }));
 
     }
 }

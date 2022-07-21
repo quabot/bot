@@ -1,5 +1,5 @@
 const { EmbedBuilder, Message } = require('discord.js');
-const { getColor } = require('../../structures/files/contants');
+const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "messageUpdate",
@@ -51,8 +51,7 @@ module.exports = {
 
         const channel = oldMessage.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
 
         if (!logDatabase.enabledEvents.includes("messageUpdate")) return;
@@ -72,7 +71,7 @@ module.exports = {
             if (Newcontent.content !== null || Newcontent.content !== '') {
                 if (Oldcontent === 'null' || Oldcontent === '') return;
                 if (Newcontent === Oldcontent) return;
-                embed.addField("Old Content", `${Oldcontent}`)
+                embed.addFields({ name: "Old Content", value: `${Oldcontent}` })
             }
         };
 
@@ -81,7 +80,7 @@ module.exports = {
             if (Newcontent.content !== null || Newcontent.content !== '') {
                 if (Newcontent === 'null' || Newcontent === '') return;
                 if (Newcontent === Oldcontent) return;
-                embed.addField("New Content", `${Newcontent}`)
+                embed.addFields({ name: "New Content", value: `${Newcontent}` })
             }
         };
 
@@ -92,11 +91,10 @@ module.exports = {
         if (oldMessage.attachments !== null) {
             oldMessage.attachments.map(getUrls);
             function getUrls(item) {
-                embed.addField(`**Attachments:**`, `${[item.url].join(" ")}`)
+                embed.addFields({ name: `**Attachments:**`, value: `${[item.url].join(" ")}` });
             }
         }
 
-        channel.send({ embeds: [embed] }).catch((err => console.log(err)));
-
+        channel.send({ embeds: [embed] }).catch((err => { }));
     }
 }

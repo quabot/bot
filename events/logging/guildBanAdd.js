@@ -1,4 +1,5 @@
-const { EmbedBuilder, Message } = require('discord.js');
+const { EmbedBuilder, Message, Colors } = require('discord.js');
+const { logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "guildBanAdd",
@@ -49,19 +50,17 @@ module.exports = {
 
         const channel = ban.guild.channels.cache.get(logDatabase.logChannelId);
         if (!channel) return;
-        if (channel.type === "GUILD_VOICE") return;
-        if (channel.type === "GUILD_STAGE_VOICE") return;
+        if (logChannelBlackList.includes(channel.type)) return;
 
         if (!logDatabase.enabledEvents.includes("guildBanAdd")) return;
 
         channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor("RED")
+                    .setColor(Colors.Red)
                     .setDescription(`**Member Banned**\n\`${ban.user.tag}\``)
                     .setTimestamp()
             ]
-        });
-
+        }).catch((err => { }));
     }
 }

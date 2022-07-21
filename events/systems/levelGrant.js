@@ -8,8 +8,6 @@ module.exports = {
 
         if (message.author.bot) return;
 
-        if (messageArray.find(item => item.userId === message.author.id && item.guildId === message.guild.id)) return;
-
         let msg = {
             content_length: message.content.length,
             guildId: message.guild.id,
