@@ -425,7 +425,6 @@ module.exports = {
 
             } else {
                 interaction.customId === backId ? (currentIndex -= 1) : (currentIndex += 1)
-                if (interaction.customId === forwardId) interaction.reply({ content: "Make sure to answer all the questions!", ephemeral: true })
                 if (answers.find(item => item.question === currentIndex)) currentAnswer = true;
                 if (!answers.find(item => item.question === currentIndex)) currentAnswer = false;
                 await interaction.update({
