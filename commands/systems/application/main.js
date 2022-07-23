@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionOverwrites, Per
 
 module.exports = {
     name: "application",
-    description: 'Staff applications.',
+    description: 'List all applications or view all application responses.',
     permissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.SendMessages],
     options: [
         {

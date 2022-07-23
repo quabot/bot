@@ -1,4 +1,4 @@
-const { EmbedBuilder, InteractionType } = require('discord.js');
+const { EmbedBuilder, InteractionType, Colors } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
@@ -11,7 +11,7 @@ module.exports = {
             if (!command) return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor("RED")
+                        .setColor(Colors.Red)
                         .setTitle("⛔ An error occured while trying to run this command!")
                 ]
             }).catch((err => { })) && client.commands.delete(interaction.commandName);

@@ -2,7 +2,7 @@ const { ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: "games",
-    description: "Play games",
+    description: "Play games.",
     options: [
         {
             name: "brokegamble",

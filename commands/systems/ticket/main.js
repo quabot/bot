@@ -2,7 +2,7 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.j
 
 module.exports = {
     name: "ticket",
-    description: 'Ticket Module.',
+    description: 'Create a ticket.',
     permissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.SendMessages],
     options: [
         {

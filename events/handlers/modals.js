@@ -1,4 +1,4 @@
-const { EmbedBuilder, InteractionType } = require('discord.js');
+const { EmbedBuilder, InteractionType, Colors } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
@@ -12,7 +12,7 @@ module.exports = {
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor("RED")
+                        .setColor(Colors.Red)
                         .setDescription(`⛔ You do not have permission to use that modal.\nYou need the permission: \`${modal.permission}\` to do that`)
                 ], ephemeral: true
             }).catch(err => console.warn(err));

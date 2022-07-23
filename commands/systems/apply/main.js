@@ -5,7 +5,7 @@ const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
     name: "apply",
-    description: 'Staff applications.',
+    description: 'Apply for an application,',
     permissions: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.SendMessages],
     options: [
         {

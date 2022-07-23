@@ -3,7 +3,7 @@ const typeSentences = require('../../../structures/files/type.json');
 
 module.exports = {
     name: "type",
-    description: "Play a typing game",
+    description: "Play a typing game.",
     permissions: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
     async execute(client, interaction, color) {
 

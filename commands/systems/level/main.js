@@ -2,7 +2,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
 
 module.exports = {
     name: "level",
-    description: "Level Module",
+    description: "View someone's level.",
     options: [
         {
             name: "view",

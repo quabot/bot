@@ -3,7 +3,7 @@ const quiz = require('../../../structures/files/quiz.json');
 
 module.exports = {
     name: "quiz",
-    description: "Play a quiz",
+    description: "Play a quiz.",
     async execute(client, interaction, color) {
 
         const quizItem = quiz[Math.floor(Math.random() * quiz.length)];

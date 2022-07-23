@@ -28,6 +28,7 @@
     "dotenv": "^16.0.1",
     "ffmpeg": "^0.0.4",
     "ffmpeg-static": "^4.4.1",
+    "fs": "^0.0.1-security",
     "glob": "^8.0.3",
     "libsodium-wrappers": "^0.7.10",
     "memejs": "^1.2.3",
@@ -38,6 +39,7 @@
     "nodemon": "^2.0.19",
     "os": "^0.1.2",
     "os-utils": "^0.0.14",
+    "path": "^0.12.7",
     "pg": "^8.7.3",
     "topgg-autoposter": "^2.0.1",
     "util": "^0.12.4"
