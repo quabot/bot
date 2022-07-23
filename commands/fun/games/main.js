@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require('discord.js');
+const { ApplicationCommandOptionType, INteraction } = require('discord.js');
 
 module.exports = {
     name: "games",
@@ -28,6 +28,9 @@ module.exports = {
             type: ApplicationCommandOptionType.Subcommand,
         },
     ],
+    /**
+     * @param {Interaction} interaction
+     */
     async execute(client, interaction, color) {
 
         // This file only creates the options.

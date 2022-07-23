@@ -1,8 +1,11 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Interaction } = require('discord.js');
 
 module.exports = {
     name: "rps",
     command: "games",
+    /**
+     * @param {Interaction} interaction
+     */
     async execute(client, interaction, color) {
 
         interaction.reply({

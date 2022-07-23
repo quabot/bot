@@ -1,8 +1,14 @@
-const { MessageEmbed, Interaction, ReactionUserManager } = require('discord.js');
+const { ReactionManager, User, GuildMember } = require('discord.js');
 const { getColor } = require('../../structures/files/contants');
 
 module.exports = {
     name: "messageReactionAdd",
+    /**
+     * 
+     * @param {ReactionManager} reaction 
+     * @param {User} user 
+     * @param {GuildMember} member
+     */
     async execute(reaction, user, client) {
 
         const ReactionRoleSchema = require('../../structures/schemas/ReactionRoleSchema');

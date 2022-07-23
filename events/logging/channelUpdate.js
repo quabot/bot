@@ -1,8 +1,13 @@
-const { EmbedBuilder, Message, ChannelType } = require('discord.js');
+const { EmbedBuilder, Channel, ChannelType } = require('discord.js');
 const { getColor, logChannelBlackList } = require('../../structures/files/contants');
 
 module.exports = {
     name: "channelUpdate",
+    /**
+     * 
+     * @param {Channel} oldChannel 
+     * @param {Channel} newChannel 
+     */
     async execute(oldChannel, newChannel, client, color) {
 
         const Log = require('../../structures/schemas/LogSchema');
@@ -78,7 +83,7 @@ module.exports = {
         if (oldChannel.bitrate !== newChannel.bitrate) args = `${args}\n**Bitrate:** \n\`${oldChannel.bitrate / 1000}kbps\` -> \`${newChannel.bitrate / 1000}kbps\``;
         if (oldChannel.videoQualityMode !== newChannel.videoQualityMode) return;
         if (oldChannel.userLimit !== newChannel.userLimit) args = `${args}\n**User Limit:** \n\`${oldChannel.userLimit}\` -> \`${newChannel.userLimit}\``
-        if (oldChannel.defaultAutoArchiveDuration !== newChannel.threads.defaultAutoArchiveDuration) args = `${args}\n**Auto Archive:** \n\`${oldChannel.defaultAutoArchiveDuration}s\` -> \`${newChannel.defaultAutoArchiveDuration}s\``;
+        if (oldChannel.defaultAutoArchiveDuration !== newChannel.defaultAutoArchiveDuration) args = `${args}\n**Auto Archive:** \n\`${oldChannel.defaultAutoArchiveDuration}s\` -> \`${newChannel.defaultAutoArchiveDuration}s\``;
         if (oldChannel.type !== newChannel.type) return;
 
         const embed = new EmbedBuilder()

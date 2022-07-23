@@ -1,11 +1,14 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, Client, Interaction} = require('discord.js');
 
 module.exports = {
     name: "brokegamble",
     command: "games",
+    /**
+     * @param {Interaction} interaction
+     */
     async execute(client, interaction, color) {
-        
-        let public = !interaction.options.getBoolean('private');
+
+        let public = interaction.options.getBoolean('private');
 
         let qbr = Math.floor(Math.random() * 10);
         let ur = Math.floor(Math.random() * 10);
