@@ -1,4 +1,4 @@
-const { EmbedBuilder, Interaction, Colors } = require('discord.js');
+const { EmbedBuilder, Interaction, Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: "guildMemberAdd",
@@ -56,6 +56,19 @@ module.exports = {
         //* Safety Checks
         if (joinLeaveSettings.joinDM === false) return;
 
+        let name = `${member.guild.name}`;
+        if (name.length > 62) name = name.slice(0, 62);
+
+        const sentFrom = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('sentfromserver')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true)
+                    .setLabel(`Sent from server: ${name}`)
+            )
+
+
         let dmMessage = joinLeaveSettings.joinDMContent;
         dmMessage = dmMessage.replaceAll("{user}", member);
         dmMessage = dmMessage.replaceAll("{tag}", member.user.tag);
@@ -81,10 +94,10 @@ module.exports = {
 
             if (joinLeaveSettings.joinDMEmbedTitleEnabled) embed.setTitle(`${dmTitle}`);
 
-            member.send({ embeds: [embed] }).catch((err => { }));
+            member.send({ embeds: [embed], components: [sentFrom] }).catch((err => { }));
 
         } else {
-            member.send({ content: dmMessage }).catch((err => { }));
+            member.send({ content: dmMessage, components: [sentFrom] }).catch((err => console.log(err)));
         }
     }
 }
