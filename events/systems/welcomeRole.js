@@ -37,9 +37,8 @@ module.exports = {
                     leaveMessage: "Goodbye **{user}**!",
                     joinChannel: "none",
                     leaveChannel: "none",
-                    joinRole: "none",
+                    joinRole: [],
                     joinRoleEnabled: true,
-                    joinRoleCooldown: 0,
                     joinDM: false,
                     joinDMContent: "Welcome to {guild}! Check out the rules in #rules.",
                     joinDMEmbed: true,
@@ -56,11 +55,20 @@ module.exports = {
         //* Safety Checks
         if (joinLeaveSettings.joinRoleEnabled === false) return;
 
-        const joinRole = member.guild.roles.cache.get(`${joinLeaveSettings.joinRole}`);
-        if (!joinRole) return;
+        joinLeaveSettings.joinRole.forEach(obj => {
+            const role = member.guild.roles.cache.get(`${obj.role}`);
+            if (!role) return;
 
-        setTimeout(() => {
-            member.roles.add(joinRole).catch((err => { }));
-        }, joinLeaveSettings.joinRoleCooldown * 1000);
+            if (obj.user === "BOT") {
+                if (member.user.bot === false) return;
+                setTimeout(() => {
+                    member.roles.add(obj.role).catch((err => { }));
+                }, obj.cooldown * 1000);
+            } else {
+                setTimeout(() => {
+                    member.roles.add(obj.role).catch((err => { }));
+                }, obj.cooldown * 1000);
+            }
+        })
     }
 }

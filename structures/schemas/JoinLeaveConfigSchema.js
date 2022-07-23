@@ -5,8 +5,8 @@ const reqString = {
     required: true,
 }
 
-const reqNum = {
-    type: Number,
+const reqArray = {
+    type: Array,
     required: true,
 }
 
@@ -47,9 +47,8 @@ const ApplicationConfigSchema = new mongoose.Schema({
     leaveMessage: reqString,
     joinChannel: reqString,
     leaveChannel: reqString,
-    joinRole: reqString,
+    joinRole: reqArray,
     joinRoleEnabled: reqBool,
-    joinRoleCooldown: reqNum,
 
     joinDM: reqBool,
     joinDMContent: reqString,
