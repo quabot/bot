@@ -1,10 +1,35 @@
-const { EmbedBuilder, InteractionType, Colors } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
+const { EmbedBuilder, InteractionType, Colors, Interaction, Client, ChannelType, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
+    /**
+     * 
+     * @param {Interaction} interaction 
+     * @param {Client} client
+     * @returns 
+     */
     async execute(interaction, client) {
 
         if (interaction.type === InteractionType.ApplicationCommand) {
+
+            if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setTitle("Hello lost traveler!")
+                            .setColor(Colors.Blue)
+                            .setDescription("We don't support DM commands at this time. [Invite QuaBot](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296) to a server to try it out!")
+                    ], components: [
+                        new ActionRowBuilder()
+                            .addComponents(
+                                new ButtonBuilder()
+                                    .setLabel("Invite QuaBot")
+                                    .setStyle(ButtonStyle.Link)
+                                    .setURL('https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296')
+                            )
+                    ]
+                }).catch((err => { }));
+            
 
             const command = client.commands.get(interaction.commandName);
 
