@@ -84,7 +84,7 @@ module.exports = {
             if (!CustomizationDatabase) return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor("RED")
+                        .setColor(Colors.Red)
                         .setDescription("Unable to get this server's customization settings. Please try again.")
                 ], ephemeral: true
             }).catch((err => { }));

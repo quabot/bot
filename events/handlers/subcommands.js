@@ -1,4 +1,4 @@
-const { InteractionType, EmbedBuilder } = require('discord.js');
+const { InteractionType, EmbedBuilder, Colors } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
@@ -13,7 +13,7 @@ module.exports = {
                 if (!command) return interaction.reply({
                     embeds: [
                         new EmbedBuilder()
-                            .setColor("RED")
+                            .setColor(Colors.Red)
                             .setTitle("⛔ An error occured while trying to run this command!")
                     ]
                 });
@@ -39,7 +39,7 @@ module.exports = {
                 if (!CustomizationDatabase) return interaction.reply({
                     embeds: [
                         new EmbedBuilder()
-                            .setColor("RED")
+                            .setColor(Colors.Red)
                             .setDescription("Unable to get this server's customization settings. Please try again.")
                     ], ephemeral: true
                 }).catch((err => { }));
