@@ -1,7 +1,10 @@
-const { EmbedBuilder, InteractionType, Colors } = require('discord.js');
+const { EmbedBuilder, InteractionType, Interaction, Colors } = require('discord.js');
 
 module.exports = {
     name: "interactionCreate",
+    /**
+     * @param {Interaction} interaction 
+     */
     async execute(interaction, client) {
 
         if (!interaction.type === InteractionType.ModalSubmit) return;
@@ -66,6 +69,24 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        modal.execute(interaction, client, CustomizationDatabase.color);
+        modal.execute(interaction, client, CustomizationDatabase.color).catch(err => {
+
+            const channel = client.channels.cache.get("1000781833052639242");
+            channel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setTitle("There was an error!")
+                        .setDescription(`\`${err}\`
+                        
+                        **Modal:** ${interaction.customId}
+                        **Guild:** ${interaction.guild.name}
+                        **User:** ${interaction.user.tag}`)
+                        .setTimestamp()
+                        .setFooter({ text: "InteractionType Modal" })
+                ]
+            });
+
+        });
     }
 }

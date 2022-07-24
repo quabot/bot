@@ -3,7 +3,7 @@ const { EmbedBuilder, Colors } = require('discord.js');
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
-
+argumentasss
         if (!interaction.isButton()) return;
 
         const button = client.buttons.get(interaction.customId);
@@ -59,6 +59,24 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        button.execute(interaction, client, CustomizationDatabase.color);
+        button.execute(interaction, client, CustomizationDatabase.color).catch(err => {
+
+            const channel = client.channels.cache.get("1000781833052639242");
+            channel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setTitle("There was an error!")
+                        .setDescription(`\`${err}\`
+                        
+                        **Button:** ${interaction.customId}
+                        **Guild:** ${interaction.guild.name}
+                        **User:** ${interaction.user.tag}`)
+                        .setTimestamp()
+                        .setFooter({ text: "InteractionType Button" })
+                ]
+            });
+
+        });
     }
 }

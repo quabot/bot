@@ -11,7 +11,7 @@ module.exports = {
         const cmdList = (await PG(`${process.cwd().replace(/\\/g, "/")}/commands/fun/*/main.js`)).map((file) => {
             const item = require(file);
             return `**/${item.name}** - ${item.description}`
-        }).join('\n');  
+        }).join('\n');
 
         interaction.reply({
             embeds: [

@@ -49,8 +49,8 @@ module.exports = {
                         return interaction.reply({ content: `You do not have the required permissions for this (sub)command: \`${interaction.commandName}\`.\nYou need the permission: \`${subCommand.permission}\` to do that`, ephemeral: true }).catch((err => { }));
                     }
                 }
-    
-    
+
+
                 // * Checks the bot's permissions.
                 if (subCommand.permissions) {
                     let error = false;
@@ -58,7 +58,7 @@ module.exports = {
                         if (!interaction.guild.members.me.permissions.has(permission)) error = true;
                         if (!interaction.guild.members.me.permissionsIn(interaction.channel).has(permission)) error = true;
                     });
-    
+
                     if (error) {
                         interaction.reply({
                             content:
@@ -67,11 +67,29 @@ module.exports = {
                         }).catch((err => { }));
                         return;
                     }
-    
+
                 }
 
                 if (subCommand.command === interaction.commandName && subCommand.name === interaction.options.getSubcommand() && CustomizationDatabase.color) {
-                    subCommand.execute(client, interaction, CustomizationDatabase.color);
+                    subCommand.execute(client, interaction, CustomizationDatabase.color).catch(err => {
+
+                        const channel = client.channels.cache.get("1000781833052639242");
+                        channel.send({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setColor(Colors.Red)
+                                    .setTitle("There was an error!")
+                                    .setDescription(`\`${err}\`
+                                    
+                                    **Command(s):** ${interaction.commandName} ${interaction.options.getSubcommand()}
+                                    **Guild:** ${interaction.guild.name}
+                                    **User:** ${interaction.user.tag}`)
+                                    .setTimestamp()
+                                    .setFooter({ text: "InteractionType Subcommand" })
+                            ]
+                        });
+
+                    });
                 }
 
             } catch (err) {

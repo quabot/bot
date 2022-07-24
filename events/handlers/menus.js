@@ -59,6 +59,24 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
-        menu.execute(interaction, client, CustomizationDatabase.color);
+        menu.execute(interaction, client, CustomizationDatabase.color).catch(err => {
+
+            const channel = client.channels.cache.get("1000781833052639242");
+            channel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setTitle("There was an error!")
+                        .setDescription(`\`${err}\`
+                        
+                        **Menu:** ${interaction.customId}
+                        **Guild:** ${interaction.guild.name}
+                        **User:** ${interaction.user.tag}`)
+                        .setTimestamp()
+                        .setFooter({ text: "InteractionType SelectMenu" })
+                ]
+            });
+
+        });
     }
 }

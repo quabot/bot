@@ -7,29 +7,28 @@ module.exports = {
      * 
      * @param {Interaction} interaction 
      * @param {Client} client
-     * @returns 
      */
     async execute(interaction, client) {
 
         if (interaction.type === InteractionType.ApplicationCommand) {
 
             if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setTitle("Hello lost traveler!")
-                            .setColor(Colors.Blue)
-                            .setDescription("We don't support DM commands at this time. [Invite QuaBot](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296) to a server to try it out!")
-                    ], components: [
-                        new ActionRowBuilder()
-                            .addComponents(
-                                new ButtonBuilder()
-                                    .setLabel("Invite QuaBot")
-                                    .setStyle(ButtonStyle.Link)
-                                    .setURL('https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296')
-                            )
-                    ]
-                }).catch((err => { }));
-            
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle("Hello lost traveler!")
+                        .setColor(Colors.Blue)
+                        .setDescription("We don't support DM commands at this time. [Invite QuaBot](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296) to a server to try it out!")
+                ], components: [
+                    new ActionRowBuilder()
+                        .addComponents(
+                            new ButtonBuilder()
+                                .setLabel("Invite QuaBot")
+                                .setStyle(ButtonStyle.Link)
+                                .setURL('https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296')
+                        )
+                ]
+            }).catch((err => { }));
+
 
             const command = client.commands.get(interaction.commandName);
 
@@ -89,7 +88,25 @@ module.exports = {
                 ], ephemeral: true
             }).catch((err => { }));
 
-            command.execute(client, interaction, CustomizationDatabase.color) // catch errors
+            command.execute(client, interaction, CustomizationDatabase.color).catch(err => {
+
+                const channel = client.channels.cache.get("1000781833052639242");
+                channel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(Colors.Red)
+                            .setTitle("There was an error!")
+                            .setDescription(`\`${err}\`
+                            
+                            **Command:** ${interaction.commandName}
+                            **Guild:** ${interaction.guild.name}
+                            **User:** ${interaction.user.tag}`)
+                            .setTimestamp()
+                            .setFooter({ text: "InteractionType Command" })
+                    ]
+                });
+
+            });
             if (!command.name) return;
 
             // log commands being used

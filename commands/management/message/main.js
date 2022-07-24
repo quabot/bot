@@ -7,9 +7,6 @@ module.exports = {
     permissions: [PermissionFlagsBits.SendMessages],
     async execute(client, interaction, color) {
 
-        const { execute } = require('../../../events/systems/welcomeDM');
-        execute(interaction.member, client)
-
         const msg = await interaction.reply({
             embeds: [
                 new EmbedBuilder()
