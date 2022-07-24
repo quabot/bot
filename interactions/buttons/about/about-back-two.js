@@ -1,17 +1,14 @@
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
 const { VERSION } = require('../../../structures/settings.json');
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Interaction, ButtonStyle } = require('discord.js');
 
 module.exports = {
-    name: "about",
-    description: "Learn more about QuaBot.",
+    id: "about-back-two",
     /**
      * @param {Interaction} interaction 
      */
-    async execute(client, interaction, color) {
+    async execute(interaction, client, color) {
 
-        await interaction.deferReply();
-
-        await interaction.editReply({
+        interaction.update({
             embeds: [
                 new EmbedBuilder()
                     .setColor(color)
@@ -34,9 +31,9 @@ module.exports = {
                             .setCustomId("about-back-all")
                             .setLabel("⏪"),
                         new ButtonBuilder()
-                            .setStyle(ButtonStyle.Secondary)
-                            .setCustomId("about-back-one")
                             .setDisabled(true)
+                            .setStyle(ButtonStyle.Secondary)
+                            .setCustomId("about-back-two")
                             .setLabel("◀️"),
                         new ButtonBuilder()
                             .setStyle(ButtonStyle.Secondary)
