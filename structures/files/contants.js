@@ -21,7 +21,6 @@ async function getColor(guildId) {
     return CustomizationDatabase.color;
 }
 
-
 const logChannelBlackList = [
     ChannelType.DM,
     ChannelType.GroupDM,
@@ -32,4 +31,9 @@ const logChannelBlackList = [
     ChannelType.GuildVoice,
 ]
 
-module.exports = { getColor, logChannelBlackList }
+const channelBlackList = [
+    ChannelType.GuildDirectory,
+    ChannelType.GuildForum,
+]
+
+module.exports = { getColor, logChannelBlackList, channelBlackList }

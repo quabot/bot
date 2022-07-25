@@ -1,5 +1,6 @@
 const { Client, Collection, Partials } = require('discord.js');
-const client = new Client({ intents: 3258319, partials: [Partials.Channel, Partials.Reaction, Partials.Message] });
+const { Channel, Reaction, Message } = Partials;
+const client = new Client({ intents: 3258319, partials: [Channel, Reaction, Message] });
 require('dotenv').config();
 
 /** Load dependencies for handlers. */

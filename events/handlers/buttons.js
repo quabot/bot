@@ -3,7 +3,6 @@ const { EmbedBuilder, Colors } = require('discord.js');
 module.exports = {
     name: "interactionCreate",
     async execute(interaction, client) {
-argumentasss
         if (!interaction.isButton()) return;
 
         const button = client.buttons.get(interaction.customId);

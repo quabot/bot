@@ -73,6 +73,7 @@ module.exports = {
                 if (subCommand.command === interaction.commandName && subCommand.name === interaction.options.getSubcommand() && CustomizationDatabase.color) {
                     subCommand.execute(client, interaction, CustomizationDatabase.color).catch(err => {
 
+                        console.log(err)
                         const channel = client.channels.cache.get("1000781833052639242");
                         channel.send({
                             embeds: [
