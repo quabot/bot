@@ -19,7 +19,7 @@ module.exports = {
                     **Why should you vote?**
                     It helps us a lot! Show us support without paying money, and it takes just a few seconds. You also get the following benefits:
                     • You get listed in the QuaBot support server.
-                    • Coming Soon
+                    • More perks Coming Soon
 
                     **How can i vote?**
                     • Go to the sites below.
