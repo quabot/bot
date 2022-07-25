@@ -1,7 +1,9 @@
 # QuaBot v4
 
 Current Version: 4.0.0
+
 Developers: Joasss and foxlldev
+
 
 #### Developer Notes
 .env file format:
