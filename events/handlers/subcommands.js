@@ -22,7 +22,6 @@ module.exports = {
 
                 const subCommand = client.subcommands.get(`${interaction.commandName}/${subcommand}`)
 
-
                 if (subCommand.permission) {
                     if (!interaction.member.permissions.has(subCommand.permission)) {
                         return interaction.reply({ content: `You do not have the required permissions for this (sub)command: \`${interaction.commandName}\`.\nYou need the permission: \`${subCommand.permission}\` to do that`, ephemeral: true }).catch((err => { }));
@@ -49,7 +48,7 @@ module.exports = {
 
                 }
 
-                if (subCommand.command === interaction.commandName && subCommand.name === interaction.options.getSubcommand() && CustomizationDatabase.color) {
+                if (subCommand.command === interaction.commandName && subCommand.name === interaction.options.getSubcommand()) {
                     
 
                     const channel = client.channels.cache.get("995299989628649492");

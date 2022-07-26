@@ -59,6 +59,8 @@ module.exports = {
             ], ephemeral: true
         }).catch((err => { }));
 
+        results.sort((a, b) => (a.sortBy > b.sortBy) ? 1 : -1)
+
 
         for (let counter = 0; counter < results.length; ++counter) {
             const { userId, xp, level = 0 } = results[counter];
