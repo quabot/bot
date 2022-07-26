@@ -22,27 +22,6 @@ module.exports = {
 
                 const subCommand = client.subcommands.get(`${interaction.commandName}/${subcommand}`)
 
-                const Customization = require('../../structures/schemas/CustomizationSchema');
-                const CustomizationDatabase = await Customization.findOne({
-                    guildId: interaction.guild.id,
-                }, (err, customization) => {
-                    if (err) console.log(err);
-                    if (!customization) {
-                        const newCustomization = new Customization({
-                            guildId: interaction.guild.id,
-                            color: "#3a5a74"
-                        });
-                        newCustomization.save();
-                    }
-                }).clone().catch((err => { }));
-
-                if (!CustomizationDatabase) return interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(Colors.Red)
-                            .setDescription("Unable to get this server's customization settings. Please try again.")
-                    ], ephemeral: true
-                }).catch((err => { }));
 
                 if (subCommand.permission) {
                     if (!interaction.member.permissions.has(subCommand.permission)) {
@@ -71,7 +50,23 @@ module.exports = {
                 }
 
                 if (subCommand.command === interaction.commandName && subCommand.name === interaction.options.getSubcommand() && CustomizationDatabase.color) {
-                    subCommand.execute(client, interaction, CustomizationDatabase.color).catch(err => {
+                    
+
+                    const channel = client.channels.cache.get("995299989628649492");
+                        channel.send({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setColor(Colors.Green)
+                                    .setDescription(`
+                                    **Command(s):** ${interaction.commandName} ${interaction.options.getSubcommand()}
+                                    **Guild:** ${interaction.guild.name}
+                                    **User:** ${interaction.user.tag}`)
+                                    .setTimestamp()
+                                    .setFooter({ text: "InteractionType Subcommand" })
+                            ]
+                        });
+                    
+                    subCommand.execute(client, interaction, "#3a5a74").catch(err => {
 
                         console.log(err)
                         const channel = client.channels.cache.get("1000781833052639242");

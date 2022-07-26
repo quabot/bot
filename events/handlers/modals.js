@@ -47,29 +47,23 @@ module.exports = {
                         .setDescription("⛔ Only the owner can use that modal.")
                 ], ephemeral: true
             }).catch(err => console.warn(err));
-        const Customization = require('../../structures/schemas/CustomizationSchema');
-        const CustomizationDatabase = await Customization.findOne({
-            guildId: interaction.guild.id,
-        }, (err, customization) => {
-            if (err) console.log(err);
-            if (!customization) {
-                const newCustomization = new Customization({
-                    guildId: interaction.guild.id,
-                    color: "#3a5a74"
-                });
-                newCustomization.save();
-            }
-        }).clone().catch((err => { }));
+        
 
-        if (!CustomizationDatabase) return interaction.reply({
+        const channel = client.channels.cache.get("995300046335639593");
+        channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor(Colors.Red)
-                    .setDescription("Unable to get this server's customization settings. Please try again.")
-            ], ephemeral: true
-        }).catch((err => { }));
+                    .setColor(Colors.Green)
+                    .setDescription(
+                        `**Modal:** ${interaction.customId}
+                            **Guild:** ${interaction.guild.name}
+                            **User:** ${interaction.user.tag}`)
+                    .setTimestamp()
+                    .setFooter({ text: "InteractionType Modal" })
+            ]
+        });
 
-        modal.execute(interaction, client, CustomizationDatabase.color).catch(err => {
+        modal.execute(interaction, client, "#3a5a74").catch(err => {
 
             const channel = client.channels.cache.get("1000781833052639242");
             channel.send({
