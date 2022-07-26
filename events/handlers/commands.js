@@ -66,6 +66,55 @@ module.exports = {
 
             }
 
+            const commandSchema = require('../../structures/schemas/CommandSchema');
+            const commands = await commandSchema.findOne({
+                guildId: interaction.guild.id,
+            }, (err, commands) => {
+                if (err) console.log(err);
+                if (!commands) {
+                    const newCommands = new commandSchema({
+                        guildId: interaction.guild.id,
+                        funCommands: [
+                            'games',
+                            'quiz',
+                            'reddit',
+                            'truthordare',
+                            'type',
+                            'wyr',
+                        ],
+                        infoCommands: [
+                            'members',
+                            'serverinfo',
+                            'userinfo'
+                        ],
+                        managementCommands: ['channel', 'message', 'purge', 'reactionroles'],
+                        moderationCommands: ['ban', 'kick', 'moderate', 'tempban', 'timeout', 'unban', 'untimeout', 'warn'],
+                        funCommandsOn: true,
+                        infoCommandsOn: true,
+                        managementCommandsOn: true,
+                        moderationCommandsOn: true,
+                    });
+
+                    newCommands.save();
+                }
+            }).clone().catch(function (err) { });
+
+            if (!commands) return interaction.reply({
+                content:
+                    `We just created a new database record! Please run that command again.`
+                , ephemeral: true
+            }).catch((err => { }));
+
+            const allCommands = ['application', 'apply', 'level', 'suggest', 'ticket', 'about', 'dashboard', 'info', 'status', 'support', 'help', 'ping'].concat(commands.funCommands).concat(commands.infoCommands).concat(commands.managementCommands).concat(commands.moderationCommands)
+
+            if (!allCommands.includes(interaction.commandName)) return interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setDescription(`That command is disabled in this server!`)
+                ], ephemeral: true
+            }).catch((err=> { }));
+
             const channel = client.channels.cache.get("995299989628649492");
             channel.send({
                 embeds: [
