@@ -96,7 +96,7 @@ module.exports = {
             member.send({ embeds: [embed], components: [sentFrom] }).catch((err => { }));
 
         } else {
-            member.send({ content: dmMessage, components: [sentFrom] }).catch((err => console.log(err)));
+            member.send({ content: dmMessage, components: [sentFrom] }).catch((err => { }));
         }
     }
 }

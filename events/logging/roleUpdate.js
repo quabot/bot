@@ -82,7 +82,7 @@ module.exports = {
 
             channel.send({
                 embeds: [embed]
-            }).catch((err => console.log(err)));
+            }).catch((err => { }));
             
         }
 

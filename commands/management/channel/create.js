@@ -31,7 +31,7 @@ module.exports = {
             rateLimitPerUser: time,
             nsfw: channelNsfw,
             parent: category
-        }).catch((err => console.log(err)));
+        }).catch((err => { }));
 
         interaction.reply({
             embeds: [

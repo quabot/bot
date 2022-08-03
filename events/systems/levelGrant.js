@@ -125,7 +125,7 @@ module.exports = {
                                         .setAuthor({ name: `${member.user.tag} is now level ${level + 1}!`, iconURL: member.user.avatarURL() })
                                         .setThumbnail(member.user.avatarURL())
                                 ], content: `${member}`
-                            }).catch((err => console.log(err)));
+                            }).catch((err => { }));
                         } else {
                             levelChannel.send({ content: levelMessage }).catch((err => { }));
                         }

@@ -15,7 +15,7 @@ module.exports = {
                     .setDescription(`**Would you rather...**\n1️⃣ - ${wyrPicked.option1}\n2️⃣ - ${wyrPicked.option2}`)
                     .setFooter({ text: "Time limit: 1 minute" })
             ], fetchReply: true
-        }).catch((err => console.log(err)));
+        }).catch((err => { }));
 
         msg.react("1️⃣");
         msg.react("2️⃣");

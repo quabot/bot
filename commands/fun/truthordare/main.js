@@ -28,7 +28,7 @@ module.exports = {
                             .setStyle(ButtonStyle.Primary)
                     )
             ]
-        }).catch((err => console.log(err)));
+        }).catch((err => { }));
 
     }
 }
