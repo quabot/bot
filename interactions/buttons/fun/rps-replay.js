@@ -27,7 +27,7 @@ module.exports = {
                             .setStyle(ButtonStyle.Success)
                     )
             ]
-        }).catch((err => console.log(err)));
+        }).catch((err => { }));
         
     }
 }

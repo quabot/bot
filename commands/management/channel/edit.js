@@ -34,7 +34,7 @@ module.exports = {
 
             await channel.edit({
                 name: channelName,
-            }).catch((err => console.log(err)));
+            }).catch((err => { }));
 
             interaction.reply({
                 embeds: [
@@ -51,7 +51,7 @@ module.exports = {
                 name: channelName,
                 rateLimitPerUser: time,
                 topic: channelDescription
-            }).catch((err => console.log(err)));
+            }).catch((err => { }));
 
             interaction.reply({
                 embeds: [

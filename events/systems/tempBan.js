@@ -26,7 +26,7 @@ module.exports = {
                             console.log(err)
                         });
 
-                        guild.members.unban(userid).catch((err => console.log(err)));
+                        guild.members.unban(userid).catch((err => { }));
 
                         const { getColor } = require('../../structures/files/contants');
                         const color = await getColor(item.guildId);
