@@ -132,12 +132,11 @@ module.exports = {
                     aboutComponents[0].setDisabled(true),
                     aboutComponents[1].setDisabled(true)
                 );
-                curPage.edit({
+                currentPage.edit({
                     embeds: [aboutEmbeds[page].setFooter({ text: `Page ${page + 1} / ${aboutEmbeds.length}` })],
                     components: [disabledRow],
                 }).catch((e => { }));
             }
         });
-
     }
 }

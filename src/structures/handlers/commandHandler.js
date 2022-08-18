@@ -26,5 +26,6 @@ module.exports = async (client) => {
     consola.log(CommandsTable.toString());
     
     CommandsList.sort();
+    
     client.on('ready', async () => { client.application.commands.set(CommandsList); });
 }

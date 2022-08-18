@@ -9,4 +9,8 @@ client.subcommands = new Collection();
     require(`./structures/handlers/${handler}`)(client);
 });
 
+const NodeCache = require('node-cache');
+const cache = new NodeCache();
+client.cache = cache;
+
 client.login(process.env.TOKEN);
