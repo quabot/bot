@@ -13,7 +13,6 @@ module.exports = {
         await interaction.deferReply();
 
         const ch = interaction.options.getChannel("channel");
-        console.log(ch)
 
         interaction.editReply({
             embeds: [
