@@ -23,19 +23,6 @@ module.exports = {
             ]
         },
         {
-            name: "emote",
-            description: "Get information about a custom emoji.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "emoij",
-                    description: "The emoji to get info about.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                }
-            ]
-        },
-        {
             name: "server",
             description: "Get information about the server.",
             type: ApplicationCommandOptionType.Subcommand

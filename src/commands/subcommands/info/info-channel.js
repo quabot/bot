@@ -21,15 +21,17 @@ module.exports = {
                     .setColor(color)
                     .setTitle(`Channel Info`)
                     .addFields(
-                        { name: "Channel", value: `${ch}`, inline: true },
-                        { name: "Name", value: `${ch.name}`, inline: true },
-                        { name: "Type", value: `${types[ch.type]}`, inline: true },
-                        { name: "NSFW", value: `${ch.nsfw ? "Enabled" : "Disabled"}`, inline: true },
-                        { name: "Ratelimit", value: `${ch.rateLimitPerUser ? ch.rateLimitPerUser + "s" : "0s"}`, inline: true },
-                        { name: "Parent", value: `${ch.parentId ? "<#" + ch.parentId + ">" : "No parent category."}`, inline: true },
-                        { name: "Description", value: `${ch.topic ? ch.topic : "No description set."}`, inline: false },
+                        { name: "**General:**", value: `
+                        **• Name:** ${ch.name}
+                        **• Channel:** ${ch}
+                        **• ID:** ${ch.id}
+                        **• Type:** ${types[ch.type]}
+                        **• NSFW:** ${ch.nsfw ? "Enabled" : "Disabled"}
+                        **• Ratelimit:** ${ch.nsfw ? "Enabled" : "Disabled"}
+                        **• Parent:** ${ch.parentId ? "<#" + ch.parentId + ">" : "No parent category."}
+                        `, inline: false },
+                        { name: "**Description:**", value: `${ch.topic ||"Not set"}`, inline: false },
                     )
-                    .setFooter({ text: `ID: ${ch.id}` })
                     .setTimestamp()
             ]
         }).catch((e => { }));
