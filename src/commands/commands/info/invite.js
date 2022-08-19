@@ -11,12 +11,7 @@ module.exports = {
         await interaction.deferReply();
 
         interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
-                    .setDescription("Invite QuaBot **[here](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296)**.")
-                    .setTimestamp()
-            ]
+            embeds: [await generateEmbed(color, "Invite QuaBot **[here](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296)**.")]
         }).catch((e => { }));
     }
 }

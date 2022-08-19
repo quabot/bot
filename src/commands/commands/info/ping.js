@@ -1,4 +1,5 @@
-const { Interaction, EmbedBuilder, Client } = require('discord.js');
+const { Interaction, Client } = require('discord.js');
+const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
     name: "ping",
@@ -11,13 +12,8 @@ module.exports = {
 
         await interaction.deferReply();
 
-        interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
-                    .setDescription(`🏓 **${client.ws.ping}ms**`)
-                    .setTimestamp()
-            ]
+        interaction.editReply({    
+            embeds: [await generateEmbed(color, `🏓 **${client.ws.ping}ms**`)]
         }).catch((e => { }));
     }
 }

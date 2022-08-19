@@ -1,4 +1,5 @@
-const { Interaction, EmbedBuilder } = require('discord.js');
+const { Interaction } = require('discord.js');
+const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
     name: "support",
@@ -11,12 +12,7 @@ module.exports = {
         await interaction.deferReply();
 
         interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
-                    .setDescription("For questions, suggestions and more, join our support server at **[discord.gg/HYGA7Y6ptk](https://discord.gg/HYGA7Y6ptk)**.")
-                    .setTimestamp()
-            ]
+            embeds: [await generateEmbed(color, "For questions, suggestions and more, join our support server at **[discord.gg/HYGA7Y6ptk](https://discord.gg/HYGA7Y6ptk)**.")]
         }).catch((e => { }));
     }
 }

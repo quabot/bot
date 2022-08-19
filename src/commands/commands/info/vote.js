@@ -1,4 +1,5 @@
-const { Interaction, EmbedBuilder } = require('discord.js');
+const { Interaction } = require('discord.js');
+const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
     name: "vote",
@@ -11,12 +12,7 @@ module.exports = {
         await interaction.deferReply();
 
         interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
-                    .setDescription("By voting for QuaBot, you can help us grow for free! It only takes a few seconds, and it gives you some perks! Vote **[here]()**.")
-                    .setTimestamp()
-            ]
+            embeds: [await generateEmbed(color, "By voting for QuaBot, you can help us grow for free! It only takes a few seconds, and it gives you some perks! Vote **[here]()**.")]
         }).catch((e => { }));
     }
 }

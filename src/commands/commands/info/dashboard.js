@@ -1,4 +1,5 @@
-const { Interaction, EmbedBuilder } = require('discord.js');
+const { Interaction } = require('discord.js');
+const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
     name: "dashboard",
@@ -11,12 +12,7 @@ module.exports = {
         await interaction.deferReply();
 
         interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
-                    .setDescription("Configure QuaBot on our dashboard **[here](https://dashboard.quabot.net)**.")
-                    .setTimestamp()
-            ]
+            embeds: [await generateEmbed(color, "Configure QuaBot on our dashboard **[here](https://dashboard.quabot.net)**.")]
         }).catch((e => { }));
     }
 }
