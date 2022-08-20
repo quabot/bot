@@ -1,4 +1,5 @@
-const { Interaction, EmbedBuilder } = require('discord.js');
+const { Interaction } = require('discord.js');
+const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
     name: "invite",
