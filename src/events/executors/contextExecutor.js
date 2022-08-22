@@ -9,7 +9,7 @@ module.exports = {
      */
     async execute(interaction, client) {
 
-        if (!interaction.isContextMenuCommand()) return;
+        if (interaction.type !== InteractionType.ApplicationCommand) return;
         if (!interaction.guildId) return;
         if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return;
 
@@ -21,12 +21,12 @@ module.exports = {
                     .setColor(Colors.Red)
                     .setDescription(`⛔ An error occured! Couldn't find the context \`${interaction.commandName}\``)
             ]
-        }).catch((err => { })) && client.commands.delete(interaction.commandName);
+        }).catch((err => { })) && client.contexts.delete(interaction.commandName);
 
 
         if (context.permission) {
             if (!interaction.member.permissions.has(context.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this menu: \`${interaction.commandName}\`.\nYou need the permission: \`${context.permission}\` to do that`, ephemeral: true }).catch((err => { }));
+                return interaction.reply({ content: `You do not have the required permissions for this context: \`${interaction.commandName}\`.\nYou need the permission: \`${context.permission}\` to do that`, ephemeral: true }).catch((err => { }));
             }
         }
 
@@ -39,11 +39,11 @@ module.exports = {
 
             if (error) return interaction.reply({
                 content:
-                    `I need the permission(s): \`${context.permissions.map(i => i)}\` to execute that menu. Double check my permissions for the server and/or this channel.`
+                    `I need the permission(s): \`${context.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
                 , ephemeral: true
             }).catch((err => { }));
         }
 
-        command.execute(client, interaction, "#3a5a74");
+        context.execute(client, interaction, "#3a5a74");
     }
 }

@@ -15,8 +15,8 @@ module.exports = async (client) => {
 
         const context = require(contextFile);
 
-        if (!context.name) CommandsTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO NAME");
-        if (!context.type) CommandsTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO TYPE");
+        if (!context.name) ContextTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO NAME");
+        if (!context.type) ContextTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO TYPE");
 
         client.contexts.set(context.name, context);
         ContextList.push(context);
@@ -34,15 +34,15 @@ module.exports = async (client) => {
         const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
         ContextList.forEach(context => {
+            console.log(context)
             const data = new ContextMenuCommandBuilder()
                 .setName(context.name)
                 .setType(context.type);
             menus.push(data.toJSON());
         });
 
-        return;
         await rest.put(
-            Routes.applicationCommands(client.user.id),
+            Routes.applicationGuildCommands(client.user.id, "1007810461347086357"),
             { body: menus },
         ).catch((e => console.log("Error with the context creation: " + e)));
     });
