@@ -22,6 +22,7 @@ module.exports = {
         let index = 1;
         const answerButtons = new ActionRowBuilder()
         const disButtons = new ActionRowBuilder()
+        if (!answerList || answerList.length === 0) return;
         answerList.forEach(q => {
             let style = ButtonStyle.Primary;
             style = answerList[index - 1] === data[0].correctAnswer ? ButtonStyle.Success : ButtonStyle.Primary;
@@ -54,12 +55,34 @@ module.exports = {
 
         collector.on('collect', async i => {
             if (i.user.id !== interaction.user.id) return;
+            const correct = answerList[i.customId - 1] === data[0].correctAnswer ? "You were **✅ correct**" : "You were **❌ incorrect**";
 
-            await i.update({
+            await i.deferReply();
+
+            if (answerList[i.customId - 1] !== data[0].correctAnswer) disButtons.components[i.customId - 1].setStyle(ButtonStyle.Danger);
+
+            await interaction.editReply({
                 components: [disButtons]
             }).catch((e => { }));
 
-            // reply w message to play again
+            i.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setDescription(`${correct}! Do you want to play again?`)
+                ], components: [
+                    new ActionRowBuilder().addComponents(
+                        new ButtonBuilder()
+                            .setStyle(ButtonStyle.Secondary)
+                            .setLabel("Play Again")
+                            .setCustomId("quiz-replay"),
+                        new ButtonBuilder()
+                            .setStyle(ButtonStyle.Secondary)
+                            .setLabel("End Interaction")
+                            .setCustomId("quiz-end")
+                    )
+                ]
+            })
         });
 
         collector.on('end', async () => {

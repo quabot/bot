@@ -10,7 +10,7 @@ module.exports = {
     async execute(interaction, client) {
 
         if (interaction.type !== InteractionType.ApplicationCommand) return;
-
+        if (!interaction.guildId) return;
         if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return;
 
         try { if (!interaction.options.getSubcommand()) return; } catch (e) { return; }
