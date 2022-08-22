@@ -34,7 +34,6 @@ module.exports = async (client) => {
         const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
         ContextList.forEach(context => {
-            console.log(context)
             const data = new ContextMenuCommandBuilder()
                 .setName(context.name)
                 .setType(context.type);
