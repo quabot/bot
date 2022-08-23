@@ -2,7 +2,7 @@ const { Interaction, Client, InteractionType, ChannelType, EmbedBuilder, Colors 
 
 module.exports = {
     event: "interactionCreate",
-    name: "commandExecutor",
+    name: "buttonExecutor",
     /**
      * @param {Interaction} interaction
      * @param {Client} client
