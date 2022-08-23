@@ -9,9 +9,8 @@ module.exports = {
      * @param {Client} client
      */
     async execute(client) {
+
         consola.success(`Logged in as ${client.user.tag}!`);
-
-
 
         function setActivity(activity) { client.user.setActivity({ type: ActivityType.Watching, name: activity }); }
         (function loop() {
@@ -25,6 +24,7 @@ module.exports = {
                 loop()
             }, 24000);
 
-        });
+        }());
+        
     }
 }
