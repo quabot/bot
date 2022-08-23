@@ -11,9 +11,20 @@ module.exports = {
     async execute(client) {
         consola.success(`Logged in as ${client.user.tag}!`);
 
-        client.user.setActivity({
-            type: ActivityType.Watching,
-            name: "QuaBot v1"
-        });
+
+
+        function setActivity(activity) { client.user.setActivity({ type: ActivityType.Watching, name: activity }); }
+        (function loop() {
+
+            setTimeout(function () { setActivity(`${client.users.cache.size} users |  /help`) }, 6000);
+            setTimeout(function () { setActivity(`quabot.net | /help`) }, 12000);
+            setTimeout(function () { setActivity(`${client.commands.size} commands | /help`) }, 18000);
+            
+            setTimeout(function () {
+                setActivity(`${client.guilds.cache.size} servers |  /help`);
+                loop()
+            }, 24000);
+
+        })
     }
 }

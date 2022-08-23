@@ -13,6 +13,7 @@
     "discord.js": "^14.2.0",
     "dotenv": "^16.0.1",
     "glob": "^8.0.3",
+    "mongodb": "^4.9.0",
     "mongoose": "^6.5.2",
     "node-cache": "^5.1.2",
     "nodemon": "^2.0.19",
