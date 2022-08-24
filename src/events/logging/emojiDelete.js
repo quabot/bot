@@ -19,8 +19,6 @@ module.exports = {
         const logChannel = await getLogChannel(emoji.guild, logConfig);
         if (!logChannel) return;
 
-        console.log(logConfig, this.event)
-
         if (!logConfig.enabledEvents.includes(this.event)) return;
 
         logChannel.send({
@@ -31,6 +29,6 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({ text: `${emoji.name}`, iconURL: `${emoji.url}` })
             ]
-        }).catch((e => console.log(e)));
+        }).catch((e => { }));
     }
 }

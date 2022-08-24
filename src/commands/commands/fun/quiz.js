@@ -49,7 +49,7 @@ module.exports = {
                     .setColor(color)
             ], fetchReply: true,
             components: [answerButtons]
-        }).catch((e => console.log(e)));
+        }).catch((e => { }));
 
         const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 20000 });
 

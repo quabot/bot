@@ -14,6 +14,6 @@ module.exports = {
         const flips = ["**🪙 Heads!**", "**🪙 Tails!**"];
         interaction.editReply({
             embeds: [await generateEmbed(color, flips[Math.floor(Math.random() * flips.length)])]
-        }).catch((e => console.log(e)));
+        }).catch((e => { }));
     }
 }

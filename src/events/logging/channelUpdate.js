@@ -22,7 +22,6 @@ module.exports = {
 
         if (!logConfig.enabledEvents.includes(this.event)) return;
         
-        console.log(newChannel, oldChannel)
         let args = "";
         if (oldChannel.rawPosition !== newChannel.rawPosition) return;
         if (oldChannel.permissionOverwrites !== newChannel.permissionOverwrites) return;
