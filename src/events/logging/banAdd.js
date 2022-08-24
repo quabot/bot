@@ -10,8 +10,6 @@ module.exports = {
      */
     async execute(ban, client, color) {
 
-        console.log("ASS")
-
         if (!ban.guild) return;
 
         const logConfig = await getLogConfig(client, ban.guild.id);
