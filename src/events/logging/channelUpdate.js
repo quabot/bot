@@ -20,6 +20,8 @@ module.exports = {
         const logChannel = await getLogChannel(newChannel.guild, logConfig);
         if (!logChannel) return;
 
+        if (!logConfig.enabledEvents.includes(this.event)) return;
+        
         console.log(newChannel, oldChannel)
         let args = "";
         if (oldChannel.rawPosition !== newChannel.rawPosition) return;

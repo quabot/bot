@@ -1,33 +1,36 @@
-const { GuildChannel, Client, EmbedBuilder, Colors } = require('discord.js');
+const { GuildEmoji, Client, EmbedBuilder, Colors } = require('discord.js');
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
 const channelTypes = ["Text channel", "DM", "Voice Channel", "DM", "Category", "News Channels", "News Thread", "Thread", "Private Thread", "Stage Channel", "Directory Channel", "Forum Channel"];
 
 module.exports = {
-    event: "channelDelete",
-    name: "channelDelete",
+    event: "emojiDelete",
+    name: "emojiDelete",
     /**
-     * @param {GuildChannel} channel
+     * @param {GuildEmoji} emoji
      * @param {Client} client
      */
-    async execute(channel, client, color) {
+    async execute(emoji, client, color) {
 
-        if (!channel.guildId) return;
+        if (!emoji.guild) return;
 
-        const logConfig = await getLogConfig(client, channel.guildId);
+        const logConfig = await getLogConfig(client, emoji.guild.id);
         if (!logConfig) return;
 
-        const logChannel = await getLogChannel(channel.guild, logConfig);
+        const logChannel = await getLogChannel(emoji.guild, logConfig);
         if (!logChannel) return;
 
+        console.log(logConfig, this.event)
+
         if (!logConfig.enabledEvents.includes(this.event)) return;
-        
+
         logChannel.send({
             embeds: [
                 new EmbedBuilder()
                     .setColor(Colors.Red)
-                    .setDescription(`**${channelTypes[channel.type]} Deleted**\n\`${channel.name}\``)
+                    .setDescription(`**${emoji.animated ? "Animated " : ""}Emoji Deleted**\n\`${emoji.name}\``)
                     .setTimestamp()
+                    .setFooter({ text: `${emoji.name}`, iconURL: `${emoji.url}` })
             ]
-        }).catch((e => { }));
+        }).catch((e => console.log(e)));
     }
 }
