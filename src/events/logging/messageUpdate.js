@@ -24,7 +24,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setDescription(`**Message Edited**\n${newMessage.channel}`)
-            .setColor(Colors.Red);
+            .setColor(Colors.Yellow);
 
         let Oldcontent = String(oldMessage.content);
         let Newcontent = String(newMessage.content);
