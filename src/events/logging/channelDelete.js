@@ -22,9 +22,8 @@ module.exports = {
         logChannel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor(Colors.Green)
-                    .setDescription(`**${channelTypes[channel.type]} Created**\n${channel}`)
-                    .setFooter({ text: `Channel Name: ${channel.name}` })
+                    .setColor(Colors.Red)
+                    .setDescription(`**${channelTypes[channel.type]} Deleted**\n\`${channel.name}\``)
                     .setTimestamp()
             ]
         }).catch((e => { }));
