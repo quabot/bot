@@ -56,7 +56,7 @@ async function getLogConfig(client, guildId) {
 }
 
 async function getLogChannel(guild, logConfig) {
-    
+
     const logBlacklist = [
         ChannelType.DM,
         ChannelType.GroupDM,
