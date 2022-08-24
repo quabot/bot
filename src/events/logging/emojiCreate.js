@@ -1,6 +1,5 @@
 const { GuildEmoji, Client, EmbedBuilder, Colors } = require('discord.js');
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
-const channelTypes = ["Text channel", "DM", "Voice Channel", "DM", "Category", "News Channels", "News Thread", "Thread", "Private Thread", "Stage Channel", "Directory Channel", "Forum Channel"];
 
 module.exports = {
     event: "emojiCreate",
