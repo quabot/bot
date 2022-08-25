@@ -35,6 +35,7 @@ module.exports = {
                 new EmbedBuilder()
                     .setColor(hexColor)
                     .setDescription(`**${hexColor}**`)
+                    .setTimestamp()
             ]
         }).catch((e => { }));
     }

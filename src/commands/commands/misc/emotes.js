@@ -17,6 +17,7 @@ module.exports = {
                 new EmbedBuilder()
                     .setColor(color)
                     .setDescription(`${emoteList}`)
+                    .setTimestamp()
             ]
         }).catch((e => { }));
     }
