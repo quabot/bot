@@ -1,4 +1,4 @@
-const { Interaction, EmbedBuilder, ApplicationCommandOptionType, ChannelType } = require('discord.js');
+const { Interaction, PermissionFlagsBits, EmbedBuilder, ApplicationCommandOptionType, ChannelType } = require('discord.js');
 
 module.exports = {
     name: "purge",
@@ -20,6 +20,8 @@ module.exports = {
     /**
      * @param {Interaction} interaction 
      */
+    permission: PermissionFlagsBits.Administrator,
+    permissions: [PermissionFlagsBits.ManageMessages],
     async execute(client, interaction, color) {
 
         let amount = interaction.options.getInteger('amount');
