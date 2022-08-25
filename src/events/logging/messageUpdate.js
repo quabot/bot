@@ -31,11 +31,12 @@ module.exports = {
         console.log(Oldcontent, Newcontent)
 
         if (Oldcontent.content === null || Oldcontent.content === '' && oldMessage.attachments === null && newMessage.attachments === null) { return } else {
-            
-        if (Newcontent.content !== null || Newcontent.content !== '') {
+            if (Newcontent.content !== null || Newcontent.content !== '') {
                 if (Newcontent === Oldcontent) return;
                 if (Oldcontent.length > 1020) Oldcontent = Oldcontent.slice(0, 1020);
-                embed.addFields({ name: "Old Content", value: `${Oldcontent}` })
+                try {
+                    embed.addFields({ name: "Old Content", value: `${Oldcontent}` });
+                } catch (e) { return }
             }
         };
 
@@ -44,7 +45,9 @@ module.exports = {
                 if (Newcontent === 'null' || Newcontent === '') return;
                 if (Newcontent === Oldcontent) return;
                 if (Newcontent.length > 1020) Newcontent = Newcontent.slice(0, 1020);
-                embed.addFields({ name: "New Content", value: `${Newcontent}` })
+                try {
+                    embed.addFields({ name: "New Content", value: `${Newcontent}` });
+                } catch (e) { return }
             }
         };
 
