@@ -23,7 +23,8 @@ module.exports = {
         let description = "**Message Deleted**";
 
         let content = String(message.content);
-        if (content === null) content = "";
+        if (content === null) return;
+        if (content.length === 0) return;
         if (content.length > 1003) content = content.slice(0, 1002);
 
         description = `${description}\n${content}`;
