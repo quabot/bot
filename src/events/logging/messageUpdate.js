@@ -28,7 +28,6 @@ module.exports = {
 
         let Oldcontent = String(oldMessage.content);
         let Newcontent = String(newMessage.content);
-        console.log(Oldcontent, Newcontent)
 
         if (Oldcontent.content === null || Oldcontent.content === '' && oldMessage.attachments === null && newMessage.attachments === null) { return } else {
             if (Newcontent.content !== null || Newcontent.content !== '') {
@@ -64,6 +63,6 @@ module.exports = {
 
         logChannel.send({
             embeds: [embed]
-        }).catch((e => console.log(e)));
+        }).catch((e => { }));
     }
 }
