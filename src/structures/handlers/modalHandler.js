@@ -7,7 +7,7 @@ const consola = require('consola');
 module.exports = async (client) => {
     const ModalTable = new Ascii("Modals");
 
-    (await PG(`${process.cwd().replace(/\\/g, "/")}/src/interactions/modals/*/*.js`)).map(async (modalFile) => {
+    (await PG(`${process.cwd().replace(/\\/g, "/")}/src/interactions/modals/*.js`)).map(async (modalFile) => {
 
         const modal = require(modalFile);
 
