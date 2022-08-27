@@ -6,8 +6,9 @@ require('dotenv').config();
 client.buttons = new Collection();
 client.commands = new Collection();
 client.contexts = new Collection();
+client.modals = new Collection();
 client.subcommands = new Collection();
-['buttonHandler', 'contextHandler', 'commandHandler', 'eventHandler', 'subcommandHandler'].forEach(handler => {
+['buttonHandler', 'contextHandler', 'commandHandler', 'eventHandler', 'modalHandler', 'subcommandHandler'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client);
 });
 

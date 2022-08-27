@@ -35,7 +35,7 @@ module.exports = {
             }
         }).clone().catch(function (err) { });
 
-        client.cache.set({ key: `${interaction.guildId}-suggest-config`, val: suggestConfig, ttl: 10000 });
+        client.cache.set(`${interaction.guildId}-suggest-config`, suggestConfig, 10000);
 
 
         if (!suggestConfig) return interaction.reply({
@@ -62,7 +62,7 @@ module.exports = {
                             .setRequired(true)
                             .setStyle(TextInputStyle.Paragraph)
                             .setPlaceholder("More voice channels!")
-                )
+                    )
             );
 
         await interaction.showModal(modal).catch((e => { }));

@@ -50,7 +50,7 @@ async function getLogConfig(client, guildId) {
                 });
         }
     }).clone().catch(function (err) { });
-    client.cache.set({ key: `${guildId}-log-config`, val: logConfig, ttl: 10000 });
+    client.cache.set(`${guildId}-log-config`, logConfig, 10000);
 
     return logConfig;
 }
