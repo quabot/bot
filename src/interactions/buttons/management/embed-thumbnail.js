@@ -3,29 +3,28 @@ const { generateEmbed } = require("../../../structures/functions/embed");
 const { isValidHttpUrl } = require("../../../structures/functions/strings");
 
 module.exports = {
-    id: "embed-url",
+    id: "embed-thumbnail",
     /**
      * @param {import("discord.js").Interaction} interaction 
      */
     async execute(client, interaction, color) {
 
-        const urlModal = new ModalBuilder()
-            .setCustomId('embed-url-modal')
-            .setTitle("Embed Url")
+        const thumbnailModal = new ModalBuilder()
+            .setCustomId('embed-thumbnail-modal')
+            .setTitle("Embed Thumbnail")
             .addComponents(
                 new ActionRowBuilder()
                     .addComponents(
                         new TextInputBuilder()
-                            .setCustomId('url')
-                            .setLabel("New url")
+                            .setCustomId('thumbnail')
+                            .setLabel("Embed thumbnail")
                             .setStyle(TextInputStyle.Paragraph)
                             .setRequired(true)
                             .setMaxLength(500)
-                            .setPlaceholder("https://quabot.net")
                     )
             )
 
-        await interaction.showModal(urlModal);
+        await interaction.showModal(thumbnailModal);
 
         const modal = await interaction.awaitModalSubmit({
             time: 60000,
@@ -35,22 +34,22 @@ module.exports = {
         });
 
         if (modal) {
-            if (modal.customId !== 'embed-url-modal') return;
+            if (modal.customId !== 'embed-thumbnail-modal') return;
 
             await modal.deferReply({ ephemeral: true });
-            const url = modal.fields.getTextInputValue("url");
-            if (!url) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((e => { }));
-            if (isValidHttpUrl(url) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((e => { }));
+            const thumbnail = modal.fields.getTextInputValue("thumbnail");
+            if (!thumbnail) modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (isValidHttpUrl(thumbnail) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
-                    EmbedBuilder.from(interaction.message.embeds[1]).setURL(url),
+                    EmbedBuilder.from(interaction.message.embeds[1]).setThumbnail(thumbnail),
                 ]
             }).catch((e => { }));
 
             modal.editReply({
-                embeds: [await generateEmbed(color, `Set the url to **${url}**`)]
+                embeds: [await generateEmbed(color, `Set the thumbnail to **${thumbnail}**`)]
             }).catch((e => { }));
         }
     }

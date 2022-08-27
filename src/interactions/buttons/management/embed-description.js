@@ -19,7 +19,7 @@ module.exports = {
                             .setLabel("New description")
                             .setStyle(TextInputStyle.Paragraph)
                             .setRequired(true)
-                            .setMaxLength(4096)
+                            .setMaxLength(4000)
                             .setPlaceholder("This is my embed description!")
                     )
             )

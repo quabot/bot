@@ -48,7 +48,7 @@ module.exports = {
         const buttons2 = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId("embed-thumnail")
+                    .setCustomId("embed-thumbnail")
                     .setLabel("Set Thumbnail")
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()

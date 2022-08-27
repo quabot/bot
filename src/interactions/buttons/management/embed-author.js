@@ -1,5 +1,6 @@
 const { ButtonStyle, ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputComponent, TextInputStyle, TextInputBuilder, EmbedBuilder } = require("discord.js");
 const { generateEmbed } = require("../../../structures/functions/embed");
+const { isValidHttpUrl } = require("../../../structures/functions/strings");
 
 module.exports = {
     id: "embed-author",
@@ -58,14 +59,18 @@ module.exports = {
 
             await modal.deferReply({ ephemeral: true });
             const text = modal.fields.getTextInputValue("text");
-            const url = modal.fields.getTextInputValue("url") ? modal.fields.getTextInputValue("url") : null;
-            const icon = modal.fields.getTextInputValue("icon") ? modal.fields.getTextInputValue("icon") : null;
+            let url = modal.fields.getTextInputValue("url") ? modal.fields.getTextInputValue("url") : null;
+            let icon = modal.fields.getTextInputValue("icon") ? modal.fields.getTextInputValue("icon") : null;
             if (!text) modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch((e => { }));
-
+            if (isValidHttpUrl(url) === false) url = null;
+            if (isValidHttpUrl(icon) === false) icon = null;
+            
+            const description = interaction.message.embeds[1].data.description === '\u200b' ? null : interaction.message.embeds[1].data.description;
+            
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
-                    EmbedBuilder.from(interaction.message.embeds[1]).setAuthor({ name: text, iconURL: icon, url }),
+                    EmbedBuilder.from(interaction.message.embeds[1]).setDescription(description).setAuthor({ name: text, iconURL: icon, url }),
                 ]
             }).catch((e => { }));
 
