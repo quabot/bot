@@ -1,4 +1,4 @@
-const { ButtonStyle, ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputComponent, TextInputStyle, TextInputBuilder, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits, ButtonStyle, ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputComponent, TextInputStyle, TextInputBuilder, EmbedBuilder } = require("discord.js");
 const { generateEmbed } = require("../../../structures/functions/embed");
 const { isValidHttpUrl } = require("../../../structures/functions/strings");
 
@@ -7,6 +7,7 @@ module.exports = {
     /**
      * @param {import("discord.js").Interaction} interaction 
      */
+    permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
         const urlModal = new ModalBuilder()

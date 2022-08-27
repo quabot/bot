@@ -1,4 +1,4 @@
-const { ButtonStyle, ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputComponent, TextInputStyle, TextInputBuilder, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits, ButtonStyle, ActionRowBuilder, ButtonBuilder, ModalBuilder, TextInputComponent, TextInputStyle, TextInputBuilder, EmbedBuilder } = require("discord.js");
 const { generateEmbed } = require("../../../structures/functions/embed");
 
 module.exports = {
@@ -6,6 +6,7 @@ module.exports = {
     /**
      * @param {import("discord.js").Interaction} interaction 
      */
+    permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
         const colorModal = new ModalBuilder()
@@ -19,6 +20,7 @@ module.exports = {
                             .setLabel("New color")
                             .setStyle(TextInputStyle.Short)
                             .setRequired(true)
+                            .setMaxLength(6)
                             .setPlaceholder("#fff")
                     )
             )

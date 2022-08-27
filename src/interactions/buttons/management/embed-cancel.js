@@ -1,4 +1,4 @@
-const { ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const { ButtonBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonStyle } = require("discord.js");
 const { generateEmbed } = require("../../../structures/functions/embed");
 
 module.exports = {
@@ -6,6 +6,7 @@ module.exports = {
     /**
      * @param {import("discord.js").Interaction} interaction 
      */
+    permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
         await interaction.deferReply();

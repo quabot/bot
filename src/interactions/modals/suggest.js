@@ -1,5 +1,6 @@
 const { Client, Interaction, Colors, ButtonStyle } = require('discord.js');
 const Suggest = require('../../structures/schemas/SuggestConfigSchema');
+const Suggestion = require('../../structures/schemas/SuggestSchema');
 const { generateEmbed } = require('../../structures/functions/embed');
 const { randomUUID } = require('node:crypto');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
@@ -111,10 +112,31 @@ module.exports = {
 
 
         const uuid = randomUUID();
+        const uuidCheck = await Suggestion.findOne({
+            guildId: interaction.guildId,
+            suggestId: uuid
+        }, (err, suggest) => {
+            if (err) console.error(err);
+        }).clone().catch(function (err) { });
 
+        if (uuidCheck) return interaction.editReply({
+            embeds: [await generateEmbed(color, "🚫 There was an error! Try again!")],
+            ephemeral: true
+        }).catch((e => { }));
+        
 
-        // TODO: Create a db record & add support to the buttons
-        // TODO (future) more suggest features although idk what yet
+        const newSuggest = new Suggestion({
+            guildId: interaction.guild.id,
+            suggestId: uuid,
+            suggestMsgId: msg.id,
+            suggestion: suggestion,
+            suggestionStatus: "PENDING",
+            suggestionUserId: interaction.user.id,
+        });
+        newSuggest.save()
+            .catch(err => {
+                console.log(err);
+            });
 
 
         const suggestLogChannel = interaction.guild.channels.cache.get(`${suggestConfig.suggestLogChannelId}`);
@@ -142,7 +164,7 @@ module.exports = {
                                 .setStyle(ButtonStyle.Success),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-reject')
-                                .setLabel("Reject")
+                                .setLabel("Deny")
                                 .setStyle(ButtonStyle.Danger),
                             new ButtonBuilder()
                                 .setCustomId('suggestion-delete')
