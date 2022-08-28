@@ -27,7 +27,7 @@ module.exports = {
     permissions: [PermissionFlagsBits.ManageChannels],
     async execute(client, interaction, color) { 
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
         const channel = interaction.options.getChannel("channel");
         let slowmode = Math.round(ms(interaction.options.getString("slowmode")) / 1000);

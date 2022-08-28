@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
         const infoList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/info/*.js`)).map((file) => {
             const item = require(file);

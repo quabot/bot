@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
         
         if (!client.cache.has("info")) client.cache.set("info", {
             djs: require('../../../../package.json').dependencies['discord.js'],

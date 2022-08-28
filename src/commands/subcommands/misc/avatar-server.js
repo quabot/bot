@@ -8,7 +8,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
         interaction.editReply({
             embeds: [

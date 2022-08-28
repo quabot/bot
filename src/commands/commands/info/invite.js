@@ -9,7 +9,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
         interaction.editReply({
             embeds: [await generateEmbed(color, "Invite QuaBot **[here](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296)**.")]

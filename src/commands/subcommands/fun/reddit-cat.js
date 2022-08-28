@@ -10,7 +10,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
         const post = await getPost("cats");
         const image = await getImage("cats");

@@ -30,7 +30,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
         const text = interaction.options.getString("text");
         const fromlanguage = interaction.options.getString("from");

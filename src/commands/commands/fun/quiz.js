@@ -10,7 +10,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
         const { data } = await axios.get('https://the-trivia-api.com/api/questions?limit=1&difficulty=easy');
 

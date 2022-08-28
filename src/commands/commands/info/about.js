@@ -88,7 +88,7 @@ module.exports = {
 
 
         let page = 0;
-        await interaction.deferReply();
+        await interaction.deferReply().catch((e => { }));
 
 
         const currentPage = await interaction.editReply({
