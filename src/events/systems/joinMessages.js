@@ -9,7 +9,8 @@ module.exports = {
      */
     async execute(member, client, color) {
 
-        console.log(member)
+       //console.log(member)
+        console.log("JOiN Message")
 
         // fetch the database
         // get the member

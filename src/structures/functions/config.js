@@ -1,4 +1,5 @@
 const Log = require('../../structures/schemas/LoggingSchema');
+const JoinLeave = require('../../structures/schemas/JoinLeaveSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -75,4 +76,63 @@ async function getLogChannel(guild, logConfig) {
     return logChannel;
 }
 
-module.exports = { getLogConfig, getLogChannel };
+async function getWelcomeConfig(client, guildId) {
+    let joinConfig;
+
+    if (client.cache.get(`${guildId}-join-config`)) joinConfig = client.cache.get(`${guildId}-join-config`);
+    if (!joinConfig) joinConfig = await JoinLeave.findOne({
+        guildId: guildId,
+    }, (err, joinleave) => {
+        if (err) console.error(err);
+        if (!joinleave) {
+            const newJoinLeave = new JoinLeave({
+                guildId: guildId,
+                joinEnabled: true,
+                leaveEnabled: true,
+                joinChannel: "none",
+                leaveChannel: "none",
+                joinMessage: "Welcome {user} to **{guild}**!",
+                joinEmbedBuilder: true,
+                joinEmbed: [],//TODO],
+                leaveMessage: "Goodbye {user}!",
+                leaveEmbedBuilder: true,
+                leaveEmbed: [],//TODO],
+                joinDM: false,
+                joinDMMessage: "Welcome to {guild} {user}! Check out the rules in #rules!",
+                joinDMEmbedBuilder: false,
+                joinDMEmbed: [],//TODO],
+                waitVerify: true,
+            });
+            newJoinLeave.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-join-config`, joinConfig, 10000);
+
+    return joinConfig;
+}
+
+async function getWelcomeChannel(guild, welcomeConfig) {
+
+    const welcomeBlacklist = [
+        ChannelType.DM,
+        ChannelType.GroupDM,
+        ChannelType.GuildCategory,
+        ChannelType.GuildDirectory,
+        ChannelType.GuildForum,
+        ChannelType.GuildStageVoice,
+        ChannelType.GuildVoice,
+    ]
+
+    if (welcomeConfig.logEnabled === false) return undefined;
+    const welcomeChannel = guild.channels.cache.get(welcomeConfig.joinChannel);
+    if (!welcomeChannel) return undefined;
+    if (welcomeBlacklist.includes(welcomeChannel.type)) return undefined;
+
+    return welcomeChannel;
+}
+
+module.exports = { getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel };

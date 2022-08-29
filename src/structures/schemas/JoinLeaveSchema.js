@@ -33,7 +33,7 @@ const JoinLeaveSchema = new mongoose.Schema({
     joinDM: reqBool,
     joinDMMessage: reqString, // only for text
     joinDMEmbedBuilder: reqBool,
-    joinDMEmbed: reqString, // join dm embed
+    joinDMEmbed: reqArray, // join dm embed
 
     waitVerify: reqBool,
 });

@@ -9,7 +9,7 @@ module.exports = {
      */
     async execute(member, client, color) {
 
-        console.log(member)
+       // console.log(member)
 
         // fetch the database
         // get the member
