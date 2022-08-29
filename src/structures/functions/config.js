@@ -1,5 +1,6 @@
 const Log = require('../../structures/schemas/LoggingSchema');
 const JoinLeave = require('../../structures/schemas/JoinLeaveSchema');
+const Verify = require('../../structures/schemas/VerificationSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -93,14 +94,44 @@ async function getWelcomeConfig(client, guildId) {
                 leaveChannel: "none",
                 joinMessage: "Welcome {user} to **{guild}**!",
                 joinEmbedBuilder: true,
-                joinEmbed: [],//TODO],
+                joinEmbed: [
+                    {
+                        title: "Welcome {username}!",
+                        description: "Welcome to **{guild}**, {user}! You are the {members}th member.",
+                        color: null,
+                        authorText: "{tag}",
+                        authorIcon: "{avatar}",
+                        authorUrl: null,
+                        footerText: null,
+                        footerIcon: null,
+                        timestamp: true,
+                        url: null,
+                        image: null,
+                        thumbnail: null
+                    }
+                ],
                 leaveMessage: "Goodbye {user}!",
                 leaveEmbedBuilder: true,
-                leaveEmbed: [],//TODO],
+                leaveEmbed: [],
                 joinDM: false,
                 joinDMMessage: "Welcome to {guild} {user}! Check out the rules in #rules!",
                 joinDMEmbedBuilder: false,
-                joinDMEmbed: [],//TODO],
+                joinDMEmbed: [
+                    {
+                        title: null,
+                        description: null,
+                        color: null,
+                        authorText: null,
+                        authorIcon: null,
+                        authorUrl: null,
+                        footerText: null,
+                        footerIcon: null,
+                        timestamp: true,
+                        url: null,
+                        image: null,
+                        thumbnail: null
+                    }
+                ],
                 waitVerify: true,
             });
             newJoinLeave.save()
@@ -135,4 +166,35 @@ async function getWelcomeChannel(guild, welcomeConfig) {
     return welcomeChannel;
 }
 
-module.exports = { getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel };
+async function getVerifyConfig(client, guildId) {
+    let verifyConfig;
+
+    if (client.cache.get(`${guildId}-verify-config`)) verifyConfig = client.cache.get(`${guildId}-verify-config`);
+    if (!verifyConfig) verifyConfig = await Verify.findOne({
+        guildId: guildId,
+    }, (err, verify) => {
+        if (err) console.error(err);
+        if (!verify) {
+            const newVerify = new Verify({
+                guildId: guildId,
+                verifyEnabled: false,
+                verifyLog: true,
+                logChannel: "none",
+                verifyChannel: "none",
+                verifyMessage: "none",
+                verifyRoles: [],
+                verifyCode: true,
+            });
+            newVerify.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-verify-config`, verifyConfig, 10000);
+
+    return verifyConfig;
+}
+
+module.exports = { getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig };

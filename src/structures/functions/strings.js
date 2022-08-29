@@ -19,6 +19,9 @@ function joinVariables(text, member) {
     joinVarMsg = joinVarMsg.replaceAll("{discriminator}", member.user.discriminator);
     joinVarMsg = joinVarMsg.replaceAll("{guild}", member.guild.name);
     joinVarMsg = joinVarMsg.replaceAll("{members}", member.guild.memberCount);
+    joinVarMsg = joinVarMsg.replaceAll("{id}", member.user.id);
+    joinVarMsg = joinVarMsg.replaceAll("{avatarhash}", member.user.avatar);
+    joinVarMsg = joinVarMsg.replaceAll("{avatar}", `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png`);
 
     return joinVarMsg;
 }

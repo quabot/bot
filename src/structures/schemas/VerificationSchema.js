@@ -20,6 +20,8 @@ const VerificationSchema = new mongoose.Schema({
     verifyEnabled: reqBool,
     verifyLog: reqBool,
     logChannel: reqString,
+    verifyChannel: reqString,
+    verifyMessage: reqString,
     verifyRoles: reqArray,
     verifyCode: reqBool,
 });
