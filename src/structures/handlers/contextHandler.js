@@ -7,6 +7,8 @@ const { ContextMenuCommandBuilder, ApplicationCommandType, REST, Routes } = requ
 require('dotenv').config();
 
 module.exports = async (client) => {
+
+    return;
     const ContextTable = new Ascii("Context Commands");
 
     ContextList = [];
@@ -41,7 +43,7 @@ module.exports = async (client) => {
         });
 
         await rest.put(
-            Routes.applicationGuildCommands(client.user.id, "1007810461347086357"),
+            Routes.applicationCommands(client.user.id),
             { body: menus },
         ).catch((e => console.log("Error with the context creation: " + e)));
     });
