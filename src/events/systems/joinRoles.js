@@ -1,4 +1,5 @@
 const { Client, GuildMember } = require('discord.js');
+const { getRolesConfig } = require('../../structures/functions/config');
 
 module.exports = {
     event: "guildMemberAdd",
@@ -9,13 +10,29 @@ module.exports = {
      */
     async execute(member, client, color) {
 
-        //console.log(member)
+        if (!member.guild) return;
 
-        // fetch the database
-        // get the member
-        
-        // get the roles
+        const rolesConfig = await getRolesConfig(client, member.guild.id);
+        if (!rolesConfig) return;
+        if (rolesConfig.roleEnabled === false) return;
+        if (rolesConfig.joinRoles.length === 0) return;
 
-        //if bot, give bot role (w delay), otherwise give human role.
+        rolesConfig.joinRoles.forEach(role => {
+            if (role.bot && member.user.bot) {
+                const fRole = member.guild.roles.cache.get(role.id);
+                if (!fRole) return;
+                setTimeout(() => {
+                    member.roles.add(fRole).catch((e => { }));
+                }, role.delay);
+            }
+
+            if (role.bot === false && !member.user.bot) {
+                const fRole = member.guild.roles.cache.get(role.id);
+                if (!fRole) return;
+                setTimeout(() => {
+                    member.roles.add(fRole).catch((e => { }));
+                }, role.delay);
+            }
+        });
     }
 }

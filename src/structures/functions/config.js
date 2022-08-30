@@ -1,6 +1,7 @@
 const Log = require('../../structures/schemas/LoggingSchema');
 const JoinLeave = require('../../structures/schemas/JoinLeaveSchema');
 const Verify = require('../../structures/schemas/VerificationSchema');
+const Role = require('../../structures/schemas/JoinRoleSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -112,7 +113,22 @@ async function getWelcomeConfig(client, guildId) {
                 ],
                 leaveMessage: "Goodbye {user}!",
                 leaveEmbedBuilder: true,
-                leaveEmbed: [],
+                leaveEmbed: [
+                    {
+                        title: "Goodbye {username}!",
+                        description: "{user} left **{guild}**!",
+                        color: null,
+                        authorText: "{tag}",
+                        authorIcon: "{avatar}",
+                        authorUrl: null,
+                        footerText: null,
+                        footerIcon: null,
+                        timestamp: true,
+                        url: null,
+                        image: null,
+                        thumbnail: null
+                    }
+                ],
                 joinDM: false,
                 joinDMMessage: "Welcome to {guild} {user}! Check out the rules in #rules!",
                 joinDMEmbedBuilder: false,
@@ -158,12 +174,32 @@ async function getWelcomeChannel(guild, welcomeConfig) {
         ChannelType.GuildVoice,
     ]
 
-    if (welcomeConfig.logEnabled === false) return undefined;
+    if (welcomeConfig.joinEnabled === false) return undefined;
     const welcomeChannel = guild.channels.cache.get(welcomeConfig.joinChannel);
     if (!welcomeChannel) return undefined;
     if (welcomeBlacklist.includes(welcomeChannel.type)) return undefined;
 
     return welcomeChannel;
+}
+
+async function getLeaveChannel(guild, welcomeConfig) {
+
+    const leaveBlacklist = [
+        ChannelType.DM,
+        ChannelType.GroupDM,
+        ChannelType.GuildCategory,
+        ChannelType.GuildDirectory,
+        ChannelType.GuildForum,
+        ChannelType.GuildStageVoice,
+        ChannelType.GuildVoice,
+    ]
+
+    if (welcomeConfig.leaveEnabled === false) return undefined;
+    const leaveChannel = guild.channels.cache.get(welcomeConfig.leaveChannel);
+    if (!leaveChannel) return undefined;
+    if (leaveBlacklist.includes(leaveChannel.type)) return undefined;
+
+    return leaveChannel;
 }
 
 async function getVerifyConfig(client, guildId) {
@@ -197,4 +233,30 @@ async function getVerifyConfig(client, guildId) {
     return verifyConfig;
 }
 
-module.exports = { getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig };
+async function getRolesConfig(client, guildId) {
+    let roleConfig;
+
+    if (client.cache.get(`${guildId}-roles-config`)) roleConfig = client.cache.get(`${guildId}-roles-config`);
+    if (!roleConfig) roleConfig = await Role.findOne({
+        guildId: guildId,
+    }, (err, role) => {
+        if (err) console.error(err);
+        if (!role) {
+            const newRole = new Role({
+                guildId: guildId,
+                roleEnabled: true,
+                joinRoles: [],
+            });
+            newRole.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-roles-config`, roleConfig, 10000);
+
+    return roleConfig;
+}
+
+module.exports = { getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig };
