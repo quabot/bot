@@ -41,7 +41,7 @@ module.exports = {
             .setColor(Colors.Yellow)
             .setTimestamp()
 
-        if (newMember.user.avatar) embed.setFooter({ text: `User: ${newMember.user.tag}`, iconURL: newMember.user.avatar ? `${newMember.user.avatarURL({ dynamic: true })}` : null });
+        embed.setFooter({ text: `User: ${newMember.user.tag}`, iconURL: newMember.user.avatar ? `${newMember.user.avatarURL({ dynamic: true })}` : null });
 
         logChannel.send({
             embeds: [embed]

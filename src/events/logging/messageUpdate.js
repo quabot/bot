@@ -23,7 +23,7 @@ module.exports = {
         if (!logConfig.enabledEvents.includes(this.event)) return;
 
         const embed = new EmbedBuilder()
-            .setDescription(`**Message Edited**\n${newMessage.channel}`)
+            .setDescription(`**Message Edited**\n${newMessage.channel}\n[Jump to Message](${newMessage.url})`)
             .setColor(Colors.Yellow);
 
         let Oldcontent = String(oldMessage.content);
