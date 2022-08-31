@@ -1,6 +1,6 @@
 const { GuildChannel, Client, EmbedBuilder, Colors } = require('discord.js');
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
-const channelTypes = ["Text channel", "DM", "Voice Channel", "DM", "Category", "News Channels", "News Thread", "Thread", "Private Thread", "Stage Channel", "Directory Channel", "Forum Channel"];
+const channelTypes = ["Text channel", "DM", "Voice Channel", "DM", "Category", "News Channel", "News Thread", "Thread", "Private Thread", "Stage Channel", "Directory Channel", "Forum Channel"];
 
 module.exports = {
     event: "channelDelete",
