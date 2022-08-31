@@ -2,6 +2,7 @@ const Log = require('../../structures/schemas/LoggingSchema');
 const JoinLeave = require('../../structures/schemas/JoinLeaveSchema');
 const Verify = require('../../structures/schemas/VerificationSchema');
 const Role = require('../../structures/schemas/JoinRoleSchema');
+const Members = require('../../structures/schemas/MembersChannelSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -257,4 +258,31 @@ async function getRolesConfig(client, guildId) {
     return roleConfig;
 }
 
-module.exports = { getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig };
+async function getMembersConfig(client, guildId) {
+    let membersConfig;
+
+    if (client.cache.get(`${guildId}-members-config`)) roleConfig = client.cache.get(`${guildId}-members-config`);
+    if (!membersConfig) membersConfig = await Members.findOne({
+        guildId: guildId,
+    }, (err, members) => {
+        if (err) console.error(err);
+        if (!members) {
+            const newMembers = new Members({
+                guildId: guildId,
+                channelId: "none",
+                channelName: "Members: {members}",
+                channelEnabled: false
+            });
+            newMembers.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-members-config`, membersConfig, 10000);
+
+    return membersConfig;
+}
+
+module.exports = { getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
