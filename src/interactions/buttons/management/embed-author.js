@@ -58,7 +58,7 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-url-modal') return;
 
-            await modal.deferReply({ ephemeral: true });
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const text = modal.fields.getTextInputValue("text");
             let url = modal.fields.getTextInputValue("url") ? modal.fields.getTextInputValue("url") : null;
             let icon = modal.fields.getTextInputValue("icon") ? modal.fields.getTextInputValue("icon") : null;

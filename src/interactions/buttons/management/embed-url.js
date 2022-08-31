@@ -38,7 +38,7 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-url-modal') return;
 
-            await modal.deferReply({ ephemeral: true });
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const url = modal.fields.getTextInputValue("url");
             if (!url) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((e => { }));
             if (isValidHttpUrl(url) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((e => { }));

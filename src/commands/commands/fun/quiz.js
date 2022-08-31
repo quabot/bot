@@ -57,7 +57,7 @@ module.exports = {
             if (i.user.id !== interaction.user.id) return;
             const correct = answerList[i.customId - 1] === data[0].correctAnswer ? "You were **✅ correct**" : "You were **❌ incorrect**";
 
-            await i.deferReply();
+            await i.deferReply().catch((e => { }));
 
             if (answerList[i.customId - 1] !== data[0].correctAnswer) disButtons.components[i.customId - 1].setStyle(ButtonStyle.Danger);
 

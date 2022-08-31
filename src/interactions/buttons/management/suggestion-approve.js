@@ -11,7 +11,7 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
 
         let suggestConfig;
 

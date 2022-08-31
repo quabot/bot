@@ -37,7 +37,7 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-thumbnail-modal') return;
 
-            await modal.deferReply({ ephemeral: true });
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const thumbnail = modal.fields.getTextInputValue("thumbnail");
             if (!thumbnail) modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));
             if (isValidHttpUrl(thumbnail) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));

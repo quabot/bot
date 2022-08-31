@@ -9,7 +9,7 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
         
         const index = interaction.message.embeds[1].data.fields ? interaction.message.embeds[1].data.fields.length - 1 : 0;
 

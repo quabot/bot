@@ -37,7 +37,7 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-title-modal') return;
 
-            await modal.deferReply({ ephemeral: true });
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const title = modal.fields.getTextInputValue("title");
             if (!title) modal.editReply({ embeds: [await generateEmbed(color, "No title entered, try again.")], ephemeral: true }).catch((e => { }));
             

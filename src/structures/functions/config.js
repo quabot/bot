@@ -216,8 +216,6 @@ async function getVerifyConfig(client, guildId) {
                 verifyEnabled: false,
                 verifyLog: true,
                 logChannel: "none",
-                verifyChannel: "none",
-                verifyMessage: "none",
                 verifyRoles: [],
                 verifyCode: true,
             });

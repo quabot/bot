@@ -47,7 +47,7 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-footer-modal') return;
 
-            await modal.deferReply({ ephemeral: true });
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const text = modal.fields.getTextInputValue("text");
             let url = modal.fields.getTextInputValue("icon") ? modal.fields.getTextInputValue("icon") : null;
             if (!text) return modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch((e => { }));

@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
 
         const suggestion = interaction.fields.getTextInputValue("suggestion");
 

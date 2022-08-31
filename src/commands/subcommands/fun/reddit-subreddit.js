@@ -10,7 +10,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
 
         const post = await getPost(interaction.options.getString("reddit"));
         const image = await getImage(interaction.options.getString("reddit"));

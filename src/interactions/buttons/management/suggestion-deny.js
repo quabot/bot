@@ -100,7 +100,7 @@ module.exports = {
             });
 
             if (modal) {
-                await modal.deferReply({ ephemeral: true });
+                await modal.deferReply({ ephemeral: true }).catch((e => { }));
 
                 const reason = modal.fields.getTextInputValue("reason");
                 if (!reason) return;

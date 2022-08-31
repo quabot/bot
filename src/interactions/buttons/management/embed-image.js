@@ -37,7 +37,7 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-image-modal') return;
 
-            await modal.deferReply({ ephemeral: true });
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const image = modal.fields.getTextInputValue("image");
             if (!image) modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch((e => { }));
             if (isValidHttpUrl(image) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch((e => { }));

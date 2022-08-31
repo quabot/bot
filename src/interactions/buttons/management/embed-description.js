@@ -37,7 +37,7 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-description-modal') return;
 
-            await modal.deferReply({ ephemeral: true });
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const description = modal.fields.getTextInputValue("description");
             if (!description) modal.editReply({ embeds: [await generateEmbed(color, "No description entered, try again.")], ephemeral: true }).catch((e => { }));
             

@@ -26,4 +26,18 @@ function joinVariables(text, member) {
     return joinVarMsg;
 }
 
-module.exports = { isValidHttpUrl, joinVariables };
+function randomString() {
+
+    // Credits for the code to: https://github.com/Joasss/NeoPass/
+    const charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789!@#$%^&*!@#$%^&*!@#$%^&*";
+    
+    let tempString = "";
+    for (let i = 0; i < 8; i++) {
+        const rndChar = charSet.charAt(Math.floor(Math.random() * charSet.length));
+        tempString = tempString + rndChar;
+    }
+
+    return tempString;
+}
+
+module.exports = { isValidHttpUrl, joinVariables, randomString };
