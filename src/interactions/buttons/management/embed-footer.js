@@ -38,7 +38,7 @@ module.exports = {
         await interaction.showModal(footerModal);
 
         const modal = await interaction.awaitModalSubmit({
-            time: 60000,
+            time: 180000,
             filter: i => i.user.id === interaction.user.id,
         }).catch(e => {
             return null
