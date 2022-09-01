@@ -40,4 +40,11 @@ function randomString() {
     return tempString;
 }
 
-module.exports = { isValidHttpUrl, joinVariables, randomString };
+function permissionBitToString(permission) {
+
+    // convert
+
+    return permission;
+}
+
+module.exports = { isValidHttpUrl, joinVariables, randomString, permissionBitToString };
