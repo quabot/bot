@@ -3,6 +3,7 @@ const JoinLeave = require('../../structures/schemas/JoinLeaveSchema');
 const Verify = require('../../structures/schemas/VerificationSchema');
 const Role = require('../../structures/schemas/JoinRoleSchema');
 const Members = require('../../structures/schemas/MembersChannelSchema');
+const Mod = require('../../structures/schemas/ModerationSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -285,4 +286,29 @@ async function getMembersConfig(client, guildId) {
     return membersConfig;
 }
 
-module.exports = { getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
+async function getModerationConfig(client, guildId) {
+    let moderationConfig;
+
+    if (client.cache.get(`${guildId}-moderation-config`)) roleConfig = client.cache.get(`${guildId}-moderation-config`);
+    if (!moderationConfig) moderationConfig = await Mod.findOne({
+        guildId: guildId,
+    }, (err, members) => {
+        if (err) console.error(err);
+        if (!members) {
+            const newMod = new Mod({
+                guildId: guildId,
+                channelId: "none",
+            });
+            newMod.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-moderation-config`, moderationConfig, 10000);
+
+    return moderationConfig;
+}
+
+module.exports = { getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
