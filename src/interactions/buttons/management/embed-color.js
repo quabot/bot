@@ -20,12 +20,12 @@ module.exports = {
                             .setLabel("New color")
                             .setStyle(TextInputStyle.Short)
                             .setRequired(true)
-                            .setMaxLength(6)
+                            .setMaxLength(7)
                             .setPlaceholder("#fff")
                     )
             )
 
-        await interaction.showModal(colorModal);
+        await interaction.showModal(colorModal).catch(() => null);
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -38,6 +38,7 @@ module.exports = {
             if (modal.customId !== 'embed-color-modal') return;
             await modal.deferReply({ ephemeral: true }).catch(() => null);
             const enteredColor = modal.fields.getTextInputValue("color");
+            console.log(enteredColor)
             if (!enteredColor) modal.editReply({ embeds: [await generateEmbed(color, "No color entered, try again.")], ephemeral: true }).catch(() => null);
             if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor)) modal.editReply({ embeds: [await generateEmbed(color, "Please enter a valid hex color code.")], ephemeral: true }).catch(() => null);
             

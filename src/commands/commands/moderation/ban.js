@@ -3,19 +3,19 @@ const { generateEmbed } = require('../../../structures/functions/embed');
 const { getModerationConfig } = require('../../../structures/functions/config');
 
 module.exports = {
-    name: "kick",
-    description: "Kick a user.",
+    name: "ban",
+    description: "Ban a user.",
     permission: PermissionFlagsBits.KickMembers,
     options: [
         {
             name: "user",
-            description: "User to kick",
+            description: "User to ban.",
             type: ApplicationCommandOptionType.User,
             required: true
         },
         {
             name: "reason",
-            description: "Reason for kicking the user.",
+            description: "Reason for banning the user.",
             type: ApplicationCommandOptionType.String,
             required: false
         },
@@ -39,32 +39,32 @@ module.exports = {
         const member = interaction.options.getMember("user");
         const user = interaction.options.getUser("user");
         const reason = interaction.options.getString("reason") ? interaction.options.getString("reason").slice(0, 800) : "No reason specified.";
-        let didKick = true;
+        let didBan = true;
 
         if (!user || !reason) {
-            didKick = false;
+            didBan = false;
             return interaction.editReply({
-                embeds: [await generateEmbed(color, "Please enter both a user and the reason for kicking this user.")]
+                embeds: [await generateEmbed(color, "Please enter both a user and the reason for banning this user.")]
             }).catch(() => null);
         }
 
         if (user.id === interaction.user.id) {
-            didKick = false;
+            didBan = false;
             return interaction.editReply({
-                embeds: [await generateEmbed(color, "**<:error:990996645913194517> What are you trying to do?**\nYou can't kick yourself!")]
+                embeds: [await generateEmbed(color, "**<:error:990996645913194517> What are you trying to do?**\nYou can't ban yourself!")]
             }).catch(() => null);
         }
 
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) {
-            didKick = false;
+            didBan = false;
             return interaction.editReply({
-                embeds: [await generateEmbed(color, "**<:error:990996645913194517> Insufficient permissions**\nYou cannot kick a user with roles higher than your own.")]
+                embeds: [await generateEmbed(color, "**<:error:990996645913194517> Insufficient permissions**\nYou cannot ban a user with roles higher than your own.")]
             }).catch(() => null);
         }
 
         const modConfig = await getModerationConfig(client, interaction.guild.id);
         if (!modConfig) {
-            didKick = false;
+            didBan = false;
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "We just created a new config! Please run that command again.")]
             }).catch(() => null);
@@ -94,27 +94,27 @@ module.exports = {
             }
         }).clone().catch(function (err) { });
 
-        const kickId = PunishmentId ? PunishmentId.kickId + 1 : 1;
+        const banId = PunishmentId ? PunishmentId.banId + 1 : 1;
 
-        await member.kick({ reason: reason }).catch(err => {
-            didKick = false;
+        await member.ban({ reason: reason }).catch(err => {
+            didBan = false;
             if (err.code === 50013) return interaction.editReply({
                 embeds: [
                     new EmbedBuilder()
                         .setTitle("<:error:990996645913194517> Insufficient permissions")
-                        .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
+                        .setDescription(`QuaBot does not have permission to ban that user - try moving the QuaBot role above all others`)
                         .setColor(color)
                 ], ephemeral
-            }).catch((err => { }))
+            }).catch((err => { }));
         });
 
-        if (didKick !== true) return;
+        if (didBan !== true) return;
 
         if (!ephemeral) member.send({
-            embeds: [await generateEmbed(color, `You were kicked from **${interaction.guild.name}**
-            **Kicked by**: ${interaction.user}
+            embeds: [await generateEmbed(color, `You were banned from **${interaction.guild.name}**
+            **Banned by**: ${interaction.user}
             **Reason**: ${reason}`)
-                .setTitle("You were kicked!")
+                .setTitle("You were banned!")
                 .setTimestamp()
             ]
         }).catch(() => null);
@@ -122,11 +122,11 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle(`User Kicked`)
+                    .setTitle(`User Banned`)
                     .setDescription(`**User**: ${member}`)
                     .setColor(color)
                     .addFields(
-                        { name: "Kick-ID", value: `${kickId}`, inline: true },
+                        { name: "Ban-ID", value: `${banId}`, inline: true },
                         { name: "Reason", value: `${reason}`, inline: true },
                         { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
                         { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
@@ -139,18 +139,18 @@ module.exports = {
             channel.send({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle("User Kicked")
+                        .setTitle("User Banned")
                         .setDescription(`**User**: ${member}`)
                         .setColor(color)
                         .addFields(
-                            { name: "Kick-ID", value: `${kickId}`, inline: true },
+                            { name: "Ban-ID", value: `${banId}`, inline: true },
                             { name: "Reason", value: `${reason}`, inline: true },
                             { name: "\u200b", value: "\u200b", inline: true },
                             { name: "Joined Server", value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`, inline: true },
                             { name: "Account Created", value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`, inline: true },
                             { name: "\u200b", value: "\u200b", inline: true },
-                            { name: "Kicked By", value: `${interaction.user}`, inline: true },
-                            { name: "Kicked In", value: `${interaction.channel}`, inline: true },
+                            { name: "Banned By", value: `${interaction.user}`, inline: true },
+                            { name: "Banned In", value: `${interaction.channel}`, inline: true },
                             { name: "\u200b", value: "\u200b", inline: true },
                         )
                         .setColor(color)
@@ -162,8 +162,8 @@ module.exports = {
         const newAction = new ModAction({
             guildId: interaction.guild.id,
             userId: member.user.id,
-            type: "kick",
-            punishmentId: kickId,
+            type: "ban",
+            punishmentId: banId,
             channelId: interaction.channel.id,
             userExecuteId: interaction.user.id,
             reason: reason,
@@ -173,7 +173,7 @@ module.exports = {
 
         if (!PunishmentId) return;
         await PunishmentId.updateOne({
-            kickId,
+            banId,
         });
 
     }

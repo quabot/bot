@@ -25,7 +25,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(thumbnailModal);
+        await interaction.showModal(thumbnailModal).catch(() => null);
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
