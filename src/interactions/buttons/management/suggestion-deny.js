@@ -148,7 +148,7 @@ module.exports = {
                     ]
                 }).catch(() => null);
 
-                interaction.editReply({
+                modal.editReply({
                     embeds: [await generateEmbed(color, "Denied the suggestion.")], ephemeral: true
                 }).catch(() => null);
 

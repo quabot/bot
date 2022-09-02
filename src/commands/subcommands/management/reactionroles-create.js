@@ -51,6 +51,7 @@ module.exports = {
 
         channel.messages.fetch({ message: message_id })
             .then(async message => {
+                console.log("Fetched a message!")
                 await message.react(`${emoji}`).catch(async err => {
                     error = true
                     return interaction.editReply({
