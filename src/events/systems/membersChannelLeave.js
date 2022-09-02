@@ -28,6 +28,6 @@ module.exports = {
 
         if (name.length > 100) name = name.slice(0, 100);
 
-        channel.setName(name).catch((err => { }));
+        channel.setName(name).catch(() => null);
     }
 }

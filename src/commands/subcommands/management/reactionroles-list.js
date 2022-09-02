@@ -48,7 +48,7 @@ module.exports = {
                     .setColor(color)
                     .setDescription("Couldn't find any reactionroles that matched those criteria! Make sure you've got them [configured](https://dashboard.quabot.net).")
             ], ephemeral: true
-        }).catch((err => { }));
+        }).catch(() => null);
 
         const backId = 'backRR'
         const forwardId = 'forwardRR'

@@ -12,7 +12,7 @@ module.exports = {
             emoji: reaction._emoji.name
         }, (err) => {
             if (err) console.log(err);
-        }).clone().catch((err => { }));
+        }).clone().catch(() => null);
 
         if (!reactionRole) return;
 
@@ -28,7 +28,7 @@ module.exports = {
 
             //? Give and remove.
             case "normal":
-                member.roles.remove(role).catch((err => { }));
+                member.roles.remove(role).catch(() => null);
                 break;
 
 
@@ -42,7 +42,7 @@ module.exports = {
 
             //? Give and removed, but reversed.
             case "reversed":
-                member.roles.add(role).catch((err => { }));
+                member.roles.add(role).catch(() => null);
                 break;
 
             //? Unique mode.
@@ -65,7 +65,7 @@ module.exports = {
                     if (member.roles.cache.some(role => role.id === `${item.roleId}`)) hasRole = true;
                 });
 
-                if (hasRole) member.roles.remove(role).catch((err => { }));
+                if (hasRole) member.roles.remove(role).catch(() => null);
 
                 break;
 

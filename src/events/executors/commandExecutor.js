@@ -21,12 +21,12 @@ module.exports = {
                     .setColor(Colors.Red)
                     .setDescription(`⛔ An error occured! Couldn't find the command \`${interaction.commandName}\``)
             ]
-        }).catch((err => { })) && client.commands.delete(interaction.commandName);
+        }).catch(() => null) && client.commands.delete(interaction.commandName);
 
 
         if (command.permission) {
             if (!interaction.member.permissions.has(command.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.\nYou need the permission: \`${command.permission}\` to do that`, ephemeral: true }).catch((err => { }));
+                return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.\nYou need the permission: \`${command.permission}\` to do that`, ephemeral: true }).catch(() => null);
             }
         }
 
@@ -41,7 +41,7 @@ module.exports = {
                 content:
                     `I need the permission(s): \`${command.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
                 , ephemeral: true
-            }).catch((err => { }));
+            }).catch(() => null);
         }
 
         command.execute(client, interaction, "#3a5a74");

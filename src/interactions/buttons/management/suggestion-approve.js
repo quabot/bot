@@ -66,7 +66,7 @@ module.exports = {
             suggestId: suggestionId,
         }, (err, suggest) => {
             if (err) console.log(err);
-        }).clone().catch((err => { }));
+        }).clone().catch(() => null);
 
 
         const msg = await channel.messages.fetch(`${suggestion.suggestMsgId}`).then(async message => {
@@ -122,11 +122,11 @@ module.exports = {
 
             interaction.editReply({
                 embeds: [await generateEmbed(color, "Approved the suggestion.")], ephemeral: true
-            }).catch((err => { }));
+            }).catch(() => null);
 
             if (member) member.send({
                 embeds: [await generateEmbed(color, `Your suggestion in ${interaction.guild.name} was approved. Go check it out [here](${message.url})!`).setTitle("Your suggestion was approved.")]
-            }).catch((err => { }));
+            }).catch(() => null);
 
             await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch(() => null);
         });
