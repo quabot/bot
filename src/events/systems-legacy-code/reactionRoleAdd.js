@@ -76,7 +76,7 @@ module.exports = {
                     });
 
                     if (hasRole) return;
-                    if (!hasRole) member.roles.add(role).catch((e => { }));
+                    if (!hasRole) member.roles.add(role).catch(() => null);
 
                     break;
 
@@ -99,7 +99,7 @@ module.exports = {
                     });
 
                     if (hasRoleBool) return;
-                    if (!hasRoleBool) member.roles.add(role).catch((e => { }));
+                    if (!hasRoleBool) member.roles.add(role).catch(() => null);
                     break;
 
 

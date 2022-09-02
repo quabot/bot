@@ -9,10 +9,10 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
         interaction.editReply({
             embeds: [await generateEmbed(color, "For questions, suggestions and more, join our support server at **[discord.gg/HYGA7Y6ptk](https://discord.gg/HYGA7Y6ptk)**.")]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

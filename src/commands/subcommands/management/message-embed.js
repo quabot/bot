@@ -14,12 +14,12 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
         const channel = interaction.options.getChannel("channel");
         if (await checkChannel(channel.type) === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Please enter a channel where the bot can send messages.")]
-        }).catch((e => { }));
+        }).catch(() => null);
 
         const buttons1 = new ActionRowBuilder()
             .addComponents(
@@ -87,6 +87,6 @@ module.exports = {
                 .setDescription("\u200b")
                 .setColor(color)
             ], components: [buttons1, buttons2, buttons3]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

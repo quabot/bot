@@ -11,7 +11,7 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
+        await interaction.deferReply({ ephemeral: true }).catch(() => null);
 
         let suggestConfig;
 
@@ -43,12 +43,12 @@ module.exports = {
         if (!suggestConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "A config is being generated, please run the command again.")],
             ephemeral: true
-        }).catch((e => { }));
+        }).catch(() => null);
 
         if (suggestConfig.suggestEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Suggestions are not enabled in this server.")],
             ephemeral: true
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
 
@@ -56,7 +56,7 @@ module.exports = {
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the suggestions channel. Ask an admin to configure this on our [dashboard](https://dashboard.quabot.net).")],
             ephemeral: true
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
         const suggestionId = interaction.message.embeds[0].footer.text;
@@ -74,12 +74,12 @@ module.exports = {
             if (!message) return interaction.editReply({
                 embeds: [await generateEmbed(color, "Couldn't find that message. Are you sure it wasn't deleted?")],
                 ephemeral: true
-            }).catch((e => { }));
+            }).catch(() => null);
 
 
             const member = interaction.guild.members.cache.get(`${suggestion.suggestionUserId}`);
 
-            await message.delete().catch((e => { }));
+            await message.delete().catch(() => null);
 
             interaction.editReply({
                 embeds: [await generateEmbed(color, "Deleted the suggestion.")], ephemeral: true
@@ -122,9 +122,9 @@ module.exports = {
                                 .setStyle(ButtonStyle.Secondary),
                         )
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
-            await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch((e => { }));
+            await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch(() => null);
         });
     }
 }

@@ -38,21 +38,21 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-url-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch((e => { }));
+            await modal.deferReply({ ephemeral: true }).catch(() => null);
             const url = modal.fields.getTextInputValue("url");
-            if (!url) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((e => { }));
-            if (isValidHttpUrl(url) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (!url) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch(() => null);
+            if (isValidHttpUrl(url) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch(() => null);
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setURL(url),
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the url to **${url}**`)]
-            }).catch((e => { }));
+            }).catch(() => null);
         }
     }
 }

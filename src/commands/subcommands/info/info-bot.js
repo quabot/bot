@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
         
         if (!client.cache.has("info")) client.cache.set("info", {
             djs: require('../../../../package.json').dependencies['discord.js'],
@@ -47,6 +47,6 @@ module.exports = {
                     )
                     .setTimestamp()
             ]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

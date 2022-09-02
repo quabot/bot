@@ -58,24 +58,24 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-addfield-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch((e => { }));
+            await modal.deferReply({ ephemeral: true }).catch(() => null);
             const title = modal.fields.getTextInputValue("title");
             const value = modal.fields.getTextInputValue("value");
             const inline = modal.fields.getTextInputValue("inline") ? true : false;
 
-            if (!title) return modal.editReply({ embeds: [await generateEmbed(color, "No title entered, try again.")], ephemeral: true }).catch((e => { }));
-            if (!value) return modal.editReply({ embeds: [await generateEmbed(color, "No value entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (!title) return modal.editReply({ embeds: [await generateEmbed(color, "No title entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!value) return modal.editReply({ embeds: [await generateEmbed(color, "No value entered, try again.")], ephemeral: true }).catch(() => null);
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).addFields({ name: title, value: value, inline: inline }),
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Added a field!`)]
-            }).catch((e => { }));
+            }).catch(() => null);
         }
     }
 }

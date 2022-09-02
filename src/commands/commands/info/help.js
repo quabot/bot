@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
         const infoList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/info/*.js`)).map((file) => {
             const item = require(file);
@@ -54,7 +54,7 @@ module.exports = {
             embeds: [helpEmbeds[page].setFooter({ text: `Page ${page + 1} / ${helpEmbeds.length}` })],
             components: [helpButtons],
             fetchReply: true,
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
         const filter = (i) =>
@@ -80,7 +80,7 @@ module.exports = {
             await i.editReply({
                 embeds: [helpEmbeds[page].setFooter({ text: `Page ${page + 1} / ${helpEmbeds.length}` })],
                 components: [helpButtons],
-            }).catch((e => { }));
+            }).catch(() => null);
             collector.resetTimer();
         });
 
@@ -93,7 +93,7 @@ module.exports = {
                 currentPage.edit({
                     embeds: [helpEmbeds[page].setFooter({ text: `Page ${page + 1} / ${helpEmbeds.length}` })],
                     components: [disabledRow],
-                }).catch((e => { }));
+                }).catch(() => null);
             }
         });
     }

@@ -18,7 +18,7 @@ module.exports = {
 
         
 
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
+        await interaction.deferReply({ ephemeral: true }).catch(() => null);
 
         const channel = interaction.options.getChannel("channel");
         const message_id = interaction.options.getString("message");
@@ -38,15 +38,15 @@ module.exports = {
         ]
         if (channelBlacklist.includes(channel.type)) return interaction.editReply({
             embeds: [await generateEmbed(color, "Please enter a valid channel to use.")]
-        }).catch((e => { }));
+        }).catch(() => null);
 
         if (role.rawPosition > interaction.guild.members.me.roles.highest.rawPosition) return interaction.editReply({
             ephemeral: true, embeds: [await generateEmbed(color, "I cannot give that role to users. Make sure my role is above the role you're trying to setup.")],
-        }).catch((e => { }));
+        }).catch(() => null);
 
         if (await Reaction.findOne({ guildId: interaction.guild.id, messageId: message_id, emoji: emoji })) return interaction.editReply({
             ephemeral: true, embeds: [await generateEmbed(color, "That reactionrole is already setup.")],
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
         channel.messages.fetch({ message: message_id })
@@ -55,7 +55,7 @@ module.exports = {
                     error = true
                     return interaction.editReply({
                         ephemeral: true, embeds: [await generateEmbed(color, "That is not a valid emoji. Please note that only default emojis work.")]
-                    }).catch((e => { }));
+                    }).catch(() => null);
                 });
 
                 if (!error) {
@@ -86,7 +86,7 @@ module.exports = {
                     newReaction.save()
                         .catch(err => {
                             console.log(err);
-                            interaction.followUp({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch((e => { }))
+                            interaction.followUp({ embeds: [new EmbedBuilder().setDescription("There was an error with the database.").setColor(color)] }).catch(() => null)
                         });
                 }
             })
@@ -97,7 +97,7 @@ module.exports = {
                             .setColor(color)
                             .setDescription("Could not find that message.")
                     ]
-                }).catch((e => { }));
+                }).catch(() => null);
                 return;
             });
     }

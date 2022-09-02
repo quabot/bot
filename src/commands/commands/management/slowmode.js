@@ -27,22 +27,22 @@ module.exports = {
     permissions: [PermissionFlagsBits.ManageChannels],
     async execute(client, interaction, color) { 
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
         const channel = interaction.options.getChannel("channel");
         let slowmode = Math.round(ms(interaction.options.getString("slowmode")) / 1000);
 
         if (!slowmode) return interaction.editReply({
             embeds: [await generateEmbed(color, "No slowmode given! Format: 1h, 6h, 20min.")]
-        }).catch((e => { }));
+        }).catch(() => null);
 
         if (slowmode > 21600) slowmode = 21600;
         if (slowmode < 0) slowmode = 0;
 
-        channel.setRateLimitPerUser(slowmode).catch((e => { }))
+        channel.setRateLimitPerUser(slowmode).catch(() => null)
 
         interaction.editReply({
             embeds: [await generateEmbed(color, `Slowmode set to: **${await convertHMS(slowmode)}**`)]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

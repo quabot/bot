@@ -37,20 +37,20 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-description-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch((e => { }));
+            await modal.deferReply({ ephemeral: true }).catch(() => null);
             const description = modal.fields.getTextInputValue("description");
-            if (!description) modal.editReply({ embeds: [await generateEmbed(color, "No description entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (!description) modal.editReply({ embeds: [await generateEmbed(color, "No description entered, try again.")], ephemeral: true }).catch(() => null);
             
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setDescription(description),
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the description to **${description}**`)]
-            }).catch((e => { }));
+            }).catch(() => null);
         }
     }
 }

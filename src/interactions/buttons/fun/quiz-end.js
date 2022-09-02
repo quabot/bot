@@ -22,7 +22,7 @@ module.exports = {
                         .setCustomId("quiz-end")
                 )
             ]
-        }).catch((e => { }));
+        }).catch(() => null);
         
     }
 }

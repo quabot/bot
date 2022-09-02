@@ -37,21 +37,21 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-image-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch((e => { }));
+            await modal.deferReply({ ephemeral: true }).catch(() => null);
             const image = modal.fields.getTextInputValue("image");
-            if (!image) modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch((e => { }));
-            if (isValidHttpUrl(image) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (!image) modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch(() => null);
+            if (isValidHttpUrl(image) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch(() => null);
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setImage(image),
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the image to **${image}**`)]
-            }).catch((e => { }));
+            }).catch(() => null);
         }
     }
 }

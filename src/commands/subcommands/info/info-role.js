@@ -9,7 +9,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
         const role = interaction.options.getRole("role");
 
@@ -30,6 +30,6 @@ module.exports = {
                     )
                     .setTimestamp()
             ]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

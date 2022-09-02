@@ -8,7 +8,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
         interaction.editReply({
             embeds: [
@@ -17,6 +17,6 @@ module.exports = {
                     .setImage(`${interaction.guild.iconURL({ size: 1024, forceStatic: false })}`)
                     .setTimestamp()
             ]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

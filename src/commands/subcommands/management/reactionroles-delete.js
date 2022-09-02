@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
+        await interaction.deferReply({ ephemeral: true }).catch(() => null);
 
         const message_id = interaction.options.getString("message_id");
         const role = interaction.options.getRole("role");
@@ -19,7 +19,7 @@ module.exports = {
 
         if (!await Reaction.findOne({ guildId: interaction.guild.id, messageId: message_id, emoji: emoji, roleId: role.id })) return interaction.editReply({
             ephemeral: true, embeds: [await generateEmbed(color, "That reaction role doesn't exist.")],
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
         await Reaction.findOneAndDelete({
@@ -31,6 +31,6 @@ module.exports = {
 
         interaction.editReply({
             ephemeral: true, embeds: [await generateEmbed(color, "Successfully deleted the reaction role.")],
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

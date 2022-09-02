@@ -28,6 +28,6 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({ text: `${emoji.name}`, iconURL: `${emoji.url}` })
             ]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

@@ -11,7 +11,7 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
+        await interaction.deferReply({ ephemeral: true }).catch(() => null);
 
         let suggestConfig;
 
@@ -43,12 +43,12 @@ module.exports = {
         if (!suggestConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "A config is being generated, please run the command again.")],
             ephemeral: true
-        }).catch((e => { }));
+        }).catch(() => null);
 
         if (suggestConfig.suggestEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Suggestions are not enabled in this server.")],
             ephemeral: true
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
 
@@ -56,7 +56,7 @@ module.exports = {
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the suggestions channel. Ask an admin to configure this on our [dashboard](https://dashboard.quabot.net).")],
             ephemeral: true
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
         const suggestionId = interaction.message.embeds[0].footer.text;
@@ -74,14 +74,14 @@ module.exports = {
             if (!message) return interaction.editReply({
                 embeds: [await generateEmbed(color, "Couldn't find that message. Are you sure it wasn't deleted?")],
                 ephemeral: true
-            }).catch((e => { }));
+            }).catch(() => null);
 
 
             const member = interaction.guild.members.cache.get(`${suggestion.suggestionUserId}`);
             const embed = EmbedBuilder.from(message.embeds[0]).setColor(Colors.Green).addFields({ name: "Approved By", value: `${interaction.user}` });
             await message.edit({
                 embeds: [embed]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             interaction.message.edit({
                 embeds: [
@@ -117,7 +117,7 @@ module.exports = {
                                 .setStyle(ButtonStyle.Secondary),
                         )
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
 
             interaction.editReply({
@@ -128,7 +128,7 @@ module.exports = {
                 embeds: [await generateEmbed(color, `Your suggestion in ${interaction.guild.name} was approved. Go check it out [here](${message.url})!`).setTitle("Your suggestion was approved.")]
             }).catch((err => { }));
 
-            await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch((e => { }));
+            await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch(() => null);
         });
     }
 }

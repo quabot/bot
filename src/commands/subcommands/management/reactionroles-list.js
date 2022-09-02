@@ -15,7 +15,7 @@ module.exports = {
 
     
 
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
+        await interaction.deferReply({ ephemeral: true }).catch(() => null);
 
         const ReactionRole = require('../../../structures/schemas/ReactionRoleSchema');
 

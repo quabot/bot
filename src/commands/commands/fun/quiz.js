@@ -10,7 +10,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
         const { data } = await axios.get('https://the-trivia-api.com/api/questions?limit=1&difficulty=easy');
 
@@ -49,7 +49,7 @@ module.exports = {
                     .setColor(color)
             ], fetchReply: true,
             components: [answerButtons]
-        }).catch((e => { }));
+        }).catch(() => null);
 
         const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 20000 });
 
@@ -57,13 +57,13 @@ module.exports = {
             if (i.user.id !== interaction.user.id) return;
             const correct = answerList[i.customId - 1] === data[0].correctAnswer ? "You were **✅ correct**" : "You were **❌ incorrect**";
 
-            await i.deferReply().catch((e => { }));
+            await i.deferReply().catch(() => null);
 
             if (answerList[i.customId - 1] !== data[0].correctAnswer) disButtons.components[i.customId - 1].setStyle(ButtonStyle.Danger);
 
             await interaction.editReply({
                 components: [disButtons]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             i.editReply({
                 embeds: [
@@ -88,7 +88,7 @@ module.exports = {
         collector.on('end', async () => {
             await message.edit({
                 components: [disButtons]
-            }).catch((e => { }));
+            }).catch(() => null);
         });
     }
 }

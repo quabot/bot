@@ -37,21 +37,21 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-thumbnail-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch((e => { }));
+            await modal.deferReply({ ephemeral: true }).catch(() => null);
             const thumbnail = modal.fields.getTextInputValue("thumbnail");
-            if (!thumbnail) modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));
-            if (isValidHttpUrl(thumbnail) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (!thumbnail) modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch(() => null);
+            if (isValidHttpUrl(thumbnail) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch(() => null);
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setThumbnail(thumbnail),
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the thumbnail to **${thumbnail}**`)]
-            }).catch((e => { }));
+            }).catch(() => null);
         }
     }
 }

@@ -28,6 +28,6 @@ module.exports = {
                     .setDescription(`**${channelTypes[channel.type]} Deleted**\n\`${channel.name}\``)
                     .setTimestamp()
             ]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

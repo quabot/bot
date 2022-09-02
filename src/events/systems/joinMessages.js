@@ -51,11 +51,11 @@ module.exports = {
                 embed.setFooter({ text: await joinVariables(welcomeConfig.joinEmbed[0].footerText, member), iconURL: icon });
             }
             
-            channel.send({ embeds: [embed] }).catch((e => { }));
+            channel.send({ embeds: [embed] }).catch(() => null);
         } else {
             if (!welcomeConfig.joinMessage) return;
 
-            channel.send({ content:`${await joinVariables(welcomeConfig.joinEmbed, member)}` }).catch((e => { }));
+            channel.send({ content:`${await joinVariables(welcomeConfig.joinEmbed, member)}` }).catch(() => null);
         }
     }
 }

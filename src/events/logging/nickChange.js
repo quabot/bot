@@ -38,6 +38,6 @@ module.exports = {
 
         logChannel.send({
             embeds: [embed]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

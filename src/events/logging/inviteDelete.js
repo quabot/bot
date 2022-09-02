@@ -26,6 +26,6 @@ module.exports = {
                     .setColor(Colors.Red)
                     .setTimestamp()
             ]
-        }).catch((e => { }));
+        }).catch(() => null);
     }
 }

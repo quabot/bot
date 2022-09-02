@@ -36,21 +36,21 @@ module.exports = {
 
         if (modal) {
             if (modal.customId !== 'embed-color-modal') return;
-            await modal.deferReply({ ephemeral: true }).catch((e => { }));
+            await modal.deferReply({ ephemeral: true }).catch(() => null);
             const enteredColor = modal.fields.getTextInputValue("color");
-            if (!enteredColor) modal.editReply({ embeds: [await generateEmbed(color, "No color entered, try again.")], ephemeral: true }).catch((e => { }));
-            if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor)) modal.editReply({ embeds: [await generateEmbed(color, "Please enter a valid hex color code.")], ephemeral: true }).catch((e => { }));
+            if (!enteredColor) modal.editReply({ embeds: [await generateEmbed(color, "No color entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor)) modal.editReply({ embeds: [await generateEmbed(color, "Please enter a valid hex color code.")], ephemeral: true }).catch(() => null);
             
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setColor(enteredColor),
                 ]
-            }).catch((e => { }));
+            }).catch(() => null);
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the color to **${enteredColor}**`)]
-            }).catch((e => { }));
+            }).catch(() => null);
         }
     }
 }

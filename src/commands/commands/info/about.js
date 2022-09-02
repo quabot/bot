@@ -88,14 +88,14 @@ module.exports = {
 
 
         let page = 0;
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(() => null);
 
 
         const currentPage = await interaction.editReply({
             embeds: [aboutEmbeds[page].setFooter({ text: `Page ${page + 1} / ${aboutEmbeds.length}` })],
             components: [aboutButtons],
             fetchReply: true,
-        }).catch((e => { }));
+        }).catch(() => null);
 
 
 
@@ -122,7 +122,7 @@ module.exports = {
             await i.editReply({
                 embeds: [aboutEmbeds[page].setFooter({ text: `Page ${page + 1} / ${aboutEmbeds.length}` })],
                 components: [aboutButtons],
-            }).catch((e => { }));
+            }).catch(() => null);
             collector.resetTimer();
         });
 
@@ -135,7 +135,7 @@ module.exports = {
                 currentPage.edit({
                     embeds: [aboutEmbeds[page].setFooter({ text: `Page ${page + 1} / ${aboutEmbeds.length}` })],
                     components: [disabledRow],
-                }).catch((e => { }));
+                }).catch(() => null);
             }
         });
     }
