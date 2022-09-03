@@ -159,6 +159,11 @@ module.exports = {
                 await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch(() => null);
 
             }
-        });
+        }).catch((async () => {
+            return interaction.editReply({
+                embeds: [await generateEmbed(color, "Couldn't find that message. Are you sure it wasn't deleted?")],
+                ephemeral: true
+            }).catch(() => null);
+        }))
     }
 }
