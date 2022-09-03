@@ -14,6 +14,18 @@ module.exports = {
 
         await interaction.deferReply().catch(() => null);
 
+
+        const funList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/fun/*.js`)).map((file) => {
+            const item = require(file);
+            return `**/${item.name}** - ${item.description}`
+        }).join('\n');
+        const funEmbed = new EmbedBuilder()
+            .setTitle(`Fun Commands`)
+            .setDescription(`Play games, get memes and much more.
+            ${funList}`)
+            .setThumbnail(client.user.avatarURL({ dynamic: true }))
+            .setColor(color);
+
         const infoList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/info/*.js`)).map((file) => {
             const item = require(file);
             return `**/${item.name}** - ${item.description}`
@@ -21,11 +33,56 @@ module.exports = {
         const infoEmbed = new EmbedBuilder()
             .setTitle(`Info Commands`)
             .setDescription(`Get QuaBot's ping, the membercount and much more.
-            ${infoList}`)
+                ${infoList}`)
             .setThumbnail(client.user.avatarURL({ dynamic: true }))
             .setColor(color);
 
-        const helpEmbeds = [infoEmbed];
+        const managementList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/management/*.js`)).map((file) => {
+            const item = require(file);
+            return `**/${item.name}** - ${item.description}`
+        }).join('\n');
+        const managementEmbed = new EmbedBuilder()
+            .setTitle(`Management Commands`)
+            .setDescription(`Purge a channel, create a poll and so much more.
+                    ${managementList}`)
+            .setThumbnail(client.user.avatarURL({ dynamic: true }))
+            .setColor(color);
+
+        const miscList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/misc/*.js`)).map((file) => {
+            const item = require(file);
+            return `**/${item.name}** - ${item.description}`
+        }).join('\n');
+        const miscEmbed = new EmbedBuilder()
+            .setTitle(`Misc Commands`)
+            .setDescription(`See an avatar, translate a text and so much more.
+                        ${miscList}`)
+            .setThumbnail(client.user.avatarURL({ dynamic: true }))
+            .setColor(color);
+
+            const moderationList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/misc/*.js`)).map((file) => {
+                const item = require(file);
+                return `**/${item.name}** - ${item.description}`
+            }).join('\n');
+            const moderationEmbed = new EmbedBuilder()
+                .setTitle(`Moderation Commands`)
+                .setDescription(`Ban a member, warn them and so much more.
+                            ${moderationList}`)
+                .setThumbnail(client.user.avatarURL({ dynamic: true }))
+                .setColor(color);
+
+                const modulesList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/modules/*.js`)).map((file) => {
+                    const item = require(file);
+                    return `**/${item.name}** - ${item.description}`
+                }).join('\n');
+                const modulesEmbed = new EmbedBuilder()
+                    .setTitle(`Module Commands`)
+                    .setDescription(`Create a ticket, leave a suggestion and so much more.
+                                ${modulesList}`)
+                    .setThumbnail(client.user.avatarURL({ dynamic: true }))
+                    .setColor(color);
+
+
+        const helpEmbeds = [funEmbed, infoEmbed, managementEmbed, miscEmbed, moderationEmbed, modulesEmbed];
 
         const helpComponents = [new ButtonBuilder()
             .setCustomId("previous-help")
@@ -69,10 +126,11 @@ module.exports = {
 
         collector.on("collect", async (i) => {
             switch (i.customId) {
-                case "previous-about":
+                case "previous-help":
                     page = page > 0 ? --page : helpEmbeds.length - 1;
                     break;
-                case "next-about":
+                case "next-help":
+                    console.log("Next page!")
                     page = page + 1 < helpEmbeds.length ? ++page : 0;
                     break;
             }
