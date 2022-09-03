@@ -5,6 +5,7 @@ const Role = require('../../structures/schemas/JoinRoleSchema');
 const Members = require('../../structures/schemas/MembersChannelSchema');
 const Mod = require('../../structures/schemas/ModerationSchema');
 const Ticket = require('../../structures/schemas/TicketConfigSchema');
+const Poll = require('../../structures/schemas/PollConfigSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -340,4 +341,27 @@ async function getTicketConfig(client, guildId) {
     return ticketConfig;
 }
 
-module.exports = { getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
+async function getPollConfig(client, guildId) {
+    let pollConfig = await Poll.findOne({
+        guildId: guildId,
+    }, (err, poll) => {
+        if (err) console.error(err);
+        if (!poll) {
+            const newPoll = new Poll({
+                guildId: guildId,
+                pollEnabled: true,
+                pollId: 0,
+                pollLogEnabled: false,
+                pollLogChannelId: "none",
+            });
+            newPoll.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    return pollConfig;
+}
+
+module.exports = { getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
