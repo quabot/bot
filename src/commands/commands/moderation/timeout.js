@@ -120,7 +120,7 @@ module.exports = {
                         .setDescription(`QuaBot does not have permission to timeout that user - try moving the QuaBot role above all others`)
                         .setColor(color)
                 ], ephemeral
-            }).catch((err => { }))
+            }).catch(() => null)
             return interaction.editReply({
                 embeds: [
                     new EmbedBuilder()
@@ -128,7 +128,7 @@ module.exports = {
                         .setDescription(`You can only timeout a user for 27 days.`)
                         .setColor(color)
                 ], ephemeral
-            }).catch((err => { }))
+            }).catch(() => null)
         });
 
         if (didTimeout !== true) return;

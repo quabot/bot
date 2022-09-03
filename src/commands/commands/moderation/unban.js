@@ -55,7 +55,7 @@ module.exports = {
                         .setDescription(`That user doesn't exist/isn't banned!`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch((err => { }))
+            }).catch(() => null)
             return;
         });
 

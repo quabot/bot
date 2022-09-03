@@ -121,7 +121,7 @@ module.exports = {
                         .setDescription(`QuaBot does not have permission to ban that user - try moving the QuaBot role above all others`)
                         .setColor(color)
                 ], ephemeral
-            }).catch((err => { }));
+            }).catch(() => null);
         });
 
         if (didBan !== true) return;
@@ -195,7 +195,7 @@ module.exports = {
         const newAction = new ModAction({
             guildId: interaction.guild.id,
             userId: member.user.id,
-            type: "ban",
+            type: "tempban",
             punishmentId: banId,
             channelId: interaction.channel.id,
             userExecuteId: interaction.user.id,

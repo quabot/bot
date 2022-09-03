@@ -105,7 +105,7 @@ module.exports = {
                         .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
                         .setColor(color)
                 ], ephemeral
-            }).catch((err => { }))
+            }).catch(() => null)
         });
 
         if (didKick !== true) return;
