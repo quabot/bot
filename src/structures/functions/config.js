@@ -4,6 +4,7 @@ const Verify = require('../../structures/schemas/VerificationSchema');
 const Role = require('../../structures/schemas/JoinRoleSchema');
 const Members = require('../../structures/schemas/MembersChannelSchema');
 const Mod = require('../../structures/schemas/ModerationSchema');
+const Ticket = require('../../structures/schemas/TicketConfigSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -289,7 +290,7 @@ async function getMembersConfig(client, guildId) {
 async function getModerationConfig(client, guildId) {
     let moderationConfig;
 
-    if (client.cache.get(`${guildId}-moderation-config`)) roleConfig = client.cache.get(`${guildId}-moderation-config`);
+    if (client.cache.get(`${guildId}-moderation-config`)) moderationConfig = client.cache.get(`${guildId}-moderation-config`);
     if (!moderationConfig) moderationConfig = await Mod.findOne({
         guildId: guildId,
     }, (err, members) => {
@@ -311,4 +312,32 @@ async function getModerationConfig(client, guildId) {
     return moderationConfig;
 }
 
-module.exports = { getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
+async function getTicketConfig(client, guildId) {
+    let ticketConfig = await Ticket.findOne({
+        guildId: guildId,
+    }, (err, members) => {
+        if (err) console.error(err);
+        if (!members) {
+            const newTicket = new Ticket({
+                guildId: guildId,
+                ticketCategory: "none",
+                ticketClosedCategory: "none",
+                ticketEnabled: true,
+                ticketStaffPing: true,
+                ticketTopicButton: true,
+                ticketSupport: "none",
+                ticketId: 1,
+                ticketLogs: true,
+                ticketChannelID: "none",
+            });
+            newTicket.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    return ticketConfig;
+}
+
+module.exports = { getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
