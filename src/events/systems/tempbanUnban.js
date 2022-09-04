@@ -4,7 +4,7 @@ const { tempUnban } = require('../../structures/functions/guilds');
 
 module.exports = {
     event: "ready",
-    name: "clientStart",
+    name: "tempbanUnban",
     once: true,
     /**
      * @param {Client} client

@@ -40,6 +40,7 @@ module.exports = {
         }).catch(() => null);
 
 
+        const pollId = pollConfig.pollId + 1;
         const msg = await interaction.reply({
             embeds: [
                 new EmbedBuilder()
@@ -83,13 +84,12 @@ module.exports = {
                             )
                     )
 
-                for (let i = 1; i < choices+1; i++) {
-                    console.log("a")
+                for (let i = 1; i < choices + 1; i++) {
                     modal.addComponents(
                         new ActionRowBuilder()
                             .addComponents(
                                 new TextInputBuilder()
-                                    .setCustomId(`question-${i}`)
+                                    .setCustomId(`${i}`)
                                     .setPlaceholder("Enter your option here...")
                                     .setLabel(`Option ${i}`)
                                     .setMaxLength(500)
@@ -99,7 +99,34 @@ module.exports = {
                     )
                 }
 
-                // create a db
+                const Poll = require('../../../structures/schemas/PollSchema');
+                const newPoll = new Poll({
+                    guildId: interaction.guildId,
+                    pollId: pollId,
+                    channelId: channel.id,
+                    msgId: "none",
+                    options: choices,
+                    duration: ms(duration),
+                    interactionId: msg.id,
+                    createdTime: new Date().getTime(),
+                    endTimestamp: new Date().getTime() + ms(duration),
+                    optionsArray: []
+                });
+                newPoll.save().catch(() => null);
+
+
+                const PollConfig = require('../../../structures/schemas/PollConfigSchema');
+                const config = await PollConfig.findOne({
+                    guildId: interaction.guildId
+                }).clone().catch(() => null);
+                await config.updateOne({
+                    pollId,
+                });
+
+                // todo: create the poll msg, then start the timer & on ready start the timer too
+                //       when finished make sure the poll actually finishes
+                //       find something against double voting
+                //       also add /poll end
 
                 await interaction.showModal(modal);
             }
