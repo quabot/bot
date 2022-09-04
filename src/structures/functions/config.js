@@ -6,6 +6,7 @@ const Members = require('../../structures/schemas/MembersChannelSchema');
 const Mod = require('../../structures/schemas/ModerationSchema');
 const Ticket = require('../../structures/schemas/TicketConfigSchema');
 const Poll = require('../../structures/schemas/PollConfigSchema');
+const Custom = require('../../structures/schemas/CustomizationSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -364,4 +365,30 @@ async function getPollConfig(client, guildId) {
     return pollConfig;
 }
 
-module.exports = { getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
+async function getCustomizationConfig(client, guildId) {
+    let customizationConfig;
+
+    if (client.cache.get(`${guildId}-customization-config`)) customizationConfig = client.cache.get(`${guildId}-customization-config`);
+    if (!customizationConfig) customizationConfig = await Custom.findOne({
+        guildId: guildId,
+    }, (err, custom) => {
+        if (err) console.error(err);
+        if (!custom) {
+            const newCustom = new Custom({
+                guildId: guildId,
+                locale: "en-US",
+                color: "#3a5a74"
+            });
+            newCustom.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-customization-config`, customizationConfig, 10000);
+
+    return customizationConfig;
+}
+
+module.exports = { getCustomizationConfig, getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };

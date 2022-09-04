@@ -1,4 +1,5 @@
 const { Interaction, Client, InteractionType, ChannelType, EmbedBuilder, Colors } = require('discord.js');
+const { getCustomizationConfig } = require('../../structures/functions/config');
 
 module.exports = {
     event: "interactionCreate",
@@ -44,6 +45,9 @@ module.exports = {
             }).catch(() => null);
         }
 
-        context.execute(client, interaction, "#3a5a74");
+        let color = "#3a5a74";
+        const config = await getCustomizationConfig(client, interaction.guildId);
+        if (config) color = config.color
+        context.execute(client, interaction, color);
     }
 }
