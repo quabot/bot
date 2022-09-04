@@ -127,7 +127,6 @@ module.exports = {
         }).catch((err => { }));
 
         setTimeout(async () => {
-            console.log("Hi")
             await endPoll(client, pollDocument, color);
         }, ms(pollDocument.duration));
     }

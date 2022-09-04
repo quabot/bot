@@ -39,6 +39,14 @@ module.exports = {
             name: "end",
             description: "End a currently active poll.",
             type: ApplicationCommandOptionType.Subcommand,
+            options: [
+                {
+                    name: "id",
+                    description: "Poll-id to end.",
+                    type: ApplicationCommandOptionType.Integer,
+                    required: true
+                }
+            ]
         }
     ],
     async execute() { }

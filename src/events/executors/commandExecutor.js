@@ -45,8 +45,6 @@ module.exports = {
             }).catch(() => null);
         }
 
-        if (interaction.options.getSubcommand()) return;
-
         let color = "#3a5a74";
         const config = await getCustomizationConfig(client, interaction.guildId);
         if (config) color = config.color
