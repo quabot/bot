@@ -34,7 +34,7 @@ module.exports = {
 
         const ephemeral = interaction.options.getBoolean("private") ? true : false;
 
-        await interaction.deferReply({ ephemeral }).catch((err => { }));
+        await interaction.deferReply({ ephemeral }).catch((e => { }));
 
         const member = interaction.options.getMember("user");
         const user = interaction.options.getUser("user");
@@ -42,20 +42,20 @@ module.exports = {
 
         if (!user || !reason) return interaction.editReply({
             embeds: [await generateEmbed(color, "Please enter both a user and the reason for timeout-ing this user.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (user.id === interaction.user.id) return interaction.editReply({
             embeds: [await generateEmbed(color, "**<:error:990996645913194517> What are you trying to do?**\nYou can't warn yourself!")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.editReply({
             embeds: [await generateEmbed(color, "**<:error:990996645913194517> Insufficient permissions**\nYou cannot warn a user with roles higher than your own.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         const modConfig = await getModerationConfig(client, interaction.guild.id);
         if (!modConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new config! Please run that command again.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         const channel = interaction.guild.channels.cache.get(modConfig.channelId);
 
@@ -90,7 +90,7 @@ module.exports = {
                 .setTitle("You were warned!")
                 .setTimestamp()
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         await interaction.editReply({
             embeds: [
@@ -107,7 +107,7 @@ module.exports = {
                         { name: "\u200b", value: "\u200b", inline: true },
                     )
             ], ephemeral, fetchReply: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (channel) {
             channel.send({
@@ -129,7 +129,7 @@ module.exports = {
                         )
                         .setColor(color)
                 ],
-            }).catch((err => { }));
+            }).catch((e => { }));
         }
 
         const ModAction = require('../../../structures/schemas/ModActionSchema');

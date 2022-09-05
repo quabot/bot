@@ -40,12 +40,12 @@ module.exports = {
         if (!suggestConfig) return interaction.reply({
             embeds: [await generateEmbed(color, "A config is being generated, please run the command again.")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (suggestConfig.suggestEnabled === false) return interaction.reply({
             embeds: [await generateEmbed(color, "Suggestions are not enabled in this server.")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const modal = new ModalBuilder()
@@ -64,6 +64,6 @@ module.exports = {
                     )
             );
 
-        await interaction.showModal(modal).catch((err => { }));
+        await interaction.showModal(modal).catch((e => { }));
     }
 }

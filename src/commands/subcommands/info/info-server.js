@@ -9,7 +9,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         const embed = new EmbedBuilder()
             .setTitle(`Server Info`)
@@ -78,6 +78,6 @@ module.exports = {
 
         interaction.editReply({
             embeds: [embed]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

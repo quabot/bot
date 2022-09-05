@@ -25,7 +25,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(thumbnailModal).catch((err => { }));
+        await interaction.showModal(thumbnailModal).catch((e => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -37,21 +37,21 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-thumbnail-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch((err => { }));
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const thumbnail = modal.fields.getTextInputValue("thumbnail");
-            if (!thumbnail) modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((err => { }));
-            if (isValidHttpUrl(thumbnail) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((err => { }));
+            if (!thumbnail) modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (isValidHttpUrl(thumbnail) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No thumbnail entered, try again.")], ephemeral: true }).catch((e => { }));
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setThumbnail(thumbnail),
                 ]
-            }).catch((err => { }));
+            }).catch((e => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the thumbnail to **${thumbnail}**`)]
-            }).catch((err => { }));
+            }).catch((e => { }));
         }
     }
 }

@@ -8,7 +8,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         const user = interaction.options.getUser("user") ? interaction.options.getUser("user") : interaction.user;
 
@@ -20,6 +20,6 @@ module.exports = {
                     .setDescription(`**Avatar of ${user}**`)
                     .setTimestamp()
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

@@ -34,6 +34,6 @@ module.exports = {
                     .setFooter({ text: `${newSticker.name}` })
                     .setTimestamp()
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

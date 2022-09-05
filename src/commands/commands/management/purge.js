@@ -40,7 +40,7 @@ module.exports = {
         if (logBlacklist.includes(interaction.channel.type)) return;
 
         if (amount > 0) {
-            if (amount > 100) return interaction.reply({ content: `You can't delete more than 100 messages.`, ephemeral: true }).catch((err => { }));
+            if (amount > 100) return interaction.reply({ content: `You can't delete more than 100 messages.`, ephemeral: true }).catch((e => { }));
             const size = await interaction.channel.bulkDelete(amount, true).catch(e => {
                 if (e.code === 50013) {
                     return interaction.editReply({
@@ -50,7 +50,7 @@ module.exports = {
                                 .setDescription(`I need some more permissions to perform that command. I need the \`MANAGE MESSAGES\` or \`ADMINISTRATOR\` permissions for that.`)
                                 .setColor(color)
                         ]
-                    }).catch((err => { }));
+                    }).catch((e => { }));
                 }
             });
 
@@ -62,12 +62,12 @@ module.exports = {
                             .setDescription(`${amount} message(s) were purged from this channel by ${interaction.user}`)
                             .setColor(color)
                     ]
-                }).catch((err => { }));
+                }).catch((e => { }));
             } else {
-                return interaction.reply({ content: `Deleted ${amount} messages.`, ephemeral: true }).catch((err => { }));
+                return interaction.reply({ content: `Deleted ${amount} messages.`, ephemeral: true }).catch((e => { }));
             }
         } else {
-            return interaction.reply({ content: `You can't delete less than 1 message.`, ephemeral: true }).catch((err => { }));
+            return interaction.reply({ content: `You can't delete less than 1 message.`, ephemeral: true }).catch((e => { }));
         }
 
     }

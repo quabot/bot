@@ -33,6 +33,6 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({ text: `Role Name: ${role.name}` })
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

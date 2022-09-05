@@ -8,6 +8,7 @@ const Ticket = require('../../structures/schemas/TicketConfigSchema');
 const Poll = require('../../structures/schemas/PollConfigSchema');
 const Custom = require('../../structures/schemas/CustomizationSchema');
 const Level = require('../../structures/schemas/LevelConfigSchema');
+const Giveaway = require('../../structures/schemas/GiveawayConfigSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -440,4 +441,24 @@ async function getLevelConfig(client, guildId) {
     return levelConfig;
 }
 
-module.exports = { getLevelConfig, getCustomizationConfig, getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
+async function getGiveawayConfig(client, guildId) {
+    let giveawayConfig = await Giveaway.findOne({
+        guildId: guildId,
+    }, (err, giveaway) => {
+        if (err) console.error(err);
+        if (!giveaway) {
+            const newGiveaway = new Giveaway({
+                guildId: guildId,
+                giveawayID: 0
+            });
+            newGiveaway.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    return giveawayConfig;
+}
+
+module.exports = { getGiveawayConfig, getLevelConfig, getCustomizationConfig, getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };

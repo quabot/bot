@@ -13,7 +13,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         const user = interaction.targetMember;
         const userObject = interaction.targetUser;
@@ -47,7 +47,7 @@ module.exports = {
                         inline: false,
                     })
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
     }
 }

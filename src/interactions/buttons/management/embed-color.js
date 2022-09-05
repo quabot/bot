@@ -25,7 +25,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(colorModal).catch((err => { }));
+        await interaction.showModal(colorModal).catch((e => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -36,21 +36,21 @@ module.exports = {
 
         if (modal) {
             if (modal.customId !== 'embed-color-modal') return;
-            await modal.deferReply({ ephemeral: true }).catch((err => { }));
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const enteredColor = modal.fields.getTextInputValue("color");
-            if (!enteredColor) modal.editReply({ embeds: [await generateEmbed(color, "No color entered, try again.")], ephemeral: true }).catch((err => { }));
-            if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor)) modal.editReply({ embeds: [await generateEmbed(color, "Please enter a valid hex color code.")], ephemeral: true }).catch((err => { }));
+            if (!enteredColor) modal.editReply({ embeds: [await generateEmbed(color, "No color entered, try again.")], ephemeral: true }).catch((e => { }));
+            if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor)) modal.editReply({ embeds: [await generateEmbed(color, "Please enter a valid hex color code.")], ephemeral: true }).catch((e => { }));
             
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setColor(enteredColor),
                 ]
-            }).catch((err => { }));
+            }).catch((e => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the color to **${enteredColor}**`)]
-            }).catch((err => { }));
+            }).catch((e => { }));
         }
     }
 }

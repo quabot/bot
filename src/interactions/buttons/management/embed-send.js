@@ -9,13 +9,13 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         const msg = interaction.message.embeds[0].data.description;
         const channel = interaction.guild.channels.cache.get(`${msg.slice(msg.indexOf('<') + 2, msg.length - 2)}`);
 
         const embed = EmbedBuilder.from(interaction.message.embeds[1]);
-        channel.send({ embeds: [embed] }).catch((err => { }));
+        channel.send({ embeds: [embed] }).catch((e => { }));
 
         const buttons1 = new ActionRowBuilder()
             .addComponents(
@@ -89,10 +89,10 @@ module.exports = {
                     .setStyle(ButtonStyle.Danger),
             )
 
-        interaction.message.edit({ components: [buttons1, buttons2, buttons3] }).catch((err => { }));
+        interaction.message.edit({ components: [buttons1, buttons2, buttons3] }).catch((e => { }));
 
         interaction.editReply({
             embeds: [await generateEmbed(color, "Sent the embed to the channel!")]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

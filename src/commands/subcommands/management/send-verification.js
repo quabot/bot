@@ -11,11 +11,11 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((err => { }));
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
 
         interaction.editReply({
             embeds: [await generateEmbed(color, "You can dismiss this message.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         interaction.channel.send({
             embeds: [
@@ -32,6 +32,6 @@ module.exports = {
                             .setStyle(ButtonStyle.Primary)
                     )
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

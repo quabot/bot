@@ -9,10 +9,10 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         interaction.editReply({
             embeds: [await generateEmbed(color, "Configure QuaBot on our dashboard **[here](https://dashboard.quabot.net)**.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

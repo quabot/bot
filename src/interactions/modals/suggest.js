@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((err => { }));
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
 
         const suggestion = interaction.fields.getTextInputValue("suggestion");
 
@@ -47,12 +47,12 @@ module.exports = {
         if (!suggestConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "A config is being generated, please run the command again.")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (suggestConfig.suggestEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Suggestions are not enabled in this server.")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
 
@@ -60,7 +60,7 @@ module.exports = {
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the suggestions channel. Ask an admin to configure this on our [dashboard](https://dashboard.quabot.net).")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
 
@@ -88,12 +88,12 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({ text: `Vote with the ${emoji2} and ${emoji1} below this message.` })
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (!msg) return interaction.editReply({
             embeds: [await generateEmbed(color, `Failed to send the message! I cannot talk in ${channel}.`)],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
 
@@ -108,7 +108,7 @@ module.exports = {
                     .setDescription(`Successfully left your suggestion. Check it out in ${channel}. [Jump](${msg.url})`)
                     .setColor(Colors.Green)
             ], ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const uuid = randomUUID();
@@ -122,7 +122,7 @@ module.exports = {
         if (uuidCheck) return interaction.editReply({
             embeds: [await generateEmbed(color, "🚫 There was an error! Try again!")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
         
 
         const newSuggest = new Suggestion({
@@ -172,7 +172,7 @@ module.exports = {
                                 .setStyle(ButtonStyle.Secondary),
                         )
                 ]
-            }).catch((err => { }));
+            }).catch((e => { }));
 
         }
     }

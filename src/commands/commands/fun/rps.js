@@ -32,7 +32,7 @@ module.exports = {
             components: [
                 new ActionRowBuilder().addComponents(buttons)
             ], fetchReply: true,
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         const collector = await message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 20000, filter: ({ user }) => user.id === user.id });
         const validChoices = ['rock', 'paper', 'scissors'];
@@ -61,7 +61,7 @@ module.exports = {
                                     .setDescription(`It's a tie! We both picked **rock**.`)
                                     .setColor(color)
                             ], components: [replay]
-                        }).catch((err => { }))
+                        }).catch((e => { }))
 
                         break;
 
@@ -72,7 +72,7 @@ module.exports = {
                                     .setDescription(`You lost! The correct answer was **paper**, ${interaction.user} picked **rock**!`)
                                     .setColor(Colors.Red)
                             ], components: [replay]
-                        }).catch((err => { }));
+                        }).catch((e => { }));
 
                         break;
 
@@ -83,7 +83,7 @@ module.exports = {
                                     .setDescription(`You won! I picked **scissors**, ${interaction.user} picked **rock**!`)
                                     .setColor(Colors.Green)
                             ], components: [replay]
-                        }).catch((err => { }));
+                        }).catch((e => { }));
 
                         break;
                 }
@@ -98,7 +98,7 @@ module.exports = {
                                     .setDescription(`You won! You picked **paper**, I picked **rock**.`)
                                     .setColor(Colors.Green)
                             ], components: [replay]
-                        }).catch((err => { }))
+                        }).catch((e => { }))
 
                         break;
 
@@ -109,7 +109,7 @@ module.exports = {
                                     .setDescription(`It's a tie! We both picked **paper**.`)
                                     .setColor(color)
                             ], components: [replay]
-                        }).catch((err => { }));
+                        }).catch((e => { }));
 
                         break;
 
@@ -120,7 +120,7 @@ module.exports = {
                                     .setDescription(`You lost! I picked **scissors**, ${interaction.user} picked **paper**!`)
                                     .setColor(Colors.Red)
                             ], components: [replay]
-                        }).catch((err => { }));
+                        }).catch((e => { }));
 
                         break;
                 }
@@ -135,7 +135,7 @@ module.exports = {
                                     .setDescription(`You lost! You picked **scissors**, I picked **rock**.`)
                                     .setColor(Colors.Red)
                             ], components: [replay]
-                        }).catch((err => { }))
+                        }).catch((e => { }))
 
                         break;
 
@@ -146,7 +146,7 @@ module.exports = {
                                     .setDescription(`You won! You picked **scissors**, i picked **paper**.`)
                                     .setColor(Colors.Green)
                             ], components: [replay]
-                        }).catch((err => { }));
+                        }).catch((e => { }));
 
                         break;
 
@@ -157,7 +157,7 @@ module.exports = {
                                     .setDescription(`It's a tie! We both picked **scissors**.`)
                                     .setColor(color)
                             ], components: [replay]
-                        }).catch((err => { }));
+                        }).catch((e => { }));
 
                         break;
                 }
@@ -169,7 +169,7 @@ module.exports = {
         collector.on('end', async () => {
             await message.edit({
                 components: [new ActionRowBuilder().addComponents(buttons)]
-            }).catch((err => { }));
+            }).catch((e => { }));
         });
     }
 }

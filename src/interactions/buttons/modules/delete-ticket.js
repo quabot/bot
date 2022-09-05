@@ -11,16 +11,16 @@ module.exports = {
     async execute(client, interaction, color) {
 
         const ticketConfig = await getTicketConfig(client, interaction.guildId);
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
 
         if (!ticketConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record. Please click that button again.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (ticketConfig.ticketEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         const ticketFound = await Ticket.findOne({
             channelId: interaction.message.channel.id,
@@ -28,7 +28,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.editReply({
             embeds: [await generateEmbed(color, "You are not inside of an existing ticket.")]
-        }).catch((err => { }));;
+        }).catch((e => { }));;
 
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
@@ -39,13 +39,13 @@ module.exports = {
 
         if (!valid) return interaction.editReply({
             embeds: [await generateEmbed(color, "You cannot manage this ticket. You must be added first.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const channel = interaction.guild.channels.cache.get(`${ticketFound.channelId}`);
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the ticket channel; this shouldn't be possible. Please make a new ticket or [contact our support](https://discord.quabot.net).")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         const msg = await interaction.editReply({
             embeds: [
@@ -68,7 +68,7 @@ module.exports = {
                             .setStyle(ButtonStyle.Success)
                     )
             ], fetchReply: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (!msg) return;
         const collectorRepeat = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
@@ -100,7 +100,7 @@ module.exports = {
                             .setColor(color)
                             .setDescription("Cancelled the ticket deletion.")
                     ]
-                }).catch((err => { }));
+                }).catch((e => { }));
 
                 return;
 
@@ -134,7 +134,7 @@ module.exports = {
                         { name: "Channel", value: `#${interaction.channel.name}`, inline: true }
                     );
 
-                logChannel.send({ embeds: [embed], files: [attachment] }).catch((err => { }));
+                logChannel.send({ embeds: [embed], files: [attachment] }).catch((e => { }));
 
             }
         });

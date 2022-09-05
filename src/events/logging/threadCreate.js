@@ -35,6 +35,6 @@ module.exports = {
                 .setFooter({ text: `${thread.name}` })
                 .setTimestamp()
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

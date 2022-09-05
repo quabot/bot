@@ -14,27 +14,27 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((err => { }));
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
         const question = interaction.fields.getTextInputValue("question");
 
 
         const pollConfig = await getPollConfig(client, interaction.guildId);
         if (!pollConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record! Please run that command again.")], ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (pollConfig.pollEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Polls are not enabled in this server. Toggle them on [our dashboard](https://dashboard.quabot.net).")], ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const pollDocument = await Poll.findOne({
             interactionId: interaction.message.id,
             guildId: interaction.guildId,
-        }).clone().catch((err => { }));
+        }).clone().catch((e => { }));
         if (!pollDocument) return interaction.editReply({
             embeds: [await generateEmbed(color, "An internal error occurred.")], ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         interaction.components.map(item => {
@@ -63,13 +63,13 @@ module.exports = {
         const channel = interaction.guild.channels.cache.get(pollDocument.channelId);
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "The channel where you wanted to create the poll couldn't be found! Do i have access to it?")], ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const msg = await channel.send({ embeds: [embed] }).catch(async err => {
             interaction.editReply({
                 embeds: [await generateEmbed(color, "I do not have permission to talk in the channel where you want to poll to be posted in.")], ephemeral: true
-            }).catch((err => { }));
+            }).catch((e => { }));
         });
         if (!msg) return;
 
@@ -92,7 +92,7 @@ module.exports = {
         }).catch(async err => {
             interaction.editReply({
                 embeds: [await generateEmbed(color, "I do not have permission to talk in the log channel.")], ephemeral: true
-            }).catch((err => { }));
+            }).catch((e => { }));
         });
 
         for (let i = 0; i < pollDocument.options; i++) {
@@ -124,7 +124,7 @@ module.exports = {
                     .setDescription(`Successfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDocument.pollId}`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         setTimeout(async () => {
             await endPoll(client, pollDocument, color);

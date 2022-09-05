@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
 
         const funList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/fun/*.js`)).map((file) => {
@@ -111,7 +111,7 @@ module.exports = {
             embeds: [helpEmbeds[page].setFooter({ text: `Page ${page + 1} / ${helpEmbeds.length}` })],
             components: [helpButtons],
             fetchReply: true,
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const filter = (i) =>
@@ -138,7 +138,7 @@ module.exports = {
             await i.editReply({
                 embeds: [helpEmbeds[page].setFooter({ text: `Page ${page + 1} / ${helpEmbeds.length}` })],
                 components: [helpButtons],
-            }).catch((err => { }));
+            }).catch((e => { }));
             collector.resetTimer();
         });
 
@@ -151,7 +151,7 @@ module.exports = {
                 currentPage.edit({
                     embeds: [helpEmbeds[page].setFooter({ text: `Page ${page + 1} / ${helpEmbeds.length}` })],
                     components: [disabledRow],
-                }).catch((err => { }));
+                }).catch((e => { }));
             }
         });
     }

@@ -16,7 +16,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
 
         const hexColor = interaction.options.getString("hex");
@@ -28,7 +28,7 @@ module.exports = {
                     .setTimestamp()
                     .setDescription("Invalid hex color! Please give a [valid](https://www.hexcolortool.com) hex color.")
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         interaction.editReply({
             embeds: [
@@ -37,6 +37,6 @@ module.exports = {
                     .setDescription(`**${hexColor}**`)
                     .setTimestamp()
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

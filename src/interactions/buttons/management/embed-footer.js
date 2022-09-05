@@ -35,7 +35,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(footerModal).catch((err => { }));
+        await interaction.showModal(footerModal).catch((e => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -47,10 +47,10 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-footer-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch((err => { }));
+            await modal.deferReply({ ephemeral: true }).catch((e => { }));
             const text = modal.fields.getTextInputValue("text");
             let url = modal.fields.getTextInputValue("icon") ? modal.fields.getTextInputValue("icon") : null;
-            if (!text) return modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch((err => { }));
+            if (!text) return modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch((e => { }));
             if (isValidHttpUrl(url) === false) url = null;
 
             interaction.message.edit({
@@ -58,11 +58,11 @@ module.exports = {
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setFooter({ text: text, iconURL: url }),
                 ]
-            }).catch((err => { }));
+            }).catch((e => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the footer!`)]
-            }).catch((err => { }));
+            }).catch((e => { }));
         }
     }
 }

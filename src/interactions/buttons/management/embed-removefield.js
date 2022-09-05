@@ -9,7 +9,7 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((err => { }));
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
         
         const index = interaction.message.embeds[1].data.fields ? interaction.message.embeds[1].data.fields.length - 1 : 0;
 
@@ -18,10 +18,10 @@ module.exports = {
                 EmbedBuilder.from(interaction.message.embeds[0]),
                 EmbedBuilder.from(interaction.message.embeds[1]).spliceFields(index, 1),
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         interaction.editReply({
             embeds: [await generateEmbed(color, `Field deleted.`)]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

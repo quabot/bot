@@ -11,7 +11,7 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch((err => { }));
+        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
 
         let suggestConfig;
 
@@ -43,12 +43,12 @@ module.exports = {
         if (!suggestConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "A config is being generated, please run the command again.")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (suggestConfig.suggestEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Suggestions are not enabled in this server.")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
 
@@ -56,7 +56,7 @@ module.exports = {
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the suggestions channel. Ask an admin to configure this on our [dashboard](https://dashboard.quabot.net).")],
             ephemeral: true
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const suggestionId = interaction.message.embeds[0].footer.text;
@@ -66,7 +66,7 @@ module.exports = {
             suggestId: suggestionId,
         }, (err, suggest) => {
             if (err) console.log(err);
-        }).clone().catch((err => { }));
+        }).clone().catch((e => { }));
 
 
         const msg = await channel.messages.fetch(`${suggestion.suggestMsgId}`).then(async message => {
@@ -74,20 +74,20 @@ module.exports = {
             if (!message) return interaction.editReply({
                 embeds: [await generateEmbed(color, "Couldn't find that message. Are you sure it wasn't deleted?")],
                 ephemeral: true
-            }).catch((err => { }));
+            }).catch((e => { }));
 
 
             const member = interaction.guild.members.cache.get(`${suggestion.suggestionUserId}`);
 
-            await message.delete().catch((err => { }));
+            await message.delete().catch((e => { }));
 
             interaction.editReply({
                 embeds: [await generateEmbed(color, "Deleted the suggestion.")], ephemeral: true
-            }).catch((err => { }));
+            }).catch((e => { }));
 
             if (member) member.send({
                 embeds: [await generateEmbed(color, `Your suggestion in ${interaction.guild.name} was deleted.`).setTitle("Your suggestion was deleted.")]
-            }).catch((err => { }));
+            }).catch((e => { }));
 
             interaction.message.edit({
                 embeds: [
@@ -122,14 +122,14 @@ module.exports = {
                                 .setStyle(ButtonStyle.Secondary),
                         )
                 ]
-            }).catch((err => { }));
+            }).catch((e => { }));
 
-            await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch((err => { }));
+            await Suggestion.findOneAndDelete({ suggestId: suggestionId }).catch((e => { }));
         }).catch((async () => {
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "Couldn't find that message. Are you sure it wasn't deleted?")],
                 ephemeral: true
-            }).catch((err => { }));
+            }).catch((e => { }));
         }))
     }
 }

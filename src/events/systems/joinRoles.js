@@ -22,7 +22,7 @@ module.exports = {
                 const fRole = member.guild.roles.cache.get(role.id);
                 if (!fRole) return;
                 setTimeout(() => {
-                    member.roles.add(fRole).catch((err => { }));
+                    member.roles.add(fRole).catch((e => { }));
                 }, role.delay);
             }
 
@@ -30,7 +30,7 @@ module.exports = {
                 const fRole = member.guild.roles.cache.get(role.id);
                 if (!fRole) return;
                 setTimeout(() => {
-                    member.roles.add(fRole).catch((err => { }));
+                    member.roles.add(fRole).catch((e => { }));
                 }, role.delay);
             }
         });

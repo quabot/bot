@@ -8,7 +8,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         const emoteList = [];
         interaction.guild.emojis.cache.forEach(e => {

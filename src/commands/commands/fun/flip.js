@@ -9,11 +9,11 @@ module.exports = {
      */
     async execute(client, interaction, color) { 
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         const flips = ["**🪙 Heads!**", "**🪙 Tails!**"];
         interaction.editReply({
             embeds: [await generateEmbed(color, flips[Math.floor(Math.random() * flips.length)])]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

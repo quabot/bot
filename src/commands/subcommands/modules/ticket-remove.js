@@ -18,11 +18,11 @@ module.exports = {
 
         if (!ticketConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record. Please run that command again.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (ticketConfig.ticketEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
 
         const Ticket = require('../../../structures/schemas/TicketSchema');
@@ -33,7 +33,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.editReply({
             embeds: [await generateEmbed(color, "You're not inside of a ticket!")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
@@ -44,7 +44,7 @@ module.exports = {
 
         if (!valid) return interaction.editReply({
             embeds: [await generateEmbed(color, "You cannot manage this ticket, you must be added first.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         const user = interaction.options.getUser("user");
 
@@ -52,7 +52,7 @@ module.exports = {
 
         if (!array.includes(user.id)) return interaction.editReply({
             embeds: [await generateEmbed(color, "That user isn't in this ticket!")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         for (var i = 0; i < array.length; i++) {
             if (array[i] === `${user.id}`) {
@@ -67,7 +67,7 @@ module.exports = {
 
         interaction.channel.permissionOverwrites.edit(user,
             { ViewChannel: false, SendMessages: false },
-        ).catch((err => { }));
+        ).catch((e => { }));
 
         interaction.editReply({
             embeds: [
@@ -75,6 +75,6 @@ module.exports = {
                     .setColor(color)
                     .setDescription(`Removed ${user} from the ticket.`)
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }

@@ -18,11 +18,11 @@ module.exports = {
 
         if (!ticketConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record. Please run that command again.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         if (ticketConfig.ticketEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
         
 
         async function createTicket(ticketConfig, interaction, subject) {
@@ -33,7 +33,7 @@ module.exports = {
 
             if (!openCategory) return interaction.editReply({
                 embeds: [await generateEmbed(color, "Couldn't find a tickets category. Configure this on [our dashboard](https://dashboard.quabot.net).")]
-            }).catch((err => { }));
+            }).catch((e => { }));
 
             let ticketId = parseInt(`${ticketConfig.ticketId}`) + 1;
 

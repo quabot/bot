@@ -13,21 +13,21 @@ module.exports = {
 
         const user = interaction.options.getUser("user") ? interaction.options.getUser("user") : interaction.user;
 
-        await interaction.deferReply().catch((err => { }));
+        await interaction.deferReply().catch((e => { }));
 
         const levelConfig = await getLevelConfig(client, interaction.guildId);
         if (!levelConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just generated a new server config! Please run that command again.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
         if (levelConfig.levelEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Levels are disabled in this server.")]
-        }).catch((err => { }));
+        }).catch((e => { }));
 
         const Level = require("../../../structures/schemas/LevelSchema");
         let levelDB = await Level.findOne({
             guildId: interaction.guildId,
             userId: user.id
-        }).clone().catch((err => { }));
+        }).clone().catch((e => { }));
 
         if (!levelDB) levelDB = {
             guildId: interaction.guildId,
@@ -45,6 +45,6 @@ module.exports = {
                     .setColor(color)
                     .setTimestamp()
             ]
-        }).catch((err => { }));
+        }).catch((e => { }));
     }
 }
