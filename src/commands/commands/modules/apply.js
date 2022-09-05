@@ -2,6 +2,7 @@ const { ApplicationCommandOptionType, PermissionFlagsBits, Colors, ActionRowBuil
 const { getApplicationConfig } = require('../../../structures/functions/config');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const Application = require('../../../structures/schemas/ApplicationSchema');
+const { randomUUID } = require('node:crypto');
 const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswerSchema');
 
 module.exports = {
@@ -257,8 +258,6 @@ module.exports = {
 
                 await interaction.showModal(modal);
 
-                // edit
-                // submit
             }
 
             if (interaction.customId === submitId) {
@@ -280,12 +279,14 @@ module.exports = {
                     ]
                 }).catch((e => { }));
 
+                const uuid = randomUUID();
                 const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswerSchema');
                 const newAnswer = new ApplicationAnswer({
                     guildId: interaction.guildId,
                     userId: interaction.user.id,
                     applicationId: application.applicationId,
                     applicationAnswers: answers,
+                    responseUuid: uuid,
                     applicationState: "PENDING",
                 });
                 newAnswer.save();
@@ -293,6 +294,29 @@ module.exports = {
                 await interaction.followUp({
                     embeds: [await generateEmbed(color, "Successfully submitted your application.")], ephemeral: true
                 }).catch((e => { }));
+
+                const logChannel = interaction.guild.channels.cache.get(applicationConfig.applicationLogChannelId);
+                if (logChannel && applicationConfig.applicationLogEnabled) logChannel.send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle("New Application Submitted")
+                            .setFooter({ text: `${uuid}` })
+                            .setDescription(`Application ID: ${application.applicationId}\nSubmitted by: ${interaction.user}\nState: **PENDING**\n\nView the answers [on our dashboard](https://dashboard.quabot.net) (discord support coming soon).`)
+                    ], components: [
+                        new ActionRowBuilder()
+                            .addComponents(
+                                new ButtonBuilder()
+                                    .setCustomId("approve-application")
+                                    .setLabel("Approve")
+                                    .setStyle(ButtonStyle.Success),
+                                new ButtonBuilder()
+                                    .setCustomId("deny-application")
+                                    .setLabel("Deny")
+                                    .setStyle(ButtonStyle.Danger)
+                            )
+                    ]
+                })
             }
         });
     }

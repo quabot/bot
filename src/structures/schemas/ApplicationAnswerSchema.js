@@ -24,6 +24,7 @@ const ApplicationAnswerSchema = new mongoose.Schema({
     guildId: reqString,
     userId: reqString,
     applicationId: reqString,
+    responseUuid: reqString,
     applicationAnswers: reqArray,
     applicationState: reqString,
 });
