@@ -34,7 +34,7 @@ module.exports = {
 
         const ephemeral = interaction.options.getBoolean("private") ? interaction.options.getBoolean("private") : false;
 
-        await interaction.deferReply({ ephemeral }).catch(() => null);
+        await interaction.deferReply({ ephemeral }).catch((err => { }));
 
         const member = interaction.options.getMember("user");
         const user = interaction.options.getUser("user");
@@ -45,21 +45,21 @@ module.exports = {
             didKick = false;
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "Please enter both a user and the reason for kicking this user.")]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         if (user.id === interaction.user.id) {
             didKick = false;
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "**<:error:990996645913194517> What are you trying to do?**\nYou can't kick yourself!")]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) {
             didKick = false;
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "**<:error:990996645913194517> Insufficient permissions**\nYou cannot kick a user with roles higher than your own.")]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         const modConfig = await getModerationConfig(client, interaction.guild.id);
@@ -67,7 +67,7 @@ module.exports = {
             didKick = false;
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "We just created a new config! Please run that command again.")]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         const channel = interaction.guild.channels.cache.get(modConfig.channelId);
@@ -105,7 +105,7 @@ module.exports = {
                         .setDescription(`QuaBot does not have permission to kick that user - try moving the QuaBot role above all others`)
                         .setColor(color)
                 ], ephemeral
-            }).catch(() => null)
+            }).catch((err => { }))
         });
 
         if (didKick !== true) return;
@@ -117,7 +117,7 @@ module.exports = {
                 .setTitle("You were kicked!")
                 .setTimestamp()
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         await interaction.editReply({
             embeds: [
@@ -133,7 +133,7 @@ module.exports = {
                         { name: "\u200b", value: "\u200b", inline: true },
                     )
             ], ephemeral, fetchReply: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (channel) {
             channel.send({
@@ -155,7 +155,7 @@ module.exports = {
                         )
                         .setColor(color)
                 ],
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         const ModAction = require('../../../structures/schemas/ModActionSchema');

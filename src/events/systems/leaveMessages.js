@@ -48,11 +48,11 @@ module.exports = {
                 embed.setFooter({ text: await joinVariables(welcomeConfig.leaveEmbed[0].footerText, member), iconURL: icon });
             }
 
-            channel.send({ embeds: [embed] }).catch(() => null);
+            channel.send({ embeds: [embed] }).catch((err => { }));
         } else {
             if (!welcomeConfig.leaveMessage) return;
 
-            channel.send({ content: `${await joinVariables(welcomeConfig.leaveMessage, member)}` }).catch(() => null);
+            channel.send({ content: `${await joinVariables(welcomeConfig.leaveMessage, member)}` }).catch((err => { }));
         }
 
     }

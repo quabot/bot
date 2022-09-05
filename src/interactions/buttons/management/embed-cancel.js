@@ -9,7 +9,7 @@ module.exports = {
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch(() => null);
+        await interaction.deferReply().catch((err => { }));
 
         const buttons1 = new ActionRowBuilder()
             .addComponents(
@@ -83,10 +83,10 @@ module.exports = {
                     .setStyle(ButtonStyle.Danger),
             )
 
-        interaction.message.edit({ components: [buttons1, buttons2, buttons3] }).catch(() => null);
+        interaction.message.edit({ components: [buttons1, buttons2, buttons3] }).catch((err => { }));
 
         interaction.editReply({
             embeds: [await generateEmbed(color, "Cancelled!")]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

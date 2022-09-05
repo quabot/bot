@@ -75,7 +75,7 @@ module.exports = {
                     .setRank(1, 'none', false)
                 rankCard.build().then(data => {
                     const attachment = new AttachmentBuilder(data, 'levelcard.png')
-                    levelChannel.send({ files: [attachment], content: `${message.author}` }).catch(() => null);
+                    levelChannel.send({ files: [attachment], content: `${message.author}` }).catch((err => { }));
                 });
 
             } else if (levelConfig.levelUpBuilder) {
@@ -106,11 +106,11 @@ module.exports = {
                     embed.setFooter({ text: await levelVariables(levelConfig.levelUpEmbed[0].footerText, member), iconURL: icon });
                 }
 
-                levelChannel.send({ embeds: [embed], content: `${message.author}` }).catch(() => null);
+                levelChannel.send({ embeds: [embed], content: `${message.author}` }).catch((err => { }));
 
             } else {
 
-                levelChannel.send({ content: `${await levelVariables(levelConfig.levelUpMessage, message.member, level, xp)}` }).catch(() => null);
+                levelChannel.send({ content: `${await levelVariables(levelConfig.levelUpMessage, message.member, level, xp)}` }).catch((err => { }));
 
             }
 
@@ -121,12 +121,12 @@ module.exports = {
                 if (message.member.roles.cache.has(levelRole)) {
                     return;
                 } else {
-                    message.member.roles.remove(prevRoleId).catch(() => null);
-                    message.member.roles.add(levelRole).catch(() => null);
+                    message.member.roles.remove(prevRoleId).catch((err => { }));
+                    message.member.roles.add(levelRole).catch((err => { }));
 
                     levelDB.role = levelRole;
                     try {
-                        await LevelDatabase.save().catch(() => null);
+                        await LevelDatabase.save().catch((err => { }));
                     } catch (e) { return; }
                 }
             }

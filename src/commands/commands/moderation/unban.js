@@ -28,14 +28,14 @@ module.exports = {
 
         const ephemeral = interaction.options.getBoolean("private") ? interaction.options.getBoolean("private") : false;
 
-        await interaction.deferReply({ ephemeral }).catch(() => null);
+        await interaction.deferReply({ ephemeral }).catch((err => { }));
 
         const userid = interaction.options.getString("userid");
 
         if (!userid) {
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "Please enter both a user and the reason for banning this user.")]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         const modConfig = await getModerationConfig(client, interaction.guild.id);
@@ -43,7 +43,7 @@ module.exports = {
             didBan = false;
             return interaction.editReply({
                 embeds: [await generateEmbed(color, "We just created a new config! Please run that command again.")]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         const channel = interaction.guild.channels.cache.get(modConfig.channelId);
@@ -55,7 +55,7 @@ module.exports = {
                         .setDescription(`That user doesn't exist/isn't banned!`)
                         .setColor(color)
                 ], ephemeral: true
-            }).catch(() => null)
+            }).catch((err => { }))
             return;
         });
 
@@ -70,7 +70,7 @@ module.exports = {
                     .setDescription(`**User:** <@${userid}>`)
                     .setColor(color)
             ], ephemeral
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (channel) channel.send({
             embeds: [
@@ -80,6 +80,6 @@ module.exports = {
                     **Unbanned By:** ${interaction.user}`)
                     .setColor(color)
                 ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

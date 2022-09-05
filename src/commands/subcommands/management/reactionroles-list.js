@@ -15,7 +15,7 @@ module.exports = {
 
     
 
-        await interaction.deferReply({ ephemeral: true }).catch(() => null);
+        await interaction.deferReply({ ephemeral: true }).catch((err => { }));
 
         const ReactionRole = require('../../../structures/schemas/ReactionRoleSchema');
 
@@ -48,7 +48,7 @@ module.exports = {
                     .setColor(color)
                     .setDescription("Couldn't find any reactionroles that matched those criteria! Make sure you've got them [configured](https://dashboard.quabot.net).")
             ], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const backId = 'backRR'
         const forwardId = 'forwardRR'

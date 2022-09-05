@@ -28,6 +28,6 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({ text: `${sticker.name}`, iconURL: `${sticker.url}` })
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

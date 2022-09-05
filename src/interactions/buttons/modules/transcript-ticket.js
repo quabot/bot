@@ -11,16 +11,16 @@ module.exports = {
     async execute(client, interaction, color) {
 
         const ticketConfig = await getTicketConfig(client, interaction.guildId);
-        await interaction.deferReply().catch(() => null);
+        await interaction.deferReply().catch((err => { }));
 
 
         if (!ticketConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record. Please click that button again.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (ticketConfig.ticketEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const ticketFound = await Ticket.findOne({
             channelId: interaction.message.channel.id,
@@ -28,7 +28,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.editReply({
             embeds: [await generateEmbed(color, "You are not inside of an existing ticket.")]
-        }).catch(() => null);;
+        }).catch((err => { }));;
 
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
@@ -39,12 +39,12 @@ module.exports = {
 
         if (!valid) return interaction.editReply({
             embeds: [await generateEmbed(color, "You cannot manage this ticket. You must be added first.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const channel = interaction.guild.channels.cache.get(`${ticketFound.channelId}`);
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the ticket channel; this shouldn't be possible. Please make a new ticket or [contact our support](https://discord.quabot.net).")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const discordTranscripts = require('discord-html-transcripts');
         const attachment = await discordTranscripts.createTranscript(channel);

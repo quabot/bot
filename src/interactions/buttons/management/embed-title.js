@@ -25,7 +25,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(titleModal).catch(() => null);
+        await interaction.showModal(titleModal).catch((err => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -37,9 +37,9 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-title-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch(() => null);
+            await modal.deferReply({ ephemeral: true }).catch((err => { }));
             const title = modal.fields.getTextInputValue("title");
-            if (!title) modal.editReply({ embeds: [await generateEmbed(color, "No title entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!title) modal.editReply({ embeds: [await generateEmbed(color, "No title entered, try again.")], ephemeral: true }).catch((err => { }));
             
             const description = interaction.message.embeds[1].data.description === '\u200b' ? null : interaction.message.embeds[1].data.description;
             
@@ -48,11 +48,11 @@ module.exports = {
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setTitle(title).setDescription(description),
                 ]
-            }).catch(() => null);
+            }).catch((err => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the title to **${title}**`)]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
     }
 }

@@ -12,7 +12,7 @@ module.exports = {
                     .setColor(color)
                     .setDescription("To delete and view punishments, use our [dashboard](https://dashboard.quabot.net).")
             ], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
 
     }

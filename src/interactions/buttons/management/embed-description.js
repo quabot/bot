@@ -25,7 +25,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(descriptionModal).catch(() => null);
+        await interaction.showModal(descriptionModal).catch((err => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -37,20 +37,20 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-description-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch(() => null);
+            await modal.deferReply({ ephemeral: true }).catch((err => { }));
             const description = modal.fields.getTextInputValue("description");
-            if (!description) modal.editReply({ embeds: [await generateEmbed(color, "No description entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!description) modal.editReply({ embeds: [await generateEmbed(color, "No description entered, try again.")], ephemeral: true }).catch((err => { }));
             
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setDescription(description),
                 ]
-            }).catch(() => null);
+            }).catch((err => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the description to **${description}**`)]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
     }
 }

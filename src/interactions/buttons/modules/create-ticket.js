@@ -17,11 +17,11 @@ module.exports = {
 
         if (!ticketConfig) return interaction.reply({
             ephemeral: true, embeds: [await generateEmbed(color, "We just created a new database record. Please click that button again.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (ticketConfig.ticketEnabled === false) return interaction.reply({
             ephemeral: true, embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const Modal = new ModalBuilder()
             .setTitle("Create a Ticket")
@@ -39,7 +39,7 @@ module.exports = {
                     )
             )
         
-        await interaction.showModal(Modal).catch(() => null);
+        await interaction.showModal(Modal).catch((err => { }));
 
         
         const modal = await interaction.awaitModalSubmit({
@@ -57,7 +57,7 @@ module.exports = {
 
             if (!openCategory) return interaction.reply({
                 ephemeral: true, embeds: [await generateEmbed(color, "Couldn't find a tickets category. Configure this on [our dashboard](https://dashboard.quabot.net).")]
-            }).catch(() => null);
+            }).catch((err => { }));
 
             let ticketId = parseInt(`${ticketConfig.ticketId}`) + 1;
 
@@ -137,7 +137,7 @@ module.exports = {
             if (modal.customId !== 'modal-ticket-create') return;
             const topic = await modal.fields.getTextInputValue("topic");
 
-            modal.deferReply({ ephemeral: true }).catch(() => null);
+            modal.deferReply({ ephemeral: true }).catch((err => { }));
             createTicket(ticketConfig, modal, topic)
         }
     }

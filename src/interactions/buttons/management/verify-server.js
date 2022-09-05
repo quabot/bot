@@ -15,12 +15,12 @@ module.exports = {
         if (!verifyConfig) return interaction.reply({
             embeds: [await generateEmbed(color, "A config is being generated, please run the command again.")],
             ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (verifyConfig.verifyEnabled === false) return interaction.reply({
             embeds: [await generateEmbed(color, "Verifications are not enabled in this server.")],
             ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const logChannel = interaction.guild.channels.cache.get(`${verifyConfig.logChannel}`);
 
@@ -56,13 +56,13 @@ module.exports = {
 
             if (modalInteraction) {
                 if (modalInteraction.customId !== 'verify-code') return;
-                await modalInteraction.deferReply({ ephemeral: true }).catch(() => null);
+                await modalInteraction.deferReply({ ephemeral: true }).catch((err => { }));
 
                 const enteredCode = modalInteraction.fields.getTextInputValue("code");
                 if (enteredCode !== code) return modalInteraction.editReply({
                     embeds: [await generateEmbed(color, "You entered the wrong code! Try again.")],
                     ephemeral: true
-                }).catch(() => null);
+                }).catch((err => { }));
 
 
                 verifyConfig.verifyRoles.forEach(role => {
@@ -70,7 +70,7 @@ module.exports = {
                         const fRole = interaction.member.guild.roles.cache.get(role.id);
                         if (fRole) {
                             setTimeout(() => {
-                                interaction.member.roles.add(fRole).catch(() => null);
+                                interaction.member.roles.add(fRole).catch((err => { }));
                             }, role.delay);
                         }
                     }
@@ -79,7 +79,7 @@ module.exports = {
                         const fRole = interaction.member.guild.roles.cache.get(role.id);
                         if (fRole) {
                             setTimeout(() => {
-                                interaction.member.roles.add(fRole).catch(() => null);
+                                interaction.member.roles.add(fRole).catch((err => { }));
                             }, role.delay);
                         }
                     }
@@ -88,7 +88,7 @@ module.exports = {
                 await modalInteraction.editReply({
                     embeds: [await generateEmbed(color, "You have been verified!")],
                     ephemeral: true
-                }).catch(() => null);
+                }).catch((err => { }));
 
                 if (verifyConfig.verifyLog && logChannel) logChannel.send({
                     embeds: [
@@ -98,7 +98,7 @@ module.exports = {
                             .setDescription(`${modalInteraction.user} has verified themselves.`)
                             .setTimestamp()
                     ]
-                }).catch(() => null);
+                }).catch((err => { }));
             }
         } else {
 
@@ -107,7 +107,7 @@ module.exports = {
                     const fRole = interaction.member.guild.roles.cache.get(role.id);
                     if (!fRole) return;
                     setTimeout(() => {
-                        interaction.member.roles.add(fRole).catch(() => null);
+                        interaction.member.roles.add(fRole).catch((err => { }));
                     }, role.delay);
                 }
 
@@ -115,7 +115,7 @@ module.exports = {
                     const fRole = interaction.member.guild.roles.cache.get(role.id);
                     if (!fRole) return;
                     setTimeout(() => {
-                        interaction.member.roles.add(fRole).catch(() => null);
+                        interaction.member.roles.add(fRole).catch((err => { }));
                     }, role.delay);
                 }
             });
@@ -123,7 +123,7 @@ module.exports = {
             await interaction.reply({
                 embeds: [await generateEmbed(color, "You have been verified!")],
                 ephemeral: true
-            }).catch(() => null);
+            }).catch((err => { }));
 
             if (verifyConfig.verifyLog && logChannel) logChannel.send({
                 embeds: [
@@ -133,7 +133,7 @@ module.exports = {
                         .setDescription(`${interaction.user} has verified themselves.`)
                         .setTimestamp()
                 ]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
     }
 }

@@ -37,7 +37,7 @@ module.exports = {
                     .setColor(color)
                     .setDescription("Couldn't find any punishments that matched those criteria!")
             ], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         found.sort((a, b) => {
             return a.punishmentId - b.punishmentId;

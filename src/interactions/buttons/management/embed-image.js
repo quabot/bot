@@ -25,7 +25,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(imageModal).catch(() => null);
+        await interaction.showModal(imageModal).catch((err => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -37,21 +37,21 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-image-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch(() => null);
+            await modal.deferReply({ ephemeral: true }).catch((err => { }));
             const image = modal.fields.getTextInputValue("image");
-            if (!image) modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch(() => null);
-            if (isValidHttpUrl(image) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!image) modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch((err => { }));
+            if (isValidHttpUrl(image) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No image entered, try again.")], ephemeral: true }).catch((err => { }));
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setImage(image),
                 ]
-            }).catch(() => null);
+            }).catch((err => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the image to **${image}**`)]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
     }
 }

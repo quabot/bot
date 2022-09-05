@@ -10,10 +10,10 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch(() => null);
+        await interaction.deferReply().catch((err => { }));
 
         interaction.editReply({    
             embeds: [await generateEmbed(color, `🏓 **${client.ws.ping}ms**`)]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

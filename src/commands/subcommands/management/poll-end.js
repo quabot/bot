@@ -13,27 +13,27 @@ module.exports = {
         const pollConfig = await getPollConfig(client, interaction.guildId);
         if (!pollConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record! Please run that command again.")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (pollConfig.pollEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Polls are not enabled in this server. Toggle them on [our dashboard](https://dashboard.quabot.net).")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         
         const Poll = require('../../../structures/schemas/PollSchema');
         const document = await Poll.findOne({
             guildId: interaction.guildId,
             pollId: id,
-        }).clone().catch(() => null);
+        }).clone().catch((err => { }));
 
         if (!document) return interaction.editReply({
             embeds: [await generateEmbed(color, "That poll doesn't exist/has been ended already.")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         await endPoll(client, document, color);
 
         interaction.editReply({
             embeds: [await generateEmbed(color, "Ending the poll.")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

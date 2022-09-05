@@ -27,6 +27,6 @@ module.exports = {
                     .setDescription(`**Role Deleted**\n${role.name}`)
                     .setTimestamp()
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

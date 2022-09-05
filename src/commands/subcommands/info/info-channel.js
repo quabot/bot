@@ -10,7 +10,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch(() => null);
+        await interaction.deferReply().catch((err => { }));
 
         const ch = interaction.options.getChannel("channel");
 
@@ -33,6 +33,6 @@ module.exports = {
                     )
                     .setTimestamp()
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

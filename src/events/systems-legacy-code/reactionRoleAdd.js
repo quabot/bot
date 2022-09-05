@@ -18,7 +18,7 @@ module.exports = {
             emoji: reaction._emoji.name
         }, (err) => {
             if (err) console.log(err);
-        }).clone().catch(() => null);
+        }).clone().catch((err => { }));
         
         if (!reactionRole) return;
 
@@ -37,22 +37,22 @@ module.exports = {
 
                 //? Give and remove
                 case "normal":
-                    member.roles.add(role).catch(() => null);
+                    member.roles.add(role).catch((err => { }));
                     break;
 
                 //? Only give it.
                 case "verify":
-                    member.roles.add(role).catch(() => null);
+                    member.roles.add(role).catch((err => { }));
                     break;
 
                 //? Only remove it when a reaction is added.
                 case "drop":
-                    member.roles.remove(role).catch(() => null);
+                    member.roles.remove(role).catch((err => { }));
                     break;
 
                 //? Give and removed, but reversed.
                 case "reversed":
-                    member.roles.remove(role).catch(() => null);
+                    member.roles.remove(role).catch((err => { }));
                     break;
 
                 //? Unique (only pick one role from the message at a time)
@@ -76,7 +76,7 @@ module.exports = {
                     });
 
                     if (hasRole) return;
-                    if (!hasRole) member.roles.add(role).catch(() => null);
+                    if (!hasRole) member.roles.add(role).catch((err => { }));
 
                     break;
 
@@ -99,7 +99,7 @@ module.exports = {
                     });
 
                     if (hasRoleBool) return;
-                    if (!hasRoleBool) member.roles.add(role).catch(() => null);
+                    if (!hasRoleBool) member.roles.add(role).catch((err => { }));
                     break;
 
 

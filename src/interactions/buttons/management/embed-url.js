@@ -26,7 +26,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(urlModal).catch(() => null);
+        await interaction.showModal(urlModal).catch((err => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -38,21 +38,21 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-url-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch(() => null);
+            await modal.deferReply({ ephemeral: true }).catch((err => { }));
             const url = modal.fields.getTextInputValue("url");
-            if (!url) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch(() => null);
-            if (isValidHttpUrl(url) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!url) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((err => { }));
+            if (isValidHttpUrl(url) === false) return modal.editReply({ embeds: [await generateEmbed(color, "No url entered, try again.")], ephemeral: true }).catch((err => { }));
 
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setURL(url),
                 ]
-            }).catch(() => null);
+            }).catch((err => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Set the url to **${url}**`)]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
     }
 }

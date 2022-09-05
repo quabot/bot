@@ -21,23 +21,23 @@ module.exports = {
         const pollConfig = await getPollConfig(client, interaction.guildId);
         if (!pollConfig) return interaction.reply({
             embeds: [await generateEmbed(color, "We just created a new database record! Please run that command again.")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (pollConfig.pollEnabled === false) return interaction.reply({
             embeds: [await generateEmbed(color, "Polls are not enabled in this server. Toggle them on [our dashboard](https://dashboard.quabot.net).")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (!channel || !choices || !duration) return interaction.reply({
             embeds: [await generateEmbed(color, "Please run the command again, we didn't get all your options.")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (await checkChannel(channel.type) === false) return interaction.reply({
             embeds: [await generateEmbed(color, "Please enter a valid type of channel, i'd like one where i can actually talk.")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (!ms(duration)) return interaction.reply({
             embeds: [await generateEmbed(color, "Please enter a valid duration, like `1w` or `10min`.")], ephemeral: true
-        }).catch(() => null);
+        }).catch((err => { }));
 
 
         const pollId = pollConfig.pollId + 1;
@@ -112,13 +112,13 @@ module.exports = {
                     endTimestamp: new Date().getTime() + ms(duration),
                     optionsArray: []
                 });
-                newPoll.save().catch(() => null);
+                newPoll.save().catch((err => { }));
 
 
                 const PollConfig = require('../../../structures/schemas/PollConfigSchema');
                 const config = await PollConfig.findOne({
                     guildId: interaction.guildId
-                }).clone().catch(() => null);
+                }).clone().catch((err => { }));
                 await config.updateOne({
                     pollId,
                 });

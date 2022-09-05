@@ -18,11 +18,11 @@ module.exports = {
 
         if (!ticketConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record. Please run that command again.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (ticketConfig.ticketEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch(() => null);
+        }).catch((err => { }));
         
 
         const Ticket = require('../../../structures/schemas/TicketSchema');
@@ -33,7 +33,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.editReply({
             embeds: [await generateEmbed(color, "You're not inside of a ticket!")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
@@ -44,7 +44,7 @@ module.exports = {
 
         if (!valid) return interaction.editReply({
             embeds: [await generateEmbed(color, "You cannot manage this ticket, you must be added first.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         interaction.editReply({
             embeds: [
@@ -60,6 +60,6 @@ module.exports = {
                             .setLabel("🔒 Close")
                     )
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

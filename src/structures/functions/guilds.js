@@ -34,7 +34,7 @@ async function tempUnban(client, document, color) {
                 )
                 .setTimestamp()
         ]
-    }).catch(() => null);
+    }).catch((err => { }));
 
 
     const moderationConfig = await getModerationConfig(client, document.guildId);
@@ -51,7 +51,7 @@ async function tempUnban(client, document, color) {
                 )
                 .setTimestamp()
         ]
-    }).catch(() => null);
+    }).catch((err => { }));
 }
 
 async function endPoll(client, document, color) {
@@ -60,7 +60,7 @@ async function endPoll(client, document, color) {
     const poll = await Poll.findOne({
         guildId: document.guildId,
         interactionId: document.interactionId
-    }).clone().catch(() => null);
+    }).clone().catch((err => { }));
 
     const guild = client.guilds.cache.get(poll.guildId);
     if (!guild) return;
@@ -100,7 +100,7 @@ async function endPoll(client, document, color) {
                     .setColor(color)
             ]
         });
-    }).catch(() => null);
+    }).catch((err => { }));
 
     await Poll.findOneAndDelete(poll);
 }

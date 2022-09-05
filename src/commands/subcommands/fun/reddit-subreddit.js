@@ -10,7 +10,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply({ ephemeral: true }).catch(() => null);
+        await interaction.deferReply({ ephemeral: true }).catch((err => { }));
 
         const post = await getPost(interaction.options.getString("reddit"));
         const image = await getImage(interaction.options.getString("reddit"));
@@ -24,6 +24,6 @@ module.exports = {
                     .setFooter({ text: `${post.subreddit_name_prefixed}`})
                     .setTimestamp()
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

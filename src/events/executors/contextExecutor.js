@@ -22,12 +22,12 @@ module.exports = {
                     .setColor(Colors.Red)
                     .setDescription(`⛔ An error occured! Couldn't find the context \`${interaction.commandName}\``)
             ]
-        }).catch(() => null) && client.contexts.delete(interaction.commandName);
+        }).catch((err => { })) && client.contexts.delete(interaction.commandName);
 
 
         if (context.permission) {
             if (!interaction.member.permissions.has(context.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this context: \`${interaction.commandName}\`.\nYou need the permission: \`${context.permission}\` to do that`, ephemeral: true }).catch(() => null);
+                return interaction.reply({ content: `You do not have the required permissions for this context: \`${interaction.commandName}\`.\nYou need the permission: \`${context.permission}\` to do that`, ephemeral: true }).catch((err => { }));
             }
         }
 
@@ -42,7 +42,7 @@ module.exports = {
                 content:
                     `I need the permission(s): \`${context.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
                 , ephemeral: true
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         let color = "#3a5a74";

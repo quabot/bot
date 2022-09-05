@@ -8,7 +8,7 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        await interaction.deferReply().catch(() => null);
+        await interaction.deferReply().catch((err => { }));
 
         const user = interaction.options.getMember('user') ? interaction.options.getMember('user') : interaction.member;
         const userObject = interaction.options.getUser('user') ? interaction.options.getUser('user') : interaction.user;
@@ -42,7 +42,7 @@ module.exports = {
                         inline: false,
                     })
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
 
     }
 }

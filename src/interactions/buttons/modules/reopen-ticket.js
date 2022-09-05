@@ -11,16 +11,16 @@ module.exports = {
     async execute(client, interaction, color) {
 
         const ticketConfig = await getTicketConfig(client, interaction.guildId);
-        await interaction.deferReply().catch(() => null);
+        await interaction.deferReply().catch((err => { }));
 
 
         if (!ticketConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just created a new database record. Please click that button again.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         if (ticketConfig.ticketEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const ticketFound = await Ticket.findOne({
             channelId: interaction.message.channel.id,
@@ -28,7 +28,7 @@ module.exports = {
 
         if (!ticketFound) return interaction.editReply({
             embeds: [await generateEmbed(color, "You are not inside of an existing ticket.")]
-        }).catch(() => null);;
+        }).catch((err => { }));;
 
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
@@ -39,30 +39,30 @@ module.exports = {
 
         if (!valid) return interaction.editReply({
             embeds: [await generateEmbed(color, "You cannot manage this ticket. You must be added first.")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
 
         const openCategory = interaction.guild.channels.cache.get(`${ticketConfig.ticketCategory}`);
 
         if (!openCategory) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the Tickets category. Configure this on [our dashboard](https://dashboard.quabot.net).")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
         const channel = interaction.guild.channels.cache.get(`${ticketFound.channelId}`);
         if (!channel) return interaction.editReply({
             embeds: [await generateEmbed(color, "Couldn't find the ticket channel; this shouldn't be possible. Please make a new ticket or [contact our support](https://discord.quabot.net).")]
-        }).catch(() => null);
+        }).catch((err => { }));
 
-        channel.setParent(openCategory, { lockPermissions: false }).catch(() => null);
+        channel.setParent(openCategory, { lockPermissions: false }).catch((err => { }));
 
         channel.permissionOverwrites.edit(ticketFound.owner,
             { ViewChannel: true, SendMessages: true },
-        ).catch(() => null);
+        ).catch((err => { }));
 
         ticketFound.users.forEach(user => {
             channel.permissionOverwrites.edit(user,
                 { ViewChannel: true, SendMessages: true },
-            ).catch(() => null);
+            ).catch((err => { }));
         });
 
         interaction.message.edit({
@@ -90,7 +90,7 @@ module.exports = {
                             .setDisabled(true)
                     )
             ],
-        }).catch(() => null);
+        }).catch((err => { }));
 
         interaction.editReply({
             embeds: [
@@ -125,6 +125,6 @@ module.exports = {
                         { name: "Channel", value: `${interaction.channel} (#${interaction.channel.name})`, inline: true }
                     )
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

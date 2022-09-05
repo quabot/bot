@@ -27,6 +27,6 @@ module.exports = {
                     .setDescription(`**Member Banned**\n\`${ban.user.tag}\``)
                     .setTimestamp()
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

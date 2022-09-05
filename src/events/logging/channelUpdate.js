@@ -45,6 +45,6 @@ module.exports = {
                     .setTimestamp()
                     .setFooter({ text: `Channel Name: ${newChannel.name}` })
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

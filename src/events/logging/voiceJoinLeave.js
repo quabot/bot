@@ -36,7 +36,7 @@ module.exports = {
             
             logChannel.send({
                 embeds: [embed]
-            }).catch(() => null);
+            }).catch((err => { }));
 
         } else {
             const embed = new EmbedBuilder()
@@ -48,7 +48,7 @@ module.exports = {
 
             logChannel.send({
                 embeds: [embed]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
     }
 }

@@ -29,6 +29,6 @@ module.exports = {
                     .setColor(Colors.Yellow)
                     .setTimestamp()
             ]
-        }).catch(() => null);
+        }).catch((err => { }));
     }
 }

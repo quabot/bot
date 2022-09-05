@@ -24,12 +24,12 @@ module.exports = {
                     .setColor(Colors.Red)
                     .setDescription(`⛔ An error occured! Couldn't find the command \`${interaction.commandName}/${interaction.options.getSubcommand()}\``)
             ]
-        }).catch(() => null) && client.subcommands.delete(`${interaction.options.getSubcommand()}/${interaction.commandName}`);
+        }).catch((err => { })) && client.subcommands.delete(`${interaction.options.getSubcommand()}/${interaction.commandName}`);
 
 
         if (subcommand.permission) {
             if (!interaction.member.permissions.has(subcommand.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this subcommand: \`${interaction.commandName}/${subcommand.name}\`.\nYou need the permission: \`${subcommand.permission}\` to do that`, ephemeral: true }).catch(() => null);
+                return interaction.reply({ content: `You do not have the required permissions for this subcommand: \`${interaction.commandName}/${subcommand.name}\`.\nYou need the permission: \`${subcommand.permission}\` to do that`, ephemeral: true }).catch((err => { }));
             }
         }
 
@@ -44,7 +44,7 @@ module.exports = {
                 content:
                     `I need the permission(s): \`${subcommand.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
                 , ephemeral: true
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
 

@@ -19,7 +19,7 @@ module.exports = {
 
         if (modal.permission) {
             if (!interaction.member.permissions.has(modal.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this modal: \`${interaction.customId}\`.\nYou need the permission: \`${modal.permission}\` to do that`, ephemeral: true }).catch(() => null);
+                return interaction.reply({ content: `You do not have the required permissions for this modal: \`${interaction.customId}\`.\nYou need the permission: \`${modal.permission}\` to do that`, ephemeral: true }).catch((err => { }));
             }
         }
 
@@ -34,7 +34,7 @@ module.exports = {
                 content:
                     `I need the permission(s): \`${modal.permissions.map(i => i)}\` to execute that modal. Double check my permissions for the server and/or this channel.`
                 , ephemeral: true
-            }).catch(() => null);
+            }).catch((err => { }));
         }
 
         let color = "#3a5a74";

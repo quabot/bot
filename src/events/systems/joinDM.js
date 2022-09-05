@@ -54,11 +54,11 @@ module.exports = {
                 embed.setFooter({ text: await joinVariables(welcomeConfig.joinDMEmbed[0].footerText, member), iconURL: icon });
             }
             
-            member.send({ embeds: [embed], components: [sentBtn] }).catch(() => null);
+            member.send({ embeds: [embed], components: [sentBtn] }).catch((err => { }));
         } else {
             if (!welcomeConfig.joinDMMessage) return;
 
-            member.send({ content:`${await joinVariables(welcomeConfig.joinDMMessage, member)}`, components: [sentBtn] }).catch(() => null);
+            member.send({ content:`${await joinVariables(welcomeConfig.joinDMMessage, member)}`, components: [sentBtn] }).catch((err => { }));
         }
     }
 }

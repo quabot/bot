@@ -46,7 +46,7 @@ module.exports = {
                     )
             )
 
-        await interaction.showModal(authorModal).catch(() => null);
+        await interaction.showModal(authorModal).catch((err => { }));
 
         const modal = await interaction.awaitModalSubmit({
             time: 180000,
@@ -58,11 +58,11 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'embed-url-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch(() => null);
+            await modal.deferReply({ ephemeral: true }).catch((err => { }));
             const text = modal.fields.getTextInputValue("text");
             let url = modal.fields.getTextInputValue("url") ? modal.fields.getTextInputValue("url") : null;
             let icon = modal.fields.getTextInputValue("icon") ? modal.fields.getTextInputValue("icon") : null;
-            if (!text) modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!text) modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch((err => { }));
             if (isValidHttpUrl(url) === false) url = null;
             if (isValidHttpUrl(icon) === false) icon = null;
             
@@ -73,11 +73,11 @@ module.exports = {
                     EmbedBuilder.from(interaction.message.embeds[0]),
                     EmbedBuilder.from(interaction.message.embeds[1]).setDescription(description).setAuthor({ name: text, iconURL: icon, url }),
                 ]
-            }).catch(() => null);
+            }).catch((err => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Successfully set the author!`)]
-            }).catch(() => null);
+            }).catch((err => { }));
         }
     }
 }

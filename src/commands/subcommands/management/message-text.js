@@ -40,18 +40,18 @@ module.exports = {
         if (modal) {
             if (modal.customId !== 'text-modal') return;
 
-            await modal.deferReply({ ephemeral: true }).catch(() => null);
+            await modal.deferReply({ ephemeral: true }).catch((err => { }));
             const text = modal.fields.getTextInputValue("text");
             
-            if (!text) modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch(() => null);
+            if (!text) modal.editReply({ embeds: [await generateEmbed(color, "No text entered, try again.")], ephemeral: true }).catch((err => { }));
 
             modal.editReply({
                 embeds: [await generateEmbed(color, `Sent the message!`)]
-            }).catch(() => null);
+            }).catch((err => { }));
 
             channel.send({
                 content: text
-            }).catch(() => null)
+            }).catch((err => { }))
         }
     }
 }
