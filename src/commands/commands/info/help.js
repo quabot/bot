@@ -130,7 +130,6 @@ module.exports = {
                     page = page > 0 ? --page : helpEmbeds.length - 1;
                     break;
                 case "next-help":
-                    console.log("Next page!")
                     page = page + 1 < helpEmbeds.length ? ++page : 0;
                     break;
             }
