@@ -28,6 +28,7 @@ module.exports = {
         const Level = require('../../structures/schemas/LevelSchema');
         const levelDB = await Level.findOne({
             guildId: message.guildId,
+            userId: message.author
         }, (err, level) => {
             if (err) console.error(err);
             if (!level) {
@@ -49,7 +50,7 @@ module.exports = {
         const xp = 0;
         const level = levelDB.level + 1;
 
-        const reqXp = 1//level * 400 + 100;
+        const reqXp = level * 400 + 100;
         const rndXp = Math.floor((Math.random() * 10) + message.content.length / 90);
 
         if (xp + rndXp >= reqXp) {
