@@ -24,7 +24,7 @@ module.exports = {
         const document = await Poll.findOne({
             guildId: interaction.guildId,
             pollId: id,
-        }).clone().catch((err => { }));
+        }).clone().catch(() => null);
 
         if (!document) return interaction.editReply({
             embeds: [await generateEmbed(color, "That poll doesn't exist/has been ended already.")], ephemeral: true

@@ -7,6 +7,7 @@ const Mod = require('../../structures/schemas/ModerationSchema');
 const Ticket = require('../../structures/schemas/TicketConfigSchema');
 const Poll = require('../../structures/schemas/PollConfigSchema');
 const Custom = require('../../structures/schemas/CustomizationSchema');
+const Level = require('../../structures/schemas/LevelConfigSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -391,4 +392,52 @@ async function getCustomizationConfig(client, guildId) {
     return customizationConfig;
 }
 
-module.exports = { getCustomizationConfig, getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
+async function getLevelConfig(client, guildId) {
+    let levelConfig;
+
+    if (client.cache.get(`${guildId}-level-config`)) levelConfig = client.cache.get(`${guildId}-level-config`);
+    if (!levelConfig) levelConfig = await Level.findOne({
+        guildId: guildId,
+    }, (err, level) => {
+        if (err) console.error(err);
+        if (!level) {
+            const newLevel = new Level({
+                guildId: guildId,
+                levelEnabled: true,
+                levelUpChannel: "none",
+                levelUpMessage: "{user} is now level **{level}** with **{xp}** xp!",
+                levelUpBuilder: true,
+                levelUpEmbed: [
+                    {
+                        title: "{tag} leveled up!",
+                        description: "{user} is now level **{level}** with **{xp}** xp!",
+                        color: null,
+                        authorText: null,
+                        authorIcon: null,
+                        authorUrl: null,
+                        footerText: null,
+                        footerIcon: null,
+                        timestamp: true,
+                        url: null,
+                        image: null,
+                        thumbnail: "{avatar}"
+                    }
+                ],
+                levelExcludedChannels: [],
+                levelExcludedRoles: [],
+                levelCard: false,
+                levelRewards: [],
+            });
+            newLevel.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-level-config`, levelConfig, 10000);
+
+    return levelConfig;
+}
+
+module.exports = { getLevelConfig, getCustomizationConfig, getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };

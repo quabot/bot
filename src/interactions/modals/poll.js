@@ -124,7 +124,7 @@ module.exports = {
                     .setDescription(`Successfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDocument.pollId}`)
                     .setColor(color)
             ], ephemeral: true
-        }).catch((err => { }));
+        }).catch(() => null);
 
         setTimeout(async () => {
             await endPoll(client, pollDocument, color);

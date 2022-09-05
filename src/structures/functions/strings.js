@@ -26,11 +26,29 @@ function joinVariables(text, member) {
     return joinVarMsg;
 }
 
+function levelVariables(text, member, level, xp) {
+    let levelVarMsg = text;
+
+    levelVarMsg = levelVarMsg.replaceAll("{user}", member);
+    levelVarMsg = levelVarMsg.replaceAll("{username}", member.user.username);
+    levelVarMsg = levelVarMsg.replaceAll("{tag}", member.user.tag);
+    levelVarMsg = levelVarMsg.replaceAll("{discriminator}", member.user.discriminator);
+    levelVarMsg = levelVarMsg.replaceAll("{guild}", member.guild.name);
+    levelVarMsg = levelVarMsg.replaceAll("{members}", member.guild.memberCount);
+    levelVarMsg = levelVarMsg.replaceAll("{id}", member.user.id);
+    levelVarMsg = levelVarMsg.replaceAll("{xp}", xp);
+    levelVarMsg = levelVarMsg.replaceAll("{level}", level);
+    levelVarMsg = levelVarMsg.replaceAll("{avatarhash}", member.user.avatar);
+    levelVarMsg = levelVarMsg.replaceAll("{avatar}", `${member.user.displayAvatarURL({ dynamic: false })}`);
+
+    return levelVarMsg;
+}
+
 function randomString() {
 
     // Credits for the code to: https://github.com/Joasss/NeoPass/
     const charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890123456789!@#$%^&*!@#$%^&*!@#$%^&*";
-    
+
     let tempString = "";
     for (let i = 0; i < 8; i++) {
         const rndChar = charSet.charAt(Math.floor(Math.random() * charSet.length));
@@ -47,4 +65,4 @@ function permissionBitToString(permission) {
     return permission;
 }
 
-module.exports = { isValidHttpUrl, joinVariables, randomString, permissionBitToString };
+module.exports = { levelVariables, isValidHttpUrl, joinVariables, randomString, permissionBitToString };

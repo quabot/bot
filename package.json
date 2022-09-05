@@ -9,6 +9,7 @@
   "dependencies": {
     "ascii-table": "^0.0.9",
     "axios": "^0.27.2",
+    "canvacord": "^5.4.6",
     "consola": "^2.15.3",
     "discord-html-transcripts": "^2.6.1",
     "discord.js": "^14.2.0",

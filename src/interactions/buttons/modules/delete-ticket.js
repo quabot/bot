@@ -68,7 +68,7 @@ module.exports = {
                             .setStyle(ButtonStyle.Success)
                     )
             ], fetchReply: true
-        }).catch((err => { }));
+        }).catch(() => null);
 
         if (!msg) return;
         const collectorRepeat = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
@@ -100,7 +100,7 @@ module.exports = {
                             .setColor(color)
                             .setDescription("Cancelled the ticket deletion.")
                     ]
-                }).catch((err => { }));
+                }).catch(() => null);
 
                 return;
 
@@ -134,7 +134,7 @@ module.exports = {
                         { name: "Channel", value: `#${interaction.channel.name}`, inline: true }
                     );
 
-                logChannel.send({ embeds: [embed], files: [attachment] }).catch((err => { }));
+                logChannel.send({ embeds: [embed], files: [attachment] }).catch(() => null);
 
             }
         });
