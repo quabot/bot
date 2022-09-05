@@ -3,7 +3,7 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.j
 module.exports = {
     name: "level",
     description: 'View levels.  ',
-    permissions: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.SendMessages],
+    permissions: [PermissionFlagsBits.SendMessages],
     options: [
         {
             name: "view",

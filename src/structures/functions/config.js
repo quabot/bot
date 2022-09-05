@@ -9,6 +9,7 @@ const Poll = require('../../structures/schemas/PollConfigSchema');
 const Custom = require('../../structures/schemas/CustomizationSchema');
 const Level = require('../../structures/schemas/LevelConfigSchema');
 const Giveaway = require('../../structures/schemas/GiveawayConfigSchema');
+const ApplicationConfig = require('../../structures/schemas/ApplicationConfigSchema');
 const { ChannelType } = require('discord.js');
 
 async function getLogConfig(client, guildId) {
@@ -461,4 +462,31 @@ async function getGiveawayConfig(client, guildId) {
     return giveawayConfig;
 }
 
-module.exports = { getGiveawayConfig, getLevelConfig, getCustomizationConfig, getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
+async function getApplicationConfig(client, guildId) {
+    let applicationConfig;
+
+    if (client.cache.get(`${guildId}-application-config`)) applicationConfig = client.cache.get(`${guildId}-application-config`);
+    if (!applicationConfig) applicationConfig = await ApplicationConfig.findOne({
+        guildId: guildId,
+    }, (err, application) => {
+        if (err) console.error(err);
+        if (!application) {
+            const newConfig = new ApplicationConfig({
+                guildId: guildId,
+                applicationEnabled: true,
+                applicationLogEnabled: true,
+                applicationLogChannelId: "none",
+            });
+            newConfig.save()
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }).clone().catch(function (err) { });
+
+    client.cache.set(`${guildId}-application-config`, applicationConfig, 10000);
+
+    return applicationConfig;
+}
+
+module.exports = { getApplicationConfig, getGiveawayConfig, getLevelConfig, getCustomizationConfig, getPollConfig, getTicketConfig, getModerationConfig, getLeaveChannel, getLogConfig, getLogChannel, getWelcomeConfig, getWelcomeChannel, getVerifyConfig, getRolesConfig, getMembersConfig };
