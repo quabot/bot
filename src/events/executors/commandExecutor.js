@@ -1,5 +1,6 @@
 const { Interaction, Client, InteractionType, ChannelType, EmbedBuilder, Colors } = require('discord.js');
 const { getCustomizationConfig } = require('../../structures/functions/config');
+const { permissionBitToString } = require('../../structures/functions/strings');
 
 module.exports = {
     event: "interactionCreate",
@@ -27,7 +28,7 @@ module.exports = {
 
         if (command.permission) {
             if (!interaction.member.permissions.has(command.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.\nYou need the permission: \`${command.permission}\` to do that`, ephemeral: true }).catch((e => { }));
+                return interaction.reply({ content: `You do not have the required permissions for this command: \`${interaction.commandName}\`.\nYou need the permission: \`${await permissionBitToString(command.permission)}\` to do that`, ephemeral: true }).catch((e => { }));
             }
         }
 
