@@ -124,7 +124,7 @@ module.exports = {
 
                 const logChannel = interaction.guild.channels.cache.get(`${ticketConfig.ticketChannelID}`);
                 if (!logChannel) return;
-                if (ticketConfigDatabase.ticketLogs === false) return;
+                if (ticketConfig.ticketLogs === false) return;
                 const embed = new EmbedBuilder()
                     .setColor(color)
                     .setTitle("Ticket Deleted")
