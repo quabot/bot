@@ -40,24 +40,20 @@ module.exports = {
             const channel = await interaction.guild.channels.create({
                 name: `ticket-${ticketId}`,
                 type: ChannelType.GuildText,
-                permissionOverwrites: [
-                    {
-                        id: interaction.guild.id,
-                        deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
-                    },
-                    {
-                        id: interaction.user.id,
-                        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory]
-                    },
-                ]
             });
+
+            await channel.setParent(openCategory, { lockPermissions: true });
+
 
             channel.permissionOverwrites.create(role,
                 { ViewChannel: true, SendMessages: true },
             );
-            channel.setParent(openCategory, { lockPermissions: false });
-
-            if (!channel.parentId) channel.setParent(openCategory, { lockPermissions: false });
+            channel.permissionOverwrites.create(interaction.guild.id,
+                { ViewChannel: false, SendMessages: false },
+            );
+            channel.permissionOverwrites.create(interaction.user.id,
+                { ViewChannel: true, SendMessages: true },
+            );
 
             const embed = new EmbedBuilder()
                 .setColor(color)
