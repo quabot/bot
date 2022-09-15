@@ -4,28 +4,33 @@ const Ascii = require('ascii-table');
 const PG = promisify(glob);
 const consola = require('consola');
 
+let loaded = 0;
+let total = 0;
+let success = true;
+
 module.exports = async (client) => {
-    const CommandsTable = new Ascii("Commands");
 
     CommandsList = [];
 
     (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/*/*.js`)).map(async (commandFile) => {
 
+        total += 1;
+
         const command = require(commandFile);
 
-        if (!command.name) CommandsTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO NAME");
-        if (!command.description) CommandsTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO DESCRIPTION");
+        if (!command.name) return success = false;
+        if (!command.description) return success = false;
 
         client.commands.set(command.name, command);
         CommandsList.push(command);
 
-        await CommandsTable.addRow(command.name, "✅ - SUCCESS");
-
+        loaded += 1;
     });
 
-    consola.log(CommandsTable.toString());
-    
+    if (success) consola.success(`Successfully loaded ${loaded}/${total} commands.`);
+    if (!success) consola.warn(`Failed to load all commands, loaded ${loaded}/${total} commands.`);
+
     CommandsList.sort();
-    
-    client.on('ready', async () => { client.application.commands.set(CommandsList); });
+
+    client.on('ready', async () => { client.application.commands.set(CommandsList).then(consola.info("Application commands deployed.\n")) });
 }

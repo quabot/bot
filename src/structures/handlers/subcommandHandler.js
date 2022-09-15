@@ -4,20 +4,25 @@ const Ascii = require('ascii-table');
 const PG = promisify(glob);
 const consola = require('consola');
 
+let loaded = 0;
+let total = 0;
+let success = true;
+
 module.exports = async (client) => {
-    const SubcmdsTable = new Ascii("Subcommands");
 
     (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/subcommands/*/*.js`)).map(async (subcommandFile) => {
+        total += 1;
 
         const subcommand = require(subcommandFile);
 
-        if (!subcommand.name) SubcmdsTable.addRow(subcommandFile.split("/")[7], "❌ - FAILED, NO NAME");
-        if (!subcommand.command) SubcmdsTable.addRow(subcommandFile.split("/")[7], "❌ - FAILED, NO COMMAND");
+        if (!subcommand.name) return success = false;
+        if (!subcommand.command) return success = false;
 
         client.subcommands.set(`${subcommand.name}/${subcommand.command}`, subcommand);
-        await SubcmdsTable.addRow(`${subcommand.command}/${subcommand.name}`, "✅ - SUCCESS");
 
+        loaded += 1;
     });
 
-    consola.log(SubcmdsTable.toString());
+    if (success) consola.success(`Successfully loaded ${loaded}/${total} subcommands.`);
+    if (!success) consola.warn(`Failed to load all subcommands, loaded ${loaded}/${total} subcommands.`);
 }

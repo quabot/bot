@@ -14,7 +14,7 @@ module.exports = {
         const { io } = require("socket.io-client");
         const socket = io("http://localhost:3002");
         socket.on("connect", () => {
-            consola.info("Socket connected.");
+            consola.info("Websocket connected.");
 
             const engine = socket.io.engine;
             engine.on("packet", ({ type, data }) => {
@@ -28,7 +28,7 @@ module.exports = {
         });
 
         socket.on("disconnect", () => {
-            consola.info("Socket disconnected.");
+            consola.warn("Websocket disconnected.");
         });
     }
 }
