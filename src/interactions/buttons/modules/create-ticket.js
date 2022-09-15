@@ -38,10 +38,10 @@ module.exports = {
                             .setStyle(TextInputStyle.Paragraph)
                     )
             )
-        
+
         await interaction.showModal(Modal).catch((e => { }));
 
-        
+
         const modal = await interaction.awaitModalSubmit({
             time: 360000,
             filter: i => i.user.id === interaction.user.id,
@@ -131,6 +131,20 @@ module.exports = {
             await ticketConfig.updateOne({
                 ticketId: ticketId,
             });
+
+            const logChannel = interaction.guild.channels.cache.get(`${ticketConfig.ticketChannelID}`);
+            if (logChannel && ticketConfig.ticketLogs === true) logChannel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle("Ticket Created")
+                        .addFields(
+                            { name: "User", value: `${interaction.user}`, inline: true },
+                            { name: "Channel", value: `${interaction.channel}`, inline: true },
+                            { name: "Top", value: `${subject}`, inline: true }
+                        )
+                ],
+            }).catch((e => { }));
         }
 
         if (modal) {

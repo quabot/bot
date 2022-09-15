@@ -23,7 +23,7 @@ module.exports = {
         if (ticketConfig.ticketEnabled === false) return interaction.editReply({
             embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
         }).catch((e => { }));
-        
+
 
         async function createTicket(ticketConfig, interaction, subject) {
 
@@ -55,8 +55,9 @@ module.exports = {
             channel.permissionOverwrites.create(role,
                 { ViewChannel: true, SendMessages: true },
             );
-
             channel.setParent(openCategory, { lockPermissions: false });
+
+            if (!channel.parentId) channel.setParent(openCategory, { lockPermissions: false });
 
             const embed = new EmbedBuilder()
                 .setColor(color)
@@ -107,6 +108,20 @@ module.exports = {
             await ticketConfig.updateOne({
                 ticketId: ticketId,
             });
+
+            const logChannel = interaction.guild.channels.cache.get(`${ticketConfig.ticketChannelID}`);
+            if (logChannel && ticketConfig.ticketLogs === true) logChannel.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle("Ticket Created")
+                        .addFields(
+                            { name: "User", value: `${interaction.user}`, inline: true },
+                            { name: "Channel", value: `${interaction.channel}`, inline: true },
+                            { name: "Top", value: `${subject}`, inline: true }
+                        )
+                ],
+            }).catch((e => { }));
         }
 
         createTicket(ticketConfig, interaction, interaction.options.getString("topic") ? interaction.options.getString("topic") : "No topic speciified.");
