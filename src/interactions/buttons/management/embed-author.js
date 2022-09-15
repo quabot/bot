@@ -66,12 +66,12 @@ module.exports = {
             if (isValidHttpUrl(url) === false) url = null;
             if (isValidHttpUrl(icon) === false) icon = null;
             
-            const description = interaction.message.embeds[1].data.description === '\u200b' ? null : interaction.message.embeds[1].data.description;
-            
+            if (interaction.message.embeds[1].data.description === '\u200b') delete interaction.message.embeds[1].data.description;
+
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
-                    EmbedBuilder.from(interaction.message.embeds[1]).setDescription(description).setAuthor({ name: text, iconURL: icon, url }),
+                    EmbedBuilder.from(interaction.message.embeds[1]).setAuthor({ name: text, iconURL: icon, url }),
                 ]
             }).catch((e => { }));
 

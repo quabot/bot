@@ -20,7 +20,7 @@ module.exports = {
         const member = reaction.message.guild.members.cache.get(`${user.id}`);
         if (!role) return;
 
-        if (reactionRole.reqPermission !== "None") {
+        if (reactionRole.reqPermission !== "None" || reactionRole.reqPermission !== "none") {
             if (!member.permissions.has(reactionRole.reqPermission)) return;
         }
 

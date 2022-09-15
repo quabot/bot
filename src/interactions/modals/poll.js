@@ -4,7 +4,6 @@ const { generateEmbed } = require('../../structures/functions/embed');
 const Poll = require('../../structures/schemas/PollSchema');
 const ms = require('ms');
 const { endPoll } = require('../../structures/functions/guilds');
-let description;
 
 module.exports = {
     id: "configure-poll",
@@ -14,6 +13,8 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
+        let description;
+        
         await interaction.deferReply({ ephemeral: true }).catch((e => { }));
         const question = interaction.fields.getTextInputValue("question");
 

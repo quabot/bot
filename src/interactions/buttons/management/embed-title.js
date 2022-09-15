@@ -41,12 +41,12 @@ module.exports = {
             const title = modal.fields.getTextInputValue("title");
             if (!title) modal.editReply({ embeds: [await generateEmbed(color, "No title entered, try again.")], ephemeral: true }).catch((e => { }));
             
-            const description = interaction.message.embeds[1].data.description === '\u200b' ? null : interaction.message.embeds[1].data.description;
-            
+            if (interaction.message.embeds[1].data.description === '\u200b') delete interaction.message.embeds[1].data.description;
+
             interaction.message.edit({
                 embeds: [
                     EmbedBuilder.from(interaction.message.embeds[0]),
-                    EmbedBuilder.from(interaction.message.embeds[1]).setTitle(title).setDescription(description),
+                    EmbedBuilder.from(interaction.message.embeds[1]).setTitle(title),
                 ]
             }).catch((e => { }));
 

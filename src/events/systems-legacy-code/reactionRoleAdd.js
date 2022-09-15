@@ -28,7 +28,7 @@ module.exports = {
         if (!role) return;
 
         //! fix the permissions system
-        if (reactionRole.reqPermission !== "None") {
+        if (reactionRole.reqPermission !== "None" || reactionRole.reqPermission !== "none") {
             if (!member.permissions.has(reactionRole.reqPermission)) return;
         }
 

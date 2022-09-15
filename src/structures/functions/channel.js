@@ -4,6 +4,7 @@ function checkChannel(channelType) {
     const validChannels = [
         ChannelType.GuildNews,
         ChannelType.GuildText,
+        ChannelType.GuildForum,
         ChannelType.GuildNewsThread,
         ChannelType.GuildPrivateThread,
         ChannelType.GuildPublicThread,
