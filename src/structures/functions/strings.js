@@ -23,7 +23,7 @@ function joinVariables(text, member) {
     joinVarMsg = joinVarMsg.replaceAll("{members}", member.guild.memberCount);
     joinVarMsg = joinVarMsg.replaceAll("{id}", member.user.id);
     joinVarMsg = joinVarMsg.replaceAll("{avatarhash}", member.user.avatar);
-    joinVarMsg = joinVarMsg.replaceAll("{avatar}", `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png`);
+    joinVarMsg = joinVarMsg.replaceAll("{avatar}", `${member.user.displayAvatarURL({ dynamic: false })}`);
 
     return joinVarMsg;
 }

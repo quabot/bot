@@ -1,7 +1,8 @@
-const { Client, Message, AttachmentBuilder, EmbedBuilder } = require('discord.js');
+const { Client, Message, AttachmentBuilder, EmbedBuilder, Collection } = require('discord.js');
 const { getLevelConfig } = require('../../structures/functions/config');
 const { Rank } = require('canvacord');
 const { levelVariables, isValidHttpUrl } = require('../../structures/functions/strings');
+const cooldowns = new Map();
 
 module.exports = {
     event: "messageCreate",
@@ -14,6 +15,21 @@ module.exports = {
 
         if (!message.guildId) return;
         if (message.author.bot) return;
+
+        
+        if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
+        const current_time = Date.now();
+        const time_stamps = cooldowns.get(message.author);
+        const cooldown_amount = 3000;
+
+        if (time_stamps.has(message.author.id)) {
+            const expiration_time = time_stamps.get(message.author.id) + cooldown_amount;
+            if (current_time < expiration_time) return;
+        }
+
+        time_stamps.set(message.author.id, current_time);
+        setTimeout(() => time_stamps.delete(message.author.id), cooldown_amount);
+
 
         const levelConfig = await getLevelConfig(client, message.guildId);
         if (!levelConfig) return;
@@ -29,7 +45,7 @@ module.exports = {
         const levelDB = await Level.findOne({
             guildId: message.guildId,
             userId: message.author
-        }, (err, level) => {
+        }, async (err, level) => {
             if (err) console.error(err);
             if (!level) {
                 const newLevel = new Level({
@@ -47,8 +63,8 @@ module.exports = {
         }).clone().catch(function (err) { });
         if (!levelDB) return;
 
-        const xp = 0;
-        const level = levelDB.level + 1;
+        let xp = levelDB.xp;
+        let level = levelDB.level + 1;
 
         const reqXp = level * 400 + 100;
         const rndXp = Math.floor((Math.random() * 10) + message.content.length / 90);
@@ -58,6 +74,8 @@ module.exports = {
             levelDB.xp = 0;
             levelDB.level += 1;
             levelDB.save();
+            xp = levelDB.xp;
+            level = levelDB.level;
 
             const channel = message.guild.channels.cache.get(`${levelConfig.levelUpChannel}`);
             const levelChannel = channel ? channel : message.channel;

@@ -14,13 +14,13 @@ module.exports = {
             .setAuthor({ name: `QuaBot v${VERSION}`, iconURL: `${client.user.avatarURL({ dynamic: true })}` })
             .setThumbnail(`${client.user.avatarURL({ dynamic: true })}`)
             .setFooter({ text: "Created by Joa_sss#0001" })
-            .setDescription(`Welcome to information center for **<:QLogo:1009229825908674570> [QuaBot](https://quabot.net)**! Here you can find loads of info about QuaBot and it's features. QuaBot uses the new slash commands, so the prefix to use it is \`/\`! We use interactions all throughout our commands and modules.
+            .setDescription(`Welcome to information center for **<:QLogo:1009229825908674570> [QuaBot](http://localhost:3000)**! Here you can find loads of info about QuaBot and it's features. QuaBot uses the new slash commands, so the prefix to use it is \`/\`! We use interactions all throughout our commands and modules.
         
             QuaBot was designed and developed by [Joa_sss](https://joasss.xyz) and was written in Javascript with the [discord.js](https://discord.js.org) framework.
         
             It's very easy to get started with QuaBot, by simply typing a \`/\`! If you're still stuck somewhere, you can join our **[Support Server](https://discord.gg/HYGA7Y6ptk)** and ask for help there. To view all commands use \`/help\`. Go to the next page for more information.
         
-            **[Website](https://quabot.net)** | **[Support](https://discord.gg/HYGA7Y6ptk)** | **[Invite](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296)** | **[Dashboard](https://dashboard.quabot.net)**`);
+            **[Website](http://localhost:3000)** | **[Support](https://discord.gg/HYGA7Y6ptk)** | **[Invite](https://discord.com/oauth2/authorize?scope=bot%20applications.commands&client_id=995243562134409296)** | **[Dashboard](https://dashboard.quabot.net)**`);
 
         const embed2 = new EmbedBuilder()
             .setColor(color)
@@ -61,7 +61,7 @@ module.exports = {
             > **By using our bot you agree to those terms. If you do not agree with our Terms of Service then you are expressly prohibited from using the bot and you must discontinue use immediately.**
             > **Read our privacy policy, by using the bot, you agree to the collection and use of information in accordance with our Privacy Policy.**
             **Where can i find these Terms of Service an Privacy Policy?**
-            You can find the [Terms of Serivce here](https://quabot.net/tos) and the [Privacy Policy here](https://quabot.net/privacy   )`)
+            You can find the [Terms of Serivce here](http://localhost:3000/tos) and the [Privacy Policy here](http://localhost:3000/privacy   )`)
 
 
         const aboutEmbeds = [embed1, embed2, embed3, embed4];

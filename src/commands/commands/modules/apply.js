@@ -59,7 +59,6 @@ module.exports = {
         }).catch((e => { }));
 
 
-
         // Make the buttons
         const backId = 'back-apply';
         const forwardId = 'forward-apply';
@@ -152,10 +151,9 @@ module.exports = {
             embeds: [await makeEmbed(0)],
             ephemeral: true,
             components: canFit
-                ? [currentAnswer ? editButton : enterButton, submitButton]
+                ? [new ActionRowBuilder({ components: [currentAnswer ? editButton : enterButton, submitButton]})]
                 : [new ActionRowBuilder({ components: [enterButton, forwardButton] })]
-        }).catch((e => { }));
-        if (canFit) return;
+        }).catch((e => console.log(e)));
         if (!msg) return;
 
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === user.id });
@@ -183,6 +181,7 @@ module.exports = {
 
             // do a question
             if (interaction.customId === enterId) {
+                console.log("HELP")
 
                 const filter = (interaction) => interaction.customId === 'apply-question';
                 interaction.awaitModalSubmit({ filter, time: 600000 })
@@ -257,6 +256,7 @@ module.exports = {
                     );
 
                 await interaction.showModal(modal);
+                console.log("HELP")
 
             }
 
