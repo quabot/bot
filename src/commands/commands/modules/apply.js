@@ -181,7 +181,6 @@ module.exports = {
 
             // do a question
             if (interaction.customId === enterId) {
-                console.log("HELP")
 
                 const filter = (interaction) => interaction.customId === 'apply-question';
                 interaction.awaitModalSubmit({ filter, time: 600000 })
@@ -256,7 +255,6 @@ module.exports = {
                     );
 
                 await interaction.showModal(modal);
-                console.log("HELP")
 
             }
 
