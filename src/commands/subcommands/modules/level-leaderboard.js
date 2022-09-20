@@ -37,8 +37,8 @@ module.exports = {
 
         function compareLevel(a, b) { return b.level - a.level; }
         function compareXp(a, b) { return b.xp - a.xp; }
+        levelDB.sort(compareXp);
         if (sortBy === "level") levelDB = levelDB.sort(compareLevel);
-        if (sortBy === "xp") levelDB = levelDB.sort(compareXp);
         levelDB = levelDB.slice(0, 10);
 
         interaction.editReply({

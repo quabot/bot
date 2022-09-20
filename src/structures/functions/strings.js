@@ -28,7 +28,7 @@ function joinVariables(text, member) {
     return joinVarMsg;
 }
 
-function levelVariables(text, member, level, xp) {
+function levelVariables(text, member, level, xp, message) {
     let levelVarMsg = text;
 
     levelVarMsg = levelVarMsg.replaceAll("{user}", member);
@@ -39,6 +39,9 @@ function levelVariables(text, member, level, xp) {
     levelVarMsg = levelVarMsg.replaceAll("{members}", member.guild.memberCount);
     levelVarMsg = levelVarMsg.replaceAll("{id}", member.user.id);
     levelVarMsg = levelVarMsg.replaceAll("{xp}", xp);
+    levelVarMsg = levelVarMsg.replaceAll("{msg}", message.url);
+    levelVarMsg = levelVarMsg.replaceAll("{required}", level * 400 + 100);
+    levelVarMsg = levelVarMsg.replaceAll("{channel}", message.channel);
     levelVarMsg = levelVarMsg.replaceAll("{level}", level);
     levelVarMsg = levelVarMsg.replaceAll("{avatarhash}", member.user.avatar);
     levelVarMsg = levelVarMsg.replaceAll("{avatar}", `${member.user.displayAvatarURL({ dynamic: false })}`);
