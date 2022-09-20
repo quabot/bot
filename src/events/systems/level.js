@@ -16,20 +16,21 @@ module.exports = {
         if (!message.guildId) return;
         if (message.author.bot) return;
 
-        
+
         if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
         const current_time = Date.now();
         const time_stamps = cooldowns.get(message.author);
         const cooldown_amount = 3000;
 
+        let no = false;
         if (time_stamps.has(message.author.id)) {
             const expiration_time = time_stamps.get(message.author.id) + cooldown_amount;
-            if (current_time < expiration_time) return;
+            if (current_time < expiration_time) return no = true;
         }
+        if (no) return;
 
         time_stamps.set(message.author.id, current_time);
         setTimeout(() => time_stamps.delete(message.author.id), cooldown_amount);
-
 
         const levelConfig = await getLevelConfig(client, message.guildId);
         if (!levelConfig) return;
@@ -47,21 +48,21 @@ module.exports = {
             userId: message.author
         }, async (err, level) => {
             if (err) console.error(err);
-            if (!level) {
-                const newLevel = new Level({
-                    guildId: message.guildId,
-                    userId: message.author.id,
-                    xp: 0,
-                    level: 0,
-                    role: "none"
-                });
-                newLevel.save()
-                    .catch(err => {
-                        console.log(err);
-                    });
-            }
         }).clone().catch(function (err) { });
-        if (!levelDB) return;
+        if (!levelDB) {
+            const newLevel = new Level({
+                guildId: message.guildId,
+                userId: message.author.id,
+                xp: 0,
+                level: 0,
+                role: "none"
+            });
+            newLevel.save()
+                .catch(err => {
+                    console.log(err);
+                });
+            return;
+        }
 
         let xp = levelDB.xp;
         let level = levelDB.level + 1;

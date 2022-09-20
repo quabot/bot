@@ -28,9 +28,9 @@ module.exports = {
             guildId: interaction.guildId,
         }).clone().catch((e => { }));
 
-        if (!levelDB) levelDB = [{
+        if (levelDB.length === 0) levelDB = [{
             guildId: interaction.guildId,
-            userId: user.id,
+            userId: interaction.user.id,
             xp: 0,
             level: 0,
         }];
