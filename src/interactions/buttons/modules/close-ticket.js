@@ -1,5 +1,6 @@
 const { Client, Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits, ButtonStyle } = require('discord.js');
 const Ticket = require('../../../structures/schemas/TicketSchema');
+const { generateEmbed } = require('../../../structures/functions/embed');
 const { getTicketConfig } = require('../../../structures/functions/config');
 
 module.exports = {
