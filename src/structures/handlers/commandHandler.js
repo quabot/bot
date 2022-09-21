@@ -1,8 +1,10 @@
 const { promisify } = require('util');
 const { glob } = require('glob');
-const Ascii = require('ascii-table');
 const PG = promisify(glob);
 const consola = require('consola');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord.js');
+require('dotenv').config();
 
 let loaded = 0;
 let total = 0;
@@ -22,6 +24,8 @@ module.exports = async (client) => {
         if (!command.description) return success = false;
 
         client.commands.set(command.name, command);
+        if (command.permission) command.permission = parseInt(command.permission);
+        if (command.permissions) command.permissions = parseInt(command.permissions) //! FIX!!
         CommandsList.push(command);
 
         loaded += 1;
@@ -32,5 +36,22 @@ module.exports = async (client) => {
 
     CommandsList.sort();
 
-    client.on('ready', async () => { client.application.commands.set(CommandsList).then(consola.info("Application commands deployed.\n")) });
+
+
+    const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+
+    const clientId = '995243562134409296';
+
+    try {
+        console.log(`Started refreshing ${CommandsList.length} application (/) commands.`);
+
+        const data = await rest.put(
+            Routes.applicationCommands(clientId),
+            { body: CommandsList },
+        );
+
+        console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    } catch (error) {
+        console.error("L Didnt work");
+    }
 }

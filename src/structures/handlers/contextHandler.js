@@ -1,50 +1,63 @@
 const { promisify } = require('util');
 const { glob } = require('glob');
-const Ascii = require('ascii-table');
 const PG = promisify(glob);
 const consola = require('consola');
-const { ContextMenuCommandBuilder, ApplicationCommandType, REST, Routes } = require('discord.js');
+const { REST } = require('@discordjs/rest');
+const { Routes, ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
 require('dotenv').config();
 
-module.exports = async (client) => {
+let loaded = 0;
+let total = 0;
+let success = true;
 
-    return;
-    const ContextTable = new Ascii("Context Commands");
+module.exports = async (client) => {
 
     ContextList = [];
 
     (await PG(`${process.cwd().replace(/\\/g, "/")}/src/interactions/context/*.js`)).map(async (contextFile) => {
 
-        const context = require(contextFile);
+        total += 1;
 
-        if (!context.name) ContextTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO NAME");
-        if (!context.type) ContextTable.addRow(commandFile.split("/")[7], "❌ - FAILED, NO TYPE");
+        const contextMenu = require(contextFile);
 
-        client.contexts.set(context.name, context);
-        ContextList.push(context);
+        if (!contextMenu.type) return success = false;
+        if (!contextMenu.name) return success = false;
 
-        await ContextTable.addRow(context.name, "✅ - SUCCESS");
+        client.contexts.set(contextMenu.name, contextMenu);
+        ContextList.push(contextMenu);
 
+        loaded += 1;
     });
 
-    consola.log(ContextTable.toString());
+    if (success) consola.success(`Successfully loaded ${loaded}/${total} context menus.`);
+    if (!success) consola.warn(`Failed to load all menus, loaded ${loaded}/${total} context menus.`);
 
     ContextList.sort();
 
-    client.on('ready', async () => {
-        const menus = [];
-        const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-        ContextList.forEach(context => {
-            const data = new ContextMenuCommandBuilder()
-                .setName(context.name)
-                .setType(context.type);
-            menus.push(data.toJSON());
-        });
+    const ContextMenus = [];
+    ContextList.forEach(menu => {
+        const contextMenu = new ContextMenuCommandBuilder()
+        .setName(menu.name)
+        .setType(menu.type);
 
-        await rest.put(
-            Routes.applicationCommands(client.user.id),
-            { body: menus },
-        ).catch((e => console.log("Error with the context creation: " + e)));
+        ContextMenus.push(contextMenu);
     });
+
+    const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+
+    const clientId = '995243562134409296';
+
+    try {
+        console.log(`Started refreshing ${ContextMenus.length} context menus.`);
+
+        const data = await rest.put(
+            Routes.applicationCommands(clientId),
+            { body: ContextMenus },
+        );
+
+        console.log(`Successfully reloaded ${data.length} context menus.`);
+    } catch (error) {
+        console.error(error);
+    }
 }

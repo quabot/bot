@@ -10,10 +10,10 @@ module.exports = {
      */
     async execute(interaction, client) {
 
-        return;
         if (!interaction.guildId) return;
         if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return;
 
+        if (!interaction.isContextMenuCommand()) return;
 
         const context = client.contexts.get(interaction.commandName);
         if (!context) return interaction.reply({
