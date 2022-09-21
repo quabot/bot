@@ -1,4 +1,4 @@
-const { ApplicationCommandType, EmbedBuilder } = require("discord.js");
+const { ApplicationCommandType, EmbedBuilder, ContextMenuCommandBuilder } = require("discord.js");
 const houses = [
     { name: "HypeSquadOnlineHouse1", emoji: "Bravery" },
     { name: "HypeSquadOnlineHouse2", emoji: "Brilliance" },
@@ -6,8 +6,10 @@ const houses = [
 ];
 
 module.exports = {
-    name: "userinfo",
-    type: ApplicationCommandType.User,
+    data: new ContextMenuCommandBuilder()
+        .setName("userinfo")
+        .setType(ApplicationCommandType.User)
+        .setDMPermission(false),
     /**
      * @param {import("discord.js").Interaction} interaction 
      */

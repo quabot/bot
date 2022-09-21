@@ -12,6 +12,7 @@ module.exports = {
     async execute(interaction, client) {
 
         if (interaction.type !== InteractionType.ApplicationCommand) return;
+        if (interaction.isMessageContextMenuCommand()) return;
         if (!interaction.guildId) return;
         if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return;
 

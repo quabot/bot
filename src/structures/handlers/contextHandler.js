@@ -1,59 +1,37 @@
+const consola = require('consola');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);
-const consola = require('consola');
-const { REST } = require('@discordjs/rest');
-const { Routes, ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
-require('dotenv').config();
 
-let loaded = 0;
-let total = 0;
-let success = true;
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord.js');
+require('dotenv').config();
 
 module.exports = async (client) => {
 
     ContextList = [];
 
     (await PG(`${process.cwd().replace(/\\/g, "/")}/src/interactions/context/*.js`)).map(async (contextFile) => {
-
-        total += 1;
-
-        const contextMenu = require(contextFile);
-
-        if (!contextMenu.type) return success = false;
-        if (!contextMenu.name) return success = false;
-
-        client.contexts.set(contextMenu.name, contextMenu);
-        ContextList.push(contextMenu);
-
-        loaded += 1;
+        const contextMenu = require(contextFile);;
+        
+        client.contexts.set(contextMenu.data.name, contextMenu);
+        ContextList.push(contextMenu.data);
     });
 
-    if (success) consola.success(`Successfully loaded ${loaded}/${total} context menus.`);
-    if (!success) consola.warn(`Failed to load all menus, loaded ${loaded}/${total} context menus.`);
-
-    ContextList.sort();
-
-
-    const ContextMenus = [];
-    ContextList.forEach(menu => {
-        const contextMenu = new ContextMenuCommandBuilder()
-        .setName(menu.name)
-        .setType(menu.type);
-
-        ContextMenus.push(contextMenu);
-    });
+    consola.success(`Successfully loaded ${ContextList.length} context menus.`);
 
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-    const clientId = '995243562134409296';
+    const clientId = process.env.CLIENT_ID;
+    const guildId = "927613222452858900";
 
     try {
-        console.log(`Started refreshing ${ContextMenus.length} context menus.`);
+        return;
+        console.log(`Started refreshing ${ContextList.length} context menus.`);
 
         const data = await rest.put(
-            Routes.applicationCommands(clientId),
-            { body: ContextMenus },
+            Routes.applicationGuildCommands(clientId, guildId),
+            { body: ContextList },
         );
 
         console.log(`Successfully reloaded ${data.length} context menus.`);

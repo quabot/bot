@@ -36,22 +36,23 @@ module.exports = async (client) => {
 
     CommandsList.sort();
 
-
+return;
 
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-    const clientId = '995243562134409296';
+    const clientId = '1022058906941411368';
+    const guildId = '927613222452858900';
 
     try {
         console.log(`Started refreshing ${CommandsList.length} application (/) commands.`);
 
         const data = await rest.put(
-            Routes.applicationCommands(clientId),
+            Routes.applicationGuildCommands(clientId, guildId),
             { body: CommandsList },
         );
 
         console.log(`Successfully reloaded ${data.length} application (/) commands.`);
     } catch (error) {
-        console.error("L Didnt work");
+        console.error(error);
     }
 }
