@@ -15,7 +15,7 @@ module.exports = {
         interaction.channel.messages.fetch({ message: interaction.targetId })
             .then(async message => {
 
-                interaction.reply("Warn");
+                interaction.editReply("Warn");
 
             }).catch(async e => {
                 console.log(e)

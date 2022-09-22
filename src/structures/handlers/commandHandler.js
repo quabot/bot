@@ -22,7 +22,7 @@ module.exports = async (client) => {
         CommandsList.push(command.data);
     });
 
-    consola.success(`Successfully loaded ${CommandsList.length} commands.`);
+    consola.success(`Successfully loaded ${CommandsList.length-contextMenus.length} commands.`);
 
 
     try {
@@ -30,7 +30,7 @@ module.exports = async (client) => {
         console.log(`Started refreshing ${CommandsList.length} commands.`);
 
         const data = await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, "927613222452858900"),
+            Routes.applicationCommands(process.env.CLIENT_ID),
             { body: CommandsList },
         );
 
