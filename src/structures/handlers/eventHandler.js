@@ -23,6 +23,6 @@ module.exports = async (client) => {
         loaded +=1;
     });
 
-    if (success) consola.success(`Successfully loaded ${loaded}/${total} events.`);
+    if (success) consola.success(`Successfully loaded ${loaded} events.`);
     if (!success) consola.warn(`Failed to load all events, loaded ${loaded}/${total} events.`);
 }

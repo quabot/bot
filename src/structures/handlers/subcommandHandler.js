@@ -23,6 +23,6 @@ module.exports = async (client) => {
         loaded += 1;
     });
 
-    if (success) consola.success(`Successfully loaded ${loaded}/${total} subcommands.`);
+    if (success) consola.success(`Successfully loaded ${loaded} subcommands.`);
     if (!success) consola.warn(`Failed to load all subcommands, loaded ${loaded}/${total} subcommands.`);
 }

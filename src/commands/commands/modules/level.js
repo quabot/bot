@@ -11,10 +11,10 @@ module.exports = {
         .addSubcommand(command => command
             .setName("leaderboard")
             .setDescription("View the server leaderboard.")
-            .addStringOption(option => option.setRequired(true).setName("sortby").setDescription("Type to sort the leaderboard by.").addChoices([
+            .addStringOption(option => option.setRequired(true).setName("sortby").setDescription("Type to sort the leaderboard by.").addChoices(
                 { name: "xp", value: "xp" },
                 { name: "level", value: "level" }
-            ])))
+            )))
         .setDMPermission(false),
     async execute(client, interaction, color) { }
 }

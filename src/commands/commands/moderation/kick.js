@@ -5,7 +5,7 @@ const { getModerationConfig } = require('../../../structures/functions/config');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers | PermissionFlagBits.KickMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers | PermissionFlagsBits.KickMembers)
         .setDescription('Kick a user.')
         .addUserOption(option => option.setName("user").setDescription("User to kick.").setRequired(true))
         .addStringOption(option => option.setName("reason").setDescription("Reason for kicking the user.").setRequired(false))
