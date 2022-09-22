@@ -1,39 +1,19 @@
-const { ApplicationCommandOptionType, Interaction, Client, EmbedBuilder, PermissionFlagsBits, MembershipScreeningFieldType } = require('discord.js');
+const { ApplicationCommandOptionType, Interaction, Client, EmbedBuilder, PermissionFlagsBits, MembershipScreeningFieldType, SlashCommandBuilder } = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const { getModerationConfig } = require('../../../structures/functions/config');
 const ms = require('ms');
 const { tempUnban } = require('../../../structures/functions/guilds');
 
 module.exports = {
-    name: "tempban",
-    description: "Temporarily ban a user.",
-    permission: PermissionFlagsBits.KickMembers,
-    options: [
-        {
-            name: "user",
-            description: "User to tempban.",
-            type: ApplicationCommandOptionType.User,
-            required: true
-        },
-        {
-            name: "duration",
-            description: "How long to tempban. (1h, 10min)",
-            type: ApplicationCommandOptionType.String,
-            required: true
-        },
-        {
-            name: "reason",
-            description: "Reason for temporarily banning the user.",
-            type: ApplicationCommandOptionType.String,
-            required: false
-        },
-        {
-            name: "private",
-            description: "Do you want this punishment to only be visible to you?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('tempban')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers)
+        .setDescription('Temporarily ban a user.')
+        .addUserOption(option => option.setName("user").setDescription("User to tempban.").setRequired(true))
+        .addStringOption(option => option.setName("duration").setDescription("How long to tempban. (1h, 30min, 1w)").setRequired(true))
+        .addStringOption(option => option.setName("reason").setDescription("Reason for kicking the user").setRequired(false))
+        .addBooleanOption(option => option.setName("private").setDescription("Do you want the punishment to be only visible to you?.").setRequired(false))
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 

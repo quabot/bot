@@ -1,9 +1,11 @@
-const { Interaction } = require('discord.js');
+const { Interaction, SlashCommandBuilder } = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    name: "flip",
-    description: "Flip a coin.",
+    data: new SlashCommandBuilder()
+        .setName('flip')
+        .setDescription('Flip a coin.')
+        .setDMPermission(false),
     /**
      * @param {Interaction} interaction 
      */

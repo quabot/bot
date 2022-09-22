@@ -1,25 +1,22 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
+const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "send",
-    description: "Send messages to create tickets, suggestions or to verify.",
-    permission: PermissionFlagsBits.Administrator,
-    options: [
-        {
-            name: "verification",
-            description: "Send a verification message.",
-            type: ApplicationCommandOptionType.Subcommand,
-        },
-        {
-            name: "tickets",
-            description: "Send a tickets message.",
-            type: ApplicationCommandOptionType.Subcommand,
-        },
-        {
-            name: "suggestions",
-            description: "Send a suggestions message.",
-            type: ApplicationCommandOptionType.Subcommand,
-        },
-    ],
+    data: new SlashCommandBuilder()
+        .setName('send')
+        .setDescription('Send messages to create tickets, suggestions or to verify.')
+        .setDMPermission(false)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages | PermissionFlagsBits.ManageGuild)
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('verification')
+                .setDescription('Send a verification message.'))
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName('tickets')
+                        .setDescription('Send a tickets message.'))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('suggestions')
+                .setDescription('Send a suggestions message.')),
     async execute() { }
 }

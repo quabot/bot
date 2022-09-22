@@ -1,31 +1,16 @@
-const { ApplicationCommandOptionType, Interaction, Client, EmbedBuilder, PermissionFlagsBits, MembershipScreeningFieldType } = require('discord.js');
+const { ApplicationCommandOptionType, Interaction, Client, EmbedBuilder, PermissionFlagsBits, MembershipScreeningFieldType, SlashCommandBuilder } = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const { getModerationConfig } = require('../../../structures/functions/config');
 
 module.exports = {
-    name: "ban",
-    description: "Ban a user.",
-    permission: PermissionFlagsBits.KickMembers,
-    options: [
-        {
-            name: "user",
-            description: "User to ban.",
-            type: ApplicationCommandOptionType.User,
-            required: true
-        },
-        {
-            name: "reason",
-            description: "Reason for banning the user.",
-            type: ApplicationCommandOptionType.String,
-            required: false
-        },
-        {
-            name: "private",
-            description: "Do you want this punishment to only be visible to you?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('ban')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers)
+        .setDescription('Ban a user.')
+        .addUserOption(option => option.setName("user").setDescription("User to ban.").setRequired(true))
+        .addStringOption(option => option.setName("reason").setDescription("Reason for banning the user.").setRequired(false))
+        .addBooleanOption(option => option.setName("private").setDescription("Do you want the punishment to be only visible to you?.").setRequired(false))
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 

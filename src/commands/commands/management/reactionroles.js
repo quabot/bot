@@ -1,44 +1,35 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
+const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "reactionroles",
-    description: "Create, list and delete reaction roles.",
-    options: [
-        {
-            name: "create",
-            description: "Create reactionroles.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "channel",
-                    description: "Channel where the message is located.",
-                    type: ApplicationCommandOptionType.Channel,
-                    required: true,
-                },
-                {
-                    name: "message",
-                    description: "Message id of the message.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-                {
-                    name: "role",
-                    description: "Role to use.",
-                    type: ApplicationCommandOptionType.Role,
-                    required: true,
-                },
-                {
-                    name: "emoji",
-                    description: "Emoji to use.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-                {
-                    name: "permission",
-                    description: "Required permission for this reactionrole.",
-                    type: ApplicationCommandOptionType.String,
-                    required: false,
-                    choices: [
+    data: new SlashCommandBuilder()
+        .setName('reactionroles')
+        .setDescription('Create, list and delete reactionroles.')
+        .setDMPermission(false)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild)
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('create')
+                .setDescription('Create a reactionrole.')
+                .addChannelOption(option => option.setDescription("Channel where the message is located.").setRequired(true).setName("channel"))
+                .addStringOption(option => option.setDescription("The id of the message.").setRequired(true).setName("message"))
+                .addRoleOption(option => option.setDescription("The role to use.").setRequired(true).setName("role"))
+                .addStringOption(option => option.setDescription("The emoji to react with.").setRequired(true).setName("emoji"))
+                .addStringOption(option => option
+                    .setDescription("The mode to use for the reactionrole.")
+                    .setRequired(true)
+                    .setName("mode")
+                    .addChoices(
+                        { name: "Normal", value: "normal" },
+                        { name: "Verify", value: "verify" },
+                        { name: "Drop", value: "drop" },
+                        { name: "Reversed", value: "reversed" },
+                        { name: "Unique", value: "unique" },
+                        { name: "Binding", value: "binding" },
+                    ))
+                .addStringOption(option => option.setDescription("The permission required to use this reactionrole.")
+                    .setRequired(false)
+                    .setName("permission")
+                    .addChoices(
                         { name: "Create Instant Invite", value: `${PermissionFlagsBits.CreateInstantInvite}` },
                         { name: "Kick Members", value: `${PermissionFlagsBits.KickMembers}` },
                         { name: "Ban Members", value: `${PermissionFlagsBits.BanMembers}` },
@@ -64,74 +55,20 @@ module.exports = {
                         { name: "Manage Roles", value: `${PermissionFlagsBits.ManageRoles}` },
                         { name: "Use Application Commands", value: `${PermissionFlagsBits.UseApplicationCommands}` },
                         { name: "Manage Threads", value: `${PermissionFlagsBits.ManageThreads}` }
-                    ],
-                },
-                {
-                    name: "mode",
-                    description: "Reactionrole mode.",
-                    type: ApplicationCommandOptionType.String,
-                    choices: [
-                        { name: "Normal", value: "normal" },
-                        { name: "Verify", value: "verify" },
-                        { name: "Drop", value: "drop" },
-                        { name: "Reversed", value: "reversed" },
-                        { name: "Unique", value: "unique" },
-                        { name: "Binding", value: "binding" },
-                    ],
-                    required: false,
-                }
-            ]
-        },
-        {
-            name: "delete",
-            description: "Delete a reactionrole.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "message_id",
-                    description: "The message to remove the reactionrole of.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "role",
-                    description: "The role to remove.",
-                    type: ApplicationCommandOptionType.Role,
-                    required: true
-                },
-                {
-                    name: "emoji",
-                    description: "Emoji to remove.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                }
-            ]
-        },
-        {
-            name: "list",
-            description: "List all reactionroles.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "message_id",
-                    description: "The message to list the reactionroles for.",
-                    type: ApplicationCommandOptionType.String,
-                    required: false
-                },
-                {
-                    name: "role",
-                    description: "The role to list the reactionroles for.",
-                    type: ApplicationCommandOptionType.Role,
-                    required: false
-                },
-                {
-                    name: "channel",
-                    description: "The channel to list the reactionroles for.",
-                    type: ApplicationCommandOptionType.Channel,
-                    required: false
-                }
-            ]
-        }
-    ],
+                    )))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('delete')
+                .setDescription('Delete a reactionrole.')
+                .addStringOption(option => option.setDescription("The message to remove the reactionrole of.").setRequired(true).setName("message_id"))
+                .addStringOption(option => option.setDescription("The emoji to remove.").setRequired(true).setName("emoji"))
+                .addChannelOption(option => option.setDescription("The channel where the message is located.").setRequired(true).setName("channel")))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('list')
+                .setDescription('List all reactionroles.')
+                .addStringOption(option => option.setDescription("The message to list the reactionroles for.").setRequired(false).setName("message_id"))
+                .addRoleOption(option => option.setDescription("The role to list the reactionroles for.").setRequired(false).setName("role"))
+                .addChannelOption(option => option.setDescription("The channel to list the reactionroles for.").setRequired(false).setName("channel"))),
     async execute() { }
 }

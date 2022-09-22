@@ -1,31 +1,27 @@
-const { Interaction,  ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
+const { Interaction, ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const ms = require('ms');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const { convertHMS } = require('../../../structures/functions/time');
 
 module.exports = {
-    name: "slowmode",
-    description: "Set a channel slowmode.",
-    options: [
-        {
-            name: "channel",
-            description: "Channel to change the slowmode of.",
-            type: ApplicationCommandOptionType.Channel,
-            required: true
-        },
-        {
-            name: "slowmode",
-            description: "Slowmode to set it to (format: 20min, 2h, 600min)",
-            type: ApplicationCommandOptionType.String,
-            required: true
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('slowmode')
+        .setDescription('Set a channel slowmode.')
+        .setDMPermission(false)
+        .addChannelOption(option =>
+            option.setName('channel')
+                .setDescription('Channel to change the slowmode of.')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('slowmode')
+                .setDescription('Slowmode to set it to (format: 20min, 2h, 600min)')
+                .setRequired(true)),
     /**
      * @param {Interaction} interaction 
      */
     permission: PermissionFlagsBits.Administrator,
     permissions: [PermissionFlagsBits.ManageChannels],
-    async execute(client, interaction, color) { 
+    async execute(client, interaction, color) {
 
         await interaction.deferReply().catch((e => { }));
 

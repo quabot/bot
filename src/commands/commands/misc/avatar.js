@@ -1,27 +1,18 @@
-const { ApplicationCommandOptionType } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "avatar",
-    description: "Get the user or server icon/avatar.",
-    options: [
-        {
-            name: "user",
-            description: "Get a user avatar.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "user",
-                    description: "The user to get the avatar of.",
-                    type: ApplicationCommandOptionType.User,
-                    required: false
-                }
-            ]
-        },
-        {
-            name: "server",
-            description: "Get the server icon.",
-            type: ApplicationCommandOptionType.Subcommand,
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('avatar')
+        .setDescription('Get the user or server icon/avatar.')
+        .setDMPermission(false)
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('user')
+                .setDescription('Get a user avatar.')
+                .addUserOption(option => option.setName("user").setRequired(false).setDescription("The user to get the avatar of.")))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('server')
+                .setDescription('List all applications.')),
     async execute() { }
 }

@@ -1,9 +1,11 @@
-const { Client, Interaction, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, Colors, EmbedBuilder } = require("discord.js");
+const { Client, Interaction, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, Colors, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    name: "rps",
-    description: "Play rock, paper, scissors.",
+    data: new SlashCommandBuilder()
+        .setName('rps')
+        .setDescription('Play rock, paper, scissors.')
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 

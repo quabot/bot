@@ -1,9 +1,11 @@
-const { Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { VERSION } = require('../../../structures/config.json');
+const { Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require('discord.js');
+const { version }= require('../../../../package.json');
 
 module.exports = {
-    name: "about",
-    description: "Learn more about QuaBot.",
+    data: new SlashCommandBuilder()
+        .setName('about')
+        .setDescription('Learn more about QuaBot.')
+        .setDMPermission(false),
     /**
      * @param {Interaction} interaction 
      */
@@ -11,7 +13,7 @@ module.exports = {
 
         const embed1 = new EmbedBuilder()
             .setColor(color)
-            .setAuthor({ name: `QuaBot v${VERSION}`, iconURL: `${client.user.avatarURL({ dynamic: true })}` })
+            .setAuthor({ name: `QuaBot v${version}`, iconURL: `${client.user.avatarURL({ dynamic: true })}` })
             .setThumbnail(`${client.user.avatarURL({ dynamic: true })}`)
             .setFooter({ text: "Created by Joa_sss#0001" })
             .setDescription(`Welcome to information center for **<:QLogo:1009229825908674570> [QuaBot](http://localhost:3000)**! Here you can find loads of info about QuaBot and it's features. QuaBot uses the new slash commands, so the prefix to use it is \`/\`! We use interactions all throughout our commands and modules.

@@ -1,37 +1,29 @@
-const { ApplicationCommandOptionType } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "reddit",
-    description: "Get images from any subreddit.",
-    options: [
-        {
-            name: "cat",
-            description: "Get a cat image.",
-            type: ApplicationCommandOptionType.Subcommand
-        },
-        {
-            name: "dog",
-            description: "Get a dog image",
-            type: ApplicationCommandOptionType.Subcommand
-        },
-        {
-            name: "meme",
-            description: "Get a random meme.",
-            type: ApplicationCommandOptionType.Subcommand
-        },
-        {
-            name: "subreddit",
-            description: "Get an image from a subreddit.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "reddit",
-                    description: "The subreddit to look through.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                }
-            ]
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('reddit')
+        .setDescription('Get images from any subreddit.')
+        .setDMPermission(false)
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('cat')
+                .setDescription('Get a cat image.'))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('dog')
+                .setDescription('Get a dog image.'))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('meme')
+                .setDescription('Get a random meme.'))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('subreddit')
+                .addStringOption(option =>
+                    option.setName('reddit')
+                        .setDescription('The subreddit to look through.')
+                        .setRequired(true))
+                .setDescription('Get an image from a subreddit.')),
     async execute() { }
 }

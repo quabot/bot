@@ -3,29 +3,14 @@ const { generateEmbed } = require('../../../structures/functions/embed');
 const { getModerationConfig } = require('../../../structures/functions/config');
 
 module.exports = {
-    name: "warn",
-    description: "Warn a user",
-    permission: PermissionFlagsBits.ModerateMembers,
-    options: [
-        {
-            name: "user",
-            description: "User to warn",
-            type: ApplicationCommandOptionType.User,
-            required: true
-        },
-        {
-            name: "reason",
-            description: "Reason for warning this user.",
-            type: ApplicationCommandOptionType.String,
-            required: true
-        },
-        {
-            name: "private",
-            description: "Do you want this punishment to only be visible to you?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('warn')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers | PermissionFlagBits.KickMembers | PermissionFlagsBits.ModerateMembers)
+        .setDescription('Warn a user.')
+        .addUserOption(option => option.setName("user").setDescription("User to warn.").setRequired(true))
+        .addStringOption(option => option.setName("reason").setDescription("Reason for warning this user.").setRequired(true))
+        .addBooleanOption(option => option.setName("private").setDescription("Do you want the punishment to be only visible to you?.").setRequired(false))
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 

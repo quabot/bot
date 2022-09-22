@@ -3,23 +3,13 @@ const { generateEmbed } = require('../../../structures/functions/embed');
 const { getModerationConfig } = require('../../../structures/functions/config');
 
 module.exports = {
-    name: "unban",
-    description: "Unban a user.",
-    permission: PermissionFlagsBits.KickMembers,
-    options: [
-        {
-            name: "userid",
-            description: "Userid to unban",
-            type: ApplicationCommandOptionType.String,
-            required: true
-        },
-        {
-            name: "private",
-            description: "Do you want this punishment to only be visible to you?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('unban')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers)
+        .setDescription('Unban a user.')
+        .addStringOption(option => option.setName("userid").setDescription("Userid to unban.").setRequired(true))
+        .addBooleanOption(option => option.setName("private").setDescription("Do you want the unban to be only visible to you?.").setRequired(false))
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 

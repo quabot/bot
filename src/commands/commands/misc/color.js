@@ -1,16 +1,11 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "color",
-    description: "Visualize a color using HEX.",
-    options: [
-        {
-            name: "hex",
-            description: "Hex color code. (#COLOR)",
-            type: ApplicationCommandOptionType.String,
-            required: true,
-        },
-    ],
+    data: new SlashCommandBuilder()
+        .setName('color')
+        .setDescription('Visualize a color using HEX.')
+        .setDMPermission(false)
+        .addStringOption(option => option.setName("hex").setRequired(true).setDescription("Hex color code. (#COLOR)")),
     /**
      * @param {import('discord.js').Interaction} interaction 
      */

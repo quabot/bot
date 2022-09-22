@@ -12,7 +12,6 @@ module.exports = {
 
         if (!interaction.guildId) return;
         if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return;
-
         if (!interaction.isContextMenuCommand()) return;
 
         const context = client.contexts.get(interaction.commandName);
@@ -24,30 +23,9 @@ module.exports = {
             ]
         }).catch((e => { })) && client.contexts.delete(interaction.commandName);
 
-
-        if (context.permission) {
-            if (!interaction.member.permissions.has(context.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this context: \`${interaction.commandName}\`.\nYou need the permission: \`${context.permission}\` to do that`, ephemeral: true }).catch((e => { }));
-            }
-        }
-
-        if (context.permissions) {
-            let error = false;
-            context.permissions.forEach(permission => {
-                if (!interaction.guild.members.me.permissions.has(permission)) error = true;
-                if (!interaction.guild.members.me.permissionsIn(interaction.channel).has(permission)) error = true;
-            });
-
-            if (error) return interaction.reply({
-                content:
-                    `I need the permission(s): \`${context.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
-                , ephemeral: true
-            }).catch((e => { }));
-        }
-
         let color = "#3a5a74";
         const config = await getCustomizationConfig(client, interaction.guildId);
-        if (config) color = config.color
+        if (config) color = config.color;
         context.execute(client, interaction, color);
     }
 }

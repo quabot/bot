@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits, Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextInputStyle, ModalBuilder, TextInputBuilder } = require('discord.js');
+const { ApplicationCommandOptionType, PermissionFlagsBits, Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextInputStyle, ModalBuilder, TextInputBuilder, SlashCommandBuilder } = require('discord.js');
 const { getApplicationConfig } = require('../../../structures/functions/config');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const Application = require('../../../structures/schemas/ApplicationSchema');
@@ -6,17 +6,11 @@ const { randomUUID } = require('node:crypto');
 const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswerSchema');
 
 module.exports = {
-    name: "apply",
-    description: 'Apply for an application',
-    permissions: [PermissionFlagsBits.SendMessages],
-    options: [
-        {
-            name: "id",
-            description: "The id of the application to apply for.",
-            type: ApplicationCommandOptionType.String,
-            required: true
-        },
-    ],
+    data: new SlashCommandBuilder()
+        .setName('apply')
+        .setDescription('Apply for an application.')
+        .setDMPermission(false)
+        .addStringOption(option => option.setName("id").setRequired(true).setDescription("The id of the application to apply for.")),
     async execute(client, interaction, color) {
 
 

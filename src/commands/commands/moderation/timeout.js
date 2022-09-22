@@ -1,38 +1,18 @@
-const { ApplicationCommandOptionType, Interaction, Client, EmbedBuilder, PermissionFlagsBits, MembershipScreeningFieldType } = require('discord.js');
+const { ApplicationCommandOptionType, Interaction, Client, EmbedBuilder, PermissionFlagsBits, MembershipScreeningFieldType, SlashCommandBuilder } = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const { getModerationConfig } = require('../../../structures/functions/config');
 const ms = require('ms');
 
 module.exports = {
-    name: "timeout",
-    description: "Timeout a user.",
-    permission: PermissionFlagsBits.ModerateMembers,
-    options: [
-        {
-            name: "user",
-            description: "User to timeout",
-            type: ApplicationCommandOptionType.User,
-            required: true
-        },
-        {
-            name: "duration",
-            description: "Duration to timeout the user.",
-            type: ApplicationCommandOptionType.String,
-            required: true
-        },
-        {
-            name: "reason",
-            description: "Reason for timeout.",
-            type: ApplicationCommandOptionType.String,
-            required: false
-        },
-        {
-            name: "private",
-            description: "Do you want this punishment to only be visible to you?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('timeout')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ModerateMembers)
+        .setDescription('Timeout a user.')
+        .addUserOption(option => option.setName("user").setDescription("User to timeout.").setRequired(true))
+        .addStringOption(option => option.setName("duration").setDescription("How long to timeout. (1h, 30min, 1w)").setRequired(true))
+        .addStringOption(option => option.setName("reason").setDescription("Reason for timing out the user.").setRequired(false))
+        .addBooleanOption(option => option.setName("private").setDescription("Do you want the punishment to be only visible to you?.").setRequired(false))
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 

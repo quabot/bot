@@ -1,10 +1,12 @@
-const { Client, Interaction, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { Client, Interaction, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, SlashCommandBuilder } = require('discord.js');
 const Suggest = require('../../../structures/schemas/SuggestConfigSchema');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    name: "suggest",
-    description: "Leave a suggestion.",
+    data: new SlashCommandBuilder()
+        .setName('suggest')
+        .setDescription('Leave a suggestion.')
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 

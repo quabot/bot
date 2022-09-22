@@ -1,8 +1,10 @@
-const { ApplicationCommandOptionType, EmbedBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, Colors } = require('discord.js');
+const { EmbedBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, Colors, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "emotes",
-    description: "List all the server emojis.",
+    data: new SlashCommandBuilder()
+        .setName('emotes')
+        .setDescription('List all the server emojis.')
+        .setDMPermission(false),
     /**
      * @param {import('discord.js').Interaction} interaction 
      */

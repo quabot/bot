@@ -1,30 +1,15 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { ApplicationCommandOptionType, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const translate = require("translate-google");
 const ISO6391 = require("iso-639-1");
 
 module.exports = {
-    name: "translate",
-    description: "Translate ",
-    options: [
-        {
-            name: "text",
-            description: "Text to translate.",
-            type: ApplicationCommandOptionType.String,
-            required: true,
-        },
-        {
-            name: "to",
-            description: "Language to translate to.",
-            type: ApplicationCommandOptionType.String,
-            required: true,
-        },
-        {
-            name: "from",
-            description: "Language to translate from.",
-            type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-    ],
+    data: new SlashCommandBuilder()
+        .setName('translate')
+        .setDescription('Translate text from one language to another.')
+        .addStringOption(option => option.setName("text").setDescription("Text to translate.").setRequired(true))
+        .addStringOption(option => option.setName("to").setDescription("Language to translate to.").setRequired(true))
+        .addStringOption(option => option.setName("from").setDescription("Language to translate from.").setRequired(false))
+        .setDMPermission(false),
     /**
      * @param {import('discord.js').Interaction} interaction 
      */

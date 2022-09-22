@@ -1,22 +1,18 @@
-const { Interaction, PermissionFlagsBits, EmbedBuilder, ApplicationCommandOptionType, ChannelType } = require('discord.js');
+const { Interaction, PermissionFlagsBits, EmbedBuilder, ApplicationCommandOptionType, ChannelType, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "purge",
-    description: "Purge messages in a channel",
-    options: [
-        {
-            name: "amount",
-            description: "Messages to purge.",
-            type: ApplicationCommandOptionType.Integer,
-            required: true
-        },
-        {
-            name: "private",
-            description: "Should it be announced to the channel?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('purge')
+        .setDescription('Purge messages in a channel.')
+        .setDMPermission(false)
+        .addIntegerOption(option =>
+            option.setName('amount')
+                .setDescription('Messages to purge.')
+                .setRequired(true))
+        .addBooleanOption(option =>
+            option.setName('private')
+                .setDescription('Should this purge be sent as a message?')
+                .setRequired(false)),
     /**
      * @param {Interaction} interaction 
      */

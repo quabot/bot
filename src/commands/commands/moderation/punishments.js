@@ -1,48 +1,21 @@
-const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
-    name: "punishments",
-    description: "Manage punishments.",
-    permission: PermissionFlagsBits.ModerateMembers,
-    options: [
-        {
-            name: "find",
-            description: "Find and list punishments.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "punishment",
-                    description: "The punishment to view.",
-                    type: ApplicationCommandOptionType.String,
-                    required: false,
-                    choices: [
-                        { name: "Kick", value: "kick" },
-                        { name: "Ban", value: "ban" },
-                        { name: "Tempban", value: "tempban" },
-                        { name: "Timeout", value: "timeout" },
-                        { name: "Warn", value: "warn" }
-                    ]
-                },
-                {
-                    name: "user",
-                    description: "The user to view.",
-                    type: ApplicationCommandOptionType.User,
-                    required: false
-                },
-                {
-                    name: "staff-member",
-                    description: "The staff member that executed the infractions.",
-                    type: ApplicationCommandOptionType.User,
-                    required: false
-                }
-            ]
-        },
-        {
-            name: "manage",
-            description: "Manage punishments.",
-            type: ApplicationCommandOptionType.Subcommand,
-        },
-    ],
-    async execute(client, interaction, color) {}
+    data: new SlashCommandBuilder()
+        .setName('punishments')
+        .setDescription('Manage punishments.')
+        .addSubcommand(command => command.setName("find").setDescription("Find and list punishments.")
+            .addStringOption(option => option.setName("punishment").setRequired(false).setDescription("The punishment to view.").addChoices([
+                { name: "Kick", value: "kick" },
+                { name: "Ban", value: "ban" },
+                { name: "Tempban", value: "tempban" },
+                { name: "Timeout", value: "timeout" },
+                { name: "Warn", value: "warn" }
+            ]))
+            .addUserOption(option => option.setName("user").setDescription("The user to view.").setRequired(false))
+            .addUserOption(option => option.setName("staff-member").setDescription("The staff member that executed the infractions.").setRequired(false)))
+        .addSubcommand(command => command.setName("punishments").setDescription("Manage punishments."))
+        .setDMPermission(false),
+    async execute(client, interaction, color) { }
 }

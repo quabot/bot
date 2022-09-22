@@ -1,57 +1,40 @@
 const { promisify } = require('util');
 const { glob } = require('glob');
+const { getContexts } = require('./contextHandler');
 const PG = promisify(glob);
+
 const consola = require('consola');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord.js');
 require('dotenv').config();
 
-let loaded = 0;
-let total = 0;
-let success = true;
+const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 module.exports = async (client) => {
 
     CommandsList = [];
+    const contextMenus = await getContexts(client);
+    contextMenus.forEach(i => CommandsList.push(i));
 
     (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/*/*.js`)).map(async (commandFile) => {
-
-        total += 1;
-
         const command = require(commandFile);
-
-        if (!command.name) return success = false;
-        if (!command.description) return success = false;
-
-        client.commands.set(command.name, command);
-        if (command.permission) command.permission = parseInt(command.permission);
-        if (command.permissions) command.permissions = parseInt(command.permissions) //! FIX!!
-        CommandsList.push(command);
-
-        loaded += 1;
+        client.commands.set(command.data.name, command);
+        CommandsList.push(command.data);
     });
 
-    if (success) consola.success(`Successfully loaded ${loaded}/${total} commands.`);
-    if (!success) consola.warn(`Failed to load all commands, loaded ${loaded}/${total} commands.`);
+    consola.success(`Successfully loaded ${CommandsList.length} commands.`);
 
-    CommandsList.sort();
-
-return;
-
-    const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
-
-    const clientId = '1022058906941411368';
-    const guildId = '927613222452858900';
 
     try {
-        console.log(`Started refreshing ${CommandsList.length} application (/) commands.`);
+        return;
+        console.log(`Started refreshing ${CommandsList.length} commands.`);
 
         const data = await rest.put(
-            Routes.applicationGuildCommands(clientId, guildId),
+            Routes.applicationGuildCommands(process.env.CLIENT_ID, "927613222452858900"),
             { body: CommandsList },
         );
 
-        console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+        console.log(`Successfully reloaded ${data.length} commands.`);
     } catch (error) {
         console.error(error);
     }

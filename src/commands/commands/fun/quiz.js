@@ -1,10 +1,12 @@
-const { Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
+const { Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, SlashCommandBuilder } = require('discord.js');
 const axios = require('axios');
 const { shuffleArray } = require('../../../structures/functions/arrays');
 
 module.exports = {
-    name: "quiz",
-    description: "Play a quiz.",
+    data: new SlashCommandBuilder()
+        .setName('quiz')
+        .setDescription('Play a quiz.')
+        .setDMPermission(false),
     /**
      * @param {Interaction} interaction 
      */

@@ -1,8 +1,10 @@
-const { Interaction, EmbedBuilder } = require('discord.js');
+const { Interaction, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "membercount",
-    description: "Get the amount of people in the server.",
+    data: new SlashCommandBuilder()
+        .setName('membercount')
+        .setDescription('Get the amount of people in the server.')
+        .setDMPermission(false),
     /**
      * @param {Interaction} interaction
      */

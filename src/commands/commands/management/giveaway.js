@@ -1,67 +1,28 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
+const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    name: "giveaway",
-    description: "Create a giveaway.",
-    permission: PermissionFlagsBits.Administrator,
-    options: [
-        {
-            name: "create",
-            description: "Create a giveaway.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "channel",
-                    description: "Channel to create the giveaway in.",
-                    required: true,
-                    type: ApplicationCommandOptionType.Channel
-                },
-                {
-                    name: "prize",
-                    description: "The prize users can win",
-                    required: true,
-                    type: ApplicationCommandOptionType.String
-                },
-                {
-                    name: "winners",
-                    description: "How many people can win.",
-                    required: true,
-                    type: ApplicationCommandOptionType.Integer
-                },
-                {
-                    name: "duration",
-                    description: "When the giveaway will end. (1h, 10min)",
-                    required: true,
-                    type: ApplicationCommandOptionType.String
-                }
-            ],
-        },
-        {
-            name: "reroll",
-            description: "Re-roll a giveaway.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "id",
-                    description: "The id of the giveaway to reroll.",
-                    required: true,
-                    type: ApplicationCommandOptionType.Integer
-                }
-            ]
-        },
-        {
-            name: "end",
-            description: "End a giveaway early.",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "id",
-                    description: "The id of the giveaway to end.",
-                    required: true,
-                    type: ApplicationCommandOptionType.Integer
-                }
-            ]
-        },
-    ],
+    data: new SlashCommandBuilder()
+        .setName('giveaway')
+        .setDescription('Create a giveaway.')
+        .setDMPermission(false)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild)
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('create')
+                .setDescription('Create a giveaway.')
+                .addChannelOption(option => option.setDescription("Channel to create the giveaway in.").setRequired(true).setName("channel"))
+                .addStringOption(option => option.setDescription("The prize users can win.").setRequired(true).setName("prize"))
+                .addIntegerOption(option => option.setDescription("How many people can win.").setRequired(true).setName("winners"))
+                .addStringOption(option => option.setDescription("When the giveaway will end. (1h, 10min)").setRequired(true).setName("duration")))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('reroll')
+                .setDescription('Re-roll a giveaway.')
+                .addIntegerOption(option => option.setDescription("The id of the giveaway to reroll.").setRequired(true).setName("id")))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('end')
+                .setDescription('End a giveaway.')
+                .addIntegerOption(option => option.setDescription("The id of the giveaway to end.").setRequired(true).setName("id"))),
     async execute() { }
 }

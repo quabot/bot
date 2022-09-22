@@ -1,9 +1,11 @@
-const { Interaction } = require('discord.js');
+const { Interaction, SlashCommandBuilder } = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    name: "dashboard",
-    description: "Get a link to the QuaBot dashboard.",
+    data: new SlashCommandBuilder()
+        .setName('dashboard')
+        .setDescription('Get a link to the QuaBot dashboard.')
+        .setDMPermission(false),
     /**
      * @param {Interaction} interaction
      */

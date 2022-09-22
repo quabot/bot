@@ -1,11 +1,13 @@
-const { Interaction, EmbedBuilder, Client, ButtonStyle, ButtonBuilder, ActionRowBuilder } = require('discord.js');
+const { Interaction, EmbedBuilder, Client, ButtonStyle, ButtonBuilder, ActionRowBuilder, SlashCommandBuilder } = require('discord.js');
 const { promisify } = require('util');
 const { glob } = require("glob");
 const PG = promisify(glob);
 
 module.exports = {
-    name: "help",
-    description: "Get a list of all the bot commands.",
+    data: new SlashCommandBuilder()
+        .setName('help')
+        .setDescription('Get a list of all the bot commands.')
+        .setDMPermission(false),
     /**
      * @param {Interaction} interaction
      * @param {Client} client
@@ -59,27 +61,27 @@ module.exports = {
             .setThumbnail(client.user.avatarURL({ dynamic: true }))
             .setColor(color);
 
-            const moderationList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/misc/*.js`)).map((file) => {
-                const item = require(file);
-                return `**/${item.name}** - ${item.description}`
-            }).join('\n');
-            const moderationEmbed = new EmbedBuilder()
-                .setTitle(`Moderation Commands`)
-                .setDescription(`Ban a member, warn them and so much more.
+        const moderationList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/misc/*.js`)).map((file) => {
+            const item = require(file);
+            return `**/${item.name}** - ${item.description}`
+        }).join('\n');
+        const moderationEmbed = new EmbedBuilder()
+            .setTitle(`Moderation Commands`)
+            .setDescription(`Ban a member, warn them and so much more.
                             ${moderationList}`)
-                .setThumbnail(client.user.avatarURL({ dynamic: true }))
-                .setColor(color);
+            .setThumbnail(client.user.avatarURL({ dynamic: true }))
+            .setColor(color);
 
-                const modulesList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/modules/*.js`)).map((file) => {
-                    const item = require(file);
-                    return `**/${item.name}** - ${item.description}`
-                }).join('\n');
-                const modulesEmbed = new EmbedBuilder()
-                    .setTitle(`Module Commands`)
-                    .setDescription(`Create a ticket, leave a suggestion and so much more.
+        const modulesList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/modules/*.js`)).map((file) => {
+            const item = require(file);
+            return `**/${item.name}** - ${item.description}`
+        }).join('\n');
+        const modulesEmbed = new EmbedBuilder()
+            .setTitle(`Module Commands`)
+            .setDescription(`Create a ticket, leave a suggestion and so much more.
                                 ${modulesList}`)
-                    .setThumbnail(client.user.avatarURL({ dynamic: true }))
-                    .setColor(color);
+            .setThumbnail(client.user.avatarURL({ dynamic: true }))
+            .setColor(color);
 
 
         const helpEmbeds = [funEmbed, infoEmbed, managementEmbed, miscEmbed, moderationEmbed, modulesEmbed];

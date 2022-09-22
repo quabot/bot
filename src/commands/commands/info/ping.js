@@ -1,9 +1,11 @@
-const { Interaction, Client } = require('discord.js');
+const { Interaction, Client, SlashCommandBuilder } = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    name: "ping",
-    description: "Get the response time between QuaBot and discord.",
+    data: new SlashCommandBuilder()
+        .setName('ping')
+        .setDescription('Get the response time between QuaBot and discord.')
+        .setDMPermission(false),
     /**
      * @param {Interaction} interaction
      * @param {Client} client

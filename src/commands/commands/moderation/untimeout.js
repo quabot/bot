@@ -4,23 +4,13 @@ const { getModerationConfig } = require('../../../structures/functions/config');
 const ms = require('ms');
 
 module.exports = {
-    name: "untimeout",
-    description: "Remove a timeout from a user.",
-    permission: PermissionFlagsBits.ModerateMembers,
-    options: [
-        {
-            name: "user",
-            description: "User to timeout.",
-            type: ApplicationCommandOptionType.User,
-            required: true
-        },
-        {
-            name: "private",
-            description: "Do you want this action to only be visible to you?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }
-    ],
+    data: new SlashCommandBuilder()
+        .setName('untimeout')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ModerateMembers)
+        .setDescription('Remove a timeout from a user.')
+        .addUserOption(option => option.setName("user").setDescription("User to untimeout.").setRequired(true))
+        .addBooleanOption(option => option.setName("private").setDescription("Do you want the untimeout to be only visible to you?.").setRequired(false))
+        .setDMPermission(false),
     /**
      * @param {Client} client 
      * @param {Interaction} interaction 
