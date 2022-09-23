@@ -10,7 +10,19 @@ module.exports = {
      */
     async execute(client, interaction, color) {
 
-        interaction.reply("Avatar")
+        await interaction.deferReply().catch((e) => { });;
+
+        const user = interaction.targetUser;
+
+        interaction.editReply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(color)
+                    .setImage(`${user.displayAvatarURL({ size: 1024, forceStatic: false })}`)
+                    .setDescription(`**Avatar of ${user}**`)
+                    .setTimestamp()
+            ]
+        }).catch((e) => { });
 
     }
 }

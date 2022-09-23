@@ -19,7 +19,7 @@ module.exports = {
 
         const funList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/fun/*.js`)).map((file) => {
             const item = require(file);
-            return `**/${item.name}** - ${item.description}`
+            return `**/${item.data.name}** - ${item.data.description}`
         }).join('\n');
         const funEmbed = new EmbedBuilder()
             .setTitle(`Fun Commands`)
@@ -30,7 +30,7 @@ module.exports = {
 
         const infoList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/info/*.js`)).map((file) => {
             const item = require(file);
-            return `**/${item.name}** - ${item.description}`
+            return `**/${item.data.name}** - ${item.data.description}`
         }).join('\n');
         const infoEmbed = new EmbedBuilder()
             .setTitle(`Info Commands`)
@@ -41,7 +41,7 @@ module.exports = {
 
         const managementList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/management/*.js`)).map((file) => {
             const item = require(file);
-            return `**/${item.name}** - ${item.description}`
+            return `**/${item.data.name}** - ${item.data.description}`
         }).join('\n');
         const managementEmbed = new EmbedBuilder()
             .setTitle(`Management Commands`)
@@ -52,7 +52,7 @@ module.exports = {
 
         const miscList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/misc/*.js`)).map((file) => {
             const item = require(file);
-            return `**/${item.name}** - ${item.description}`
+            return `**/${item.data.name}** - ${item.data.description}`
         }).join('\n');
         const miscEmbed = new EmbedBuilder()
             .setTitle(`Misc Commands`)
@@ -63,7 +63,7 @@ module.exports = {
 
         const moderationList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/misc/*.js`)).map((file) => {
             const item = require(file);
-            return `**/${item.name}** - ${item.description}`
+            return `**/${item.data.name}** - ${item.data.description}`
         }).join('\n');
         const moderationEmbed = new EmbedBuilder()
             .setTitle(`Moderation Commands`)
@@ -74,7 +74,7 @@ module.exports = {
 
         const modulesList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/modules/*.js`)).map((file) => {
             const item = require(file);
-            return `**/${item.name}** - ${item.description}`
+            return `**/${item.data.name}** - ${item.data.description}`
         }).join('\n');
         const modulesEmbed = new EmbedBuilder()
             .setTitle(`Module Commands`)
