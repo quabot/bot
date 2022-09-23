@@ -34,7 +34,7 @@ module.exports = async (client) => {
             { body: CommandsList },
         );
 
-        console.log(`Successfully reloaded ${data.length} commands.`);
+        console.log(`Successfully reloaded ${CommandsList.length} commands.`);
     } catch (error) {
         console.error(error);
     }

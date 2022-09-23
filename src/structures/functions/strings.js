@@ -40,7 +40,7 @@ function levelVariables(text, member, level, xp, message) {
     levelVarMsg = levelVarMsg.replaceAll("{id}", member.user.id);
     levelVarMsg = levelVarMsg.replaceAll("{xp}", xp);
     levelVarMsg = levelVarMsg.replaceAll("{msg}", message.url);
-    levelVarMsg = levelVarMsg.replaceAll("{required}", level * 400 + 100);
+    levelVarMsg = levelVarMsg.replaceAll("{required}", level+1 * 400 + 100);
     levelVarMsg = levelVarMsg.replaceAll("{channel}", message.channel);
     levelVarMsg = levelVarMsg.replaceAll("{level}", level);
     levelVarMsg = levelVarMsg.replaceAll("{avatarhash}", member.user.avatar);

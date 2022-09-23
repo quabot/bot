@@ -26,7 +26,7 @@ module.exports = {
         const reason = interaction.options.getString("reason").slice(0, 800);
 
         if (!user || !reason) return interaction.editReply({
-            embeds: [await generateEmbed(color, "Please enter both a user and the reason for timeout-ing this user.")]
+            embeds: [await generateEmbed(color, "Please enter both a user and the reason for warning this user.")]
         }).catch((e => { }));
 
         if (user.id === interaction.user.id) return interaction.editReply({
