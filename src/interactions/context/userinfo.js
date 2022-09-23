@@ -7,7 +7,7 @@ const houses = [
 
 module.exports = {
     data: new ContextMenuCommandBuilder()
-        .setName("userinfo")
+        .setName("Userinfo")
         .setType(ApplicationCommandType.User)
         .setDMPermission(false),
     /**

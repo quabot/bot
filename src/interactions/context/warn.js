@@ -4,7 +4,7 @@ const { getModerationConfig } = require("../../structures/functions/config");
 
 module.exports = {
     data: new ContextMenuCommandBuilder()
-        .setName("warn")
+        .setName("Warn")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers | PermissionFlagsBits.KickMembers | PermissionFlagsBits.ModerateMembers)
         .setType(ApplicationCommandType.User)
         .setDMPermission(false),

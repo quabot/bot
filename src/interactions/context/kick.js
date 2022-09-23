@@ -4,7 +4,7 @@ const { generateEmbed } = require("../../structures/functions/embed");
 
 module.exports = {
     data: new ContextMenuCommandBuilder()
-        .setName("kick")
+        .setName("Kick")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers | PermissionFlagsBits.KickMembers)
         .setType(ApplicationCommandType.User)
         .setDMPermission(false),
