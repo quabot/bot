@@ -13,7 +13,6 @@ module.exports = {
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
-    permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
         const channel = interaction.options.getChannel("channel");

@@ -10,7 +10,6 @@ module.exports = {
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
-    permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
 
         const id = interaction.options.getInteger("id");

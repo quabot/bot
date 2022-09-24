@@ -11,6 +11,15 @@ module.exports = {
         .setDescription('Temporarily ban a user.')
         .addUserOption(option => option.setName("user").setDescription("User to tempban.").setRequired(true))
         .addStringOption(option => option.setName("duration").setDescription("How long to tempban. (1h, 30min, 1w)").setRequired(true))
+        .addIntegerOption(option => option.setName("delete_messages").setDescription("How many of their recent messages to delete.").setRequired(true).addChoices(
+            { name: "Don't delete any", value: 0 },
+            { name: "Previous hour", value: 3600 },
+            { name: "Previous 6 hours", value: 21600 },
+            { name: "Previous 12 hours", value: 43200 },
+            { name: "Previous 24 hours", value: 86400 },
+            { name: "Previous 3 days", value: 259200 },
+            { name: "Previous 7 days", value: 604800 }
+        ))
         .addStringOption(option => option.setName("reason").setDescription("Reason for kicking the user").setRequired(false))
         .addBooleanOption(option => option.setName("private").setDescription("Do you want the punishment to be only visible to you?.").setRequired(false))
         .setDMPermission(false),
@@ -27,6 +36,7 @@ module.exports = {
         const member = interaction.options.getMember("user");
         const user = interaction.options.getUser("user");
         const duration = interaction.options.getString("duration");
+        const seconds = interaction.options.getInteger("delete_messages");
         const reason = interaction.options.getString("reason") ? interaction.options.getString("reason").slice(0, 800) : "No reason specified.";
         let didBan = true;
 
@@ -92,7 +102,7 @@ module.exports = {
 
         const banId = PunishmentId ? PunishmentId.banId + 1 : 1;
 
-        await member.ban({ reason: reason }).catch(err => {
+        await member.ban({ reason: reason, deleteMessageSeconds: seconds }).catch(err => {
             didBan = false;
             if (err.code === 50013) return interaction.editReply({
                 embeds: [

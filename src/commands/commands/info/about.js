@@ -32,7 +32,7 @@ module.exports = {
             .setDescription(`In order to make it easier for the end-user to use QuaBot, we created an online dashboard. On our dashboard you can configure every setting to your liking.
         
             **What does it offer?**
-            > - Server Insights: Member Lists, Server statistics in graphs & Dashboard Action Logs.\n> - Module configuration: Tickets, Welcome, Suggestions & Polls and loads more to configure QuaBot.\n> - Command toggles: toggle commands or an entire command group.\n\nClick **[here](https://dashboard.quabot.net)** for our dashboard.`)
+            > - Server Insights: Member Lists, Server statistics in graphs & Dashboard Action Logs.\n> - Module configuration: Tickets, Welcome, Suggestions & Polls and loads more to configure QuaBot.\nAll with responsive and intuitive UI and is very easy to use and understand.\n\nClick **[here](https://dashboard.quabot.net)** for our dashboard.`)
 
         const embed3 = new EmbedBuilder()
             .setColor(color)

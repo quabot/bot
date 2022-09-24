@@ -8,7 +8,6 @@ module.exports = {
      * @param {Client} client 
      * @param {Interaction} interaction 
      */
-    permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
         await interaction.reply({
             embeds: [await generateEmbed(color, "You can create, edit and delete applications on my [dashboard](https://dashboard.quabot.net)!")]
