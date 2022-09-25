@@ -26,7 +26,7 @@ module.exports = async (client) => {
 
 
     try {
-        return;
+        return; // No commands have to be loaded.
         console.log(`Started refreshing ${CommandsList.length} commands.`);
 
         const data = await rest.put(
