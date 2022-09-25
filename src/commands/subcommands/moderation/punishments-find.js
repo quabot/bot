@@ -2,7 +2,6 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Message, ButtonStyle, Col
 
 module.exports = {
     name: "find",
-    permission: PermissionFlagsBits.ModerateMembers,
     command: "punishments",
     async execute(client, interaction, color) {
 
@@ -10,26 +9,26 @@ module.exports = {
 
         const punishment = interaction.options.getString("punishment");
         const user = interaction.options.getUser("user");
-        const channel = interaction.options.getUser("staff-member");
+        const staff = interaction.options.getUser("staff-member");
 
         let found = await ModActionSchema.find({
             guildId: interaction.guild.id,
         });
-
+console.log(staff, user, punishment)
         //* Worst code ever but it works - It get's the reactionroles!
-        if (punishment && !user && !channel) found = await ModActionSchema.find({ guildId: interaction.guild.id, type: punishment });
-        if (punishment && user && !channel) found = await ModActionSchema.find({ guildId: interaction.guild.id, type: punishment, userExecuteId: user.id });
-        if (punishment && !user && channel) found = await ModActionSchema.find({ guildId: interaction.guild.id, type: punishment, channelId: channel.id });
+        if (punishment && !user && !staff) found = await ModActionSchema.find({ guildId: interaction.guild.id, type: punishment });
+        if (punishment && user && !staff) found = await ModActionSchema.find({ guildId: interaction.guild.id, type: punishment, userId: user.id });
+        if (punishment && !user && staff) found = await ModActionSchema.find({ guildId: interaction.guild.id, type: punishment, userExecuteId: staff.id });
 
-        if (user && !punishment && !channel) found = await ModActionSchema.find({ guildId: interaction.guild.id, userExecuteId: user.id });
-        if (user && punishment && !channel) found = await ModActionSchema.find({ guildId: interaction.guild.id, userExecuteId: user.id, type: punishment });
-        if (user && !punishment && channel) found = await ModActionSchema.find({ guildId: interaction.guild.id, userExecuteId: user.id, channelId: channel.id });
+        if (user && !punishment && !staff) found = await ModActionSchema.find({ guildId: interaction.guild.id, userId: user.id });
+        if (user && punishment && !staff) found = await ModActionSchema.find({ guildId: interaction.guild.id, userId: user.id, type: punishment });
+        if (user && !punishment && staff) found = await ModActionSchema.find({ guildId: interaction.guild.id, userId: user.id, userExecuteId: staff.id });
 
-        if (channel && !punishment && !user) found = await ModActionSchema.find({ guildId: interaction.guild.id, channelId: channel.id });
-        if (channel && punishment && !user) found = await ModActionSchema.find({ guildId: interaction.guild.id, channelId: channel.id, type: punishment });
-        if (channel && !punishment && user) found = await ModActionSchema.find({ guildId: interaction.guild.id, channelId: channel.id, userExecuteId: user.id });
+        if (staff && !punishment && !user) found = await ModActionSchema.find({ guildId: interaction.guild.id, userExecuteId: staff.id });
+        if (staff && punishment && !user) found = await ModActionSchema.find({ guildId: interaction.guild.id, userExecuteId: staff.id, type: punishment });
+        if (staff && !punishment && user) found = await ModActionSchema.find({ guildId: interaction.guild.id, userExecuteId: staff.id, userId: user.id });
 
-        if (channel && punishment && user) found = await ModActionSchema.find({ guildId: interaction.guild.id, channelId: channel.id, userExecuteId: user.id, type: punishment });
+        if (staff && punishment && user) found = await ModActionSchema.find({ guildId: interaction.guild.id, userExecuteId: staff.id, userId: user.id, type: punishment });
 
         if (found.length === 0) return interaction.reply({
             embeds: [
@@ -69,7 +68,7 @@ module.exports = {
                 color: Colors.Green,
                 fields: await Promise.all(
                     current.map(async (item) => ({
-                        name: `${item.punishmentId} | \`${item.type}\``,
+                        name: `ID: ${item.punishmentId} | \`${item.type}\``,
                         value: `Staff: <@${item.userExecuteId}> | User: <@${item.userId}> - Reason: ${item.reason}`
                     }))
                 )
