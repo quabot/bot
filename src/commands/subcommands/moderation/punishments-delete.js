@@ -10,11 +10,11 @@ module.exports = {
     async execute(client, interaction, color) {
 
         await interaction.deferReply({ ephemeral: true }).catch(((e => { })))
-        
+
         const id = interaction.options.getInteger("id");
         const user = interaction.options.getUser("user");
         const type = interaction.options.getString("type");
-        
+
         const ModActionSchema = require('../../../structures/schemas/ModActionSchema');
         const found = await ModActionSchema.findOne({
             guildId: interaction.guildId,
@@ -24,7 +24,7 @@ module.exports = {
         }).catch((e => { }));
 
         if (!found) return interaction.editReply({
-            embeds:[await generateEmbed(color, `No punishments with the id ${id}, user ${user} and type ${type} was found.`)]
+            embeds: [await generateEmbed(color, `No punishments with the id ${id}, user ${user} and type ${type} was found.`)]
         }).catch((e => { }));
 
         await ModActionSchema.findOneAndDelete({

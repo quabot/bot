@@ -12,6 +12,10 @@ module.exports = {
                 .setDescription('Create, delete and edit applications.'))
         .addSubcommand(subcommand =>
             subcommand
+                .setName('responses')
+                .setDescription('View the responses to applications.'))
+        .addSubcommand(subcommand =>
+            subcommand
                 .setName('list')
                 .setDescription('List all applications.')),
     async execute() { }
