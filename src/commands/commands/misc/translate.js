@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const translate = require("translate-google");
 const ISO6391 = require("iso-639-1");
 

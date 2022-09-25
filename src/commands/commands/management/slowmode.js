@@ -1,4 +1,4 @@
-const { Interaction, ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
+const { Interaction, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const ms = require('ms');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const { convertHMS } = require('../../../structures/functions/time');

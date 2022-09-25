@@ -1,4 +1,4 @@
-const { Interaction, ApplicationCommandOptionType, SlashCommandBuilder } = require('discord.js');
+const { Interaction, SlashCommandBuilder } = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {

@@ -1,13 +1,13 @@
-const { Interaction, PermissionFlagsBits, EmbedBuilder, ApplicationCommandOptionType, ChannelType, SlashCommandBuilder } = require('discord.js');
+const { Interaction, PermissionFlagsBits, EmbedBuilder, ChannelType, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('purge')
-        .setDescription('Purge messages in a channel.')
+        .setName('clear')
+        .setDescription('Clear messages in a channel.')
         .setDMPermission(false)
         .addIntegerOption(option =>
             option.setName('amount')
-                .setDescription('Messages to purge.')
+                .setDescription('Messages to clear.')
                 .setRequired(true))
         .addBooleanOption(option =>
             option.setName('private')

@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits, Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextInputStyle, ModalBuilder, TextInputBuilder, SlashCommandBuilder } = require('discord.js');
+const { PermissionFlagsBits, Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextInputStyle, ModalBuilder, TextInputBuilder, SlashCommandBuilder } = require('discord.js');
 const { getApplicationConfig } = require('../../../structures/functions/config');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const Application = require('../../../structures/schemas/ApplicationSchema');
