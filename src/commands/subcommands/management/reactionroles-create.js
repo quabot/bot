@@ -69,7 +69,7 @@ module.exports = {
                                     { name: "Channel", value: `${channel}`, inline: true },
                                     { name: "Role", value: `${role}`, inline: true },
                                     { name: "Mode", value: `${mode}`, inline: true },
-                                    { name: "Required Permission", value: `${await permissionBitToString(permission)}`, inline: true },
+                                    { name: "Required Permission", value: `${permission === "None" ? "none" : await permissionBitToString(permission)}`, inline: true },
                                 )
                                 .setColor(color)
                         ]
