@@ -121,7 +121,7 @@ module.exports = {
 
                 if (levelConfig.levelUpEmbed[0].footerText) {
                     let icon = null;
-                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].footerIcon)) icon = await levelVariables(levelConfig.levelUpEmbed[0].footerIcon, member);
+                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].footerIcon)) icon = await levelVariables(levelConfig.levelUpEmbed[0].footerIcon, message.member, level, xp, message);
                     embed.setFooter({ text: await levelVariables(levelConfig.levelUpEmbed[0].footerText, member), iconURL: icon });
                 }
 
