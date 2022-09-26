@@ -32,7 +32,7 @@ module.exports = {
                             .setStyle(TextInputStyle.Short)
                             .setRequired(false)
                             .setMaxLength(250)
-                            .setPlaceholder("http://localhost:3000"),
+                            .setPlaceholder("https://quabot.net"),
                     ),
                 new ActionRowBuilder()
                     .addComponents(
