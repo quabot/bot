@@ -22,7 +22,7 @@ module.exports = {
                             .setStyle(TextInputStyle.Paragraph)
                             .setRequired(true)
                             .setMaxLength(500)
-                            .setPlaceholder("https://quabot.net")
+                            .setPlaceholder("http://localhost:3000")
                     )
             )
 
