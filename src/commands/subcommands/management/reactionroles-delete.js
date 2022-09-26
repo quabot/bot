@@ -41,6 +41,8 @@ module.exports = {
                 return;
             });
 
+        if (!message) return;
+
         message.reactions.resolve(emoji).users.remove(client.user.id).catch((e => { }));
 
         interaction.editReply({

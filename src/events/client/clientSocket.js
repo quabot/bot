@@ -78,7 +78,19 @@ module.exports = {
                     ]
                 }).catch((e => { }));
             }
-        })
+        });
+
+        socket.on("react", async (data) => {
+            const channel = client.guilds.cache.get(data.newReaction.guildId).channels.cache.get(data.newReaction.channelId);
+            if (!channel) return;
+
+            const message = await channel.messages.fetch({ message: data.newReaction.messageId })
+                .catch(async e => {
+                    return;
+                });
+
+            message.react(data.newReaction.emoji).catch((e => { }));
+        });
 
         socket.on("disconnect", () => {
             consola.warn("Websocket disconnected.");
