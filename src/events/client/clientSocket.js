@@ -15,16 +15,10 @@ module.exports = {
         const socket = io("http://localhost:3002");
         socket.on("connect", () => {
             consola.info("Websocket connected.");
+        });
 
-            const engine = socket.io.engine;
-            engine.on("packet", ({ type, data }) => {
-                if (type !== 'message') return;
-                const index = data.indexOf(",");
-                const sliced = data.slice(index, data.length);
-                const cache = sliced.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/['"]+/g, '');
-
-                client.cache.take(cache);
-            });
+        socket.on("update", (data) => {
+            client.cache.take(data.cache);
         });
 
         socket.on("disconnect", () => {
