@@ -92,6 +92,28 @@ module.exports = {
             message.react(data.newReaction.emoji).catch((e => { }));
         });
 
+        socket.on("application-state", async (data) => {
+            const Application = require('../../structures/schemas/ApplicationSchema');
+            const application = await Application.findOne({
+                guildId: data.guildId,
+                applicationId: data.applicationId,
+            });
+            if (!application) return;
+            
+            const member = client.guilds.cache.get(data.guildId).members.cache.get(data.userId);
+            const role = application.applicationReward === "none" ? undefined : client.guilds.cache.get(data.guildId).roles.cache.get(application.applicationReward);
+            
+            if (role) member.roles.add(role).catch((e => { }));
+            member.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(data.applicationState === "APPROVED" ? Colors.Green : Colors.Red)
+                        .setTitle(`Application ${data.applicationState.toLowerCase()}!`)
+                        .setDescription(`Your application in ${client.guilds.cache.get(data.guildId).name} has been approved. You have been given the rewards (if any).`)
+                ]
+            }).catch((e => { }));
+        });
+
         socket.on("disconnect", () => {
             consola.warn("Websocket disconnected.");
         });
