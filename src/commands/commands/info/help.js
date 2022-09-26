@@ -61,7 +61,7 @@ module.exports = {
             .setThumbnail(client.user.avatarURL({ dynamic: true }))
             .setColor(color);
 
-        const moderationList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/misc/*.js`)).map((file) => {
+        const moderationList = (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/moderation/*.js`)).map((file) => {
             const item = require(file);
             return `**/${item.data.name}** - ${item.data.description}`
         }).join('\n');
