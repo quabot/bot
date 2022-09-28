@@ -43,7 +43,7 @@ module.exports = {
             **Why should you vote?**
             It helps us a lot! Show us support without paying money, and it takes just a few seconds. You also get the following benefits:
             • You get listed in the QuaBot support server.
-            • More perks Coming Soon
+            • You get a 1.5x level xp boost for 12 hours.
             **How can i vote?**
             • Go to the sites below.
             • Click the "Vote" button.
@@ -51,7 +51,7 @@ module.exports = {
             • It's as simple as that! Enjoy you're perks.
         
             **Vote Links:**
-            🔗[Top.gg](https://example.com) | 🔗[Top.gg](https://example.com) | 🔗[Top.gg](https://example.com)`)
+            🔗[Top.gg](https://top.gg/bot/995243562134409296) | 🔗[Discordbotlist.com](https://discordbotlist.com/bots/quabot-2212) | 🔗[Bots.gg](https://discord.bots.gg/bots/995243562134409296)`)
 
         const embed4 = new EmbedBuilder()
             .setColor(color)

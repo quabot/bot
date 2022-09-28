@@ -153,4 +153,45 @@ async function endGiveaway(client, document, color) {
     }).catch((e => { }));
 }
 
-module.exports = { endGiveaway, tempUnban, endPoll };
+async function handleVote(client, data) {
+
+    const User = require('../../structures/schemas/LevelVoteSchema');
+    let foundUser = await User.findOne({
+        userId: data.user
+    });
+    if (!foundUser) {
+        const newUser = new User({
+            lastVote: `${new Date().getTime() + 43200000}`,
+            userId: data.user,
+        });
+        await newUser.save().catch((e => { }));
+    }
+    if (foundUser) {
+        foundUser.lastVote = new Date().getTime() + 43200000;
+        await foundUser.save().catch((e => { }))
+    }
+
+    if (!foundUser) foundUser = {
+        voted: false,
+        lastVote: "0",
+    }
+    if (parseInt(foundUser.lastVote) > new Date().getTime()) return;
+
+
+    const channel = client.guilds.cache.get(`1007810461347086357`).channels.cache.get("1024600377628299266");
+
+    channel.send({
+        embeds: [
+            new EmbedBuilder()
+                .setTitle("User voted!")
+                .setColor("3a5a74")
+                .setDescription(`<@${data.user}> voted for QuaBot! They will now have a **1.5x** level xp multiplier for 12 hours.\nVote [here](https://top.gg/bot/995243562134409296/vote).`)
+        ]
+    });
+
+    client.users.cache.get(data.user).send({
+        embeds: [new EmbedBuilder().setColor("3a5a74").setDescription("Thanks for voting for QuaBot! You have recieved a **1.5x** level xp boost.")]
+    }).catch((e => { }));
+}
+
+module.exports = { handleVote, endGiveaway, tempUnban, endPoll };

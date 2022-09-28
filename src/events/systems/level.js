@@ -20,7 +20,7 @@ module.exports = {
         if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
         const current_time = Date.now();
         const time_stamps = cooldowns.get(message.author);
-        const cooldown_amount = 10000;
+        const cooldown_amount = 0;
 
         let no = false;
         if (time_stamps.has(message.author.id)) {
@@ -64,11 +64,31 @@ module.exports = {
             return;
         }
 
+        const User = require('../../structures/schemas/LevelVoteSchema');
+        let Vote = await User.findOne({
+            userId: message.author
+        }, async (err, level) => {
+            if (err) console.error(err);
+        }).clone().catch(function (err) { });
+        if (!Vote) {
+            const newVote = new User({
+                userId: message.author.id,
+                lastVote: "0",
+            });
+            newVote.save()
+                .catch(err => {
+                    console.log(err);
+                });
+            return;
+        }
+        if (!Vote) Vote = { lastVote: "0" };
+
         let xp = levelDB.xp;
         let level = levelDB.level + 1;
 
         const reqXp = level * 400 + 100;
-        const rndXp = Math.floor((Math.random() * 10) + message.content.length / 90);
+        let rndXp = Math.floor((Math.random() * 10) + message.content.length / 90);
+        if (parseInt(Vote.lastVote) > new Date().getTime()) rndXp = Math.floor((Math.random() * 15) + message.content.length / 60);
 
         if (xp + rndXp >= reqXp) {
 
@@ -103,25 +123,25 @@ module.exports = {
 
                 if (levelConfig.levelUpEmbed.length === 0) return;
 
-                if (levelConfig.levelUpEmbed[0].title) embed.setTitle(await levelVariables(levelConfig.levelUpEmbed[0].title, message.member, level, xp, message));
-                if (levelConfig.levelUpEmbed[0].description) embed.setDescription(await levelVariables(levelConfig.levelUpEmbed[0].description, message.member, level, xp, message));
+                if (levelConfig.levelUpEmbed[0].title) embed.setTitle(await levelVariables(levelConfig.levelUpEmbed[0].title, message.member, levelDB.level, xp, message));
+                if (levelConfig.levelUpEmbed[0].description) embed.setDescription(await levelVariables(levelConfig.levelUpEmbed[0].description, message.member, levelDB.level, xp, message));
                 if (levelConfig.levelUpEmbed[0].color && /^#([0-9A-F]{6}){1,2}$/i.test(levelConfig.levelUpEmbed[0].color)) embed.setColor(levelConfig.levelUpEmbed[0].color);
                 if (levelConfig.levelUpEmbed[0].timestamp === true) embed.setTimestamp();
-                if (levelConfig.levelUpEmbed[0].image && isValidHttpUrl(await levelVariables(levelConfig.levelUpEmbed[0].image, message.member, level, xp, message)) && embed.setImage(await levelVariables(levelConfig.levelUpEmbed[0].image, message.member, level, xp, message)));
-                if (levelConfig.levelUpEmbed[0].thumbnail && isValidHttpUrl(await levelVariables(levelConfig.levelUpEmbed[0].thumbnail, message.member, level, xp, message)) && embed.setThumbnail(await levelVariables(levelConfig.levelUpEmbed[0].thumbnail, message.member, level, xp, message)));
-                if (levelConfig.levelUpEmbed[0].url && isValidHttpUrl(await levelVariables(levelConfig.levelUpEmbed[0].url, message.member, level, xp, message)) && embed.setURL(await levelVariables(levelConfig.levelUpEmbed[0].url, message.member, level, xp, message)));
+                if (levelConfig.levelUpEmbed[0].image && isValidHttpUrl(await levelVariables(levelConfig.levelUpEmbed[0].image, message.member, levelDB.level, xp, message)) && embed.setImage(await levelVariables(levelConfig.levelUpEmbed[0].image, message.member, levelDB.level, xp, message)));
+                if (levelConfig.levelUpEmbed[0].thumbnail && isValidHttpUrl(await levelVariables(levelConfig.levelUpEmbed[0].thumbnail, message.member, levelDB.level, xp, message)) && embed.setThumbnail(await levelVariables(levelConfig.levelUpEmbed[0].thumbnail, message.member, levelDB.level, xp, message)));
+                if (levelConfig.levelUpEmbed[0].url && isValidHttpUrl(await levelVariables(levelConfig.levelUpEmbed[0].url, message.member, levelDB.level, xp, message)) && embed.setURL(await levelVariables(levelConfig.levelUpEmbed[0].url, message.member, levelDB.level, xp, message)));
 
                 if (levelConfig.levelUpEmbed[0].authorText) {
                     let icon = null;
                     let url = null;
-                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].authorIcon)) icon = await levelVariables(levelConfig.levelUpEmbed[0].authorIcon, message.member, level, xp, message);
-                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].authorUrl)) url = await levelVariables(levelConfig.levelUpEmbed[0].authorUrl, message.member, level, xp, message);
+                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].authorIcon)) icon = await levelVariables(levelConfig.levelUpEmbed[0].authorIcon, message.member, levelDB.level, xp, message);
+                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].authorUrl)) url = await levelVariables(levelConfig.levelUpEmbed[0].authorUrl, message.member, levelDB.level, xp, message);
                     embed.setAuthor({ name: await levelVariables(levelConfig.levelUpEmbed[0].authorText, message.member, level, xp, message), iconURL: icon, url: url });
                 }
 
                 if (levelConfig.levelUpEmbed[0].footerText) {
                     let icon = null;
-                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].footerIcon)) icon = await levelVariables(levelConfig.levelUpEmbed[0].footerIcon, message.member, level, xp, message);
+                    if (isValidHttpUrl(levelConfig.levelUpEmbed[0].footerIcon)) icon = await levelVariables(levelConfig.levelUpEmbed[0].footerIcon, message.member, levelDB.level, xp, message);
                     embed.setFooter({ text: await levelVariables(levelConfig.levelUpEmbed[0].footerText, member), iconURL: icon });
                 }
 
@@ -129,7 +149,7 @@ module.exports = {
 
             } else {
 
-                levelChannel.send({ content: `${await levelVariables(levelConfig.levelUpMessage, message.member, level, xp, message)}` }).catch((e => { }));
+                levelChannel.send({ content: `${await levelVariables(levelConfig.levelUpMessage, message.member, levelDB.level, xp, message)}` }).catch((e => { }));
 
             }
 

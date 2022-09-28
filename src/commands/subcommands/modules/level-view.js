@@ -40,7 +40,7 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setTitle(`${user.tag}'s rank`)
-                    .setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}** xp.`)
+                    .setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}** xp. You need **${(levelDB.level + 1) * 400 + 100} xp** for the next level.`)
                     .setThumbnail(user.displayAvatarURL({ dynamic: true }))
                     .setColor(color)
                     .setTimestamp()

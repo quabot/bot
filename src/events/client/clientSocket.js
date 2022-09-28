@@ -1,5 +1,6 @@
 const { Client, EmbedBuilder, Colors, ButtonStyle, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const consola = require('consola');
+const { handleVote } = require('../../structures/functions/guilds');
 require('dotenv').config();
 
 module.exports = {
@@ -19,6 +20,10 @@ module.exports = {
 
         socket.on("update", (data) => {
             client.cache.take(data.cache);
+        });
+
+        socket.on("vote", (data) => {
+            handleVote(client, data);
         });
 
         socket.on("send", (data) => {
@@ -99,10 +104,10 @@ module.exports = {
                 applicationId: data.applicationId,
             });
             if (!application) return;
-            
+
             const member = client.guilds.cache.get(data.guildId).members.cache.get(data.userId);
             const role = application.applicationReward === "none" ? undefined : client.guilds.cache.get(data.guildId).roles.cache.get(application.applicationReward);
-            
+
             if (role) member.roles.add(role).catch((e => { }));
             member.send({
                 embeds: [
