@@ -36,15 +36,16 @@ module.exports = {
             level: 0,
         };
 
-        interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle(`${user.tag}'s rank`)
-                    .setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}** xp. You need **${(levelDB.level + 1) * 400 + 100} xp** for the next level.`)
-                    .setThumbnail(user.displayAvatarURL({ dynamic: true }))
-                    .setColor(color)
-                    .setTimestamp()
-            ]
-        }).catch((e => { }));
+        const embeds = [];
+        if (Math.random() > 0.5) embeds.push(new EmbedBuilder().setColor(color).setDescription("Tip: By [voting](https://top.gg/bot/995243562134409296) for QuaBot, you receive a **1.5x xp multiplier** for 12 hours!"));
+        embeds.push(
+            new EmbedBuilder()
+                .setTitle(`${user.tag}'s rank`)
+                .setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}** xp. You need **${(levelDB.level + 1) * 400 + 100} xp** for the next level.`)
+                .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+                .setColor(color)
+                .setTimestamp());
+        
+        interaction.editReply({ embeds }).catch((e => { }));
     }
 }
