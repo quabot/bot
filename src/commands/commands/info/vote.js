@@ -14,7 +14,7 @@ module.exports = {
         await interaction.deferReply().catch((e => { }));
 
         interaction.editReply({
-            embeds: [await generateEmbed(color, "By voting for QuaBot, you can help us grow for free! It only takes a few seconds, and it gives you some perks! Vote **[here]()**.")]
+            embeds: [await generateEmbed(color, "By voting for QuaBot, you can help us grow for free! It only takes a few seconds, and it gives you some perks! Vote **[here](https://top.gg/bot/995243562134409296)**.")]
         }).catch((e => { }));
     }
 }
