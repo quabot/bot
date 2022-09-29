@@ -1,5 +1,3 @@
-const { PermissionsBitField } = require("discord.js");
-
 function isValidHttpUrl(string) {
     let url;
 
