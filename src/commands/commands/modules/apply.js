@@ -232,7 +232,7 @@ module.exports = {
                 const value = answers.find(item => item.question === currentIndex) ? answers.find(item => item.question === currentIndex).value : "";
                 const modal = new ModalBuilder()
                     .setCustomId('apply-question')
-                    .setTitle(`${(application.applicationItems.indexOf(q) + 1) + ". " + q.question}`.slice(0, 44))
+                    .setTitle(`Question ${(application.applicationItems.indexOf(q) + 1)}`)
                     .addComponents(
                         new ActionRowBuilder()
                             .addComponents(
