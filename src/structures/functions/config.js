@@ -327,7 +327,7 @@ async function getTicketConfig(client, guildId) {
                 guildId: guildId,
                 ticketCategory: "none",
                 ticketClosedCategory: "none",
-                ticketEnabled: true,
+                ticketEnabled: false,
                 ticketStaffPing: true,
                 ticketTopicButton: true,
                 ticketSupport: "none",
@@ -405,7 +405,7 @@ async function getLevelConfig(client, guildId) {
         if (!level) {
             const newLevel = new Level({
                 guildId: guildId,
-                levelEnabled: true,
+                levelEnabled: false,
                 levelUpChannel: "none",
                 levelUpMessage: "{user} is now level **{level}** with **{xp}** xp!",
                 levelUpBuilder: true,
