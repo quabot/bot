@@ -175,7 +175,6 @@ async function handleVote(client, data) {
         voted: false,
         lastVote: "0",
     }
-    if (parseInt(foundUser.lastVote) > new Date().getTime()) return;
 
 
     const channel = client.guilds.cache.get(`1007810461347086357`).channels.cache.get("1024600377628299266");
