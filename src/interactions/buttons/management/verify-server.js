@@ -30,15 +30,15 @@ module.exports = {
             const code = await randomString();
 
             const modal = new ModalBuilder()
-                .setTitle("Type the verification code.")
+                .setTitle("Code: " + code)
                 .setCustomId("verify-code")
                 .addComponents(
                     new ActionRowBuilder()
                         .addComponents(
                             new TextInputBuilder()
                                 .setCustomId("code")
-                                .setLabel("Code: " + code)
-                                .setPlaceholder("Type the verification code. (Case sensitive)")
+                                .setLabel("Type the code:")
+                                .setPlaceholder("Type the verification code.")
                                 .setMaxLength(8)
                                 .setRequired(true)
                                 .setStyle(TextInputStyle.Short)
