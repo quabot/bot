@@ -1,5 +1,5 @@
 const { Interaction, EmbedBuilder, Client } = require('discord.js');
-const { VERSION } = require('../../../structures/config.json');
+const { version } = require('../../../../package.json')
 const os = require('os');
 
 module.exports = {
@@ -39,7 +39,7 @@ module.exports = {
                         { name: "Node.js", value: `\`${info.njs}\``, inline: true },
                         { name: '\u200b', value: '\u200b', inline: true },
                         { name: "CPU", value: `\`\`\`${info.cpu}\`\`\``, inline: true },
-                        { name: 'Version', value: `\`${VERSION}\``, inline: true },
+                        { name: 'Version', value: `\`${version}\``, inline: true },
                         { name: '\u200b', value: '\u200b', inline: true },
                         { name: "Platform", value: `\`${info.platform}\``, inline: true },
                         { name: "Ping", value: `\`${client.ws.ping}ms\``, inline: true },

@@ -1,6 +1,4 @@
 const { Interaction, EmbedBuilder, Client, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { VERSION } = require('../../../structures/config.json');
-const os = require('os');
 const { checkChannel } = require('../../../structures/functions/channel');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
