@@ -1,5 +1,5 @@
 const { Client, EmbedBuilder, Colors, GuildBan, VoiceChannel } = require('discord.js');
-const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
+const { getLogConfig, getLogChannel, getCustomizationConfig } = require('../../structures/functions/config');
 
 module.exports = {
     event: "voiceStateUpdate",
@@ -26,6 +26,10 @@ module.exports = {
 
         const user = newState.guild.members.cache.get(`${newState.id}`);
         if (!user) return;
+
+        let color = "#3a5a74";
+        const config = await getCustomizationConfig(client, newState.guild.id);
+        if (config) color = config.color
 
         const embed = new EmbedBuilder()
             .setColor(color)
