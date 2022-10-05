@@ -37,6 +37,10 @@ module.exports = {
         if (levelConfig.levelEnabled === false) return;
         if (levelConfig.levelExcludedChannels.includes(message.channel.id)) return;
 
+        let parent = "none";
+        if (message.channel.parent) parent = message.channel.parentId;
+        if (levelConfig.levelExcludedChannels.includes(parent)) return;
+
         for (let i = 0; i < levelConfig.levelExcludedRoles.length; i++) {
             const role = levelConfig.levelExcludedRoles[i]
             if (message.member.roles.cache.has(role)) return;

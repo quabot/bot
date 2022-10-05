@@ -9,7 +9,7 @@ module.exports = {
      * @param {VoiceChannel} newState
      * @param {Client} client
      */
-    async execute(oldState, newState, client, color) {
+    async execute(oldState, newState, client) {
 
         if (!newState.guild) return;
 
