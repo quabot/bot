@@ -106,6 +106,9 @@ module.exports = {
                             )
                     )
 
+                await interaction.showModal(modal);
+
+                if (pollDocument) return;
                 const newPoll = new Poll({
                     guildId: interaction.guildId,
                     pollId: pollId,
@@ -131,8 +134,62 @@ module.exports = {
                     pollId,
                 });
 
+            } else {
+
+                const pollDocument = await Poll.findOne({
+                    interactionId: interaction.message.id,
+                    guildId: interaction.guildId,
+                }).clone().catch((e => { }));
+                let choicesLength = pollDocument ? pollDocument.options : choices;
+
+
+                const modal = new ModalBuilder()
+                    .setTitle("Configure Poll")
+                    .setCustomId("choices-poll")
+
+                for (let index = 0; index < choicesLength; index++) {
+                    modal.addComponents(
+                        new ActionRowBuilder()
+                            .setComponents(
+                                new TextInputBuilder()
+                                    .setCustomId(`${index}`)
+                                    .setLabel(`Choice ${index + 1}`)
+                                    .setRequired(true)
+                                    .setMaxLength(200)
+                                    .setValue(pollDocument ? `${pollDocument.optionsArray[index] ? pollDocument.optionsArray[index] : ""}` : "")
+                                    .setStyle(TextInputStyle.Short)
+                            )
+                    )
+                }
 
                 await interaction.showModal(modal);
+
+                if (pollDocument) return;
+                const newPoll = new Poll({
+                    guildId: interaction.guildId,
+                    pollId: pollId,
+                    channelId: channel.id,
+                    msgId: "none",
+                    description: 'none',
+                    options: choices,
+                    topic: 'none',
+                    duration: ms(duration),
+                    interactionId: msg.id,
+                    createdTime: new Date().getTime(),
+                    endTimestamp: new Date().getTime() + ms(duration),
+                    optionsArray: []
+                });
+                newPoll.save().catch((e => { }));
+
+
+                const PollConfig = require('../../../structures/schemas/PollConfigSchema');
+                const config = await PollConfig.findOne({
+                    guildId: interaction.guildId
+                }).clone().catch((e => { }));
+                await config.updateOne({
+                    pollId,
+                });
+
             }
         })
     }

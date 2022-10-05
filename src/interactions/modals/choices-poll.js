@@ -6,15 +6,12 @@ const ms = require('ms');
 const { endPoll } = require('../../structures/functions/guilds');
 
 module.exports = {
-    id: "info-poll",
+    id: "choices-poll",
     /**
      * @param {Client} client 
      * @param {import("discord.js").ModalSubmitInteraction} interaction 
      */
     async execute(client, interaction, color) {
-
-        const question = interaction.fields.getTextInputValue("question");
-        let description = interaction.fields.getTextInputValue("description");
 
 
         const pollConfig = await getPollConfig(client, interaction.guildId);
@@ -34,13 +31,25 @@ module.exports = {
         if (!pollDocument) return interaction.reply({
             embeds: [await generateEmbed(color, "An internal error occurred.")], ephemeral: true
         }).catch((e => { }));
+        if (!interaction.components) return;
 
-        if (pollDocument.optionsArray.length !== 0 && description && question) {
-            return;
+        if (pollDocument.topic !== 'none' && pollDocument.description !== 'none') {
+
+            let description = pollDocument.description;
+
+            let options = [];
+            interaction.components.map(item => options.push(`${item.components[0].value}`));
+
+            for (let index = 0; index < options.length; index++) {
+                const option = options[index];
+                const emoji = `${index}`.replace('0', ':one:').replace('1', ':two:').replace('2', ':three:').replace('3', ':four:').replace('4', ':five:');
+                if (description) description = `${description}\n${emoji} - ${option}`;
+                console.log(`${index}`, emoji)
+            }
 
 
             const embed = new EmbedBuilder()
-                .setTitle(`${question}`)
+                .setTitle(`${pollDocument.topic}`)
                 .setDescription(`${description}`)
                 .addFields(
                     { name: "Hosted by", value: `${interaction.user}`, inline: true },
@@ -70,10 +79,10 @@ module.exports = {
                     new EmbedBuilder()
                         .setTitle("New Poll!")
                         .setTimestamp()
-                        .setDescription(interaction.fields.getTextInputValue("description"))
+                        .setDescription(pollDocument.description)
                         .addFields(
-                            { name: "Question", value: `${question}` },
-                            { name: "Options", value: `${description}` },
+                            { name: "Question", value: `${pollDocument.question}` },
+                            { name: "Options", value: `${pollDocument.options}` },
                             { name: "Created by", value: `${interaction.user}`, inline: true },
                             { name: "Ends in", value: `<t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R>`, inline: true },
                             { name: "Message", value: `[Click to jump](${msg.url})`, inline: true }
@@ -89,24 +98,13 @@ module.exports = {
             for (let i = 0; i < pollDocument.options; i++) {
                 let reactionEmoji = `${i + 1}`;
 
-                msg.react(`${reactionEmoji.replace("1", "1️⃣").replace("2", "2️⃣").replace("3", "3️⃣").replace("4", "4️⃣")}`)
+                msg.react(`${reactionEmoji.replace("1", "1️⃣").replace("2", "2️⃣").replace("3", "3️⃣").replace("4", "4️⃣").replace("5", "5️⃣")}`)
             }
-
-            let arrayOptions = [];
-            interaction.components.map(item => {
-                if (item.components[0].customId === "question") return;
-
-                const componentId = `${item.components[0].customId}`;
-                const emoji = componentId;
-                const option = item.components[0].value;
-
-                arrayOptions.push(`${option}`);
-            });
 
             await pollDocument.updateOne({
                 msgId: msg.id,
                 endTimestamp: Math.round(new Date().getTime()) + Math.round(ms(pollDocument.duration)),
-                optionsArray: arrayOptions
+                optionsArray: options
             });
 
             interaction.editReply({
@@ -120,39 +118,39 @@ module.exports = {
             setTimeout(async () => {
                 await endPoll(client, pollDocument, color);
             }, ms(pollDocument.duration));
+            
         } else {
 
             interaction.update({
                 embeds: [new EmbedBuilder()
-                .setColor(color)
+                    .setColor(color)
                     .addFields(
-                        { name: "Question", value: question, inline: true},
-                        { name: "Description", value: description, inline: true},
-                        { name: "Channel", value: `<#${pollDocument.channelId}>`, inline: true},
-                        { name: "Duration", value: `${pollDocument.duration}ms`, inline: true},
-                        { name: "Choices", value: `${pollDocument.options}`, inline: true}
+                        { name: "Channel", value: `<@${pollDocument.channelId}>`, inline: true },
+                        { name: "Duration", value: `${pollDocument.duration}ms`, inline: true },
+                        { name: "Choices", value: `${pollDocument.options}`, inline: true }
                     )
-            .setDescription("Click the button below this message to enter the details for the poll. When entered, click the _second_ button to enter the choices.")],
+                    .setDescription("Click the button below this message to enter the details for the poll. When entered, click the _second_ button to enter the choices.")],
                 components: [
                     new ActionRowBuilder({
                         components: [
                             new ButtonBuilder({
                                 style: ButtonStyle.Secondary,
-                                label: 'Edit Details',
+                                label: 'Enter Details',
                                 customId: "details-poll"
                             }),
                             new ButtonBuilder({
                                 style: ButtonStyle.Secondary,
-                                label: 'Enter Choices',
+                                label: 'Edit Choices',
                                 customId: "choices-poll"
                             })]
                     })
                 ]
             }).catch(() => { });
 
+            const arrayOptions = [];
+            interaction.components.map(item => arrayOptions.push(`${item.components[0].value}`));
             await pollDocument.updateOne({
-                topic: question,
-                description
+                optionsArray: arrayOptions
             });
         }
     }

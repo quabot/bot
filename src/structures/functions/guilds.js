@@ -79,7 +79,7 @@ async function endPoll(client, document, color) {
             .map((reaction) => reaction.count)
             .flat();
 
-        reactions = reactions.slice(0, 3)
+        reactions = reactions.slice(0, 4)
         var winner = Math.max(...reactions);
 
         let winMsg;
@@ -87,6 +87,7 @@ async function endPoll(client, document, color) {
         if (reactions[1] === winner) winMsg = poll.optionsArray[1];
         if (reactions[2] === winner) winMsg = poll.optionsArray[2];
         if (reactions[3] === winner) winMsg = poll.optionsArray[3];
+        if (reactions[4] === winner) winMsg = poll.optionsArray[4];
 
         message.edit({
             embeds: [
