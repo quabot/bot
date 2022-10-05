@@ -15,6 +15,7 @@ module.exports = {
 
         const channel = interaction.options.getChannel("channel");
         const choices = interaction.options.getInteger("choices");
+        const description = interaction.options.getString("description");
         const duration = interaction.options.getString("duration");
 
         const pollConfig = await getPollConfig(client, interaction.guildId);
@@ -26,7 +27,7 @@ module.exports = {
             embeds: [await generateEmbed(color, "Polls are not enabled in this server. Toggle them on [our dashboard](https://dashboard.quabot.net).")], ephemeral: true
         }).catch((e => { }));
 
-        if (!channel || !choices || !duration) return interaction.reply({
+        if (!channel || !choices || !duration || !description) return interaction.reply({
             embeds: [await generateEmbed(color, "Please run the command again, we didn't get all your options.")], ephemeral: true
         }).catch((e => { }));
 
@@ -44,7 +45,7 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setColor(color)
-                    .setDescription(`Click the button below this message to enter the details for the poll.`)
+                    .setDescription(`Click the button below this message to enter the details for the poll. When entered, click the _second_ button to enter the choices.`)
                     .addFields(
                         { name: "Channel", value: `${channel}`, inline: true },
                         { name: "Duration", value: `${duration}`, inline: true },
@@ -57,7 +58,12 @@ module.exports = {
                         new ButtonBuilder({
                             style: ButtonStyle.Secondary,
                             label: 'Enter Details',
-                            customId: "create-poll"
+                            customId: "details-poll"
+                        }),
+                        new ButtonBuilder({
+                            style: ButtonStyle.Secondary,
+                            label: 'Enter Choices',
+                            customId: "choices-poll"
                         })]
                 })
             ], fetchReply: true,
@@ -65,11 +71,11 @@ module.exports = {
 
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
         collector.on('collect', async interaction => {
-            if (interaction.customId === "create-poll") {
+            if (interaction.customId === "details-poll") {
 
                 const modal = new ModalBuilder()
                     .setTitle("Configure Poll")
-                    .setCustomId("configure-poll")
+                    .setCustomId("info-poll")
                     .addComponents(
                         new ActionRowBuilder()
                             .addComponents(
@@ -80,23 +86,18 @@ module.exports = {
                                     .setMaxLength(500)
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Short)
-                            )
-                    )
-
-                for (let i = 1; i < choices + 1; i++) {
-                    modal.addComponents(
+                            ),
                         new ActionRowBuilder()
                             .addComponents(
                                 new TextInputBuilder()
-                                    .setCustomId(`${i}`)
-                                    .setPlaceholder("Enter your option here...")
-                                    .setLabel(`Option ${i}`)
+                                    .setCustomId("description")
+                                    .setPlaceholder("Wether or not to add more voice channels to our server.")
+                                    .setLabel("Poll Description")
                                     .setMaxLength(500)
                                     .setRequired(true)
-                                    .setStyle(TextInputStyle.Short)
+                                    .setStyle(TextInputStyle.Paragraph)
                             )
                     )
-                }
 
                 const Poll = require('../../../structures/schemas/PollSchema');
                 const newPoll = new Poll({
@@ -104,6 +105,7 @@ module.exports = {
                     pollId: pollId,
                     channelId: channel.id,
                     msgId: "none",
+                    description: 'none',
                     options: choices,
                     duration: ms(duration),
                     interactionId: msg.id,
