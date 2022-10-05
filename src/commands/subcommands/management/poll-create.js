@@ -1,7 +1,8 @@
-const { Interaction, Client, PermissionFlagsBits, ActionRowBuilder, TextInputStyle, ModalBuilder, TextInputBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
+const { Interaction, Client, ActionRowBuilder, TextInputStyle, ModalBuilder, TextInputBuilder, ButtonStyle, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const { checkChannel } = require('../../../structures/functions/channel');
 const { getPollConfig } = require('../../../structures/functions/config');
 const { generateEmbed } = require('../../../structures/functions/embed');
+const Poll = require('../../../structures/schemas/PollSchema');
 const ms = require('ms');
 
 module.exports = {
@@ -15,7 +16,6 @@ module.exports = {
 
         const channel = interaction.options.getChannel("channel");
         const choices = interaction.options.getInteger("choices");
-        const description = interaction.options.getString("description");
         const duration = interaction.options.getString("duration");
 
         const pollConfig = await getPollConfig(client, interaction.guildId);
@@ -27,7 +27,7 @@ module.exports = {
             embeds: [await generateEmbed(color, "Polls are not enabled in this server. Toggle them on [our dashboard](https://dashboard.quabot.net).")], ephemeral: true
         }).catch((e => { }));
 
-        if (!channel || !choices || !duration || !description) return interaction.reply({
+        if (!channel || !choices || !duration) return interaction.reply({
             embeds: [await generateEmbed(color, "Please run the command again, we didn't get all your options.")], ephemeral: true
         }).catch((e => { }));
 
@@ -72,6 +72,11 @@ module.exports = {
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
         collector.on('collect', async interaction => {
             if (interaction.customId === "details-poll") {
+                const pollDocument = await Poll.findOne({
+                    interactionId: interaction.message.id,
+                    guildId: interaction.guildId,
+                }).clone().catch((e => { }));
+
 
                 const modal = new ModalBuilder()
                     .setTitle("Configure Poll")
@@ -84,6 +89,7 @@ module.exports = {
                                     .setPlaceholder("Should we add more voice channels?")
                                     .setLabel("Poll Question")
                                     .setMaxLength(500)
+                                    .setValue(pollDocument ? pollDocument.topic : "")
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Short)
                             ),
@@ -93,13 +99,13 @@ module.exports = {
                                     .setCustomId("description")
                                     .setPlaceholder("Wether or not to add more voice channels to our server.")
                                     .setLabel("Poll Description")
+                                    .setValue(pollDocument ? pollDocument.description : "")
                                     .setMaxLength(500)
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Paragraph)
                             )
                     )
 
-                const Poll = require('../../../structures/schemas/PollSchema');
                 const newPoll = new Poll({
                     guildId: interaction.guildId,
                     pollId: pollId,
@@ -107,6 +113,7 @@ module.exports = {
                     msgId: "none",
                     description: 'none',
                     options: choices,
+                    topic: 'none',
                     duration: ms(duration),
                     interactionId: msg.id,
                     createdTime: new Date().getTime(),

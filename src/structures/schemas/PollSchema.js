@@ -24,6 +24,7 @@ const PollSchema = new mongoose.Schema({
     interactionId: reqString,
     description: reqString,
     createdTime: reqString,
+    topic: reqString,
     endTimestamp: reqString,
     optionsArray: reqArray
 });

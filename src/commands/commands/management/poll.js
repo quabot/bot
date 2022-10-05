@@ -18,7 +18,6 @@ module.exports = {
                         { name: "4", value: 4 },
                         { name: "5", value: 5 },
                     ))
-                .addStringOption(option => option.setDescription("What is this poll about?").setName("description").setRequired(true))
                 .addStringOption(option => option.setDescription("How long the poll should last. (1h, 30min)").setRequired(true).setName("duration")))
         .addSubcommand(subcommand =>
             subcommand
