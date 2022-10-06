@@ -33,7 +33,7 @@ module.exports = {
         }).catch((e => { }));
         if (!interaction.components) return;
 
-        if (pollDocument.topic !== 'none' && pollDocument.description !== 'none') {
+        if (pollDocument.topic && pollDocument.description) {
 
             let description = pollDocument.description;
 
@@ -44,7 +44,6 @@ module.exports = {
                 const option = options[index];
                 const emoji = `${index}`.replace('0', ':one:').replace('1', ':two:').replace('2', ':three:').replace('3', ':four:').replace('4', ':five:');
                 if (description) description = `${description}\n${emoji} - ${option}`;
-                console.log(`${index}`, emoji)
             }
 
 
@@ -107,7 +106,7 @@ module.exports = {
                 optionsArray: options
             });
 
-            interaction.editReply({
+            interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(`Successfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDocument.pollId}`)
@@ -125,7 +124,7 @@ module.exports = {
                 embeds: [new EmbedBuilder()
                     .setColor(color)
                     .addFields(
-                        { name: "Channel", value: `<@${pollDocument.channelId}>`, inline: true },
+                        { name: "Channel", value: `<#${pollDocument.channelId}>`, inline: true },
                         { name: "Duration", value: `${pollDocument.duration}ms`, inline: true },
                         { name: "Choices", value: `${pollDocument.options}`, inline: true }
                     )

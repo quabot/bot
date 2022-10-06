@@ -36,12 +36,22 @@ module.exports = {
         }).catch((e => { }));
 
         if (pollDocument.optionsArray.length !== 0 && description && question) {
-            return;
+
+            let desc = description;
+
+            let options = [];
+            pollDocument.optionsArray.map(item => options.push(`${item}`));
+
+            for (let index = 0; index < options.length; index++) {
+                const option = options[index];
+                const emoji = `${index}`.replace('0', ':one:').replace('1', ':two:').replace('2', ':three:').replace('3', ':four:').replace('4', ':five:');
+                if (desc) desc = `${desc}\n${emoji} - ${option}`;
+            }
 
 
             const embed = new EmbedBuilder()
                 .setTitle(`${question}`)
-                .setDescription(`${description}`)
+                .setDescription(`${desc}`)
                 .addFields(
                     { name: "Hosted by", value: `${interaction.user}`, inline: true },
                     { name: "Ends in", value: `<t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R>`, inline: true }
@@ -70,10 +80,10 @@ module.exports = {
                     new EmbedBuilder()
                         .setTitle("New Poll!")
                         .setTimestamp()
-                        .setDescription(interaction.fields.getTextInputValue("description"))
+                        .setDescription(pollDocument.description)
                         .addFields(
-                            { name: "Question", value: `${question}` },
-                            { name: "Options", value: `${description}` },
+                            { name: "Question", value: `${pollDocument.question}` },
+                            { name: "Options", value: `${pollDocument.options}` },
                             { name: "Created by", value: `${interaction.user}`, inline: true },
                             { name: "Ends in", value: `<t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R>`, inline: true },
                             { name: "Message", value: `[Click to jump](${msg.url})`, inline: true }
@@ -89,27 +99,17 @@ module.exports = {
             for (let i = 0; i < pollDocument.options; i++) {
                 let reactionEmoji = `${i + 1}`;
 
-                msg.react(`${reactionEmoji.replace("1", "1️⃣").replace("2", "2️⃣").replace("3", "3️⃣").replace("4", "4️⃣")}`)
+                msg.react(`${reactionEmoji.replace("1", "1️⃣").replace("2", "2️⃣").replace("3", "3️⃣").replace("4", "4️⃣").replace("5", "5️⃣")}`)
             }
-
-            let arrayOptions = [];
-            interaction.components.map(item => {
-                if (item.components[0].customId === "question") return;
-
-                const componentId = `${item.components[0].customId}`;
-                const emoji = componentId;
-                const option = item.components[0].value;
-
-                arrayOptions.push(`${option}`);
-            });
 
             await pollDocument.updateOne({
                 msgId: msg.id,
                 endTimestamp: Math.round(new Date().getTime()) + Math.round(ms(pollDocument.duration)),
-                optionsArray: arrayOptions
+                topic: question,
+                description
             });
 
-            interaction.editReply({
+            interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(`Successfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDocument.pollId}`)
@@ -120,6 +120,7 @@ module.exports = {
             setTimeout(async () => {
                 await endPoll(client, pollDocument, color);
             }, ms(pollDocument.duration));
+            
         } else {
 
             interaction.update({
