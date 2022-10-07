@@ -64,6 +64,8 @@ async function endPoll(client, document, color) {
         interactionId: document.interactionId
     }).clone().catch((e => { }));
 
+    if (!poll) return;
+
     const guild = client.guilds.cache.get(poll.guildId);
     if (!guild) return;
 
