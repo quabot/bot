@@ -21,6 +21,7 @@ const PollConfigSchema = new mongoose.Schema({
     pollId: reqNum,
     pollLogEnabled: reqBool,
     pollLogChannelId: reqString,
+    pollRole: { type: String, required: true, default: "none" },
 });
 
 module.exports = mongoose.model('Poll-Config', PollConfigSchema);

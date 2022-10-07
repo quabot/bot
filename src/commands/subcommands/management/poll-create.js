@@ -67,7 +67,7 @@ module.exports = {
                         })]
                 })
             ], fetchReply: true,
-        });
+        }).catch((e => { }))
 
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
         collector.on('collect', async interaction => {

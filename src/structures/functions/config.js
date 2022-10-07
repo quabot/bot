@@ -357,6 +357,7 @@ async function getPollConfig(client, guildId) {
                 pollId: 0,
                 pollLogEnabled: false,
                 pollLogChannelId: "none",
+                pollRole: 'none',
             });
             newPoll.save()
                 .catch(err => {

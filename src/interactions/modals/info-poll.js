@@ -48,6 +48,8 @@ module.exports = {
                 if (desc) desc = `${desc}\n${emoji} - ${option}`;
             }
 
+            let role = interaction.guild.roles.cache.get(`${pollConfig.pollRole}`);
+            if (!role) role = "";
 
             const embed = new EmbedBuilder()
                 .setTitle(`${question}`)
@@ -66,7 +68,7 @@ module.exports = {
             }).catch((e => { }));
 
 
-            const msg = await channel.send({ embeds: [embed] }).catch(async err => {
+            const msg = await channel.send({ embeds: [embed], content: role }).catch(async err => {
                 interaction.editReply({
                     embeds: [await generateEmbed(color, "I do not have permission to talk in the channel where you want to poll to be posted in.")], ephemeral: true
                 }).catch((e => { }));

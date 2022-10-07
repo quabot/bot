@@ -79,7 +79,6 @@ async function endPoll(client, document, color) {
             .map((reaction) => reaction.count)
             .flat();
 
-        reactions = reactions.slice(0, 4)
         var winner = Math.max(...reactions);
 
         let winMsg;
