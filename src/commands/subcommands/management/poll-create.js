@@ -89,7 +89,7 @@ module.exports = {
                                     .setPlaceholder("Should we add more voice channels?")
                                     .setLabel("Poll Question")
                                     .setMaxLength(500)
-                                    .setValue(pollDocument ? pollDocument.topic : "")
+                                    .setValue(pollDocument ? (pollDocument.topic === "none" ? "" : pollDocument.topic) : "")
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Short)
                             ),
@@ -99,7 +99,7 @@ module.exports = {
                                     .setCustomId("description")
                                     .setPlaceholder("Wether or not to add more voice channels to our server.")
                                     .setLabel("Poll Description")
-                                    .setValue(pollDocument ? pollDocument.description : "")
+                                    .setValue(pollDocument ? (pollDocument.description === "none" ? "" : pollDocument.description) : "")
                                     .setMaxLength(500)
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Paragraph)
@@ -170,9 +170,9 @@ module.exports = {
                     pollId: pollId,
                     channelId: channel.id,
                     msgId: "none",
-                    description: 'Enter a description',
+                    description: 'none',
                     options: choices,
-                    topic: 'Enter a question',
+                    topic: 'none',
                     duration: ms(duration),
                     interactionId: msg.id,
                     createdTime: new Date().getTime(),
@@ -193,4 +193,4 @@ module.exports = {
             }
         })
     }
-}
+} 

@@ -33,7 +33,7 @@ module.exports = {
         }).catch((e => { }));
         if (!interaction.components) return;
 
-        if (pollDocument.topic && pollDocument.description) {
+        if (pollDocument.topic !== 'none' && pollDocument.description !== 'none') {
 
             let description = pollDocument.description;
 
@@ -106,18 +106,18 @@ module.exports = {
                 optionsArray: options
             });
 
-            interaction.reply({
+            interaction.update({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(`Successfully created a poll that ends <t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(pollDocument.duration) / 1000)}:R> in ${channel}!\nThe ID for this poll is ${pollDocument.pollId}`)
                         .setColor(color)
-                ], ephemeral: true
+                ], ephemeral: true, components: []
             }).catch((e => { }));
 
             setTimeout(async () => {
                 await endPoll(client, pollDocument, color);
             }, ms(pollDocument.duration));
-            
+
         } else {
 
             interaction.update({
