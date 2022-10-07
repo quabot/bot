@@ -38,6 +38,7 @@ module.exports = {
         if (!ms(duration)) return interaction.reply({
             embeds: [await generateEmbed(color, "Please enter a valid duration, like `1w` or `10min`.")], ephemeral: true
         }).catch((e => { }));
+        
 
 
         const pollId = pollConfig.pollId + 1;
@@ -67,7 +68,9 @@ module.exports = {
                         })]
                 })
             ], fetchReply: true,
-        }).catch((e => { }))
+        }).catch((e => { }));
+
+        if (!msg) return;
 
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === interaction.user.id });
         collector.on('collect', async interaction => {

@@ -28,8 +28,9 @@ module.exports = {
             interactionId: interaction.message.id,
             guildId: interaction.guildId,
         }).clone().catch((e => { }));
+
         if (!pollDocument) return interaction.reply({
-            embeds: [await generateEmbed(color, "An internal error occurred.")], ephemeral: true
+            embeds: [await generateEmbed(color, "Couldn't find the database record.")], ephemeral: true
         }).catch((e => { }));
         if (!interaction.components) return;
 
@@ -46,6 +47,8 @@ module.exports = {
                 if (description) description = `${description}\n${emoji} - ${option}`;
             }
 
+            let role = interaction.guild.roles.cache.get(`${pollConfig.pollRole}`);
+            if (!role) role = ""
 
             const embed = new EmbedBuilder()
                 .setTitle(`${pollDocument.topic}`)
@@ -63,12 +66,12 @@ module.exports = {
                 embeds: [await generateEmbed(color, "The channel where you wanted to create the poll couldn't be found! Do i have access to it?")], ephemeral: true
             }).catch((e => { }));
 
-
-            const msg = await channel.send({ embeds: [embed] }).catch(async err => {
+            const msg = await channel.send({ embeds: [embed], content: `${role}` }).catch(async err => {
                 interaction.editReply({
                     embeds: [await generateEmbed(color, "I do not have permission to talk in the channel where you want to poll to be posted in.")], ephemeral: true
-                }).catch((e => { }));
+                }).catch((e => console.log(e)));
             });
+
             if (!msg) return;
 
 

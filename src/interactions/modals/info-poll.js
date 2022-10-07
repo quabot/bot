@@ -68,7 +68,7 @@ module.exports = {
             }).catch((e => { }));
 
 
-            const msg = await channel.send({ embeds: [embed], content: role }).catch(async err => {
+            const msg = await channel.send({ embeds: [embed], content: `${role}` }).catch(async err => {
                 interaction.editReply({
                     embeds: [await generateEmbed(color, "I do not have permission to talk in the channel where you want to poll to be posted in.")], ephemeral: true
                 }).catch((e => { }));
