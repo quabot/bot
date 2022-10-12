@@ -1,6 +1,7 @@
 const { Client, EmbedBuilder, Colors, ButtonStyle, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const consola = require('consola');
 const { handleVote } = require('../../structures/functions/guilds');
+const { default: axios } = require('axios');
 require('dotenv').config();
 
 module.exports = {
@@ -117,6 +118,16 @@ module.exports = {
                         .setDescription(`Your application in ${client.guilds.cache.get(data.guildId).name} has been approved. You have been given the rewards (if any).`)
                 ]
             }).catch((e => { }));
+        });
+
+        socket.on("stats", async (data) => {
+            axios.post('http://localhost:3001/stats-post', { password: `${process.env.STATS_PASSWORD}`, guilds: client.guilds.cache.size, channels: client.channels.cache.size, users: client.users.cache.size }).catch(e => { })
+        })
+
+        socket.on('nickname', async (data) => {
+            const guild = client.guilds.cache.get(data.guildId);
+            if (!guild) return;
+            guild.members.me.setNickname(data.nickname).catch((e => console.log(e)))
         });
 
         socket.on("disconnect", () => {
