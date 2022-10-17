@@ -1,69 +1,69 @@
 const { ReactionManager, User, GuildMember } = require('discord.js');
 
 module.exports = {
-    event: "messageReactionAdd",
-    name: "reactionRoleAdd",
+    event: 'messageReactionAdd',
+    name: 'reactionRoleAdd',
     /**
-     * 
-     * @param {ReactionManager} reaction 
-     * @param {User} user 
+     *
+     * @param {ReactionManager} reaction
+     * @param {User} user
      * @param {GuildMember} member
      */
     async execute(reaction, user, client) {
-
         const ReactionRoleSchema = require('../../structures/schemas/ReactionRoleSchema');
-        const reactionRole = await ReactionRoleSchema.findOne({
-            guildId: reaction.message.guildId,
-            messageId: reaction.message.id,
-            emoji: reaction._emoji.name
-        }, (err) => {
-            if (err) console.log(err);
-        }).clone().catch((e => { }));
-        
-        if (!reactionRole) return;
+        const reactionRole = await ReactionRoleSchema.findOne(
+            {
+                guildId: reaction.message.guildId,
+                messageId: reaction.message.id,
+                emoji: reaction._emoji.name,
+            },
+            err => {
+                if (err) console.log(err);
+            }
+        )
+            .clone()
+            .catch(e => {});
 
+        if (!reactionRole) return;
 
         const role = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
         const member = reaction.message.guild.members.cache.get(`${user.id}`);
         if (!role) return;
 
-        if (reactionRole.reqPermission !== "None" && reactionRole.reqPermission !== "none") {
+        if (reactionRole.reqPermission !== 'None' && reactionRole.reqPermission !== 'none') {
             if (!member.permissions.has(reactionRole.reqPermission)) return;
         }
 
         async function asyncSwitch(type) {
             switch (type) {
-
                 //? Give and remove
-                case "normal":
-                    member.roles.add(role).catch((e => { }));
+                case 'normal':
+                    member.roles.add(role).catch(e => {});
                     break;
 
                 //? Only give it.
-                case "verify":
-                    member.roles.add(role).catch((e => { }));
+                case 'verify':
+                    member.roles.add(role).catch(e => {});
                     break;
 
                 //? Only remove it when a reaction is added.
-                case "drop":
-                    member.roles.remove(role).catch((e => { }));
+                case 'drop':
+                    member.roles.remove(role).catch(e => {});
                     break;
 
                 //? Give and removed, but reversed.
-                case "reversed":
-                    member.roles.remove(role).catch((e => { }));
+                case 'reversed':
+                    member.roles.remove(role).catch(e => {});
                     break;
 
                 //? Unique (only pick one role from the message at a time)
-                case "unique":
-
+                case 'unique':
                     const reactions = await ReactionRoleSchema.find({
                         guildId: reaction.message.guildId,
                         messageId: reaction.message.id,
-                        mode: "unique"
+                        mode: 'unique',
                     });
                     if (!reactions) return;
-
 
                     let hasRole = false;
 
@@ -75,18 +75,17 @@ module.exports = {
                     });
 
                     if (hasRole) return;
-                    if (!hasRole) member.roles.add(role).catch((e => { }));
+                    if (!hasRole) member.roles.add(role).catch(e => {});
 
                     break;
 
-                case "binding":
+                case 'binding':
                     const reactionsFound = await ReactionRoleSchema.find({
                         guildId: reaction.message.guildId,
                         messageId: reaction.message.id,
-                        mode: "unique"
+                        mode: 'unique',
                     });
                     if (!reactionsFound) return;
-
 
                     let hasRoleBool = false;
 
@@ -98,14 +97,11 @@ module.exports = {
                     });
 
                     if (hasRoleBool) return;
-                    if (!hasRoleBool) member.roles.add(role).catch((e => { }));
+                    if (!hasRoleBool) member.roles.add(role).catch(e => {});
                     break;
-
-
             }
         }
 
         asyncSwitch(reactionRole.type);
-
-    }
-}
+    },
+};

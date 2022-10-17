@@ -10,32 +10,27 @@ require('dotenv').config();
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-module.exports = async (client) => {
-
+module.exports = async client => {
     CommandsList = [];
     const contextMenus = await getContexts(client);
     contextMenus.forEach(i => CommandsList.push(i));
 
-    (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/commands/*/*.js`)).map(async (commandFile) => {
+    (await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/commands/*/*.js`)).map(async commandFile => {
         const command = require(commandFile);
         client.commands.set(command.data.name, command);
         CommandsList.push(command.data);
     });
 
-    consola.success(`Successfully loaded ${CommandsList.length-contextMenus.length} commands.`);
-
+    consola.success(`Successfully loaded ${CommandsList.length - contextMenus.length} commands.`);
 
     try {
         return; // No commands have to be loaded.
         console.log(`Started refreshing ${CommandsList.length} commands.`);
 
-        const data = await rest.put(
-            Routes.applicationCommands(process.env.CLIENT_ID),
-            { body: CommandsList },
-        );
+        const data = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: CommandsList });
 
         console.log(`Successfully reloaded ${CommandsList.length} commands.`);
     } catch (error) {
         console.error(error);
     }
-}
+};

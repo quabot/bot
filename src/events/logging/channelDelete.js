@@ -1,16 +1,28 @@
 const { GuildChannel, Client, EmbedBuilder, Colors } = require('discord.js');
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
-const channelTypes = ["Text channel", "DM", "Voice Channel", "DM", "Category", "News Channel", "News Thread", "Thread", "Private Thread", "Stage Channel", "Directory Channel", "Forum Channel"];
+const channelTypes = [
+    'Text channel',
+    'DM',
+    'Voice Channel',
+    'DM',
+    'Category',
+    'News Channel',
+    'News Thread',
+    'Thread',
+    'Private Thread',
+    'Stage Channel',
+    'Directory Channel',
+    'Forum Channel',
+];
 
 module.exports = {
-    event: "channelDelete",
-    name: "channelDelete",
+    event: 'channelDelete',
+    name: 'channelDelete',
     /**
      * @param {GuildChannel} channel
      * @param {Client} client
      */
     async execute(channel, client, color) {
-
         if (!channel.guildId) return;
 
         const logConfig = await getLogConfig(client, channel.guildId);
@@ -20,14 +32,16 @@ module.exports = {
         if (!logChannel) return;
 
         if (!logConfig.enabledEvents.includes(this.event)) return;
-        
-        logChannel.send({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(Colors.Red)
-                    .setDescription(`**${channelTypes[channel.type]} Deleted**\n\`${channel.name}\``)
-                    .setTimestamp()
-            ]
-        }).catch((e => { }));
-    }
-}
+
+        logChannel
+            .send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setDescription(`**${channelTypes[channel.type]} Deleted**\n\`${channel.name}\``)
+                        .setTimestamp(),
+                ],
+            })
+            .catch(e => {});
+    },
+};

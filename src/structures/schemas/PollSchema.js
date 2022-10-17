@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 const reqString = {
     type: String,
     required: true,
-}
+};
 
 const reqNum = {
     type: Number,
     required: true,
-}
+};
 
 const reqArray = {
     type: Array,
     required: true,
-}
+};
 
 const PollSchema = new mongoose.Schema({
     guildId: reqString,
@@ -26,7 +26,7 @@ const PollSchema = new mongoose.Schema({
     createdTime: reqString,
     topic: reqString,
     endTimestamp: reqString,
-    optionsArray: reqArray
+    optionsArray: reqArray,
 });
 
 module.exports = mongoose.model('Poll', PollSchema);

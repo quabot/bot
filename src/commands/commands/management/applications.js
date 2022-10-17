@@ -5,18 +5,15 @@ module.exports = {
         .setName('applications')
         .setDescription('Manage applications.')
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild)
+        .setDefaultMemberPermissions(
+            PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild
+        )
         .addSubcommand(subcommand =>
-            subcommand
-                .setName('manage')
-                .setDescription('Create, delete and edit applications.'))
+            subcommand.setName('manage').setDescription('Create, delete and edit applications.')
+        )
         .addSubcommand(subcommand =>
-            subcommand
-                .setName('responses')
-                .setDescription('View the responses to applications.'))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('list')
-                .setDescription('List all applications.')),
-    async execute() { }
-}
+            subcommand.setName('responses').setDescription('View the responses to applications.')
+        )
+        .addSubcommand(subcommand => subcommand.setName('list').setDescription('List all applications.')),
+    async execute() {},
+};

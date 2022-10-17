@@ -1,37 +1,47 @@
-const { Interaction, EmbedBuilder, Client, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const {
+    Interaction,
+    EmbedBuilder,
+    Client,
+    PermissionFlagsBits,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+} = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    name: "suggestions",
-    command: "send",
+    name: 'suggestions',
+    command: 'send',
     /**
-     * @param {Client} client 
-     * @param {Interaction} interaction 
+     * @param {Client} client
+     * @param {Interaction} interaction
      */
     async execute(client, interaction, color) {
+        await interaction.deferReply({ ephemeral: true }).catch(e => {});
 
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
+        interaction
+            .editReply({
+                embeds: [await generateEmbed(color, 'You can dismiss this message.')],
+            })
+            .catch(e => {});
 
-        interaction.editReply({
-            embeds: [await generateEmbed(color, "You can dismiss this message.")]
-        }).catch((e => { }));
-
-        interaction.channel.send({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
-                    .setTitle("Create suggestion")
-                    .setDescription("Click on the button below this message to leave a suggestion.")
-            ],
-            components: [
-                new ActionRowBuilder()
-                    .addComponents(
+        interaction.channel
+            .send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle('Create suggestion')
+                        .setDescription('Click on the button below this message to leave a suggestion.'),
+                ],
+                components: [
+                    new ActionRowBuilder().addComponents(
                         new ButtonBuilder()
-                            .setCustomId("suggestion-create")
+                            .setCustomId('suggestion-create')
                             .setStyle(ButtonStyle.Secondary)
-                            .setLabel("💡 Suggest")
-                    )
-            ]
-        }).catch((e => { }));
-    }
-}
+                            .setLabel('💡 Suggest')
+                    ),
+                ],
+            })
+            .catch(e => {});
+    },
+};

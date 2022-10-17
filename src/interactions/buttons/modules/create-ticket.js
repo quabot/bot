@@ -1,63 +1,94 @@
-const { Client, Interaction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, PermissionFlagsBits, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ChannelType } = require('discord.js');
+const {
+    Client,
+    Interaction,
+    EmbedBuilder,
+    ActionRowBuilder,
+    ButtonBuilder,
+    PermissionFlagsBits,
+    ButtonStyle,
+    ModalBuilder,
+    TextInputBuilder,
+    TextInputStyle,
+    ChannelType,
+} = require('discord.js');
 const Ticket = require('../../../structures/schemas/TicketSchema');
 const { getTicketConfig } = require('../../../structures/functions/config');
 const { createTicket } = require('../../../commands/subcommands/modules/ticket-create');
 const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    id: "create-ticket",
+    id: 'create-ticket',
     /**
-     * @param {Interaction} interaction 
-     * @param {Client} client 
+     * @param {Interaction} interaction
+     * @param {Client} client
      */
     async execute(client, interaction, color) {
-
         const ticketConfig = await getTicketConfig(client, interaction.guildId);
 
+        if (!ticketConfig)
+            return interaction
+                .reply({
+                    ephemeral: true,
+                    embeds: [
+                        await generateEmbed(
+                            color,
+                            'We just created a new database record. Please click that button again.'
+                        ),
+                    ],
+                })
+                .catch(e => {});
 
-        if (!ticketConfig) return interaction.reply({
-            ephemeral: true, embeds: [await generateEmbed(color, "We just created a new database record. Please click that button again.")]
-        }).catch((e => { }));
-
-        if (ticketConfig.ticketEnabled === false) return interaction.reply({
-            ephemeral: true, embeds: [await generateEmbed(color, "Tickets are disabled in this server.")]
-        }).catch((e => { }));
+        if (ticketConfig.ticketEnabled === false)
+            return interaction
+                .reply({
+                    ephemeral: true,
+                    embeds: [await generateEmbed(color, 'Tickets are disabled in this server.')],
+                })
+                .catch(e => {});
 
         const Modal = new ModalBuilder()
-            .setTitle("Create a Ticket")
-            .setCustomId("modal-ticket-create")
+            .setTitle('Create a Ticket')
+            .setCustomId('modal-ticket-create')
             .addComponents(
-                new ActionRowBuilder()
-                    .addComponents(
-                        new TextInputBuilder()
-                            .setCustomId("topic")
-                            .setLabel("Ticket Topic")
-                            .setPlaceholder("I have a question about...")
-                            .setMaxLength(1000)
-                            .setRequired(true)
-                            .setStyle(TextInputStyle.Paragraph)
-                    )
-            )
+                new ActionRowBuilder().addComponents(
+                    new TextInputBuilder()
+                        .setCustomId('topic')
+                        .setLabel('Ticket Topic')
+                        .setPlaceholder('I have a question about...')
+                        .setMaxLength(1000)
+                        .setRequired(true)
+                        .setStyle(TextInputStyle.Paragraph)
+                )
+            );
 
-        await interaction.showModal(Modal).catch((e => { }));
+        await interaction.showModal(Modal).catch(e => {});
 
-
-        const modal = await interaction.awaitModalSubmit({
-            time: 360000,
-            filter: i => i.user.id === interaction.user.id,
-        }).catch(e => {
-            return null
-        });
+        const modal = await interaction
+            .awaitModalSubmit({
+                time: 360000,
+                filter: i => i.user.id === interaction.user.id,
+            })
+            .catch(e => {
+                return null;
+            });
 
         async function createTicket(ticketConfig, interaction, subject) {
-
             let role = interaction.guild.roles.cache.get(`${ticketConfig.ticketSupport}`);
 
             const openCategory = interaction.guild.channels.cache.get(`${ticketConfig.ticketCategory}`);
 
-            if (!openCategory) return interaction.reply({
-                ephemeral: true, embeds: [await generateEmbed(color, "Couldn't find a tickets category. Configure this on [our dashboard](https://dashboard.quabot.net).")]
-            }).catch((e => { }));
+            if (!openCategory)
+                return interaction
+                    .reply({
+                        ephemeral: true,
+                        embeds: [
+                            await generateEmbed(
+                                color,
+                                "Couldn't find a tickets category. Configure this on [our dashboard](https://dashboard.quabot.net)."
+                            ),
+                        ],
+                    })
+                    .catch(e => {});
 
             let ticketId = parseInt(`${ticketConfig.ticketId}`) + 1;
 
@@ -67,43 +98,46 @@ module.exports = {
                 permissionOverwrites: [
                     {
                         id: interaction.guild.id,
-                        deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages]
+                        deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages],
                     },
                     {
                         id: interaction.user.id,
-                        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory]
+                        allow: [
+                            PermissionFlagsBits.ViewChannel,
+                            PermissionFlagsBits.SendMessages,
+                            PermissionFlagsBits.ReadMessageHistory,
+                        ],
                     },
-                ]
+                ],
             });
 
-            channel.permissionOverwrites.create(role,
-                { ViewChannel: true, SendMessages: true },
-            );
+            channel.permissionOverwrites.create(role, { ViewChannel: true, SendMessages: true });
 
             channel.setParent(openCategory, { lockPermissions: false });
 
             const embed = new EmbedBuilder()
                 .setColor(color)
-                .setTitle("New Ticket")
-                .setDescription("Please wait, staff will be with you shortly.")
+                .setTitle('New Ticket')
+                .setDescription('Please wait, staff will be with you shortly.')
                 .addFields(
-                    { name: "Topic", value: `${subject}`, inline: true },
-                    { name: "Created By", value: `${interaction.user}`, inline: true }
+                    { name: 'Topic', value: `${subject}`, inline: true },
+                    { name: 'Created By', value: `${interaction.user}`, inline: true }
                 )
-                .setTimestamp()
+                .setTimestamp();
 
-            channel.send({
-                embeds: [embed],
-                components: [
-                    new ActionRowBuilder()
-                        .addComponents(
+            channel
+                .send({
+                    embeds: [embed],
+                    components: [
+                        new ActionRowBuilder().addComponents(
                             new ButtonBuilder()
                                 .setCustomId('close-ticket')
                                 .setLabel('🔒 Close')
                                 .setStyle(ButtonStyle.Secondary)
-                        )
-                ],
-            }).catch((err) => { });
+                        ),
+                    ],
+                })
+                .catch(err => {});
 
             if (role) channel.send(`${role}`);
 
@@ -118,41 +152,46 @@ module.exports = {
             });
             await newTicket.save();
 
-            interaction.editReply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(color)
-                        .setTitle("Ticket Created")
-                        .setDescription(`Check it out here: ${channel}. Staff will be with you shortly!`)
-                        .setTimestamp()
-                ]
-            }).catch((err) => { });
+            interaction
+                .editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(color)
+                            .setTitle('Ticket Created')
+                            .setDescription(`Check it out here: ${channel}. Staff will be with you shortly!`)
+                            .setTimestamp(),
+                    ],
+                })
+                .catch(err => {});
 
             await ticketConfig.updateOne({
                 ticketId: ticketId,
             });
 
             const logChannel = interaction.guild.channels.cache.get(`${ticketConfig.ticketChannelID}`);
-            if (logChannel && ticketConfig.ticketLogs === true) logChannel.send({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(color)
-                        .setTitle("Ticket Created")
-                        .addFields(
-                            { name: "User", value: `${interaction.user}`, inline: true },
-                            { name: "Channel", value: `${interaction.channel}`, inline: true },
-                            { name: "Top", value: `${subject}`, inline: true }
-                        )
-                ],
-            }).catch((e => { }));
+            if (logChannel && ticketConfig.ticketLogs === true)
+                logChannel
+                    .send({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color)
+                                .setTitle('Ticket Created')
+                                .addFields(
+                                    { name: 'User', value: `${interaction.user}`, inline: true },
+                                    { name: 'Channel', value: `${interaction.channel}`, inline: true },
+                                    { name: 'Top', value: `${subject}`, inline: true }
+                                ),
+                        ],
+                    })
+                    .catch(e => {});
         }
 
         if (modal) {
             if (modal.customId !== 'modal-ticket-create') return;
-            const topic = await modal.fields.getTextInputValue("topic");
+            const topic = await modal.fields.getTextInputValue('topic');
 
-            modal.deferReply({ ephemeral: true }).catch((e => { }));
-            createTicket(ticketConfig, modal, topic)
+            modal.deferReply({ ephemeral: true }).catch(e => {});
+            createTicket(ticketConfig, modal, topic);
         }
-    }
-}
+    },
+};

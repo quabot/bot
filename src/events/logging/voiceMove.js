@@ -2,15 +2,14 @@ const { Client, EmbedBuilder, Colors, GuildBan, VoiceChannel } = require('discor
 const { getLogConfig, getLogChannel, getCustomizationConfig } = require('../../structures/functions/config');
 
 module.exports = {
-    event: "voiceStateUpdate",
-    name: "voiceMove",
+    event: 'voiceStateUpdate',
+    name: 'voiceMove',
     /**
      * @param {VoiceChannel} oldState
      * @param {VoiceChannel} newState
      * @param {Client} client
      */
     async execute(oldState, newState, client) {
-
         if (!newState.guild) return;
 
         const logConfig = await getLogConfig(client, newState.guild.id);
@@ -27,20 +26,22 @@ module.exports = {
         const user = newState.guild.members.cache.get(`${newState.id}`);
         if (!user) return;
 
-        let color = "#3a5a74";
+        let color = '#3a5a74';
         const config = await getCustomizationConfig(client, newState.guild.id);
-        if (config) color = config.color
+        if (config) color = config.color;
 
         const embed = new EmbedBuilder()
             .setColor(color)
             .setDescription(`**${user} switched from <#${oldState.channelId}> to <#${newState.channelId}>**`)
-            .setTimestamp()
+            .setTimestamp();
 
-        if (user.user.avatar) embed.setFooter({ text: `User: ${user.user.tag}`, iconURL: `${user.user.avatarURL({ dynamic: true })}` })
+        if (user.user.avatar)
+            embed.setFooter({ text: `User: ${user.user.tag}`, iconURL: `${user.user.avatarURL({ dynamic: true })}` });
 
-        logChannel.send({
-            embeds: [embed]
-        }).catch((e => { }));
-
-    }
-}
+        logChannel
+            .send({
+                embeds: [embed],
+            })
+            .catch(e => {});
+    },
+};

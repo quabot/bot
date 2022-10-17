@@ -1,8 +1,21 @@
-const { getApplicationConfig, getCustomizationConfig, getGiveawayConfig, getLevelConfig, getLogConfig, getMembersConfig, getModerationConfig, getPollConfig, getRolesConfig, getTicketConfig, getVerifyConfig, getWelcomeConfig } = require('../../structures/functions/config')
+const {
+    getApplicationConfig,
+    getCustomizationConfig,
+    getGiveawayConfig,
+    getLevelConfig,
+    getLogConfig,
+    getMembersConfig,
+    getModerationConfig,
+    getPollConfig,
+    getRolesConfig,
+    getTicketConfig,
+    getVerifyConfig,
+    getWelcomeConfig,
+} = require('../../structures/functions/config');
 
 module.exports = {
-    event: "guildCreate",
-    name: "botAdd",
+    event: 'guildCreate',
+    name: 'botAdd',
     async execute(guild, client, color) {
         await getApplicationConfig(client, guild.id);
         await getCustomizationConfig(client, guild.id);
@@ -30,5 +43,5 @@ module.exports = {
         //             .setColor(color)
         //     ]
         // })).catch((err => { }));
-    }
-}
+    },
+};

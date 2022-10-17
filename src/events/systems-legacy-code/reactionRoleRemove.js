@@ -1,18 +1,22 @@
 const { EmbedBuilder, Interaction } = require('discord.js');
 
 module.exports = {
-    event: "messageReactionRemove",
-    name: "reactionRoleRemove",
+    event: 'messageReactionRemove',
+    name: 'reactionRoleRemove',
     async execute(reaction, user, client) {
-
         const ReactionRoleSchema = require('../../structures/schemas/ReactionRoleSchema');
-        const reactionRole = await ReactionRoleSchema.findOne({
-            guildId: reaction.message.guildId,
-            messageId: reaction.message.id,
-            emoji: reaction._emoji.name
-        }, (err) => {
-            if (err) console.log(err);
-        }).clone().catch((e => { }));
+        const reactionRole = await ReactionRoleSchema.findOne(
+            {
+                guildId: reaction.message.guildId,
+                messageId: reaction.message.id,
+                emoji: reaction._emoji.name,
+            },
+            err => {
+                if (err) console.log(err);
+            }
+        )
+            .clone()
+            .catch(e => {});
 
         if (!reactionRole) return;
 
@@ -20,41 +24,37 @@ module.exports = {
         const member = reaction.message.guild.members.cache.get(`${user.id}`);
         if (!role) return;
 
-        if (reactionRole.reqPermission !== "None" && reactionRole.reqPermission !== "none") {
+        if (reactionRole.reqPermission !== 'None' && reactionRole.reqPermission !== 'none') {
             if (!member.permissions.has(reactionRole.reqPermission)) return;
         }
 
         switch (reactionRole.type) {
-
             //? Give and remove.
-            case "normal":
-                member.roles.remove(role).catch((e => { }));
+            case 'normal':
+                member.roles.remove(role).catch(e => {});
                 break;
 
-
             //? Only give it.
-            case "verify":
+            case 'verify':
                 break;
 
             //? Only remove it when a reaction is added.
-            case "drop":
+            case 'drop':
                 break;
 
             //? Give and removed, but reversed.
-            case "reversed":
-                member.roles.add(role).catch((e => { }));
+            case 'reversed':
+                member.roles.add(role).catch(e => {});
                 break;
 
             //? Unique mode.
-            case "unique":
-
+            case 'unique':
                 const reactions = await ReactionRoleSchema.find({
                     guildId: reaction.message.guildId,
                     messageId: reaction.message.id,
-                    mode: "unique"
+                    mode: 'unique',
                 });
                 if (!reactions) return;
-
 
                 let hasRole = false;
 
@@ -65,12 +65,9 @@ module.exports = {
                     if (member.roles.cache.some(role => role.id === `${item.roleId}`)) hasRole = true;
                 });
 
-                if (hasRole) member.roles.remove(role).catch((e => { }));
+                if (hasRole) member.roles.remove(role).catch(e => {});
 
                 break;
-
-
         }
-
-    }
-}
+    },
+};

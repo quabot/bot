@@ -8,15 +8,14 @@ let loaded = 0;
 let total = 0;
 let success = true;
 
-module.exports = async (client) => {
-
-    (await PG(`${process.cwd().replace(/\\/g, "/")}/src/commands/subcommands/*/*.js`)).map(async (subcommandFile) => {
+module.exports = async client => {
+    (await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/subcommands/*/*.js`)).map(async subcommandFile => {
         total += 1;
 
         const subcommand = require(subcommandFile);
 
-        if (!subcommand.name) return success = false;
-        if (!subcommand.command) return success = false;
+        if (!subcommand.name) return (success = false);
+        if (!subcommand.command) return (success = false);
 
         client.subcommands.set(`${subcommand.name}/${subcommand.command}`, subcommand);
 
@@ -25,4 +24,4 @@ module.exports = async (client) => {
 
     if (success) consola.success(`Successfully loaded ${loaded} subcommands.`);
     if (!success) consola.warn(`Failed to load all subcommands, loaded ${loaded}/${total} subcommands.`);
-}
+};

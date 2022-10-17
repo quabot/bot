@@ -1,4 +1,11 @@
-const { EmbedBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, Colors, SlashCommandBuilder } = require('discord.js');
+const {
+    EmbedBuilder,
+    ButtonStyle,
+    ButtonBuilder,
+    ActionRowBuilder,
+    Colors,
+    SlashCommandBuilder,
+} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -6,30 +13,29 @@ module.exports = {
         .setDescription('List all the server emojis.')
         .setDMPermission(false),
     /**
-     * @param {import('discord.js').Interaction} interaction 
+     * @param {import('discord.js').Interaction} interaction
      */
     async execute(client, interaction, color) {
-
-        await interaction.deferReply().catch((e => { }));
+        await interaction.deferReply().catch(e => {});
 
         const emoteList = [];
         interaction.guild.emojis.cache.forEach(e => {
             emoteList.push(e);
         });
 
-        const backId = 'backMusic'
-        const forwardId = 'forwardMusic'
+        const backId = 'backMusic';
+        const forwardId = 'forwardMusic';
         const backButton = new ButtonBuilder({
             style: ButtonStyle.Secondary,
             label: 'Back',
             emoji: '⬅️',
-            customId: backId
+            customId: backId,
         });
         const forwardButton = new ButtonBuilder({
             style: ButtonStyle.Secondary,
             label: 'Forward',
             emoji: '➡️',
-            customId: forwardId
+            customId: forwardId,
         });
 
         const makeEmbed = async start => {
@@ -40,16 +46,16 @@ module.exports = {
                 timestamp: Date.now(),
                 title: `Emotes ${start + 1}-${start + 10}/${emoteList.length}`,
                 fields: await Promise.all(
-                    current.map(async (emote) => {
-                        return ({
+                    current.map(async emote => {
+                        return {
                             name: `${emote.name}`,
                             value: `${emote}`,
-                            inline: true
-                        });
+                            inline: true,
+                        };
                     })
-                )
+                ),
             });
-        }
+        };
 
         let currentIndex = 0;
 
@@ -57,17 +63,14 @@ module.exports = {
         const msg = await interaction.editReply({
             embeds: [await makeEmbed(0)],
             ephemeral: true,
-            components: canFit
-                ? []
-                : [new ActionRowBuilder({ components: [forwardButton] })]
-        })
+            components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
+        });
         if (canFit) return;
 
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === user.id });
 
         collector.on('collect', async interaction => {
-
-            interaction.customId === backId ? (currentIndex -= 10) : (currentIndex += 10)
+            interaction.customId === backId ? (currentIndex -= 10) : (currentIndex += 10);
             await interaction.update({
                 embeds: [await makeEmbed(currentIndex)],
                 components: [
@@ -75,11 +78,10 @@ module.exports = {
                         components: [
                             ...(currentIndex ? [backButton] : []),
                             ...(currentIndex + 10 < emoteList.length ? [forwardButton] : []),
-                        ]
-                    })
-                ]
+                        ],
+                    }),
+                ],
             });
         });
-
-    }
-}
+    },
+};

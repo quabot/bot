@@ -1,27 +1,32 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { generateEmbed } = require("../../../structures/functions/embed");
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { generateEmbed } = require('../../../structures/functions/embed');
 
 module.exports = {
-    id: "embed-removefield",
+    id: 'embed-removefield',
     /**
-     * @param {import("discord.js").Interaction} interaction 
+     * @param {import("discord.js").Interaction} interaction
      */
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
+        await interaction.deferReply({ ephemeral: true }).catch(e => {});
 
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
-        
-        const index = interaction.message.embeds[1].data.fields ? interaction.message.embeds[1].data.fields.length - 1 : 0;
+        const index = interaction.message.embeds[1].data.fields
+            ? interaction.message.embeds[1].data.fields.length - 1
+            : 0;
 
-        interaction.message.edit({
-            embeds: [
-                EmbedBuilder.from(interaction.message.embeds[0]),
-                EmbedBuilder.from(interaction.message.embeds[1]).spliceFields(index, 1),
-            ]
-        }).catch((e => { }));
+        interaction.message
+            .edit({
+                embeds: [
+                    EmbedBuilder.from(interaction.message.embeds[0]),
+                    EmbedBuilder.from(interaction.message.embeds[1]).spliceFields(index, 1),
+                ],
+            })
+            .catch(e => {});
 
-        interaction.editReply({
-            embeds: [await generateEmbed(color, `Field deleted.`)]
-        }).catch((e => { }));
-    }
-}
+        interaction
+            .editReply({
+                embeds: [await generateEmbed(color, `Field deleted.`)],
+            })
+            .catch(e => {});
+    },
+};

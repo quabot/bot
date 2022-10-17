@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const reqString = {
     type: String,
     required: true,
-}
+};
 
 const reqNum = {
     type: Number,
-    required: true
-}
+    required: true,
+};
 
 const GiveawayConfigSchema = new mongoose.Schema({
     guildId: reqString,

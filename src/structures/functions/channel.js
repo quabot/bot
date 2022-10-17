@@ -1,4 +1,4 @@
-const { ChannelType } = require("discord.js");
+const { ChannelType } = require('discord.js');
 
 function checkChannel(channelType) {
     const validChannels = [
@@ -8,11 +8,11 @@ function checkChannel(channelType) {
         ChannelType.GuildNewsThread,
         ChannelType.GuildPrivateThread,
         ChannelType.GuildPublicThread,
-        ChannelType.GuildVoice
-    ]
+        ChannelType.GuildVoice,
+    ];
 
     if (validChannels.includes(channelType)) return true;
     if (!validChannels.includes(channelType)) return false;
 }
 
-module.exports = { checkChannel }
+module.exports = { checkChannel };

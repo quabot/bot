@@ -9,17 +9,18 @@ module.exports = {
      * @param {Interaction} interaction
      */
     async execute(client, interaction, color) {
+        await interaction.deferReply().catch(e => {});
 
-        await interaction.deferReply().catch((e => { }));
-
-        interaction.editReply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
-                    .setTitle(`${interaction.guild.name} Members`)
-                    .setDescription(`${interaction.guild.memberCount}`)
-                    .setTimestamp()
-            ]
-        }).catch((e => { }));
-    }
-}
+        interaction
+            .editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle(`${interaction.guild.name} Members`)
+                        .setDescription(`${interaction.guild.memberCount}`)
+                        .setTimestamp(),
+                ],
+            })
+            .catch(e => {});
+    },
+};

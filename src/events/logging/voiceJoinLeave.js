@@ -2,15 +2,14 @@ const { Client, EmbedBuilder, Colors, GuildBan, VoiceChannel } = require('discor
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
 
 module.exports = {
-    event: "voiceStateUpdate",
-    name: "voiceJoinLeave",
+    event: 'voiceStateUpdate',
+    name: 'voiceJoinLeave',
     /**
      * @param {VoiceChannel} oldState
      * @param {VoiceChannel} newState
      * @param {Client} client
      */
     async execute(oldState, newState, client, color) {
-
         if (!newState.guild) return;
 
         const logConfig = await getLogConfig(client, newState.guild.id);
@@ -30,25 +29,36 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor(Colors.Red)
                 .setDescription(`**${user} left <#${oldState.channelId}>**`)
-                .setTimestamp()
+                .setTimestamp();
 
-            if (user.user.avatar) embed.setFooter({ text: `User: ${user.user.tag}`, iconURL: `${user.user.avatarURL({ dynamic: true })}` });
-            
-            logChannel.send({
-                embeds: [embed]
-            }).catch((e => { }));
+            if (user.user.avatar)
+                embed.setFooter({
+                    text: `User: ${user.user.tag}`,
+                    iconURL: `${user.user.avatarURL({ dynamic: true })}`,
+                });
 
+            logChannel
+                .send({
+                    embeds: [embed],
+                })
+                .catch(e => {});
         } else {
             const embed = new EmbedBuilder()
-            .setColor(Colors.Green)
+                .setColor(Colors.Green)
                 .setDescription(`**${user} joined <#${newState.channelId}>**`)
-                .setTimestamp()
+                .setTimestamp();
 
-            if (user.user.avatar) embed.setFooter({ text: `User: ${user.user.tag}`, iconURL: `${user.user.avatarURL({ dynamic: true })}` })
+            if (user.user.avatar)
+                embed.setFooter({
+                    text: `User: ${user.user.tag}`,
+                    iconURL: `${user.user.avatarURL({ dynamic: true })}`,
+                });
 
-            logChannel.send({
-                embeds: [embed]
-            }).catch((e => { }));
+            logChannel
+                .send({
+                    embeds: [embed],
+                })
+                .catch(e => {});
         }
-    }
-}
+    },
+};

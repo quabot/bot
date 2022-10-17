@@ -1,39 +1,55 @@
-const { Interaction, Client, PermissionFlagsBits, ButtonBuilder, ActionRowBuilder, ButtonStyle, EmbedBuilder, Colors } = require('discord.js');
+const {
+    Interaction,
+    Client,
+    PermissionFlagsBits,
+    ButtonBuilder,
+    ActionRowBuilder,
+    ButtonStyle,
+    EmbedBuilder,
+    Colors,
+} = require('discord.js');
 const { generateEmbed } = require('../../../structures/functions/embed');
 const Application = require('../../../structures/schemas/ApplicationSchema');
 
 module.exports = {
-    name: "list",
-    command: "applications",
+    name: 'list',
+    command: 'applications',
     /**
-     * @param {Client} client 
-     * @param {Interaction} interaction 
+     * @param {Client} client
+     * @param {Interaction} interaction
      */
     async execute(client, interaction, color) {
-        
-        await interaction.deferReply({ ephemeral: true }).catch((e => { }));
+        await interaction.deferReply({ ephemeral: true }).catch(e => {});
 
         const applications = await Application.find({
-            guildId: interaction.guildId
+            guildId: interaction.guildId,
         });
 
-        if (!applications) return interaction.editReply({
-            embeds: [await generateEmbed(color, "Couldn't find any configured applications in this server! Add one on [my dashboard](https://dashboard.quabot.net).")]
-        }).catch((e => { }));
+        if (!applications)
+            return interaction
+                .editReply({
+                    embeds: [
+                        await generateEmbed(
+                            color,
+                            "Couldn't find any configured applications in this server! Add one on [my dashboard](https://dashboard.quabot.net)."
+                        ),
+                    ],
+                })
+                .catch(e => {});
 
-        const backId = 'back-list'
-        const forwardId = 'forward-list'
+        const backId = 'back-list';
+        const forwardId = 'forward-list';
         const backButton = new ButtonBuilder({
             style: ButtonStyle.Secondary,
             label: 'Back',
             emoji: '⬅️',
-            customId: backId
+            customId: backId,
         });
         const forwardButton = new ButtonBuilder({
             style: ButtonStyle.Secondary,
             label: 'Forward',
             emoji: '➡️',
-            customId: forwardId
+            customId: forwardId,
         });
 
         const makeEmbed = async start => {
@@ -44,16 +60,16 @@ module.exports = {
                 timestamp: Date.now(),
                 title: `Applications ${start + 1}-${start + 5}/${applications.length}`,
                 fields: await Promise.all(
-                    current.map(async (application) => {
-                        return ({
+                    current.map(async application => {
+                        return {
                             name: `${application.applicationName} - \`${application.applicationId}\``,
                             value: `${application.applicationDescription}`,
-                            inline: true
-                        });
+                            inline: true,
+                        };
                     })
-                )
+                ),
             });
-        }
+        };
 
         let currentIndex = 0;
 
@@ -61,17 +77,14 @@ module.exports = {
         const msg = await interaction.editReply({
             embeds: [await makeEmbed(0)],
             ephemeral: true,
-            components: canFit
-                ? []
-                : [new ActionRowBuilder({ components: [forwardButton] })]
-        })
+            components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
+        });
         if (canFit) return;
 
         const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === user.id });
 
         collector.on('collect', async interaction => {
-
-            interaction.customId === backId ? (currentIndex -= 5) : (currentIndex += 5)
+            interaction.customId === backId ? (currentIndex -= 5) : (currentIndex += 5);
             await interaction.update({
                 embeds: [await makeEmbed(currentIndex)],
                 components: [
@@ -79,10 +92,10 @@ module.exports = {
                         components: [
                             ...(currentIndex ? [backButton] : []),
                             ...(currentIndex + 5 < applications.length ? [forwardButton] : []),
-                        ]
-                    })
-                ]
+                        ],
+                    }),
+                ],
             });
         });
-    }
-}
+    },
+};

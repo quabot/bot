@@ -2,13 +2,12 @@ const { Client, EmbedBuilder, Colors } = require('discord.js');
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
 
 module.exports = {
-    event: "inviteCreate",
-    name: "inviteCreate",
+    event: 'inviteCreate',
+    name: 'inviteCreate',
     /**
      * @param {Client} client
      */
     async execute(invite, client, color) {
-
         if (!invite.guild) return;
 
         const logConfig = await getLogConfig(client, invite.guild.id);
@@ -19,13 +18,19 @@ module.exports = {
 
         if (!logConfig.enabledEvents.includes(this.event)) return;
 
-        logChannel.send({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription(`**Invite Created**\n[discord.gg/${invite.code}](https://discord.gg/${invite.code})\n${invite.inviter} - ${invite.channel}\n\n**Expires after:**\n${invite.maxAge / 60 / 60} hours`)
-                    .setColor(Colors.Green)
-                    .setTimestamp()
-            ]
-        }).catch((e => { }));
-    }
-}
+        logChannel
+            .send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            `**Invite Created**\n[discord.gg/${invite.code}](https://discord.gg/${invite.code})\n${
+                                invite.inviter
+                            } - ${invite.channel}\n\n**Expires after:**\n${invite.maxAge / 60 / 60} hours`
+                        )
+                        .setColor(Colors.Green)
+                        .setTimestamp(),
+                ],
+            })
+            .catch(e => {});
+    },
+};

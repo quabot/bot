@@ -3,17 +3,17 @@ const mongoose = require('mongoose');
 const reqString = {
     type: String,
     required: true,
-}
+};
 
 const reqArray = {
     type: Array,
     required: true,
-}
+};
 
 const reqBool = {
     type: Boolean,
     required: true,
-}
+};
 
 const JoinLeaveSchema = new mongoose.Schema({
     guildId: reqString,
@@ -25,7 +25,7 @@ const JoinLeaveSchema = new mongoose.Schema({
     joinMessage: reqString, // Only for the text based messages
     joinEmbedBuilder: reqBool,
     joinEmbed: reqArray, // join msg for embed msgs
-    
+
     leaveMessage: reqString, // Only for the text based messages
     leaveEmbedBuilder: reqBool,
     leaveEmbed: reqArray, // leave msg for embed msgs

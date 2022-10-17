@@ -2,14 +2,13 @@ const { Client, GuildMember } = require('discord.js');
 const { getRolesConfig } = require('../../structures/functions/config');
 
 module.exports = {
-    event: "guildMemberAdd",
-    name: "joinRoles",
+    event: 'guildMemberAdd',
+    name: 'joinRoles',
     /**
      * @param {GuildMember} member
      * @param {Client} client
      */
     async execute(member, client, color) {
-
         if (!member.guild) return;
 
         const rolesConfig = await getRolesConfig(client, member.guild.id);
@@ -22,7 +21,7 @@ module.exports = {
                 const fRole = member.guild.roles.cache.get(role.id);
                 if (!fRole) return;
                 setTimeout(() => {
-                    member.roles.add(fRole).catch((e => { }));
+                    member.roles.add(fRole).catch(e => {});
                 }, role.delay);
             }
 
@@ -30,9 +29,9 @@ module.exports = {
                 const fRole = member.guild.roles.cache.get(role.id);
                 if (!fRole) return;
                 setTimeout(() => {
-                    member.roles.add(fRole).catch((e => { }));
+                    member.roles.add(fRole).catch(e => {});
                 }, role.delay);
             }
         });
-    }
-}
+    },
+};

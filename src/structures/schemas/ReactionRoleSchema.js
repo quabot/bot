@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const reqString = {
     type: String,
     required: true,
-}
+};
 
 const ReactionRoleSchema = new mongoose.Schema({
     guildId: reqString,

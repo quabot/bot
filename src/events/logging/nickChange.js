@@ -2,15 +2,14 @@ const { Client, EmbedBuilder, Colors, GuildBan, GuildMember } = require('discord
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
 
 module.exports = {
-    event: "guildMemberUpdate",
-    name: "nickChange",
+    event: 'guildMemberUpdate',
+    name: 'nickChange',
     /**
      * @param {GuildMember} oldMember
      * @param {GuildMember} newMember
      * @param {Client} client
      */
     async execute(oldMember, newMember, client, color) {
-
         if (!oldMember.guild) return;
 
         const logConfig = await getLogConfig(client, oldMember.guild.id);
@@ -26,18 +25,24 @@ module.exports = {
         if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) return;
         if (oldMember.avatar !== newMember.avatar) return;
 
-        let oldNick = oldMember.nickname ? oldMember.nickname : "No nickname";
-        let newNick = newMember.nickname ? newMember.nickname : "No nickname";
+        let oldNick = oldMember.nickname ? oldMember.nickname : 'No nickname';
+        let newNick = newMember.nickname ? newMember.nickname : 'No nickname';
 
         const embed = new EmbedBuilder()
             .setColor(Colors.Yellow)
             .setDescription(`**Nickname Changed**\n\`${oldNick}\` -> \`${newNick}\``)
             .setTimestamp();
 
-        if (newMember.user.avatar) embed.setFooter({ text: `User: ${newMember.user.tag}`, iconURL: `${newMember.user.avatarURL({ dynamic: true })}` });
+        if (newMember.user.avatar)
+            embed.setFooter({
+                text: `User: ${newMember.user.tag}`,
+                iconURL: `${newMember.user.avatarURL({ dynamic: true })}`,
+            });
 
-        logChannel.send({
-            embeds: [embed]
-        }).catch((e => { }));
-    }
-}
+        logChannel
+            .send({
+                embeds: [embed],
+            })
+            .catch(e => {});
+    },
+};

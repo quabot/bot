@@ -2,34 +2,50 @@ const { Interaction, Client, InteractionType, ChannelType, EmbedBuilder, Colors 
 const { getCustomizationConfig } = require('../../structures/functions/config');
 
 module.exports = {
-    event: "interactionCreate",
-    name: "subcommandExecutor",
+    event: 'interactionCreate',
+    name: 'subcommandExecutor',
     /**
      * @param {Interaction} interaction
      * @param {Client} client
      */
     async execute(interaction, client) {
-
         if (interaction.type !== InteractionType.ApplicationCommand) return;
         if (!interaction.guildId) return;
         if (interaction.channel.type === ChannelType.DM || interaction.channel.type === ChannelType.GroupDM) return;
 
-        try { if (!interaction.options.getSubcommand()) return; } catch (e) { return; }
-
+        try {
+            if (!interaction.options.getSubcommand()) return;
+        } catch (e) {
+            return;
+        }
 
         const subcommand = client.subcommands.get(`${interaction.options.getSubcommand()}/${interaction.commandName}`);
-        if (!subcommand) return interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(Colors.Red)
-                    .setDescription(`⛔ An error occured! Couldn't find the command \`${interaction.commandName}/${interaction.options.getSubcommand()}\``)
-            ]
-        }).catch((e => { })) && client.subcommands.delete(`${interaction.options.getSubcommand()}/${interaction.commandName}`);
-
+        if (!subcommand)
+            return (
+                interaction
+                    .reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(Colors.Red)
+                                .setDescription(
+                                    `⛔ An error occured! Couldn't find the command \`${
+                                        interaction.commandName
+                                    }/${interaction.options.getSubcommand()}\``
+                                ),
+                        ],
+                    })
+                    .catch(e => {}) &&
+                client.subcommands.delete(`${interaction.options.getSubcommand()}/${interaction.commandName}`)
+            );
 
         if (subcommand.permission) {
             if (!interaction.member.permissions.has(subcommand.permission)) {
-                return interaction.reply({ content: `You do not have the required permissions for this subcommand: \`${interaction.commandName}/${subcommand.name}\`.\nYou need the permission: \`${subcommand.permission}\` to do that`, ephemeral: true }).catch((e => { }));
+                return interaction
+                    .reply({
+                        content: `You do not have the required permissions for this subcommand: \`${interaction.commandName}/${subcommand.name}\`.\nYou need the permission: \`${subcommand.permission}\` to do that`,
+                        ephemeral: true,
+                    })
+                    .catch(e => {});
             }
         }
 
@@ -40,19 +56,23 @@ module.exports = {
                 if (!interaction.guild.members.me.permissionsIn(interaction.channel).has(permission)) error = true;
             });
 
-            if (error) return interaction.reply({
-                content:
-                    `I need the permission(s): \`${subcommand.permissions.map(i => i)}\` to execute that command. Double check my permissions for the server and/or this channel.`
-                , ephemeral: true
-            }).catch((e => { }));
+            if (error)
+                return interaction
+                    .reply({
+                        content: `I need the permission(s): \`${subcommand.permissions.map(
+                            i => i
+                        )}\` to execute that command. Double check my permissions for the server and/or this channel.`,
+                        ephemeral: true,
+                    })
+                    .catch(e => {});
         }
 
+        if (subcommand.command !== interaction.commandName || subcommand.name !== interaction.options.getSubcommand())
+            return;
 
-        if (subcommand.command !== interaction.commandName || subcommand.name !== interaction.options.getSubcommand()) return;
-
-        let color = "#3a5a74";
+        let color = '#3a5a74';
         const config = await getCustomizationConfig(client, interaction.guildId);
-        if (config) color = config.color
+        if (config) color = config.color;
         subcommand.execute(client, interaction, color);
-    }
-}
+    },
+};

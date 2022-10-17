@@ -2,15 +2,14 @@ const { Client, EmbedBuilder, Colors, GuildBan, Message } = require('discord.js'
 const { getLogConfig, getLogChannel } = require('../../structures/functions/config');
 
 module.exports = {
-    event: "messageDelete",
-    name: "messageDelete",
+    event: 'messageDelete',
+    name: 'messageDelete',
     /**
      * @param {Message} message
      * @param {Client} client
      */
     async execute(message, client, color) {
         try {
-
             if (!message.guildId) return;
 
             const logConfig = await getLogConfig(client, message.guildId);
@@ -21,7 +20,7 @@ module.exports = {
 
             if (!logConfig.enabledEvents.includes(this.event)) return;
 
-            let description = "**Message Deleted**";
+            let description = '**Message Deleted**';
 
             let content = String(message.content);
             if (content === null) return;
@@ -30,23 +29,26 @@ module.exports = {
 
             description = `${description}\n${content}`;
 
-            const embed = new EmbedBuilder()
-                .setDescription(`${description}`)
-                .setColor(Colors.Red);
-            if (message.author.avatar) embed.setFooter({ text: `User: ${message.author.tag}`, iconURL: `${message.author.avatarURL({ dynamic: true })}` })
+            const embed = new EmbedBuilder().setDescription(`${description}`).setColor(Colors.Red);
+            if (message.author.avatar)
+                embed.setFooter({
+                    text: `User: ${message.author.tag}`,
+                    iconURL: `${message.author.avatarURL({ dynamic: true })}`,
+                });
 
-            embed.addFields({ name: "Channel", value: `${message.channel}`, inline: true });
+            embed.addFields({ name: 'Channel', value: `${message.channel}`, inline: true });
             if (message.attachments !== null) {
                 message.attachments.map(getUrls);
                 function getUrls(item) {
-                    embed.addFields({ name: `**Attachment:**`, value: `${[item.url].join(" ")}` })
+                    embed.addFields({ name: `**Attachment:**`, value: `${[item.url].join(' ')}` });
                 }
             }
 
-            logChannel.send({
-                embeds: [embed]
-            }).catch((e => { }));
-
-        } catch (e) { }
-    }
-}
+            logChannel
+                .send({
+                    embeds: [embed],
+                })
+                .catch(e => {});
+        } catch (e) {}
+    },
+};
