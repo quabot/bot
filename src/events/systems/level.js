@@ -34,7 +34,7 @@ module.exports = {
 
         const levelConfig = await getLevelConfig(client, message.guildId);
         if (!levelConfig) return;
-        // if (levelConfig.levelEnabled === false) return;
+        if (levelConfig.levelEnabled === false) return;
         if (levelConfig.levelExcludedChannels.includes(message.channel.id)) return;
 
         let parent = "none";

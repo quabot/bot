@@ -19,9 +19,9 @@ module.exports = {
         if (!levelConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just generated a new server config! Please run that command again.")]
         }).catch((e => { }));
-        // if (levelConfig.levelEnabled === false) return interaction.editReply({
-        //     embeds: [await generateEmbed(color, "Levels are disabled in this server.")]
-        // }).catch((e => { }));
+        if (levelConfig.levelEnabled === false) return interaction.editReply({
+            embeds: [await generateEmbed(color, "Levels are disabled in this server.")]
+        }).catch((e => { }));
 
         const Level = require("../../../structures/schemas/LevelSchema");
         let levelDB = await Level.find({
