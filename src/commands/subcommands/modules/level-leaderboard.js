@@ -19,9 +19,9 @@ module.exports = {
         if (!levelConfig) return interaction.editReply({
             embeds: [await generateEmbed(color, "We just generated a new server config! Please run that command again.")]
         }).catch((e => { }));
-        if (levelConfig.levelEnabled === false) return interaction.editReply({
-            embeds: [await generateEmbed(color, "Levels are disabled in this server.")]
-        }).catch((e => { }));
+        // if (levelConfig.levelEnabled === false) return interaction.editReply({
+        //     embeds: [await generateEmbed(color, "Levels are disabled in this server.")]
+        // }).catch((e => { }));
 
         const Level = require("../../../structures/schemas/LevelSchema");
         let levelDB = await Level.find({
@@ -35,10 +35,12 @@ module.exports = {
             level: 0,
         }];
 
+        const members = await interaction.guild.members.fetch();
+
         function compareLevel(a, b) { return b.level - a.level; }
         function compareXp(a, b) { return b.xp - a.xp; }
         levelDB.sort(compareXp);
-        if (sortBy === "level") levelDB = levelDB.sort(compareLevel);
+        if (sortBy === "level") levelDB = levelDB.sort(compareLevel).filter(({ userId }) => members.some(member => member.user.id === userId));
         levelDB = levelDB.slice(0, 10);
 
         interaction.editReply({

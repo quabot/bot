@@ -57,6 +57,14 @@ module.exports = {
                     .setLabel("Set Footer")
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
+                    .setCustomId("embed-timestamp")
+                    .setLabel("Add Timestamp")
+                    .setStyle(ButtonStyle.Primary),
+            )
+
+        const buttons3 = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
                     .setCustomId("embed-addfield")
                     .setLabel("Add Field")
                     .setStyle(ButtonStyle.Primary),
@@ -66,7 +74,7 @@ module.exports = {
                     .setStyle(ButtonStyle.Danger),
             )
 
-        const buttons3 = new ActionRowBuilder()
+        const buttons4 = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId("embed-send")
@@ -83,7 +91,7 @@ module.exports = {
             new EmbedBuilder()
                 .setDescription("\u200b")
                 .setColor(color)
-            ], components: [buttons1, buttons2, buttons3]
+            ], components: [buttons1, buttons2, buttons3,  buttons4]
         }).catch((e => { }));
     }
 }

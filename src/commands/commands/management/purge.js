@@ -54,8 +54,8 @@ module.exports = {
                 interaction.reply({
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle('Messages purged')
-                            .setDescription(`${amount} message(s) were purged from this channel by ${interaction.user}`)
+                            .setTitle('Messages deleted')
+                            .setDescription(`${amount} message(s) were deleted from this channel by ${interaction.user}`)
                             .setColor(color)
                     ]
                 }).catch((e => { }));
