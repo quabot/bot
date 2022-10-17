@@ -24,12 +24,20 @@ module.exports = async client => {
     consola.success(`Successfully loaded ${CommandsList.length - contextMenus.length} commands.`);
 
     try {
-        return; // No commands have to be loaded.
-        console.log(`Started refreshing ${CommandsList.length} commands.`);
+        if (process.env.RELOAD_COMMANDS) {
+            console.log(`Started refreshing ${CommandsList.length} commands.`);
 
-        const data = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: CommandsList });
-
-        console.log(`Successfully reloaded ${CommandsList.length} commands.`);
+            if (process.env.DEV) {
+                await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
+                    body: CommandsList,
+                });
+            } else {
+                await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+                    body: CommandsList,
+                });
+            }
+            console.log(`Successfully reloaded ${CommandsList.length} commands.`);
+        }
     } catch (error) {
         console.error(error);
     }

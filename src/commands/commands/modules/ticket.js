@@ -26,6 +26,7 @@ module.exports = {
                 .setDescription('Remove a user from a ticket.')
                 .addUserOption(option => option.setName('user').setRequired(true).setDescription('The user to remove.'))
         )
+        .addSubcommand(command => command.setName('claim').setDescription('Claim a ticket.'))
         .setDMPermission(false),
     async execute(client, interaction, color) {},
 };

@@ -78,7 +78,8 @@ module.exports = {
                 .setDescription('Please wait, staff will be with you shortly.')
                 .addFields(
                     { name: 'Topic', value: `${subject}`, inline: true },
-                    { name: 'Created By', value: `${interaction.user}`, inline: true }
+                    { name: 'Created By', value: `${interaction.user}`, inline: true },
+                    { name: 'Claimed by', value: 'Not claimed yet', inline: true }
                 )
                 .setTimestamp();
 
@@ -90,6 +91,10 @@ module.exports = {
                             new ButtonBuilder()
                                 .setCustomId('close-ticket')
                                 .setLabel('🔒 Close')
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
+                                .setCustomId('claim-ticket')
+                                .setLabel('🙋‍♂️ Claim')
                                 .setStyle(ButtonStyle.Secondary)
                         ),
                     ],
