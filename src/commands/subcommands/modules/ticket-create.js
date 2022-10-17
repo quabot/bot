@@ -43,7 +43,9 @@ module.exports = {
                 .catch(e => {});
 
         async function createTicket(ticketConfig, interaction, subject) {
-            let role = interaction.guild.roles.cache.get(`${ticketConfig.ticketSupport}`);
+            const role =
+                interaction.guild.roles.cache.get(`${ticketConfig.ticketSupport}`) ??
+                (await interaction.guild.members.fetch(interaction.guild.ownerId));
 
             const openCategory = interaction.guild.channels.cache.get(`${ticketConfig.ticketCategory}`);
 
