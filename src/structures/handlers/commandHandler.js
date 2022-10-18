@@ -11,7 +11,7 @@ require('dotenv').config();
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 module.exports = async client => {
-    CommandsList = [];
+    const CommandsList = [];
     const contextMenus = await getContexts(client);
     contextMenus.forEach(i => CommandsList.push(i));
 

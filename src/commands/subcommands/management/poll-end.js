@@ -9,7 +9,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
         const id = interaction.options.getInteger('id');
 
-        const pollConfig = await getPollConfig(client, interaction.guildId);
+        const pollConfig = await getPollConfig(interaction.guildId);
         if (!pollConfig)
             return interaction
                 .editReply({

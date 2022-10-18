@@ -22,7 +22,7 @@ module.exports = {
      * @param {import("discord.js").ModalSubmitInteraction} interaction
      */
     async execute(client, interaction, color) {
-        const pollConfig = await getPollConfig(client, interaction.guildId);
+        const pollConfig = await getPollConfig(interaction.guildId);
         if (!pollConfig)
             return interaction
                 .reply({

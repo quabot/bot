@@ -25,7 +25,7 @@ module.exports = {
         const question = interaction.fields.getTextInputValue('question');
         let description = interaction.fields.getTextInputValue('description');
 
-        const pollConfig = await getPollConfig(client, interaction.guildId);
+        const pollConfig = await getPollConfig(interaction.guildId);
         if (!pollConfig)
             return interaction
                 .reply({

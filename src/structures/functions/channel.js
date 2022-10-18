@@ -11,8 +11,7 @@ function checkChannel(channelType) {
         ChannelType.GuildVoice,
     ];
 
-    if (validChannels.includes(channelType)) return true;
-    if (!validChannels.includes(channelType)) return false;
+    return validChannels.includes(channelType);
 }
 
 module.exports = { checkChannel };

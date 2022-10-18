@@ -4,7 +4,7 @@ const { glob } = require('glob');
 const PG = promisify(glob);
 
 async function getContexts(client) {
-    ContextList = [];
+    const ContextList = [];
 
     (await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/context/*.js`)).map(async contextFile => {
         const contextMenu = require(contextFile);

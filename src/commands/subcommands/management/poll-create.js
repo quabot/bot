@@ -27,7 +27,7 @@ module.exports = {
         const choices = interaction.options.getInteger('choices');
         const duration = interaction.options.getString('duration');
 
-        const pollConfig = await getPollConfig(client, interaction.guildId);
+        const pollConfig = await getPollConfig(interaction.guildId);
         if (!pollConfig)
             return interaction
                 .reply({

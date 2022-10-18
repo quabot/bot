@@ -24,7 +24,7 @@ module.exports = {
         await getLogConfig(client, guild.id);
         await getMembersConfig(client, guild.id);
         await getModerationConfig(client, guild.id);
-        await getPollConfig(client, guild.id);
+        await getPollConfig(guild.id);
         await getRolesConfig(client, guild.id);
         await getTicketConfig(client, guild.id);
         await getVerifyConfig(client, guild.id);

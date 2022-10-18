@@ -1,14 +1,15 @@
-const { EmbedBuilder, Colors } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { getModerationConfig, getPollConfig } = require('./config');
 const { shuffleArray } = require('./arrays');
 const { generateEmbed } = require('./embed');
 
 async function tempUnban(client, document, color) {
+    const TempBan = require('../schemas/TempbanSchema');
     const guild = client.guilds.cache.get(`${document.guildId}`);
     if (!guild) return;
     const channel = guild.channels.cache.get(`${document.channelId}`);
 
-    let member = await guild.bans.fetch(document.userId).catch(err => {
+    await guild.bans.fetch(document.userId).catch(err => {
         return;
     });
 
@@ -16,48 +17,45 @@ async function tempUnban(client, document, color) {
         if (err.code !== 50035) return;
     });
 
-    const TempBan = require('../schemas/TempbanSchema');
     await TempBan.findOneAndDelete({
         guildId: document.guildId,
         userId: document.userId,
         banId: document.banId,
     });
 
-    if (channel)
-        channel
-            .send({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(color)
-                        .setTitle('Member Unbanned!')
-                        .addFields(
-                            { name: 'User', value: `<@${document.userId}>`, inline: true },
-                            { name: 'Unbanned After', value: `${document.banDuration}`, inline: true },
-                            { name: 'Ban-Id', value: `${document.banId}`, inline: true }
-                        )
-                        .setTimestamp(),
-                ],
-            })
-            .catch(e => {});
+    await channel
+        ?.send({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(color)
+                    .setTitle('Member Unbanned!')
+                    .addFields(
+                        { name: 'User', value: `<@${document.userId}>`, inline: true },
+                        { name: 'Unbanned After', value: `${document.banDuration}`, inline: true },
+                        { name: 'Ban-Id', value: `${document.banId}`, inline: true }
+                    )
+                    .setTimestamp(),
+            ],
+        })
+        .catch(e => {});
 
     const moderationConfig = await getModerationConfig(client, document.guildId);
     const logChannel = guild.channels.cache.get(`${moderationConfig.channelId}`);
-    if (logChannel)
-        logChannel
-            .send({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(color)
-                        .setTitle('Member Auto-Unbanned')
-                        .addFields(
-                            { name: 'User', value: `<@${document.userId}>`, inline: true },
-                            { name: 'Unbanned After', value: `${document.banDuration}`, inline: true },
-                            { name: 'Ban-Id', value: `${document.banId}`, inline: true }
-                        )
-                        .setTimestamp(),
-                ],
-            })
-            .catch(e => {});
+    await logChannel
+        ?.send({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(color)
+                    .setTitle('Member Auto-Unbanned')
+                    .addFields(
+                        { name: 'User', value: `<@${document.userId}>`, inline: true },
+                        { name: 'Unbanned After', value: `${document.banDuration}`, inline: true },
+                        { name: 'Ban-Id', value: `${document.banId}`, inline: true }
+                    )
+                    .setTimestamp(),
+            ],
+        })
+        .catch(e => {});
 }
 
 async function endPoll(client, document, color) {
@@ -77,18 +75,18 @@ async function endPoll(client, document, color) {
     const channel = guild.channels.cache.get(poll.channelId);
     if (!channel) return;
 
-    const pollConfig = await getPollConfig(client, guild.id);
-    if (pollConfig.pollEnabled === false) return;
+    const pollConfig = await getPollConfig(guild.id);
+    if (!pollConfig.pollEnabled) return;
 
     channel.messages
         .fetch(`${poll.msgId}`)
         .then(message => {
-            let reactions = message.reactions.cache
+            const reactions = message.reactions.cache
                 .each(async reaction => await reaction.users.fetch())
                 .map(reaction => reaction.count)
                 .flat();
 
-            var winner = Math.max(...reactions);
+            const winner = Math.max(...reactions);
 
             let winMsg;
             if (reactions[0] === winner) winMsg = poll.optionsArray[0];
@@ -184,7 +182,7 @@ async function endGiveaway(client, document, color) {
 
 async function handleVote(client, data) {
     const User = require('../../structures/schemas/LevelVoteSchema');
-    let foundUser = await User.findOne({
+    foundUser = await User.findOne({
         userId: data.user,
     });
     if (!foundUser) {
@@ -193,21 +191,19 @@ async function handleVote(client, data) {
             userId: data.user,
         });
         await newUser.save().catch(e => {});
-    }
-    if (foundUser) {
-        foundUser.lastVote = new Date().getTime() + 43200000;
-        await foundUser.save().catch(e => {});
-    }
 
-    if (!foundUser)
         foundUser = {
             voted: false,
             lastVote: '0',
         };
+    } else {
+        foundUser.lastVote = new Date().getTime() + 43200000;
+        await foundUser.save().catch(e => {});
+    }
 
     const channel = client.guilds.cache.get(`1007810461347086357`).channels.cache.get('1024600377628299266');
 
-    channel.send({
+    await channel.send({
         embeds: [
             new EmbedBuilder()
                 .setTitle('User voted!')

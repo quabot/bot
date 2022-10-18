@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const { glob } = require('glob');
-const Ascii = require('ascii-table');
 const PG = promisify(glob);
 const consola = require('consola');
 
@@ -22,6 +21,7 @@ module.exports = async client => {
         loaded += 1;
     });
 
-    if (success) consola.success(`Successfully loaded ${loaded} subcommands.`);
-    if (!success) consola.warn(`Failed to load all subcommands, loaded ${loaded}/${total} subcommands.`);
+    if (success) {
+        consola.success(`Successfully loaded ${loaded} subcommands.`);
+    } else consola.warn(`Failed to load all subcommands, loaded ${loaded}/${total} subcommands.`);
 };

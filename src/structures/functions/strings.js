@@ -11,38 +11,36 @@ function isValidHttpUrl(string) {
 }
 
 function joinVariables(text, member) {
-    let joinVarMsg = text;
-
-    joinVarMsg = joinVarMsg.replaceAll('{user}', member);
-    joinVarMsg = joinVarMsg.replaceAll('{username}', member.user.username);
-    joinVarMsg = joinVarMsg.replaceAll('{tag}', member.user.tag);
-    joinVarMsg = joinVarMsg.replaceAll('{discriminator}', member.user.discriminator);
-    joinVarMsg = joinVarMsg.replaceAll('{guild}', member.guild.name);
-    joinVarMsg = joinVarMsg.replaceAll('{members}', member.guild.memberCount);
-    joinVarMsg = joinVarMsg.replaceAll('{id}', member.user.id);
-    joinVarMsg = joinVarMsg.replaceAll('{avatarhash}', member.user.avatar);
-    joinVarMsg = joinVarMsg.replaceAll('{avatar}', `${member.user.displayAvatarURL({ dynamic: false })}`);
+    const joinVarMsg = text
+        .replaceAll('{user}', member)
+        .replaceAll('{username}', member.user.username)
+        .replaceAll('{tag}', member.user.tag)
+        .replaceAll('{discriminator}', member.user.discriminator)
+        .replaceAll('{guild}', member.guild.name)
+        .replaceAll('{members}', member.guild.memberCount)
+        .replaceAll('{id}', member.user.id)
+        .replaceAll('{avatarhash}', member.user.avatar)
+        .replaceAll('{avatar}', `${member.user.displayAvatarURL({ dynamic: false })}`);
 
     return joinVarMsg;
 }
 
 function levelVariables(text, member, level, xp, message) {
-    let levelVarMsg = text;
-
-    levelVarMsg = levelVarMsg.replaceAll('{user}', member);
-    levelVarMsg = levelVarMsg.replaceAll('{username}', member.user.username);
-    levelVarMsg = levelVarMsg.replaceAll('{tag}', member.user.tag);
-    levelVarMsg = levelVarMsg.replaceAll('{discriminator}', member.user.discriminator);
-    levelVarMsg = levelVarMsg.replaceAll('{guild}', member.guild.name);
-    levelVarMsg = levelVarMsg.replaceAll('{members}', member.guild.memberCount);
-    levelVarMsg = levelVarMsg.replaceAll('{id}', member.user.id);
-    levelVarMsg = levelVarMsg.replaceAll('{xp}', xp);
-    levelVarMsg = levelVarMsg.replaceAll('{msg}', message.url);
-    levelVarMsg = levelVarMsg.replaceAll('{required}', (parseInt(level) + 1) * 400 + 100);
-    levelVarMsg = levelVarMsg.replaceAll('{channel}', message.channel);
-    levelVarMsg = levelVarMsg.replaceAll('{level}', level);
-    levelVarMsg = levelVarMsg.replaceAll('{avatarhash}', member.user.avatar);
-    levelVarMsg = levelVarMsg.replaceAll('{avatar}', `${member.user.displayAvatarURL({ dynamic: false })}`);
+    const levelVarMsg = text
+        .replaceAll('{user}', member)
+        .replaceAll('{username}', member.user.username)
+        .replaceAll('{tag}', member.user.tag)
+        .replaceAll('{discriminator}', member.user.discriminator)
+        .replaceAll('{guild}', member.guild.name)
+        .replaceAll('{members}', member.guild.memberCount)
+        .replaceAll('{id}', member.user.id)
+        .replaceAll('{xp}', xp)
+        .replaceAll('{msg}', message.url)
+        .replaceAll('{required}', (parseInt(level) + 1) * 400 + 100)
+        .replaceAll('{channel}', message.channel)
+        .replaceAll('{level}', level)
+        .replaceAll('{avatarhash}', member.user.avatar)
+        .replaceAll('{avatar}', `${member.user.displayAvatarURL({ dynamic: false })}`);
 
     return levelVarMsg;
 }
@@ -93,15 +91,17 @@ function permissionBitToString(permission) {
         { perm: 'MANAGE_EMOJIS', code: 0x40000000 },
     ];
 
+    let permissionString;
+
     try {
-        perms.find(i => i.code === parseInt(permission)).perm;
+        permissionString = perms.find(i => i.code === parseInt(permission)).perm;
     } catch (e) {}
-    return perms.find(i => i.code === parseInt(permission)).perm;
+    return permissionString;
 }
 
 function titleCase(str) {
-    var splitStr = str.toLowerCase().split(' ');
-    for (var i = 0; i < splitStr.length; i++) {
+    const splitStr = str.toLowerCase().split(' ');
+    for (let i = 0; i < splitStr.length; i++) {
         splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
     return splitStr.join(' ');

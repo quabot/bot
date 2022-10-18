@@ -26,7 +26,7 @@ async function getLogConfig(client, guildId) {
                 if (err) console.error(err);
                 if (!log) {
                     const newLog = new Log({
-                        guildId: guildId,
+                        guildId,
                         logChannelId: 'none',
                         logEnabled: true,
                         enabledEvents: [
@@ -63,6 +63,7 @@ async function getLogConfig(client, guildId) {
         )
             .clone()
             .catch(function (err) {});
+
     client.cache.set(`${guildId}-log-config`, logConfig, 10000);
 
     return logConfig;
@@ -79,10 +80,9 @@ async function getLogChannel(guild, logConfig) {
         ChannelType.GuildVoice,
     ];
 
-    if (logConfig.logEnabled === false) return undefined;
+    if (!logConfig.logEnabled) return;
     const logChannel = guild.channels.cache.get(logConfig.logChannelId);
-    if (!logChannel) return undefined;
-    if (logBlacklist.includes(logChannel.type)) return undefined;
+    if (!logChannel || logBlacklist.includes(logChannel.type)) return;
 
     return logChannel;
 }
@@ -187,10 +187,9 @@ async function getWelcomeChannel(guild, welcomeConfig) {
         ChannelType.GuildVoice,
     ];
 
-    if (welcomeConfig.joinEnabled === false) return undefined;
+    if (!welcomeConfig.joinEnabled) return;
     const welcomeChannel = guild.channels.cache.get(welcomeConfig.joinChannel);
-    if (!welcomeChannel) return undefined;
-    if (welcomeBlacklist.includes(welcomeChannel.type)) return undefined;
+    if (!welcomeChannel || welcomeBlacklist.includes(welcomeChannel.type)) return;
 
     return welcomeChannel;
 }
@@ -206,10 +205,9 @@ async function getLeaveChannel(guild, welcomeConfig) {
         ChannelType.GuildVoice,
     ];
 
-    if (welcomeConfig.leaveEnabled === false) return undefined;
+    if (!welcomeConfig.leaveEnabled) return;
     const leaveChannel = guild.channels.cache.get(welcomeConfig.leaveChannel);
-    if (!leaveChannel) return undefined;
-    if (leaveBlacklist.includes(leaveChannel.type)) return undefined;
+    if (!leaveChannel || leaveBlacklist.includes(leaveChannel.type)) return;
 
     return leaveChannel;
 }
@@ -374,7 +372,7 @@ async function getTicketConfig(client, guildId) {
     return ticketConfig;
 }
 
-async function getPollConfig(client, guildId) {
+async function getPollConfig(guildId) {
     let pollConfig = await Poll.findOne(
         {
             guildId: guildId,
