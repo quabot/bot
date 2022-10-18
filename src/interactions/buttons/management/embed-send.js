@@ -14,7 +14,7 @@ module.exports = {
         const channel = interaction.guild.channels.cache.get(`${msg.slice(msg.indexOf('<') + 2, msg.length - 2)}`);
 
         const embed = EmbedBuilder.from(interaction.message.embeds[1]);
-        channel.send({ embeds: [embed] }).catch(e => {});
+        channel.send({ content: interaction.message.content, embeds: [embed] }).catch(e => {});
 
         const buttons1 = new ActionRowBuilder().addComponents(
             new ButtonBuilder()

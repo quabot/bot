@@ -47,6 +47,7 @@ module.exports = {
         );
 
         const buttons3 = new ActionRowBuilder().addComponents(
+            new ButtonBuilder().setCustomId('embed-message').setLabel('Add Message').setStyle(ButtonStyle.Primary),
             new ButtonBuilder().setCustomId('embed-addfield').setLabel('Add Field').setStyle(ButtonStyle.Primary),
             new ButtonBuilder().setCustomId('embed-removefield').setLabel('Remove Field').setStyle(ButtonStyle.Danger)
         );
