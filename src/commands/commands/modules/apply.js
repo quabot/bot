@@ -335,8 +335,9 @@ module.exports = {
                                 .setTitle('New Application Submitted')
                                 .setFooter({ text: `${uuid}` })
                                 .setDescription(
-                                    `Application ID: ${application.applicationId}\nSubmitted by: ${interaction.user}\nState: **PENDING**\n\nView the answers [on our dashboard](https://dashboard.quabot.net) (discord support coming soon).`
-                                ),
+                                    `Application ID: ${application.applicationId}\nSubmitted by: ${interaction.user}\nState: **PENDING**\n\nView the answers [on our dashboard](https://dashboard.quabot.net).`
+                                )
+                                .setTimestamp(),
                         ],
                         components: [
                             new ActionRowBuilder().addComponents(

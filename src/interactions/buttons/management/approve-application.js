@@ -16,7 +16,7 @@ module.exports = {
      */
     permission: PermissionFlagsBits.Administrator,
     async execute(client, interaction, color) {
-        await interaction.deferReply().catch(e => {});
+        await interaction.deferReply({ ephemeral: true }).catch(e => {});
 
         const applicationConfig = await getApplicationConfig(client, interaction.guildId);
 
