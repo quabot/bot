@@ -53,7 +53,13 @@ module.exports = {
                 })
                 .catch(e => {});
 
-        const role = interaction.guild.roles.cache.get('943796762676711424');
+        const role = interaction.guild.roles.cache.get(ticketConfig.ticketSupport);
+        if (!role)
+            return interaction
+                .editReply({
+                    embeds: [await generateEmbed(color, 'There is no support role, so you cannot claim the ticket.')],
+                })
+                .catch(e => {});
 
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
@@ -108,6 +114,9 @@ module.exports = {
         interaction.deleteReply().catch(err => {
             console.error(err);
         });
+
+        ticketFound.staff = interaction.user.id;
+        await ticketFound.save();
 
         const logChannel = interaction.guild.channels.cache.get(`${ticketConfig.ticketChannelID}`);
         if (logChannel && ticketConfig.ticketLogs === true)

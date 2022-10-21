@@ -27,6 +27,7 @@ const TicketSchema = new mongoose.Schema({
     closed: reqBool,
     owner: reqString,
     users: reqArray,
+    staff: { type: String, required: true, default: 'none' }
 });
 
 module.exports = mongoose.model('Tickets', TicketSchema);

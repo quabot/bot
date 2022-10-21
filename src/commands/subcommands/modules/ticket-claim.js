@@ -33,14 +33,14 @@ module.exports = {
                         ),
                     ],
                 })
-                .catch(e => {});
+                .catch(e => { });
 
         if (ticketConfig.ticketEnabled === false)
             return interaction
                 .editReply({
                     embeds: [await generateEmbed(color, 'Tickets are disabled in this server.')],
                 })
-                .catch(e => {});
+                .catch(e => { });
 
         const Ticket = require('../../../structures/schemas/TicketSchema');
 
@@ -48,16 +48,23 @@ module.exports = {
             channelId: interaction.channel.id,
         })
             .clone()
-            .catch(function (err) {});
+            .catch(function (err) { });
 
         if (!ticketFound)
             return interaction
                 .editReply({
                     embeds: [await generateEmbed(color, "You're not inside of a ticket!")],
                 })
-                .catch(e => {});
+                .catch(e => { });
 
-        const role = interaction.guild.roles.cache.get(`${ticketConfig.ticketSupport}`);
+        const role = interaction.guild.roles.cache.get(ticketConfig.ticketSupport);
+        if (!role)
+            return interaction
+                .editReply({
+                    embeds: [await generateEmbed(color, 'There is no support role, so you cannot claim the ticket.')],
+                })
+                .catch(e => { });
+
 
         let valid = false;
         if (ticketFound.owner === interaction.user.id) valid = true;
@@ -73,9 +80,22 @@ module.exports = {
                         await generateEmbed(color, 'You cannot manage this ticket, you must have the support role.'),
                     ],
                 })
-                .catch(e => {});
+                .catch(e => { });
+
+        const member = interaction.guild.members.cache.get(ticketFound.staff);
+        if (member && (member.roles.cache.has(role.id) || member.permissions.has(PermissionFlagsBits.Administrator)))
+            return interaction
+                .editReply({
+                    embeds: [
+                        await generateEmbed(color, `This ticket is already claimed by <@${ticketFound.staff}>!`),
+                    ],
+                })
+                .catch(e => { });
 
         const ticketMsg = (await interaction.channel.messages.fetch()).last();
+
+        ticketFound.staff = interaction.user.id;
+        await ticketFound.save();
 
         ticketMsg
             .edit({
@@ -95,7 +115,7 @@ module.exports = {
                     ),
                 ],
             })
-            .catch(e => {});
+            .catch(e => { });
 
         await interaction.deleteReply().catch(err => {
             console.error(err);
@@ -119,6 +139,6 @@ module.exports = {
                             ),
                     ],
                 })
-                .catch(e => {});
+                .catch(e => { });
     },
 };
