@@ -135,7 +135,7 @@ module.exports = {
 
         socket.on('stats', async data => {
             axios
-                .post('http://localhost:3001/stats-post', {
+                .post('https://api.quabot.net/stats-post', {
                     password: `${process.env.STATS_PASSWORD}`,
                     guilds: client.guilds.cache.size,
                     channels: client.channels.cache.size,
