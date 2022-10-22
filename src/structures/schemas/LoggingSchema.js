@@ -8,6 +8,7 @@ const reqString = {
 const reqArray = {
     type: Array,
     required: true,
+    default: [],
 };
 
 const reqBool = {
@@ -19,6 +20,7 @@ const LogSchema = new mongoose.Schema({
     guildId: reqString,
     logChannelId: reqString,
     logEnabled: reqBool,
+    logExcludedChannels: reqArray,
     enabledEvents: reqArray,
     disabledEvents: reqArray,
 });
