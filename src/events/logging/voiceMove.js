@@ -15,6 +15,9 @@ module.exports = {
         const logConfig = await getLogConfig(client, newState.guild.id);
         if (!logConfig) return;
 
+        const ignoredCategories = ['931929731010535454', '931929980735213608'];
+        if (ignoredCategories.includes(newState.parentId)) return;
+
         const logChannel = await getLogChannel(newState.guild, logConfig);
         if (!logChannel) return;
 

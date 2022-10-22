@@ -14,6 +14,9 @@ module.exports = {
         const logConfig = await getLogConfig(client, thread.guild.id);
         if (!logConfig) return;
 
+        const ignoredCategories = ['931929731010535454', '931929980735213608'];
+        if (ignoredCategories.includes(thread.parent.parentId)) return;
+
         const logChannel = await getLogChannel(thread.guild, logConfig);
         if (!logChannel) return;
 
