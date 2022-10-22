@@ -11,6 +11,7 @@ const Level = require('../../structures/schemas/LevelConfigSchema');
 const Giveaway = require('../../structures/schemas/GiveawayConfigSchema');
 const ApplicationConfig = require('../../structures/schemas/ApplicationConfigSchema');
 const { ChannelType } = require('discord.js');
+const Boost = require('../schemas/BoostSchema');
 
 async function getLogConfig(client, guildId) {
     let logConfig;
@@ -542,6 +543,73 @@ async function getApplicationConfig(client, guildId) {
     return applicationConfig;
 }
 
+async function getBoostConfig(client, guildId) {
+    let boostConfig;
+
+    if (client.cache.get(`${guildId}-boost-config`)) boostConfig = client.cache.get(`${guildId}-boost-config`);
+    if (!boostConfig)
+        boostConfig = await Boost.findOne(
+            {
+                guildId,
+            },
+            (err, boost) => {
+                if (err) console.error(err);
+                if (!boost) {
+                    const newBoost = new Boost({
+                        guildId,
+                        boostEnabled: true,
+                        boostChannel: 'none',
+                        boostMessage: '{user} started boosting this server!',
+                        boostEmbedBuilder: true,
+                        boostEmbed: [
+                            {
+                                title: 'Thanks {username}!',
+                                description: '{user} started boosting this server.',
+                                color: null,
+                                authorText: '{tag}',
+                                authorIcon: '{avatar}',
+                                authorUrl: null,
+                                footerText: null,
+                                footerIcon: null,
+                                timestamp: true,
+                                url: null,
+                                image: null,
+                                thumbnail: null,
+                            },
+                        ],
+                    });
+                    newBoost.save().catch(err => {
+                        console.log(err);
+                    });
+                }
+            }
+        )
+            .clone()
+            .catch(function (err) {});
+
+    client.cache.set(`${guildId}-boost-config`, boostConfig, 10000);
+
+    return boostConfig;
+}
+
+async function getBoostChannel(guild, boostConfig) {
+    const leaveBlacklist = [
+        ChannelType.DM,
+        ChannelType.GroupDM,
+        ChannelType.GuildCategory,
+        ChannelType.GuildDirectory,
+        ChannelType.GuildForum,
+        ChannelType.GuildStageVoice,
+        ChannelType.GuildVoice,
+    ];
+
+    if (!boostConfig.boostEnabled) return;
+    const boostChannel = guild.channels.cache.get(boostConfig.leaveChannel);
+    if (!boostChannel || leaveBlacklist.includes(boostChannel.type)) return;
+
+    return boostChannel;
+}
+
 module.exports = {
     getApplicationConfig,
     getGiveawayConfig,
@@ -558,4 +626,6 @@ module.exports = {
     getVerifyConfig,
     getRolesConfig,
     getMembersConfig,
+    getBoostConfig,
+    getBoostChannel,
 };
