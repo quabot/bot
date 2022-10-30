@@ -47,7 +47,7 @@ module.exports = {
                             ),
                         ],
                     })
-                    .catch(e => {});
+                    .catch(e => { });
             } else if (data.type === 'ticket') {
                 channel
                     .send({
@@ -66,7 +66,7 @@ module.exports = {
                             ),
                         ],
                     })
-                    .catch(e => {});
+                    .catch(e => { });
             } else {
                 channel
                     .send({
@@ -85,7 +85,7 @@ module.exports = {
                             ),
                         ],
                     })
-                    .catch(e => {});
+                    .catch(e => { });
             }
         });
 
@@ -99,7 +99,7 @@ module.exports = {
                 return;
             });
 
-            message.react(data.newReaction.emoji).catch(e => {});
+            message.react(data.newReaction.emoji).catch(e => { });
         });
 
         socket.on('application-state', async data => {
@@ -116,7 +116,7 @@ module.exports = {
                     ? undefined
                     : client.guilds.cache.get(data.guildId).roles.cache.get(application.applicationReward);
 
-            if (role) member.roles.add(role).catch(e => {});
+            if (role) member.roles.add(role).catch(e => { });
             member
                 .send({
                     embeds: [
@@ -124,24 +124,29 @@ module.exports = {
                             .setColor(data.applicationState === 'APPROVED' ? Colors.Green : Colors.Red)
                             .setTitle(`Application ${data.applicationState.toLowerCase()}!`)
                             .setDescription(
-                                `Your application in ${
-                                    client.guilds.cache.get(data.guildId).name
+                                `Your application in ${client.guilds.cache.get(data.guildId).name
                                 } has been approved. You have been given the rewards (if any).`
                             ),
                     ],
                 })
-                .catch(e => {});
+                .catch(e => { });
         });
 
         socket.on('stats', async data => {
             axios
-                .post('https://api.quabot.net/stats-post', {
+                .post('http://localhost:3001/stats-post', {
                     password: `${process.env.STATS_PASSWORD}`,
                     guilds: client.guilds.cache.size,
                     channels: client.channels.cache.size,
                     users: client.users.cache.size,
-                })
-                .catch(e => {});
+                }).catch(e => { });
+        });
+
+        socket.on('uptime', async data => {
+            axios
+                .post('http://localhost:3001/uptime-post', {
+                    password: `${process.env.STATS_PASSWORD}`
+                }).catch(e => { });
         });
 
         socket.on('nickname', async data => {
