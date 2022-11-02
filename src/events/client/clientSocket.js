@@ -134,7 +134,7 @@ module.exports = {
 
         socket.on('stats', async data => {
             axios
-                .post('http://localhost:3001/stats-post', {
+                .post('https://api.quabot.net/stats-post', {
                     password: `${process.env.STATS_PASSWORD}`,
                     guilds: client.guilds.cache.size,
                     channels: client.channels.cache.size,
@@ -144,7 +144,7 @@ module.exports = {
 
         socket.on('uptime', async data => {
             axios
-                .post('http://localhost:3001/uptime-post', {
+                .post('https://api.quabot.net/uptime-post', {
                     password: `${process.env.STATS_PASSWORD}`
                 }).catch(e => { });
         });
