@@ -22,7 +22,7 @@ module.exports = {
         await interaction.deferReply().catch(e => {});
 
         if (!ticketConfig)
-            return interaction
+            return await interaction
                 .editReply({
                     embeds: [
                         await generateEmbed(
@@ -34,7 +34,7 @@ module.exports = {
                 .catch(e => {});
 
         if (ticketConfig.ticketEnabled === false)
-            return interaction
+            return await interaction
                 .editReply({
                     embeds: [await generateEmbed(color, 'Tickets are disabled in this server.')],
                 })
@@ -47,7 +47,7 @@ module.exports = {
             .catch(function (err) {});
 
         if (!ticketFound)
-            return interaction
+            return await interaction
                 .editReply({
                     embeds: [await generateEmbed(color, 'You are not inside of an existing ticket.')],
                 })
@@ -61,7 +61,7 @@ module.exports = {
         if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
 
         if (!valid)
-            return interaction
+            return await interaction
                 .editReply({
                     embeds: [await generateEmbed(color, 'You cannot manage this ticket. You must be added first.')],
                 })
@@ -70,7 +70,7 @@ module.exports = {
         const closedCategory = interaction.guild.channels.cache.get(`${ticketConfig.ticketClosedCategory}`);
 
         if (!closedCategory)
-            return interaction
+            return await interaction
                 .editReply({
                     embeds: [
                         await generateEmbed(
@@ -83,7 +83,7 @@ module.exports = {
 
         const channel = interaction.guild.channels.cache.get(`${ticketFound.channelId}`);
         if (!channel)
-            return interaction
+            return await interaction
                 .editReply({
                     embeds: [
                         await generateEmbed(
@@ -116,7 +116,7 @@ module.exports = {
             })
             .catch(e => {});
 
-        interaction
+        await interaction
             .editReply({
                 embeds: [
                     new EmbedBuilder()
