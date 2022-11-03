@@ -27,9 +27,10 @@ module.exports = {
 
         const logConfig = await getLogConfig(client, channel.guildId);
         if (!logConfig) return;
+        if (logConfig.logEnabled === false) return;
 
-        const ignoredChannels = logConfig.logExcludedChannels;
-        if (ignoredChannels.includes(channel.id)) return;
+        if (logConfig.logExcludedChannels && logConfig.logExcludedChannels.includes(channel.id)) return;
+        if (logConfig.logExcludedCategories && channel.parentId && logConfig.logExcludedCategories.includes(channel.parentId)) return;
 
         const logChannel = await getLogChannel(channel.guild, logConfig);
         if (!logChannel) return;

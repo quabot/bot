@@ -16,6 +16,9 @@ module.exports = {
         const logChannel = await getLogChannel(invite.guild, logConfig);
         if (!logChannel) return;
 
+        if (logConfig.logExcludedChannels && logConfig.logExcludedChannels.includes(invite.channel.id)) return;
+        if (logConfig.logExcludedCategories && invite.channel.parentId && logConfig.logExcludedCategories.includes(invite.channel.parentId)) return;
+        
         if (!logConfig.enabledEvents.includes(this.event)) return;
 
         logChannel

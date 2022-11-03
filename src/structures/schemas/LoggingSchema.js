@@ -21,6 +21,7 @@ const LogSchema = new mongoose.Schema({
     logChannelId: reqString,
     logEnabled: reqBool,
     logExcludedChannels: reqArray,
+    logExcludedCategories: reqArray,
     enabledEvents: reqArray,
     disabledEvents: reqArray,
 });
