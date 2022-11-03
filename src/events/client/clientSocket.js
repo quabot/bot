@@ -90,9 +90,9 @@ module.exports = {
         });
 
         socket.on('react', async data => {
-            const channel = client.guilds.cache
-                .get(data.newReaction.guildId)
-                .channels.cache.get(data.newReaction.channelId);
+            const guild = client.guilds.cache.get(data.newReaction.guildId);
+            if (!guild) return;
+            const channel = guild.channels.cache.get(data.newReaction.channelId);
             if (!channel) return;
 
             const message = await channel.messages.fetch({ message: data.newReaction.messageId }).catch(async e => {
