@@ -1,10 +1,11 @@
-import { Client, Partials } from 'discord.js';
+import { Client, Collection, Partials } from 'discord.js';
 const { Channel, Reaction, Message } = Partials;
 
 const client = new Client({ intents: 47055, partials: [Channel, Reaction, Message] });
 require('dotenv').config();
 
-['eventHandler'].forEach(handler => {
+export const commands = new Collection();
+['commandHandler', 'eventHandler'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client);
 });
 

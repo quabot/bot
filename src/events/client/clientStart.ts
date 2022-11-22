@@ -20,5 +20,6 @@ module.exports = {
 
         console.log('');
         consola.info(`Logged in as ${client.user?.tag}.`);
+        setTimeout(() => { console.log(''); consola.success(`Ready!`)}, 1000);
     }
 }
