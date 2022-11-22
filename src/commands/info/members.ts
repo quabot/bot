@@ -20,7 +20,6 @@ module.exports = {
         });
 
 
-        // get colors to work
         // do subcommands
         // do buttons
         // do select menus

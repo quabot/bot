@@ -15,6 +15,7 @@ module.exports = async (client: Client) => {
 
     (await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.ts`)).map(async commandFile => {
         const command = require(commandFile);
+        if (!command.data) return;
         commands.set(command.data.name, command);
         commandsList.push(command.data);
     });
