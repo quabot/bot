@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { Client, Colors, CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { embed } from "../../utils/constants/embeds";
 
 module.exports = {
@@ -10,7 +10,6 @@ module.exports = {
 
         await interaction.deferReply();
 
-        //@ts-ignore
         await interaction.editReply({
             embeds: [
                 embed(color)

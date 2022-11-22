@@ -2,6 +2,7 @@ import { Client, Colors, EmbedBuilder, Interaction, InteractionType } from 'disc
 import consola from 'consola';
 import { commands } from '../../main';
 import { handleError } from '../../utils/constants/errors';
+import { getServerConfig } from '../../utils/configs/getServerConfig';
 
 module.exports = {
     event: "interactionCreate",
@@ -19,7 +20,11 @@ module.exports = {
                     .setTimestamp(),
             ]
         });
-        
-        command.execute(client, interaction, '#3a5a74').catch((e:any) => handleError(client, e, interaction.commandName));
+
+        let color = "#3a5a74";
+        const config:any = await getServerConfig(client, interaction.guildId);
+        if (config) color = config.color;
+
+        command.execute(client, interaction, color).catch((e:any) => handleError(client, e, interaction.commandName));
     }
 }

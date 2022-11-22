@@ -9,4 +9,7 @@ export const commands = new Collection();
     require(`./structures/handlers/${handler}`)(client);
 });
 
+import NodeCache from 'node-cache';
+export const cache = new NodeCache();
+
 client.login(process.env.TOKEN);
