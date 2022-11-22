@@ -1,5 +1,6 @@
 import { Client, ActivityType } from 'discord.js';
 import consola from 'consola';
+import { commands } from '../../main';
 
 module.exports = {
     event: "ready",
@@ -11,7 +12,7 @@ module.exports = {
         (function loop() {
             setTimeout(function () { setActivity(`${client.users.cache.size.toLocaleString()} users |  /help`) }, 6000);
             setTimeout(function () { setActivity(`quabot.net | /help`) }, 12000);
-            setTimeout(function () { setActivity(` commands | /help`) }, 18000);
+            setTimeout(function () { setActivity(`${commands.size} commands | /help`) }, 18000);
             setTimeout(function () {
                 setActivity(`${client.guilds.cache.size} servers |  /help`);
                 loop();
