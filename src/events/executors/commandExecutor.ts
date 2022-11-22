@@ -1,6 +1,7 @@
 import { Client, Colors, EmbedBuilder, Interaction, InteractionType } from 'discord.js';
 import consola from 'consola';
 import { commands } from '../../main';
+import { handleError } from '../../utils/constants/errors';
 
 module.exports = {
     event: "interactionCreate",
@@ -18,7 +19,7 @@ module.exports = {
                     .setTimestamp(),
             ]
         });
-
-        command.execute(client, interaction, '#3a5a74');
+        
+        command.execute(client, interaction, '#3a5a74').catch((e:any) => handleError(client, e, interaction.commandName));
     }
 }

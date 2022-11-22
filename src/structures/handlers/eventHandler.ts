@@ -2,6 +2,7 @@ import { promisify } from 'util';
 import { glob } from 'glob';
 import { Client } from 'discord.js';
 import consola from 'consola';
+import { handleError } from '../../utils/constants/errors';
 
 const PG = promisify(glob);
 
@@ -14,8 +15,8 @@ module.exports = async (client: Client) => {
 
         if (!event.event) return total += 1;
 
-        if (event.once) client.once(event.event, (...args) => event.execute(...args, client));
-        if (!event.once) client.on(event.event, (...args) => event.execute(...args, client));
+        if (event.once) client.once(event.event, (...args) => event.execute(...args, client).catch((e:any) => handleError(client, e, eventFile)));
+        if (!event.once) client.on(event.event, (...args) => event.execute(...args, client).catch((e:any) => handleError(client, e, eventFile)));
 
         loaded += 1;
         total += 1;

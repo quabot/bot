@@ -1,4 +1,5 @@
-import { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { Client, CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { embed } from "../../utils/constants/embeds";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,20 +10,17 @@ module.exports = {
 
         await interaction.deferReply();
 
+        //@ts-ignore
         await interaction.editReply({
             embeds: [
-                new EmbedBuilder()
-                    .setColor(color)
+                embed(color)
                     .setThumbnail(`${interaction.guild?.iconURL()}`)
                     .setTitle(`${interaction.guild?.name}`)
                     .setDescription(`${interaction.guild?.memberCount}`)
-                    .setTimestamp()
             ]
         });
-        
 
-        // create embed from a general component
-        // handle errors
+
         // get colors to work
         // do subcommands
         // do buttons
