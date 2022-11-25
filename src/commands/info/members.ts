@@ -18,12 +18,5 @@ module.exports = {
                     .setDescription(`${interaction.guild?.memberCount}`)
             ]
         });
-
-
-        // do subcommands
-        // do buttons
-        // do select menus
-        // do modals
-        // do context commands
     }
 }

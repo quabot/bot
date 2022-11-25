@@ -1,5 +1,4 @@
 import { Client, Colors, EmbedBuilder, Interaction, InteractionType } from 'discord.js';
-import consola from 'consola';
 import { commands } from '../../main';
 import { handleError } from '../../utils/constants/errors';
 import { getServerConfig } from '../../utils/configs/getServerConfig';
