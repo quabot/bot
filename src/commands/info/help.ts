@@ -8,12 +8,14 @@ module.exports = {
         .setDMPermission(false),
     async execute(client: Client, interaction: CommandInteraction, color: any) {
 
+        // TODO: ADD [module] argument support, add the embeds (only when all modules done)
+
         await interaction.deferReply();
 
         await interaction.editReply({
             embeds: [
                 embed(color)
-                    .setThumbnail(`${interaction.guild?.iconURL()}`)
+                    .setThumbnail(`${client.user?.displayAvatarURL()}`)
                     .setTitle(`QuaBot Commands`)
                     .setDescription(`With the menu below this message you can select a category to get a list of commands within the selected category.`)
             ], components: [
