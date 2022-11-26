@@ -1,0 +1,23 @@
+{
+    "content": "content here",
+    "title": "title",
+    "color": "color",
+    "timestamp": false,
+    "footer": {
+        "text": "text-footer",
+        "icon": "icon-footer"
+    },
+    "author": {
+        "text": "text-author",
+        "icon": "icon-author",
+        "url": "url-author"
+    },
+    "description": "description",
+    "fields": [
+        { "name": "field name", "value": "value", "inline": true },
+        { "name": "field name", "value": "value", "inline": false }
+    ],
+    "url": "url for title",
+    "thumbnail": "thumbnail url",
+    "image": "image url"
+}
