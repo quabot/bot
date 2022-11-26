@@ -6,8 +6,9 @@ require('dotenv').config();
 
 export const commands = new Collection();
 export const selectors = new Collection();
+export const modals = new Collection();
 export const subcommands = new Collection();
-['commandHandler', 'subcommandHandler', 'eventHandler', 'selectHandler'].forEach(handler => {
+['commandHandler', 'subcommandHandler', 'eventHandler', 'modalHandler', 'selectHandler'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client);
 });
 
