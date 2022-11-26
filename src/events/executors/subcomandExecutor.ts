@@ -27,6 +27,6 @@ module.exports = {
         const config: any = await getServerConfig(client, interaction.guildId);
         if (config) color = config.color;
 
-        subcommand.execute(client, interaction, color).catch((e: any) => handleError(client, e, interaction.commandName));
+        subcommand.execute(client, interaction, color).catch((e: any) => handleError(client, e, `${interaction.options.getSubcommand()}/${interaction.commandName}`));
     }
 }

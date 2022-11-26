@@ -18,7 +18,7 @@ export const getServerConfig = async (client: Client, guildId: string) => {
             color: '#3a5a74',
             updatesChannel: 'none'
         }).save();
-    }).catch(() => { });
+    }).clone().catch(() => { });
 
     cache.set(`${guildId}-server-config`, serverConfig);
     return serverConfig;

@@ -1,12 +1,29 @@
-import { Client, Colors, CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { Client, CommandInteraction } from "discord.js";
+import { channelTypes } from "../../utils/constants/discord";
 import { embed } from "../../utils/constants/embeds";
 
 module.exports = {
     command: 'info',
     subcommand: 'channel',
     async execute(client: Client, interaction: CommandInteraction, color: any) {
+        await interaction.deferReply();
 
-        interaction.reply('channel');
-        
+        const channel: any = interaction.options.get('channel')?.channel ?? interaction.channel;
+
+        await interaction.editReply({
+            embeds: [
+                embed(color)
+                    .setTitle("Channel Info")
+                    .setDescription(`
+                    **• Name:** ${channel?.name}
+                    **• Channel:** ${channel}
+                    **• ID:** ${channel?.id}
+                    **• Type:** ${channelTypes[channel?.type]}
+                    **• NSFW:** ${channel?.nsfw ? 'Enabled' : 'Disabled'}
+                    **• Ratelimit:** ${channel?.rateLimitPerUser !== 0 ? 'Enabled' : 'Disabled'}
+                    **• Parent:** ${channel?.parentId ? '<#' + channel?.parentId + '>' : 'None'}
+                    `)
+            ]
+        });
     }
 }

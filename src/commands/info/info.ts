@@ -11,6 +11,10 @@ module.exports = {
                 .setDescription('Get information about QuaBot.'))
         .addSubcommand(subcommand =>
             subcommand
+                .setName('server')
+                .setDescription('Get information about the server.'))
+        .addSubcommand(subcommand =>
+            subcommand
                 .setName('channel')
                 .setDescription('Get information about a channel.')
                 .addChannelOption(option =>
