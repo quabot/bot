@@ -8,19 +8,16 @@ export const getSuggestConfig = async (client: Client, guildId: string) => {
     const cacheConfig = cache.get(`${guildId}-suggestion-config`);
 
     if (cacheConfig) suggestConfig = cacheConfig;
-    if (!suggestConfig) await Suggest.findOne({
+    if (!suggestConfig) suggestConfig = await Suggest.findOne({
         guildId,
     }, (err: any, suggest: any) => {
         if (err) console.log(err);
         if (!suggest) new Suggest({
             guildId,
-
             enabled: false,
-            channelId: '',
-
+            channelId: 'none',
             logEnabled: false,
-            logChannelId: '',
-
+            logChannelId: 'none',
             message: {
                 content: '',
                 title: 'New Suggestion!',
@@ -44,10 +41,8 @@ export const getSuggestConfig = async (client: Client, guildId: string) => {
                 thumbnail: '',
                 image: ''
             },
-
             emojiRed: '🔴',
             emojiGreen: '🟢',
-
             reasonRequired: true,
             dm: true,
             dmMessage: {
@@ -70,10 +65,9 @@ export const getSuggestConfig = async (client: Client, guildId: string) => {
                 thumbnail: '',
                 image: ''
             },
-
             colors: { approve: '#40ff3d', deny: '#ff3d3d', pending: '#3a5a74' }
         }).save();
-    }).catch(() => { });
+    }).clone().catch(() => { });
 
     cache.set(`${guildId}-suggestion-config`, suggestConfig);
     return suggestConfig;
