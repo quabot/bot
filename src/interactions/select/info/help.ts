@@ -1,8 +1,8 @@
-import { Client, SelectMenuInteraction } from 'discord.js';
+import type { Client, ColorResolvable, SelectMenuInteraction } from 'discord.js';
 
 module.exports = {
-    id: 'help',
-    async execute(client: Client, interaction: SelectMenuInteraction, color: any) {
-        interaction.reply('need help? go to hell!');
+    name: 'help',
+    async execute(_client: Client, interaction: SelectMenuInteraction, _color: ColorResolvable) {
+        await interaction.reply('need help? go to hell!');
     },
 };

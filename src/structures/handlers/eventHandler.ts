@@ -1,32 +1,31 @@
 import { promisify } from 'util';
 import { glob } from 'glob';
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import consola from 'consola';
 import { handleError } from '../../utils/constants/errors';
 
 const PG = promisify(glob);
 
 let loaded = 0;
-let total = 0;
 
 module.exports = async (client: Client) => {
-    (await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.ts`)).map(async eventFile => {
-        const event = require(eventFile);
+    const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.ts`);
 
-        if (!event.event) return (total += 1);
+    files.forEach(async file => {
+        const event = require(file);
+        if (!event.name) return;
 
         if (event.once)
-            client.once(event.event, (...args) =>
-                event.execute(...args, client).catch((e: any) => handleError(client, e, eventFile))
+            client.once(event.name, (...args) =>
+                event.execute(...args, client).catch((e: any) => handleError(client, e, file))
             );
         if (!event.once)
-            client.on(event.event, (...args) =>
-                event.execute(...args, client).catch((e: any) => handleError(client, e, eventFile))
+            client.on(event.name, (...args) =>
+                event.execute(...args, client).catch((e: any) => handleError(client, e, file))
             );
 
         loaded += 1;
-        total += 1;
     });
 
-    consola.success(`Loaded ${loaded - total !== 0 ? `${loaded}/${total}` : total} events.`);
+    consola.success(`Loaded ${loaded}/${files.length} events.`);
 };

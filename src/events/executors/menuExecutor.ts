@@ -1,13 +1,12 @@
-import { Client, Colors, EmbedBuilder, Interaction } from 'discord.js';
+import { type Client, Colors, EmbedBuilder, type Interaction } from 'discord.js';
 import { selectors } from '../../main';
 import { handleError } from '../../utils/constants/errors';
 import { getServerConfig } from '../../utils/configs/getServerConfig';
 
 module.exports = {
-    event: 'interactionCreate',
+    name: 'interactionCreate',
     async execute(interaction: Interaction, client: Client) {
-        if (!interaction.isSelectMenu()) return;
-        if (!interaction.guildId) return;
+        if (!interaction.isSelectMenu() || !interaction.guildId) return;
 
         const select: any = selectors.get(interaction.customId);
         if (!select)
@@ -20,10 +19,9 @@ module.exports = {
                 ],
             });
 
-        let color = '#3a5a74';
         const config: any = await getServerConfig(client, interaction.guildId);
-        if (config) color = config.color;
+        const color = config?.color ?? '#3a5a74';
 
-        select.execute(client, interaction, color).catch((e: any) => handleError(client, e, interaction.customId));
+        select.execute(client, interaction, color).catch((e: Error) => handleError(client, e, interaction.customId));
     },
 };

@@ -10,4 +10,4 @@ const SuggestSchema = new mongoose.Schema({
     userId: reqString,
 });
 
-module.exports = mongoose.model('Suggestion', SuggestSchema);
+export default mongoose.model('Suggestion', SuggestSchema);

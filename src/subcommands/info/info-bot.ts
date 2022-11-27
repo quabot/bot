@@ -1,12 +1,12 @@
-import { Client, CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { cache } from '../../main';
 import { embed } from '../../utils/constants/embeds';
 import os from 'os';
 
 module.exports = {
-    command: 'info',
-    subcommand: 'bot',
-    async execute(client: Client, interaction: CommandInteraction, color: any) {
+    parent: 'info',
+    name: 'bot',
+    async execute(client: Client, interaction: ChatInputCommandInteraction, color: ColorResolvable) {
         await interaction.deferReply();
 
         if (!cache.has('client-info'))
@@ -23,7 +23,7 @@ module.exports = {
             embeds: [
                 embed(color)
                     .setTitle(`${client.user?.username}`)
-                    .setThumbnail(client.user?.avatarURL() || '')
+                    .setThumbnail(client.user?.displayAvatarURL() ?? '')
                     .addFields(
                         {
                             name: 'Memory Usage',
@@ -34,7 +34,7 @@ module.exports = {
                         },
                         {
                             name: 'Uptime',
-                            value: `<t:${Math.round((client.readyTimestamp || 0) / 1000)}:R>`,
+                            value: `<t:${Math.round((client.readyTimestamp ?? 0) / 1000)}:R>`,
                             inline: true,
                         },
                         { name: 'Ping', value: `\`${client.ws.ping}ms\``, inline: true },

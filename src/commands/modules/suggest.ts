@@ -14,7 +14,7 @@ import { embed } from '../../utils/constants/embeds';
 module.exports = {
     data: new SlashCommandBuilder().setName('suggest').setDescription('Leave a suggestion.').setDMPermission(false),
     async execute(client: Client, interaction: CommandInteraction, color: any) {
-        const suggestConfig: any = await getSuggestConfig(client, interaction.guildId || '');
+        const suggestConfig: any = await getSuggestConfig(client, interaction.guildId ?? '');
         if (!suggestConfig)
             return await interaction.reply({
                 embeds: [

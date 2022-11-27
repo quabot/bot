@@ -1,15 +1,11 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import { cache } from '../../main';
+import Suggest from '../../structures/schemas/SuggestConfigSchema';
 
-const Suggest = require('../../structures/schemas/SuggestConfigSchema');
-
-export const getSuggestConfig = async (client: Client, guildId: string) => {
-    let suggestConfig;
-    const cacheConfig = cache.get(`${guildId}-suggestion-config`);
-
-    if (cacheConfig) suggestConfig = cacheConfig;
-    if (!suggestConfig)
-        suggestConfig = await Suggest.findOne(
+export const getSuggestConfig = async (_client: Client, guildId: string) => {
+    const suggestConfig =
+        cache.get(`${guildId}-suggestion-config`) ??
+        (await Suggest.findOne(
             {
                 guildId,
             },
@@ -74,7 +70,7 @@ export const getSuggestConfig = async (client: Client, guildId: string) => {
             }
         )
             .clone()
-            .catch(() => {});
+            .catch(() => {}));
 
     cache.set(`${guildId}-suggestion-config`, suggestConfig);
     return suggestConfig;

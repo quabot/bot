@@ -1,13 +1,13 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import { connect } from 'mongoose';
 import consola from 'consola';
 import { AutoPoster } from 'topgg-autoposter';
 
 module.exports = {
-    event: 'ready',
+    name: 'ready',
     once: true,
     async execute(client: Client) {
-        connect(process.env.DATABASE_URI || '')
+        connect(process.env.DATABASE_URI ?? '')
             .then(db => {
                 consola.info(`Connected to database ${db.connections[0].name}.`);
             })
@@ -16,7 +16,7 @@ module.exports = {
             });
 
         if (process.env.NODE_ENV !== 'production') return;
-        AutoPoster(process.env.TOPGG_API_KEY || '', client).on('posted', stats =>
+        AutoPoster(process.env.TOPGG_API_KEY ?? '', client).on('posted', stats =>
             consola.info(`Published statistics: ${stats.serverCount} servers.`)
         );
     },

@@ -8,4 +8,4 @@ const ServerSchema = new mongoose.Schema({
     updatesChannel: reqString,
 });
 
-module.exports = mongoose.model('Server', ServerSchema);
+export default mongoose.model('Server', ServerSchema);

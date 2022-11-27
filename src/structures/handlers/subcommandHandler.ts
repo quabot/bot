@@ -1,26 +1,24 @@
 import { promisify } from 'util';
 import { glob } from 'glob';
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import consola from 'consola';
 import { subcommands } from '../../main';
 
 const PG = promisify(glob);
 
-let total = 0;
 let loaded = 0;
 
-module.exports = async (client: Client) => {
-    (await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*.ts`)).map(async subcommandFile => {
-        const subcommand = require(subcommandFile);
+module.exports = async (_client: Client) => {
+    const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*.ts`);
 
-        if (!subcommand.command) return (total += 1);
-        if (!subcommand.subcommand) return (total += 1);
+    files.forEach(async file => {
+        const subcommand = require(file);
+        if (!subcommand.parent || !subcommand.name) return;
 
-        subcommands.set(`${subcommand.subcommand}/${subcommand.command}`, subcommand);
+        subcommands.set(`${subcommand.name}/${subcommand.parent}`, subcommand);
 
-        total += 1;
         loaded += 1;
     });
 
-    consola.success(`Loaded ${loaded - total !== 0 ? `${loaded}/${total}` : total} subcommands.`);
+    consola.success(`Loaded ${loaded}/${files.length} subcommands.`);
 };

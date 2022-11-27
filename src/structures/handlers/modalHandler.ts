@@ -1,23 +1,22 @@
 import { promisify } from 'util';
 import { glob } from 'glob';
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import consola from 'consola';
 import { modals } from '../../main';
 
 const PG = promisify(glob);
 let loaded = 0;
-let total = 0;
 
-module.exports = async (client: Client) => {
-    (await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/modals/*/*.ts`)).map(async modalFile => {
-        const modal = require(modalFile);
+module.exports = async (_client: Client) => {
+    const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/modals/*/*.ts`);
 
-        if (!modal.id) return (total += 1);
-        modals.set(modal.id, modal);
+    files.forEach(async file => {
+        const modal = require(file);
+        if (!modal.name) return;
 
-        total += 1;
+        modals.set(modal.name, modal);
         loaded += 1;
     });
 
-    consola.success(`Loaded ${loaded - total !== 0 ? `${loaded}/${total}` : total} modals.`);
+    consola.success(`Loaded ${loaded}/${files.length} modals.`);
 };

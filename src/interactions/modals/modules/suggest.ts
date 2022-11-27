@@ -1,8 +1,8 @@
-import { Client, ModalSubmitInteraction } from 'discord.js';
+import type { Client, ColorResolvable, ModalSubmitInteraction } from 'discord.js';
 
 module.exports = {
-    id: 'suggest',
-    async execute(client: Client, interaction: ModalSubmitInteraction, color: any) {
-        interaction.reply('your sugestion? go to hell!');
+    name: 'suggest',
+    async execute(_client: Client, interaction: ModalSubmitInteraction, _color: ColorResolvable) {
+        await interaction.reply('your sugestion? go to hell!');
     },
 };

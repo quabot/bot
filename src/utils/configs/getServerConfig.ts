@@ -1,15 +1,11 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import { cache } from '../../main';
+import Server from '../../structures/schemas/ServerSchema';
 
-const Server = require('../../structures/schemas/ServerSchema');
-
-export const getServerConfig = async (client: Client, guildId: string) => {
-    let serverConfig;
-    const cacheConfig = cache.get(`${guildId}-server-config`);
-
-    if (cacheConfig) serverConfig = cacheConfig;
-    if (!serverConfig)
-        await Server.findOne(
+export const getServerConfig = async (_client: Client, guildId: string) => {
+    const serverConfig =
+        cache.get(`${guildId}-server-config`) ??
+        (await Server.findOne(
             {
                 guildId,
             },
@@ -25,7 +21,7 @@ export const getServerConfig = async (client: Client, guildId: string) => {
             }
         )
             .clone()
-            .catch(() => {});
+            .catch(() => {}));
 
     cache.set(`${guildId}-server-config`, serverConfig);
     return serverConfig;

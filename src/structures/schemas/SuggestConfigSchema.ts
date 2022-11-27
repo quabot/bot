@@ -21,4 +21,4 @@ const SuggestConfigSchema = new mongoose.Schema({
     colors: reqObject,
 });
 
-module.exports = mongoose.model('Suggestion-Config', SuggestConfigSchema);
+export default mongoose.model('Suggestion-Config', SuggestConfigSchema);

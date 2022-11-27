@@ -1,14 +1,14 @@
-import { Client, CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { channelTypes } from '../../utils/constants/discord';
 import { embed } from '../../utils/constants/embeds';
 
 module.exports = {
-    command: 'info',
-    subcommand: 'channel',
-    async execute(client: Client, interaction: CommandInteraction, color: any) {
+    parent: 'info',
+    name: 'channel',
+    async execute(_client: Client, interaction: ChatInputCommandInteraction, color: ColorResolvable) {
         await interaction.deferReply();
 
-        const channel: any = interaction.options.get('channel')?.channel ?? interaction.channel;
+        const channel: any = interaction.options.getChannel('channel') ?? interaction.channel;
 
         await interaction.editReply({
             embeds: [

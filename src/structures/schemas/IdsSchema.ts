@@ -6,4 +6,4 @@ const IdsSchema = new mongoose.Schema({
     suggestId: optId,
 });
 
-module.exports = mongoose.model('Id', IdsSchema);
+export default mongoose.model('Id', IdsSchema);
