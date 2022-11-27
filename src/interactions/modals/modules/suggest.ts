@@ -1,4 +1,4 @@
-import { type Client, type ColorResolvable, type ModalSubmitInteraction } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type Client, type ColorResolvable, type ModalSubmitInteraction } from 'discord.js';
 import { getIdConfig } from '../../../utils/configs/getIdConfig';
 import { getSuggestConfig } from '../../../utils/configs/getSuggestConfig';
 import CustomEmbed from '../../../utils/constants/customEmbed';
@@ -25,8 +25,8 @@ module.exports = {
                 embeds: [new Embed(color).setDescription('Suggestions are disabled in this server.')],
             });
 
-        const suggestChannel: any = interaction.guild?.channels.cache.get(suggestConfig.channelId);
-        if (!suggestChannel)
+        const channel: any = interaction.guild?.channels.cache.get(suggestConfig.channelId);
+        if (!channel)
             return await interaction.editReply({
                 embeds: [
                     new Embed(color).setDescription(
@@ -55,7 +55,7 @@ module.exports = {
 
         const suggestEmbed = new CustomEmbed(suggestConfig.message, getParsedString);
 
-        const msg = await suggestChannel.send({ embeds: [suggestEmbed], content: getParsedString(suggestConfig.message.content) })
+        const msg = await channel.send({ embeds: [suggestEmbed], content: getParsedString(suggestConfig.message.content) })
         await msg.react(suggestConfig.emojiGreen);
         await msg.react(suggestConfig.emojiRed);
 
@@ -77,13 +77,43 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription(`Successfully created your suggestion! You can check it out [here](${msg.url}).`)
+                    .setDescription(`Successfully created your suggestion! You can check it out [here](${msg.url}). ${suggestConfig.dm && "You will receive a DM when staff has approved/denied your suggestion."}`)
                     .setFooter({ text: `ID: ${idConfig.suggestId}` })
-                ]
+            ]
         });
 
-        // respond with an epic smex msg
-        // get the log channel
-        // send the msg
+        if (!suggestConfig.logEnabled) return;
+        const logChannel: any = interaction.guild?.channels.cache.get(suggestConfig.logChannelId);
+        if (!logChannel) return;
+
+        await logChannel.send({
+            embeds: [
+                new Embed(suggestConfig.colors.pending)
+                    .setTitle("New Suggestion")
+                    .addFields(
+                        { name: "User", value: `${interaction.user}`, inline: true },
+                        { name: "State", value: `Pending`, inline: true },
+                        { name: "ID", value: `${idConfig.suggestId}`, inline: true },
+                        { name: "Message", value: `[Click to jump](${msg.url})`, inline: true },
+                        { name: "Suggestion", value: `${suggestion}`, inline: false },
+                    )
+            ], components: [
+                new ActionRowBuilder<ButtonBuilder>()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('suggestion-approve')
+                            .setLabel('Approve')
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
+                            .setCustomId('suggestion-deny')
+                            .setLabel('Deny')
+                            .setStyle(ButtonStyle.Danger),
+                        new ButtonBuilder()
+                            .setCustomId('suggestion-delete')
+                            .setLabel('Delete')
+                            .setStyle(ButtonStyle.Secondary)
+                    )
+            ]
+        });
     },
 };
