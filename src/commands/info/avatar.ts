@@ -16,23 +16,19 @@ module.exports = {
     )
     .setDMPermission(false),
   async execute(
-    client: Client,
+    _client: Client,
     interaction: ChatInputCommandInteraction,
     color: any
   ) {
     await interaction.deferReply();
 
-    const user =
-      (await interaction.options.getUser('user')) ?? interaction.user;
-
-    const avatar = user.avatarURL();
+    const user = interaction.options.getUser('user') ?? interaction.user;
 
     await interaction.editReply({
       embeds: [
-        (avatar
-          ? embed(color).setImage(avatar)
-          : embed(color).setDescription("This person doesn't have an avatar!")
-        ).setTitle(`${user.tag}'s avatar`),
+        embed(color)
+          .setImage(user.displayAvatarURL({ size: 1024, forceStatic: false }))
+          .setTitle(`${user.tag}'s avatar`),
       ],
     });
   },
