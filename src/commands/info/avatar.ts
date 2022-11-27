@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from 'discord.js';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,7 +22,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(color)
+                new Embed(color)
                     .setImage(user.displayAvatarURL({ size: 1024, forceStatic: false }))
                     .setTitle(`${user.tag}'s avatar`),
             ],
