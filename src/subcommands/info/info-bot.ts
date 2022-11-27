@@ -1,13 +1,12 @@
-import { Client, CommandInteraction } from "discord.js";
-import { cache } from "../../main";
-import { embed } from "../../utils/constants/embeds";
+import { Client, CommandInteraction } from 'discord.js';
+import { cache } from '../../main';
+import { embed } from '../../utils/constants/embeds';
 import os from 'os';
 
 module.exports = {
     command: 'info',
     subcommand: 'bot',
     async execute(client: Client, interaction: CommandInteraction, color: any) {
-
         await interaction.deferReply();
 
         if (!cache.has('client-info'))
@@ -15,7 +14,7 @@ module.exports = {
                 djs: require('../../../package.json').dependencies['discord.js'],
                 njs: process.version,
                 cpu: os.cpus()[0].model,
-                platform: process.platform.replace('win32', 'windows')
+                platform: process.platform.replace('win32', 'windows'),
             });
 
         const info: any = cache.get('client-info');
@@ -28,11 +27,16 @@ module.exports = {
                     .addFields(
                         {
                             name: 'Memory Usage',
-                            value: `\`${Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)
-                                }MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``,
-                            inline: true
+                            value: `\`${
+                                Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)
+                            }MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``,
+                            inline: true,
                         },
-                        { name: 'Uptime', value: `<t:${Math.round((client.readyTimestamp || 0) / 1000)}:R>`, inline: true },
+                        {
+                            name: 'Uptime',
+                            value: `<t:${Math.round((client.readyTimestamp || 0) / 1000)}:R>`,
+                            inline: true,
+                        },
                         { name: 'Ping', value: `\`${client.ws.ping}ms\``, inline: true },
 
                         { name: 'Users', value: `\`${client.users.cache.size.toLocaleString()}\``, inline: true },
@@ -50,8 +54,8 @@ module.exports = {
                         { name: 'Platform', value: `\`${info.platform}\``, inline: true },
                         { name: 'Website', value: `[quabot.net](https://quabot.net)`, inline: true },
                         { name: 'CPU', value: `\`\`\`${info.cpu}\`\`\``, inline: true }
-                    )
-            ]
+                    ),
+            ],
         });
-    }
-}
+    },
+};

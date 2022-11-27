@@ -23,9 +23,9 @@ module.exports = async (client: Client) => {
     consola.success(`Loaded ${commandsList.length} commands.`);
 
     try {
-        if (process.env.RELOAD_COMMANDS === "false") return;
+        if (process.env.RELOAD_COMMANDS === 'false') return;
 
-        if (process.env.NODE_ENV === "development") {
+        if (process.env.NODE_ENV === 'development') {
             await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
                 body: commandsList,
             });
@@ -39,4 +39,4 @@ module.exports = async (client: Client) => {
     } catch (error) {
         consola.warn(`Failed to reload commands: ${error}`);
     }
-}
+};

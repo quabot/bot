@@ -7,7 +7,7 @@ const SuggestSchema = new mongoose.Schema({
     msgId: reqString,
     suggestion: reqString,
     status: reqString,
-    userId: reqString
+    userId: reqString,
 });
 
 module.exports = mongoose.model('Suggestion', SuggestSchema);

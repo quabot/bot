@@ -1,25 +1,25 @@
 export const reqString = {
     type: String,
-    required: true
-}
+    required: true,
+};
 
 export const reqBool = {
     type: Boolean,
-    required: true
-}
+    required: true,
+};
 
 export const reqArray = {
     type: Array,
-    required: true
-}
+    required: true,
+};
 
 export const reqObject = {
     type: Object,
-    required: true
-}
+    required: true,
+};
 
 export const optId = {
     type: Number,
     default: 0,
-    required: false
-}
+    required: false,
+};

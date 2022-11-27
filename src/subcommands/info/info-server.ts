@@ -1,5 +1,5 @@
-import { ChannelType, Client, CommandInteraction } from "discord.js";
-import { embed } from "../../utils/constants/embeds";
+import { ChannelType, Client, CommandInteraction } from 'discord.js';
+import { embed } from '../../utils/constants/embeds';
 
 module.exports = {
     command: 'info',
@@ -38,27 +38,25 @@ module.exports = {
                 name: '**Channels:**',
                 value: `
                         **• Total**: ${interaction.guild!.channels.cache.size}
-                        **• Text**: ${interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildText).size
-                    }
-                        **• Categories**: ${interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildCategory)
-                        .size
-                    }
-                        **• Voice**: ${interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildVoice)
-                        .size
-                    }
-                        **• News**: ${interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildNews).size
-                    }
-                        **• Stages**: ${interaction.guild!.channels.cache.filter(
-                        c => c.type === ChannelType.GuildStageVoice
-                    ).size
-                    }
-                        **• Threads**: ${interaction.guild!.channels.cache.filter(
-                        c => c.type === ChannelType.PublicThread
-                    ).size +
-                    interaction.guild!.channels.cache.filter(
-                        c => c.type === ChannelType.PrivateThread
-                    ).size
-                    }
+                        **• Text**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildText).size
+                        }
+                        **• Categories**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildCategory).size
+                        }
+                        **• Voice**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildVoice).size
+                        }
+                        **• News**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildNews).size
+                        }
+                        **• Stages**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildStageVoice).size
+                        }
+                        **• Threads**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.PublicThread).size +
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.PrivateThread).size
+                        }
                 `,
                 inline: false,
             });
@@ -67,28 +65,26 @@ module.exports = {
                 name: '**Channels:**',
                 value: `
                         **• Total**: ${interaction.guild!.channels.cache.size}
-                        **• Text**: ${interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildText).size
-                    }
-                        **• Categories**: ${interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildCategory)
-                        .size
-                    }
-                        **• Voice**: ${interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildVoice)
-                        .size
-                    }
-                        **• Threads**: ${interaction.guild!.channels.cache.filter(
-                        c => c.type === ChannelType.PublicThread
-                    ).size +
-                    interaction.guild!.channels.cache.filter(
-                        c => c.type === ChannelType.PrivateThread
-                    ).size
-                    }
+                        **• Text**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildText).size
+                        }
+                        **• Categories**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildCategory).size
+                        }
+                        **• Voice**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.GuildVoice).size
+                        }
+                        **• Threads**: ${
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.PublicThread).size +
+                            interaction.guild!.channels.cache.filter(c => c.type === ChannelType.PrivateThread).size
+                        }
                                  `,
                 inline: false,
             });
         }
 
         await interaction.editReply({
-            embeds: [infoEmbed]
+            embeds: [infoEmbed],
         });
-    }
-}
+    },
+};

@@ -13,14 +13,20 @@ module.exports = async (client: Client) => {
     (await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.ts`)).map(async eventFile => {
         const event = require(eventFile);
 
-        if (!event.event) return total += 1;
+        if (!event.event) return (total += 1);
 
-        if (event.once) client.once(event.event, (...args) => event.execute(...args, client).catch((e:any) => handleError(client, e, eventFile)));
-        if (!event.once) client.on(event.event, (...args) => event.execute(...args, client).catch((e:any) => handleError(client, e, eventFile)));
+        if (event.once)
+            client.once(event.event, (...args) =>
+                event.execute(...args, client).catch((e: any) => handleError(client, e, eventFile))
+            );
+        if (!event.once)
+            client.on(event.event, (...args) =>
+                event.execute(...args, client).catch((e: any) => handleError(client, e, eventFile))
+            );
 
         loaded += 1;
         total += 1;
     });
 
-    consola.success(`Loaded ${(loaded - total !== 0) ? `${loaded}/${total}` : total} events.`);
-}
+    consola.success(`Loaded ${loaded - total !== 0 ? `${loaded}/${total}` : total} events.`);
+};
