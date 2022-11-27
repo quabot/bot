@@ -1,5 +1,5 @@
 import { ActionRowBuilder, Client, CommandInteraction, SelectMenuBuilder, SlashCommandBuilder } from 'discord.js';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,7 +13,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(color)
+                new Embed(color)
                     .setThumbnail(`${client.user?.displayAvatarURL()}`)
                     .setTitle(`QuaBot Commands`)
                     .setDescription(

@@ -1,5 +1,5 @@
 import { ChannelType, type ChatInputCommandInteraction, type Client, type ColorResolvable } from 'discord.js';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 
 module.exports = {
     parent: 'info',
@@ -13,7 +13,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(color)
+                new Embed(color)
                     .setThumbnail(guild!.iconURL())
                     .setTitle('Server Info')
                     .addFields(

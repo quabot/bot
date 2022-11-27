@@ -21,7 +21,7 @@ export const getSuggestConfig = async (_client: Client, guildId: string) => {
                         message: {
                             content: '',
                             title: 'New Suggestion!',
-                            color: '',
+                            color: '#8f8d8d',
                             timestamp: true,
                             footer: {
                                 text: 'Vote with the 🟢 and 🔴 below this message.',
@@ -65,7 +65,7 @@ export const getSuggestConfig = async (_client: Client, guildId: string) => {
                             thumbnail: '',
                             image: '',
                         },
-                        colors: { approve: '#40ff3d', deny: '#ff3d3d', pending: '#3a5a74' },
+                        colors: { approve: '#40ff3d', deny: '#ff3d3d', pending: '#8f8d8d' },
                     }).save();
             }
         )

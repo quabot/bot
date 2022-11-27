@@ -9,7 +9,7 @@ import {
     ModalActionRowComponentBuilder,
 } from 'discord.js';
 import { getSuggestConfig } from '../../utils/configs/getSuggestConfig';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 
 module.exports = {
     data: new SlashCommandBuilder().setName('suggest').setDescription('Leave a suggestion.').setDMPermission(false),
@@ -18,7 +18,7 @@ module.exports = {
         if (!suggestConfig)
             return await interaction.reply({
                 embeds: [
-                    embed(color).setDescription(
+                    new Embed(color).setDescription(
                         'We are setting up suggestions for first-time use, please run the command again!'
                     ),
                 ],
@@ -26,14 +26,14 @@ module.exports = {
 
         if (!suggestConfig.enabled)
             return await interaction.reply({
-                embeds: [embed(color).setDescription('Suggestions are disabled in this server.')],
+                embeds: [new Embed(color).setDescription('Suggestions are disabled in this server.')],
             });
 
         const suggestChannel = interaction.guild?.channels.cache.get(suggestConfig.channelId);
         if (!suggestChannel)
             return await interaction.reply({
                 embeds: [
-                    embed(color).setDescription(
+                    new Embed(color).setDescription(
                         'The suggestions channel has not been configured. This can be done our [dashboard](https://quabot.net).'
                     ),
                 ],

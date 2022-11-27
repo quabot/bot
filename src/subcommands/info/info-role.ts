@@ -1,5 +1,5 @@
 import type { ChatInputCommandInteraction, Client, ColorResolvable, Role } from 'discord.js';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 
 module.exports = {
     parent: 'info',
@@ -11,7 +11,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(role.color ?? color).setTitle('Role Info').setDescription(`
+                new Embed(role.color ?? color).setTitle('Role Info').setDescription(`
                     **• Name:** ${role.name}
                     **• Role:** ${role}
                     **• ID:** ${role.id}

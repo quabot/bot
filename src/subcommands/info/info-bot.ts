@@ -1,6 +1,6 @@
 import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { cache } from '../../main';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 import os from 'os';
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(color)
+                new Embed(color)
                     .setTitle(`${client.user?.username}`)
                     .setThumbnail(client.user?.displayAvatarURL() ?? '')
                     .addFields(

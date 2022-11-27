@@ -1,6 +1,6 @@
 import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { channelTypes } from '../../utils/constants/discord';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 
 module.exports = {
     parent: 'info',
@@ -12,7 +12,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(color).setTitle('Channel Info').setDescription(`
+                new Embed(color).setTitle('Channel Info').setDescription(`
                     **• Name:** ${channel?.name}
                     **• Channel:** ${channel}
                     **• ID:** ${channel?.id}
