@@ -1,5 +1,6 @@
 import { type Client, type ColorResolvable, type ModalSubmitInteraction, EmbedBuilder } from 'discord.js';
 import { getSuggestConfig } from '../../../utils/configs/getSuggestConfig';
+import CustomEmbed from '../../../utils/constants/customEmbed';
 import Embed from '../../../utils/constants/embeds';
 
 module.exports = {
@@ -38,7 +39,6 @@ module.exports = {
                 embeds: [new Embed(color).setDescription("You didn't enter anything.")],
             });
 
-        const suggestEmbed = new EmbedBuilder();
         const getParsedString = (text: any) => {
             let newText = text;
 
@@ -50,35 +50,8 @@ module.exports = {
 
             return newText;
         };
-        
-        if (suggestConfig.message.title)
-            suggestEmbed.setTitle(`${getParsedString(suggestConfig.message.title)}`);
-        if (suggestConfig.message.timestamp) suggestEmbed.setTimestamp();
-        if (suggestConfig.message.footer) {
-            let text = null;
-            let iconURL = null;
-            if (suggestConfig.message.footer.text) text = suggestConfig.message.footer.text;
-            if (suggestConfig.message.footer.icon) iconURL = suggestConfig.message.footer.icon;
-            //@ts-ignore
-            suggestEmbed.setFooter({ text, iconURL });
-        }
-        if (suggestConfig.message.author) {
-             let name = null;
-             let url = null;
-             let iconURL = null;
-             if (suggestConfig.message.author.text) name = suggestConfig.message.author.text;
-             if (suggestConfig.message.author.url) url = suggestConfig.message.author.url;
-             if (suggestConfig.message.author.icon) iconURL = suggestConfig.message.author.icon;
-             //@ts-ignore
-             suggestEmbed.setAuthor({ name, iconURL, url });
-        }
-        if (suggestConfig.message.description) suggestEmbed.setDescription(suggestConfig.message.description);
-        if (suggestConfig.message.fields) suggestEmbed.addFields(suggestConfig.message.fields);
-        if (suggestConfig.message.url) suggestEmbed.setURL(suggestConfig.message.url);
-        if (suggestConfig.message.thumbnail) suggestEmbed.setThumbnail(suggestConfig.message.thumbnail);
-        if (suggestConfig.message.image) suggestEmbed.setImage(suggestConfig.message.image);
-        if (suggestConfig.message.color) suggestEmbed.setColor(suggestConfig.message.color);
-        
+
+        const suggestEmbed = new CustomEmbed(suggestConfig.message, getParsedString);
         await interaction.editReply({ embeds: [suggestEmbed], content: suggestConfig.message.content });
 
         // get the embed for the channel

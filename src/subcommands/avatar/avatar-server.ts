@@ -1,5 +1,5 @@
 import type { ChatInputCommandInteraction, Client, ColorResolvable, Guild } from 'discord.js';
-import { embed } from '../../utils/constants/embeds';
+import Embed from '../../utils/constants/embeds';
 
 module.exports = {
     parent: 'avatar',
@@ -10,7 +10,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(color)
+                new Embed(color)
                     .setImage(
                         guild.iconURL({ size: 1024, forceStatic: false }) ??
                             'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png'
