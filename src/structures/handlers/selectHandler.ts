@@ -12,12 +12,12 @@ module.exports = async (client: Client) => {
     (await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/select/*/*.ts`)).map(async selectFile => {
         const select = require(selectFile);
 
-        if (!select.id) return total +=1;
+        if (!select.id) return (total += 1);
         selectors.set(select.id, select);
 
-        total +=1;
-        loaded +=1;
+        total += 1;
+        loaded += 1;
     });
 
-    consola.success(`Loaded ${(loaded - total !== 0) ? `${loaded}/${total}` : total} select menus.`);
-}
+    consola.success(`Loaded ${loaded - total !== 0 ? `${loaded}/${total}` : total} select menus.`);
+};

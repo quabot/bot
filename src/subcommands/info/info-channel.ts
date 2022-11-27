@@ -1,6 +1,6 @@
-import { Client, CommandInteraction } from "discord.js";
-import { channelTypes } from "../../utils/constants/discord";
-import { embed } from "../../utils/constants/embeds";
+import { Client, CommandInteraction } from 'discord.js';
+import { channelTypes } from '../../utils/constants/discord';
+import { embed } from '../../utils/constants/embeds';
 
 module.exports = {
     command: 'info',
@@ -12,9 +12,7 @@ module.exports = {
 
         await interaction.editReply({
             embeds: [
-                embed(color)
-                    .setTitle("Channel Info")
-                    .setDescription(`
+                embed(color).setTitle('Channel Info').setDescription(`
                     **• Name:** ${channel?.name}
                     **• Channel:** ${channel}
                     **• ID:** ${channel?.id}
@@ -22,8 +20,8 @@ module.exports = {
                     **• NSFW:** ${channel?.nsfw ? 'Enabled' : 'Disabled'}
                     **• Ratelimit:** ${channel?.rateLimitPerUser !== 0 ? 'Enabled' : 'Disabled'}
                     **• Parent:** ${channel?.parentId ? '<#' + channel?.parentId + '>' : 'None'}
-                    `)
-            ]
+                    `),
+            ],
         });
-    }
-}
+    },
+};

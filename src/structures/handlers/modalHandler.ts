@@ -12,12 +12,12 @@ module.exports = async (client: Client) => {
     (await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/modals/*/*.ts`)).map(async modalFile => {
         const modal = require(modalFile);
 
-        if (!modal.id) return total +=1;
+        if (!modal.id) return (total += 1);
         modals.set(modal.id, modal);
 
-        total +=1;
-        loaded +=1;
+        total += 1;
+        loaded += 1;
     });
 
-    consola.success(`Loaded ${(loaded - total !== 0) ? `${loaded}/${total}` : total} modals.`);
-}
+    consola.success(`Loaded ${loaded - total !== 0 ? `${loaded}/${total}` : total} modals.`);
+};

@@ -18,7 +18,7 @@ const SuggestConfigSchema = new mongoose.Schema({
     dm: reqBool,
     dmMessage: reqObject,
 
-    colors: reqObject
+    colors: reqObject,
 });
 
 module.exports = mongoose.model('Suggestion-Config', SuggestConfigSchema);

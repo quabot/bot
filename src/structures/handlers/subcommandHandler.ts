@@ -10,18 +10,17 @@ let total = 0;
 let loaded = 0;
 
 module.exports = async (client: Client) => {
-
     (await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*.ts`)).map(async subcommandFile => {
         const subcommand = require(subcommandFile);
 
-        if (!subcommand.command) return total +=1;
-        if (!subcommand.subcommand) return total +=1;
+        if (!subcommand.command) return (total += 1);
+        if (!subcommand.subcommand) return (total += 1);
 
         subcommands.set(`${subcommand.subcommand}/${subcommand.command}`, subcommand);
 
-        total +=1;
-        loaded +=1;
+        total += 1;
+        loaded += 1;
     });
 
-    consola.success(`Loaded ${(loaded - total !== 0) ? `${loaded}/${total}` : total} subcommands.`);
-}
+    consola.success(`Loaded ${loaded - total !== 0 ? `${loaded}/${total}` : total} subcommands.`);
+};

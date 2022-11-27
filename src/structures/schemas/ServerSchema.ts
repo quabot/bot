@@ -5,7 +5,7 @@ const ServerSchema = new mongoose.Schema({
     guildId: reqString,
     locale: reqString,
     color: reqString,
-    updatesChannel: reqString
+    updatesChannel: reqString,
 });
 
 module.exports = mongoose.model('Server', ServerSchema);
