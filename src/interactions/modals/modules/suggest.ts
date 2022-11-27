@@ -1,7 +1,9 @@
-import { type Client, type ColorResolvable, type ModalSubmitInteraction, EmbedBuilder } from 'discord.js';
+import { type Client, type ColorResolvable, type ModalSubmitInteraction } from 'discord.js';
+import { getIdConfig } from '../../../utils/configs/getIdConfig';
 import { getSuggestConfig } from '../../../utils/configs/getSuggestConfig';
 import CustomEmbed from '../../../utils/constants/customEmbed';
 import Embed from '../../../utils/constants/embeds';
+import Suggestion from '../../../structures/schemas/SuggestSchema';
 
 module.exports = {
     name: 'suggest',
@@ -23,7 +25,7 @@ module.exports = {
                 embeds: [new Embed(color).setDescription('Suggestions are disabled in this server.')],
             });
 
-        const suggestChannel = interaction.guild?.channels.cache.get(suggestConfig.channelId);
+        const suggestChannel: any = interaction.guild?.channels.cache.get(suggestConfig.channelId);
         if (!suggestChannel)
             return await interaction.editReply({
                 embeds: [
@@ -39,26 +41,48 @@ module.exports = {
                 embeds: [new Embed(color).setDescription("You didn't enter anything.")],
             });
 
-        const getParsedString = (text: any) => {
-            let newText = text;
+        const idConfig: any = await getIdConfig(interaction.guildId ?? '');
+        if (!idConfig) return await interaction.editReply({
+            embeds: [new Embed(color).setDescription("We just setup some more documents! Please run the command again.")],
+        });
 
-            newText = newText.replaceAll('{suggestion}', suggestion);
-            newText = newText.replaceAll('{user}', interaction.user);
-            newText = newText.replaceAll('{avatar}', interaction.user.displayAvatarURL());
-            newText = newText.replaceAll('{server}', interaction.guild?.name);
-            newText = newText.replaceAll('{icon}', interaction.guild?.iconURL());
-
-            return newText;
-        };
+        const getParsedString = (text: string) => text
+            .replaceAll('{suggestion}', suggestion)
+            .replaceAll('{user}', `${interaction.user}`)
+            .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
+            .replaceAll('{server}', interaction.guild?.name ?? '')
+            .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
         const suggestEmbed = new CustomEmbed(suggestConfig.message, getParsedString);
-        await interaction.editReply({ embeds: [suggestEmbed], content: suggestConfig.message.content });
 
-        // get the embed for the channel
-        // get the colors
-        // get the emojis
-        // send the msg
-        // create the suggestion document
+        const msg = await suggestChannel.send({ embeds: [suggestEmbed], content: getParsedString(suggestConfig.message.content) })
+        await msg.react(suggestConfig.emojiGreen);
+        await msg.react(suggestConfig.emojiRed);
+
+
+        idConfig.suggestId += 1;
+        await idConfig.save();
+
+        const newSuggestion = new Suggestion({
+            guildId: interaction.guildId,
+            id: idConfig.suggestId ?? 0,
+            msgId: msg.id,
+            suggestion: suggestion,
+            status: "pending",
+            userId: interaction.user.id,
+        });
+        await newSuggestion.save();
+
+
+        await interaction.editReply({
+            embeds: [
+                new Embed(color)
+                    .setDescription(`Successfully created your suggestion! You can check it out [here](${msg.url}).`)
+                    .setFooter({ text: `ID: ${idConfig.suggestId}` })
+                ]
+        });
+
+        // respond with an epic smex msg
         // get the log channel
         // send the msg
     },

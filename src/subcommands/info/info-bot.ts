@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { cache } from '../../main';
 import Embed from '../../utils/constants/embeds';
-import os from 'os';
+import { totalmem, freemem, cpus } from 'os';
 
 module.exports = {
     parent: 'info',
@@ -13,7 +13,7 @@ module.exports = {
             cache.set('client-info', {
                 djs: require('../../../package.json').dependencies['discord.js'],
                 njs: process.version,
-                cpu: os.cpus()[0].model,
+                cpu: cpus()[0].model,
                 platform: process.platform.replace('win32', 'windows'),
             });
 
@@ -28,8 +28,8 @@ module.exports = {
                         {
                             name: 'Memory Usage',
                             value: `\`${
-                                Math.round(os.totalmem() / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024)
-                            }MB/${Math.round(os.totalmem() / 1024 / 1024)}MB\``,
+                                Math.round(totalmem() / 1024 / 1024) - Math.round(freemem() / 1024 / 1024)
+                            }MB/${Math.round(totalmem() / 1024 / 1024)}MB\``,
                             inline: true,
                         },
                         {

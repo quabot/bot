@@ -2,7 +2,7 @@
 import { EmbedBuilder } from 'discord.js';
 
 class CustomEmbed extends EmbedBuilder {
-    constructor(rawEmbed: any, getParsedString: any) {
+    constructor(rawEmbed: any, getParsedString: Function) {
         super();
 
         const embed = new EmbedBuilder();
