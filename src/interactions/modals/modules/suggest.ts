@@ -1,6 +1,6 @@
-import { Client, EmbedBuilder, ModalSubmitInteraction } from "discord.js"
-import { getSuggestConfig } from "../../../utils/configs/getSuggestConfig";
-import { embed } from "../../../utils/constants/embeds";
+import { Client, EmbedBuilder, ModalSubmitInteraction } from 'discord.js'
+import { getSuggestConfig } from '../../../utils/configs/getSuggestConfig';
+import { embed } from '../../../utils/constants/embeds';
 
 module.exports = {
     id: 'suggest',
@@ -11,14 +11,14 @@ module.exports = {
         if (!suggestConfig) return await interaction.editReply({
             embeds: [
                 embed(color)
-                    .setDescription("We are setting up suggestions for first-time use, please run the command again!")
+                    .setDescription('We are setting up suggestions for first-time use, please run the command again!')
             ]
         });
 
         if (!suggestConfig.enabled) return await interaction.editReply({
             embeds: [
                 embed(color)
-                    .setDescription("Suggestions are disabled in this server.")
+                    .setDescription('Suggestions are disabled in this server.')
             ]
         });
 
@@ -26,7 +26,7 @@ module.exports = {
         if (!suggestChannel) return await interaction.editReply({
             embeds: [
                 embed(color)
-                    .setDescription("The suggestions channel has not been configured. This can be done our [dashboard](https://quabot.net).")
+                    .setDescription('The suggestions channel has not been configured. This can be done our [dashboard](https://quabot.net).')
             ]
         });
 
@@ -34,7 +34,7 @@ module.exports = {
         if (!suggestion) return await interaction.editReply({
             embeds: [
                 embed(color)
-                    .setDescription("You didn't enter anything.")
+                    .setDescription('You didn\'t enter anything.')
             ]
         });
 
@@ -42,20 +42,21 @@ module.exports = {
         const getParsedString = (text: any) => {
             let newText = text;
 
-            newText = newText.replaceAll("{suggestion}", suggestion);
-            newText = newText.replaceAll("{user}", interaction.user);
-            newText = newText.replaceAll("{avatar}", interaction.user.displayAvatarURL());
-            newText = newText.replaceAll("{server}", interaction.guild?.name);
-            newText = newText.replaceAll("{icon}", interaction.guild?.iconURL());
+            newText = newText.replaceAll('{suggestion}', suggestion);
+            newText = newText.replaceAll('{user}', interaction.user);
+            newText = newText.replaceAll('{avatar}', interaction.user.displayAvatarURL());
+            newText = newText.replaceAll('{server}', interaction.guild?.name);
+            newText = newText.replaceAll('{icon}', interaction.guild?.iconURL());
 
             return newText;
         }
 
-        if (suggestConfig.message.title !== "") suggestEmbed.setTitle(`${getParsedString(suggestConfig.message.title)}`);
+        if (suggestConfig.message.title !== '') suggestEmbed.setTitle(`${getParsedString(suggestConfig.message.title)}`);
         if (suggestConfig.message.timestamp) suggestEmbed.setTimestamp();
         if (suggestConfig.message.footer) {
             let url = null;
             let text = null; // finish the embed thing, then code cleanup and pass in the everything for a general thing maker
+        
         }
 
 
