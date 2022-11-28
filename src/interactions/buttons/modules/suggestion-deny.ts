@@ -5,7 +5,7 @@ import CustomEmbed from "../../../utils/constants/customEmbed";
 import Embed from "../../../utils/constants/embeds";
 
 module.exports = {
-    name: 'suggestion-approve',
+    name: 'suggestion-deny',
     async execute(_client: Client, interaction: ButtonInteraction, color: ColorResolvable) {
         await interaction.deferReply({ ephemeral: true });
 
@@ -54,31 +54,34 @@ module.exports = {
                         ]
                     });
 
+
+                    // get the rejection reason
+                    return;
                 await interaction.editReply({
                     embeds: [
                         new Embed(color)
-                            .setDescription('Suggestion approved.')
+                            .setDescription('Suggestion denied.')
                     ]
                 });
 
-                suggestion.status = 'approved';
+                suggestion.status = 'denied';
                 await suggestion.save();
 
                 message.edit({
                     embeds:[
                         EmbedBuilder.from(message.embeds[0])
-                            .setColor(config.colors.approve )
-                            .setFooter({ text: 'This suggestion was approved!' })
+                            .setColor(config.colors.deny)
+                            .setFooter({ text: 'This suggestion was denied!' })
                     ]
                 });
                 
                 await interaction.message.edit({
                     embeds: [
-                        new Embed(config.colors.approve)
+                        new Embed(config.colors.deny)
                             .setTitle("New Suggestion")
                             .addFields(
                                 { name: "User", value: `${interaction.message.embeds[0].fields[0].value}`, inline: true },
-                                { name: "State", value: `Approved`, inline: true },
+                                { name: "State", value: `Denied`, inline: true },
                                 { name: "Approved By", value: `${interaction.user}`, inline: true },
                                 { name: "ID", value: `${suggestion.id}`, inline: true },
                                 { name: "Message", value: `[Click to jump](${interaction.message.embeds[0].fields[3].value})`, inline: true },
@@ -116,8 +119,8 @@ module.exports = {
                         .replaceAll('{avatar}', user.displayAvatarURL() ?? '')
                         .replaceAll('{server}', interaction.guild?.name ?? '')
                         .replaceAll('{staff}', `${interaction.user ?? ''}`)
-                        .replaceAll('{state}', 'approved')
-                        .replaceAll('{color}', ` ${config.colors.approve}`)
+                        .replaceAll('{state}', 'denied')
+                        .replaceAll('{color}', ` ${config.colors.deny}`)
                         .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
                 const embed = new CustomEmbed(config.dmMessage, parseString);
