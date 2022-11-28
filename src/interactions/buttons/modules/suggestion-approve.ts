@@ -81,8 +81,8 @@ module.exports = {
                                 { name: "State", value: `Approved`, inline: true },
                                 { name: "Approved By", value: `${interaction.user}`, inline: true },
                                 { name: "ID", value: `${suggestion.id}`, inline: true },
-                                { name: "Message", value: `[Click to jump](${interaction.message.embeds[0].fields[3].value})`, inline: true },
-                                { name: "Suggestion", value: `${suggestion}`, inline: false },
+                                { name: "Message", value: `${interaction.message.embeds[0].fields[3].value}`, inline: true },
+                                { name: "Suggestion", value: `${suggestion.suggestion}`, inline: false },
                             )
                     ], components: [
                         new ActionRowBuilder<ButtonBuilder>()

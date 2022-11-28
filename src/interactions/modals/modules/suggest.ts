@@ -8,7 +8,7 @@ import Suggestion from '../../../structures/schemas/SuggestSchema';
 module.exports = {
     name: 'suggest',
     async execute(client: Client, interaction: ModalSubmitInteraction, color: ColorResolvable) {
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: true });
 
         const suggestConfig: any = await getSuggestConfig(client, interaction.guildId || '');
         if (!suggestConfig)
