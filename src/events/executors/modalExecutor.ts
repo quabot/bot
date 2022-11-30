@@ -9,7 +9,15 @@ module.exports = {
         if (!interaction.isModalSubmit() || !interaction.guildId) return;
 
         const modal: any = modals.get(interaction.customId);
-        if (!modal) return;
+        if (!modal)
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setDescription(`⚠️ An error occurred! Couldn't find the modal ${interaction.customId}!`)
+                        .setTimestamp(),
+                ],
+            });
 
         const config: any = await getServerConfig(client, interaction.guildId);
         const color = config?.color ?? '#3a5a74';

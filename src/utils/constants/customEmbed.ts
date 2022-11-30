@@ -36,7 +36,7 @@ class CustomEmbed extends EmbedBuilder {
         if (rawEmbed.thumbnail) embed.setThumbnail(getParsedString(rawEmbed.thumbnail));
 
         if (rawEmbed.image) embed.setImage(getParsedString(rawEmbed.image));
-        
+
         if (rawEmbed.color) embed.setColor(getParsedString(rawEmbed.color));
 
         const newFields: any = [];

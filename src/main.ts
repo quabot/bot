@@ -5,11 +5,10 @@ const client = new Client({ intents: 47055, partials: [Channel, Reaction, Messag
 require('dotenv').config();
 
 export const commands = new Collection();
-export const buttons = new Collection();
 export const selectors = new Collection();
 export const modals = new Collection();
 export const subcommands = new Collection();
-['buttonHandler', 'commandHandler','eventHandler', 'modalHandler', 'selectHandler', 'subcommandHandler'].forEach(handler => {
+['commandHandler', 'subcommandHandler', 'eventHandler', 'modalHandler', 'selectHandler'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client);
 });
 
