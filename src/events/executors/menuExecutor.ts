@@ -1,7 +1,7 @@
 import { type Client, Colors, EmbedBuilder, type Interaction } from 'discord.js';
 import { selectors } from '../..';
-import { handleError } from '../../utils/constants/errors';
-import { getServerConfig } from '../../utils/configs/getServerConfig';
+import { handleError } from '../../_utils/constants/errors';
+import { getServerConfig } from '../../_utils/configs/getServerConfig';
 
 module.exports = {
     name: 'interactionCreate',

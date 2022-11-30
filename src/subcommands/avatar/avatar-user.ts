@@ -1,12 +1,9 @@
-import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import { Subcommand, type SubcommandArgs, Embed } from '../../structures';
 
-module.exports = {
-    parent: 'avatar',
-    name: 'user',
-    async execute(_client: Client, interaction: ChatInputCommandInteraction, color: ColorResolvable) {
-        await interaction.deferReply();
-
+export default new Subcommand()
+    .setParent('avatar')
+    .setName('user')
+    .setCallback(async ({ interaction, color }: SubcommandArgs) => {
         const user = interaction.options.getUser('user') ?? interaction.user;
 
         await interaction.editReply({
@@ -16,5 +13,4 @@ module.exports = {
                     .setTitle(`${user.tag}'s avatar`),
             ],
         });
-    },
-};
+    });

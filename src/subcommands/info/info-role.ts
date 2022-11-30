@@ -1,5 +1,5 @@
 import type { ChatInputCommandInteraction, Client, ColorResolvable, Role } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import Embed from '../../_utils/constants/embeds';
 
 module.exports = {
     parent: 'info',

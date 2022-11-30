@@ -1,5 +1,5 @@
 import { ActionRowBuilder, Client, CommandInteraction, SelectMenuBuilder, SlashCommandBuilder } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import Embed from '../../_utils/constants/embeds';
 
 module.exports = {
     data: new SlashCommandBuilder()

@@ -8,8 +8,8 @@ import {
     ActionRowBuilder,
     ModalActionRowComponentBuilder,
 } from 'discord.js';
-import { getSuggestConfig } from '../../utils/configs/getSuggestConfig';
-import Embed from '../../utils/constants/embeds';
+import { getSuggestConfig } from '../../_utils/configs/getSuggestConfig';
+import Embed from '../../_utils/constants/embeds';
 
 module.exports = {
     data: new SlashCommandBuilder().setName('suggest').setDescription('Leave a suggestion.').setDMPermission(false),

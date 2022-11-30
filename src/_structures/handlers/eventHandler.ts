@@ -2,7 +2,7 @@ import { promisify } from 'util';
 import { glob } from 'glob';
 import type { Client } from 'discord.js';
 import consola from 'consola';
-import { handleError } from '../../utils/constants/errors';
+import { handleError } from '../../_utils/constants/errors';
 
 const PG = promisify(glob);
 

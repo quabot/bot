@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { reqNum, reqString } from '../../utils/constants/schemas';
+import { reqNum, reqString } from '../../_utils/constants/schemas';
 
 const SuggestSchema = new mongoose.Schema({
     guildId: reqString,

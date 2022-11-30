@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Client, Collection, ColorResolvable, GuildMember } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import Embed from '../../_utils/constants/embeds';
 const houses = new Collection<string, string>();
 houses.set('HypeSquadOnlineHouse1', '<:QBravery:1011633937296138341> Bravery');
 houses.set('HypeSquadOnlineHouse2', '<:QBrilliance:1011633938441195572> Brilliance');

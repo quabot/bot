@@ -1,12 +1,11 @@
-import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { cache } from '../..';
-import Embed from '../../utils/constants/embeds';
 import { totalmem, freemem, cpus } from 'os';
+import { Subcommand, type SubcommandArgs, Embed } from '../../structures';
 
-module.exports = {
-    parent: 'info',
-    name: 'bot',
-    async execute(client: Client, interaction: ChatInputCommandInteraction, color: ColorResolvable) {
+export default new Subcommand()
+    .setParent('info')
+    .setName('bot')
+    .setCallback(async ({ interaction, client, color }: SubcommandArgs) => {
         await interaction.deferReply();
 
         if (!cache.has('client-info'))
@@ -57,5 +56,4 @@ module.exports = {
                     ),
             ],
         });
-    },
-};
+    });

@@ -1,12 +1,12 @@
 import { Client, CommandInteraction, SlashCommandBuilder } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import Embed from '../../_utils/constants/embeds';
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('members')
         .setDescription('Get the amount of people in the server.')
         .setDMPermission(false),
-    async execute(client: Client, interaction: CommandInteraction, color: any) {
+    async execute(_client: Client, interaction: CommandInteraction, color: any) {
         await interaction.deferReply();
 
         await interaction.editReply({
