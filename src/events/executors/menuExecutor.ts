@@ -1,5 +1,5 @@
 import { type Client, Colors, EmbedBuilder, type Interaction } from 'discord.js';
-import { selectors } from '../../main';
+import { selectors } from '../..';
 import { handleError } from '../../utils/constants/errors';
 import { getServerConfig } from '../../utils/configs/getServerConfig';
 

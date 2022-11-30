@@ -4,7 +4,7 @@ import { type Client, Routes, type SlashCommandBuilder } from 'discord.js';
 import consola from 'consola';
 
 import { REST } from '@discordjs/rest';
-import { commands } from '../../main';
+import { commands } from '../..';
 
 const PG = promisify(glob);
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN ?? '');

@@ -1,5 +1,5 @@
 import type { Client } from 'discord.js';
-import { cache } from '../../main';
+import { cache } from '../..';
 import Server from '../../structures/schemas/ServerSchema';
 
 export const getServerConfig = async (_client: Client, guildId: string) => {

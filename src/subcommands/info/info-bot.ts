@@ -1,5 +1,5 @@
 import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
-import { cache } from '../../main';
+import { cache } from '../..';
 import Embed from '../../utils/constants/embeds';
 import { totalmem, freemem, cpus } from 'os';
 

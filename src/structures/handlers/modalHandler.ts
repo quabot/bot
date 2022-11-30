@@ -2,7 +2,7 @@ import { promisify } from 'util';
 import { glob } from 'glob';
 import type { Client } from 'discord.js';
 import consola from 'consola';
-import { modals } from '../../main';
+import { modals } from '../..';
 
 const PG = promisify(glob);
 let loaded = 0;

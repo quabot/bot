@@ -1,6 +1,6 @@
 import { type Client, ActivityType } from 'discord.js';
 import consola from 'consola';
-import { commands } from '../../main';
+import { commands } from '../..';
 
 module.exports = {
     name: 'ready',

@@ -1,5 +1,5 @@
 import type { Client } from 'discord.js';
-import { cache } from '../../main';
+import { cache } from '../..';
 import Suggest from '../../structures/schemas/SuggestConfigSchema';
 
 export const getSuggestConfig = async (_client: Client, guildId: string) => {

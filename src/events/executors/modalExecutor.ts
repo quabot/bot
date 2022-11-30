@@ -1,5 +1,5 @@
 import { type Client, Colors, EmbedBuilder, type Interaction } from 'discord.js';
-import { modals } from '../../main';
+import { modals } from '../..';
 import { handleError } from '../../utils/constants/errors';
 import { getServerConfig } from '../../utils/configs/getServerConfig';
 
