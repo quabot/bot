@@ -48,7 +48,7 @@ export const getSuggestConfig = async (_client: Client, guildId: string) => {
                         dmMessage: {
                             content: '',
                             title: 'Your suggestion was {state}!',
-                            color: '',
+                            color: '{color}',
                             timestamp: true,
                             footer: {
                                 text: '',
@@ -65,7 +65,7 @@ export const getSuggestConfig = async (_client: Client, guildId: string) => {
                             thumbnail: '',
                             image: '',
                         },
-                        colors: { approve: '#40ff3d', deny: '#ff3d3d', pending: '#8f8d8d' },
+                        colors: { approve: '#40ff3d', deny: '#ff3d3d', pending: '#8f8d8d', deleted: ' #b30000' },
                     }).save();
             }
         )
