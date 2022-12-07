@@ -19,14 +19,6 @@ export interface ChannelSelectMenu extends BaseSelectMenu {}
 export interface MentionableSelectMenu extends BaseSelectMenu {}
 
 export class RoleSelectMenu extends RoleSelectMenuBuilder {
-    constructor() {
-        super();
-
-        this.customId = '';
-        this.ephemeral = false;
-        this.callback = () => {};
-    }
-
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -41,14 +33,6 @@ export class RoleSelectMenu extends RoleSelectMenuBuilder {
 }
 
 export class UserSelectMenu extends UserSelectMenuBuilder {
-    constructor() {
-        super();
-
-        this.customId = '';
-        this.ephemeral = false;
-        this.callback = () => {};
-    }
-
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -63,14 +47,6 @@ export class UserSelectMenu extends UserSelectMenuBuilder {
 }
 
 export class StringSelectMenu extends StringSelectMenuBuilder {
-    constructor() {
-        super();
-
-        this.customId = '';
-        this.ephemeral = false;
-        this.callback = () => {};
-    }
-
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -85,14 +61,6 @@ export class StringSelectMenu extends StringSelectMenuBuilder {
 }
 
 export class ChannelSelectMenu extends ChannelSelectMenuBuilder {
-    constructor() {
-        super();
-
-        this.customId = '';
-        this.ephemeral = false;
-        this.callback = () => {};
-    }
-
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -107,14 +75,6 @@ export class ChannelSelectMenu extends ChannelSelectMenuBuilder {
 }
 
 export class MentionableSelectMenu extends MentionableSelectMenuBuilder {
-    constructor() {
-        super();
-
-        this.customId = '';
-        this.ephemeral = false;
-        this.callback = () => {};
-    }
-
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 

@@ -1,5 +1,4 @@
 import {
-    ChatInputCommandInteraction,
     REST,
     Routes,
     Collection,
@@ -14,10 +13,11 @@ import consola from 'consola';
 import {
     type Client,
     type Command,
+    type CommandArgs,
     type Subcommand,
-    type SubcommandArgs,
     type Event,
     type Modal,
+    type ModalArgs,
     type AnySelectMenu,
     Embed,
 } from '.';
@@ -82,7 +82,7 @@ export class CommandManager extends BaseManager {
         return this;
     }
 
-    async execute(interaction: ChatInputCommandInteraction, ...args: any) {
+    async execute({ interaction, client, color }: CommandArgs) {
         const { commandName } = interaction;
         const command = this.commands.get(commandName);
 
@@ -97,7 +97,7 @@ export class CommandManager extends BaseManager {
 
         if (command.ephemeral !== 'children') await interaction.deferReply({ ephemeral: command.ephemeral });
 
-        await command.callback(interaction, ...args);
+        await command.callback({ interaction, client, color });
 
         return this;
     }
@@ -128,7 +128,7 @@ export class SubcommandManager extends BaseManager {
         return this;
     }
 
-    async execute({ interaction, client, color }: SubcommandArgs) {
+    async execute({ interaction, client, color }: CommandArgs) {
         const { commandName } = interaction;
         const subcommandName = interaction.options.getSubcommand();
         const subcommand = this.subcommands.get(`${commandName}_${subcommandName}`);
@@ -175,7 +175,7 @@ export class ModalManager extends BaseManager {
         return this;
     }
 
-    async execute(interaction: ModalSubmitInteraction, ...args: any) {
+    async execute({ interaction, client, color }: ModalArgs) {
         const { customId } = interaction;
         const modal = this.modals.get(customId);
 
@@ -188,7 +188,7 @@ export class ModalManager extends BaseManager {
 
         await interaction.deferReply({ ephemeral: modal.ephemeral });
 
-        await modal.callback(interaction, ...args);
+        await modal.callback({ interaction, client, color });
 
         return this;
     }
@@ -219,7 +219,7 @@ export class SelectMenuManager extends BaseManager {
         return this;
     }
 
-    async execute(interaction: AnySelectMenuInteraction, ...args: any) {
+    async execute({ interaction, client, color }: ModalArgs) {
         const { customId } = interaction;
         const selectMenu = this.selectMenus.get(customId);
 
@@ -234,7 +234,7 @@ export class SelectMenuManager extends BaseManager {
 
         await interaction.deferReply({ ephemeral: selectMenu.ephemeral });
 
-        await selectMenu.callback(interaction, ...args);
+        await selectMenu.callback({ interaction, client, color });
 
         return this;
     }

@@ -1,11 +1,11 @@
 import { cache } from '../..';
 import { totalmem, freemem, cpus } from 'os';
-import { Subcommand, type SubcommandArgs, Embed } from '../../structures';
+import { Subcommand, type CommandArgs, Embed } from '../../structures';
 
 export default new Subcommand()
     .setParent('info')
     .setName('bot')
-    .setCallback(async ({ interaction, client, color }: SubcommandArgs) => {
+    .setCallback(async ({ interaction, client, color }: CommandArgs) => {
         await interaction.deferReply();
 
         if (!cache.has('client-info'))

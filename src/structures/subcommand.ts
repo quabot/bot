@@ -1,11 +1,3 @@
-import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
-
-export interface SubcommandArgs {
-    client: Client;
-    interaction: ChatInputCommandInteraction;
-    color: ColorResolvable;
-}
-
 export interface Subcommand {
     parent: string;
     name: string;

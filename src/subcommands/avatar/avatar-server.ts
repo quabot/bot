@@ -1,10 +1,10 @@
 import type { Guild } from 'discord.js';
-import { Subcommand, type SubcommandArgs, Embed } from '../../structures';
+import { Subcommand, type CommandArgs, Embed } from '../../structures';
 
 export default new Subcommand()
     .setParent('avatar')
     .setName('server')
-    .setCallback(async ({ interaction, color }: SubcommandArgs) => {
+    .setCallback(async ({ interaction, color }: CommandArgs) => {
         const guild = interaction.guild as Guild;
 
         await interaction.editReply({

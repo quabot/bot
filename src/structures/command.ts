@@ -2,9 +2,18 @@ import {
     SlashCommandBuilder,
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
+    type ChatInputCommandInteraction,
+    type Client,
+    type ColorResolvable,
 } from 'discord.js';
 
 type ephemeral = boolean | 'children';
+
+export interface CommandArgs {
+    client: Client;
+    interaction: ChatInputCommandInteraction;
+    color: ColorResolvable;
+}
 
 export interface Command {
     ephemeral: ephemeral;

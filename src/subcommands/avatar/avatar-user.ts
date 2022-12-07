@@ -1,9 +1,9 @@
-import { Subcommand, type SubcommandArgs, Embed } from '../../structures';
+import { Subcommand, type CommandArgs, Embed } from '../../structures';
 
 export default new Subcommand()
     .setParent('avatar')
     .setName('user')
-    .setCallback(async ({ interaction, color }: SubcommandArgs) => {
+    .setCallback(async ({ interaction, color }: CommandArgs) => {
         const user = interaction.options.getUser('user') ?? interaction.user;
 
         await interaction.editReply({

@@ -1,4 +1,10 @@
-import { ModalBuilder } from 'discord.js';
+import { ModalBuilder, type ModalSubmitInteraction, type Client, type ColorResolvable } from 'discord.js';
+
+export interface ModalArgs {
+    client: Client;
+    interaction: ModalSubmitInteraction;
+    color: ColorResolvable;
+}
 
 export interface Modal {
     customId: string;
