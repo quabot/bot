@@ -7,7 +7,7 @@ import {
     type ColorResolvable,
 } from 'discord.js';
 
-type ephemeral = boolean | 'children';
+type boolOrChild = boolean | 'children';
 
 export interface CommandArgs {
     client: Client;
@@ -16,12 +16,23 @@ export interface CommandArgs {
 }
 
 export interface Command {
-    ephemeral: ephemeral;
+    deferReply: boolOrChild;
+    ephemeral: boolOrChild;
     callback: Function;
 }
 
 export class Command extends SlashCommandBuilder {
-    setEphemeral(ephemeral: ephemeral) {
+    constructor() {
+        super();
+
+        this.deferReply = true;
+    }
+
+    setDeferReply(deferReply: boolOrChild) {
+        this.deferReply = deferReply;
+    }
+
+    setEphemeral(ephemeral: boolOrChild) {
         this.ephemeral = ephemeral;
 
         return this;

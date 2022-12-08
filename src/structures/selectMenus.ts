@@ -8,6 +8,7 @@ import {
 
 interface BaseSelectMenu {
     customId: string;
+    deferReply: boolean;
     ephemeral: boolean;
     callback: Function;
 }
@@ -19,6 +20,18 @@ export interface ChannelSelectMenu extends BaseSelectMenu {}
 export interface MentionableSelectMenu extends BaseSelectMenu {}
 
 export class RoleSelectMenu extends RoleSelectMenuBuilder {
+    constructor() {
+        super();
+
+        this.deferReply = true;
+    }
+
+    setDeferReply(deferReply: boolean) {
+        this.deferReply = deferReply;
+
+        return this;
+    }
+
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -33,6 +46,18 @@ export class RoleSelectMenu extends RoleSelectMenuBuilder {
 }
 
 export class UserSelectMenu extends UserSelectMenuBuilder {
+    constructor() {
+        super();
+
+        this.deferReply = true;
+    }
+
+    setDeferReply(deferReply: boolean) {
+        this.deferReply = deferReply;
+
+        return this;
+    }
+
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -47,6 +72,18 @@ export class UserSelectMenu extends UserSelectMenuBuilder {
 }
 
 export class StringSelectMenu extends StringSelectMenuBuilder {
+    constructor() {
+        super();
+
+        this.deferReply = true;
+    }
+
+    setDeferReply(deferReply: boolean) {
+        this.deferReply = deferReply;
+
+        return this;
+    }
+
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -61,6 +98,18 @@ export class StringSelectMenu extends StringSelectMenuBuilder {
 }
 
 export class ChannelSelectMenu extends ChannelSelectMenuBuilder {
+    constructor() {
+        super();
+
+        this.deferReply = true;
+    }
+
+    setDeferReply(deferReply: boolean) {
+        this.deferReply = deferReply;
+
+        return this;
+    }
+
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 
@@ -75,6 +124,18 @@ export class ChannelSelectMenu extends ChannelSelectMenuBuilder {
 }
 
 export class MentionableSelectMenu extends MentionableSelectMenuBuilder {
+    constructor() {
+        super();
+
+        this.deferReply = true;
+    }
+
+    setDeferReply(deferReply: boolean) {
+        this.deferReply = deferReply;
+
+        return this;
+    }
+
     setEphemeral(ephemeral: boolean) {
         this.ephemeral = ephemeral;
 

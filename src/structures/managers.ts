@@ -1,12 +1,4 @@
-import {
-    REST,
-    Routes,
-    Collection,
-    Colors,
-    type RESTPostAPIChatInputApplicationCommandsJSONBody,
-    AnySelectMenuInteraction,
-    ModalSubmitInteraction,
-} from 'discord.js';
+import { REST, Routes, Collection, Colors, type RESTPostAPIChatInputApplicationCommandsJSONBody } from 'discord.js';
 import { promisify } from 'util';
 import { glob } from 'glob';
 import consola from 'consola';
@@ -95,7 +87,8 @@ export class CommandManager extends BaseManager {
                 ],
             });
 
-        if (command.ephemeral !== 'children') await interaction.deferReply({ ephemeral: command.ephemeral });
+        if (command.ephemeral !== 'children' && command.deferReply)
+            await interaction.deferReply({ ephemeral: command.ephemeral });
 
         await command.callback({ interaction, client, color });
 
@@ -143,7 +136,8 @@ export class SubcommandManager extends BaseManager {
             });
 
         setTimeout(async () => {
-            if (!interaction.deferred) await interaction.deferReply({ ephemeral: subcommand.ephemeral });
+            if (!interaction.deferred && subcommand.deferReply)
+                await interaction.deferReply({ ephemeral: subcommand.ephemeral });
             await subcommand.callback({ interaction, client, color });
             return this;
         }, 100);
@@ -186,7 +180,7 @@ export class ModalManager extends BaseManager {
                 ],
             });
 
-        await interaction.deferReply({ ephemeral: modal.ephemeral });
+        if (modal.deferReply) await interaction.deferReply({ ephemeral: modal.ephemeral });
 
         await modal.callback({ interaction, client, color });
 
