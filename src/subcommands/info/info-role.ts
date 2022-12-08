@@ -5,8 +5,6 @@ export default new Subcommand()
     .setParent('info')
     .setName('role')
     .setCallback(async ({ interaction, color }: CommandArgs) => {
-        await interaction.deferReply();
-
         const role: Role = interaction.options.getRole('role', true) as Role;
 
         await interaction.editReply({

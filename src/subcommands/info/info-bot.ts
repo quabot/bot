@@ -6,8 +6,6 @@ export default new Subcommand()
     .setParent('info')
     .setName('bot')
     .setCallback(async ({ interaction, client, color }: CommandArgs) => {
-        await interaction.deferReply();
-
         if (!cache.has('client-info'))
             cache.set('client-info', {
                 djs: require('../../../package.json').dependencies['discord.js'],
