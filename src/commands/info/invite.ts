@@ -1,14 +1,10 @@
-import { Client, CommandInteraction, SlashCommandBuilder } from 'discord.js';
-import Embed from '../../_utils/constants/embeds';
+import { Command, Embed, type CommandArgs } from '../../structures';
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('invite')
-        .setDescription('Get an invite to add quabot to your own server.')
-        .setDMPermission(false),
-    async execute(_client: Client, interaction: CommandInteraction, color: any) {
-        await interaction.deferReply();
-
+export default new Command()
+    .setName('invite')
+    .setDescription('Get an invite to add quabot to your own server.')
+    .setDMPermission(false)
+    .setCallback(async ({ interaction, color }: CommandArgs) => {
         await interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -19,5 +15,4 @@ module.exports = {
                     ),
             ],
         });
-    },
-};
+    });
