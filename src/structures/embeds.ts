@@ -32,14 +32,14 @@ export class CustomEmbed extends EmbedBuilder {
     constructor(rawEmbed: CustomEmbedJSON, getParsedString: Function) {
         super();
 
-        this.setTitle(getParsedString(rawEmbed.title) ?? null)
-            .setURL(getParsedString(rawEmbed.url) ?? null)
-            .setDescription(getParsedString(rawEmbed.description) ?? null)
+        this.setTitle(getParsedString(rawEmbed.title))
+            .setURL(getParsedString(rawEmbed.url))
+            .setDescription(getParsedString(rawEmbed.description))
 
-            .setThumbnail(getParsedString(rawEmbed.thumbnail) ?? null)
-            .setImage(getParsedString(rawEmbed.image) ?? null)
+            .setThumbnail(getParsedString(rawEmbed.thumbnail))
+            .setImage(getParsedString(rawEmbed.image))
 
-            .setColor(getParsedString(rawEmbed.color) ?? null)
+            .setColor(getParsedString(rawEmbed.color))
 
             .setAuthor(rawEmbed.author ?? null)
             .setFooter(rawEmbed.footer ?? null);

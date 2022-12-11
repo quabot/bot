@@ -6,22 +6,15 @@ import {
     ModalActionRowComponentBuilder,
 } from 'discord.js';
 import { Command, Embed, type CommandArgs } from '../../structures';
-import { getSuggestConfig } from '../../_utils/configs/getSuggestConfig';
+import { getSuggestConfig } from '../../utils';
 
 export default new Command()
     .setName('suggest')
     .setDescription('Leave a suggestion.')
     .setDMPermission(false)
+    .setDeferReply(false)
     .setCallback(async ({ client, interaction, color }: CommandArgs) => {
         const suggestConfig: any = await getSuggestConfig(client, interaction.guildId ?? '');
-        if (!suggestConfig)
-            return await interaction.reply({
-                embeds: [
-                    new Embed(color).setDescription(
-                        'We are setting up suggestions for first-time use, please run the command again!'
-                    ),
-                ],
-            });
 
         if (!suggestConfig.enabled)
             return await interaction.reply({
@@ -53,5 +46,6 @@ export default new Command()
                         .setStyle(TextInputStyle.Paragraph)
                 )
             );
+
         await interaction.showModal(modal);
     });

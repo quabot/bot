@@ -68,7 +68,7 @@ const Suggest = mongoose.model(
     })
 );
 
-export const schemas = {
+export const Schemas = {
     Ids,
     Server,
     SuggestConfig,

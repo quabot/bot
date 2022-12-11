@@ -1,4 +1,4 @@
-import { Client, schemas } from '../structures';
+import { Client, Schemas } from '../structures';
 
 export const reqString = {
     type: String,
@@ -128,15 +128,15 @@ export const optSuggestDmMessage = {
 };
 
 export async function getIdConfig(client: Client, guildId: string) {
-    return await getFromDB(client, guildId, schemas.Ids, 'id-config');
+    return await getFromDB(client, guildId, Schemas.Ids, 'id-config');
 }
 
 export async function getServerConfig(client: Client, guildId: string) {
-    return await getFromDB(client, guildId, schemas.Server, `${guildId}-server-config`);
+    return await getFromDB(client, guildId, Schemas.Server, `server-config`);
 }
 
 export async function getSuggestConfig(client: Client, guildId: string) {
-    return await getFromDB(client, guildId, schemas.SuggestConfig, `${guildId}-suggestion-config`);
+    return await getFromDB(client, guildId, Schemas.SuggestConfig, `suggestion-config`);
 }
 
 async function getFromDB(client: Client, guildId: string, Schema: any, cacheName: string) {
@@ -149,7 +149,7 @@ async function getFromDB(client: Client, guildId: string, Schema: any, cacheName
             .clone()
             .catch(() => {});
 
-        client.cache.set(cacheName, result);
+        client.cache.set(`${guildId}-${cacheName}`, result);
     }
 
     return result;

@@ -1,4 +1,5 @@
-import type { ModalSubmitInteraction, Client, ColorResolvable } from 'discord.js';
+import type { ModalSubmitInteraction, ColorResolvable } from 'discord.js';
+import type { Client } from '.';
 
 export interface ModalArgs {
     client: Client;

@@ -1,7 +1,5 @@
-import { getIdConfig } from '../../../_utils/configs/getIdConfig';
-import { getSuggestConfig } from '../../../_utils/configs/getSuggestConfig';
-import Suggestion from '../../../_structures/schemas/SuggestSchema';
-import { Modal, Embed, CustomEmbed, type ModalArgs } from '../../../structures';
+import { getSuggestConfig, getIdConfig } from '../../../utils';
+import { Schemas, Modal, Embed, CustomEmbed, type ModalArgs } from '../../../structures';
 
 export default new Modal().setName('suggest').setCallback(async ({ client, interaction, color }: ModalArgs) => {
     const suggestConfig: any = await getSuggestConfig(client, interaction.guildId || '');
@@ -35,7 +33,7 @@ export default new Modal().setName('suggest').setCallback(async ({ client, inter
             embeds: [new Embed(color).setDescription("You didn't enter anything.")],
         });
 
-    const idConfig: any = await getIdConfig(interaction.guildId ?? '');
+    const idConfig: any = await getIdConfig(client, interaction.guildId ?? '');
     if (!idConfig)
         return await interaction.editReply({
             embeds: [
@@ -43,13 +41,16 @@ export default new Modal().setName('suggest').setCallback(async ({ client, inter
             ],
         });
 
-    const getParsedString = (text: string) =>
-        text
-            .replaceAll('{suggestion}', suggestion)
-            .replaceAll('{user}', `${interaction.user}`)
-            .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
-            .replaceAll('{server}', interaction.guild?.name ?? '')
-            .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
+    const getParsedString = (text: string) => {
+        return (
+            text
+                .replaceAll('{suggestion}', suggestion)
+                .replaceAll('{user}', `${interaction.user}`)
+                .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
+                .replaceAll('{server}', interaction.guild?.name ?? '')
+                .replaceAll('{icon}', interaction.guild?.iconURL() ?? '') || null
+        );
+    };
 
     const suggestEmbed = new CustomEmbed(suggestConfig.message, getParsedString);
 
@@ -61,9 +62,9 @@ export default new Modal().setName('suggest').setCallback(async ({ client, inter
     await msg.react(suggestConfig.emojiRed);
 
     idConfig.suggestId += 1;
-    await idConfig.save();
+    client.cache.set(`${interaction.guildId}-id-config`, await idConfig.save());
 
-    const newSuggestion = new Suggestion({
+    const newSuggestion = new Schemas.Suggest({
         guildId: interaction.guildId,
         id: idConfig.suggestId ?? 0,
         msgId: msg.id,

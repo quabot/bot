@@ -3,9 +3,9 @@ import {
     ApplicationCommandType,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     type ChatInputCommandInteraction,
-    type Client,
     type ColorResolvable,
 } from 'discord.js';
+import type { Client } from '.';
 
 type boolOrChild = boolean | 'children';
 
@@ -30,6 +30,8 @@ export class Command extends SlashCommandBuilder {
 
     setDeferReply(deferReply: boolOrChild) {
         this.deferReply = deferReply;
+
+        return this;
     }
 
     setEphemeral(ephemeral: boolOrChild) {
