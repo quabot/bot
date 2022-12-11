@@ -1,12 +1,11 @@
 import { type Client, ActivityType } from 'discord.js';
 import consola from 'consola';
-import { commands } from '../..';
-import { Event } from '../../structures';
+import { Event, EventArgs } from '../../structures';
 
 export default new Event()
     .setName('ready')
     .setOnce(true)
-    .setCallback(async ({}, client: Client) => {
+    .setCallback(async ({ client }: EventArgs, onlineClient: Client) => {
         const activities = [`{usersCount} users`, `quabot.net`, `{commandsCount} commands`, `{guildsCount} servers`];
 
         setActivity(activities[0]);
@@ -17,19 +16,19 @@ export default new Event()
         }, 6000);
 
         console.log('');
-        consola.info(`Logged in as ${client.user?.tag}.`);
+        consola.info(`Logged in as ${onlineClient.user?.tag}.`);
         setTimeout(() => {
             console.log('');
             consola.success(`Ready!`);
         }, 1000);
 
         function setActivity(activity: any) {
-            client.user?.setActivity({
+            onlineClient.user?.setActivity({
                 type: ActivityType.Watching,
                 name: `${activity
-                    .replaceAll('{usersCount}', client.users.cache.size.toLocaleString())
-                    .replaceAll('{commandsCount}', commands.size.toLocaleString())
-                    .replaceAll('{guildsCount}', client.guilds.cache.size.toLocaleString())} | /help`,
+                    .replaceAll('{usersCount}', onlineClient.users.cache.size.toLocaleString())
+                    .replaceAll('{commandsCount}', client.commands.size.toLocaleString())
+                    .replaceAll('{guildsCount}', onlineClient.guilds.cache.size.toLocaleString())} | /help`,
             });
         }
     });

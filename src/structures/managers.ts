@@ -40,6 +40,10 @@ export class CommandManager extends BaseManager {
         this.commandsJSON = [];
     }
 
+    get size() {
+        return this.commands.size;
+    }
+
     async loadAll() {
         const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
 

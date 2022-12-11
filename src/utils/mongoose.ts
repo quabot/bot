@@ -127,6 +127,12 @@ export const optSuggestDmMessage = {
     required: false,
 };
 
+export async function getServerColor(client: Client, guildId: string) {
+    const serverConfig: any = await getFromDB(client, guildId, Schemas.Ids, 'id-config');
+
+    return serverConfig.color;
+}
+
 export async function getIdConfig(client: Client, guildId: string) {
     return await getFromDB(client, guildId, Schemas.Ids, 'id-config');
 }
