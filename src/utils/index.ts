@@ -6,8 +6,10 @@ export * from './mongoose';
 export async function handleError(client: Client, error: Error, location?: string) {
     consola.error(error);
 
-    const guild = await client.guilds.fetch('1007810461347086357');
-    const channel: BaseGuildTextChannel = guild?.channels.cache.get('1044638906416648213') as BaseGuildTextChannel;
+    const guild = await client.guilds.fetch(process.env.GUILD_ID ?? '');
+    const channel: BaseGuildTextChannel = (await guild?.channels.fetch(
+        process.env.LOG_CHANNEL_ID ?? ''
+    )) as BaseGuildTextChannel;
 
     channel?.send({
         embeds: [
