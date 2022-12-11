@@ -243,9 +243,9 @@ export class EventManager extends BaseManager {
             const event: Event = require(file).default;
 
             if (event.once) {
-                this.client.once(event.name, async (...args) => await event.callback(...args, this.client));
+                this.client.once(event.name, async (...args) => await event.callback({ client: this.client }, ...args));
             } else {
-                this.client.on(event.name, async (...args) => await event.callback(...args, this.client));
+                this.client.on(event.name, async (...args) => await event.callback({ client: this.client }, ...args));
             }
         }
 

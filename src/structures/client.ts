@@ -1,5 +1,5 @@
 import { Client as BaseClient, type ClientOptions } from 'discord.js';
-import { CommandManager, EventManager } from '.';
+import { CommandManager, SubcommandManager, ModalManager, SelectMenuManager, EventManager } from '.';
 
 export interface ClientConfig {
     token: string;
@@ -8,21 +8,27 @@ export interface ClientConfig {
 
 export interface Client {
     config: ClientConfig;
-    events: EventManager;
     commands: CommandManager;
+    subcommands: SubcommandManager;
+    modals: ModalManager;
+    selectMenus: SelectMenuManager;
+    events: EventManager;
 }
 
 export class Client extends BaseClient {
     constructor(options: ClientOptions) {
         super(options);
 
-        this.events = new EventManager(this);
         this.commands = new CommandManager(this);
+        this.subcommands = new SubcommandManager(this);
+        this.modals = new ModalManager(this);
+        this.selectMenus = new SelectMenuManager(this);
+        this.events = new EventManager(this);
     }
 
     build(): this {
-        this.events.loadAll();
         this.commands.loadAll();
+        this.events.loadAll();
 
         this.login(process.env.TOKEN);
 
