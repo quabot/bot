@@ -2,11 +2,6 @@ import { Client as BaseClient, type ClientOptions } from 'discord.js';
 import NodeCache from 'node-cache';
 import { CommandManager, SubcommandManager, ModalManager, SelectMenuManager, EventManager } from '.';
 
-export interface ClientConfig {
-    token: string;
-    guildId: string;
-}
-
 export interface Client {
     cache: NodeCache;
 
