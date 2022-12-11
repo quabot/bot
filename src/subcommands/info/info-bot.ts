@@ -1,20 +1,19 @@
-import { cache } from '../..';
 import { totalmem, freemem, cpus } from 'os';
-import { Subcommand, type CommandArgs, Embed } from '../../structures';
+import { Subcommand, type CommandArgs, Embed, type ClientInfo } from '../../structures';
 
 export default new Subcommand()
     .setParent('info')
     .setName('bot')
     .setCallback(async ({ interaction, client, color }: CommandArgs) => {
-        if (!cache.has('client-info'))
-            cache.set('client-info', {
+        if (!client.cache.has('client-info'))
+            client.cache.set('client-info', {
                 djs: require('../../../package.json').dependencies['discord.js'],
                 njs: process.version,
                 cpu: cpus()[0].model,
                 platform: process.platform.replace('win32', 'windows'),
             });
 
-        const info: any = cache.get('client-info');
+        const info: ClientInfo = client.cache.get('client-info') as ClientInfo;
 
         await interaction.editReply({
             embeds: [

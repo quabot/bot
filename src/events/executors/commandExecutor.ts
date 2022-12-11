@@ -1,7 +1,6 @@
 import type { Interaction } from 'discord.js';
-import { handleError } from '../../_utils/constants/errors';
 import { Event, type EventArgs } from '../../structures';
-import { getServerColor } from '../../utils';
+import { getServerColor, handleError } from '../../utils';
 
 export default new Event()
     .setName('interactionCreate')
