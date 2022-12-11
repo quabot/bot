@@ -1,19 +1,19 @@
-import type { ModalSubmitInteraction, Client, ColorResolvable } from 'discord.js';
+import type { AnySelectMenuInteraction, Client, ColorResolvable } from 'discord.js';
 
-export interface ModalArgs {
+export interface SelectMenuArgs {
     client: Client;
-    interaction: ModalSubmitInteraction;
+    interaction: AnySelectMenuInteraction;
     color: ColorResolvable;
 }
 
-export interface Modal {
+export interface SelectMenu {
     name: string;
     deferReply: boolean;
     ephemeral: boolean;
     callback: Function;
 }
 
-export class Modal {
+export class SelectMenu {
     constructor() {
         this.deferReply = true;
     }

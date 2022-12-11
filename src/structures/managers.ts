@@ -10,17 +10,18 @@ import {
     type Event,
     type Modal,
     type ModalArgs,
-    type AnySelectMenu,
+    type SelectMenu,
+    type SelectMenuArgs,
     Embed,
 } from '.';
 
 const PG = promisify(glob);
 
-interface BaseManager {
+export interface BaseManager {
     client: Client;
 }
 
-class BaseManager {
+export class BaseManager {
     constructor(client: Client) {
         this.client = client;
     }
@@ -161,7 +162,7 @@ export class ModalManager extends BaseManager {
         for (const file of files) {
             const modal: Modal = require(file).default;
 
-            this.modals.set(modal.customId, modal);
+            this.modals.set(modal.name, modal);
         }
 
         consola.success(`Loaded ${files.length} modals.`);
@@ -189,7 +190,7 @@ export class ModalManager extends BaseManager {
 }
 
 export interface SelectMenuManager {
-    selectMenus: Collection<string, AnySelectMenu>;
+    selectMenus: Collection<string, SelectMenu>;
 }
 
 export class SelectMenuManager extends BaseManager {
@@ -203,9 +204,9 @@ export class SelectMenuManager extends BaseManager {
         const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/selectMenus/*/*.ts`);
 
         for (const file of files) {
-            const selectMenu: AnySelectMenu = require(file).default;
+            const selectMenu: SelectMenu = require(file).default;
 
-            this.selectMenus.set(selectMenu.customId, selectMenu);
+            this.selectMenus.set(selectMenu.name, selectMenu);
         }
 
         consola.success(`Loaded ${files.length} selectMenus.`);
@@ -213,7 +214,7 @@ export class SelectMenuManager extends BaseManager {
         return this;
     }
 
-    async execute({ interaction, client, color }: ModalArgs) {
+    async execute({ interaction, client, color }: SelectMenuArgs) {
         const { customId } = interaction;
         const selectMenu = this.selectMenus.get(customId);
 

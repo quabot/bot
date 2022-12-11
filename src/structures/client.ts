@@ -1,7 +1,7 @@
 import { Client as BaseClient, type ClientOptions } from 'discord.js';
 import { CommandManager, EventManager } from '.';
 
-interface ClientConfig {
+export interface ClientConfig {
     token: string;
     guildId: string;
 }
