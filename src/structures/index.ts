@@ -6,3 +6,4 @@ export * from './managers';
 export * from './modal';
 export * from './selectMenu';
 export * from './subcommand';
+export * from './schemas';
