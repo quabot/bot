@@ -4,12 +4,11 @@
     "singleQuote": true,
     "arrowParens": "avoid",
     "overrides": [
-      {
-        "files": "*.yml",
-        "options": {
-          "tabWidth": 2
+        {
+            "files": "*.yml",
+            "options": {
+                "tabWidth": 2
+            }
         }
-      }
     ]
-  }
-  
+}

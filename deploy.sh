@@ -4,7 +4,7 @@ echo 'Pulling code from GitHub'
 git pull origin main
 
 echo 'Installing dependencies'
-npm ci
+yarn install
 
 echo 'Building'
 npm run build
