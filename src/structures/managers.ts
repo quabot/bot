@@ -41,7 +41,7 @@ export class CommandManager extends BaseManager {
     }
 
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.ts`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
 
         for (const file of files) {
             const command: Command = require(file).default;
@@ -109,7 +109,7 @@ export class SubcommandManager extends BaseManager {
     }
 
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*.ts`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*.js`);
 
         for (const file of files) {
             const subcommand: Subcommand = require(file).default;
@@ -157,7 +157,7 @@ export class ModalManager extends BaseManager {
     }
 
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/modals/*/*.ts`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/modals/*/*.js`);
 
         for (const file of files) {
             const modal: Modal = require(file).default;
@@ -201,7 +201,7 @@ export class SelectMenuManager extends BaseManager {
     }
 
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/selectMenus/*/*.ts`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/selectMenus/*/*.js`);
 
         for (const file of files) {
             const selectMenu: SelectMenu = require(file).default;
@@ -237,7 +237,7 @@ export class SelectMenuManager extends BaseManager {
 
 export class EventManager extends BaseManager {
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.ts`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.js`);
 
         for (const file of files) {
             const event: Event = require(file).default;
