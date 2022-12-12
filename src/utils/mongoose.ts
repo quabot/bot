@@ -128,7 +128,7 @@ export const optSuggestDmMessage = {
 };
 
 export async function getServerColor(client: Client, guildId: string) {
-    const serverConfig: any = await getFromDB(client, guildId, Schemas.Ids, 'id-config');
+    const serverConfig: any = await getServerConfig(client, guildId);
 
     return serverConfig.color;
 }
@@ -148,9 +148,9 @@ export async function getSuggestConfig(client: Client, guildId: string) {
 async function getFromDB(client: Client, guildId: string, Schema: any, cacheName: string) {
     let result = client.cache.get(cacheName);
     if (!result) {
-        result = Schema.findOne({ guildId }, (err: any, data: any) => {
+        result = await Schema.findOne({ guildId }, async (err: any, data: any) => {
             if (err) console.log(err);
-            if (!data) new Schema({ guildId }).save();
+            if (!data) await new Schema({ guildId }).save();
         })
             .clone()
             .catch(() => {});

@@ -8,7 +8,9 @@ export default new Command()
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setThumbnail(`${interaction.guild?.iconURL()}`)
+                    .setThumbnail(
+                        `https://cdn.discordapp.com/icons/1007810461347086357/a08a18c53574cadc45aa5825e1decd9c.webp?size=240`
+                    )
                     .setTitle(`QuaBot Dashboard`)
                     .setDescription(`You can find our dashboard [here](https://quabot.net)!`),
             ],

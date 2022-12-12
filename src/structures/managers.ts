@@ -45,7 +45,7 @@ export class CommandManager extends BaseManager {
     }
 
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/commands/*/*.js`);
 
         for (const file of files) {
             const command: Command = require(file).default;
@@ -112,8 +112,12 @@ export class SubcommandManager extends BaseManager {
         this.subcommands = new Collection();
     }
 
+    filter(fn: (value: Subcommand, key: string, collection: Collection<string, Subcommand>) => boolean) {
+        return this.subcommands.filter(fn);
+    }
+
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*.js`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/subcommands/*/*.js`);
 
         for (const file of files) {
             const subcommand: Subcommand = require(file).default;
@@ -161,7 +165,7 @@ export class ModalManager extends BaseManager {
     }
 
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/modals/*/*.js`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/modals/*/*.js`);
 
         for (const file of files) {
             const modal: Modal = require(file).default;
@@ -205,7 +209,7 @@ export class SelectMenuManager extends BaseManager {
     }
 
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/selectMenus/*/*.js`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/select/*/*.js`);
 
         for (const file of files) {
             const selectMenu: SelectMenu = require(file).default;
@@ -241,7 +245,7 @@ export class SelectMenuManager extends BaseManager {
 
 export class EventManager extends BaseManager {
     async loadAll() {
-        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.js`);
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/events/*/*.js`);
 
         for (const file of files) {
             const event: Event = require(file).default;

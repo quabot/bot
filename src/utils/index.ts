@@ -18,7 +18,7 @@ export async function handleError(client: Client, error: Error, location?: strin
                 .setFooter({ text: error.name })
                 .setTimestamp()
                 .setDescription(
-                    `\`\`\`js${error.message}\`\`\`\n**Location/Command:**\n\`\`\`js${location ?? error.stack}\`\`\``
+                    `\`\`\`js\n${error.message}\`\`\`\n**Location/Command:**\n\`\`\`js${location ?? error.stack}\`\`\``
                 ),
         ],
     });

@@ -5,7 +5,12 @@ import { getServerColor, handleError } from '../../utils';
 export default new Event()
     .setName('interactionCreate')
     .setCallback(async ({ client }: EventArgs, interaction: Interaction) => {
-        if (!interaction.isChatInputCommand() || !interaction.guildId) return;
+        if (
+            !interaction.isChatInputCommand() ||
+            !interaction.guildId ||
+            client.subcommands.filter(subcommand => subcommand.parent === interaction.commandName).size === 0
+        )
+            return;
 
         const subcommandName = interaction.options.getSubcommand();
         if (!subcommandName) return;
