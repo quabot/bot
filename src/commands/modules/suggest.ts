@@ -14,7 +14,9 @@ export default new Command()
     .setDMPermission(false)
     .setDeferReply(false)
     .setCallback(async ({ client, interaction, color }: CommandArgs) => {
-        const suggestConfig: any = await getSuggestConfig(client, interaction.guildId ?? '');
+        let suggestConfig: any = await getSuggestConfig(client, interaction.guildId ?? '');
+
+        if (suggestConfig === null) suggestConfig = await getSuggestConfig(client, interaction.guildId ?? '');
 
         if (!suggestConfig.enabled)
             return await interaction.reply({

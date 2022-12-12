@@ -87,7 +87,7 @@ export class CommandManager extends BaseManager {
             return await interaction.reply({
                 embeds: [
                     new Embed(Colors.Red).setDescription(
-                        `⚠️ An error occurred! Couldn't find the command ${commandName}!`
+                        `⚠️ An error occurred! Couldn't find the command \`${commandName}\`!`
                     ),
                 ],
             });
@@ -139,7 +139,7 @@ export class SubcommandManager extends BaseManager {
             return await interaction.reply({
                 embeds: [
                     new Embed(Colors.Red).setDescription(
-                        `⚠️ An error occurred! Couldn't find the subcommand ${subcommandName} from the command ${commandName}!`
+                        `⚠️ An error occurred! Couldn't find the subcommand \`${subcommandName}\` from the command \`${commandName}\`!`
                     ),
                 ],
             });
@@ -185,7 +185,9 @@ export class ModalManager extends BaseManager {
         if (!modal)
             return await interaction.reply({
                 embeds: [
-                    new Embed(Colors.Red).setDescription(`⚠️ An error occurred! Couldn't find the modal ${customId}!`),
+                    new Embed(Colors.Red).setDescription(
+                        `⚠️ An error occurred! Couldn't find the modal \`${customId}\`!`
+                    ),
                 ],
             });
 
@@ -230,7 +232,7 @@ export class SelectMenuManager extends BaseManager {
             return await interaction.reply({
                 embeds: [
                     new Embed(Colors.Red).setDescription(
-                        `⚠️ An error occurred! Couldn't find the selectMenu ${customId}!`
+                        `⚠️ An error occurred! Couldn't find the selectMenu \`${customId}\`!`
                     ),
                 ],
             });

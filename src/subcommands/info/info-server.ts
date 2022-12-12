@@ -2,7 +2,7 @@ import { ChannelType } from 'discord.js';
 import { Subcommand, Embed, type CommandArgs } from '../../structures';
 
 export default new Subcommand()
-    .setName('info')
+    .setParent('info')
     .setName('server')
     .setCallback(async ({ interaction, color }: CommandArgs) => {
         const { guild } = interaction;
