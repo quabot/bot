@@ -19,44 +19,61 @@ export class Embed extends EmbedBuilder {
     }
 }
 
-export interface CustomEmbedJSON extends APIEmbed {
-    content: string | undefined;
+export interface CustomEmbedJSON extends Omit<APIEmbed, 'timestamp'> {
+    content: string;
 
     author: EmbedAuthorOptions;
     footer: EmbedFooterOptions;
 
-    timestamp: 'true' | 'false';
+    timestamp: boolean;
 }
 
 export class CustomEmbed extends EmbedBuilder {
-    constructor(rawEmbed: CustomEmbedJSON, getParsedString: Function) {
+    constructor(rawEmbed: CustomEmbedJSON, getParsedString: (str: string | undefined) => string | null) {
         super();
 
-        const author = {
-            name: getParsedString(rawEmbed.author.name),
-            url: getParsedString(rawEmbed.author.url),
-            iconURL: getParsedString(rawEmbed.author.iconURL),
+        const author: EmbedAuthorOptions = {
+            name: getParsedString(rawEmbed.author.name) as string,
         };
 
-        const footer = {
-            text: getParsedString(rawEmbed.footer.text),
-            iconURL: getParsedString(rawEmbed.footer.iconURL),
+        if (notEmptyStringChecker(rawEmbed.author.url)) author.url = getParsedString(rawEmbed.author.url) as string;
+        if (notEmptyStringChecker(rawEmbed.author.iconURL))
+            author.iconURL = getParsedString(rawEmbed.author.iconURL) as string;
+
+        const footer: EmbedFooterOptions = {
+            text: getParsedString(rawEmbed.footer.text) as string,
         };
+
+        if (notEmptyStringChecker(rawEmbed.footer.iconURL))
+            footer.iconURL = getParsedString(rawEmbed.footer.iconURL) as string;
 
         this.setTitle(getParsedString(rawEmbed.title))
             .setURL(getParsedString(rawEmbed.url))
             .setDescription(getParsedString(rawEmbed.description))
 
-            .setThumbnail(getParsedString(rawEmbed.thumbnail))
-            .setImage(getParsedString(rawEmbed.image))
+            .setThumbnail(getParsedString(rawEmbed.thumbnail as string | undefined))
+            .setImage(getParsedString(rawEmbed.image as string | undefined))
 
-            .setColor(getParsedString(rawEmbed.color))
+            .setColor(getParsedString(rawEmbed.color as string | undefined) as ColorResolvable | null)
 
             .setAuthor(author.name ? author : null)
             .setFooter(footer.text ? footer : null);
 
-        if (rawEmbed.fields) this.setFields(rawEmbed.fields);
+        if (rawEmbed.fields)
+            this.setFields(
+                rawEmbed.fields.map(field => ({
+                    name: getParsedString(field.name) as string,
+                    value: getParsedString(field.value) as string,
+                    inline: field.inline as boolean,
+                }))
+            );
 
-        if (rawEmbed.timestamp === 'true') this.setTimestamp();
+        if (rawEmbed.timestamp) this.setTimestamp();
+
+        function notEmptyStringChecker(str: string | undefined) {
+            if (str?.length) return str?.length > 0;
+
+            return false;
+        }
     }
 }

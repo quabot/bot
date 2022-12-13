@@ -8,19 +8,18 @@ export default new Modal().setName('suggest').setCallback(async ({ client, inter
     const suggestion = interaction.fields.getTextInputValue('suggestion');
     const idConfig: any = await getIdConfig(client, interaction.guildId ?? '');
 
-    const getParsedString = (text: string) => {
+    const getParsedString = (text: string | undefined) => {
         const result = text
-            .replaceAll('{suggestion}', suggestion)
+            ?.replaceAll('{suggestion}', suggestion)
             .replaceAll('{user}', `${interaction.user}`)
             .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
             .replaceAll('{server}', interaction.guild?.name ?? '')
             .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
-        if (result.length === 0) {
-            console.log(`🚀 ~ file: suggest.ts:18 ~ getParsedString ~ result`, result.length);
+        if (result?.length === 0 || !result) {
             return null;
         }
-        console.log(`🚀 ~ file: suggest.ts:18 ~ getParsedString ~ result`, result);
+
         return result;
     };
 
@@ -45,7 +44,6 @@ export default new Modal().setName('suggest').setCallback(async ({ client, inter
         userId: interaction.user.id,
     });
     await newSuggestion.save();
-    console.log(`🚀 ~ file: suggest.ts:44 ~ newModal ~ newSuggestion`, newSuggestion);
 
     await interaction.editReply({
         embeds: [

@@ -10,7 +10,7 @@ export default new Event()
     .setCallback(async ({}, client: Client) => {
         connect(process.env.DATABASE_URI ?? '')
             .then(db => {
-                consola.info(`Connected to database ${db.connections[0].name}.`);
+                consola.info(`Connected to database '${db.connections[0].name}'.`);
             })
             .catch(err => {
                 consola.error(`Failed to connect to the database: ${err}`);

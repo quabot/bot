@@ -16,7 +16,7 @@ export default new Event()
         }, 6000);
 
         console.log('');
-        consola.info(`Logged in as ${onlineClient.user?.tag}.`);
+        consola.info(`Logged in as '${onlineClient.user?.tag}'.`);
         setTimeout(() => {
             console.log('');
             consola.success(`Ready!`);

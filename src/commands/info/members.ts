@@ -8,7 +8,10 @@ export default new Command()
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setThumbnail(`${interaction.guild?.iconURL()}`)
+                    .setThumbnail(
+                        interaction.guild?.iconURL() ??
+                            'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png'
+                    )
                     .setTitle(`${interaction.guild?.name}`)
                     .setDescription(`${interaction.guild?.memberCount}`),
             ],

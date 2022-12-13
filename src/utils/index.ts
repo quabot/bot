@@ -4,8 +4,8 @@ export * from './discord';
 export * from './mongoose';
 
 export async function handleError(client: Client, error: Error, location?: string) {
+    if (process.env.DEBUG === 'true') return consola.log(error);
     consola.error(error);
-    console.log(error);
 
     const guild = await client.guilds.fetch(process.env.GUILD_ID ?? '');
     const channel: BaseGuildTextChannel = (await guild?.channels.fetch(
