@@ -32,6 +32,17 @@ export class CustomEmbed extends EmbedBuilder {
     constructor(rawEmbed: CustomEmbedJSON, getParsedString: Function) {
         super();
 
+        const author = {
+            name: getParsedString(rawEmbed.author.name),
+            url: getParsedString(rawEmbed.author.url),
+            iconURL: getParsedString(rawEmbed.author.iconURL),
+        };
+
+        const footer = {
+            text: getParsedString(rawEmbed.footer.text),
+            iconURL: getParsedString(rawEmbed.footer.iconURL),
+        };
+
         this.setTitle(getParsedString(rawEmbed.title))
             .setURL(getParsedString(rawEmbed.url))
             .setDescription(getParsedString(rawEmbed.description))
@@ -41,8 +52,8 @@ export class CustomEmbed extends EmbedBuilder {
 
             .setColor(getParsedString(rawEmbed.color))
 
-            .setAuthor(rawEmbed.author ?? null)
-            .setFooter(rawEmbed.footer ?? null);
+            .setAuthor(author.name ? author : null)
+            .setFooter(footer.text ? footer : null);
 
         if (rawEmbed.fields) this.setFields(rawEmbed.fields);
 
