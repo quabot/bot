@@ -3,53 +3,25 @@ import { Schemas, Modal, Embed, CustomEmbed, type ModalArgs } from '../../../str
 
 export default new Modal().setName('suggest').setCallback(async ({ client, interaction, color }: ModalArgs) => {
     const suggestConfig: any = await getSuggestConfig(client, interaction.guildId || '');
-    if (!suggestConfig)
-        return await interaction.editReply({
-            embeds: [
-                new Embed(color).setDescription(
-                    'We are setting up suggestions for first-time use, please run the command again!'
-                ),
-            ],
-        });
-
-    if (!suggestConfig.enabled)
-        return await interaction.editReply({
-            embeds: [new Embed(color).setDescription('Suggestions are disabled in this server.')],
-        });
 
     const suggestChannel: any = interaction.guild?.channels.cache.get(suggestConfig.channelId);
-    if (!suggestChannel)
-        return await interaction.editReply({
-            embeds: [
-                new Embed(color).setDescription(
-                    'The suggestions channel has not been configured. This can be done our [dashboard](https://quabot.net).'
-                ),
-            ],
-        });
-
     const suggestion = interaction.fields.getTextInputValue('suggestion');
-    if (!suggestion)
-        return await interaction.editReply({
-            embeds: [new Embed(color).setDescription("You didn't enter anything.")],
-        });
-
     const idConfig: any = await getIdConfig(client, interaction.guildId ?? '');
-    if (!idConfig)
-        return await interaction.editReply({
-            embeds: [
-                new Embed(color).setDescription('We just setup some more documents! Please run the command again.'),
-            ],
-        });
 
     const getParsedString = (text: string) => {
-        return (
-            text
-                .replaceAll('{suggestion}', suggestion)
-                .replaceAll('{user}', `${interaction.user}`)
-                .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
-                .replaceAll('{server}', interaction.guild?.name ?? '')
-                .replaceAll('{icon}', interaction.guild?.iconURL() ?? '') || null
-        );
+        const result = text
+            .replaceAll('{suggestion}', suggestion)
+            .replaceAll('{user}', `${interaction.user}`)
+            .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
+            .replaceAll('{server}', interaction.guild?.name ?? '')
+            .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
+
+        if (result.length === 0) {
+            console.log(`🚀 ~ file: suggest.ts:18 ~ getParsedString ~ result`, result.length);
+            return null;
+        }
+        console.log(`🚀 ~ file: suggest.ts:18 ~ getParsedString ~ result`, result);
+        return result;
     };
 
     const suggestEmbed = new CustomEmbed(suggestConfig.message, getParsedString);
@@ -73,6 +45,7 @@ export default new Modal().setName('suggest').setCallback(async ({ client, inter
         userId: interaction.user.id,
     });
     await newSuggestion.save();
+    console.log(`🚀 ~ file: suggest.ts:44 ~ newModal ~ newSuggestion`, newSuggestion);
 
     await interaction.editReply({
         embeds: [
