@@ -1,6 +1,6 @@
 import { Client as BaseClient, type ClientOptions } from 'discord.js';
 import NodeCache from 'node-cache';
-import { CommandManager, SubcommandManager, ModalManager, SelectMenuManager, EventManager } from '.';
+import { CommandManager, SubcommandManager, ModalManager, SelectMenuManager, EventManager, ButtonManager } from '.';
 
 export interface ClientInfo {
     djs: string;
@@ -14,6 +14,7 @@ export interface Client {
 
     commands: CommandManager;
     subcommands: SubcommandManager;
+    buttons: ButtonManager;
     modals: ModalManager;
     selectMenus: SelectMenuManager;
     events: EventManager;
@@ -27,6 +28,7 @@ export class Client extends BaseClient {
 
         this.commands = new CommandManager(this);
         this.subcommands = new SubcommandManager(this);
+        this.buttons = new ButtonManager(this);
         this.modals = new ModalManager(this);
         this.selectMenus = new SelectMenuManager(this);
         this.events = new EventManager(this);
@@ -35,6 +37,7 @@ export class Client extends BaseClient {
     build() {
         this.commands.loadAll();
         this.subcommands.loadAll();
+        this.buttons.loadAll();
         this.modals.loadAll();
         this.selectMenus.loadAll();
         this.events.loadAll();

@@ -10,6 +10,8 @@ import {
     type Event,
     type Modal,
     type ModalArgs,
+    type Button,
+    type ButtonArgs,
     type SelectMenu,
     type SelectMenuArgs,
     Embed,
@@ -150,6 +152,52 @@ export class SubcommandManager extends BaseManager {
             await subcommand.callback({ interaction, client, color });
             return this;
         }, 100);
+    }
+}
+
+export interface ButtonManager {
+    buttons: Collection<string, Button>;
+}
+
+export class ButtonManager extends BaseManager {
+    constructor(client: Client) {
+        super(client);
+
+        this.buttons = new Collection();
+    }
+
+    async loadAll() {
+        const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/modals/*/*.js`);
+
+        for (const file of files) {
+            const button: Button = require(file).default;
+
+            this.buttons.set(button.name, button);
+        }
+
+        consola.success(`Loaded ${files.length} buttons.`);
+
+        return this;
+    }
+
+    async execute({ interaction, client, color }: ButtonArgs) {
+        const { customId } = interaction;
+        const button = this.buttons.get(customId);
+
+        if (!button)
+            return await interaction.reply({
+                embeds: [
+                    new Embed(Colors.Red).setDescription(
+                        `⚠️ An error occurred! Couldn't find the button \`${customId}\`!`
+                    ),
+                ],
+            });
+
+        if (button.deferReply) await interaction.deferReply({ ephemeral: button.ephemeral });
+
+        await button.callback({ interaction, client, color });
+
+        return this;
     }
 }
 
