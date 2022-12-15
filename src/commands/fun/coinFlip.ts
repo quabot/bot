@@ -1,13 +1,10 @@
-import { Client, CommandInteraction, SlashCommandBuilder } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import { Command, Embed, type CommandArgs } from '../../structures';
 
-module.exports = {
-    data: new SlashCommandBuilder().setName('coinflip').setDescription('Flip a coin.').setDMPermission(true),
-    async execute(client: Client, interaction: CommandInteraction, color: any) {
-        await interaction.deferReply();
-
+export default new Command()
+    .setName('coinflip')
+    .setDescription('Flip a coin.')
+    .setCallback(async ({ interaction, color }: CommandArgs) => {
         await interaction.editReply({
             embeds: [new Embed(color).setTitle(['🪙 Heads!', '🪙 Tails!'][Math.floor(Math.random() * 2)])],
         });
-    },
-};
+    });

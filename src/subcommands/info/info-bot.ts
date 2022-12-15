@@ -1,23 +1,19 @@
-import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
-import { cache } from '../../main';
-import Embed from '../../utils/constants/embeds';
 import { totalmem, freemem, cpus } from 'os';
+import { Subcommand, type CommandArgs, Embed, type ClientInfo } from '../../structures';
 
-module.exports = {
-    parent: 'info',
-    name: 'bot',
-    async execute(client: Client, interaction: ChatInputCommandInteraction, color: ColorResolvable) {
-        await interaction.deferReply();
-
-        if (!cache.has('client-info'))
-            cache.set('client-info', {
+export default new Subcommand()
+    .setParent('info')
+    .setName('bot')
+    .setCallback(async ({ interaction, client, color }: CommandArgs) => {
+        if (!client.cache.has('client-info'))
+            client.cache.set('client-info', {
                 djs: require('../../../package.json').dependencies['discord.js'],
                 njs: process.version,
                 cpu: cpus()[0].model,
                 platform: process.platform.replace('win32', 'windows'),
             });
 
-        const info: any = cache.get('client-info');
+        const info: ClientInfo = client.cache.get('client-info') as ClientInfo;
 
         await interaction.editReply({
             embeds: [
@@ -57,5 +53,4 @@ module.exports = {
                     ),
             ],
         });
-    },
-};
+    });

@@ -1,40 +1,23 @@
-import { type Client, Colors, EmbedBuilder, type Interaction } from 'discord.js';
-import { subcommands } from '../../main';
-import { handleError } from '../../utils/constants/errors';
-import { getServerConfig } from '../../utils/configs/getServerConfig';
+import type { Interaction } from 'discord.js';
+import { Event, type EventArgs } from '../../structures';
+import { getServerColor, handleError } from '../../utils';
 
-module.exports = {
-    name: 'interactionCreate',
-    async execute(interaction: Interaction, client: Client) {
-        try {
-            if (!interaction.isChatInputCommand() || !interaction.guildId) return;
-
-            const subcommandName = interaction.options.getSubcommand();
-            if (!subcommandName) return;
-
-            const subcommand: any = subcommands.get(`${subcommandName}/${interaction.commandName}`);
-            if (!subcommand)
-                return await interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(Colors.Red)
-                            .setDescription(
-                                `⚠️ An error occurred! Couldn't find the command ${interaction.commandName} with subcommand ${subcommandName}!`
-                            )
-                            .setTimestamp(),
-                    ],
-                });
-
-            const config: any = await getServerConfig(client, interaction.guildId);
-            const color = config?.color ?? '#3a5a74';
-
-            subcommand
-                .execute(client, interaction, color)
-                .catch((e: Error) =>
-                    handleError(client, e, `${interaction.options.getSubcommand()}/${interaction.commandName}`)
-                );
-        } catch (e) {
+export default new Event()
+    .setName('interactionCreate')
+    .setCallback(async ({ client }: EventArgs, interaction: Interaction) => {
+        if (
+            !interaction.isChatInputCommand() ||
+            !interaction.guildId ||
+            client.subcommands.filter(subcommand => subcommand.parent === interaction.commandName).size === 0
+        )
             return;
-        }
-    },
-};
+
+        const subcommandName = interaction.options.getSubcommand();
+        if (!subcommandName) return;
+
+        const color = await getServerColor(client, interaction.guildId);
+
+        await client.subcommands
+            .execute({ client, interaction, color })
+            .catch((e: Error) => handleError(client, e, subcommandName));
+    });

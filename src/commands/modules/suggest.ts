@@ -1,20 +1,21 @@
 import {
     TextInputStyle,
     TextInputBuilder,
-    Client,
-    CommandInteraction,
-    SlashCommandBuilder,
     ModalBuilder,
     ActionRowBuilder,
     ModalActionRowComponentBuilder,
 } from 'discord.js';
-import { getSuggestConfig } from '../../utils/configs/getSuggestConfig';
-import Embed from '../../utils/constants/embeds';
+import { Command, Embed, type CommandArgs } from '../../structures';
+import { getSuggestConfig } from '../../utils';
 
-module.exports = {
-    data: new SlashCommandBuilder().setName('suggest').setDescription('Leave a suggestion.').setDMPermission(false),
-    async execute(client: Client, interaction: CommandInteraction, color: any) {
-        const suggestConfig: any = await getSuggestConfig(client, interaction.guildId ?? '');
+export default new Command()
+    .setName('suggest')
+    .setDescription('Leave a suggestion.')
+    .setDMPermission(false)
+    .setDeferReply(false)
+    .setCallback(async ({ client, interaction, color }: CommandArgs) => {
+        let suggestConfig: any = await getSuggestConfig(client, interaction.guildId ?? '');
+
         if (!suggestConfig)
             return await interaction.reply({
                 embeds: [
@@ -54,6 +55,6 @@ module.exports = {
                         .setStyle(TextInputStyle.Paragraph)
                 )
             );
+
         await interaction.showModal(modal);
-    },
-};
+    });

@@ -5,16 +5,11 @@ import { getServerColor, handleError } from '../../utils';
 export default new Event()
     .setName('interactionCreate')
     .setCallback(async ({ client }: EventArgs, interaction: Interaction) => {
-        if (
-            !interaction.isChatInputCommand() ||
-            !interaction.guildId ||
-            client.subcommands.filter(subcommand => subcommand.parent === interaction.commandName).size > 0
-        )
-            return;
+        if (!interaction.isAnySelectMenu() || !interaction.guildId) return;
 
         const color = await getServerColor(client, interaction.guildId);
 
-        await client.commands
+        await client.selectMenus
             .execute({ client, interaction, color })
-            .catch((e: Error) => handleError(client, e, interaction.commandName));
+            .catch((e: Error) => handleError(client, e, interaction.customId));
     });

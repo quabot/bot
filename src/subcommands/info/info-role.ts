@@ -1,24 +1,21 @@
-import type { ChatInputCommandInteraction, Client, ColorResolvable, Role } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import type { Role } from 'discord.js';
+import { type CommandArgs, Subcommand, Embed } from '../../structures';
 
-module.exports = {
-    parent: 'info',
-    name: 'role',
-    async execute(_client: Client, interaction: ChatInputCommandInteraction, color: ColorResolvable) {
-        await interaction.deferReply();
-
+export default new Subcommand()
+    .setParent('info')
+    .setName('role')
+    .setCallback(async ({ interaction, color }: CommandArgs) => {
         const role: Role = interaction.options.getRole('role', true) as Role;
 
         await interaction.editReply({
             embeds: [
-                new Embed(role.color ?? color).setTitle('Role Info').setDescription(`
-                    **• Name:** ${role.name}
-                    **• Role:** ${role}
-                    **• ID:** ${role.id}
-                    **• Mentionable:** ${role.mentionable ? 'Yes' : 'No'}
-                    **• Separated:** ${role.hoist ? 'Yes' : 'No'}
-                    `),
+                new Embed(role.color !== 0 ? role.color : color).setTitle('Role Info').setDescription(`
+                **• Name:** ${role.name}
+                **• Role:** ${role}
+                **• ID:** ${role.id}
+                **• Mentionable:** ${role.mentionable ? 'Yes' : 'No'}
+                **• Separated:** ${role.hoist ? 'Yes' : 'No'}
+                `),
             ],
         });
-    },
-};
+    });

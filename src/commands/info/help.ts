@@ -1,15 +1,12 @@
-import { ActionRowBuilder, Client, CommandInteraction, SelectMenuBuilder, SlashCommandBuilder } from 'discord.js';
-import Embed from '../../utils/constants/embeds';
+import { ActionRowBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { Command, Embed, type CommandArgs } from '../../structures';
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('help')
-        .setDescription('Get a list of all the bot commands.')
-        .setDMPermission(false),
-    async execute(client: Client, interaction: CommandInteraction, color: any) {
+export default new Command()
+    .setName('help')
+    .setDescription('Get a list of all the bot commands.')
+    .setDMPermission(false)
+    .setCallback(async ({ client, interaction, color }: CommandArgs) => {
         // TODO: ADD [module] argument support, add the embeds (only when all modules done)
-
-        await interaction.deferReply();
 
         await interaction.editReply({
             embeds: [
@@ -21,8 +18,8 @@ module.exports = {
                     ),
             ],
             components: [
-                new ActionRowBuilder<SelectMenuBuilder>().addComponents(
-                    new SelectMenuBuilder().setCustomId('help').setPlaceholder('Select a category').addOptions(
+                new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                    new StringSelectMenuBuilder().setCustomId('help').setPlaceholder('Select a category').addOptions(
                         {
                             label: '💬 Info',
                             description:
@@ -58,5 +55,4 @@ module.exports = {
                 ),
             ],
         });
-    },
-};
+    });
