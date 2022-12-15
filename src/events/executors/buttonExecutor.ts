@@ -1,27 +1,15 @@
-import { type Client, Colors, EmbedBuilder, type Interaction } from 'discord.js';
-import { buttons } from '../../main';
-import { handleError } from '../../utils/constants/errors';
-import { getServerConfig } from '../../utils/configs/getServerConfig';
+import type { Interaction } from 'discord.js';
+import { Event, type EventArgs } from '../../structures';
+import { getServerColor, handleError } from '../../utils';
 
-module.exports = {
-    name: 'interactionCreate',
-    async execute(interaction: Interaction, client: Client) {
+export default new Event()
+    .setName('interactionCreate')
+    .setCallback(async ({ client }: EventArgs, interaction: Interaction) => {
         if (!interaction.isButton() || !interaction.guildId) return;
 
-        const button: any = buttons.get(interaction.customId);
-        if (!button)
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(Colors.Red)
-                        .setDescription(`⚠️ An error occurred! Couldn't find the button ${interaction.customId}!`)
-                        .setTimestamp(),
-                ],
-            });
+        const color = await getServerColor(client, interaction.guildId);
 
-        const config: any = await getServerConfig(client, interaction.guildId);
-        const color = config?.color ?? '#3a5a74';
-
-        button.execute(client, interaction, color).catch((e: Error) => handleError(client, e, interaction.customId));
-    },
-};
+        await client.buttons
+            .execute({ client, interaction, color })
+            .catch((e: Error) => handleError(client, e, interaction.customId));
+    });
