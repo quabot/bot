@@ -9,7 +9,7 @@ export default new Subcommand()
 
         await interaction.editReply({
             embeds: [
-                new Embed(role.color ?? color).setTitle('Role Info').setDescription(`
+                new Embed(role.color !== 0 ? role.color : color).setTitle('Role Info').setDescription(`
                 **• Name:** ${role.name}
                 **• Role:** ${role}
                 **• ID:** ${role.id}

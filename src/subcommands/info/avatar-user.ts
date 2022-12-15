@@ -10,7 +10,7 @@ export default new Subcommand()
             embeds: [
                 new Embed(color)
                     .setImage(user.displayAvatarURL({ size: 1024, forceStatic: false }))
-                    .setTitle(`${user.tag}'s avatar`),
+                    .setTitle(`\`${user.tag}'s\` avatar`),
             ],
         });
     });

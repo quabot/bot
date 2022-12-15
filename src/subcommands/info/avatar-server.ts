@@ -10,7 +10,7 @@ export default new Subcommand()
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setTitle(`${guild.name}'s avatar`)
+                    .setTitle(`\`${guild.name}'s\` server icon`)
                     .setImage(
                         guild.iconURL({ size: 1024, forceStatic: false }) ??
                             'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png'

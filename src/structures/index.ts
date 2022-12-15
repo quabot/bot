@@ -7,3 +7,4 @@ export * from './modal';
 export * from './selectMenu';
 export * from './subcommand';
 export * from './schemas';
+export * from './button';
