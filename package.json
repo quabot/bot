@@ -1,0 +1,16 @@
+{
+  "name": "quabot",
+  "version": "7.0.0",
+  "main": "src/main.js",
+  "author": "Joa_sss",
+  "license": "none",
+  "private": true,
+  "dependencies": {
+    "consola": "^2.15.3",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "glob": "^8.1.0",
+    "node-cache": "^5.1.2",
+    "util": "^0.12.5"
+  }
+}
