@@ -1,0 +1,27 @@
+const { SlashCommandBuilder, Client, CommandInteraction } = require("discord.js");
+const { Embed } = require("../../utils/constants/embed");
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('support')
+        .setDescription('Get the invite to the QuaBot support server.')
+        .setDMPermission(false),
+    /**
+     * @param {Client} client 
+     * @param {CommandInteraction} interaction
+     */
+    async execute(client, interaction, color) {
+        await interaction.deferReply();
+
+        await interaction.editReply({
+            embeds: [
+                new Embed(color)
+                    .setThumbnail(`${client.user.avatarURL()}`)
+                    .setTitle(`QuaBot Support`)
+                    .setDescription(
+                        `Join our support server [here](https://discord.gg/kxKHuy47Eq) for fun, events, questions and suggestions!`
+                    ),
+            ]
+        })
+    }
+}

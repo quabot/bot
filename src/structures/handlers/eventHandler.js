@@ -22,5 +22,5 @@ module.exports = async client => {
         loaded += 1;
     });
 
-    consola.info(`Loaded ${loaded}/${total} events.`)
+    consola.success(`Loaded ${loaded}/${total} events.`)
 };

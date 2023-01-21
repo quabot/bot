@@ -1,0 +1,29 @@
+const { Client } = require('discord.js');
+const Server = require('../../structures/schemas/Server');
+
+/**
+ * @param {Client} client 
+ */
+const getServerConfig = async (client, guildId) => {
+    const serverConfig =
+    client.cache.get(`${guildId}-server-config`) ??
+
+        (await Server.findOne(
+            { guildId },
+            (err, server) => {
+                if (err) console.log(err);
+                if (!server)
+                    new Server({
+                        guildId,
+                        locale: 'en-us',
+                        color: '#3a5a74',
+                        updatesChannel: 'none',
+                    }).save();
+            }
+        ).clone().catch(() => { }));
+
+    client.cache.set(`${guildId}-server-config`, serverConfig);
+    return serverConfig;
+};
+
+module.exports = { getServerConfig };
