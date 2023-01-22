@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, Client, CommandInteraction } = require("discord.js");
 const { Embed } = require("../../utils/constants/embed");
 
 module.exports = {
@@ -9,7 +9,6 @@ module.exports = {
             .setName('question')
             .setDescription('What is your question?')
             .setRequired(true))
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false),
     /**
      * @param {Client} client
