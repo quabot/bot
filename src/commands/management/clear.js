@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
 const { Embed } = require("../../utils/constants/embed");
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
         .setDMPermission(false),
     /**
      * @param {Client} client 
-     * @param {CommandInteraction} interaction
+     * @param {ChatInputCommandInteraction} interaction
      */
     async execute(client, interaction, color) {
         await interaction.deferReply({ ephemeral: true });
