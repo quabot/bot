@@ -8,10 +8,16 @@ const reqNum = {
     required: true
 }
 
+const reqId = {
+    type: Number,
+    required: true,
+    default: 1
+}
+
 const optId = {
     type: Number,
-    default: 0,
-    required: false
+    default: 1,
+    required: true
 }
 
 const reqBool = {

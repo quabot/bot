@@ -5,6 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('giveaway')
         .setDescription('Create, edit, reroll and end giveaways.')
+        
         .addSubcommand(command => command
             .setName('create')
             .setDescription('Create a giveaway.')
@@ -24,6 +25,7 @@ module.exports = {
                 .setName('duration')
                 .setDescription('The length that the giveaway should last for.')
                 .setRequired(true)))
+
         .addSubcommand(command => command
             .setName('reroll')
             .setDescription('Re-roll a giveaway.')
@@ -31,6 +33,7 @@ module.exports = {
                 .setName('giveaway-id')
                 .setDescription('The id of the giveaway to re-roll.')
                 .setRequired(true)))
+
         .addSubcommand(command => command
             .setName('end')
             .setDescription('End a giveaway.')
@@ -38,6 +41,7 @@ module.exports = {
                 .setName('giveaway-id')
                 .setDescription('The id of the giveaway to end.')
                 .setRequired(true)))
+                
         .addSubcommand(command => command
             .setName('edit')
             .setDescription('Edit a giveaway.')
@@ -45,7 +49,8 @@ module.exports = {
                 .setName('giveaway-id')
                 .setDescription('The id of the giveaway to edit.')
                 .setRequired(true)))
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild)
         .setDMPermission(false),
     /**
      * @param {Client} client 

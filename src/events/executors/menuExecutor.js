@@ -10,7 +10,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(interaction, client) {
-        if (!interaction.isSelectMenu() || !interaction.guildId) return;
+        if (!interaction.isStringSelectMenu() || !interaction.guildId) return;
 
         const menu = client.menus.get(interaction.customId);
         if (!menu) return;
