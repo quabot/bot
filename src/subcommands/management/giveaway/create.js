@@ -130,7 +130,7 @@ module.exports = {
 
         
         setTimeout(() => {
-            endGiveaway(client, newGiveaway, color);
+            endGiveaway(client, newGiveaway, false);
         }, ms(duration));
     }
 };

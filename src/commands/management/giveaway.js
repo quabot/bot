@@ -41,15 +41,6 @@ module.exports = {
                 .setName('giveaway-id')
                 .setDescription('The id of the giveaway to end.')
                 .setRequired(true)))
-                
-        .addSubcommand(command => command
-            .setName('edit')
-            .setDescription('Edit a giveaway.')
-            .addNumberOption(option => option
-                .setName('giveaway-id')
-                .setDescription('The id of the giveaway to edit.')
-                .setRequired(true)))
-
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild)
         .setDMPermission(false),
     /**

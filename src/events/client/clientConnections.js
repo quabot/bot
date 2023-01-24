@@ -6,6 +6,7 @@ const { AutoPoster } = require('topgg-autoposter');
 module.exports = {
     event: "ready",
     name: "clientConnections",
+    once: true,
     /**
      * @param {Client} client 
      */

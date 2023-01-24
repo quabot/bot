@@ -3,6 +3,7 @@ const { ActivityType, Client } = require("discord.js");
 module.exports = {
     event: "ready",
     name: "clientStart",
+    once: true,
     /**
      * @param {Client} client 
      */
