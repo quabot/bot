@@ -4,7 +4,8 @@ const { reqString, optId } = require("../../utils/constants/schemas");
 const IdsSchema = new Schema({
     guildId: reqString,
     suggestId: optId,
-    giveawayId: optId
+    giveawayId: optId,
+    pollId: optId
 });
 
 module.exports = model('Id', IdsSchema);

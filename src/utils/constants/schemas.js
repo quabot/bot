@@ -30,4 +30,9 @@ const reqObject = {
     required: true
 }
 
-module.exports = { reqObject, reqBool, reqString, reqNum, optId };
+const reqArray = {
+    type: Array,
+    required: true
+}
+
+module.exports = { reqArray, reqObject, reqBool, reqString, reqNum, optId };

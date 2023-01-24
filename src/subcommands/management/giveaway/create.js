@@ -60,6 +60,13 @@ module.exports = {
                     .setDescription('Please enter a valid duration. Eg. 1h, 5m, 1d etc.')
             ]
         });
+        
+        if (ms(duration) > 2147483647) return await interaction.editReply({
+            embeds: [
+                new Embed(color)
+                    .setDescription('Please enter a value that is below 24 days.')
+            ]
+        });
 
         if (winners > 25 || winners < 1) return await interaction.editReply({
             embeds: [
@@ -76,12 +83,6 @@ module.exports = {
         });
 
         const endTime = Math.round((new Date().getTime() + ms(duration)) / 1000);
-        if (ms(duration) > 2147483647) return await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('Please enter a value that is below 24 days.')
-            ]
-        });
 
         const message = await channel.send({
             embeds: [
