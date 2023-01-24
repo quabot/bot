@@ -42,7 +42,7 @@ module.exports = {
         });
 
         
-        const giveaway = await Giveaway.findOne({ id });
+        const giveaway = await Giveaway.findOne({ guildId: interaction.guildId, id });
         if (!giveaway) return await interaction.editReply({
             embeds: [
                 new Embed(color)
