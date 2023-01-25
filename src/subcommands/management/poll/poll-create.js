@@ -4,6 +4,7 @@ const Poll = require('../../../structures/schemas/Poll');
 const { getIdConfig } = require('../../../utils/configs/idConfig');
 const { getPollConfig } = require('../../../utils/configs/pollConfig');
 const { Embed } = require('../../../utils/constants/embed');
+const { endPoll } = require('../../../utils/functions/poll');
 
 module.exports = {
     parent: 'poll',
@@ -16,7 +17,7 @@ module.exports = {
     async execute(client, interaction, color) {
 
         const config = await getPollConfig(client, interaction.guildId);
-        const ids = await getIdConfig(client, interaction.guildId);
+        const ids = await getIdConfig(interaction.guildId);
         if (!config || !ids) return await interaction.reply({
             embeds: [
                 new Embed(color)
@@ -99,6 +100,16 @@ module.exports = {
                             label: 'Enter Choices',
                             customId: 'choices-poll',
                         }),
+                        new ButtonBuilder({
+                            style: ButtonStyle.Success,
+                            label: 'Create Poll',
+                            customId: 'create-poll',
+                        }),
+                        new ButtonBuilder({
+                            style: ButtonStyle.Danger,
+                            label: 'Cancel',
+                            customId: 'cancel-poll',
+                        })
                     ],
                 }),
             ], fetchReply: true
@@ -135,7 +146,7 @@ module.exports = {
                                     .setCustomId('question')
                                     .setPlaceholder('Poll Question...')
                                     .setLabel('Poll Question')
-                                    .setMaxLength(500)
+                                    .setMaxLength(256)
                                     .setValue(document ? (document.topic === 'none' ? '' : document.topic) : '')
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Short)
@@ -144,10 +155,10 @@ module.exports = {
                             .addComponents(
                                 new TextInputBuilder()
                                     .setCustomId('description')
-                                    .setPlaceholder('Wether or not to add more voice channels to our server.')
+                                    .setPlaceholder('Poll description...')
                                     .setLabel('Poll Description')
                                     .setValue(document ? document.description === 'none' ? '' : document.description : '')
-                                    .setMaxLength(500)
+                                    .setMaxLength(250)
                                     .setRequired(true)
                                     .setStyle(TextInputStyle.Paragraph)
                             )
@@ -163,18 +174,219 @@ module.exports = {
                     channel: channel.id,
                     message: 'none',
                     interaction: message.id,
+                    role,
 
                     topic: 'none',
                     description: 'none',
 
-                    duration: ms(duration),
+                    duration: duration,
                     optionsCount: choices,
                     options: [],
 
-                    created: new Date().getTime(),
-                    endTimestamp: new Date().getTime() + ms(duration),
+                    created: 0,
+                    endTimestamp: 0
                 });
                 await newPoll.save();
+            } else if (interaction.customId === 'cancel-poll') {
+                const document = await Poll.findOne({
+                    guildId: interaction.guildId,
+                    interaction: message.id
+                });
+
+                await interaction.update({
+                    components: [
+                        new ActionRowBuilder({
+                            components: [
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Primary,
+                                    label: 'Enter Details',
+                                    customId: 'details-poll',
+                                    disabled: true
+                                }),
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Secondary,
+                                    label: 'Enter Choices',
+                                    customId: 'choices-poll',
+                                    disabled: true
+                                }),
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Success,
+                                    label: 'Create Poll',
+                                    customId: 'create-poll',
+                                    disabled: true
+                                }),
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Danger,
+                                    label: 'Cancel',
+                                    customId: 'cancel-poll',
+                                    disabled: true
+                                })
+                            ],
+                        }),
+                    ]
+                });
+
+                if (document) {
+                    await Poll.findOneAndDelete({
+                        guildId: interaction.guildId,
+                        interaction: message.id
+                    });
+                }
+
+            } else if (interaction.customId === 'create-poll') {
+
+                const document = await Poll.findOne({
+                    guildId: interaction.guildId,
+                    interaction: message.id
+                });
+                if (!document) return await interaction.reply({
+                    embeds: [
+                        new Embed(color)
+                            .setDescription('Please fill out all the required fields.')
+                    ], ephemeral: true
+                });
+
+                if (!document.topic || !document.description || document.options.length === 0) return await interaction.reply({
+                    embeds: [
+                        new Embed(color)
+                            .setDescription('Please fill out all the required fields.')
+                    ], ephemeral: true
+                });
+
+
+                let description = document.description;
+                for (let index = 0; index < document.options.length; index++) {
+                    const option = document.options[index];
+                    const emoji = `${index}`
+                        .replace('0', ':one:')
+                        .replace('1', ':two:')
+                        .replace('2', ':three:')
+                        .replace('3', ':four:')
+                        .replace('4', ':five:');
+                    if (description) description = `${description}\n${emoji} - ${option}`;
+                }
+
+                const embed = new Embed(color)
+                    .setTitle(`${document.topic}`)
+                    .setDescription(`${description}`)
+                    .addFields(
+                        { name: 'Hosted by', value: `${interaction.user}`, inline: true },
+                        {
+                            name: 'Ends in',
+                            value: `<t:${Math.round(new Date().getTime() / 1000) + Math.round(ms(document.duration) / 1000)
+                                }:R>`,
+                            inline: true,
+                        }
+                    )
+                    .setFooter({ text: `ID: ${document.id}` });
+
+
+                const channel = interaction.guild.channels.cache.get(document.channel);
+                if (!channel) return await interaction.reply({
+                    embeds: [
+                        new Embed(color)
+                            .setDescription('Couldn\'t find the poll channel. Are sure it still exists and that I have access to it?')
+                    ], ephemeral: true
+                });
+
+                const msg = await channel.send({ embeds: [embed], content: document.role ? `${document.role}` : null });
+                if (!msg) return await interaction.reply({
+                    embeds: [
+                        new Embed(color)
+                            .setDescription('Failed to send the message in the channel.')
+                    ], ephemeral: true
+                });
+
+
+                for (let i = 0; i < document.optionsCount; i++) {
+                    let reactionEmoji = `${i + 1}`;
+
+                    msg.react(
+                        `${reactionEmoji
+                            .replace('1', '1️⃣')
+                            .replace('2', '2️⃣')
+                            .replace('3', '3️⃣')
+                            .replace('4', '4️⃣')
+                            .replace('5', '5️⃣')}`
+                    );
+                }
+
+                await document.updateOne({
+                    message: msg.id,
+                    endTimestamp: Math.round(new Date().getTime()) + Math.round(ms(document.duration)),
+                    created: new Date().getTime()
+                });
+
+                setTimeout(async () => {
+                    await endPoll(client, document);
+                }, ms(duration));
+
+                await interaction.update({
+                    components: [
+                        new ActionRowBuilder({
+                            components: [
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Primary,
+                                    label: 'Enter Details',
+                                    customId: 'details-poll',
+                                    disabled: true
+                                }),
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Secondary,
+                                    label: 'Enter Choices',
+                                    customId: 'choices-poll',
+                                    disabled: true
+                                }),
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Success,
+                                    label: 'Create Poll',
+                                    customId: 'create-poll',
+                                    disabled: true
+                                }),
+                                new ButtonBuilder({
+                                    style: ButtonStyle.Danger,
+                                    label: 'Cancel',
+                                    customId: 'cancel-poll',
+                                    disabled: true
+                                })
+                            ],
+                        }),
+                    ]
+                });
+
+                await interaction.followUp({
+                    embeds: [
+                        new Embed(color)
+                            .setDescription(`The poll has started in ${channel}! [Click here](${msg.url}) to jump to the message.`)
+                    ], ephemeral: true
+                });
+
+                if (!config.logEnabled) return;
+                const logChannel = interaction.guild.channels.cache.get(config.logChannel);
+                if (!logChannel) return;
+
+                await logChannel.send({
+                    embeds: [
+                        new Embed(color)
+                            .setTitle('New Poll!')
+                            .addFields(
+                                { name: 'Question', value: `${document.topic}` },
+                                { name: 'Description', value: `${document.description}` },
+                                { name: 'Options', value: `${document.optionsCount}` },
+                                { name: 'Created by', value: `${interaction.user}`, inline: true },
+                                {
+                                    name: 'Ends in',
+                                    value: `<t:${Math.round(new Date().getTime() / 1000) +
+                                        Math.round(ms(document.duration) / 1000)
+                                        }:R>`,
+                                    inline: true,
+                                },
+                                { name: 'Message', value: `[Click to jump](${msg.url})`, inline: true }
+                            )
+                    ],
+                });
+
+
             } else {
                 const document = await Poll.findOne({
                     guildId: interaction.guildId,
@@ -185,7 +397,7 @@ module.exports = {
                     .setTitle('Configure Poll')
                     .setCustomId('choices-poll')
 
-                for (let index = 0; index < choicesLength; index++)
+                for (let index = 0; index < choices; index++)
                     modal.addComponents(
                         new ActionRowBuilder()
                             .setComponents(
@@ -193,10 +405,10 @@ module.exports = {
                                     .setCustomId(`${index}`)
                                     .setLabel(`Option ${index + 1}`)
                                     .setRequired(true)
-                                    .setMaxLength(200)
+                                    .setMaxLength(180)
                                     .setValue(
                                         document
-                                            ? `${document.optionsArray[index] ? document.optionsArray[index] : ''}`
+                                            ? `${document.options[index] ? document.options[index] : ''}`
                                             : ''
                                     )
                                     .setStyle(TextInputStyle.Short)
@@ -214,28 +426,20 @@ module.exports = {
                     channel: channel.id,
                     message: 'none',
                     interaction: message.id,
+                    role: role,
 
                     topic: 'none',
                     description: 'none',
 
-                    duration: ms(duration),
+                    duration: duration,
                     optionsCount: choices,
                     options: [],
 
-                    created: new Date().getTime(),
-                    endTimestamp: new Date().getTime() + ms(duration),
+                    created: 0,
+                    endTimestamp: 0
                 });
                 await newPoll.save();
             }
         });
-        // details button
-        // choices button
-        // when both, cancel and send button
-
-        // send channel msg
-        // create db document
-        // update id
-
-        // start timer
     }
 };

@@ -4,7 +4,7 @@ const { getPollConfig } = require("../../../utils/configs/pollConfig");
 const { Embed } = require("../../../utils/constants/embed");
 
 module.exports = {
-    name: 'info-poll',
+    name: 'choices-poll',
     /**
      * @param {Client} client 
      * @param {ModalSubmitInteraction} interaction
@@ -38,32 +38,33 @@ module.exports = {
             ]
         });
 
-        const question = interaction.fields.getTextInputValue('question');
-        let description = interaction.fields.getTextInputValue('description');
+        const options = [];
+        interaction.components.map(item => options.push(`${item.components[0].value}`));
 
-        if (!question || !description) return await interaction.reply({
+        if (options.length < 2 || options.length > 5) return await interaction.reply({
             embeds: [
                 new Embed(color)
-                    .setDescription('Missing some required field values.')
+                    .setDescription('You need at least two options and a maximum of 5.')
             ]
         });
 
-        poll.topic = question;
-        poll.description = description;
+        poll.options = options;
         await poll.save();
 
         const embed = new Embed(color)
             .setDescription(
-                `Click the blue button below this message to enter the details for the poll. When entered, click the gray button to enter the choices.${poll.options.length !== 0 ? `\n\n**Entered Choices:**${poll.options.map(o => `\n${o}`)}` : ''}`
+                `Click the blue button below this message to enter the details for the poll. When entered, click the gray button to enter the choices.${options ? `\n\n**Entered Choices:**${options.map(o => `\n${o}`)}` : ''}`
             )
             .addFields(
                 { name: 'Channel', value: `<#${poll.channel}>`, inline: true },
                 { name: 'Duration', value: `${poll.duration}`, inline: true },
                 { name: 'Choices', value: `${poll.optionsCount}`, inline: true },
-                { name: 'Role', value: `${poll.role ? `${poll.role}` : 'None'}`, inline: true },
-                { name: 'Question', value: `${question}`, inline: true },
-                { name: 'Description', value: `${description}`, inline: true }
+                { name: 'Role', value: `${poll.role ? `${poll.role}` : 'None'}`, inline: true }
             );
+
+        if (poll.topic !== 'none') embed.addFields({ name: 'Question', value: `${poll.topic}`, inline: true });
+        if (poll.description !== 'none') embed.addFields({ name: 'Description', value: `${poll.description}`, inline: true });
+
         await interaction.update({ embeds: [embed] });
     }
 }

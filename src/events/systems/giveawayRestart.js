@@ -1,5 +1,4 @@
 const { Client } = require('discord.js');
-const consola = require('consola');
 const { endGiveaway } = require('../../utils/functions/giveaway');
 
 module.exports = {

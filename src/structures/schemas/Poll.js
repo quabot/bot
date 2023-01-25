@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { reqString, reqArray, reqNum } = require("../../utils/constants/schemas");
+const { reqString, reqArray, reqNum, optString } = require("../../utils/constants/schemas");
 
 const Poll = new Schema({
     guildId: reqString,
@@ -7,6 +7,7 @@ const Poll = new Schema({
     channel: reqString,
     message: reqString,
     interaction: reqString,
+    role: optString,
 
     topic: reqString,
     description: reqString,

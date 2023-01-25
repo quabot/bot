@@ -3,6 +3,11 @@ const reqString = {
     required: true
 }
 
+const optString = {
+    type: String,
+    required: false
+}
+
 const reqNum = {
     type: Number,
     required: true
@@ -35,4 +40,4 @@ const reqArray = {
     required: true
 }
 
-module.exports = { reqArray, reqObject, reqBool, reqString, reqNum, optId };
+module.exports = { optString, reqArray, reqObject, reqBool, reqString, reqNum, optId };

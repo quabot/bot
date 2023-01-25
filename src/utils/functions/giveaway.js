@@ -42,7 +42,7 @@ async function endGiveaway(client, document, forceEarly) {
 
             await message.edit({
                 embeds: [
-                    new Embed(colorConfig.color)
+                    new Embed(colorConfig.color ?? '#fff')
                         .setTitle(`${giveaway.prize}`)
                         .setDescription(
                             `Ended: <t:${forceEarly ? Math.floor(new Date().getTime() / 1000) : Math.floor(giveaway.endTimestamp / 1000)}:R>
@@ -55,14 +55,14 @@ async function endGiveaway(client, document, forceEarly) {
 
             if (isWinner) await message.reply({
                 embeds: [
-                    new Embed(colorConfig.color)
+                    new Embed(colorConfig.color ?? '#fff')
                         .setDescription(`${winMsg}, you won **${giveaway.prize}**!`)
                 ], content: `${winMsg}`
             });
 
             if (!isWinner) await message.reply({
                 embeds: [
-                    new Embed(colorConfig.color)
+                    new Embed(colorConfig.color ?? '#fff')
                         .setDescription('There were not enough entries for a winner to be determined.')
                 ]
             });
