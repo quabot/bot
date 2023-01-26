@@ -1,0 +1,36 @@
+const { Client, Events, GuildBan, Colors } = require('discord.js');
+const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
+const { Embed } = require('../../utils/constants/embed');
+
+module.exports = {
+    event: Events.GuildBanAdd,
+    name: "guildBanAdd",
+    /**
+     * @param {GuildBan} ban
+     * @param {Client} client 
+     */
+    async execute(ban, client) {
+
+        const config = await getLoggingConfig(client, ban.guild.id);
+        if (!config) return;
+        if (!config.enabled) return;
+
+        if (!config.enabledEvents.includes('guildBanRemove')) return;
+
+
+        const channel = ban.guild.channels.cache.get(config.channelId);
+        if (!channel) return;
+
+
+        await channel.send({
+            embeds: [
+                new Embed(Colors.Green)
+                    .setDescription(`
+                        **Member Unbanned**
+                        ${ban.user} (${ban.user.tag})
+                        `)
+                    .setFooter({ text: `${ban.user.tag}`, iconURL: `${ban.user.displayAvatarURL({ dynamic: true })}` })
+            ]
+        });
+    }
+}
