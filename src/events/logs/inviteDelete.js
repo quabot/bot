@@ -25,7 +25,7 @@ module.exports = {
 
         await channel.send({
             embeds: [
-                new Embed(Colors.Green)
+                new Embed(Colors.Red)
                     .setDescription(`
                     **Invite Deleted**
                     discord.gg/${invite.code}

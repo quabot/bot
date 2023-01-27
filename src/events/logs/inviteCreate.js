@@ -25,7 +25,7 @@ module.exports = {
 
         await channel.send({
             embeds: [
-                new Embed(Colors.Red)
+                new Embed(Colors.Green)
                     .setDescription(`**Invite Created**
                         [discord.gg/${invite.code}](https://discord.gg/${invite.code})
                         ${invite.inviter} - ${invite.channel}
