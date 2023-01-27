@@ -1,4 +1,4 @@
-const { Client, Events, GuildEmoji, Colors, Invite } = require('discord.js');
+const { Client, Events, Colors, Invite } = require('discord.js');
 const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
 const { Embed } = require('../../utils/constants/embed');
 

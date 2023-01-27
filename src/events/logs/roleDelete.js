@@ -1,6 +1,5 @@
 const { Client, Events, Colors, Role } = require('discord.js');
 const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
-const { channelTypesById } = require('../../utils/constants/discord');
 const { Embed } = require('../../utils/constants/embed');
 
 module.exports = {
