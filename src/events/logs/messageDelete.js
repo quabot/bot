@@ -24,6 +24,7 @@ module.exports = {
         let description = '';
         if (message.content) description += message.content.slice(0, 1002);
 
+        if (message.author.bot) return;
 
         const embed = new Embed(Colors.Red)
             .setDescription(`

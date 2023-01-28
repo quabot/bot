@@ -13,6 +13,8 @@ module.exports = {
      */
     async execute(oldState, newState, client) {
 
+        if (oldState.member.user.bot || newState.member.user.bot) return;
+        
         const config = await getLoggingConfig(client, oldState.guild.id);
         if (!config) return;
         if (!config.enabled) return;

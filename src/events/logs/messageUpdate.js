@@ -18,11 +18,11 @@ module.exports = {
 
         if (!config.enabledEvents.includes('messageUpdate')) return;
 
-
         const channel = newMessage.guild.channels.cache.get(config.channelId);
         if (!channel) return;
 
 
+        if (oldMessage.author.bot) return;
         const embed = new Embed(Colors.Yellow)
             .setDescription(`**Message Edited**
             ${newMessage.channel} - [Jump to Message](${newMessage.url})`);

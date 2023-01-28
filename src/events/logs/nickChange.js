@@ -21,7 +21,7 @@ module.exports = {
 
         const channel = oldMember.guild.channels.cache.get(config.channelId);
         if (!channel) return;
-A
+
         await channel.send({
             embeds: [
                 new Embed(Colors.Yellow)
