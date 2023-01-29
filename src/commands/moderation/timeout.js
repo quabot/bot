@@ -5,18 +5,23 @@ const { Embed } = require("../../utils/constants/embed");
 const Punishment = require('../../structures/schemas/Punishment');
 const { randomUUID } = require('crypto');
 const { CustomEmbed } = require("../../utils/constants/customEmbed");
+const ms = require('ms');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('warn')
-        .setDescription('Warn a user.')
+        .setName('timeout')
+        .setDescription('Timeout a user.')
         .addUserOption(option => option
             .setName('user')
-            .setDescription('The user you wish to warn.')
+            .setDescription('The user you wish to timeout.')
+            .setRequired(true))
+        .addStringOption(option => option
+            .setName('duration')
+            .setDescription('How long should the user be timed out.')
             .setRequired(true))
         .addStringOption(option => option
             .setName('reason')
-            .setDescription('The reason for warning the user.')
+            .setDescription('The reason for timing out the user.')
             .setRequired(true))
         .addBooleanOption(option => option
             .setName('private')
@@ -43,32 +48,40 @@ module.exports = {
         });
 
 
-        const reason = interaction.options.getString('reason').slice(0, 800);
-        const user = interaction.options.getMember('user');
-        if (!user || !reason) return await interaction.editReply({
+        const reason = interaction.options.getString('reason').slice(0, 800) ?? 'No reason specified.';
+        const duration = interaction.options.getString('duration').slice(0, 800);
+        const member = interaction.options.getMember('user');
+        if (!member || !reason || !duration) return await interaction.editReply({
             embeds: [
                 new Embed(color)
                     .setDescription('Please fill out all the required fields')
             ]
         });
 
-        
-        if (user === interaction.member) return interaction.editReply({
+        if (!ms(duration)) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You cannot warn yourself.')
-            ]
-        });
-
-        if (user.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('You cannot warn a user with roles higher than your own.')
+                    .setDescription('Please enter a valid duration. This could be "1d" for 1 day, "1w" for 1 week or "1hour" for 1 hour.')
             ]
         });
 
 
-        const userDatabase = await getUser(interaction.guildId, user.id);
+        if (member === interaction.member) return interaction.editReply({
+            embeds: [
+                new Embed(color)
+                    .setDescription('You cannot timeout yourself.')
+            ]
+        });
+
+        if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.editReply({
+            embeds: [
+                new Embed(color)
+                    .setDescription('You cannot timeout a user with roles higher than your own.')
+            ]
+        });
+
+
+        const userDatabase = await getUser(interaction.guildId, member.id);
         if (!userDatabase) return await interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -76,7 +89,22 @@ module.exports = {
             ]
         });
 
-        userDatabase.warns += 1;
+
+        let timeout = true;
+        await member.timeout(ms(duration), reason).catch(async e => {
+            timeout = false;
+
+            await interaction.editReply({
+                embeds: [
+                    new Embed(color)
+                        .setDescription(`Failed to timeout user.`)
+                ]
+            });
+        });
+
+        if (!timeout) return;
+
+        userDatabase.timeouts += 1;
         await userDatabase.save();
 
 
@@ -84,33 +112,34 @@ module.exports = {
 
         const NewPunishment = new Punishment({
             guildId: interaction.guildId,
-            userId: user.id,
+            userId: member.id,
 
             channelId: interaction.channelId,
             moderatorId: interaction.user.id,
             time: new Date().getTime(),
 
-            type: 'warn',
+            type: 'timeout',
             id,
             reason,
-            duration: 'none'
+            duration
         });
         await NewPunishment.save();
+
 
         interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setTitle('User Warned')
-                    .setDescription(`**User:** @${user.user.tag} (${user})\n**Reason:** ${reason}`)
+                    .setTitle('User Timed Out')
+                    .setDescription(`**User:** @${member.user.tag} (${member})\n**Reason:** ${reason}`)
                     .addFields(
                         {
                             name: 'Joined Server',
-                            value: `<t:${parseInt(user.joinedTimestamp / 1000)}:R>`,
+                            value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,
                             inline: true,
                         },
                         {
                             name: 'Account Created',
-                            value: `<t:${parseInt(user.user.createdTimestamp / 1000)}:R>`,
+                            value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
                             inline: true,
                         }
                     )
@@ -118,25 +147,26 @@ module.exports = {
             ]
         });
 
-        if (config.warnDM) {
+        if (config.timeoutDM) {
             const parseString = (text) =>
                 text
                     .replaceAll('{reason}', reason)
-                    .replaceAll('{user}', `${user}`)
+                    .replaceAll('{user}', `${member}`)
                     .replaceAll('{moderator}', interaction.user)
+                    .replaceAll('{duration}', duration)
                     .replaceAll('{staff}', interaction.user)
                     .replaceAll('{server}', interaction.guild?.name ?? '')
                     .replaceAll('{color}', color)
                     .replaceAll('{id}', `${id}`)
-                    .replaceAll('{joined}', `<t:${parseInt(user.joinedTimestamp / 1000)}:R>`)
-                    .replaceAll('{created}', `<t:${parseInt(user.joinedTimestamp / 1000)}:R>`)
+                    .replaceAll('{joined}', `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`)
+                    .replaceAll('{created}', `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`)
                     .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
-            await user.send({
+            await member.send({
                 embeds: [
-                    new CustomEmbed(config.warnDMMessage, parseString)
+                    new CustomEmbed(config.timeoutDMMessage, parseString)
                 ],
-                content: parseString(config.warnDMMessage.content)
+                content: parseString(config.timeoutDMMessage.content)
             }).catch(() => { });
         }
 
@@ -147,26 +177,26 @@ module.exports = {
             await channel.send({
                 embeds: [
                     new Embed(color)
-                        .setTitle('Member Warned')
+                        .setTitle('Member Timed Out')
                         .addFields(
-                            { name: 'User', value: `@${user.user.tag} (${user})`, inline: true },
-                            { name: 'Warned By', value: `${interaction.user}`, inline: true },
-                            { name: 'Warned In', value: `${interaction.channel}`, inline: true },
-                            { name: 'User warns', value: `${userDatabase.warns}`, inline: true },
+                            { name: 'User', value: `@${member.user.tag} (${member})`, inline: true },
+                            { name: 'Timed Out By', value: `${interaction.user}`, inline: true },
+                            { name: 'Timed Out In', value: `${interaction.channel}`, inline: true },
+                            { name: 'User timeouts', value: `${userDatabase.timeouts}`, inline: true },
                             {
                                 name: 'Joined Server',
-                                value: `<t:${parseInt(user.joinedTimestamp / 1000)}:R>`,
+                                value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,
                                 inline: true,
                             },
                             {
                                 name: 'Account Created',
-                                value: `<t:${parseInt(user.user.createdTimestamp / 1000)}:R>`,
+                                value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
                                 inline: true,
                             },
                             { name: 'Reason', value: `${reason}`, inline: false },
                         )
                 ]
-            })
+            });
         }
     }
 }

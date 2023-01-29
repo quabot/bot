@@ -21,6 +21,9 @@ module.exports = {
 
         const channel = oldMember.guild.channels.cache.get(config.channelId);
         if (!channel) return;
+        
+        if (oldMember.nickName === newMember.nickname) return;
+        if (!oldMember.nickName && !newMember.nickname) return;
 
         await channel.send({
             embeds: [
