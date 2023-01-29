@@ -93,7 +93,8 @@ module.exports = {
             type: 'warn',
             id,
             reason,
-            duration: 'none'
+            duration: 'none',
+            active: false
         });
         await NewPunishment.save();
 
@@ -101,7 +102,7 @@ module.exports = {
             embeds: [
                 new Embed(color)
                     .setTitle('User Warned')
-                    .setDescription(`**User:** @${user.user.tag} (${user})\n**Reason:** ${reason}`)
+                    .setDescription(`**User:** ${member} (@${member.user.tag})\n**Reason:** ${reason}`)
                     .addFields(
                         {
                             name: 'Joined Server',
@@ -149,10 +150,10 @@ module.exports = {
                     new Embed(color)
                         .setTitle('Member Warned')
                         .addFields(
-                            { name: 'User', value: `@${user.user.tag} (${user})`, inline: true },
+                            { name: 'User', value: `${member} (@${member.user.tag})`, inline: true },
                             { name: 'Warned By', value: `${interaction.user}`, inline: true },
                             { name: 'Warned In', value: `${interaction.channel}`, inline: true },
-                            { name: 'User warns', value: `${userDatabase.warns}`, inline: true },
+                            { name: 'User Total Warns', value: `${userDatabase.warns}`, inline: true },
                             {
                                 name: 'Joined Server',
                                 value: `<t:${parseInt(user.joinedTimestamp / 1000)}:R>`,

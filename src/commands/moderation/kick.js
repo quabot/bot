@@ -9,25 +9,21 @@ const ms = require('ms');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('timeout')
-        .setDescription('Timeout a user.')
+        .setName('kick')
+        .setDescription('Kick a user.')
         .addUserOption(option => option
             .setName('user')
-            .setDescription('The user you wish to timeout.')
-            .setRequired(true))
-        .addStringOption(option => option
-            .setName('duration')
-            .setDescription('How long should the user be timed out.')
+            .setDescription('The user you wish to kick.')
             .setRequired(true))
         .addStringOption(option => option
             .setName('reason')
-            .setDescription('The reason for timing out the user.')
+            .setDescription('The reason for kicking the user.')
             .setRequired(false))
         .addBooleanOption(option => option
             .setName('private')
             .setDescription('Should the message be visible to you only?')
             .setRequired(false))
-        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .setDMPermission(false),
     /**
      * @param {Client} client 
@@ -49,19 +45,11 @@ module.exports = {
 
 
         const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
-        const duration = interaction.options.getString('duration').slice(0, 800);
         const member = interaction.options.getMember('user');
-        if (!member || !reason || !duration) return await interaction.editReply({
+        if (!member || !reason) return await interaction.editReply({
             embeds: [
                 new Embed(color)
                     .setDescription('Please fill out all the required fields')
-            ]
-        });
-
-        if (!ms(duration)) return await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('Please enter a valid duration. This could be "1d" for 1 day, "1w" for 1 week or "1hour" for 1 hour.')
             ]
         });
 
@@ -69,14 +57,14 @@ module.exports = {
         if (member === interaction.member) return interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You cannot timeout yourself.')
+                    .setDescription('You cannot kick yourself.')
             ]
         });
 
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You cannot timeout a user with roles higher than your own.')
+                    .setDescription('You cannot kick a user with roles higher than your own.')
             ]
         });
 
@@ -90,21 +78,21 @@ module.exports = {
         });
 
 
-        let timeout = true;
-        await member.timeout(ms(duration), reason).catch(async e => {
-            timeout = false;
+        let kick = true;
+        await member.kick(reason).catch(async e => {
+            kick = false;
 
             await interaction.editReply({
                 embeds: [
                     new Embed(color)
-                        .setDescription(`Failed to timeout the user.`)
+                        .setDescription(`Failed to kick the user.`)
                 ]
             });
         });
 
-        if (!timeout) return;
+        if (!kick) return;
 
-        userDatabase.timeouts += 1;
+        userDatabase.kicks += 1;
         await userDatabase.save();
 
 
@@ -118,10 +106,10 @@ module.exports = {
             moderatorId: interaction.user.id,
             time: new Date().getTime(),
 
-            type: 'timeout',
+            type: 'kick',
             id,
             reason,
-            duration,
+            duration: 'none',
             active: false
         });
         await NewPunishment.save();
@@ -130,7 +118,7 @@ module.exports = {
         interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setTitle('User Timed Out')
+                    .setTitle('User Kicked')
                     .setDescription(`**User:** ${member} (@${member.user.tag})\n**Reason:** ${reason}`)
                     .addFields(
                         {
@@ -148,13 +136,13 @@ module.exports = {
             ]
         });
 
-        if (config.timeoutDM) {
+
+        if (config.kickDM) {
             const parseString = (text) =>
                 text
                     .replaceAll('{reason}', reason)
                     .replaceAll('{user}', `${member}`)
                     .replaceAll('{moderator}', interaction.user)
-                    .replaceAll('{duration}', duration)
                     .replaceAll('{staff}', interaction.user)
                     .replaceAll('{server}', interaction.guild?.name ?? '')
                     .replaceAll('{color}', color)
@@ -165,11 +153,12 @@ module.exports = {
 
             await member.send({
                 embeds: [
-                    new CustomEmbed(config.timeoutDMMessage, parseString)
+                    new CustomEmbed(config.kickDMMessage, parseString)
                 ],
-                content: parseString(config.timeoutDMMessage.content)
+                content: parseString(config.kickDMMessage.content)
             }).catch(() => { });
         }
+
 
         if (config.channel) {
             const channel = interaction.guild.channels.cache.get(config.channelId);
@@ -178,12 +167,12 @@ module.exports = {
             await channel.send({
                 embeds: [
                     new Embed(color)
-                        .setTitle('Member Timed Out')
+                        .setTitle('Member Kicked')
                         .addFields(
                             { name: 'User', value: `${member} (@${member.user.tag})`, inline: true },
-                            { name: 'Timed Out By', value: `${interaction.user}`, inline: true },
-                            { name: 'Timed Out In', value: `${interaction.channel}`, inline: true },
-                            { name: 'User Total Timeouts', value: `${userDatabase.timeouts}`, inline: true },
+                            { name: 'Kicked By', value: `${interaction.user}`, inline: true },
+                            { name: 'Kicked In', value: `${interaction.channel}`, inline: true },
+                            { name: 'User Total Kicks', value: `${userDatabase.kicks}`, inline: true },
                             {
                                 name: 'Joined Server',
                                 value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,

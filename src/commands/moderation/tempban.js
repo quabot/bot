@@ -6,28 +6,44 @@ const Punishment = require('../../structures/schemas/Punishment');
 const { randomUUID } = require('crypto');
 const { CustomEmbed } = require("../../utils/constants/customEmbed");
 const ms = require('ms');
+const { tempUnban } = require("../../utils/functions/unban");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('timeout')
-        .setDescription('Timeout a user.')
+        .setName('tempban')
+        .setDescription('Temporarily ban a user.')
         .addUserOption(option => option
             .setName('user')
-            .setDescription('The user you wish to timeout.')
+            .setDescription('The user you wish to tempban.')
             .setRequired(true))
         .addStringOption(option => option
             .setName('duration')
-            .setDescription('How long should the user be timed out.')
+            .setDescription('How long should the user be banned.')
             .setRequired(true))
+        .addIntegerOption(option =>
+            option
+                .setName('delete_messages')
+                .setDescription('How many of their recent messages to delete.')
+                .setRequired(true)
+                .addChoices(
+                    { name: "Don't delete any", value: 0 },
+                    { name: 'Previous hour', value: 3600 },
+                    { name: 'Previous 6 hours', value: 21600 },
+                    { name: 'Previous 12 hours', value: 43200 },
+                    { name: 'Previous 24 hours', value: 86400 },
+                    { name: 'Previous 3 days', value: 259200 },
+                    { name: 'Previous 7 days', value: 604800 }
+                )
+        )
         .addStringOption(option => option
             .setName('reason')
-            .setDescription('The reason for timing out the user.')
+            .setDescription('The reason for banning the user.')
             .setRequired(false))
         .addBooleanOption(option => option
             .setName('private')
             .setDescription('Should the message be visible to you only?')
             .setRequired(false))
-        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .setDMPermission(false),
     /**
      * @param {Client} client 
@@ -51,7 +67,8 @@ module.exports = {
         const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
         const duration = interaction.options.getString('duration').slice(0, 800);
         const member = interaction.options.getMember('user');
-        if (!member || !reason || !duration) return await interaction.editReply({
+        const seconds = interaction.options.getInteger('delete_messages');
+        if (!member || !reason || !duration || seconds === undefined) return await interaction.editReply({
             embeds: [
                 new Embed(color)
                     .setDescription('Please fill out all the required fields')
@@ -69,14 +86,14 @@ module.exports = {
         if (member === interaction.member) return interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You cannot timeout yourself.')
+                    .setDescription('You cannot ban yourself.')
             ]
         });
 
         if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition) return interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You cannot timeout a user with roles higher than your own.')
+                    .setDescription('You cannot ban a user with roles higher than your own.')
             ]
         });
 
@@ -90,21 +107,21 @@ module.exports = {
         });
 
 
-        let timeout = true;
-        await member.timeout(ms(duration), reason).catch(async e => {
-            timeout = false;
+        let ban = true;
+        await member.ban({ reason, deleteMessageSeconds: seconds }).catch(async e => {
+            ban = false;
 
             await interaction.editReply({
                 embeds: [
                     new Embed(color)
-                        .setDescription(`Failed to timeout the user.`)
+                        .setDescription(`Failed to ban the user.`)
                 ]
             });
         });
 
-        if (!timeout) return;
+        if (!ban) return;
 
-        userDatabase.timeouts += 1;
+        userDatabase.tempbans += 1;
         await userDatabase.save();
 
 
@@ -118,19 +135,24 @@ module.exports = {
             moderatorId: interaction.user.id,
             time: new Date().getTime(),
 
-            type: 'timeout',
+            type: 'tempban',
             id,
             reason,
             duration,
-            active: false
+            active: true
         });
         await NewPunishment.save();
+
+
+        setTimeout(async () => {
+            await tempUnban(client, NewPunishment);
+        }, ms(duration));
 
 
         interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setTitle('User Timed Out')
+                    .setTitle('User Temporarily Banned')
                     .setDescription(`**User:** ${member} (@${member.user.tag})\n**Reason:** ${reason}`)
                     .addFields(
                         {
@@ -148,7 +170,7 @@ module.exports = {
             ]
         });
 
-        if (config.timeoutDM) {
+        if (config.tempbanDM) {
             const parseString = (text) =>
                 text
                     .replaceAll('{reason}', reason)
@@ -165,9 +187,9 @@ module.exports = {
 
             await member.send({
                 embeds: [
-                    new CustomEmbed(config.timeoutDMMessage, parseString)
+                    new CustomEmbed(config.tempbanDMMessage, parseString)
                 ],
-                content: parseString(config.timeoutDMMessage.content)
+                content: parseString(config.tempbanDMMessage.content)
             }).catch(() => { });
         }
 
@@ -178,12 +200,12 @@ module.exports = {
             await channel.send({
                 embeds: [
                     new Embed(color)
-                        .setTitle('Member Timed Out')
+                        .setTitle('Member Temporarily Banned')
                         .addFields(
                             { name: 'User', value: `${member} (@${member.user.tag})`, inline: true },
-                            { name: 'Timed Out By', value: `${interaction.user}`, inline: true },
-                            { name: 'Timed Out In', value: `${interaction.channel}`, inline: true },
-                            { name: 'User Total Timeouts', value: `${userDatabase.timeouts}`, inline: true },
+                            { name: 'Banned By', value: `${interaction.user}`, inline: true },
+                            { name: 'Banned In', value: `${interaction.channel}`, inline: true },
+                            { name: 'User Total Tempbans', value: `${userDatabase.tempbans}`, inline: true },
                             {
                                 name: 'Joined Server',
                                 value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,

@@ -3,8 +3,8 @@ const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
 const { Embed } = require('../../utils/constants/embed');
 
 module.exports = {
-    event: Events.GuildBanAdd,
-    name: "guildBanAdd",
+    event: Events.GuildBanRemove,
+    name: "guildBanRemove",
     /**
      * @param {GuildBan} ban
      * @param {Client} client 

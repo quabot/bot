@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { reqString } = require("../../utils/constants/schemas");
+const { reqString, reqBool } = require("../../utils/constants/schemas");
 
 const Punishment = new Schema({
     guildId: reqString,
@@ -12,7 +12,8 @@ const Punishment = new Schema({
     type: reqString,
     id: reqString,
     reason: reqString,
-    duration: reqString
+    duration: reqString,
+    active: reqBool
 });
 
 module.exports = model('Punishment', Punishment);
