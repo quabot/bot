@@ -9,10 +9,7 @@ const User = new Schema({
     tempbans: reqNum,
     warns: reqNum,
     kicks: reqNum,
-    timeouts: reqNum,
-
-    typeScore: reqNum,
-    quizScore: reqNum
+    timeouts: reqNum
 });
 
 module.exports = model('User', User);

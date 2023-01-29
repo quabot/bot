@@ -13,9 +13,7 @@ const getUser = async (guildId, userId) => {
                     tempbans: 0,
                     warns: 0,
                     kicks: 0,
-                    timeouts: 0,
-                    typeScore: 0,
-                    quizScore: 0
+                    timeouts: 0
                 }).save();
         }
     ).clone().catch(() => { });
