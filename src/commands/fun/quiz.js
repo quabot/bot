@@ -1,7 +1,8 @@
-const { SlashCommandBuilder, Client, CommandInteraction, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { SlashCommandBuilder, Client, CommandInteraction, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require("discord.js");
 const { Embed } = require("../../utils/constants/embed");
 const axios = require('axios');
 const { shuffleArray } = require("../../utils/functions/array");
+const { getUserGame } = require("../../utils/configs/userGame");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -40,8 +41,8 @@ module.exports = {
         const row = new ActionRowBuilder();
         answers.forEach(answer => {
             const button = new ButtonBuilder()
-                .setCustomId(`quiz-${answers.indexOf(answer)}`)
-                .setLabel(answer.replaceAll('&quot;', '"'))
+                .setCustomId(`${answers.indexOf(answer)}`)
+                .setLabel(answer.replaceAll('&amp;', '&').replaceAll('&reg;', '®').replaceAll('&#039;', '\'').replaceAll('&quot;', '"'))
                 .setStyle(ButtonStyle.Secondary);
 
             row.addComponents(button);
@@ -50,17 +51,63 @@ module.exports = {
         const message = await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription(`${question.question}`.replaceAll('&quot;', '"'))
+                    .setDescription(`${question.question}`.replaceAll('&amp;', '&').replaceAll('&reg;', '®').replaceAll('&quot;', '"').replaceAll('&#039;', '\''))
             ], components: [row], fetchReply: true
         });
 
         const collector = message.createMessageComponentCollector({
-            filter: ({ user }) => user.id === interaction.user.id,
             time: 60000
         });
 
+
         collector.on('collect', async interaction => {
-            if (interaction.customId === 'quiz-0') {
+            const userDB = await getUserGame(interaction.user.id);
+            if (userDB) userDB.quizTries += 1;
+
+            const answeredAnswer = answers[parseInt(interaction.customId)];
+            if (!answeredAnswer) return interaction.reply('There was an error.');
+            if (answeredAnswer === question.correct_answer) {
+                const row2 = new ActionRowBuilder();
+                answers.forEach(answer => {
+                    const button = new ButtonBuilder()
+                        .setCustomId(`${answers.indexOf(answer)}`)
+                        .setLabel(answer.replaceAll('&quot;', '"').replaceAll('&#039;', '\'').replaceAll('&amp;', '&').replaceAll('&reg;', '®'))
+                        .setStyle(answer === question.correct_answer ? ButtonStyle.Success : ButtonStyle.Secondary)
+                        .setDisabled(true);
+
+                    row2.addComponents(button);
+                });
+
+                await interaction.update({
+                    embeds: [
+                        new Embed(Colors.Green)
+                            .setDescription(`**Correct**\n${question.question}\n**Answered by:** ${interaction.user}\n**Points:** ${userDB ? userDB.quizPoints + 1 : 0}`.replaceAll('&amp;', '&').replaceAll('&reg;', '®').replaceAll('&#039;', '\'').replaceAll('&quot;', '"'))
+                    ], components: [row2]
+                });
+
+                if (userDB) userDB.quizPoints += 1;
+                if (userDB) await userDB.save();
+            } else {
+                const row2 = new ActionRowBuilder();
+                answers.forEach(answer => {
+                    const button = new ButtonBuilder()
+                        .setCustomId(`${answers.indexOf(answer)}`)
+                        .setLabel(answer.replaceAll('&quot;', '"').replaceAll('&amp;', '&').replaceAll('&reg;', '®').replaceAll('&#039;', '\''))
+                        .setStyle(answer === question.correct_answer ? ButtonStyle.Success : (answers.indexOf(answer) === parseInt(interaction.customId) ? ButtonStyle.Danger : ButtonStyle.Secondary))
+                        .setDisabled(true);
+
+                    row2.addComponents(button);
+                });
+
+                await interaction.update({
+                    embeds: [
+                        new Embed(Colors.Red)
+                            .setDescription(`**Incorrect**\n${question.question}\n**Correct Answer:** ${question.correct_answer}\n**Answered by:** ${interaction.user}\n**Points:** ${userDB ? userDB.quizPoints - 1 : 0}`.replaceAll('&#039;', '\'').replaceAll('&amp;', '&').replaceAll('&reg;', '®').replaceAll('&quot;', '"'))
+                    ], components: [row2]
+                });
+
+                if (userDB) userDB.quizPoints -= 1;
+                if (userDB) await userDB.save();
             }
         });
     }
