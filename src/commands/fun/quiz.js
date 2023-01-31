@@ -61,6 +61,7 @@ module.exports = {
 
 
         collector.on('collect', async interaction => {
+            if (interaction.customId === 'quiz-replay') return;
             const userDB = await getUserGame(interaction.user.id);
             if (userDB) userDB.quizTries += 1;
 
@@ -68,6 +69,13 @@ module.exports = {
             if (!answeredAnswer) return interaction.reply('There was an error.');
             if (answeredAnswer === question.correct_answer) {
                 const row2 = new ActionRowBuilder();
+
+                const button = new ButtonBuilder()
+                    .setCustomId(`quiz-replay`)
+                    .setLabel('Play Again')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(false);
+
                 answers.forEach(answer => {
                     const button = new ButtonBuilder()
                         .setCustomId(`${answers.indexOf(answer)}`)
@@ -77,6 +85,7 @@ module.exports = {
 
                     row2.addComponents(button);
                 });
+                row2.addComponents(button)
 
                 await interaction.update({
                     embeds: [
@@ -89,6 +98,13 @@ module.exports = {
                 if (userDB) await userDB.save();
             } else {
                 const row2 = new ActionRowBuilder();
+                
+                const button = new ButtonBuilder()
+                    .setCustomId(`quiz-replay`)
+                    .setLabel('Play Again')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(false);
+
                 answers.forEach(answer => {
                     const button = new ButtonBuilder()
                         .setCustomId(`${answers.indexOf(answer)}`)
@@ -98,6 +114,7 @@ module.exports = {
 
                     row2.addComponents(button);
                 });
+                row2.addComponents(button);
 
                 await interaction.update({
                     embeds: [
