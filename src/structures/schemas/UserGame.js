@@ -5,9 +5,13 @@ const UserGames = new Schema({
     userId: reqString,
     typePoints: reqNum,
     typeTries: reqNum,
+    typeFastest: reqNum,
     
     quizTries: reqNum,
-    quizPoints: reqNum
+    quizPoints: reqNum,
+    
+    rpsTries: reqNum,
+    rpsPoints: reqNum
 });
 
 module.exports = model('User-Game', UserGames);

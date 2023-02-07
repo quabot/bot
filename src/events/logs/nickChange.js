@@ -24,6 +24,9 @@ module.exports = {
         
         if (oldMember.nickName === newMember.nickname) return;
         if (!oldMember.nickName && !newMember.nickname) return;
+        if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) return;
+        if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) return;
+        if (oldMember.avatar !== newMember.avatar) return;
 
         await channel.send({
             embeds: [

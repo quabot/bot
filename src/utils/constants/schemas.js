@@ -10,7 +10,8 @@ const optString = {
 
 const reqNum = {
     type: Number,
-    required: true
+    required: true,
+    default: 0
 }
 
 const reqId = {

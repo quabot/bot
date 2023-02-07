@@ -1,4 +1,4 @@
-const { Client, Interaction, Colors } = require('discord.js');
+const { Client, Interaction, Colors, EmbedBuilder } = require('discord.js');
 const { getServerConfig } = require('../../utils/configs/serverConfig');
 const { handleError } = require('../../utils/constants/errorHandler');
 
@@ -23,7 +23,16 @@ module.exports = {
                 ],
             });
 
+
         const config = await getServerConfig(client, interaction.guildId);
+        if (config && config.disabledCommands && config.disabledCommands.includes(interaction.commandName)) return await interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(config.color ?? '#3a5a74')
+                    .setDescription('That command is not enabled in this server.')
+            ], ephemeral: true
+        });
+
         const color = config?.color ?? '#3a5a74';
 
         await command

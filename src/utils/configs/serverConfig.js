@@ -18,6 +18,7 @@ const getServerConfig = async (client, guildId) => {
                         locale: 'en-us',
                         color: '#3a5a74',
                         updatesChannel: 'none',
+                        disabledCommands: []
                     }).save();
             }
         ).clone().catch(() => { }));

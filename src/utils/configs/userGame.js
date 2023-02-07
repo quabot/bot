@@ -10,9 +10,13 @@ const getUserGame = async (userId) => {
                     userId,
                     typePoints: 0,
                     typeTries: 0,
+                    typeFastest: 15,
                     
                     quizTries: 0,
-                    quizPoints: 0
+                    quizPoints: 0,
+                    
+                    rpsTries: 0,
+                    rpsPoints: 0
                 }).save();
         }
     ).clone().catch(() => { });

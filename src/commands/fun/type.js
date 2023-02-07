@@ -1,6 +1,7 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require("discord.js");
+const { SlashCommandBuilder, Client, CommandInteraction, Colors } = require("discord.js");
 const { Embed } = require("../../utils/constants/embed");
 const axios = require('axios');
+const { getUserGame } = require("../../utils/configs/userGame");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -741,13 +742,74 @@ module.exports = {
                 "It's never been my responsibility to glaze the donuts."
             ]
             const sentence = sentences[Math.floor(Math.random() * sentences.length)];
-            
 
             await interaction.editReply({
                 embeds: [
                     new Embed(color)
                         .setDescription(sentence)
+                        .setTitle('Try to type this sentence as within 15 seconds!')
                 ]
+            });
+
+            await getUserGame(interaction.user.id);
+
+            const filter = m => m.author.id === interaction.user.id;
+            const collector = interaction.channel.createMessageCollector({ filter, time: 15000 });
+            const startTime = new Date().getTime();
+
+            collector.on('collect', async m => {
+                collector.stop();
+                const userDB = await getUserGame(interaction.user.id);
+
+                if (m.content === sentence) {
+                    const totalTime = (new Date().getTime() - startTime) / 1000;
+                    await interaction.editReply({
+                        embeds: [
+                            new Embed(color)
+                                .setColor(Colors.Green)
+                                .setTitle('Try to type this sentence as within 15 seconds!')
+                                .setDescription(`${sentence}${totalTime < userDB.typeFastest ? ' - **New highscore!**' : ''}`)
+                                .addFields(
+                                    { name: 'Typed by', value: `${interaction.user}`, inline: true },
+                                    { name: 'Time', value: `${totalTime} seconds`, inline: true },
+                                    { name: 'Points', value: `${userDB.typePoints + 1}`, inline: true }
+                                )
+                        ]
+                    });
+
+                    userDB.typePoints += 1;
+                    userDB.typeTries += 1;
+                    if (totalTime < userDB.typeFastest) userDB.typeFastest = totalTime;
+                    await userDB.save();
+                } else {
+                    const totalTime = (new Date().getTime() - startTime) / 1000;
+                    await interaction.editReply({
+                        embeds: [
+                            new Embed(color)
+                                .setColor(Colors.Red)
+                                .setTitle('Try to type this sentence as within 15 seconds!')
+                                .setDescription(`${sentence}\n\n**Entered:**\n${m.content}`)
+                                .addFields(
+                                    { name: 'Typed by', value: `${interaction.user}`, inline: true },
+                                    { name: 'Time', value: `${totalTime} seconds`, inline: true },
+                                    { name: 'Points', value: `${userDB.typePoints - 1}`, inline: true }
+                                )
+                        ]
+                    });
+
+                    userDB.typePoints -= 1;
+                    userDB.typeTries += 1;
+                    await userDB.save();
+                }
+            });
+
+            collector.on('end', collected => {
+                if (collected.size === 0) return interaction.editReply({
+                    embeds: [
+                        new Embed(color)
+                            .setDescription('Failed to respond in time.')
+                    ]
+                });
             });
         }
     }
