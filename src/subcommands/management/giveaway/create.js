@@ -43,7 +43,7 @@ module.exports = {
         if (!channel || !prize || !winners || !duration) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('Please enter all the required fields')
+                    .setDescription('Please enter all the required fields.')
             ]
         });
 

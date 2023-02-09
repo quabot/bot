@@ -8,9 +8,10 @@ const getIdConfig = async (guildId) => {
             if (!ids)
                 new Ids({
                     guildId,
-                    locale: 'en-us',
-                    color: '#3a5a74',
-                    updatesChannel: 'none',
+                    suggestId: 0,
+                    giveawayId: 0,
+                    pollId: 0,
+                    ticketId: 1,
                 }).save();
         }
     ).clone().catch(() => { });

@@ -41,7 +41,7 @@ module.exports = {
         if (!channel || !choices || !duration) return await interaction.reply({
             embeds: [
                 new Embed(color)
-                    .setDescription('Please enter all the required fields')
+                    .setDescription('Please enter all the required fields.')
             ]
         });
 

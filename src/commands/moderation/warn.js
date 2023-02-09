@@ -48,7 +48,7 @@ module.exports = {
         if (!user || !reason) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('Please fill out all the required fields')
+                    .setDescription('Please fill out all the required fields.')
             ]
         });
 
