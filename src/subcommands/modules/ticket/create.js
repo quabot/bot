@@ -1,6 +1,5 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { getTicketConfig } = require('../../../utils/configs/ticketConfig');
-const { randomUUID } = require('crypto');
 const Ticket = require('../../../structures/schemas/Ticket');
 const { Embed } = require('../../../utils/constants/embed');
 const { getIdConfig } = require('../../../utils/configs/idConfig');
