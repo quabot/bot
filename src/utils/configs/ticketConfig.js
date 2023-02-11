@@ -25,7 +25,7 @@ const getTicketConfig = async (client, guildId) => {
                         topicButton: true,
                     
                         logChannel: 'none',
-                        transcriptChannel: 'none'
+                        logEnabled: false
                     }).save();
             }
         ).clone().catch(() => { }));

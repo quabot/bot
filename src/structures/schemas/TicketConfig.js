@@ -13,7 +13,7 @@ const TicketConfig = new Schema({
     topicButton: reqBool,
 
     logChannel: reqString,
-    transcriptChannel: reqString
+    logEnabled: reqBool,
 });
 
 module.exports = model('Ticket-Config', TicketConfig);

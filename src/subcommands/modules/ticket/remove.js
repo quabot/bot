@@ -2,26 +2,24 @@ const {
     ChatInputCommandInteraction,
     Client,
     ColorResolvable,
-    PermissionFlagsBits,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle
+    PermissionFlagsBits
 } = require('discord.js');
-const {getTicketConfig} = require('../../../utils/configs/ticketConfig');
+const { getTicketConfig } = require('../../../utils/configs/ticketConfig');
 const Ticket = require('../../../structures/schemas/Ticket');
-const {Embed} = require('../../../utils/constants/embed');
-const {getIdConfig} = require('../../../utils/configs/idConfig');
+const { Embed } = require('../../../utils/constants/embed');
+const { getIdConfig } = require('../../../utils/configs/idConfig');
 
 module.exports = {
     parent: 'ticket',
-    name: 'close',
+    name: 'remove',
     /**
      * @param {Client} client
      * @param {ChatInputCommandInteraction} interaction
      * @param {ColorResolvable} color
      */
     async execute(client, interaction, color) {
-        await interaction.deferReply({ephemeral: false});
+        await interaction.deferReply({ ephemeral: false });
+        const user = interaction.options.getUser('user');
 
         const config = await getTicketConfig(client, interaction.guildId);
         const ids = await getIdConfig(interaction.guildId);
@@ -50,13 +48,7 @@ module.exports = {
             ]
         });
 
-        if (ticket.closed) return await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('This ticket is already closed.')
-            ]
-        });
-
+        if (!user) return;
 
         let valid = false;
         if (ticket.owner === interaction.user.id) valid = true;
@@ -67,33 +59,38 @@ module.exports = {
         if (!valid) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You are not allowed to close the ticket.')
+                    .setDescription('You are not allowed to add users to the ticket.')
             ]
         });
 
 
-        const closedCategory = interaction.guild.channels.cache.get(config.closedCategory);
-        if (!closedCategory) return await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).')
-            ]
+        const array = ticket.users;
+        if (!array.includes(user.id))
+            return interaction
+                .editReply({
+                    embeds: [await generateEmbed(color, "That user isn't in this ticket!")],
+                })
+                .catch(e => {});
+
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === `${user.id}`) {
+                array.splice(i, 1);
+                i--;
+            }
+        }
+
+        await ticket.updateOne({
+            users: array,
         });
 
-        await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('Close this ticket with the button below this message.'),
-            ],
-            components: [
-                new ActionRowBuilder()
-                    .addComponents(
-                    new ButtonBuilder()
-                        .setStyle(ButtonStyle.Secondary)
-                        .setCustomId('close-ticket')
-                        .setLabel('🔒 Close')
-                ),
-            ]
-        });
+        await interaction.channel.permissionOverwrites.edit(user, { ViewChannel: false, SendMessages: false });
+
+        await interaction
+            .editReply({
+                embeds: [
+                    new Embed(color)
+                        .setDescription(`Removed ${user} from the ticket.`)
+                ],
+            });
     }
 };

@@ -4,7 +4,8 @@ const {
     CommandInteraction,
     ButtonBuilder,
     ButtonStyle,
-    ActionRowBuilder
+    ActionRowBuilder,
+    Colors
 } = require("discord.js");
 const {Embed} = require("../../utils/constants/embed");
 const {getUserGame} = require("../../utils/configs/userGame");
@@ -72,7 +73,7 @@ module.exports = {
             if (choices[myChoice].strongTo === userChoice) {
                 await interaction.update({
                     embeds: [
-                        new Embed(color)
+                        new Embed(Colors.Red)
                             .setDescription(`I picked **${myChoice}** and you picked **${userChoice}**, so i won and you lost!`)
                             .addFields(
                                 {name: 'Your Score', value: `${userDB.rpsPoints - 1}`, inline: true},
@@ -94,7 +95,7 @@ module.exports = {
             } else if (choices[myChoice].weakTo === userChoice) {
                 await interaction.update({
                     embeds: [
-                        new Embed(color)
+                        new Embed(Colors.Green)
                             .setDescription(`I picked **${myChoice}** and you picked **${userChoice}**, so you won!`)
                             .addFields(
                                 {name: 'Your Score', value: `${userDB.rpsPoints + 1}`, inline: true},
@@ -116,7 +117,7 @@ module.exports = {
             } else {
                 await interaction.update({
                     embeds: [
-                        new Embed(color)
+                        new Embed(Colors.Orange)
                             .setDescription(`I picked **${myChoice}** and you picked **${userChoice}**, so it's a tie!`)
                             .addFields(
                                 {name: 'Your Score', value: `${userDB.rpsPoints}`, inline: true},

@@ -7,21 +7,21 @@ const {
     ButtonBuilder,
     ButtonStyle
 } = require('discord.js');
-const {getTicketConfig} = require('../../../utils/configs/ticketConfig');
+const { getTicketConfig } = require('../../../utils/configs/ticketConfig');
 const Ticket = require('../../../structures/schemas/Ticket');
-const {Embed} = require('../../../utils/constants/embed');
-const {getIdConfig} = require('../../../utils/configs/idConfig');
+const { Embed } = require('../../../utils/constants/embed');
+const { getIdConfig } = require('../../../utils/configs/idConfig');
 
 module.exports = {
     parent: 'ticket',
-    name: 'close',
+    name: 'reopen',
     /**
      * @param {Client} client
      * @param {ChatInputCommandInteraction} interaction
      * @param {ColorResolvable} color
      */
     async execute(client, interaction, color) {
-        await interaction.deferReply({ephemeral: false});
+        await interaction.deferReply({ ephemeral: false });
 
         const config = await getTicketConfig(client, interaction.guildId);
         const ids = await getIdConfig(interaction.guildId);
@@ -50,10 +50,10 @@ module.exports = {
             ]
         });
 
-        if (ticket.closed) return await interaction.editReply({
+        if (!ticket.closed) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('This ticket is already closed.')
+                    .setDescription('This ticket is not closed.')
             ]
         });
 
@@ -67,32 +67,32 @@ module.exports = {
         if (!valid) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You are not allowed to close the ticket.')
+                    .setDescription('You are not allowed to reopen the ticket.')
             ]
         });
 
 
-        const closedCategory = interaction.guild.channels.cache.get(config.closedCategory);
-        if (!closedCategory) return await interaction.editReply({
+        const openCategory = interaction.guild.channels.cache.get(config.openCategory);
+        if (!openCategory) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).')
+                    .setDescription('There is no category to move this ticket to once re-opened. Configure this on our [dashboard](https://quabot.net/dashboard).')
             ]
         });
 
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('Close this ticket with the button below this message.'),
+                    .setDescription('Reopen this ticket with the button below this message.'),
             ],
             components: [
                 new ActionRowBuilder()
                     .addComponents(
-                    new ButtonBuilder()
-                        .setStyle(ButtonStyle.Secondary)
-                        .setCustomId('close-ticket')
-                        .setLabel('🔒 Close')
-                ),
+                        new ButtonBuilder()
+                            .setStyle(ButtonStyle.Primary)
+                            .setCustomId('reopen-ticket')
+                            .setLabel('🔓 Reopen')
+                    ),
             ]
         });
     }

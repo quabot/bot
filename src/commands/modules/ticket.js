@@ -18,6 +18,9 @@ module.exports = {
         .addSubcommand(subcommand => subcommand
             .setName('close')
             .setDescription('Close a ticket.'))
+            .addSubcommand(subcommand => subcommand
+                .setName('reopen')
+                .setDescription('Reopen a ticket.'))
         .addSubcommand(subcommand => subcommand
             .setName('delete')
             .setDescription('Delete a ticket.'))

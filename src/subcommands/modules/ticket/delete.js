@@ -14,7 +14,7 @@ const {getIdConfig} = require('../../../utils/configs/idConfig');
 
 module.exports = {
     parent: 'ticket',
-    name: 'close',
+    name: 'delete',
     /**
      * @param {Client} client
      * @param {ChatInputCommandInteraction} interaction
@@ -50,50 +50,37 @@ module.exports = {
             ]
         });
 
-        if (ticket.closed) return await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('This ticket is already closed.')
-            ]
+
+        let allowed = false;
+        if (ticket.owner === interaction.user.id) allowed = true;
+        if (ticket.users.includes(interaction.user.id)) allowed = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) allowed = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) allowed = true;
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) allowed = true;
+        config.staffRoles.forEach(r => {
+            if (interaction.member.roles.cache.some(role => role.id === r)) allowed = true;
         });
-
-
-        let valid = false;
-        if (ticket.owner === interaction.user.id) valid = true;
-        if (ticket.users.includes(interaction.user.id)) valid = true;
-        if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
-        if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
-        if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
-        if (!valid) return await interaction.editReply({
+        if (!allowed) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('You are not allowed to close the ticket.')
-            ]
-        });
-
-
-        const closedCategory = interaction.guild.channels.cache.get(config.closedCategory);
-        if (!closedCategory) return await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setDescription('There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).')
+                    .setDescription('You are not allowed to delete the ticket, you need to be added, be the owner, and/or a staff member to delete it.')
             ]
         });
 
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('Close this ticket with the button below this message.'),
+                    .setDescription('Delete this ticket with the button below this message.'),
             ],
             components: [
                 new ActionRowBuilder()
                     .addComponents(
                     new ButtonBuilder()
                         .setStyle(ButtonStyle.Secondary)
-                        .setCustomId('close-ticket')
-                        .setLabel('🔒 Close')
+                        .setCustomId('delete-ticket')
+                        .setLabel('🗑️ Delete')
                 ),
             ]
-        });
+        })
     }
 };
