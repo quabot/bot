@@ -31,7 +31,7 @@ const getReactionConfig = async (client, guildId) => {
                                 icon: '',
                                 url: '',
                             },
-                            description: 'Your role in **{server}** has been {action}.',
+                            description: 'Your role ({role}) in **{server}** has been {action}.',
                             fields: [],
                             url: '',
                             thumbnail: '',
