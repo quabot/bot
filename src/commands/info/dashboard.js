@@ -20,6 +20,6 @@ module.exports = {
                 .setTitle(`QuaBot Dashboard`)
                 .setDescription(`You can find our dashboard [here](https://quabot.net)!`),
             ]
-        })
+        });
     }
 }
