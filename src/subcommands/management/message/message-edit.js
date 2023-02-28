@@ -4,7 +4,7 @@ const { Embed } = require('../../../utils/constants/embed');
 
 module.exports = {
     parent: 'message',
-    name: 'send',
+    name: 'edit',
     /**
      * @param {Client} client 
      * @param {ChatInputCommandInteraction} interaction 
@@ -13,15 +13,23 @@ module.exports = {
     async execute(client, interaction, color) {
         await interaction.deferReply();
 
-        const channel = interaction.options.getChannel('channel');
-        if (channelBlacklist.includes(channel.type))
-            return await interaction
-                .editReply({
-                    embeds: [
-                        new Embed(color)
-                            .setDescription('Please enter a valid channel type.')
-                    ],
-                });
+        const messageUrl = interaction.options.getString('message');
+        const ids = messageUrl.match(/\d+/g)
+        const message = await interaction.guild.channels.cache.get(ids[1])?.messages.fetch(ids[2]).catch(err => null) ?? null;
+        
+        if (!message) return await interaction.editReply({
+            embeds: [
+                new Embed(color)    
+                .setDescription('Couldn\'t find any messages with that URL.')
+            ]
+        });
+
+        if (message.author.id !== client.user.id) return await interaction.editReply({
+            embeds: [
+                new Embed(color)    
+                .setDescription('I cannot edit that message.')
+            ]
+        });
 
         const buttons1 = new ActionRowBuilder().addComponents(
             new ButtonBuilder().setCustomId('embed-message').setLabel('Set Message').setStyle(ButtonStyle.Primary),
@@ -48,18 +56,18 @@ module.exports = {
         );
 
         const buttons4 = new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId('embed-send').setLabel('Send Message').setStyle(ButtonStyle.Success),
+            new ButtonBuilder().setCustomId('embed-save').setLabel('Save Message').setStyle(ButtonStyle.Success),
             new ButtonBuilder().setCustomId('embed-cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger)
         );
-
 
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription(`Click the buttons below this message to set components of the embed.\nThe message will be sent to ${channel}. If the description is empty the embed will not be sent.`),
-                new EmbedBuilder().setDescription('\u200b').setColor(color),
+                    .setDescription(`Click the buttons below this message to set components of the embed.\nIf the description is empty the embed will not be sent. Message URL: ${messageUrl}`),
+                EmbedBuilder.from(message.embeds[0]) || new EmbedBuilder().setDescription('\u200b').setColor(color),
             ],
             components: [buttons1, buttons2, buttons3, buttons4],
+            content: message.content
         });
     }
 };
