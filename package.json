@@ -17,6 +17,7 @@
     "node-cache": "^5.1.2",
     "random-reddit": "^2.0.3",
     "topgg-autoposter": "^2.0.1",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "ws": "^8.12.1"
   }
 }
