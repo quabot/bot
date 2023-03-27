@@ -6,7 +6,7 @@ const Config = require('../../structures/schemas/ReactionConfig');
  */
 const getReactionConfig = async (client, guildId) => {
     const reactionConfig =
-        client.cache.get(`${guildId}-giveaway-config`) ??
+        client.cache.get(`${guildId}-reaction-config`) ??
 
         (await Config.findOne(
             { guildId },
