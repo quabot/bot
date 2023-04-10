@@ -15,7 +15,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('messageDelete')) return;
+        if (!config.events.includes('messageDelete')) return;
 
 
         const channel = message.guild.channels.cache.get(config.channelId);

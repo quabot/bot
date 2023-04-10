@@ -15,7 +15,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('stickerDelete')) return;
+        if (!config.events.includes('stickerDelete')) return;
 
 
         const channel = sticker.guild.channels.cache.get(config.channelId);

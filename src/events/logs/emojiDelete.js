@@ -15,7 +15,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('emojiDelete')) return;
+        if (!config.events.includes('emojiDelete')) return;
 
 
         const channel = emoji.guild.channels.cache.get(config.channelId);

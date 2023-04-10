@@ -16,7 +16,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('nickChange')) return;
+        if (!config.events.includes('nickChange')) return;
 
 
         const channel = oldMember.guild.channels.cache.get(config.channelId);

@@ -7,8 +7,7 @@ const LoggingConfig = new Schema({
     channelId: reqString,
     excludedChannels: reqArray,
     excludedCategories: reqArray,
-    enabledEvents: reqArray,
-    disabledEvents: reqArray
+    events: reqArray
 });
 
 module.exports = model('Logging-Config', LoggingConfig);

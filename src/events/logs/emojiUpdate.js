@@ -16,7 +16,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('emojiUpdate')) return;
+        if (!config.events.includes('emojiUpdate')) return;
 
 
         const channel = oldEmoji.guild.channels.cache.get(config.channelId);

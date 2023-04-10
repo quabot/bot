@@ -16,7 +16,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
         
-        if (!config.enabledEvents.includes('roleAddRemove')) return;
+        if (!config.events.includes('roleAddRemove')) return;
 
         if (oldMember.nickname !== newMember.nickname) return;
         if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) return;

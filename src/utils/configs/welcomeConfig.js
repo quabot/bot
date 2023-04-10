@@ -83,6 +83,11 @@ const getWelcomeConfig = async (client, guildId) => {
                             url: '',
                             thumbnail: '',
                             image: '',
+                            author: {
+                                text: '',
+                                icon: '',
+                                url: ''
+                            }
                         },
                     }).save();
             }

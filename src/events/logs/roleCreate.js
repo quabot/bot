@@ -15,7 +15,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('roleCreate')) return;
+        if (!config.events.includes('roleCreate')) return;
 
 
         const channel = role.guild.channels.cache.get(config.channelId);

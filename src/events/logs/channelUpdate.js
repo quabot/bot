@@ -17,7 +17,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('channelUpdate')) return;
+        if (!config.events.includes('channelUpdate')) return;
         if (newChannel.parentId && config.excludedCategories.includes(newChannel.parentId)) return;
         if (config.excludedChannels.includes(newChannel.id)) return;
 

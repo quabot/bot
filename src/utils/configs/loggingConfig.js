@@ -19,7 +19,7 @@ const getLoggingConfig = async (client, guildId) => {
                         channelId: 'none',
                         excludedChannels: [],
                         excludedCategories: [],
-                        enabledEvents: [
+                        events: [
                             'emojiCreate',
                             'emojiDelete',
                             'emojiUpdate',
@@ -42,8 +42,7 @@ const getLoggingConfig = async (client, guildId) => {
                             'stickerUpdate',
                             'threadCreate',
                             'threadDelete',
-                        ],
-                        disabledEvents: ['voiceMove', 'voiceJoinLeave']
+                        ]
                     }).save();
             }
         ).clone().catch(() => { }));

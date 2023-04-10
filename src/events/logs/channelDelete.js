@@ -16,7 +16,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('channelDelete')) return;
+        if (!config.events.includes('channelDelete')) return;
         if (channel.parentId && config.excludedCategories.includes(channel.parentId)) return;
         if (config.excludedChannels.includes(channel.id)) return;
 

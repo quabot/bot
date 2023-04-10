@@ -15,7 +15,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('guildBanRemove')) return;
+        if (!config.events.includes('guildBanRemove')) return;
 
 
         const channel = ban.guild.channels.cache.get(config.channelId);

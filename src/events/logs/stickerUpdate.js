@@ -16,7 +16,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('stickerUpdate')) return;
+        if (!config.events.includes('stickerUpdate')) return;
 
 
         const channel = newSticker.guild.channels.cache.get(config.channelId);

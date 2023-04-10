@@ -16,7 +16,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('threadDelete')) return;
+        if (!config.events.includes('threadDelete')) return;
         if (thread.parentId && (config.excludedCategories.includes(thread.parent.parentId) || config.excludedChannels.includes(thread.parentId))) return;
 
 

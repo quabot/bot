@@ -15,7 +15,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('inviteCreate')) return;
+        if (!config.events.includes('inviteCreate')) return;
         if (config.excludedChannels.includes(invite.channel.id)) return;
         if (invite.channel.parentId && config.excludedCategories.includes(invite.channel.parentId)) return;
 

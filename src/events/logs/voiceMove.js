@@ -19,7 +19,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('voiceJoinLeave')) return;
+        if (!config.events.includes('voiceJoinLeave')) return;
         if (newState.channelId && (config.excludedCategories.includes(newState.channel.parentId) || config.excludedChannels.includes(newState.channelId))) return;
         if (oldState.channelId && (config.excludedCategories.includes(oldState.channel.parentId) || config.excludedChannels.includes(oldState.channelId))) return;
 

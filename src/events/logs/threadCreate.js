@@ -17,7 +17,7 @@ module.exports = {
         if (!config) return;
         if (!config.enabled) return;
 
-        if (!config.enabledEvents.includes('threadCreate')) return;
+        if (!config.events.includes('threadCreate')) return;
         if (thread.parentId && (config.excludedCategories.includes(thread.parent.parentId) || config.excludedChannels.includes(thread.parentId))) return;
 
 
