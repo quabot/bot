@@ -75,7 +75,7 @@ module.exports = {
 
                 await interaction.message.edit({
                     embeds: [
-                        new Embed(config.colors.deleted)
+                        new Embed(Colors.DarkRed)
                             .setTitle("New Suggestion")
                             .addFields(
                                 { name: "User", value: `${interaction.message.embeds[0].fields[0].value}`, inline: true },
@@ -116,7 +116,7 @@ module.exports = {
                         .replaceAll('{server}', interaction.guild?.name ?? '')
                         .replaceAll('{staff}', `${interaction.user ?? ''}`)
                         .replaceAll('{state}', 'deleted')
-                        .replaceAll('{color}', ` ${config.colors.deleted}`)
+                        .replaceAll('{color}', color)
                         .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
 

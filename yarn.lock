@@ -830,9 +830,9 @@
     lodash "^4.17.21"
 
 "@sapphire/snowflake@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-3.4.0.tgz#25c012158a9feea2256c718985dbd6c1859a5022"
-  integrity sha512-zZxymtVO6zeXVMPds+6d7gv/OfnCc25M1Z+7ZLB0oPmeMTPeRWVPQSS16oDJy5ZsyCOLj7M6mbZml5gWXcVRNw==
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-3.4.1.tgz#065b5a8b24e398fad7a8c0ed80c7804ca9f61f15"
+  integrity sha512-PIK7Y8Mv0F1d2oOUMCfRMqUgxrQ/LQMxNKdpuk5bHZDnGVTyJ45dlC2396QTALml32WpdGGGV7fn3rHtwllHmA==
 
 "@stencil/core@^2.22.1":
   version "2.22.2"

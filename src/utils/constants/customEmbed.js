@@ -42,7 +42,6 @@ class CustomEmbed extends EmbedBuilder {
         rawEmbed.fields.forEach((field) => newFields.push({ name: `${getParsedString(field.name)}`, value: `${getParsedString(field.value)}`, inline: field.inline }));
         
         if (newFields.length !== 0) embed.addFields(newFields);
-
         return embed;
     }
 }

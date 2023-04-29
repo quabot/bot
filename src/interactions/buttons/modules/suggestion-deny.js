@@ -64,41 +64,52 @@ module.exports = {
                     });
 
                 let rejectionReason = "No reason specified";
-                const modal = new ModalBuilder()
-                    .setTitle('Reason for rejecting')
-                    .setCustomId('reject-suggest')
-                    .addComponents(
-                        new ActionRowBuilder()
-                            .addComponents(
-                                new TextInputBuilder()
-                                    .setCustomId('reason')
-                                    .setLabel('Rejection Reason')
-                                    .setMaxLength(500)
-                                    .setMinLength(2)
-                                    .setPlaceholder('Leave a rejection reason...')
-                                    .setRequired(true)
-                                    .setStyle(TextInputStyle.Paragraph)
-                            )
-                    );
+                if (config.reasonRequired) {
+                    const modal = new ModalBuilder()
+                        .setTitle('Reason for rejecting')
+                        .setCustomId('reject-suggest')
+                        .addComponents(
+                            new ActionRowBuilder()
+                                .addComponents(
+                                    new TextInputBuilder()
+                                        .setCustomId('reason')
+                                        .setLabel('Rejection Reason')
+                                        .setMaxLength(500)
+                                        .setMinLength(2)
+                                        .setPlaceholder('Leave a rejection reason...')
+                                        .setRequired(true)
+                                        .setStyle(TextInputStyle.Paragraph)
+                                )
+                        );
 
-                await interaction.showModal(modal);
-
-
-                const modalResponse = await interaction
-                    .awaitModalSubmit({
-                        time: 60000,
-                        filter: i => i.user.id === interaction.user.id,
-                    }).catch(() => { });
+                    await interaction.showModal(modal);
 
 
-                if (modalResponse && modalResponse.customId === 'reject-suggest') rejectionReason = modalResponse.fields.getTextInputValue('reason');
+                    const modalResponse = await interaction
+                        .awaitModalSubmit({
+                            time: 60000,
+                            filter: i => i.user.id === interaction.user.id,
+                        }).catch(() => { });
 
-                await modalResponse.reply({
-                    embeds: [
-                        new Embed(color)
-                            .setDescription('Suggestion denied.')
-                    ], ephemeral: true
-                });
+
+                    if (modalResponse && modalResponse.customId === 'reject-suggest') rejectionReason = modalResponse.fields.getTextInputValue('reason');
+
+                    if (!modalResponse) return;
+
+                    await modalResponse.reply({
+                        embeds: [
+                            new Embed(color)
+                                .setDescription('Suggestion denied.')
+                        ], ephemeral: true
+                    });
+                } else {
+                    await interaction.reply({
+                        embeds: [
+                            new Embed(color)
+                                .setDescription('Suggestion denied.')
+                        ]
+                    });
+                }
 
                 suggestion.status = 'denied';
                 await suggestion.save();
@@ -107,7 +118,7 @@ module.exports = {
                 message.edit({
                     embeds: [
                         EmbedBuilder.from(message.embeds[0])
-                            .setColor(config.colors.deny)
+                            .setColor(Colors.Red)
                             .addFields(
                                 { name: "Denied by", value: `${interaction.user}`, inline: true },
                                 { name: "Reason", value: `${rejectionReason}`, inline: true }
@@ -119,7 +130,7 @@ module.exports = {
 
                 await interaction.message.edit({
                     embeds: [
-                        new Embed(config.colors.deny)
+                        new Embed(Colors.Red)
                             .setTitle("New Suggestion")
                             .addFields(
                                 { name: "User", value: `${interaction.message.embeds[0].fields[0].value}`, inline: true },
@@ -164,7 +175,7 @@ module.exports = {
                         .replaceAll('{server}', interaction.guild?.name ?? '')
                         .replaceAll('{staff}', `${interaction.user ?? ''}`)
                         .replaceAll('{state}', 'denied')
-                        .replaceAll('{color}', ` ${config.colors.deny}`)
+                        .replaceAll('{color}', color)
                         .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
                 const embed = new CustomEmbed(config.dmMessage, parseString)

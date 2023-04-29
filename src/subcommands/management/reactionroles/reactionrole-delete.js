@@ -75,10 +75,8 @@ module.exports = {
 
         if (!message) return;
 
-        await message.reactions
-            .resolve(emoji)
-            .users.remove(client.user.id)
-            .catch(e => { });
+        const m = await message.reactions.resolve(emoji)
+        if (m) m.users.remove(client.user.id);
 
         await interaction.editReply({
             embeds: [

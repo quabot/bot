@@ -1,6 +1,7 @@
 const { Client } = require('discord.js');
 const { WebSocketServer } = require('ws');
 const consola = require('consola');
+const { CustomEmbed } = require('../../utils/constants/customEmbed');
 
 module.exports = {
     event: "ready",
@@ -17,11 +18,29 @@ module.exports = {
         wss.on('connection', function connection(ws) {
           ws.on('error', console.error);
         
-          ws.on('message', function message(d) {
+          ws.on('message', async function message(d) {
+            console.log(d)
             const data = JSON.parse(d);
+            console.log(data)
             if (data.status !== 200) return;
             
             if (data.type === 'cache') client.cache.take(data.message);
+
+            if (data.type === 'send-message') {
+              const guild = client.guilds.cache.get(data.guildId);
+              if (!guild) return;
+              const channel = guild.channels.cache.get(data.channelId);
+              if (!channel) return;
+
+
+              const getParsedString = (s) => {
+                return `${s}`.replaceAll(`{guild}`, guild.name).replaceAll(`{member}`, guild.memberCount);
+              }
+
+              const sentEmbed = new CustomEmbed(data.message, getParsedString);
+
+              await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) })
+            }
           });
         });
     }

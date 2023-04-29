@@ -1,4 +1,4 @@
-const { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require("discord.js");
+const { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Colors } = require("discord.js");
 const { CustomEmbed } = require("../../../utils/constants/customEmbed");
 const { Embed } = require("../../../utils/constants/embed");
 const Suggest = require('../../../structures/schemas/Suggestion');
@@ -76,7 +76,7 @@ module.exports = {
                 message.edit({
                     embeds: [
                         EmbedBuilder.from(message.embeds[0])
-                            .setColor(config.colors.approve)
+                            .setColor(Colors.Green)
                             .addFields({ name: 'Approved By', value: `${interaction.user}`, inline: true })
                             .setFooter({ text: 'This suggestion was approved!' })
                     ]
@@ -84,7 +84,7 @@ module.exports = {
 
                 await interaction.message.edit({
                     embeds: [
-                        new Embed(config.colors.approve)
+                        new Embed(Colors.Green)
                             .setTitle("New Suggestion")
                             .addFields(
                                 { name: "User", value: `${interaction.message.embeds[0].fields[0].value}`, inline: true },
@@ -127,7 +127,7 @@ module.exports = {
                         .replaceAll('{server}', interaction.guild?.name ?? '')
                         .replaceAll('{staff}', `${interaction.user ?? ''}`)
                         .replaceAll('{state}', 'approved')
-                        .replaceAll('{color}', ` ${config.colors.approve}`)
+                        .replaceAll('{color}', color)
                         .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
                 const embed = new CustomEmbed(config.dmMessage, parseString);
