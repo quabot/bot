@@ -19,7 +19,7 @@ module.exports = {
                 .setRequired(true))
             .addStringOption(option => option
                 .setName('duration')
-                .setDescription('The length that the giveaway should last for.')
+                .setDescription('The length that the poll should last for.')
                 .setRequired(true))
             .addRoleOption(option => option
                 .setName('role-mention')
