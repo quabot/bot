@@ -19,9 +19,7 @@ module.exports = {
           ws.on('error', console.error);
         
           ws.on('message', async function message(d) {
-            console.log(d)
             const data = JSON.parse(d);
-            console.log(data)
             if (data.status !== 200) return;
             
             if (data.type === 'cache') client.cache.take(data.message);

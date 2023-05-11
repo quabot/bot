@@ -1,5 +1,7 @@
 const { ChannelType } = require("discord.js");
 
+const API_URL = 'http://localhost:3001';
+
 const channelTypes = [
     'Text',
     'DM',
@@ -85,4 +87,4 @@ function permissionBitToString(permission) {
     return permissionString;
 }
 
-module.exports = { permissionBitToString, channelBlacklist, channelTypesById, channelTypes };
+module.exports = { permissionBitToString, channelBlacklist, channelTypesById, channelTypes, API_URL };
