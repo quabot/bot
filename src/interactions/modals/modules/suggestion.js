@@ -58,6 +58,7 @@ module.exports = {
             .replaceAll('{suggestion}', suggestion)
             .replaceAll('{user}', `${interaction.user}`)
             .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
+            .replaceAll('{id}', ids.suggestId + 1 ?? 0)
             .replaceAll('{server}', interaction.guild?.name ?? '')
             .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 

@@ -35,7 +35,7 @@ module.exports = {
 
 
         const id = interaction.options.getNumber('giveaway-id');
-        if (!id) return await interaction.editReply({
+        if (id === null || id === undefined) return await interaction.editReply({
             embeds: [
                 new Embed(color)
                     .setDescription('Please enter a valid id to end.')

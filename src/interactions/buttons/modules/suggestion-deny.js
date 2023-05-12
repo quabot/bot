@@ -26,6 +26,13 @@ module.exports = {
             ], ephemeral: true
         });
 
+        if (suggestion.status === 'denied') return await interaction.editReply({
+            embeds: [
+                new Embed(color)
+                    .setDescription('The suggestion has already been denied.')
+            ]
+        });
+
 
         const config = await getSuggestConfig(client, interaction.guildId);
         if (!config) return await interaction.reply({

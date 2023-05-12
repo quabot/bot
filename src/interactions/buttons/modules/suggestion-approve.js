@@ -27,6 +27,13 @@ module.exports = {
             ]
         });
 
+		if (suggestion.status === 'approved') return await interaction.editReply({
+				embeds: [
+						new Embed(color)
+								.setDescription('The suggestion has already been approved.')
+				]
+		});
+
         const config = await getSuggestConfig(client, interaction.guildId);
         if (!config) return await interaction.editReply({
             embeds: [
