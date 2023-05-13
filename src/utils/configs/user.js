@@ -2,7 +2,7 @@ const User = require('../../structures/schemas/User');
 
 const getUser = async (guildId, userId) => {
     const user = await User.findOne(
-        { guildId },
+        { guildId, userId },
         (err, document) => {
             if (err) console.log(err);
             if (!document)
@@ -13,7 +13,10 @@ const getUser = async (guildId, userId) => {
                     tempbans: 0,
                     warns: 0,
                     kicks: 0,
-                    timeouts: 0
+                    timeouts: 0,
+
+                    afk: false,
+                    afkMessage: 'No afk message set.'
                 }).save();
         }
     ).clone().catch(() => { });
