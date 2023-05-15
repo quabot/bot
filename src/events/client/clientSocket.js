@@ -32,12 +32,12 @@ module.exports = {
 
 
               const getParsedString = (s) => {
-                return `${s}`.replaceAll(`{guild}`, guild.name).replaceAll(`{member}`, guild.memberCount);
+                return `${s}`.replaceAll(`{guild}`, guild.name).replaceAll(`{members}`, guild.memberCount);
               }
 
               const sentEmbed = new CustomEmbed(data.message, getParsedString);
 
-              await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) })
+              await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) ?? '' })
             }
           });
         });

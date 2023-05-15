@@ -1,4 +1,4 @@
-const { ReactionManager, User, GuildMember } = require('discord.js');
+const { ReactionManager, User } = require('discord.js');
 const { getReactionConfig } = require('../../utils/configs/reactionConfig');
 const { getServerConfig } = require('../../utils/configs/serverConfig');
 const { CustomEmbed } = require('../../utils/constants/customEmbed');
