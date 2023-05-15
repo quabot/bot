@@ -14,10 +14,9 @@ const reqNum = {
     default: 0
 }
 
-const reqId = {
-    type: Number,
-    required: true,
-    default: 1
+const optObject = {
+    type: Object,
+    required: false
 }
 
 const optId = {
@@ -41,4 +40,4 @@ const reqArray = {
     required: true
 }
 
-module.exports = { optString, reqArray, reqObject, reqBool, reqString, reqNum, optId };
+module.exports = { optString, reqArray, reqObject, reqBool, reqString, reqNum, optId, optObject };
