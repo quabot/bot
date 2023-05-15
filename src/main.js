@@ -10,6 +10,7 @@ client.commands = new Collection();
 client.menus = new Collection();
 client.modals = new Collection();
 client.subcommands = new Collection();
+client.custom_commands = [];
 ['buttonHandler', 'commandHandler' ,'eventHandler', 'menuHandler', 'modalHandler', 'subcommandHandler'].forEach(handler => {
     require(`./structures/handlers/${handler}`)(client);
 });
