@@ -45,7 +45,6 @@ class CustomEmbed extends EmbedBuilder {
         if (newFields.length !== 0) embed.addFields(newFields);
         
         if (!embed.data.title && !embed.data.footer.text && !embed.data.footer.icon_url && !embed.data.author.name && !embed.data.description && !embed.data.fields && !embed.data.image && !embed.data.thumbnail && !embed.data.timestamp && !embed.data.title) return new EmbedBuilder().setDescription('** **');
-        console.log(embed);
         return embed;
     }
 }

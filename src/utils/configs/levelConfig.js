@@ -58,9 +58,9 @@ const getLevelConfig = async (guildId, client) => {
                             image: '',
                         },
                         
-                        excludedChannels: reqArray, 
-                        excludedRoles: reqArray,
-                        rewards: reqArray
+                        excludedChannels: [], 
+                        excludedRoles: [],
+                        rewards: []
                     }).save();
             }
         ).clone().catch(() => { }));

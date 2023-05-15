@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { reqString } = require("../../utils/constants/schemas");
+const { reqString, reqNum } = require("../../utils/constants/schemas");
 
 const LevelSchema = new Schema({
     guildId: reqString,
