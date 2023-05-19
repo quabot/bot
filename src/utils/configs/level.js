@@ -12,7 +12,8 @@ const getLevel = async (guildId, userId) => {
                     xp: 0,
                     level: 0,
                     role: 'none',
-                    lastVote: '0'
+                    lastVote: '0',
+                    active: true
                 }).save();
         }
     ).clone().catch(() => { });
