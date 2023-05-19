@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { reqString, reqNum } = require("../../utils/constants/schemas");
+const { reqString, reqNum, reqBool } = require("../../utils/constants/schemas");
 
 const LevelSchema = new Schema({
     guildId: reqString,
@@ -7,7 +7,8 @@ const LevelSchema = new Schema({
     xp: reqNum,
     level: reqNum,
     role: reqString,
-    lastVote: reqString
+    lastVote: reqString,
+    active: reqBool,
 });
 
 module.exports = model('Level', LevelSchema);

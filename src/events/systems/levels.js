@@ -37,6 +37,8 @@ module.exports = {
 		if (!config.enabled) return;
 		if (config.excludedChannels.includes(message.channelId)) return;
 
+		const levelDB = await getLevel(message.guildId, message.author.id);
+
 		for (let i = 0; i < config.excludedRoles.length; i++) {
 			const role = config.excludedRoles[i];
 			if (message.member.roles.cache.has(role)) return;
@@ -48,14 +50,13 @@ module.exports = {
 		if (!color) return;
 
 
-		const levelDB = await getLevel(message.guildId, message.author.id);
 		if (!levelDB) return;
 
 		let xp = levelDB.xp;
 		let level = levelDB.level;
 		let reqXp = level * 500 + 100;
 		let rndXp = Math.floor(Math.random() * 10 + (Math.min(Math.max(message.content.length / 100, 1), 20)));
-
+		
 		if (xp + rndXp >= reqXp) {
 			levelDB.xp = 0;
 			levelDB.level += 1;

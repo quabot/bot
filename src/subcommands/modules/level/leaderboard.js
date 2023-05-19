@@ -29,8 +29,9 @@ module.exports = {
 
 		const Level = require('../../../structures/schemas/Level');
 		const leaderboard = await Level.find({
-			guildId: interaction.guildId
-		}).sort({ level: -1, xp: -1 }).limit(10);
+			guildId: interaction.guildId,
+			active: true
+		}).sort({ level: -1, xp: -1 }).limit(25);
 
 		let lb = '';
 		leaderboard.forEach(i => lb = lb + `**${leaderboard.indexOf(i)+1}.** <@${i.userId}> - Level: ${i.level}, XP: ${i.xp}\n`);

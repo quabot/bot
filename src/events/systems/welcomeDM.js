@@ -36,7 +36,7 @@ module.exports = {
             await member.send({ embeds: [embed], content: parseString(config.dm.content) });
         } else {
             if (config.dm.content === '') return;
-            await channel.send({ content: parseString(config.dm.content) });
+            await member.send({ content: parseString(config.dm.content) });
         }
 
     }
