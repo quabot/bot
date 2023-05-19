@@ -15,6 +15,7 @@ module.exports = {
         if (message.author.bot) return;
 
         const respondConfig = await getResponderConfig(client, message.guildId);
+        if (!respondConfig) return;
         if (!respondConfig.enabled) return;
         
         const configColor = await getServerConfig(client, message.guildId);
