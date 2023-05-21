@@ -30,7 +30,9 @@ module.exports = {
         const role = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
         const member = reaction.message.guild.members.cache.get(`${user.id}`);
         if (!role) return;
-
+        if (role.managed) return;
+        if (role.id === reaction.message.guildId) return;
+        
         if (reactionRole.reqPermission !== 'None' && reactionRole.reqPermission !== 'none') {
             if (!member.permissions.has(reactionRole.reqPermission)) return;
         }
