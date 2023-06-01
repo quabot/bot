@@ -58,8 +58,14 @@ module.exports = {
             .replaceAll('{suggestion}', suggestion)
             .replaceAll('{user}', `${interaction.user}`)
             .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
+            .replaceAll('{username}', `${interaction.user.username}`)
+            .replaceAll('{tag}', `${interaction.user.tag}`)
+            .replaceAll('{discriminator}', `${interaction.user.discriminator}`)
+            .replaceAll('{servername}', `${interaction.guild.name}`)
             .replaceAll('{id}', ids.suggestId + 1 ?? 0)
             .replaceAll('{server}', interaction.guild?.name ?? '')
+            .replaceAll('{guild}', interaction.guild?.name ?? '')
+            .replaceAll('{servername}', interaction.guild?.name ?? '')
             .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
         const suggestEmbed = new CustomEmbed(config.message, getParsedString);

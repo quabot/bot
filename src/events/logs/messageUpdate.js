@@ -17,6 +17,8 @@ module.exports = {
         if (!config.enabled) return;
 
         if (!config.events.includes('messageUpdate')) return;
+        if (config.excludedChannels.includes(newMessage.channelId)) return;
+        if (config.excludedCategories.includes(newMessage.channel.parentId)) return;
 
         const channel = newMessage.guild.channels.cache.get(config.channelId);
         if (!channel) return;

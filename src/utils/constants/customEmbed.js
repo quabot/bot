@@ -2,7 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 const _ = require('lodash');
 
 class CustomEmbed extends EmbedBuilder {
-    constructor(rawEmbed, getParsedString) {
+    constructor(rawEmbed, getParsedString) {console.log(rawEmbed)
         super();
 
         const embed = new EmbedBuilder();
@@ -36,8 +36,8 @@ class CustomEmbed extends EmbedBuilder {
         if (rawEmbed.thumbnail) embed.setThumbnail(getParsedString(rawEmbed.thumbnail).substring(0, 2048));
 
         if (rawEmbed.image) embed.setImage(getParsedString(rawEmbed.image).substring(0, 2048));
-        
-        if (rawEmbed.color) embed.setColor(getParsedString(rawEmbed.color).substring(0, 256));
+
+        if (rawEmbed.color) embed.setColor(getParsedString(rawEmbed.color) ?? '#3a5a74');
 
         const newFields = [];
         rawEmbed.fields.forEach((field) => newFields.push({ name: `${getParsedString(field.name)}`.substring(0, 256), value: `${getParsedString(field.value)}`.substring(0, 1024), inline: field.inline }));

@@ -65,7 +65,19 @@ module.exports = {
 			xp = 0;
 			level = level += 1;
 
-			const parse = (s) => { return s.replaceAll('{tag}', `${message.author.tag}`).replaceAll('{user}', message.author).replaceAll('{color}', `${color}`).replaceAll('{xp}', `${xp}`).replaceAll('{level}', `${level}`).replaceAll('{avatar}', `${message.author.displayAvatarURL({ dynamic: true })}`) };
+			const parse = (s) => { return s
+				.replaceAll('{tag}', `${message.author.tag}`)
+				.replaceAll('{username}', `${message.author.username}` ?? '')
+				.replaceAll('{discriminator}', `${message.author.discriminator}` ?? '')
+				.replaceAll('{id}', `${message.author.id}` ?? '')
+				.replaceAll('{user}', message.author)
+				.replaceAll('{color}', `${color}`)
+				.replaceAll('{xp}', `${xp}`)
+				.replaceAll('{level}', `${level}`)
+				.replaceAll('{icon}', message.guild.iconURL() ?? '')
+				.replaceAll('{server}', message.guild.name ?? '')
+				.replaceAll('{members}', message.guild.memberCount ?? '')
+				.replaceAll('{avatar}', `${message.author.displayAvatarURL({ dynamic: true })}`) };
 			if (config.channel !== 'disabled') {
 				const channel = config.channel === 'none' ? message.channel : message.guild.channels.cache.get(`${config.channel}`);
 				if (!channel) return;

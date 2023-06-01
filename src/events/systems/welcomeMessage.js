@@ -23,6 +23,7 @@ module.exports = {
         const parseString = (text) =>
             text
                 .replaceAll('{user}', `${member}`)
+                .replaceAll('{id}', `${member.user.id}`)
                 .replaceAll('{username}', member.user.username ?? '')
                 .replaceAll('{tag}', member.user.tag ?? '')
                 .replaceAll('{discriminator}', member.user.discriminator ?? '')
@@ -30,7 +31,7 @@ module.exports = {
                 .replaceAll('{icon}', member.guild.iconURL() ?? '')
                 .replaceAll('{server}', member.guild.name ?? '')
                 .replaceAll('{members}', member.guild.memberCount ?? '')
-                .replaceAll('{color}', ` ${custom.color ?? '#3a5a74'}`)
+                .replaceAll('{color}', `${custom.color ?? '#3a5a74'}`)
 
         if (config.joinType === 'embed') {
             const embed = new CustomEmbed(config.joinMessage, parseString);

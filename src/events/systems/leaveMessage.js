@@ -29,8 +29,9 @@ module.exports = {
                 .replaceAll('{avatar}', member.displayAvatarURL() ?? '')
                 .replaceAll('{icon}', member.guild.iconURL() ?? '')
                 .replaceAll('{server}', member.guild.name ?? '')
+                .replaceAll('{id}', `${member.user.id}`)
                 .replaceAll('{members}', member.guild.memberCount ?? '')
-                .replaceAll('{color}', ` ${custom.color ?? '#3a5a74'}`)
+                .replaceAll('{color}', `${custom.color ?? '#3a5a74'}`)
 
         if (config.leaveType === 'embed') {
             const embed = new CustomEmbed(config.leaveMessage, parseString);

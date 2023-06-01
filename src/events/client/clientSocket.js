@@ -1,4 +1,4 @@
-const { Client } = require('discord.js');
+const { Client, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { WebSocketServer } = require('ws');
 const consola = require('consola');
 const { CustomEmbed } = require('../../utils/constants/customEmbed');
@@ -38,6 +38,33 @@ module.exports = {
           const sentEmbed = new CustomEmbed(data.message, getParsedString);
 
           await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) ?? '' })
+        }
+
+        if (data.type === 'send-message-ticket') {
+          const guild = client.guilds.cache.get(data.guildId);
+          if (!guild) return;
+          const channel = guild.channels.cache.get(data.channelId);
+          if (!channel) return;
+
+          const embed = data.embedEnabled;
+
+
+          const getParsedString = (s) => {
+            return `${s}`.replaceAll(`{guild}`, guild.name).replaceAll(`{members}`, guild.memberCount).replaceAll('{color}', '#3a5a74');
+          }
+          const row = new ActionRowBuilder()
+            .addComponents(
+              new ButtonBuilder()
+                .setCustomId('ticket-create')
+                .setLabel('Create Ticket')
+                .setStyle(ButtonStyle.Secondary)
+            )
+
+          if (!embed) return await channel.send({ content: getParsedString(data.message.content) ?? '', components: [row] });
+
+          const sentEmbed = new CustomEmbed(data.message, getParsedString);
+
+          await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) ?? '', components: [row] })
         }
 
         if (data.type === 'add-reaction') {

@@ -45,7 +45,7 @@ module.exports = {
         if (!category || category.type !== ChannelType.GuildCategory) return await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription('Couldn\'t find any valid configured categories for tickets. You can do this on our [dashboard](https://quabot.net/dashboad).')
+                    .setDescription(`Couldn\'t find any valid configured categories for tickets. You can do this on our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/modules/tickets).`)
             ]
         });
 
