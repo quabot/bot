@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { reqString, reqNum } = require("../../utils/constants/schemas");
+const { reqString, reqNum, reqObject } = require("../../utils/constants/schemas");
 
 const UserGames = new Schema({
     userId: reqString,
@@ -11,7 +11,10 @@ const UserGames = new Schema({
     quizPoints: reqNum,
     
     rpsTries: reqNum,
-    rpsPoints: reqNum
+    rpsPoints: reqNum,
+
+    birthday: reqObject,
+    bio: reqString
 });
 
 module.exports = model('User-Game', UserGames);
