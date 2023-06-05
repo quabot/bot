@@ -53,12 +53,12 @@ module.exports = {
             .setThumbnail(`${client.user.avatarURL({ dynamic: true })}`)
             .setFooter({ text: 'Created by Joa_sss#0001' })
             .setDescription(`By voting for QuaBot you're helping us __a lot__.  When you vote with the links below you're getting us more users.
-            **Why should you vote?**
+            \n**Why should you vote?**
             It helps us a lot! Show us support without paying money, and it takes just a few seconds. You also get the following benefits:\n- You get listed in the QuaBot support server.\n- You get a 1.5x level xp boost for 12 hours.
-            **How can i vote?**
+            \n\n**How can i vote?**
             - Go to the sites below.\n- Click the "Vote" button.\n- You will have to login.\n- It's as simple as that! Enjoy you're perks. (Note: You only get the 1.5x level xp from Top.gg)
         
-            **Vote Links:**
+            \n\n**Vote Links:**
             🔗 **[Top.gg](https://top.gg/bot/995243562134409296)** | 🔗 **[Discordbotlist.com](https://discordbotlist.com/bots/quabot-2212)** | 🔗 **[Bots.gg](https://discord.bots.gg/bots/995243562134409296)**`);
 
         const embed4 = new Embed(color)
