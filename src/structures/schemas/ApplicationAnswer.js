@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const { reqString, reqBool, reqArray, reqNum, optString } = require("../../utils/constants/schemas");
 
-const ApplicationAnsweer = new Schema({
+const ApplicationAnswer = new Schema({
     guildId: reqString,
     id: reqString, //Application ID
     response_uuid: reqString, // unique identifier for the response
@@ -11,4 +11,4 @@ const ApplicationAnsweer = new Schema({
     state: reqString // pending, approved or denied
 });
 
-module.exports = model('Application', Application);
+module.exports = model('Application-Answer', ApplicationAnswer);
