@@ -43,7 +43,10 @@ module.exports = {
             .setDescription(`In order to make it easier for the end-user to use QuaBot, we created an online dashboard. On our dashboard you can configure every setting to your liking.
         
             **What does it offer?**
-            > - Server Statistics: view insights and statistics about your server that can be vital.\n- Command toggles: toggle and configure all of the commands that we offer.\nModule configuration: configure all of QuaBot\'s modules to the greatest extend.\nAll with responsive and intuitive UI and is very easy to use and understand.\n\nClick **[here](https://dashboard.quabot.net)** for our dashboard.`);
+            > - Server Statistics: view insights and statistics about your server that can be vital.
+            > - Command toggles: toggle and configure all of the commands that we offer.
+            > - Module configuration: configure all of QuaBot\'s modules to the greatest extend.
+            All with responsive and intuitive UI and is very easy to use and understand.\n\nClick **[here](https://dashboard.quabot.net)** for our dashboard.`);
 
         const embed3 = new Embed(color)
             .setAuthor({ name: `QuaBot | Voting`, iconURL: `${client.user.avatarURL({ dynamic: true })}` })
@@ -51,14 +54,9 @@ module.exports = {
             .setFooter({ text: 'Created by Joa_sss#0001' })
             .setDescription(`By voting for QuaBot you're helping us __a lot__.  When you vote with the links below you're getting us more users.
             **Why should you vote?**
-            It helps us a lot! Show us support without paying money, and it takes just a few seconds. You also get the following benefits:
-            • You get listed in the QuaBot support server.
-            • You get a 1.5x level xp boost for 12 hours.
+            It helps us a lot! Show us support without paying money, and it takes just a few seconds. You also get the following benefits:\n- You get listed in the QuaBot support server.\n- You get a 1.5x level xp boost for 12 hours.
             **How can i vote?**
-            • Go to the sites below.
-            • Click the "Vote" button.
-            • You will have to login.
-            • It's as simple as that! Enjoy you're perks. (Note: You only get the 1.5x level xp from Top.gg)
+            - Go to the sites below.\n- Click the "Vote" button.\n- You will have to login.\n- It's as simple as that! Enjoy you're perks. (Note: You only get the 1.5x level xp from Top.gg)
         
             **Vote Links:**
             🔗 **[Top.gg](https://top.gg/bot/995243562134409296)** | 🔗 **[Discordbotlist.com](https://discordbotlist.com/bots/quabot-2212)** | 🔗 **[Bots.gg](https://discord.bots.gg/bots/995243562134409296)**`);
@@ -71,6 +69,7 @@ module.exports = {
             Our Terms of Service constitute a legally binding agreement made between you and QuaBot, concerning your access to and use of the bot. You agree that by utilizing the bot, you have read, understood, and agreed to be bound by all of our Terms of Service.
             > By using our bot you agree to those terms. If you do not agree with our Terms of Service then you are expressly prohibited from using the bot and you must discontinue use immediately.
             > Read our privacy policy, by using the bot, you agree to the collection and use of information in accordance with our Privacy Policy.
+            
             **Where can i find these Terms of Service an Privacy Policy?**
             You can find the Terms of Service **[here](https://quabot.net/about/tos)** and the Privacy Policy **[here](https://quabot.net/about/privacy)**`);
 

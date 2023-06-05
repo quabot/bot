@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
-const { Embed } = require("../../utils/constants/embed");
 
 module.exports = {
     data: new SlashCommandBuilder()
