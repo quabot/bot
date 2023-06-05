@@ -5,7 +5,7 @@ module.exports = {
         .setName('channel')
         .setDescription('Manage channels.')
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageRoles)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels)
         .addSubcommand(subcommand => subcommand
             .setName('create')
             .setDescription('Create a channel.')
@@ -22,6 +22,15 @@ module.exports = {
             .addChannelOption(option =>
                 option.setDescription('The channel to remove.').setRequired(true).setName('channel')
             ))
+            .addSubcommand(subcommand => subcommand
+                .setName('slowmode')
+                .setDescription('Set a channel\'s slowmode.')
+                .addChannelOption(option =>
+                    option.setDescription('The channel to set the slowmode of.').setRequired(true).setName('channel')
+                )
+                .addStringOption(option =>
+                    option.setDescription('The slowmode to set it to (format: 1h, 20min, 30s).').setRequired(true).setName('slowmode')
+                ))
         .addSubcommand(subcommand => subcommand
             .setName('edit')
             .setDescription('Edit a channel.')
