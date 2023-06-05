@@ -12,13 +12,14 @@ module.exports = {
      */
     async execute(client, interaction, color) {
         await interaction.deferReply();
-
+        
         if (!client.cache.has('client-info'))
             client.cache.set('client-info', {
                 djs: require('../../../../package.json').dependencies['discord.js'],
                 njs: process.version,
                 cpu: cpus()[0].model,
                 platform: process.platform.replace('win32', 'windows'),
+                commands: client.commands.size
             });
 
         const info = client.cache.get('client-info');
@@ -56,7 +57,9 @@ module.exports = {
                                 }MB/${Math.round(totalmem() / 1024 / 1024)}MB\``,
                             inline: true,
                         },
-                        { name: 'CPU', value: `\`\`\`${info.cpu}\`\`\``, inline: true }
+                        { name: 'Commands', value: `${info.commands}`, inline: true },
+
+                        { name: 'CPU', value: `\`\`\`${info.cpu}\`\`\``, inline: false }
                     ),
             ],
         });
