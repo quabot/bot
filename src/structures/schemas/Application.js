@@ -30,7 +30,9 @@ const Application = new Schema({
     reaction: reqString, // What reaction should be added (if enabled)
 
     add_roles: reqArray, // What roles should be added when approved
-    remove_roles: reqArray, // What roles should be removed when approved
+    remove_roles: reqArray, // What roles should be removed when approved,
+
+    date: reqString
 });
 
 module.exports = model('Application', Application);
