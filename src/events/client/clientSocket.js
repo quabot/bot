@@ -1,5 +1,6 @@
-const { Client, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { Client, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
 const { WebSocketServer } = require('ws');
+const { Embed } = require('../../utils/constants/embed');
 const consola = require('consola');
 const { CustomEmbed } = require('../../utils/constants/customEmbed');
 
@@ -83,6 +84,55 @@ module.exports = {
               if (!message) return;
               await message.react(item.emoji);
             });
+        }
+
+        if (data.type === 'responded-application-form') {
+          const data = JSON.parse(d);
+          if (data.status !== 200) return;
+
+          const form = data.form;
+          if (!form) return;
+
+          const guild = client.guilds.cache.get(form.guildId);
+          if (!guild) return;
+
+          const Application = require('../../structures/schemas/Application');
+          const FoundForm = await Application.findOne({
+            guildId: form.guildId,
+            id: form.id
+          });
+          if (!FoundForm) return;
+          if (!FoundForm.submissions_channel) return;
+
+          const submission_channel = guild.channels.cache.get(FoundForm.submissions_channel);
+          if (!submission_channel) return;
+          let submission_user = guild.members.cache.get(form.userId);
+          if (FoundForm.anonymous) submission_user = 'Anonymous';
+          if (!submission_user) return;
+
+          await submission_channel.send({
+            embeds: [
+              new Embed(Colors.Grey)
+                .setTitle('New application form submitted!')
+                .setDescription(`**${submission_user}** has submitted an answer to ${FoundForm.name}!`)
+                .addFields(
+                  { name: 'Link', value: `[Click here](https://quabot.net/dashboard/${form.guildId}/modules/applications/answers/${form.response_uuid})` },
+                )
+                .setFooter({ text: `${form.response_uuid}` })
+            ], components: [
+              new ActionRowBuilder()
+                .addComponents(
+                  new ButtonBuilder()
+                    .setCustomId(`application-accept`)
+                    .setLabel('Accept')
+                    .setStyle(ButtonStyle.Success),
+                  new ButtonBuilder()
+                    .setCustomId(`application-deny`)
+                    .setLabel('Deny')
+                    .setStyle(ButtonStyle.Danger),
+                ),
+            ]
+          });
         }
       });
     });
