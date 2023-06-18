@@ -29,16 +29,17 @@ module.exports = {
           const guild = client.guilds.cache.get(data.guildId);
           if (!guild) return;
           const channel = guild.channels.cache.get(data.channelId);
+          const embed = data.embed;
           if (!channel) return;
 
 
           const getParsedString = (s) => {
             return `${s}`.replaceAll(`{guild}`, guild.name).replaceAll(`{members}`, guild.memberCount);
           }
-
+          
           const sentEmbed = new CustomEmbed(data.message, getParsedString);
-
-          await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) ?? '' })
+          if (embed) await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) ?? '' });
+          if (!embed && (getParsedString(data.message.content) ?? '** **') !== '') await channel.send({ content: getParsedString(data.message.content) ?? '** **' });
         }
 
         if (data.type === 'send-message-ticket') {
@@ -133,6 +134,41 @@ module.exports = {
                 ),
             ]
           });
+        }
+
+        if (data.type === 'approved-application-form') {
+          const data = JSON.parse(d);
+          if (data.status !== 200) return;
+
+          const form = data.form;
+          if (!form) return;
+
+          const guild = client.guilds.cache.get(form.guildId);
+          if (!guild) return;
+
+          const Application = require('../../structures/schemas/Application');
+          const FoundForm = await Application.findOne({
+            guildId: form.guildId,
+            id: form.id
+          });
+          if (!FoundForm) return;
+
+          const member = guild.members.cache.get(form.userId);
+          if (!member) return;
+
+          if (FoundForm.add_roles) {
+            FoundForm.add_roles.forEach(async (role) => {
+              const roleToAdd = guild.roles.cache.get(role);
+              if (roleToAdd) member.roles.add(roleToAdd);
+            });
+          }
+
+          if (FoundForm.remove_roles) {
+            FoundForm.remove_roles.forEach(async (role) => {
+              const roleToAdd = guild.roles.cache.get(role);
+              if (roleToAdd) member.roles.remove(roleToAdd);
+            });
+          }
         }
       });
     });
