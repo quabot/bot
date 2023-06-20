@@ -24,12 +24,13 @@ module.exports = {
         user.flags?.toArray().forEach(flag => {
             badges.push(houses.get(flag) ?? '');
         });
-
+        
         await interaction.editReply({
             embeds: [
                 new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
-                    **• Name**: ${user}
-                    **• Tag**: ${user.tag}
+                    **• User**: ${user}
+                    **• Displayname**: ${user.globalName ?? 'This feature is not supported by Discord.js yet lol (coming soon)'}
+                    **• Username**: @${user.username}
                     **• ID**: ${user.id}
                     **• Roles**: ${member.roles.cache
                         .map((r) => r)

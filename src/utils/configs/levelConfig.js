@@ -16,7 +16,7 @@ const getLevelConfig = async (guildId, client) => {
                         messageEmbed: true,
                         message: {
                             content: '',
-                            title: '{tag} leveled up!',
+                            title: '@{username} leveled up!',
                             color: '{color}',
                             timestamp: true,
                             footer: {
@@ -39,7 +39,7 @@ const getLevelConfig = async (guildId, client) => {
                         dmMessageEmbed: true,
                         dmMessage: {
                             content: '',
-                            title: '{tag} leveled up!',
+                            title: '@{username} leveled up!',
                             color: '{color}',
                             timestamp: true,
                             footer: {

@@ -29,7 +29,7 @@ const getWelcomeConfig = async (client, guildId) => {
                                 icon: '',
                             },
                             author: {
-                                text: '{tag}',
+                                text: '@{username}',
                                 icon: '{avatar}',
                                 url: '',
                             },
@@ -53,7 +53,7 @@ const getWelcomeConfig = async (client, guildId) => {
                                 icon: '',
                             },
                             author: {
-                                text: '{tag}',
+                                text: '@{username}',
                                 icon: '{avatar}',
                                 url: '',
                             },
