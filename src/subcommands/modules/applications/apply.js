@@ -32,7 +32,7 @@ module.exports = {
 					.setDescription('This module is disabled in this server.')
 			]
 		});
-console.log(id)
+		
 		if (!id) return await interaction.editReply({
 			embeds: [
 				new Embed(color)
@@ -46,7 +46,7 @@ console.log(id)
 			guildId: interaction.guildId,
 			id
 		});
-		console.log(fApplication)
+		
 		if (!fApplication) return await interaction.editReply({
 			embeds: [
 				new Embed(color)

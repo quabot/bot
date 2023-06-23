@@ -35,7 +35,6 @@ module.exports = {
 
         if (config.joinType === 'embed') {
             const embed = new CustomEmbed(config.joinMessage, parseString);
-            console.log(embed)
             await channel.send({ embeds: [embed], content: parseString(config.joinMessage.content) });
         } else {
             if (config.joinMessage.content === '') return;

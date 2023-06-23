@@ -49,7 +49,7 @@ module.exports = {
                     .setDescription('This is not a valid ticket.')
             ]
         });
-        console.log(ticket)
+        
         await interaction.editReply({
             embeds: [
                 new Embed(color)

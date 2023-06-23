@@ -44,7 +44,6 @@ module.exports = {
             } else if (document.type === 'reaction') {
                 await message.react(document.reaction);
             } else if (document.type === 'embed') {
-                console.log(document)
                 const embed = new CustomEmbed(document.embed, parse);
                 await message.reply({ embeds: [embed], content: parse(document.embed.content) });
             }

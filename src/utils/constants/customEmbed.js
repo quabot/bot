@@ -2,7 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 const _ = require('lodash');
 
 class CustomEmbed extends EmbedBuilder {
-    constructor(rawEmbed, getParsedString) {console.log(rawEmbed)
+    constructor(rawEmbed, getParsedString) {
         super();
 
         const embed = new EmbedBuilder();
