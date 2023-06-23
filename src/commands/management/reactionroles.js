@@ -117,6 +117,12 @@ module.exports = {
                         .setName('channel')
                 )
         )
+
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('help')
+                .setDescription('View information about the reactionroles module.'))
+
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild)
         .setDMPermission(false),
     /**
