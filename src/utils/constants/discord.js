@@ -1,6 +1,6 @@
 const { ChannelType } = require("discord.js");
 
-const API_URL = 'http://localhost:3001';
+const API_URL = 'https://api.quabot.net';
 
 const channelTypes = [
     'Text',

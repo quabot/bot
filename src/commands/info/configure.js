@@ -16,7 +16,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setDescription(`In order to configure QuaBot's settings, visit the [QuaBot Dashboard](https://quabot.net/dashboard/${interaction.guildId})/general.`)
+                    .setDescription(`In order to configure QuaBot's settings, visit the [QuaBot Dashboard](https://quabot.net/dashboard/${interaction.guildId}/general).`)
             ]
         });
     }
