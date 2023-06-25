@@ -19,7 +19,7 @@ module.exports = {
             .setDescription('See a list of forms in the server.'))
         .addSubcommand(command => command
             .setName('help')
-            .setDescription('Get some information about the afk module.'))
+            .setDescription('Get some information about the applications module.'))
         .setDMPermission(false),
     /**
      * @param {Client} client 

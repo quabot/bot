@@ -3,7 +3,17 @@ const { reqString, reqId, reqBool, reqNum } = require("../../utils/constants/sch
 
 const Giveaway = new Schema({
     guildId: reqString,
-    afkEnabled: reqBool
+    id: reqNum,
+
+    prize: reqString,
+    winners: reqNum,
+
+    channel: reqString,
+    message: reqString,
+    host: reqString,
+
+    endTimestamp: reqString,
+    ended: reqBool
 });
 
 module.exports = model('Giveaway', Giveaway);
