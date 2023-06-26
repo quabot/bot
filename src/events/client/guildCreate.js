@@ -41,7 +41,7 @@ module.exports = {
 
 		let done = false;
 		guild.channels.cache.forEach(channel => {
-			if (channel.type === ChannelType.GuildText && !done && !channel.name.includes('rules') && !channel.name.includes('announcements') && !channel.name.includes('information')) {
+			if (channel.type === ChannelType.GuildText && !done && !channel.name.includes('rules') && !channel.name.includes('announcements') && !channel.name.includes('info') && !channel.name.includes('information')) {
 				done = true;
 				channel.send({
 					embeds: [

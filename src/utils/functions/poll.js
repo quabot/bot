@@ -60,7 +60,8 @@ async function endPoll(client, document) {
                         )
                 ]
             });
-        });
+        })
+        .catch(() => { });
 
     await Poll.findOneAndDelete(poll);
 }

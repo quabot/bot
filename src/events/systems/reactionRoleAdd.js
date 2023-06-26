@@ -1,4 +1,4 @@
-const { ReactionManager, User, GuildMember } = require('discord.js');
+const { ReactionManager, User, GuildMember, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { getReactionConfig } = require('../../utils/configs/reactionConfig');
 const { getServerConfig } = require('../../utils/configs/serverConfig');
 const { CustomEmbed } = require('../../utils/constants/customEmbed');
@@ -52,6 +52,15 @@ module.exports = {
         });
         if (excluded && !required && reactionRole.reqRoles.length === 0) return;
 
+        const sentFrom = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('sentFrom')
+                .setLabel('Sent from server: ' + guild?.name ?? 'Unknown')
+                .setStyle(ButtonStyle.Primary)
+                .setDisabled(true)
+        );
+
         async function asyncSwitch(type) {
             switch (type) {
                 //? Give and remove
@@ -74,7 +83,7 @@ module.exports = {
                         .replaceAll('{message}', reaction.message.url);
 
                     if (config.dmEnabled) await member.send({
-                        embeds: [new CustomEmbed(config.dm, parseNormal)]
+                        embeds: [new CustomEmbed(config.dm, parseNormal)], components: [sentFrom]
                     }).catch(() => { });
 
                     break;
@@ -99,7 +108,7 @@ module.exports = {
                         .replaceAll('{message}', reaction.message.url);
 
                     if (config.dmEnabled) await member.send({
-                        embeds: [new CustomEmbed(config.dm, parseVerify)]
+                        embeds: [new CustomEmbed(config.dm, parseVerify)], components: [sentFrom]
                     }).catch(() => { });
 
                     break;
@@ -124,7 +133,7 @@ module.exports = {
                         .replaceAll('{message}', reaction.message.url);
 
                     if (config.dmEnabled) await member.send({
-                        embeds: [new CustomEmbed(config.dm, parseDrop)]
+                        embeds: [new CustomEmbed(config.dm, parseDrop)], components: [sentFrom]
                     }).catch(() => { });
 
                     break;
@@ -149,7 +158,7 @@ module.exports = {
                         .replaceAll('{message}', reaction.message.url);
 
                     if (config.dmEnabled) await member.send({
-                        embeds: [new CustomEmbed(config.dm, parseReversed)]
+                        embeds: [new CustomEmbed(config.dm, parseReversed)], components: [sentFrom]
                     }).catch(() => { });
 
                     break;
@@ -192,7 +201,7 @@ module.exports = {
                             .replaceAll('{message}', reaction.message.url);
 
                         if (config.dmEnabled) await member.send({
-                            embeds: [new CustomEmbed(config.dm, parseUnique)]
+                            embeds: [new CustomEmbed(config.dm, parseUnique)], components: [sentFrom]
                         }).catch(() => { });
                     }
 
@@ -217,7 +226,7 @@ module.exports = {
                         .replaceAll('{message}', reaction.message.url);
 
                     if (config.dmEnabled) await member.send({
-                        embeds: [new CustomEmbed(config.dm, parseBinding)]
+                        embeds: [new CustomEmbed(config.dm, parseBinding)], components: [sentFrom]
                     }).catch(() => { });
 
                     break;

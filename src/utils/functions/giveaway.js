@@ -26,6 +26,7 @@ async function endGiveaway(client, document, forceEarly) {
     channel.messages
         .fetch(`${giveaway.message}`)
         .then(async message => {
+            if (!message) return;
 
             const reactions = await message.reactions.cache.get('🎉').users.fetch();
             const shuffled = await shuffleArray(
@@ -69,7 +70,8 @@ async function endGiveaway(client, document, forceEarly) {
 
             giveaway.ended = true;
             await giveaway.save();
-        });
+        })
+        .catch(() => { });
 }
 
 module.exports = { endGiveaway };

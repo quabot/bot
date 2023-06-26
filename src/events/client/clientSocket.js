@@ -3,6 +3,7 @@ const { WebSocketServer } = require('ws');
 const { Embed } = require('../../utils/constants/embed');
 const consola = require('consola');
 const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const Vote = require('../../structures/schemas/Vote');
 
 module.exports = {
   event: "ready",
@@ -13,8 +14,8 @@ module.exports = {
    */
   async execute(client) {
 
-    const wss = new WebSocketServer({ port: 8080 });
-    consola.info('Listening on port :8080');
+    const wss = new WebSocketServer({ port: 8081 });
+    consola.info('Listening on port :8081');
 
     wss.on('connection', function connection(ws) {
       ws.on('error', console.error);
@@ -24,6 +25,58 @@ module.exports = {
         if (data.status !== 200) return;
 
         if (data.type === 'cache') client.cache.take(data.message);
+
+        if (data.type === 'vote') {
+          if (data.body.type !== 'upvote') return;
+          const guild = client.guilds.cache.get('1007810461347086357');
+          if (!guild) return;
+          const ch = guild.channels.cache.get('1024600377628299266');
+          if (!ch) return;
+
+          ch.send({
+            content: `<@${data.body.user}>`,
+            embeds: [
+              new Embed('#3A5A74')
+                .setTitle('User Voted!')
+                .setDescription(`<@${data.body.user}> has voted for QuaBot! Thank you for your support, you have received a 1.5x level multiplier. You can vote again in 12 hours! [Vote here.](https://top.gg/bot/995243562134409296/vote)`)
+            ]
+          });
+
+          const user = client.users.cache.get(data.body.user);
+          if (!user) return;
+
+          const sentFrom = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('sentFrom')
+                    .setLabel('Sent from server: ' + guild?.name ?? 'Unknown')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true)
+            );
+
+          user.send({
+            embeds: [
+              new Embed('#3A5A74')
+                .setDescription(`Hey ${user.username}! Thank you so much for voting on QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level multiplier for 12 hours! We hope you enjoy your time with QuaBot!`)
+            ], components: [sentFrom]
+          })
+
+
+          const config = await Vote.findOne(
+            { userId: data.body.user },
+            (err, config) => {
+              if (err) console.log(err);
+              if (!config)
+                new Vote({
+                  userId: data.body.user,
+                  lastVote: `${new Date().getTime()}`
+                }).save();
+            }
+          ).clone().catch(() => { });
+
+          if (!config) return;
+          config.lastVote = `${new Date().getTime()}`;
+        }
 
         if (data.type === 'send-message') {
           const guild = client.guilds.cache.get(data.guildId);
@@ -36,7 +89,7 @@ module.exports = {
           const getParsedString = (s) => {
             return `${s}`.replaceAll(`{guild}`, guild.name).replaceAll(`{members}`, guild.memberCount);
           }
-          
+
           const sentEmbed = new CustomEmbed(data.message, getParsedString);
           if (embed) await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) ?? '' });
           if (!embed && (getParsedString(data.message.content) ?? '** **') !== '') await channel.send({ content: getParsedString(data.message.content) ?? '** **' });

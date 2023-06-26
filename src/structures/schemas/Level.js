@@ -7,8 +7,7 @@ const LevelSchema = new Schema({
     xp: reqNum,
     level: reqNum,
     role: reqString,
-    lastVote: reqString,
-    active: reqBool,
+    active: reqBool
 });
 
 module.exports = model('Level', LevelSchema);

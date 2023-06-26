@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { getModerationConfig } = require("../../utils/configs/moderationConfig");
 const { getUser } = require("../../utils/configs/user");
 const { Embed } = require("../../utils/constants/embed");
@@ -120,6 +120,16 @@ module.exports = {
         });
 
         if (config.warnDM) {
+
+            const sentFrom = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('sentFrom')
+                    .setLabel('Sent from server: ' + interaction.guild?.name ?? 'Unknown')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true)
+            );
+
             const parseString = (text) =>
                 text
                     .replaceAll('{reason}', reason)
@@ -137,6 +147,7 @@ module.exports = {
                 embeds: [
                     new CustomEmbed(config.warnDMMessage, parseString)
                 ],
+                components: [sentFrom],
                 content: parseString(config.warnDMMessage.content)
             }).catch(() => { });
         }

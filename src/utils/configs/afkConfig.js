@@ -11,7 +11,7 @@ const getAfkConfig = async (guildId, client) => {
                 if (!config)
                     new Afk({
                         guildId,
-                        enabled: true
+                        enabled: false
                     }).save();
             }
         ).clone().catch(() => { }));

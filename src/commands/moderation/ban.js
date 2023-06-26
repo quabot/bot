@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { getModerationConfig } = require("../../utils/configs/moderationConfig");
 const { getUser } = require("../../utils/configs/user");
 const { Embed } = require("../../utils/constants/embed");
@@ -152,6 +152,14 @@ module.exports = {
             ]
         });
 
+        const sentFrom = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('sentFrom')
+                    .setLabel('Sent from server: ' + interaction.guild?.name ?? 'Unknown')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true)
+            );
 
         if (config.banDM) {
             const parseString = (text) =>
@@ -171,7 +179,8 @@ module.exports = {
                 embeds: [
                     new CustomEmbed(config.banDMMessage, parseString)
                 ],
-                content: parseString(config.banDMMessage.content)
+                content: parseString(config.banDMMessage.content),
+                components: [sentFrom]
             }).catch(() => { });
         }
 
