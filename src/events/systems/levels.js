@@ -15,7 +15,9 @@ module.exports = {
 	*/
 	async execute(message, client) {
 		if (!message.guildId) return;
-		if (message.author.bot) return;
+		try {
+			if (message.author.bot) return;
+		} catch (e) { }
 
 		if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
 		const current_time = Date.now();
@@ -54,7 +56,7 @@ module.exports = {
 			.addComponents(
 				new ButtonBuilder()
 					.setCustomId('sentFrom')
-					.setLabel('Sent from server: ' + guild?.name ?? 'Unknown')
+					.setLabel('Sent from server: ' + message.guild?.name ?? 'Unknown')
 					.setStyle(ButtonStyle.Primary)
 					.setDisabled(true)
 			);

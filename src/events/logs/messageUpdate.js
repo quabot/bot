@@ -24,7 +24,10 @@ module.exports = {
         if (!channel) return;
 
 
-        if (oldMessage.author.bot) return;
+		try {
+			if (oldMessage.author.bot) return;
+		} catch (e) { }
+        
         const embed = new Embed(Colors.Yellow)
             .setDescription(`**Message Edited**
             ${newMessage.channel} - [Jump to Message](${newMessage.url})`);
