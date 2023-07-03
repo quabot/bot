@@ -43,7 +43,7 @@ module.exports = {
 				new Embed(color)
 					.setThumbnail(user.displayAvatarURL({ dynamic: true }))
 					.setTitle(`@${user.username}\'s level status`)
-					.setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}** xp.`)
+					.setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}/${levelDB.level * 500 + 100}** xp.`)
 			]
 		});
 	}

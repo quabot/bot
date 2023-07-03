@@ -20,6 +20,7 @@ module.exports = {
                     **• Name:** ${role.name}
                     **• Role:** ${role}
                     **• ID:** ${role.id}
+                    **• Users:** ${role.members.size}
                     **• Mentionable:** ${role.mentionable ? 'Yes' : 'No'}
                     **• Separated:** ${role.hoist ? 'Yes' : 'No'}
                     `),

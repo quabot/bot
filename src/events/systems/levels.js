@@ -22,7 +22,7 @@ module.exports = {
 		if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
 		const current_time = Date.now();
 		const time_stamps = cooldowns.get(message.author);
-		const cooldown_amount = 10000;
+		const cooldown_amount = 7500;
 
 		let no = false;
 		if (time_stamps.has(message.author.id)) {
