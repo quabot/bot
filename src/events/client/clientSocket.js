@@ -45,20 +45,11 @@ module.exports = {
           const user = client.users.cache.get(data.body.user);
           if (!user) return;
 
-          const sentFrom = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('sentFrom')
-                    .setLabel('Sent from server: ' + guild?.name ?? 'Unknown')
-                    .setStyle(ButtonStyle.Primary)
-                    .setDisabled(true)
-            );
-
           user.send({
             embeds: [
               new Embed('#3A5A74')
                 .setDescription(`Hey ${user.username}! Thank you so much for voting on QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level multiplier for 12 hours! We hope you enjoy your time with QuaBot!`)
-            ], components: [sentFrom]
+            ]
           })
 
 
@@ -79,14 +70,12 @@ module.exports = {
         }
 
         if (data.type === 'responder-reload') {
-          console.log(client.custom_commands)
           client.custom_commands = client.custom_commands.filter(c => c.guildId !== data.guildId);
           
           const Responder = require('../../structures/schemas/Responder');
           const responses = await Responder.find({ guildId: data.guildId });
           responses.forEach((response) => {
             client.custom_commands.push(response);
-            console.log(client.custom_commands)
           });
         }
 
