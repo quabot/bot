@@ -25,7 +25,7 @@ module.exports = {
         commands_list.forEach(async cL => {
             let run = false;
             if (!cL.wildcard && cL.trigger === message.content) run = true;
-            if (cL.wildcard && message.content.includes(cL.trigger)) run = true;
+            if (cL.wildcard && message.content.toLowerCase().includes(cL.trigger)) run = true;
 
 
             if (cL.ignored_channels.includes(message.channel.id)) run = false;

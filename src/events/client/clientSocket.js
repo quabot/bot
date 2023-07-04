@@ -78,6 +78,18 @@ module.exports = {
           config.lastVote = `${new Date().getTime()}`;
         }
 
+        if (data.type === 'responder-reload') {
+          console.log(client.custom_commands)
+          client.custom_commands = client.custom_commands.filter(c => c.guildId !== data.guildId);
+          
+          const Responder = require('../../structures/schemas/Responder');
+          const responses = await Responder.find({ guildId: data.guildId });
+          responses.forEach((response) => {
+            client.custom_commands.push(response);
+            console.log(client.custom_commands)
+          });
+        }
+
         if (data.type === 'send-message') {
           const guild = client.guilds.cache.get(data.guildId);
           if (!guild) return;
