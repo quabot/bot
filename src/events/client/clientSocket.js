@@ -48,7 +48,7 @@ module.exports = {
           user.send({
             embeds: [
               new Embed('#3A5A74')
-                .setDescription(`Hey ${user.username}! Thank you so much for voting on QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level multiplier for 12 hours! We hope you enjoy your time with QuaBot!`)
+                .setDescription(`Hey ${user}! Thank you so much for voting for QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level multiplier for 12 hours! We hope you enjoy your time with QuaBot!`)
             ]
           })
 
