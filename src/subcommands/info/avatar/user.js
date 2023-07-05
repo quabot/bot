@@ -21,7 +21,7 @@ module.exports = {
                         user.avatarURL({ size: 1024, forceStatic: false }) ??
                         'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png'
                     )
-                    .setTitle(`${user.tag}'s avatar`),
+                    .setTitle(`${user.username}'s avatar`),
             ],
         });
     },

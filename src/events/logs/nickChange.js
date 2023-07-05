@@ -36,7 +36,7 @@ module.exports = {
                         **User:** ${newMember}
                         ${oldMember.nickname ?? 'None'} -> ${newMember.nickname ?? 'None'}
                         `)
-                    .setFooter({ text: `${newMember.user.tag}`, iconURL: `${newMember.user.displayAvatarURL({ dynamic: true })}` })
+                    .setFooter({ text: `${newMember.user.username}`, iconURL: `${newMember.user.displayAvatarURL({ dynamic: true })}` })
             ]
         });
     }

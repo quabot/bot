@@ -37,7 +37,7 @@ module.exports = {
             `)
             .addFields({ name: 'Channel', value: `${message.channel}`, inline: true })
             .setFooter({
-                text: `User: ${message.author.tag}`,
+                text: `User: @${message.author.username}`,
                 iconURL: `${message.author.avatarURL({ dynamic: true })}`,
             });
 

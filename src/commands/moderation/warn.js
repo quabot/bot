@@ -102,7 +102,7 @@ module.exports = {
             embeds: [
                 new Embed(color)
                     .setTitle('User Warned')
-                    .setDescription(`**User:** ${user} (@${user.user.tag})\n**Reason:** ${reason}`)
+                    .setDescription(`**User:** ${user} (@${user.user.username})\n**Reason:** ${reason}`)
                     .addFields(
                         {
                             name: 'Joined Server',
@@ -161,7 +161,7 @@ module.exports = {
                     new Embed(color)
                         .setTitle('Member Warned')
                         .addFields(
-                            { name: 'User', value: `${user} (@${user.user.tag})`, inline: true },
+                            { name: 'User', value: `${user} (@${user.user.username})`, inline: true },
                             { name: 'Warned By', value: `${interaction.user}`, inline: true },
                             { name: 'Warned In', value: `${interaction.channel}`, inline: true },
                             { name: 'User Total Warns', value: `${userDatabase.warns}`, inline: true },

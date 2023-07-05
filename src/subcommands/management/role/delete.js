@@ -14,7 +14,7 @@ module.exports = {
 
         const role = interaction.options.getRole('role');
 
-        await interaction.guild.roles.delete(role.id, `Role deleted by ${interaction.user.tag}`).catch(async (e) => { });
+        await interaction.guild.roles.delete(role.id, `Role deleted by ${interaction.user.username}`).catch(async (e) => { });
 
         await interaction.editReply({
             embeds: [

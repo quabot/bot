@@ -131,7 +131,7 @@ module.exports = {
             embeds: [
                 new Embed(color)
                     .setTitle('User Timed Out')
-                    .setDescription(`**User:** ${member} (@${member.user.tag})\n**Reason:** ${reason}`)
+                    .setDescription(`**User:** ${member} (@${member.user.username})\n**Reason:** ${reason}`)
                     .addFields(
                         {
                             name: 'Joined Server',
@@ -190,7 +190,7 @@ module.exports = {
                     new Embed(color)
                         .setTitle('Member Timed Out')
                         .addFields(
-                            { name: 'User', value: `${member} (@${member.user.tag})`, inline: true },
+                            { name: 'User', value: `${member} (@${member.user.username})`, inline: true },
                             { name: 'Timed Out By', value: `${interaction.user}`, inline: true },
                             { name: 'Timed Out In', value: `${interaction.channel}`, inline: true },
                             { name: 'User Total Timeouts', value: `${userDatabase.timeouts}`, inline: true },

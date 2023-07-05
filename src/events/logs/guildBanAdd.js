@@ -26,9 +26,9 @@ module.exports = {
                 new Embed(Colors.Red)
                     .setDescription(`
                         **Member Banned**
-                        ${ban.user} (${ban.user.tag})
+                        ${ban.user} (${ban.user.username})
                         `)
-                    .setFooter({ text: `${ban.user.tag}`, iconURL: `${ban.user.displayAvatarURL({ dynamic: true })}` })
+                    .setFooter({ text: `${ban.user.username}`, iconURL: `${ban.user.displayAvatarURL({ dynamic: true })}` })
             ]
         });
     }

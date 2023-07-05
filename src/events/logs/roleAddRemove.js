@@ -42,7 +42,7 @@ module.exports = {
                         **User:** ${newMember}
                         ${role}
                         `)
-                    .setFooter({ text: `${newMember.user.tag}`, iconURL: `${newMember.user.displayAvatarURL({ dynamic: true })}` })
+                    .setFooter({ text: `${newMember.user.username}`, iconURL: `${newMember.user.displayAvatarURL({ dynamic: true })}` })
             ]
         });
     }

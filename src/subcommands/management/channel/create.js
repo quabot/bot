@@ -20,7 +20,7 @@ module.exports = {
             name: channel_name,
             topic: channel_topic,
             nsfw: channel_nsfw,
-            reason: `Channel created by ${interaction.user.tag}`
+            reason: `Channel created by ${interaction.user.username}`
         }).then(async (d) => {
             await interaction.editReply({
                 embeds: [

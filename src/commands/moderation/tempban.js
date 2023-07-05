@@ -153,7 +153,7 @@ module.exports = {
             embeds: [
                 new Embed(color)
                     .setTitle('User Temporarily Banned')
-                    .setDescription(`**User:** ${member} (@${member.user.tag})\n**Reason:** ${reason}`)
+                    .setDescription(`**User:** ${member} (@${member.user.username})\n**Reason:** ${reason}`)
                     .addFields(
                         {
                             name: 'Joined Server',
@@ -212,7 +212,7 @@ module.exports = {
                     new Embed(color)
                         .setTitle('Member Temporarily Banned')
                         .addFields(
-                            { name: 'User', value: `${member} (@${member.user.tag})`, inline: true },
+                            { name: 'User', value: `${member} (@${member.user.username})`, inline: true },
                             { name: 'Banned By', value: `${interaction.user}`, inline: true },
                             { name: 'Banned In', value: `${interaction.channel}`, inline: true },
                             { name: 'User Total Tempbans', value: `${userDatabase.tempbans}`, inline: true },

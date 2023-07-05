@@ -21,7 +21,7 @@ module.exports = {
             name: role_name,
             hoist: role_hoist,
             mentionable: role_mentionable,
-            reason: `Role edited by ${interaction.user.tag}`
+            reason: `Role edited by ${interaction.user.username}`
         }).then(async (d) => {
             await interaction.editReply({
                 embeds: [

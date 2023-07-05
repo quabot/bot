@@ -29,7 +29,7 @@ module.exports = {
             message.reply({
                 embeds: [
                     new Embed(color)
-                        .setDescription(`${user.tag} is afk.\n\`${config.afkMessage}\``)
+                        .setDescription(`${user.username} is afk.\n\`${config.afkMessage}\``)
                 ]
             });
         }

@@ -42,7 +42,7 @@ module.exports = {
         }
 
         if (newMessage.author) embed.setFooter({
-            text: `@${newMessage.author.tag}`,
+            text: `@${newMessage.author.username}`,
             iconURL: `${newMessage.author.avatarURL({ dynamic: true }) ?? 'https://i.imgur.com/VUwD8zP.png'}`
         });
 

@@ -66,7 +66,7 @@ module.exports = {
         await getUser(interaction.guildId, member.id);
 
         let timeout = true;
-        await member.timeout(1, `Timeout removed by @${interaction.user.tag}`).catch(async e => {
+        await member.timeout(1, `Timeout removed by @${interaction.user.username}`).catch(async e => {
             timeout = false;
 
             await interaction.editReply({
@@ -84,7 +84,7 @@ module.exports = {
             embeds: [
                 new Embed(color)
                     .setTitle('User Timeout Removed')
-                    .setDescription(`**User:** ${member} (@${member.user.tag})`)
+                    .setDescription(`**User:** ${member} (@${member.user.username})`)
                     .addFields(
                         {
                             name: 'Joined Server',
@@ -109,7 +109,7 @@ module.exports = {
                     new Embed(color)
                         .setTitle('Member Timeout Removed')
                         .addFields(
-                            { name: 'User', value: `${member} (@${member.user.tag})`, inline: true },
+                            { name: 'User', value: `${member} (@${member.user.username})`, inline: true },
                             { name: 'Removed By', value: `${interaction.user}`, inline: true },
                             { name: 'Removed In', value: `${interaction.channel}`, inline: true },
                             {
