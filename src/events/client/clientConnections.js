@@ -31,7 +31,7 @@ module.exports = {
                     headers: {
                         authorization: process.env.STATS_KEY
                     }
-                });
+                }).catch(() => { });
                 loop();
             }, 60000);
         })();

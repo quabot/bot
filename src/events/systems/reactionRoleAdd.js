@@ -56,7 +56,7 @@ module.exports = {
         .addComponents(
             new ButtonBuilder()
                 .setCustomId('sentFrom')
-                .setLabel('Sent from server: ' + guild?.name ?? 'Unknown')
+                .setLabel('Sent from server: ' + reaction.message.guild?.name ?? 'Unknown')
                 .setStyle(ButtonStyle.Primary)
                 .setDisabled(true)
         );
