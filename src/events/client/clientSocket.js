@@ -96,6 +96,28 @@ module.exports = {
           if (!embed && (getParsedString(data.message.content) ?? '** **') !== '') await channel.send({ content: getParsedString(data.message.content) ?? '** **' });
         }
 
+        if (data.type === 'update-message') {
+          const message = data.message;
+          if (!message) return;
+
+          const getParsedString = (s) => {
+            return s;
+          }
+
+          const sentEmbed = new CustomEmbed(message, getParsedString);
+          client.guilds.cache.forEach(async (guild) => {
+            const Server = require('../../structures/schemas/Server');
+            const config = await Server.findOne({ guildId: guild.id });
+            if (config) {
+              const channel = guild.channels.cache.get(config.updatesChannel);
+              if (channel) {
+                channel.send({ embeds: [sentEmbed] });
+              }
+            }
+
+          })
+        }
+
         if (data.type === 'send-message-ticket') {
           const guild = client.guilds.cache.get(data.guildId);
           if (!guild) return;
