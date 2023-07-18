@@ -28,12 +28,12 @@ module.exports = {
         if (config && config.disabledCommands && config.disabledCommands.includes(interaction.commandName)) return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setColor(config.color ?? '#3a5a74')
+                    .setColor(config.color ?? '#416683')
                     .setDescription('That command is not enabled in this server.')
             ], ephemeral: true
         });
 
-        const color = config?.color ?? '#3a5a74';
+        const color = config?.color ?? '#416683';
 
         await command
             .execute(client, interaction, color)

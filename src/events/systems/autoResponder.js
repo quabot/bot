@@ -19,7 +19,7 @@ module.exports = {
         if (!respondConfig.enabled) return;
         
         const configColor = await getServerConfig(client, message.guildId);
-        const color = configColor?.color ?? '#3a5a74';
+        const color = configColor?.color ?? '#416683';
 
         const commands_list = client.custom_commands.filter(c => c.guildId === message.guildId);
         commands_list.forEach(async cL => {

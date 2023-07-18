@@ -37,7 +37,7 @@ class CustomEmbed extends EmbedBuilder {
 
         if (rawEmbed.image) embed.setImage(getParsedString(rawEmbed.image).substring(0, 2048));
 
-        if (rawEmbed.color) embed.setColor(getParsedString(rawEmbed.color) ?? '#3a5a74');
+        if (rawEmbed.color) embed.setColor(getParsedString(rawEmbed.color) ?? '#416683');
 
         const newFields = [];
         rawEmbed.fields.forEach((field) => newFields.push({ name: `${getParsedString(field.name)}`.substring(0, 256), value: `${getParsedString(field.value)}`.substring(0, 1024), inline: field.inline }));

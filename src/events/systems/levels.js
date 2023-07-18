@@ -49,7 +49,7 @@ module.exports = {
 
 
 		const configColor = await getServerConfig(client, message.guildId);
-		const color = configColor?.color ?? '#3a5a74';
+		const color = configColor?.color ?? '#416683';
 		if (!color) return;
 
 		const sentFrom = new ActionRowBuilder()

@@ -16,7 +16,7 @@ module.exports = {
         if (!modal) return;
 
         const config = await getServerConfig(client, interaction.guildId);
-        const color = config?.color ?? '#3a5a74';
+        const color = config?.color ?? '#416683';
 
         modal.execute(client, interaction, color).catch((e) => handleError(client, e, interaction.customId));
     }

@@ -16,7 +16,7 @@ const getServerConfig = async (client, guildId) => {
                     new Server({
                         guildId,
                         locale: 'en-us',
-                        color: '#3a5a74',
+                        color: '#416683',
                         updatesChannel: 'none',
                         disabledCommands: []
                     }).save();

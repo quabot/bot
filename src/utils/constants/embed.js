@@ -6,7 +6,7 @@ class Embed extends EmbedBuilder {
 
         return new EmbedBuilder().setTimestamp().setColor(color).setFooter({
             text: 'quabot.net',
-            iconURL: 'https://i.imgur.com/zDx61ID.png',
+            iconURL: 'https://i.imgur.com/5ONDYp3.png',
         });
     }
 }

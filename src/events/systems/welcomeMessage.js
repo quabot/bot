@@ -31,7 +31,7 @@ module.exports = {
                 .replaceAll('{icon}', member.guild.iconURL() ?? '')
                 .replaceAll('{server}', member.guild.name ?? '')
                 .replaceAll('{members}', member.guild.memberCount ?? '')
-                .replaceAll('{color}', `${custom.color ?? '#3a5a74'}`)
+                .replaceAll('{color}', `${custom.color ?? '#416683'}`)
 
         if (config.joinType === 'embed') {
             const embed = new CustomEmbed(config.joinMessage, parseString);

@@ -14,9 +14,9 @@ module.exports = async client => {
         if (!event.name || !event.event) return;
 
         if (event.once) {
-            client.once(event.event, (...args) => event.execute(...args, client, '#3a5a74').catch((e) => { }));
+            client.once(event.event, (...args) => event.execute(...args, client, '#416683').catch((e) => { }));
         } else {
-                client.on(event.event, (...args) => event.execute(...args, client, '#3a5a74').catch((e) => console.log(e)));
+                client.on(event.event, (...args) => event.execute(...args, client, '#416683').catch((e) => console.log(e)));
         }
 
         loaded += 1;
