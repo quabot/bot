@@ -105,17 +105,20 @@ module.exports = {
           }
 
           const sentEmbed = new CustomEmbed(message, getParsedString);
+          let total = 0;
           client.guilds.cache.forEach(async (guild) => {
             const Server = require('../../structures/schemas/Server');
             const config = await Server.findOne({ guildId: guild.id });
             if (config) {
               const channel = guild.channels.cache.get(config.updatesChannel);
               if (channel) {
+                total ++;
                 channel.send({ embeds: [sentEmbed] });
+                console.log('Sent the update message to ' + guild.name + ' (' + guild.id + ')');
               }
             }
 
-          })
+          });
         }
 
         if (data.type === 'send-message-ticket') {
