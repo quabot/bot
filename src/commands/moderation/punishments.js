@@ -61,13 +61,19 @@ module.exports = {
                 .addStringOption(option =>
                     option
                         .setName('id')
-                        .setDescription('The ID of the punishment.')
+                        .setDescription('The ID of the punishment(s).')
                         .setRequired(false)
                 )
                 .addUserOption(option =>
                     option
                         .setName('user')
-                        .setDescription('The user to manage the punishment of.')
+                        .setDescription('The user to view the punishments of.')
+                        .setRequired(false)
+                )
+                .addStringOption(option =>
+                    option
+                        .setName('user-id')
+                        .setDescription('The user (ID) to view the punishments of.')
                         .setRequired(false)
                 )
                 .addUserOption(option =>
