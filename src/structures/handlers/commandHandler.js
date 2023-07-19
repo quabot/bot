@@ -4,6 +4,7 @@ const { Client, Routes } = require('discord.js');
 const consola = require('consola');
 
 const { REST } = require('@discordjs/rest');
+const getContexts = require('./contextHandler');
 
 const PG = promisify(glob);
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
@@ -13,6 +14,8 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
  */
 module.exports = async (client) => {
     const commandsList = [];
+    const contexts = await getContexts(client);
+    contexts.forEach(context => commandsList.push(context));
 
     const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
     files.forEach(async file => {
