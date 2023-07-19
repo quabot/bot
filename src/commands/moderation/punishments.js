@@ -38,7 +38,7 @@ module.exports = {
                     option
                         .setName('user')
                         .setDescription('The user to manage the punishment of.')
-                        .setRequired(true)
+                        .setRequired(false)
                 )
         )
         .addSubcommand(subcommand =>
