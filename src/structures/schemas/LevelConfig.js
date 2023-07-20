@@ -1,20 +1,30 @@
 const { Schema, model } = require("mongoose");
-const { reqString, reqId, reqBool, reqArray, reqObject } = require("../../utils/constants/schemas");
+const { reqString, reqBool, reqArray, reqObject, reqNum } = require("../../utils/constants/schemas");
 
 const LevelConfig = new Schema({
     guildId: reqString,
-    enabled: reqBool, //levels enabled?
-    channel: reqString,  // level up channel (if none, in channel where happened, if disabled, nothing will happen)
-    messageEmbed: reqBool, // If true: embed, if false: text
-    message: reqObject, // the level up message
+    enabled: reqBool,
+    channel: reqString,
 
-    dmMessageEnabled: reqBool, // if true, the message will be sent in dms (as well)
+    messageType: reqString, // none, current, other
+    levelCard: reqObject,
+    messageText: reqString,
+    message: reqObject,
+
+    dmMessageEnabled: reqBool,
     dmMessageEmbed: reqBool,
+    dmMessageText: reqString,
     dmMessage: reqObject,
+
+    voiceXp: reqBool,
+    voiceXpMultiplier: reqNum,
+    xpMultiplier: reqNum,
     
     excludedChannels: reqArray, 
     excludedRoles: reqArray,
-    rewards: reqArray
+
+    rewards: reqArray,
+    rewardsMode: reqString,
 });
 
 module.exports = model('Level-Config', LevelConfig);

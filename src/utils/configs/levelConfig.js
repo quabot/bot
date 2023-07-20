@@ -12,8 +12,11 @@ const getLevelConfig = async (guildId, client) => {
                     new Level({
                         guildId,
                         enabled: false,
-                        channel: 'disabled',
-                        messageEmbed: true,
+                        channel: 'none', // none, current, other
+                    
+                        messageType: 'embed', // Embed, Text or card
+                        levelCard: {no:'no'},
+                        messageText: '{user} leveled up to level {level}!',
                         message: {
                             content: '',
                             title: '@{username} leveled up!',
@@ -35,8 +38,9 @@ const getLevelConfig = async (guildId, client) => {
                             image: '',
                         },
                     
-                        dmMessageEnabled: false, // if true, the message will be sent in dms (as well)
+                        dmMessageEnabled: false,
                         dmMessageEmbed: true,
+                        dmMessageText: 'You leveled up in {server} to level {level}!',
                         dmMessage: {
                             content: '',
                             title: '@{username} leveled up!',
@@ -57,10 +61,16 @@ const getLevelConfig = async (guildId, client) => {
                             thumbnail: '{avatar}',
                             image: '',
                         },
+                    
+                        voiceXp: true,
+                        voiceXpMultiplier: 1,
+                        xpMultiplier: 1,
                         
                         excludedChannels: [], 
                         excludedRoles: [],
-                        rewards: []
+                    
+                        rewards: [],
+                        rewardsMode: 'stack',
                     }).save();
             }
         ).clone().catch(() => { }));

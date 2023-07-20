@@ -1,5 +1,7 @@
 const { Client, Message, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { getLevelConfig } = require('../../utils/configs/levelConfig');
+const { AttachmentBuilder } = require('discord.js');
+const { profileImage } = require('discord-arts');
 const { getLevel } = require('../../utils/configs/level');
 const cooldowns = new Map();
 const { CustomEmbed } = require('../../utils/constants/customEmbed');
@@ -22,7 +24,7 @@ module.exports = {
 		if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
 		const current_time = Date.now();
 		const time_stamps = cooldowns.get(message.author);
-		const cooldown_amount = 7500;
+		const cooldown_amount = 1; //!change
 
 		let no = false;
 		if (time_stamps.has(message.author.id)) {
@@ -65,8 +67,17 @@ module.exports = {
 
 		let xp = levelDB.xp;
 		let level = levelDB.level;
-		let reqXp = level * 500 + 100;
-		let rndXp = Math.floor(Math.random() * 10 + (Math.min(Math.max(message.content.length / 100, 1), 20)));
+
+		const formula = (lvl) => 120 * (lvl ** 2) + 100;
+		let reqXp = formula(level);
+
+		let rndXp = Math.floor(Math.random() * 5);
+		if (message.content.length > 200) rndXp += 1;
+		rndXp = rndXp * config.xpMultiplier ?? 1;
+
+
+		console.log(level, xp, reqXp, rndXp)
+
 
 		const vote = await Vote.findOne(
 			{ userId: message.author.id },
@@ -85,12 +96,14 @@ module.exports = {
 
 
 		if (xp + rndXp >= reqXp) {
-			levelDB.xp = 0;
+			levelDB.xp += rndXp;
 			levelDB.level += 1;
 			await levelDB.save();
 
-			xp = 0;
+			xp = xp += rndXp;
 			level = level += 1;
+
+			// todo: handle the new settings etc one by one, start by msgs, then work on level rewards
 
 			const parse = (s) => {
 				return s
@@ -107,23 +120,36 @@ module.exports = {
 					.replaceAll('{members}', message.guild.memberCount ?? '')
 					.replaceAll('{avatar}', `${message.author.displayAvatarURL({ dynamic: true })}`)
 			};
-			if (config.channel !== 'disabled') {
-				const channel = config.channel === 'none' ? message.channel : message.guild.channels.cache.get(`${config.channel}`);
+			if (config.channel !== 'none') {
+				let channel = config.channel === 'current' ? message.channel : message.guild.channels.cache.get(`${config.channel}`);
 				if (!channel) return;
 
 				const embed = new CustomEmbed(config.message, parse);
 
-				if (config.messageEmbed) channel.send({ embeds: [embed], content: `${parse(config.message.content)}` });
-				if (!config.messageEmbed && config.messageEmbed.content) channel.send({ content: `${parse(config.message.contents)}` });
+				if (config.messageType === 'embed') channel.send({ embeds: [embed], content: `${parse(config.message.content)}` });
+				if (config.messageType === 'text') channel.send({ content: `${parse(config.messageText)}` });
+				if (config.messageType === 'card') {
+					channel.send('futured is still making the actual card.')
+					// const buffer = await profileImage(message.author.id, {
+					// 	rankData: {
+					// 		currentXp: xp,
+					// 		requiredXp: reqXp,
+					// 		level,
+					// 	}
+					// });
+
+					// const attachment = new AttachmentBuilder(buffer, { name: 'level_card.png' });
+					// channel.send({ files: [attachment] });
+				}
 			}
 
 			if (config.dmMessageEnabled) {
 				const embed = new CustomEmbed(config.dmMessage, parse);
 				if (config.dmMessageEmbed) message.member.send({ embeds: [embed], content: `${parse(config.dmMessage.content)}`, components: [sentFrom] });
-				if (!config.dmMessageEmbed && config.dmMessage.content) message.member.send({ content: `${parse(config.dmMessage.content)}`, components: [sentFrom] });
+				if (!config.dmMessageEmbed && config.dmMessageText) message.member.send({ content: `${parse(config.dmMessageText)}`, components: [sentFrom] });
 			}
 
-
+			return; // role rewards
 			if (levelDB.role !== 'none') {
 				const removeRole = message.guild.roles.cache.get(levelDB.role);
 				if (!removeRole) return;
