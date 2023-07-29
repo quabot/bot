@@ -221,7 +221,7 @@ module.exports = {
                 .setTitle('New application form submitted!')
                 .setDescription(`**${submission_user}** has submitted an answer to ${FoundForm.name}!`)
                 .addFields(
-                  { name: 'Link', value: `[Click here](https://quabot.net/dashboard/${form.guildId}/modules/applications/answers/${form.response_uuid})` },
+                  { name: 'Link', value: `[Click here](https://quabot.net/dashboard/${form.guildId}/modules/applications/responses/${form.response_uuid})` },
                 )
                 .setFooter({ text: `${form.response_uuid}` })
             ], components: [
