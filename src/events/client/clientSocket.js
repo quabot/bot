@@ -71,7 +71,7 @@ module.exports = {
 
         if (data.type === 'responder-reload') {
           client.custom_commands = client.custom_commands.filter(c => c.guildId !== data.guildId);
-          
+
           const Responder = require('../../structures/schemas/Responder');
           const responses = await Responder.find({ guildId: data.guildId });
           responses.forEach((response) => {
@@ -112,7 +112,7 @@ module.exports = {
             if (config) {
               const channel = guild.channels.cache.get(config.updatesChannel);
               if (channel) {
-                total ++;
+                total++;
                 channel.send({ embeds: [sentEmbed] });
                 console.log('Sent the update message to ' + guild.name + ' (' + guild.id + ')');
               }
@@ -146,6 +146,31 @@ module.exports = {
           const sentEmbed = new CustomEmbed(data.message, getParsedString);
 
           await channel.send({ embeds: [sentEmbed], content: getParsedString(data.message.content) ?? '', components: [row] })
+        }
+
+        if (data.type === 'send-message-applications') {
+          const guild = client.guilds.cache.get(data.guildId);
+          if (!guild) return;
+          const channel = guild.channels.cache.get(data.channelId);
+          if (!channel) return;
+
+          const embed = data.embed;
+          const applicationId = data.id;
+          if (!applicationId) return;
+
+          const row = new ActionRowBuilder()
+            .addComponents(
+              new ButtonBuilder()
+                .setCustomId('applications-fill-' + applicationId)
+                .setLabel('Apply')
+                .setStyle(ButtonStyle.Primary)
+            )
+
+          if (!embed) return await channel.send({ content: data.message.content, components: [row] });
+
+          const sentEmbed = new CustomEmbed(data.message, (e) => { return e });
+
+          await channel.send({ embeds: [sentEmbed], content: data.message.content ?? '', components: [row] })
         }
 
         if (data.type === 'add-reaction') {
