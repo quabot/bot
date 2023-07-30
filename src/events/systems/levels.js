@@ -7,6 +7,7 @@ const cooldowns = new Map();
 const { CustomEmbed } = require('../../utils/constants/customEmbed');
 const { getServerConfig } = require('../../utils/configs/serverConfig');
 const Vote = require('../../structures/schemas/Vote');
+const { drawCard } = require('../../utils/functions/levelCard');
 
 module.exports = {
 	event: "messageCreate",
@@ -71,13 +72,11 @@ module.exports = {
 		const formula = (lvl) => 120 * (lvl ** 2) + 100;
 		let reqXp = formula(level);
 
+		console.log(level, xp)
+
 		let rndXp = Math.floor(Math.random() * 5);
 		if (message.content.length > 200) rndXp += 1;
 		rndXp = rndXp * config.xpMultiplier ?? 1;
-
-
-		console.log(level, xp, reqXp, rndXp)
-
 
 		const vote = await Vote.findOne(
 			{ userId: message.author.id },
@@ -103,7 +102,7 @@ module.exports = {
 			xp = xp += rndXp;
 			level = level += 1;
 
-			// todo: handle the new settings etc one by one, start by msgs, then work on level rewards
+			// todo: handle the new settings etc one by one, start by msgs, then work on level rewards, then finish with the parse function
 
 			const parse = (s) => {
 				return s
@@ -120,6 +119,7 @@ module.exports = {
 					.replaceAll('{members}', message.guild.memberCount ?? '')
 					.replaceAll('{avatar}', `${message.author.displayAvatarURL({ dynamic: true })}`)
 			};
+
 			if (config.channel !== 'none') {
 				let channel = config.channel === 'current' ? message.channel : message.guild.channels.cache.get(`${config.channel}`);
 				if (!channel) return;
@@ -129,17 +129,12 @@ module.exports = {
 				if (config.messageType === 'embed') channel.send({ embeds: [embed], content: `${parse(config.message.content)}` });
 				if (config.messageType === 'text') channel.send({ content: `${parse(config.messageText)}` });
 				if (config.messageType === 'card') {
-					channel.send('futured is still making the actual card.')
-					// const buffer = await profileImage(message.author.id, {
-					// 	rankData: {
-					// 		currentXp: xp,
-					// 		requiredXp: reqXp,
-					// 		level,
-					// 	}
-					// });
+					const card = await drawCard(message.member, message.member.user, level, xp, formula(level));
+					if (!card) return channel.send('Internal error with card');
+					
+					const attachment = new AttachmentBuilder(card, { name: 'level_card.png' });
 
-					// const attachment = new AttachmentBuilder(buffer, { name: 'level_card.png' });
-					// channel.send({ files: [attachment] });
+					channel.send({ files: [attachment] });
 				}
 			}
 
