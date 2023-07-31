@@ -48,8 +48,8 @@ async function drawCard(member, user, level, xp, reqXp, options) {
     // "Displayname"
     context.font = '32px GG Sans Bold';
     context.fillStyle = '#fff';
-    const usernameWidth = context.measureText(user.username).width;
-    context.fillText(`${user.username}`, 166, 51 + 43 / 2);
+    const usernameWidth = context.measureText(user.displayName).width;
+    context.fillText(`${user.displayName}`, 166, 51 + 43 / 2);
     // Username & Joined Date
     context.font = '28px GG Sans';
     context.fillStyle = '#B5B9BF';

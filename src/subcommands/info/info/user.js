@@ -29,7 +29,7 @@ module.exports = {
             embeds: [
                 new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
                     **• User**: ${user}
-                    **• Displayname**: ${user.globalName ?? 'This feature is not supported by Discord.js yet lol (coming soon)'}
+                    **• Displayname**: ${user.displayName ?? 'None'}
                     **• Username**: @${user.username}
                     **• ID**: ${user.id}
                     **• Roles**: ${member.roles.cache

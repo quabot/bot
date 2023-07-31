@@ -51,7 +51,7 @@ module.exports = {
 
         embed.addFields(
             { name: 'Username', value: `${user.user.username}`, inline: true },
-            // { name: 'Displayname', value: `${user.DISPLAYNAME ?? 'None'}`, inline: true },
+            { name: 'Displayname', value: `${user.globalName ?? 'None'}`, inline: true },
             // { name: 'Discriminator', value: `${user.user.discriminator ?? 'None'}`, inline: true },
             { name: 'Joined server on', value: `<t:${Math.floor(user.joinedTimestamp / 1000)}:R>`, inline: true },
             { name: 'Account created on', value: `<t:${Math.floor(user.user.createdTimestamp / 1000)}:R>`, inline: true })
