@@ -20,39 +20,41 @@ async function drawCard(member, user, level, xp, reqXp, options) {
 
 
     // Background
-    if (options.bg_type === 'color') {
+    if (options.bg.type === 'color') {
         // Static Color BG
-        context.fillStyle = options.bg_color;
+        context.fillStyle = options.bg.color;
         context.fillRect(0, 0, canvas.width, canvas.height);
-    } else if (options.bg_type === 'image') {
+    } else if (options.bg.type === 'image') {
         // do imgs
-        const background = await readFile('./src/utils/assets/backgrounds/wallpaper.jpg');
+        let background = await readFile(`./src/utils/assets/backgrounds/${options.bg.image}.jpg`).catch(() => { });
+        if (!background) background = await readFile(`./src/utils/assets/backgrounds/fallback.jpg`);
         const backgroundImage = new Canvas.Image();
         backgroundImage.src = background;
         context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        
+        context.fillStyle = options.bg.image_overlay;
+        context.fillRect(0, 0, canvas.width, canvas.height);
     }
 
 
 
-    //     STROKE (TBF)
-    // context.strokeStyle = '#0099ff';
-    // context.lineWidth = 10;
-    // context.strokeRect(0, 0, canvas.width, canvas.height);
-
-    // context.font = '28px sans-serif';
-    // context.fillStyle = '#ffffff';
-    // context.fillText('Profile', canvas.width / 2.5, canvas.height / 3.5);
+    // Stroke/Border
+    if (options.border.enabled) {
+        context.strokeStyle = options.border.color;
+        context.lineWidth = options.border.size;
+        context.strokeRect(0, 0, canvas.width, canvas.height);
+    }
 
 
 
     // "Displayname"
     context.font = '32px GG Sans Bold';
-    context.fillStyle = '#fff';
+    context.fillStyle = options.colors.displayname;
     const usernameWidth = context.measureText(user.displayName).width;
     context.fillText(`${user.displayName}`, 166, 51 + 43 / 2);
     // Username & Joined Date
     context.font = '28px GG Sans';
-    context.fillStyle = '#B5B9BF';
+    context.fillStyle = options.colors.username;
     context.fillText(`@${user.username} • Joined ${moment(member.joinedTimestamp).format("MMM D, YYYY")}`, 166, 90 + 37 / 2);
 
 
@@ -60,7 +62,7 @@ async function drawCard(member, user, level, xp, reqXp, options) {
     // XP BAR
     const percent = xp / reqXp;
 
-    context.fillStyle = "#1E1F22";
+    context.fillStyle = options.colors.xp_bar;
     context.beginPath();
     context.roundRect(35, canvas.height - 48, canvas.width - 70, 13, 100, Math.max((canvas.width - 70) * percent, canvas.width - 70));
     context.fill();
@@ -68,7 +70,7 @@ async function drawCard(member, user, level, xp, reqXp, options) {
     let width = (canvas.width - 70) * percent;
     if (width > canvas.width - 70) width = canvas.width - 70;
 
-    context.fillStyle = "#37CF74";
+    context.fillStyle = options.colors.accent;
     context.beginPath();
     context.roundRect(35, canvas.height - 48, width, 13, 100);
     context.fill();
@@ -77,11 +79,11 @@ async function drawCard(member, user, level, xp, reqXp, options) {
     // Bottom XP/LV info
     // XP Counter
     context.font = '24px GG Sans';
-    context.fillStyle = '#fff';
+    context.fillStyle = options.colors.xp;
     context.fillText(`${xp} XP`, 32, 162 + 16);
     // "until next level"
     context.font = '24px GG Sans';
-    context.fillStyle = '#fff';
+    context.fillStyle = options.colors.xp;
     context.fillText(`${reqXp - xp} XP until next level`, canvas.width - 40 - context.measureText(`${reqXp - xp} XP until next level`).width, 162 + 16);
 
 
@@ -89,22 +91,25 @@ async function drawCard(member, user, level, xp, reqXp, options) {
     // Level
     context.font = '24px GG Sans';
     const levelWidth = context.measureText(`LEVEL ${level}`).width;
-    // Level blog
-    context.fillStyle = "#1E1F22";
+    // Level blob
+    context.fillStyle = options.colors.level_bg;
     context.beginPath();
-    context.roundRect(102 + 33 + 32 + usernameWidth + 15, 11.75*3 + 8, levelWidth + 16 + 17, 39, 100);
+    context.roundRect(102 + 33 + 32 + usernameWidth + 15, 11.75 * 3 + 8, levelWidth + 16 + 17, 39, 100);
     context.fill();
     // Level text
-    context.fillStyle = '#B5B9BF';
+    context.fillStyle = options.colors.level_text;
     context.fillText(`LEVEL ${level}`, 102 + 33 + 32 + usernameWidth + 32, 48 + 32 / 2 + 8);
 
 
     // Profile Picture
-    // Make it rounded
-    context.beginPath();
-    context.arc(83, 83, 51, 0, Math.PI * 2, true);
-    context.closePath();
-    context.clip();
+    // Make it rounded (if enabled)
+    if (options.pfp.rounded) {
+        context.beginPath();
+        context.arc(83, 83, 51, 0, Math.PI * 2, true);
+        context.closePath();
+        context.clip();
+    }
+
     // Drawing pfp image itself
     const { body } = await request(user.displayAvatarURL({ format: 'jpg' }));
     const avatar = new Canvas.Image();

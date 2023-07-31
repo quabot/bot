@@ -75,18 +75,33 @@ module.exports = {
 
 		//! dont reuse this code, its just for testing
 		const card = await drawCard(message.member, message.member.user, level, xp, formula(level), {
-			bg_type: 'color', //none, color and image // default: color
-			bg_color: '#000', // default: #2B2D31
-			bg_image: 'amsterdam', // default: amsterdam
+			bg: {
+				type: 'color', //none, color and image // default: color
+			    color: '#2B2D31', // default: #2B2D31
+				image: 'amsterdam', // default: amsterdam,
+				image_overlay: "rgba(0,0,0,0.6)", // default: rgba(0,0,0,0.6)
+			},
 
-			border_enabled: true,
-			border_color: '#2B2D31',
-			border_size: 10,
+			border: {
+				enabled: false, // default false
+				color: "#000", // default #fff
+				size: 10 // default 10
+			},
 
-			// accent
-			// colors
-			// pfp border
-			// pfp circle/square
+			colors: {
+				accent: "#37CF74", // default: #37CF74,
+				displayname: "#fff", // default: #fff,
+				username: "#B5B9BF", // default: #B5B9BF,
+				xp: "#fff", // default: #fff,
+				xp_bar: "#1E1F22", // default: #1E1F22,
+
+				level_bg: "#1E1F22", // default: #1E1F22,
+				level_text: "#B5B9BF", // default: #B5B9BF,
+			},
+
+			pfp: {
+				rounded: true, // default true
+			}
 		});
 		if (!card) return channel.send('Internal error with card');
 		
