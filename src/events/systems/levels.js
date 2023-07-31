@@ -72,7 +72,29 @@ module.exports = {
 		const formula = (lvl) => 120 * (lvl ** 2) + 100;
 		let reqXp = formula(level);
 
-		console.log(level, xp)
+
+		//! dont reuse this code, its just for testing
+		const card = await drawCard(message.member, message.member.user, level, xp, formula(level), {
+			bg_type: 'color', //none, color and image // default: color
+			bg_color: '#000', // default: #2B2D31
+			bg_image: 'amsterdam', // default: amsterdam
+
+			border_enabled: true,
+			border_color: '#2B2D31',
+			border_size: 10,
+
+			// accent
+			// colors
+			// pfp border
+			// pfp circle/square
+		});
+		if (!card) return channel.send('Internal error with card');
+		
+		const attachment = new AttachmentBuilder(card, { name: 'level_card.png' });
+
+		message.channel.send({ files: [attachment] });
+
+
 
 		let rndXp = Math.floor(Math.random() * 5);
 		if (message.content.length > 200) rndXp += 1;
