@@ -11,6 +11,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(oldEmoji, newEmoji, client) {
+        if (!newEmoji.guild.id) return;
 
         const config = await getLoggingConfig(client, oldEmoji.guild.id);
         if (!config) return;

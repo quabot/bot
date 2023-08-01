@@ -11,6 +11,9 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(oldMember, newMember, client) {
+		try {
+			if (newMember.guild.id) return;
+		} catch (e) { }
 
         const config = await getLoggingConfig(client, oldMember.guild.id);
         if (!config) return;
@@ -33,6 +36,7 @@ module.exports = {
             role = `<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`;
 
         if (role === '<@&>') return;
+        if (!role) return;
         
         await channel.send({
             embeds: [

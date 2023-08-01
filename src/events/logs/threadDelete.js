@@ -12,6 +12,10 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(thread, client) {
+		try {
+			if (thread.guild.id) return;
+		} catch (e) { }
+        
         const config = await getLoggingConfig(client, thread.guildId);
         if (!config) return;
         if (!config.enabled) return;

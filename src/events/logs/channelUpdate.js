@@ -12,6 +12,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(oldChannel, newChannel, client) {
+        if (!newChannel.guildId) return;
 
         const config = await getLoggingConfig(client, newChannel.guildId);
         if (!config) return;

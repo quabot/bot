@@ -10,6 +10,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(invite, client) {
+        if (!invite.guild.id) return;
 
         const config = await getLoggingConfig(client, invite.guild.id);
         if (!config) return;

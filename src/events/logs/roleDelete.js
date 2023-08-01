@@ -10,6 +10,9 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(role, client) {
+		try {
+			if (role.guild.id) return;
+		} catch (e) { }
 
         const config = await getLoggingConfig(client, role.guild.id);
         if (!config) return;

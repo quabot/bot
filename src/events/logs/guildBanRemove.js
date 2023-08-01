@@ -10,6 +10,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(ban, client) {
+        if (!ban.guild.id) return;
 
         const config = await getLoggingConfig(client, ban.guild.id);
         if (!config) return;

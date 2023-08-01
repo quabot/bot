@@ -10,6 +10,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(emoji, client) {
+        if (!emoji.guild.id) return;
 
         const config = await getLoggingConfig(client, emoji.guild.id);
         if (!config) return;

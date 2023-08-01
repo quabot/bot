@@ -10,6 +10,9 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(sticker, client) {
+		try {
+			if (sticker.guild.id) return;
+		} catch (e) { }
 
         const config = await getLoggingConfig(client, sticker.guild.id);
         if (!config) return;

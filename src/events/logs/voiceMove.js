@@ -12,6 +12,9 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(oldState, newState, client) {
+		try {
+			if (newState.guild.id) return;
+		} catch (e) { }
         if (oldState.member.user.bot || newState.member.user.bot) return;
         
         const config = await getLoggingConfig(client, oldState.guild.id);
