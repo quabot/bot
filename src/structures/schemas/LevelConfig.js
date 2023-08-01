@@ -8,11 +8,12 @@ const LevelConfig = new Schema({
 
     messageType: reqString, // none, current, other
     levelCard: reqObject,
+    cardMention: reqBool,
     messageText: reqString,
     message: reqObject,
 
-    dmMessageEnabled: reqBool,
-    dmMessageEmbed: reqBool,
+    dmEnabled: reqBool,
+    dmType: reqString,
     dmMessageText: reqString,
     dmMessage: reqObject,
 
@@ -20,11 +21,17 @@ const LevelConfig = new Schema({
     voiceXpMultiplier: reqNum,
     xpMultiplier: reqNum,
     
+    commandXp: reqBool, // xp when quabot interactions are done
+    commandXpMultiplier: reqNum,
+    
     excludedChannels: reqArray, 
     excludedRoles: reqArray,
 
     rewards: reqArray,
-    rewardsMode: reqString,
+    rewardsMode: reqString, // 'stack' or 'replace'
+    removeRewards: reqBool,
+
+    viewCard: reqBool, // Show the level card on /level view
 });
 
 module.exports = model('Level-Config', LevelConfig);

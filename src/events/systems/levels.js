@@ -73,44 +73,6 @@ module.exports = {
 		let reqXp = formula(level);
 
 
-		//! dont reuse this code, its just for testing
-		const card = await drawCard(message.member, message.member.user, level, xp, formula(level), {
-			bg: {
-				type: 'color', //none, color and image // default: color
-			    color: '#2B2D31', // default: #2B2D31
-				image: 'amsterdam', // default: amsterdam,
-				image_overlay: "rgba(0,0,0,0.6)", // default: rgba(0,0,0,0.6)
-			},
-
-			border: {
-				enabled: false, // default false
-				color: "#000", // default #fff
-				size: 10 // default 10
-			},
-
-			colors: {
-				accent: "#37CF74", // default: #37CF74,
-				displayname: "#fff", // default: #fff,
-				username: "#B5B9BF", // default: #B5B9BF,
-				xp: "#fff", // default: #fff,
-				xp_bar: "#1E1F22", // default: #1E1F22,
-
-				level_bg: "#1E1F22", // default: #1E1F22,
-				level_text: "#B5B9BF", // default: #B5B9BF,
-			},
-
-			pfp: {
-				rounded: true, // default true
-			}
-		});
-		if (!card) return channel.send('Internal error with card');
-		
-		const attachment = new AttachmentBuilder(card, { name: 'level_card.png' });
-
-		message.channel.send({ files: [attachment] });
-
-
-
 		let rndXp = Math.floor(Math.random() * 5);
 		if (message.content.length > 200) rndXp += 1;
 		rndXp = rndXp * config.xpMultiplier ?? 1;
@@ -163,42 +125,52 @@ module.exports = {
 
 				const embed = new CustomEmbed(config.message, parse);
 
-				if (config.messageType === 'embed') channel.send({ embeds: [embed], content: `${parse(config.message.content)}` });
-				if (config.messageType === 'text') channel.send({ content: `${parse(config.messageText)}` });
+				if (config.messageType === 'embed') await channel.send({ embeds: [embed], content: `${parse(config.message.content)}` });
+				if (config.messageType === 'text') await channel.send({ content: `${parse(config.messageText)}` });
 				if (config.messageType === 'card') {
-					const card = await drawCard(message.member, message.member.user, level, xp, formula(level));
+					const card = await drawCard(message.member, message.member.user, level, xp, formula(level), config.levelCard);
 					if (!card) return channel.send('Internal error with card');
-					
-					const attachment = new AttachmentBuilder(card, { name: 'level_card.png' });
 
-					channel.send({ files: [attachment] });
+					const attachment = new AttachmentBuilder(card, { name: 'level_card.png' });
+				
+					if (!config.cardMention) await channel.send({ files: [attachment] });
+					if (config.cardMention) await channel.send({ files: [attachment], content: `${message.author}` });
 				}
 			}
 
-			if (config.dmMessageEnabled) {
+			if (config.dmEnabled) {
 				const embed = new CustomEmbed(config.dmMessage, parse);
-				if (config.dmMessageEmbed) message.member.send({ embeds: [embed], content: `${parse(config.dmMessage.content)}`, components: [sentFrom] });
-				if (!config.dmMessageEmbed && config.dmMessageText) message.member.send({ content: `${parse(config.dmMessageText)}`, components: [sentFrom] });
-			}
 
-			return; // role rewards
-			if (levelDB.role !== 'none') {
-				const removeRole = message.guild.roles.cache.get(levelDB.role);
-				if (!removeRole) return;
-				await message.member.roles.remove(levelDB.role);
+				if (config.dmType === 'embed') await message.member.send({ embeds: [embed], content: `${parse(config.dmMessage.content)}`, components: [sentFrom] });
+				if (config.dmType === 'text') await message.member.send({ content: `${parse(config.dmMessageText)}` });
+				if (config.dmType === 'card') {
+					const card = await drawCard(message.member, message.member.user, level, xp, formula(level), config.levelCard);
+					if (!card) return channel.send('Internal error with card');
+
+					const attachment = new AttachmentBuilder(card, { name: 'level_card.png' });
+
+					if (!config.cardMention) await message.member.send({ files: [attachment] });
+					if (config.cardMention) await message.member.send({ files: [attachment], content: `${message.author}` });
+				}
 			}
 
 			const nextCheck = config.rewards.filter(i => i.level === level) ?? [];
 			nextCheck.forEach(async check => {
-				if (!check.remove) {
-					const role = message.guild.roles.cache.get(check.role);
-					if (!role) return;
-					await message.member.roles.add(check.role);
-				} else {
-					const role = message.guild.roles.cache.get(check.role);
-					if (!role) return;
-					await message.member.roles.add(check.role);
+				if (config.rewardsMode === 'replace') {
+					if (levelDB.role !== 'none') {
+						const role = message.guild.roles.cache.get(levelDB.role);
+						if (role) await message.member.roles.remove(role);
+					}
 
+					const role = message.guild.roles.cache.get(check.role);
+					if (role) await message.member.roles.add(role);
+					levelDB.role = check.role;
+					await levelDB.save();
+				} 
+
+				if (config.rewardsMode === 'stack') {
+					const role = message.guild.roles.cache.get(check.role);
+					if (role) await message.member.roles.add(role);
 					levelDB.role = check.role;
 					await levelDB.save();
 				}

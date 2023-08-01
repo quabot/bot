@@ -13,9 +13,38 @@ const getLevelConfig = async (guildId, client) => {
                         guildId,
                         enabled: false,
                         channel: 'none', // none, current, other
-                    
+
                         messageType: 'embed', // Embed, Text or card
-                        levelCard: {no:'no'},
+                        levelCard: {
+                            bg: {
+                                type: 'color', //none, color and image // default: color
+                                color: '#2B2D31', // default: #2B2D31
+                                image: 'amsterdam', // default: amsterdam,
+                                image_overlay: "rgba(0,0,0,0.6)", // default: rgba(0,0,0,0.6)
+                            },
+
+                            border: {
+                                enabled: false, // default false
+                                color: "#000", // default #fff
+                                size: 10 // default 10
+                            },
+
+                            colors: {
+                                accent: "#37CF74", // default: #37CF74,
+                                displayname: "#fff", // default: #fff,
+                                username: "#B5B9BF", // default: #B5B9BF,
+                                xp: "#fff", // default: #fff,
+                                xp_bar: "#1E1F22", // default: #1E1F22,
+
+                                level_bg: "#1E1F22", // default: #1E1F22,
+                                level_text: "#B5B9BF", // default: #B5B9BF,
+                            },
+
+                            pfp: {
+                                rounded: true, // default true
+                            }
+                        },
+                        cardMention: true,
                         messageText: '{user} leveled up to level {level}!',
                         message: {
                             content: '',
@@ -37,9 +66,9 @@ const getLevelConfig = async (guildId, client) => {
                             thumbnail: '{avatar}',
                             image: '',
                         },
-                    
-                        dmMessageEnabled: false,
-                        dmMessageEmbed: true,
+
+                        dmEnabled: false,
+                        dmType: 'embed',
                         dmMessageText: 'You leveled up in {server} to level {level}!',
                         dmMessage: {
                             content: '',
@@ -61,16 +90,22 @@ const getLevelConfig = async (guildId, client) => {
                             thumbnail: '{avatar}',
                             image: '',
                         },
-                    
+
                         voiceXp: true,
                         voiceXpMultiplier: 1,
                         xpMultiplier: 1,
-                        
-                        excludedChannels: [], 
+    
+                        commandXp: true, // xp when quabot interactions are done
+                        commandXpMultiplier: 0.5,
+
+                        excludedChannels: [],
                         excludedRoles: [],
-                    
+
                         rewards: [],
                         rewardsMode: 'stack',
+                        removeRewards: true,
+
+                        viewCard: false,
                     }).save();
             }
         ).clone().catch(() => { }));
