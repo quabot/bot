@@ -12,7 +12,7 @@ const getLevelConfig = async (guildId, client) => {
                     new Level({
                         guildId,
                         enabled: false,
-                        channel: 'none', // none, current, other
+                        channel: 'current', // none, current, other
 
                         messageType: 'embed', // Embed, Text or card
                         levelCard: {
@@ -48,7 +48,7 @@ const getLevelConfig = async (guildId, client) => {
                         messageText: '{user} leveled up to level {level}!',
                         message: {
                             content: '',
-                            title: '@{username} leveled up!',
+                            title: '{user.displayname} leveled up!',
                             color: '{color}',
                             timestamp: true,
                             footer: {
@@ -63,16 +63,16 @@ const getLevelConfig = async (guildId, client) => {
                             description: '{user} is now level **{level}** with **{xp}** xp!',
                             fields: [],
                             url: '',
-                            thumbnail: '{avatar}',
+                            thumbnail: '{user.avatar_url}',
                             image: '',
                         },
 
                         dmEnabled: false,
                         dmType: 'embed',
-                        dmMessageText: 'You leveled up in {server} to level {level}!',
+                        dmMessageText: 'You leveled up in **{server}** to level {level}. You now have {xp} xp and need {required_xp} for the next level.',
                         dmMessage: {
                             content: '',
-                            title: '@{username} leveled up!',
+                            title: '{user.displayname} leveled up!',
                             color: '{color}',
                             timestamp: true,
                             footer: {
@@ -107,7 +107,7 @@ const getLevelConfig = async (guildId, client) => {
 
                         rewardDm: false,
                         rewardDmType: 'embed',
-                        rewardDmMessageText: 'You received the role {reward} in {server} for surpassing level {level}!',
+                        rewardDmMessageText: 'You received the role {reward} in **{server}** for surpassing level {level}!',
                         rewardDmMessage: {
                             content: '',
                             title: 'Reward received!',
