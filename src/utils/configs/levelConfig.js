@@ -105,6 +105,30 @@ const getLevelConfig = async (guildId, client) => {
                         rewardsMode: 'stack',
                         removeRewards: true,
 
+                        rewardDm: false,
+                        rewardDmType: 'embed',
+                        rewardDmMessageText: 'You received the role {reward} in {server} for surpassing level {level}!',
+                        rewardDmMessage: {
+                            content: '',
+                            title: 'Reward received!',
+                            color: '{color}',
+                            timestamp: true,
+                            footer: {
+                                text: '',
+                                icon: '',
+                            },
+                            author: {
+                                text: '',
+                                icon: '',
+                                url: '',
+                            },
+                            description: 'You received the role {role} in **{server}** for surpassing level **{level}**!',
+                            fields: [],
+                            url: '',
+                            thumbnail: '{avatar}',
+                            image: '',
+                        },
+
                         viewCard: false,
                     }).save();
             }

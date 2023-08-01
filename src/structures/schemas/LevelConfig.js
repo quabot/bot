@@ -20,16 +20,21 @@ const LevelConfig = new Schema({
     voiceXp: reqBool,
     voiceXpMultiplier: reqNum,
     xpMultiplier: reqNum,
-    
+
     commandXp: reqBool, // xp when quabot interactions are done
     commandXpMultiplier: reqNum,
-    
-    excludedChannels: reqArray, 
+
+    excludedChannels: reqArray,
     excludedRoles: reqArray,
 
     rewards: reqArray,
     rewardsMode: reqString, // 'stack' or 'replace'
     removeRewards: reqBool,
+
+    rewardDm: reqBool,
+    rewardDmType: reqString,
+    rewardDmMessageText: reqString,
+    rewardDmMessage: reqObject,
 
     viewCard: reqBool, // Show the level card on /level view
 });
