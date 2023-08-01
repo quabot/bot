@@ -13,6 +13,7 @@ module.exports = {
      * @param {GuildMember} member
      */
     async execute(reaction, user, client) {
+        if (!reaction.message.guildId) return;
         const Reaction = require('../../structures/schemas/ReactionRole');
         let reactionRole = await Reaction.findOne({
             guildId: reaction.message.guildId,

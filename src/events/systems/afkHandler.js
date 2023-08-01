@@ -12,6 +12,7 @@ module.exports = {
     */
     async execute(message, client) {
         if (message.author.bot) return;
+        if (!message.guildId) return;
         
 		const user = message.mentions.users.first();
         if (!user) return;

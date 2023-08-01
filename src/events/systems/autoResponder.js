@@ -13,6 +13,7 @@ module.exports = {
     */
     async execute(message, client) {
         if (message.author.bot) return;
+        if (!message.guildId) return;
 
         const respondConfig = await getResponderConfig(client, message.guildId);
         if (!respondConfig) return;

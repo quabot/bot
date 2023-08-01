@@ -14,6 +14,7 @@ module.exports = {
 		const userId = message.author.id ?? '';
         if (!userId) return;
         if (message.author.bot) return;
+        if (!message.guildId) return;
 
         const config = await getUser(message.guildId, userId);
         const configColor = await getServerConfig(client, message.guildId);
