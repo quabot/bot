@@ -21,7 +21,7 @@ module.exports = {
                 await interaction.editReply({
                     embeds: [
                         new Embed(color)
-                            .setDescription('Couldn\'t find that subreddit.')
+                            .setDescription('Couldn\'t find that subreddit. This could be due to reddit reatelimits.')
                     ]
                 });
                 return;
@@ -43,7 +43,7 @@ module.exports = {
                 return await interaction.editReply({
                     embeds: [
                         new Embed(color)
-                            .setDescription('Couldn\'t find that subreddit.')
+                            .setDescription('Couldn\'t find that subreddit. This could be due to reddit reatelimits.')
                     ]
                 })
             });

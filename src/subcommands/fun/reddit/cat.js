@@ -13,17 +13,25 @@ module.exports = {
     async execute(client, interaction, color) {
         await interaction.deferReply();
 
-        const post = await getPost('cats');
-        
-        await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                .setTitle(`${post.title}`)
-                .setURL(`${post.url}`)
-                .setDescription(post.is_gallery ? `This post is a gallery, check all the images here: ${post.url}` : null)
-                .setImage(`${post.url}`)
-                .setFooter({ text: `Posted by u/${post.author_fullname} in r/${post.subreddit}` })
-            ],
+        await getPost('cats').then(async (d) => {
+            await interaction.editReply({
+                embeds: [
+                    new Embed(color)
+                        .setTitle(`${d.title}`)
+                        .setURL(`${d.url}`)
+                        .setDescription(d.is_gallery ? `This post is a gallery, check all the images here: ${d.url}` : null)
+                        .setImage(`${d.url}`)
+                        .setFooter({ text: `Posted by u/${d.author_fullname} in r/${d.subreddit}` })
+                ],
+            });
+        }).catch(async () => {
+            return await interaction.editReply({
+                embeds: [
+                    new Embed(color)
+                        .setTitle('Reddit Ratelimit')
+                        .setDescription('Reddit is ratelimiting us, try again later.')
+                ]
+            })
         });
     },
 };
