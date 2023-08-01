@@ -39,7 +39,7 @@ module.exports = {
                     }
                     **• Joined Server**: <t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>
                     **• Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>
-                    **• House**: ${badges.join(' ')}
+                    **• House**: ${badges.join(' ')} ${badges.length === 0 ? 'None' : ''}
                 `),
             ],
         });
