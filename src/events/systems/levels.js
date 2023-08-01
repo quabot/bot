@@ -24,7 +24,7 @@ module.exports = {
 		if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
 		const current_time = Date.now();
 		const time_stamps = cooldowns.get(message.author);
-		const cooldown_amount = 1; //!change
+		const cooldown_amount = 30000;
 
 		let no = false;
 		if (time_stamps.has(message.author.id)) {
@@ -98,8 +98,6 @@ module.exports = {
 
 			xp = xp += rndXp;
 			level = level += 1;
-
-			// todo: handle the new settings etc one by one, start by msgs, then work on level rewards, then finish with the parse function
 
 			const parse = (s) => {
 				return s
