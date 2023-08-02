@@ -1,6 +1,7 @@
-const { Client, ChatInputCommandInteraction } = require("discord.js");
+const { Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
 const { getLevelConfig } = require("../../../utils/configs/levelConfig");
 const Level = require("../../../structures/schemas/Level");
+const { Embed } = require("../../../utils/constants/embed");
 
 module.exports = {
 	parent: 'level',
@@ -12,12 +13,21 @@ module.exports = {
 	 */
 	async execute(client, interaction, color) {
 		await interaction.deferReply();
+
+		const user = interaction.options.getUser('user');
+
+		if (!user) return await interaction.editReply({
+			embeds: [
+				new Embed(color)
+					.setDescription('You need to specify a user.')
+			]
+		});
 	
 
 		if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) return await interaction.editReply({
 			embeds: [
 				new Embed(color)
-					.setDescription('You do not have the permissions required.')
+					.setDescription('You do not have the required permissions.')
 			]
 		});
 
@@ -39,10 +49,17 @@ module.exports = {
 
 		await Level.findOneAndDelete({ guildId: interaction.guildId, userId: user.id });
 
+		if (config.removeRewards) {
+			config.rewards.forEach(async (reward) => {
+				const role = interaction.guild.roles.cache.get(reward.role);
+				if (role) await interaction.member.roles.remove(role).catch(() => { });
+			});
+		}
+
 		await interaction.editReply({
 			embeds: [
 				new Embed(color)
-					.setDescription(`Reset ${user}'s level to 0 and xp to 0. (Removed from database))`)
+					.setDescription(`Reset ${user}'s level to 0 and xp to 0.`)
 			]
 		});
 	}

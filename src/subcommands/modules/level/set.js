@@ -36,6 +36,7 @@ module.exports = {
 		});
 
 		const user = interaction.options.getUser('user');
+		const member = interaction.options.getMember('user');
 		const levelDB = await getLevel(interaction.guildId, user.id);
 		if (!levelDB) return await interaction.editReply({
 			embeds: [
@@ -47,6 +48,15 @@ module.exports = {
 		const xp = interaction.options.getNumber('xp');
 		const level = interaction.options.getNumber('level');
 
+		if (config.removeRewards) {
+			config.rewards.forEach(async (reward) => {
+				if (reward.level > level) {
+					const role = interaction.guild.roles.cache.get(reward.role);
+					if (member.roles.cache.has(role.id)) await member.roles.remove(role).catch(() => { });
+				}
+			});
+		}
+
 		levelDB.xp = xp;
 		levelDB.level = level;
 		await levelDB.save();
@@ -54,7 +64,7 @@ module.exports = {
 		await interaction.editReply({
 			embeds: [
 				new Embed(color)
-					.setDescription(`Successfully set ${user}'s level to ${level} and xp to ${xp}`)
+					.setDescription(`Successfully set ${user}'s level to ${level} and xp to ${xp}. Some level rewards might be out of sync.`)
 			]
 		});
 	}
