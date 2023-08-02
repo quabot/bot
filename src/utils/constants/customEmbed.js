@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const _ = require('lodash');
+const { isValidHttpUrl } = require("../functions/string");
 
 class CustomEmbed extends EmbedBuilder {
     constructor(rawEmbed, getParsedString) {
@@ -15,7 +16,7 @@ class CustomEmbed extends EmbedBuilder {
             let text = null;
             let iconURL = null;
             if (rawEmbed.footer.text) text = getParsedString(rawEmbed.footer.text).substring(0, 2048);
-            if (rawEmbed.footer.icon) iconURL = getParsedString(rawEmbed.footer.icon).substring(0, 2048);
+            if (rawEmbed.footer.icon && isValidHttpUrl(getParsedString(rawEmbed.footer.icon).substring(0, 2048))) iconURL = getParsedString(rawEmbed.footer.icon).substring(0, 2048);
             embed.setFooter({ text, iconURL });
         }
 
@@ -24,18 +25,18 @@ class CustomEmbed extends EmbedBuilder {
             let url = null;
             let iconURL = null;
             if (rawEmbed.author.text) name = getParsedString(rawEmbed.author.text).substring(0, 256);
-            if (rawEmbed.author.url) url = getParsedString(rawEmbed.author.url).substring(0, 2048);
-            if (rawEmbed.author.icon) iconURL = getParsedString(rawEmbed.author.icon).substring(0, 2048);
+            if (rawEmbed.author.url && isValidHttpUrl(getParsedString(rawEmbed.author.url).substring(0, 2048))) url = getParsedString(rawEmbed.author.url).substring(0, 2048);
+            if (rawEmbed.author.icon && isValidHttpUrl(getParsedString(rawEmbed.author.icon).substring(0, 2048))) iconURL = getParsedString(rawEmbed.author.icon).substring(0, 2048);
             embed.setAuthor({ name, iconURL, url });
         }
 
         if (rawEmbed.description) embed.setDescription(getParsedString(rawEmbed.description).substring(0, 4096));
 
-        if (rawEmbed.url) embed.setURL(getParsedString(rawEmbed.url).substring(0, 2048));
+        if (rawEmbed.url && isValidHttpUrl(getParsedString(rawEmbed.url).substring(0, 2048))) embed.setURL(getParsedString(rawEmbed.url).substring(0, 2048));
 
-        if (rawEmbed.thumbnail) embed.setThumbnail(getParsedString(rawEmbed.thumbnail).substring(0, 2048));
+        if (rawEmbed.thumbnail && isValidHttpUrl(getParsedString(rawEmbed.thumbnail).substring(0, 2048))) embed.setThumbnail(getParsedString(rawEmbed.thumbnail).substring(0, 2048));
 
-        if (rawEmbed.image) embed.setImage(getParsedString(rawEmbed.image).substring(0, 2048));
+        if (rawEmbed.image && isValidHttpUrl(getParsedString(rawEmbed.image).substring(0, 2048))) embed.setImage(getParsedString(rawEmbed.image).substring(0, 2048));
 
         if (rawEmbed.color) embed.setColor(getParsedString(rawEmbed.color) ?? '#416683');
 
