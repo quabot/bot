@@ -18,7 +18,7 @@ module.exports = {
 	async execute(interaction, client) {
 		if (!interaction.guildId) return;
 		try {
-			if (interaction.uer.bot) return;
+			if (interaction.user.bot) return;
 		} catch (e) { }
 
 		if (!cooldowns.has(interaction.user)) cooldowns.set(interaction.user, new Collection());
@@ -40,7 +40,7 @@ module.exports = {
 		const config = await getLevelConfig(interaction.guildId, client);
 		if (!config) return;
 		if (!config.enabled) return;
-		if (!config.commandXp)
+		if (!config.commandXp) return;
 			if (config.excludedChannels.includes(interaction.channelId)) return;
 
 		const levelDB = await getLevel(interaction.guildId, interaction.user.id);
