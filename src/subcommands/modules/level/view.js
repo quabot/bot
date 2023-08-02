@@ -1,8 +1,9 @@
-const { Client, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction } = require("discord.js");
+const { Client, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction, AttachmentBuilder } = require("discord.js");
 const { getSuggestConfig } = require("../../../utils/configs/suggestConfig");
 const { Embed } = require("../../../utils/constants/embed");
 const { getLevelConfig } = require("../../../utils/configs/levelConfig");
 const { getLevel } = require("../../../utils/configs/level");
+const { drawCard } = require("../../../utils/functions/levelCard");
 
 module.exports = {
 	parent: 'level',
@@ -38,13 +39,24 @@ module.exports = {
 			]
 		});
 
-		await interaction.editReply({
-			embeds: [
-				new Embed(color)
-					.setThumbnail(user.displayAvatarURL({ dynamic: true }))
-					.setTitle(`@${user.username}\'s level status`)
-					.setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}/${levelDB.level * 500 + 100}** xp.`)
-			]
-		});
+		const formula = (lvl) => 120 * (lvl ** 2) + 100;
+
+		if (!config.viewCard) {
+			await interaction.editReply({
+				embeds: [
+					new Embed(color)
+						.setThumbnail(user.displayAvatarURL({ dynamic: true }))
+						.setTitle(`${user.displayName}\'s level status`)
+						.setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}/${formula(levelDB.level)}** xp.`)
+				]
+			});
+		} else {
+			const card = await drawCard(interaction.member, interaction.user, levelDB.level, levelDB.xp, formula(levelDB.level), config.levelCard);
+			if (!card) return interaction.editReply('Internal error with level card');
+
+			const attachment = new AttachmentBuilder(card, { name: 'level_card.png' });
+
+			await interaction.editReply({ files: [attachment] });
+		}
 	}
 };
