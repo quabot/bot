@@ -12,6 +12,7 @@ module.exports = {
     async execute(message, client) {
 		try {
 			if (message.guild.id) return;
+            if (!message.author) return;
 		} catch (e) { }
 
         const config = await getLoggingConfig(client, message.guildId);
@@ -40,7 +41,7 @@ module.exports = {
             `)
             .addFields({ name: 'Channel', value: `${message.channel}`, inline: true })
             .setFooter({
-                text: `User: @${message.author.username}`,
+                text: `User: @${message.author.username ?? 'none'}`,
                 iconURL: `${message.author.avatarURL({ dynamic: true })}`,
             });
 
