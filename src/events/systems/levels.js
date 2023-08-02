@@ -221,18 +221,18 @@ module.exports = {
 				if (config.rewardsMode === 'replace') {
 					if (levelDB.role !== 'none') {
 						const role = message.guild.roles.cache.get(levelDB.role);
-						if (role) await message.member.roles.remove(role);
+						if (role) await message.member.roles.remove(role).catch(() => {});
 					}
 
 					const role = message.guild.roles.cache.get(check.role);
-					if (role) await message.member.roles.add(role);
+					if (role) await message.member.roles.add(role).catch(() => {});
 					levelDB.role = check.role;
 					await levelDB.save();
 				}
 
 				if (config.rewardsMode === 'stack') {
 					const role = message.guild.roles.cache.get(check.role);
-					if (role) await message.member.roles.add(role);
+					if (role) await message.member.roles.add(role).catch(() => {});
 					levelDB.role = check.role;
 					await levelDB.save();
 				}
