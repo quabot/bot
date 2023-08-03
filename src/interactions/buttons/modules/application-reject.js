@@ -72,5 +72,12 @@ module.exports = {
         await interaction.message.edit({
             components: []
         });
+
+        await member.send({
+            embeds: [
+              new Embed('#416683')
+                .setDescription(`Your application response for the form **${form.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${interaction.guild.id}/user/applications/answers/${id}).`)
+            ]
+          }).catch(() => { });
     },
 };
