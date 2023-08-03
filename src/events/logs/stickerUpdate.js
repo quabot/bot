@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(oldSticker, newSticker, client) {
 		try {
-			if (newSticker.guild.id) return;
+			if (!newSticker.guild.id) return;
 		} catch (e) { }
 
         const config = await getLoggingConfig(client, newSticker.guild.id);

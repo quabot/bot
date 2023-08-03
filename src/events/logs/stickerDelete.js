@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(sticker, client) {
 		try {
-			if (sticker.guild.id) return;
+			if (!sticker.guild.id) return;
 		} catch (e) { }
 
         const config = await getLoggingConfig(client, sticker.guild.id);

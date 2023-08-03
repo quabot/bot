@@ -12,7 +12,7 @@ module.exports = {
      */
     async execute(oldRole, newRole, client) {
 		try {
-			if (newRole.guild.id) return;
+			if (!newRole.guild.id) return;
 		} catch (e) { }
 
         const config = await getLoggingConfig(client, newRole.guild.id);

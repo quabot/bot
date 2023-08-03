@@ -13,7 +13,7 @@ module.exports = {
      */
     async execute(thread, client) {
 		try {
-			if (thread.guild.id) return;
+			if (!thread.guild.id) return;
 		} catch (e) { }
         
         const config = await getLoggingConfig(client, thread.guildId);

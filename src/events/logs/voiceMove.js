@@ -13,7 +13,7 @@ module.exports = {
      */
     async execute(oldState, newState, client) {
 		try {
-			if (newState.guild.id) return;
+			if (!newState.guild.id) return;
 		} catch (e) { }
         if (oldState.member.user.bot || newState.member.user.bot) return;
         

@@ -11,9 +11,9 @@ module.exports = {
      */
     async execute(message, client) {
 		try {
-			if (message.guild.id) return;
+			if (!message.guild.id) return;
             if (!message.author) return;
-		} catch (e) { }
+		} catch (e) { console.log(e) }
 
         const config = await getLoggingConfig(client, message.guildId);
         if (!config) return;
