@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
+//* No executed code since it just creates slash subcommands.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('channel')

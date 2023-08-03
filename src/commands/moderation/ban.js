@@ -7,6 +7,7 @@ const { randomUUID } = require('crypto');
 const { CustomEmbed } = require("../../utils/constants/customEmbed");
 const ms = require('ms');
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ban')
@@ -45,11 +46,16 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        await getUser(interaction.guildId, member.id)
+
+        //* Determine if the command should be ephemeral or not.
         const private = interaction.options.getBoolean('private') ?? false;
 
+        //* Defer the reply to give the user an instant response.
         await interaction.deferReply({ ephemeral: private });
 
 
+        //* Get the moderation config and return if it doesn't exist.
         const config = await getModerationConfig(client, interaction.guildId);
         if (!config) return await interaction.editReply({
             embeds: [
@@ -59,6 +65,7 @@ module.exports = {
         });
 
 
+        //* Get the user-defined variables and return errors if they're invalid
         const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
         const member = interaction.options.getMember('user');
         const seconds = interaction.options.getInteger('delete_messages');
@@ -70,6 +77,7 @@ module.exports = {
         });
 
 
+        //* Prevent non-allowed bans.
         if (member === interaction.member) return interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -85,6 +93,7 @@ module.exports = {
         });
 
 
+        //* Get the user's database and add them if they don't exist.
         const userDatabase = await getUser(interaction.guildId, member.id);
         if (!userDatabase) return await interaction.editReply({
             embeds: [
@@ -94,6 +103,7 @@ module.exports = {
         });
 
 
+        //* Try to ban the user and return if it fails.
         let ban = true;
         await member.ban({ reason, deleteMessageSeconds: seconds }).catch(async e => {
             ban = false;
@@ -108,6 +118,8 @@ module.exports = {
 
         if (!ban) return;
 
+
+        //* Update the databases
         userDatabase.bans += 1;
         await userDatabase.save();
 
@@ -131,6 +143,7 @@ module.exports = {
         await NewPunishment.save();
 
 
+        //* Edit the reply to confirm the ban.
         interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -152,6 +165,7 @@ module.exports = {
             ]
         });
 
+        //* Send the ban message to the user.
         const sentFrom = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -185,6 +199,7 @@ module.exports = {
         }
 
 
+        //* Send the log message.
         if (config.channel) {
             const channel = interaction.guild.channels.cache.get(config.channelId);
             if (!channel) return;

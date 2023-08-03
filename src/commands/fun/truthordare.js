@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, Client, CommandInteraction } = require("discord.js");
 const { Embed } = require("../../utils/constants/embed");
-const axios = require('axios');
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('truthordare')
@@ -12,8 +12,12 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        //* Defer the reply to give the user an instant response.
         await interaction.deferReply();
 
+        //* Define a list of truths and dares.
+        //? Why not an API? I don't really know but i think it was due to ratelimits. We could change this but this works too. 
+        //? Most APIs had only a couple of answers and so we put those + more in arrays.
         const truths = [
             {
                 "question": "Did you drink alcohol before you were legal to do so?"
@@ -621,6 +625,7 @@ module.exports = {
         ]
 
 
+        //* Send a random truth and dare to the user.
         await interaction.editReply({
             embeds: [
                 new Embed(color)

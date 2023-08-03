@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, Client, CommandInteraction } = require("discord.js");
 const { Embed } = require("../../utils/constants/embed");
 
+
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('8ball')
@@ -15,8 +17,10 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        //* Defer the reply to give the user an instant response.
         await interaction.deferReply({ ephemeral: true });
 
+        //* Get the question from the interaction options
         const question = interaction.options.get('question').value;
         if (!question) return await interaction.editReply({
             embeds: [
@@ -25,6 +29,8 @@ module.exports = {
             ]
         });
 
+
+        //* Array of possible 8ball answers.
         const answers = [
             'It is certain',
             'Without a doubt',
@@ -48,6 +54,7 @@ module.exports = {
             'My reply is no',
         ];
 
+        //* Edit the reply to give the user a random answer.
         await interaction.editReply({
             embeds: [
                 new Embed(color)

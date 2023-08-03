@@ -4,6 +4,7 @@ const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
@@ -26,11 +27,11 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        //* Defer the reply to give the user an instant response.
         await interaction.deferReply();
 
+        //* Get the module and list the different categories.
         const module = interaction.options.getString('module');
-
-        // check valid module
 
         const embeds = [];
 
@@ -67,6 +68,7 @@ module.exports = {
             }
         ]
 
+        //? It works, never touch it again.
         categories.map(async c => {
             const list = (await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/${c.path}/*.js`))
                 .map(file => {

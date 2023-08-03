@@ -5,8 +5,8 @@ const { Embed } = require("../../utils/constants/embed");
 const Punishment = require('../../structures/schemas/Punishment');
 const { randomUUID } = require('crypto');
 const { CustomEmbed } = require("../../utils/constants/customEmbed");
-const ms = require('ms');
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('kick')
@@ -30,11 +30,16 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        await getUser(interaction.guildId, member.id)
+
+        //* Determine if the command should be ephemeral or not.
         const private = interaction.options.getBoolean('private') ?? false;
 
+        //* Defer the reply to give the user an instant response.
         await interaction.deferReply({ ephemeral: private });
 
 
+        //* Get the moderation config and return if it doesn't exist.
         const config = await getModerationConfig(client, interaction.guildId);
         if (!config) return await interaction.editReply({
             embeds: [
@@ -44,6 +49,7 @@ module.exports = {
         });
 
 
+        //* Get the reason and member and return if it doesn't exist.
         const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
         const member = interaction.options.getMember('user');
         if (!member || !reason) return await interaction.editReply({
@@ -54,6 +60,7 @@ module.exports = {
         });
 
 
+        //* Prevent a non-allowed kick.
         if (member === interaction.member) return interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -69,6 +76,7 @@ module.exports = {
         });
 
 
+        //* Get the user's database and return if it doesn't exist.
         const userDatabase = await getUser(interaction.guildId, member.id);
         if (!userDatabase) return await interaction.editReply({
             embeds: [
@@ -78,6 +86,7 @@ module.exports = {
         });
 
 
+        //* Kick the user and return if it fails.
         let kick = true;
         await member.kick(reason).catch(async e => {
             kick = false;
@@ -92,6 +101,7 @@ module.exports = {
 
         if (!kick) return;
 
+        //* Update the database.
         userDatabase.kicks += 1;
         await userDatabase.save();
 
@@ -115,6 +125,7 @@ module.exports = {
         await NewPunishment.save();
 
 
+        //* Update the reply to confirm the kick.
         interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -136,6 +147,7 @@ module.exports = {
             ]
         });
 
+        //* Send the DM to the user.
         const sentFrom = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -170,6 +182,7 @@ module.exports = {
         }
 
 
+        //* Send the log to the log channel.
         if (config.channel) {
             const channel = interaction.guild.channels.cache.get(config.channelId);
             if (!channel) return;

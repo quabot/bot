@@ -7,6 +7,7 @@ const {
     SlashCommandBuilder,
 } = require('discord.js');
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('emotes')
@@ -16,13 +17,18 @@ module.exports = {
      * @param {import('discord.js').Interaction} interaction
      */
     async execute(client, interaction, color) {
-        await interaction.deferReply().catch(e => { });
+        //* Defer the reply to give the user an instant response.
+        await interaction.deferReply();
 
+        //* Create an array of all the emojis in the guild.
         const emoteList = [];
         interaction.guild.emojis.cache.forEach(e => {
             emoteList.push(e);
         });
 
+        
+        //* Create the multi-page system.
+        //? don't touch it lol
         const backId = 'backMusic';
         const forwardId = 'forwardMusic';
         const backButton = new ButtonBuilder({

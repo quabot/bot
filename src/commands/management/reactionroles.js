@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
-const { Embed } = require("../../utils/constants/embed");
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
+//* No execute function is needed for this command.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reactionroles')

@@ -27,7 +27,7 @@ module.exports = async (client) => {
     });
 
 
-    consola.success(`Loaded ${commandsList.length}/${files.length} commands.`);
+    consola.success(`Loaded ${commandsList.length - contexts.length}/${files.length} commands.`);
 
     try {
         if (process.env.RELOAD_COMMANDS === 'false') return;

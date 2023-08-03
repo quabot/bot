@@ -1,12 +1,6 @@
-const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { getModerationConfig } = require("../../utils/configs/moderationConfig");
-const { getUser } = require("../../utils/configs/user");
-const { Embed } = require("../../utils/constants/embed");
-const Punishment = require('../../structures/schemas/Punishment');
-const { randomUUID } = require('crypto');
-const { CustomEmbed } = require("../../utils/constants/customEmbed");
-const ms = require('ms');
+const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('punishments')

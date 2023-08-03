@@ -15,6 +15,7 @@ module.exports = {
     async execute(client) {
         set('strictQuery', true);
 
+        // Connect MongoDB
         connect(process.env.DATABASE_URI)
             .then(db => {
                 consola.info(`Connected to database ${db.connections[0].name}.`);
@@ -23,7 +24,7 @@ module.exports = {
                 consola.error(`Failed to connect to the database: ${err}`);
             });
 
-        // Website stats
+        // Post the stats to the QuaBot Site
         (function loop() {
             if (process.env.POST_STATS !== 'true') return;
             setTimeout(function () {
@@ -36,6 +37,7 @@ module.exports = {
             }, 60000);
         })();
 
+        // Post the stats to top.gg
         if (process.env.NODE_ENV !== 'production') return;
         AutoPoster(process.env.TOPGG_API_KEY ?? '', client).on('posted', stats =>
             consola.info(`Published statistics: ${stats.serverCount} servers.`)

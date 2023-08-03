@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, Client, CommandInteraction } = require("discord.js");
-const { Embed } = require("../../utils/constants/embed");
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
+//* No executed code since it just creates slash subcommands.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('info')

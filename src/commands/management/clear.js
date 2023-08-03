@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
 const { Embed } = require("../../utils/constants/embed");
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('clear')
@@ -16,8 +17,11 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        //* Defer the reply to give the user an instant response.
+        //* Ephemeral to make it private.
         await interaction.deferReply({ ephemeral: true });
 
+        //* Get the amount of messages to delete and set it if it is invalid.
         let amount = interaction.options.get('amount').value;
         if (!amount) return await interaction.editReply({
             embeds: [
@@ -30,6 +34,7 @@ module.exports = {
         if (amount > 100) amount = 100;
 
 
+        //* Delete the messages, give an error if failed.
         await interaction.channel.bulkDelete(amount, true).catch(async e => {
             if (e.code === 50013) {
                 return await interaction
@@ -45,6 +50,7 @@ module.exports = {
         });
 
 
+        //* Confirm that it worked to the user.
         await interaction.editReply({
             embeds: [
                 new Embed(color)

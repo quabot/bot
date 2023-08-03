@@ -7,9 +7,10 @@ const {
     ActionRowBuilder,
     Colors
 } = require("discord.js");
-const {Embed} = require("../../utils/constants/embed");
-const {getUserGame} = require("../../utils/configs/userGame");
+const { Embed } = require("../../utils/constants/embed");
+const { getUserGame } = require("../../utils/configs/userGame");
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rps')
@@ -20,8 +21,10 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        //* Get the user's game data to pre-load it.
         await getUserGame(interaction.user.id);
 
+        //* Give the user the options to choose from and create a collector for the message.
         const msg = await interaction.reply({
             embeds: [
                 new Embed(color)
@@ -54,30 +57,36 @@ module.exports = {
 
         const userDB = await getUserGame(interaction.user.id);
 
+        //* Stop listening when a button is clicked.
         collector.on('collect', async interaction => {
             collector.stop();
 
 
+            //* Update the tries
             userDB.rpsTries += 1;
 
+            //* Pick an option as bot and check the user's choice.
             const options = ['rock', 'paper', 'scissors'];
             const myChoice = options[Math.floor(Math.random() * options.length)];
             let userChoice = interaction.customId;
 
+
+            //* Define the list of options and what happens.
             const choices = {
-                rock: {weakTo: 'paper', strongTo: 'scissors'},
-                paper: {weakTo: 'scissors', strongTo: 'rock'},
-                scissors: {weakTo: 'rock', strongTo: 'paper'}
+                rock: { weakTo: 'paper', strongTo: 'scissors' },
+                paper: { weakTo: 'scissors', strongTo: 'rock' },
+                scissors: { weakTo: 'rock', strongTo: 'paper' }
             }
 
+            //* Handle the different options, give the user a response and update the database accordingly.
             if (choices[myChoice].strongTo === userChoice) {
                 await interaction.update({
                     embeds: [
                         new Embed(Colors.Red)
                             .setDescription(`I picked **${myChoice}** and you picked **${userChoice}**, so i won and you lost!`)
                             .addFields(
-                                {name: 'Your Score', value: `${userDB.rpsPoints - 1}`, inline: true},
-                                {name: 'Entered By', value: `${interaction.user}`, inline: true}
+                                { name: 'Your Score', value: `${userDB.rpsPoints - 1}`, inline: true },
+                                { name: 'Entered By', value: `${interaction.user}`, inline: true }
                             )
                     ], components: [
                         new ActionRowBuilder()
@@ -98,8 +107,8 @@ module.exports = {
                         new Embed(Colors.Green)
                             .setDescription(`I picked **${myChoice}** and you picked **${userChoice}**, so you won!`)
                             .addFields(
-                                {name: 'Your Score', value: `${userDB.rpsPoints + 1}`, inline: true},
-                                {name: 'Entered By', value: `${interaction.user}`, inline: true}
+                                { name: 'Your Score', value: `${userDB.rpsPoints + 1}`, inline: true },
+                                { name: 'Entered By', value: `${interaction.user}`, inline: true }
                             )
                     ], components: [
                         new ActionRowBuilder()
@@ -120,8 +129,8 @@ module.exports = {
                         new Embed(Colors.Orange)
                             .setDescription(`I picked **${myChoice}** and you picked **${userChoice}**, so it's a tie!`)
                             .addFields(
-                                {name: 'Your Score', value: `${userDB.rpsPoints}`, inline: true},
-                                {name: 'Entered By', value: `${interaction.user}`, inline: true}
+                                { name: 'Your Score', value: `${userDB.rpsPoints}`, inline: true },
+                                { name: 'Entered By', value: `${interaction.user}`, inline: true }
                             )
                     ], components: [
                         new ActionRowBuilder()
@@ -139,6 +148,7 @@ module.exports = {
         });
 
 
+        //* When the collector ends, give the user the option to play again.
         collector.on('end', async () => {
             await interaction.editReply({
                 components: [

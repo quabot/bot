@@ -4,6 +4,7 @@ const axios = require('axios');
 const { shuffleArray } = require("../../utils/functions/array");
 const { getUserGame } = require("../../utils/configs/userGame");
 
+//* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('quiz')
@@ -14,8 +15,10 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(client, interaction, color) {
+        //* Defer the reply to give the user an instant response.
         await interaction.deferReply();
 
+        //* Fetch a quiz question from the opentdb API, and return an error if it fails.
         const { data } = await axios.get('https://opentdb.com/api.php?amount=1&type=multiple');
         if (!data) return await interaction.editReply({
             embeds: [
@@ -24,7 +27,7 @@ module.exports = {
             ]
         });
 
-
+        //* Define the question and answers.
         const question = data.results[0];
         if (!question) return await interaction.editReply({
             embeds: [
@@ -33,11 +36,13 @@ module.exports = {
             ]
         });
 
+        //* Shufle the answers
         const answersRaw = question.incorrect_answers;
         answersRaw.push(question.correct_answer);
         const answers = await shuffleArray(answersRaw);
 
 
+        //* Create the buttons for each answer.
         const row = new ActionRowBuilder();
         answers.forEach(answer => {
             const button = new ButtonBuilder()
@@ -47,7 +52,8 @@ module.exports = {
 
             row.addComponents(button);
         });
-
+        
+        //* Edit the message to show the quiz question to the user.
         const message = await interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -55,16 +61,21 @@ module.exports = {
             ], components: [row], fetchReply: true
         });
 
+        //* Create a collector to collect the interactions.
         const collector = message.createMessageComponentCollector({
             time: 60000
         });
 
-
         collector.on('collect', async interaction => {
+
+            //? The replay button is handled by the button handler.
             if (interaction.customId === 'quiz-replay') return;
+
+            //* Set the user's attempts for the score
             const userDB = await getUserGame(interaction.user.id);
             if (userDB) userDB.quizTries += 1;
 
+            //* Check what the user answered and update the message accordingly.
             const answeredAnswer = answers[parseInt(interaction.customId)];
             if (!answeredAnswer) return interaction.reply('There was an error.');
             if (answeredAnswer === question.correct_answer) {
@@ -76,6 +87,8 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary)
                     .setDisabled(false);
 
+
+                //* Create a disabled list of buttons
                 answers.forEach(answer => {
                     const button = new ButtonBuilder()
                         .setCustomId(`${answers.indexOf(answer)}`)
@@ -87,6 +100,7 @@ module.exports = {
                 });
                 row2.addComponents(button)
 
+                //* Display the result and give the user their points.
                 await interaction.update({
                     embeds: [
                         new Embed(Colors.Green)
@@ -105,6 +119,7 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary)
                     .setDisabled(false);
 
+                //* Create a disabled list of buttons
                 answers.forEach(answer => {
                     const button = new ButtonBuilder()
                         .setCustomId(`${answers.indexOf(answer)}`)
@@ -116,6 +131,7 @@ module.exports = {
                 });
                 row2.addComponents(button);
 
+                //* Display the result and take away the user's points.
                 await interaction.update({
                     embeds: [
                         new Embed(Colors.Red)
