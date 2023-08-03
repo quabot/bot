@@ -85,6 +85,9 @@ module.exports = {
         }
 
         await interaction.message.edit({
+            embeds: [
+                EmbedBuilder.from(interaction.message.embeds[0]).addFields({ name: 'Status', value: 'Approved', inline: true })
+            ],
             components: []
         });
 

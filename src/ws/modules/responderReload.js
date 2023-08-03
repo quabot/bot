@@ -1,4 +1,3 @@
-const Responder = require('../../structures/schemas/Responder');
 
 //* Reload the autoresponder reponses for the server.
 module.exports = {

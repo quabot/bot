@@ -1,6 +1,5 @@
 const { Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { Embed } = require('../../utils/constants/embed');
-const Application = require('../../structures/schemas/Application');
 
 //* Handle what happens when a form gets responded to.
 module.exports = {
@@ -36,7 +35,7 @@ module.exports = {
               .setTitle('New application form submitted!')
               .setDescription(`**${submission_user}** has submitted an answer to ${FoundForm.name}!`)
               .addFields(
-                { name: 'Link', value: `[Click here](https://quabot.net/dashboard/${form.guildId}/modules/applications/responses/${form.response_uuid})` },
+                { name: 'Link', value: `[Click here](https://quabot.net/dashboard/${form.guildId}/modules/applications/responses/${form.response_uuid})`, inline: true },
               )
               .setFooter({ text: `${form.response_uuid}` })
           ], components: [

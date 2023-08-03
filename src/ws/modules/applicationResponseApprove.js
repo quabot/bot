@@ -1,5 +1,4 @@
 const { Embed } = require('../../utils/constants/embed');
-const Application = require('../../structures/schemas/Application');
 
 //* Handle what happens when a form gets responded to.
 module.exports = {
