@@ -37,6 +37,7 @@ const LevelConfig = new Schema({
     rewardDmMessage: reqObject,
 
     viewCard: reqBool, // Show the level card on /level view
+    leaderboardPublic: reqBool, // Should everyone be able to see the leaderboard
 });
 
 module.exports = model('Level-Config', LevelConfig);

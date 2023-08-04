@@ -130,6 +130,7 @@ const getLevelConfig = async (guildId, client) => {
                         },
 
                         viewCard: false,
+                        leaderboardPublic: false,
                     }).save();
             }
         ).clone().catch(() => { }));
