@@ -19,6 +19,7 @@ module.exports = {
 
         const member = (interaction.options.getMember('user') ?? interaction.member);
         const { user } = member;
+        console.log(member.presence?.status)
 
         const badges = [];
         user.flags?.toArray().forEach(flag => {
@@ -29,7 +30,7 @@ module.exports = {
             embeds: [
                 new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
                     **• User**: ${user}
-                    **• Displayname**: ${user.displayName ?? 'None'}
+                    **• Displayname**: ${user.globalName ?? 'None'}
                     **• Username**: @${user.username}
                     **• ID**: ${user.id}
                     **• Roles**: ${member.roles.cache
@@ -40,6 +41,7 @@ module.exports = {
                     **• Joined Server**: <t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>
                     **• Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>
                     **• House**: ${badges.join(' ')} ${badges.length === 0 ? 'None' : ''}
+                    **• Status**: ${member.presence?.status ?? 'Unknown'}
                 `),
             ],
         });
