@@ -1,6 +1,6 @@
 const discord = require('discord.js');
 const prefix = "!";
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 const mainHelp = new discord.MessageEmbed()
     .setColor(colors.COLOR)
@@ -31,7 +31,7 @@ const infoEmbed = new discord.MessageEmbed() // DONE
     .setColor(colors.COLOR)
     .setTitle("Info Commands")
     .setThumbnail("https://i.imgur.com/8HHHGK1.png")
-    .setDescription(`These commands are used to get information about loads of different things.\n\n**${prefix}server** - By using this command you get the server name.\n**${prefix}donate** - This command is used to get info about donations to quabot.\n**${prefix}help** - By using this command you will get a list of commands or see how to use them.\n**${prefix}info** - When using this command you will recieve a list of bot information.\n**${prefix}leaderboard** - This command allows you to view a leaderbord of levels of a server.\n**${prefix}online** -  This will display the amount of users on the guild with every presence.\n**${prefix}ping** - When using this command you will recieve your ping.\n**${prefix}serverinfo** - When you use this command, you can see a list of information about the server.\n**${prefix}uptime ** - When using this command, the current online time of the bot is displayed.\n**${prefix}userinfo** - When you use this command you get a list of information about a user.\n**${prefix}prefix** - Get the server prefix.\n**${prefix}stats** - View the discord bot stats and hardware.\n**${prefix}rank** - Get your current amount of levels and XP points.`)
+    .setDescription(`These commands are used to get information about loads of different things.\n\n**${prefix}donate** - This command is used to get info about donations to quabot.\n**${prefix}help** - By using this command you will get a list of commands or see how to use them.\n**${prefix}info** - When using this command you will recieve a list of bot information.\n**${prefix}leaderboard** - This command allows you to view a leaderbord of levels of a server.\n**${prefix}online** -  This will display the amount of users on the guild with every presence.\n**${prefix}ping** - When using this command you will recieve your ping.\n**${prefix}serverinfo** - When you use this command, you can see a list of information about the server.\n**${prefix}uptime ** - When using this command, the current online time of the bot is displayed.\n**${prefix}userinfo** - When you use this command you get a list of information about a user.\n**${prefix}prefix** - Get the server prefix.\n**${prefix}stats** - View the discord bot stats and hardware.\n**${prefix}rank** - Get your current amount of levels and XP points.`)
 const miscEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
     .setTitle("Misc Commands")
@@ -50,53 +50,53 @@ module.exports = {
 
         console.log("Command `help` was used.");
 
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         if (!args[0]) {
-            if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-            message.channel.send({ embeds: [mainHelp]});
+            if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+            message.channel.send(mainHelp);
             return;
         }
 
         const category = args[0].toLowerCase();
 
         if (category === "fun") {
-            message.channel.send({ embeds: [funEmbed]});
-            if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+            message.channel.send(funEmbed);
+            if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
             return;
         }
 
         if (category === "moderation") {
-            message.channel.send({ embeds: [moderationEmbed]});
-            if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+            message.channel.send(moderationEmbed);
+            if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
             return;
         }
 
         if (category === "management") {
-            message.channel.send({ embeds: [managementEmbed]});
-            if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+            message.channel.send(managementEmbed);
+            if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
             return;
         }
 
         if(category === "info") {
-            message.channel.send({ embeds: [infoEmbed]});
-            if(message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+            message.channel.send(infoEmbed);
+            if(message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
             return;
         }
 
         if(category === "misc") {
-            message.channel.send({ embeds: [miscEmbed]});
-            if(message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+            message.channel.send(miscEmbed);
+            if(message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
             return; 
         }
 
         if(category === "music") {
-            message.channel.send({ embeds: [musicEmbed]});
-            if(message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+            message.channel.send(musicEmbed);
+            if(message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
             return; 
         }
 
-        message.channel.send({ embeds: [mainHelp] });
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        message.channel.send(mainHelp);
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
     }
 }

@@ -1,5 +1,5 @@
 {
-    "COLOR": "#36b9c6",
+    "COLOR": "#0e005e",
     "BAN_COLOR": "#ab0303",
     "KICK_COLOR": "#e05e00",
     "UNBAN_COLOR": "#5bba02",
@@ -11,7 +11,5 @@
     "SAY_COLOR": "#b872db",
     "PREFIX_COLOR": "#f0fff7",
     "UNMUTE_COLOR": "#55e6bd",
-    "WARN_COLOR": "#b157de",
-    "RED": "#fc0303",
-    "LIME": "#6fff00"
+    "WARN_COLOR": "#b157de"
 }

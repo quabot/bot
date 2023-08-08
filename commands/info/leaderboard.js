@@ -1,6 +1,6 @@
 const discord = require('discord.js');
-const Guild = require('../../models/guild');
-const colors = require('../../files/colors.json');
+const Guild = require('../models/guild');
+const colors = require('../files/colors.json');
 const Levels = require('discord.js-leveling')
 
 const errorMain = new discord.MessageEmbed()
@@ -18,18 +18,18 @@ const noXP = new discord.MessageEmbed()
 
 module.exports = {
     name: "leaderboard",
-    aliases: ["top", "leveltop", "lb"],
+    aliases: ["top", "leveltop"],
     async execute(client, message, args) {
 
         console.log("Command `leaderboard` was used.");
 
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain]});
+            if (err) message.channel.send(errorMain);
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -46,16 +46,16 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
 
-                return message.channel.send({ embeds: [addedDatabase]});
+                return message.channel.send(addedDatabase);
             }
         });
-        if (settings.enableLevel === "false") return message.channel.send({ embeds: [noLVLS]});
+        if (settings.enableLevel === "false") return message.channel.send(noLVLS);
 
         const rawLeaderboard = await Levels.fetchLeaderboard(message.guild.id, 10);
         
-        if (rawLeaderboard.length < 1) return reply({ embeds: [noXP]});
+        if (rawLeaderboard.length < 1) return reply(noXP);
 
         const leaderboard = await Levels.computeLeaderboard(client, rawLeaderboard, true); // We process the leaderboard.
 
@@ -66,7 +66,7 @@ module.exports = {
             .setTitle("Leaderboard")
             .setThumbnail(message.guild.iconURL({ dynamic: true }))
             .setDescription(`\n${lb.join("\n\n")}`)
-        message.channel.send({ embeds: [embed]});
+        message.channel.send(embed);
 
     }
 }

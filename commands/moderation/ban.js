@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
-const User = require('../../models/guild');
+const colors = require('../files/colors.json');
+const Guild = require('../models/guild');
+const User = require('../models/guild');
 
 const noPermsBanBot = new discord.MessageEmbed()
     .setDescription("I do not have permission to ban members!")
@@ -32,10 +32,10 @@ module.exports = {
         const member = message.mentions.members.first();
         let reason = "No reason specified.";
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanBot);
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send(noPermsBanBot);
+        if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
 
         if (!member) return message.channel.send(noUserToBan);
         if (args.length > 1) reason = args.slice(1).join(' ');

@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const moment = require('moment');
-const colors = require('../../files/colors.json')
 
 module.exports = {
     name: "userinfo",
@@ -9,8 +8,8 @@ module.exports = {
 
         console.log("Command `userinfo` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         let user = message.mentions.users.first() || message.author;
 
@@ -24,7 +23,7 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed()
             .setAuthor(user.username + '#' + user.discriminator, user.displayAvatarURL)
-            .setColor(colors.COLOR)
+            .setColor(`RANDOM`)
             .setImage(user.avatarURL())
             .addField(`${user.tag}`, `${user}`, true)
             .addField("ID:", `${user.id}`, true)
@@ -37,6 +36,6 @@ module.exports = {
             .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
             .setFooter(`ID: ${user.id}`)
             .setTimestamp();
-        message.channel.send({ embeds: [embed]});
+        message.channel.send({ embed: embed });
     }
 }

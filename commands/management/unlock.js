@@ -1,5 +1,5 @@
 const discord =  require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 module.exports = {
     name: "unlock",
@@ -10,6 +10,6 @@ module.exports = {
         const useLock = new discord.MessageEmbed()  
             .setDescription("Please use `!lock unlock` to unlock a channel!")
             .setColor(colors.COLOR);
-        message.channel.send({ embeds: [useLock]});
+        message.channel.send(useLock);
     }
 }

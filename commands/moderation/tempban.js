@@ -1,10 +1,10 @@
 const discord = require('discord.js');
 const ms = require('ms');
 
-const Guild = require('../../models/guild');
+const Guild = require('../models/guild');
 const config = require('../../files/config.json');
 const User = require('../../models/user');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 const errorMain = new discord.MessageEmbed()
     .setDescription("There was an error!")
@@ -33,10 +33,10 @@ module.exports = {
         console.log("Command `tempban` was used.");
 
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_ROLES")) return message.channel.send(noPermsManageRoles);
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("MANAGE_ROLES")) return message.channel.send(noPermsManageRoles);
+        if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
 
         const user = message.mentions.users.first();
         const time = args[1];

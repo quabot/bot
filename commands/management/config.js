@@ -1,6 +1,6 @@
 const discord = require('discord.js');
 
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 const errorMain = new discord.MessageEmbed()
     .setDescription("There was an error!")
     .setColor(colors.COLOR)
@@ -13,7 +13,7 @@ const noNewPrefix = new discord.MessageEmbed()
 const noNewValue = new discord.MessageEmbed()
     .setDescription("Please enter a valid new value!")
     .setColor(colors.COLOR)
-const Guild = require('../../models/guild');
+const Guild = require('../models/guild');
 const optionsEmbed = new discord.MessageEmbed()
     .setTitle("Quabot configuration")
     .setColor(colors.COLOR)
@@ -64,7 +64,7 @@ module.exports = {
 
         const channel = message.mentions.channels.first();
 
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
@@ -92,10 +92,10 @@ module.exports = {
             }
         });
 
-        if (!a0) return message.channel.send({ embeds: [optionsEmbed]});
+        if (!a0) return message.channel.send(optionsEmbed);
 
         if (a0 === "prefix") {
-            if (!a1) return message.channel.send({ embeds: [noNewPrefix]});
+            if (!a1) return message.channel.send(noNewPrefix);
             await settings.updateOne({
                 prefix: a1
             });
@@ -103,15 +103,15 @@ module.exports = {
             const newPrefix = new discord.MessageEmbed()
                 .setDescription(`Succesfully updated server prefix to **${a1}**`)
                 .setColor(colors.COLOR)
-            message.channel.send({ embeds: [newPrefix]});
-            if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+            message.channel.send(newPrefix);
+            if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
         }
 
         if (a0 === "channel") {
-            if (!a1) return message.channel.send({ embeds: [channelEmbed]});
+            if (!a1) return message.channel.send(channelEmbed);
 
             if (a1 === "log") {
-                if (!channel) return message.channel.send({ embeds: [noNewValue]});
+                if (!channel) return message.channel.send(noNewValue);
 
                 await settings.updateOne({
                     logChannelID: channel.id
@@ -119,18 +119,18 @@ module.exports = {
                 const embed3 = new discord.MessageEmbed()
                     .setColor(colors.COLOR)
                     .setDescription(`Log channel ID is now: **${channel.id}**!`)
-                message.channel.send({ embeds: [embed3]});
-                if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                message.channel.send(embed3);
+                if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
                 return;
             }
 
-            message.channel.send({ embeds: [channelEmbed]});
+            message.channel.send(channelEmbed);
         }
 
         if (a0 === "toggle") {
-            if (!a1) return message.channel.send({ embeds: [toggleEmbed]});
+            if (!a1) return message.channel.send(toggleEmbed);
             if (a1 === "level") {
-                if (!a2) return message.channel.send({ embeds: [noNewValue]});
+                if (!a2) return message.channel.send(noNewValue);
 
                 if (a2 === "false" || a2 === "true") {
 
@@ -141,17 +141,17 @@ module.exports = {
                     const embed = new discord.MessageEmbed()
                         .setColor(colors.COLOR)
                         .setDescription(`Level system enabled is now: **${a2}**!`)
-                    message.channel.send({ embeds: [embed]});
-                    if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                    message.channel.send(embed);
+                    if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
                     return;
                 } else {
-                    message.channel.send({ embeds: [noNewValue]});
+                    message.channel.send(noNewValue);
                 }
-                if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
             }
 
             if (a1 === "music") {
-                if (!a2) return message.channel.send({ embeds: [noNewValue]});
+                if (!a2) return message.channel.send(noNewValue);
 
                 if (a2 === "false" || a2 === "true") {
 
@@ -162,17 +162,17 @@ module.exports = {
                     const embed1 = new discord.MessageEmbed()
                         .setColor(colors.COLOR)
                         .setDescription(`Music enabled is now: **${a2}**!`)
-                    message.channel.send({ embeds: [embed1]});
-                    if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                    message.channel.send(embed1);
+                    if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
                     return;
                 } else {
-                    message.channel.send({ embeds: [noNewValue]});
+                    message.channel.send(noNewValue);
                 }
-                if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
             }
 
             if (a1 === "swear") {
-                if (!a2) return message.channel.send({ embeds: [noNewValue]});
+                if (!a2) return message.channel.send(noNewValue);
 
                 if (a2 === "false" || a2 === "true") {
 
@@ -183,16 +183,16 @@ module.exports = {
                     const embed2 = new discord.MessageEmbed()
                         .setColor(colors.COLOR)
                         .setDescription(`Swear filter enabled is now: **${a2}**!`)
-                    message.channel.send({ embeds: [embed2]});
-                    if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                    message.channel.send(embed2);
+                    if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
                     return;
                 } else {
-                    message.channel.send({ embeds: [noNewValue]});
+                    message.channel.send(noNewValue);
                 }
             }
 
             if (a1 === "log") {
-                if (!a2) return message.channel.send({ embeds: [noNewValue]});
+                if (!a2) return message.channel.send(noNewValue);
 
                 if (a2 === "false" || a2 === "true") {
 
@@ -203,21 +203,21 @@ module.exports = {
                     const embed2 = new discord.MessageEmbed()
                         .setColor(colors.COLOR)
                         .setDescription(`Log channel enabled is now: **${a2}**!`)
-                    message.channel.send({ embeds: [embed2]});
-                    if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                    message.channel.send(embed2);
+                    if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
                     return;
                 } else {
-                    message.channel.send({ embeds: [noNewValue]});
+                    message.channel.send(noNewValue);
                 }
             }
 
-            message.channel.send({ embeds: [toggleEmbed]});
+            message.channel.send(toggleEmbed);
         }
 
         if (a0 === "roles") {
-            if (!a1) return message.channel.send({ embeds: [roleEmbed]});
+            if (!a1) return message.channel.send(roleEmbed);
             if (a1 === "muted") {
-                if (!a2) return message.channel.send({ embeds: [noNewValue]});
+                if (!a2) return message.channel.send(noNewValue);
                 await settings.updateOne({
                     mutedRoleName: a2
                 });
@@ -225,24 +225,24 @@ module.exports = {
                 const embed49 = new discord.MessageEmbed()
                     .setColor(colors.COLOR)
                     .setDescription(`This servers muted role name is now: **${a2}**!`)
-                message.channel.send({ embeds: [embed49]});
-                if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                message.channel.send(embed49);
+                if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
                 return;
             }
             if (a1 === "main") {
-                if (!a2) return message.channel.send({ embeds: [noNewValue]});
+                if (!a2) return message.channel.send(noNewValue);
                 await settings.updateOne({
                     mainRoleName: a2
                 });
 
-                const embed48 = new discord.MessageEmbed()
+                const embed49 = new discord.MessageEmbed()
                     .setColor(colors.COLOR)
                     .setDescription(`This servers main role name is now: **${a2}**!`)
-                message.channel.send({ embeds: [embed48]});
-                if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+                message.channel.send(embed49);
+                if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
                 return;
             }
-            if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
+            if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 50000 });
         }
     }
 }

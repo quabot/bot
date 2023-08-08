@@ -1,9 +1,7 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
 
-const Flipping = new discord.MessageEmbed()
-    .setColor(colors.COLOR)
-    .setDescription("Tossing the coin... :coin:")
+const Flipping = require('../../files/embeds');
+const colors = require('../files/colors.json');
 
 module.exports = {
     name: "coin",
@@ -12,21 +10,21 @@ module.exports = {
 
         console.log("Command `coin` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         function randomCoin() {
-            const random = ['Heads', 'Tails'];
+            const random = ['You got heads', 'You got tails'];
             return random[Math.floor(Math.random() * random.length)];        
         }
 
         const Result = new discord.MessageEmbed()
-            .setDescription(`**${randomCoin()}! :coin:**`)
+            .setDescription(`**${randomCoin()}**!`)
             .setColor(colors.COLOR)
 
-        message.channel.send({embeds: [Flipping]}).then(msg => {
+        message.channel.send(Flipping).then(msg => {
             setTimeout(function () {
-                msg.edit({embeds: [Result]});
+                msg.edit(Result);
             }, 2000);
         });
     }

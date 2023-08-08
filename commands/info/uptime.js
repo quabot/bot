@@ -1,5 +1,5 @@
 const discord = require('discord.js');  
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 module.exports = {
     name: "uptime",
@@ -8,8 +8,8 @@ module.exports = {
 
         console.log("Command `uptime` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         let totalSeconds = (client.uptime / 1000);
         let days = Math.floor(totalSeconds / 86400);
@@ -22,6 +22,6 @@ module.exports = {
         const embed = new discord.MessageEmbed()
             .setDescription(`This bot has been online for: ${uptime}`)
             .setColor(colors.COLOR);
-        message.channel.send({ embeds: [embed]});
+        message.channel.send(embed);
     }
 }

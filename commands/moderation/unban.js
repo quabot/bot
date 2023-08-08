@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 
-const Guild = require('../../models/guild');
+const Guild = require('../models/guild');
 const config = require('../../files/config.json');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 const errorMain = new discord.MessageEmbed()
     .setDescription("There was an error!")
@@ -30,10 +30,10 @@ module.exports = {
 
         console.log("Command `unban` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanBot);
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send(noPermsBanBot);
+        if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
 
         const member = args[0];
         const memberid = args[0];

@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 const ms = require('ms');
-const Guild = require('../../models/guild');
+const Guild = require('../models/guild');
 const config = require('../../files/config.json');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 const noPermsAdminUser = new discord.MessageEmbed()
     .setDescription("You do not have administrator permissions!")
@@ -40,25 +40,25 @@ module.exports = {
 
         console.log("Command `giveaway` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) return message.channel.send({ embeds: [noPermsMsg]});
-        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send({ embeds: [noPermsAdminUser]});
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send(noPermsMsg);
+        if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send(noPermsAdminUser);
 
         let giveawayChannel = message.mentions.channels.first();
         if (!giveawayChannel) {
-            return message.channel.send({ embeds: [noValidChannel]});
+            return message.channel.send(noValidChannel);
         }
 
         let giveawayDuration = args[1];
         if (!giveawayDuration || isNaN(ms(giveawayDuration))) {
-            return message.channel.send({ embeds: [noTime]});
+            return message.channel.send(noTime);
         }
 
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain]});
+            if (err) message.channel.send(errorMain);
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -75,21 +75,21 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
 
-                return message.channel.send({ embeds: [addedDatabase]});
+                return message.channel.send(addedDatabase);
             }
         });
         const logChannel = message.guild.channels.cache.get(settings.logChannelID);
 
         let giveawayNumberWinners = args[2];
         if (isNaN(giveawayNumberWinners) || (parseInt(giveawayNumberWinners) <= 0)) {
-            return message.channel.send({ embeds: no[noWinners]});
+            return message.channel.send(noWinners);
         }
 
         let giveawayPrize = args.slice(3).join(' ');
         if (!giveawayPrize) {
-            return message.channel.send({ embeds: [noPrize]});
+            return message.channel.send(noPrize);
         }
 
         client.giveawaysManager.start(giveawayChannel, {
@@ -135,7 +135,7 @@ module.exports = {
                     .addField('Prize', giveawayPrize)
                     .addField('Duration', giveawayDuration)
                     .addField('Winners', giveawayNumberWinners)
-                return logChannel.send({ embeds: [embed]});
+                return logChannel.send(embed);
             };
         }
 

@@ -1,5 +1,5 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 module.exports = {
     name: "online",
@@ -8,8 +8,8 @@ module.exports = {
 
         console.log("Command `online` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         const members = message.guild.members.cache;
 
@@ -17,6 +17,6 @@ module.exports = {
             .setColor(colors.COLOR)
             .setThumbnail(message.guild.iconURL({ dynamic: true }))
             .setDescription(`**${members.filter(member => member.presence.status === 'online').size}** users are online,\n**${members.filter(member => member.presence.status === 'idle').size}** on Idle,\n**${members.filter(member => member.presence.status === 'dnd').size}** on Do Not Disturb, and\n**${members.filter(member => member.presence.status === 'offline').size}** offline.`);
-        message.channel.send({ embeds: [embed]});
+        message.channel.send(embed);
     }
 }

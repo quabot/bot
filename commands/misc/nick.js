@@ -1,5 +1,5 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 const errorEmbed = new discord.MessageEmbed()
     .setColor(colors.COLOR)
@@ -17,9 +17,9 @@ module.exports = {
     async execute(client, message, args) {
 
         console.log("Command `nick` was used.");
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_NICKNAMES") || !message.guild.me.permissions.has("ADMINISTRATOR")) return message.channel.send(errorEmbed).then(message.delete({ timout: 10000 }));
-        if (message.member.permissions.has('ADMINISTRATOR')) return message.channel.send(errorEmbed).then(message.delete({ timout: 10000 }));
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("MANAGE_NICKNAMES") || !message.guild.me.hasPermission("ADMINISTRATOR")) return message.channel.send(errorEmbed).then(message.delete({ timout: 10000 }));
+        if (message.member.hasPermission('ADMINISTRATOR')) return message.channel.send(errorEmbed).then(message.delete({ timout: 10000 }));
 
         if (!args[0]) return message.channel.send(newNickEnter);
         const newNick = args.slice(0).join(' ');
@@ -27,7 +27,7 @@ module.exports = {
             return message.channel.send(notAbove)
         });
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
         const change = new discord.MessageEmbed()
             .setColor(colors.COLOR)
             .setDescription(`Changed your nickname to **${newNick}**!`)

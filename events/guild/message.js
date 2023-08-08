@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 const Levels = require('discord.js-leveling');
 
 // FILES
-const Guild = require('../../models/guild');
+const Guild = require('../models/guild');
 const config = require('../../files/config.json');
 const swearwords = require("../../files/data.json");
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 // ERROR MESSAGE
 

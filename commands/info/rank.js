@@ -1,5 +1,5 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 const Guild = require('../../models/guild')
 
 const Levels = require('discord.js-leveling');
@@ -25,13 +25,13 @@ module.exports = {
 
         console.log("Command `rank` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
         
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain]});
+            if (err) message.channel.send(errorMain);
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -46,24 +46,24 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
 
-                return message.channel.send({ embeds: [addedDatabase]});
+                return message.channel.send(addedDatabase);
             }
         });
 
-        if (settings.enableLevel === "false") return message.channel.send({ embeds: [noLVLS]});
+        if (settings.enableLevel === "false") return message.channel.send(noLVLS);
 
         const target = message.mentions.users.first() || message.author;
 
         const user = await Levels.fetch(target.id, message.guild.id);
 
-        if (!user) return message.channel.send({ embeds: [noXP]});
+        if (!user) return message.channel.send(noXP);
 
         const embed = new discord.MessageEmbed()
             .setColor(colors.COLOR)
             .setDescription(`**${target.tag}** is currently level ${user.level}, and has ${user.xp} XP.`);
-        message.channel.send({ embeds: [embed]});
+        message.channel.send(embed);
 
     }
 }

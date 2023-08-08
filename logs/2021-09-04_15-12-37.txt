@@ -1,0 +1,1028 @@
+npm WARN discord-bot@1.0.43 No description
+npm WARN discord-bot@1.0.43 No repository field.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.13 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.13: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+audited 615 packages in 4.164s
+
+75 packages are looking for funding
+  run `npm fund` for details
+
+found 29 vulnerabilities (2 low, 2 moderate, 25 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+> discord-bot@1.0.43 start /home/minecraft/multicraft/servers/server193021
+> node index.js
+
+Loaded cat.js
+Loaded coin.js
+Loaded dog.js
+Loaded meme.js
+Loaded rps.js
+Loaded type.js
+Loaded all commands in category fun
+Loaded donate.js
+Loaded help.js
+Loaded info.js
+Loaded leaderboard.js
+Loaded online.js
+Loaded ping.js
+Loaded prefix.js
+Loaded rank.js
+Loaded serverinfo.js
+Loaded stats.js
+Loaded support.js
+Loaded uptime.js
+Loaded userinfo.js
+Loaded all commands in category info
+Loaded clear.js
+Loaded config.js
+Loaded debug.js
+Loaded end.js
+Loaded giveaway.js
+Loaded lockdown.js
+Loaded reroll.js
+Loaded unlock.js
+Loaded all commands in category management
+Loaded avatar.js
+Loaded emotes.js
+Loaded members.js
+Loaded nick.js
+Loaded all commands in category misc
+Loaded ban.js
+Loaded clearpunishments.js
+Loaded kick.js
+Loaded mute.js
+Loaded punishments.js
+Loaded tempban.js
+Loaded tempmute.js
+Loaded unban.js
+Loaded unmute.js
+Loaded warn.js
+Loaded all commands in category moderation
+Loaded autoplay.js
+Loaded join.js
+Loaded nowplaying.js
+Loaded pause.js
+Loaded play.js
+Loaded queue.js
+Loaded repeat.js
+Loaded resume.js
+Loaded seek.js
+Loaded shuffle.js
+Loaded skip.js
+Loaded status.js
+Loaded stop.js
+Loaded volume.js
+Loaded all commands in category music
+[DisTube] Downloaded youtube-dl 2021.06.06
+Connected to the Quabot database.
+ 
+GENERAL INFORMATION: 
+Client: QuaBot#6758
+Channels: 463
+Servers: 15
+Users: 27623
+Version: 1.0.5.2
+ 
+ 
+You are running Quabot, this project is made by do#8888. It is not allowed to distribute these files punblicly without the creator's consent.
+ 
+Command `debug` was used.
+Command `debug` was used.
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 1)
+(node:42) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 2)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 3)
+Command `debug` was used.
+(node:42) UnhandledPromiseRejectionWarning: ReferenceError: noPermsMsg is not defined
+    at Object.execute (/home/minecraft/multicraft/servers/server193021/commands/management/debug.js:19:93)
+    at module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:105:30)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 4)
+Command `debug` was used.
+Command `uptime` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 5)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 6)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 7)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 8)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 9)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 10)
+Command `meme` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 11)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 12)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 13)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 14)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 15)
+Command `serverinfo` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Invalid Form Body
+embed.fields[2].value: Must be 1024 or fewer in length.
+embeds[0].fields[2].value: Must be 1024 or fewer in length.
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 16)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 17)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 18)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 19)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 20)
+Command `clear` was used.
+Command `clear` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Unknown Message
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 21)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Unknown Message
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 22)
+Command `clear` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Unknown Message
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 23)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 24)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 25)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 26)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 27)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 28)
+Command `ping` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 29)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 30)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 31)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 32)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 33)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 34)
+Command `rank` was used.
+Command `rank` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 35)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 36)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 37)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 38)
+Command `avatar` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 39)
+Command `rank` was used.
+Command `leaderboard` was used.
+Command `rank` was used.
+Command `rank` was used.
+Command `leaderboard` was used.
+Command `rank` was used.
+Command `leaderboard` was used.
+Command `rank` was used.
+Command `rank` was used.
+Command `rank` was used.
+Command `rank` was used.
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 40)
+Command `rank` was used.
+Command `rank` was used.
+Command `leaderboard` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 41)
+Command `rank` was used.
+Command `info` was used.
+Command `rank` was used.
+Command `kick` was used.
+Command `rank` was used.
+Command `tempmute` was used.
+(node:42) UnhandledPromiseRejectionWarning: TypeError: Cannot read property 'id' of undefined
+    at Object.execute (/home/minecraft/multicraft/servers/server193021/commands/moderation/tempmute.js:84:48)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 42)
+Command `mute` was used.
+(node:42) UnhandledPromiseRejectionWarning: TypeError: Cannot read property 'id' of undefined
+    at Object.execute (/home/minecraft/multicraft/servers/server193021/commands/moderation/mute.js:74:44)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 43)
+Command `rank` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 44)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 45)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 46)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 47)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 48)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 49)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 50)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 51)
+Command `stats` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 52)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 53)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 54)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 55)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 56)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 57)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 58)
+Command `rank` was used.
+Command `rank` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 59)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 60)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 61)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 62)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 63)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 64)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 65)
+Command `play` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 66)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 67)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 68)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 69)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 70)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 71)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 72)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 73)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 74)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 75)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 76)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 77)
+Command `mute` was used.
+Command `kick` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 78)
+Command `kick` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 79)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 80)
+Command `meme` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 81)
+Command `prefix` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 82)
+Command `rank` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 83)
+Command `ping` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 84)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 85)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 86)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 87)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 88)
+Command `userinfo` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 89)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 90)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 91)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 92)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 93)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 94)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 95)
+Command `help` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 96)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 97)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 98)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 99)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 100)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 101)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 102)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 103)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 104)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 105)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 106)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 107)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 108)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 109)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 110)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 111)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 112)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 113)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 114)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 115)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 116)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 117)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 118)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 119)
+Command `serverinfo` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Invalid Form Body
+embed.fields[2].value: Must be 1024 or fewer in length.
+embeds[0].fields[2].value: Must be 1024 or fewer in length.
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 120)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 121)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 122)
+Command `help` was used.
+Quabot has joined a server.
+Quabot has joined a server.
+(node:42) UnhandledPromiseRejectionWarning: TypeError: Cannot read property 'prefix' of null
+    at module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:64:29)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 123)
+Command `info` was used.
+Command `avatar` was used.
+Command `ping` was used.
+Command `online` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 124)
+Quabot has left a server.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 125)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 126)
+Command `members` was used.
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 127)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 128)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async MessageManager.delete (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/managers/MessageManager.js:126:5)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 129)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 130)
+(node:42) UnhandledPromiseRejectionWarning: DiscordAPIError: Missing Permissions
+    at RequestHandler.execute (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:154:13)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async RequestHandler.push (/home/minecraft/multicraft/servers/server193021/node_modules/discord.js/src/rest/RequestHandler.js:39:14)
+    at async module.exports (/home/minecraft/multicraft/servers/server193021/events/guild/message.js:84:31)
+(node:42) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 131)

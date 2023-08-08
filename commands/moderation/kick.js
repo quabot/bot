@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
-const User = require('../../models/guild');
+const colors = require('../files/colors.json');
+const Guild = require('../models/guild');
+const User = require('../models/guild');
 
 const noPermsKickBot = new discord.MessageEmbed()
     .setDescription("I do not have permission to kick members!")
@@ -29,10 +29,10 @@ module.exports = {
         const member = message.mentions.members.first();
         let reason = "No reason specified.";
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("KICK_MEMBERS")) return message.channel.send(noPermsKickBot);
-        if (!message.member.permissions.has("KICK_MEMBERS")) return message.channel.send(noPermsKickUser);
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("KICK_MEMBERS")) return message.channel.send(noPermsKickBot);
+        if (!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send(noPermsKickUser);
 
         if (!member) return message.channel.send(noUsertoKick);
         if (args.length > 1) reason = args.slice(1).join(' ');

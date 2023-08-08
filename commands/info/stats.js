@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 module.exports = {
     name: "stats",
@@ -8,8 +8,8 @@ module.exports = {
 
         console.log("Command `stats` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         const embed = new Discord.MessageEmbed()
             .setTitle("Quabot Statistics")
@@ -20,7 +20,7 @@ module.exports = {
             .addField("Channels", `${client.channels.cache.size}`)
             .addField("Users", `${client.users.cache.size}`)
             .addField("Servers", `${client.guilds.cache.size}`);
-        message.channel.send({ embeds: [embed]});
+        message.channel.send(embed);
     }
 
 }

@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 const DisTube = require('distube');
 
-const Guild = require('../../models/guild');
-const colors = require('../../files/colors.json');
+const Guild = require('../models/guild');
+const colors = require('../files/colors.json');
 const noNumber = new discord.MessageEmbed()
     .setDescription(`Please provide a number!`)
     .setColor(colors.COLOR);
@@ -28,8 +28,8 @@ module.exports = {
 
         console.log("Command `volume` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         const settings = await Guild.findOne({
             guildID: message.guild.id

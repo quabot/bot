@@ -1,0 +1,103 @@
+npm WARN discord-bot@1.0.43 No description
+npm WARN discord-bot@1.0.43 No repository field.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.13 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.13: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+audited 615 packages in 3.336s
+
+75 packages are looking for funding
+  run `npm fund` for details
+
+found 5 vulnerabilities (2 low, 2 moderate, 1 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+> discord-bot@1.0.43 start /home/minecraft/multicraft/servers/server193021
+> node index.js
+
+Loaded autoplay.js
+Loaded avatar.js
+Loaded ban.js
+Loaded cat.js
+Loaded clear.js
+Loaded clearpunishments.js
+Loaded coin.js
+Loaded config.js
+Loaded debug.js
+Loaded dog.js
+Loaded donate.js
+Loaded emotes.js
+Loaded end.js
+Loaded giveaway.js
+Loaded help.js
+Loaded info.js
+Loaded join.js
+Loaded kick.js
+Loaded leaderboard.js
+Loaded lockdown.js
+Loaded members.js
+Loaded meme.js
+Loaded mute.js
+Loaded nick.js
+Loaded nowplaying.js
+Loaded online.js
+Loaded pause.js
+Loaded ping.js
+Loaded play.js
+Loaded prefix.js
+Loaded punishments.js
+Loaded queue.js
+Loaded rank.js
+Loaded repeat.js
+Loaded reroll.js
+Loaded resume.js
+Loaded rps.js
+Loaded seek.js
+Loaded serverinfo.js
+Loaded shuffle.js
+Loaded skip.js
+Loaded stats.js
+Loaded status.js
+Loaded stop.js
+Loaded support.js
+Loaded tempban.js
+Loaded tempmute.js
+Loaded type.js
+Loaded unban.js
+Loaded unlock.js
+Loaded unmute.js
+Loaded uptime.js
+Loaded userinfo.js
+Loaded volume.js
+Loaded warn.js
+[DisTube] Downloaded youtube-dl 2021.06.06
+Connected to the Quabot database.
+ 
+GENERAL INFORMATION: 
+Client: QuaBot#6758
+Channels: 523
+Servers: 16
+Users: 24254
+Version: 1.0.5
+ 
+Quabot poster interval started.
+events.js:287
+      throw er; // Unhandled 'error' event
+      ^
+
+TypeError: mongoose.Types.ObjectID is not a function
+    at /home/minecraft/multicraft/servers/server193021/events/guild/message.js:45:37
+    at /home/minecraft/multicraft/servers/server193021/node_modules/mongoose/lib/model.js:4868:18
+    at processTicksAndRejections (internal/process/task_queues.js:79:11)
+Emitted 'error' event on Function instance at:
+    at /home/minecraft/multicraft/servers/server193021/node_modules/mongoose/lib/model.js:4870:15
+    at processTicksAndRejections (internal/process/task_queues.js:79:11)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! discord-bot@1.0.43 start: `node index.js`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the discord-bot@1.0.43 start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /tmp/npm/_logs/2021-07-14T15_06_21_252Z-debug.log

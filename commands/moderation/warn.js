@@ -2,9 +2,9 @@ const discord = require("discord.js");
 const mongoose = require('mongoose');
 
 const User = require('../../models/user');
-const Guild = require('../../models/guild');
+const Guild = require('../models/guild');
 const config = require('../../files/config.json');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 
 const noPermsBanUser = new discord.MessageEmbed()
     .setDescription("You do not have permission to warn members! `BAN_MEMBERS`")
@@ -29,9 +29,9 @@ module.exports = {
 
         console.log("Command `warn` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(noPermsBanUser);
         
         let reason = "No reason specified";
 

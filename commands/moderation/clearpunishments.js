@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 const mongoose = require('mongoose');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 const User = require('../../models/user');
-const Guild = require('../../models/guild');
+const Guild = require('../models/guild');
 
 const errorMain = new discord.MessageEmbed()
     .setDescription("There was an error!")
@@ -24,8 +24,8 @@ module.exports = {
 
         console.log("Command `clearpunishments` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         const type = args[0];
         const member = message.mentions.users.first();

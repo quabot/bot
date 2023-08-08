@@ -1,34 +1,29 @@
-const { Client, Intents } = require('discord.js');
-const client = new Client({
-	intents: [
-		'GUILDS',
-		'GUILD_VOICE_STATES',
-		'GUILD_MESSAGES',
-	],
-})
-
+// MODULES
+const distube = require('distube');
 const Discord = require("discord.js");
 const Levels = require("discord.js-leveling");
 const { GiveawaysManager } = require('discord-giveaways');
-const DisTube = require('distube');
 const mongoose = require("./utils/mongoose");
 const colors = require('./files/colors.json');
-const config = require('./files/config.json');
 
-client.commands = new Discord.Collection();
+// CLIENT
+const client = new Discord.Client();
 client.mongoose = require('./utils/mongoose');
 
+// FILES
+const Guild = require('./models/guild');
+const config = require("./files/config.json");
+
+// COLLECTIONS
+client.commands = new Discord.Collection();
+
+// COMMAND HANDLER
 ['command_handler', 'event_handler'].forEach(handler => {
     require(`./handlers/${handler}`)(client, Discord);
-});
-
-const player = new DisTube.default(client, {
-	searchSongs: 1,
-	leaveOnEmpty: true,
-	emptyCooldown: 60,
-	leaveOnFinish: true,
-	leaveOnStop: true
 })
+
+// MUSIC
+const player = new distube(client, { leaveOnFinish: true });
 
 player.on('playSong', (message, queue, song) => {
     const playingEmbed = new Discord.MessageEmbed()
@@ -85,8 +80,11 @@ player.on('noRelated', message => {
     message.channel.send(noRelatedEmbed);
 });
 
+
+
 client.player = player;
 
+// GIVEAWAY
 client.giveawaysManager = new GiveawaysManager(client, {
     storage: "./files/giveaways.json",
     updateCountdownEvery: 5000,
@@ -97,6 +95,7 @@ client.giveawaysManager = new GiveawaysManager(client, {
     }
 });
 
+// START BOT
 Levels.setURL("mongodb+srv://admin:AbyUoKpaaWrjK@cluster.n4eqp.mongodb.net/Database?retryWrites=true&w=majority");
 client.mongoose.init();
 client.login(config.BOT_TOKEN);

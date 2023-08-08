@@ -1,4 +1,5 @@
 const config = require('../../files/config.json');
+const dbots = require('dbots');
 const discord = require('discord.js')
 
 module.exports = (Discord, client, message) => {

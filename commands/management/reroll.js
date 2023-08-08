@@ -1,7 +1,7 @@
 const discord = require('discord.js');
 const config = require('../../files/config.json')
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
+const colors = require('../files/colors.json');
+const Guild = require('../models/guild');
 
 const noPermsAdminUser = new discord.MessageEmbed()
     .setDescription("You do not have administrator permissions!")
@@ -38,42 +38,42 @@ module.exports = {
 
         console.log("Command `reroll` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) return message.channel.send({ embeds: [noPermsMsg]});
-        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send({ embeds: [noPermsAdminUser]});
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send(noPermsMsg);
+        if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send(noPermsAdminUser);
 
 
-        if (!args[0]) return message.channel.send({ embeds: [noValPrize]});
+        if (!args[0]) return message.channel.send(noValPrize);
 
         let giveaway =
             client.giveawaysManager.giveaways.find((g) => g.prize === args.join(' ')) ||
             client.giveawaysManager.giveaways.find((g) => g.messageID === args[0]);
 
         if (!giveaway) {
-            return message.channel.send({ embeds: [noGivFound]});
+            return message.channel.send(noGivFound);
         }
 
         client.giveawaysManager.reroll(giveaway.messageID)
             .then(() => {
-                message.channel.send({ embeds: [sucRerolled]});
+                message.channel.send(sucRerolled);
             })
             .catch((e) => {
                 const notEndedYetMsgID = new discord.MessageEmbed()
                     .setDescription(`Giveaway with message ID ${giveaway.messageID} has not ended.`)
                     .setColor(colors.COLOR);
                 if (e.startsWith(notEndedYetMsgID)) {
-                    message.channel.send({ embeds: [notEndedYet]});
+                    message.channel.send(notEndedYet);
                 } else {
                     console.error(e);
-                    message.channel.send({ embeds: [errorEmbed]});
+                    message.channel.send(errorEmbed);
                 }
             });
 
             const settings = await Guild.findOne({
                 guildID: message.guild.id
             }, (err, guild) => {
-                if (err) message.channel.send({ embeds: [errorMain]});
+                if (err) message.channel.send(errorMain);
                 if (!guild) {
                     const newGuild = new Guild({
                         _id: mongoose.Types.ObjectID(),
@@ -90,9 +90,9 @@ module.exports = {
                     });
     
                     newGuild.save()
-                        .catch(err => message.channel.send({ embeds: [errorMain]}));
+                        .catch(err => message.channel.send(errorMain));
     
-                    return message.channel.send({ embeds: [addedDatabase]});
+                    return message.channel.send(addedDatabase);
                 }
             });
             const logChannel = message.guild.channels.cache.get(settings.logChannelID);
@@ -109,7 +109,7 @@ module.exports = {
                         .setColor(colors.GIVEAWAY_COLOR)
                         .setTitle('Giveaway rerolled')
                         .addField('Giveaway', giveaway)
-                    return logChannel.send({ embeds: [embed]});
+                    return logChannel.send(embed);
                 };
             }
     }

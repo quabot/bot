@@ -1,5 +1,5 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 const config = require('../../files/config.json');
 
 module.exports = {
@@ -9,8 +9,8 @@ module.exports = {
 
         console.log("Command `info` was used.");
 
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
 
         let totalSeconds = (client.uptime / 1000);
         let days = Math.floor(totalSeconds / 86400);
@@ -32,7 +32,7 @@ module.exports = {
             .addField("Commands", config.CMD_AMOUNT)
             .setFooter(`Uptime: ${uptime}`)
             .setColor(colors.COLOR)
-        message.channel.send({ embeds: [embed]})
+        message.channel.send(embed)
 
     }
 }

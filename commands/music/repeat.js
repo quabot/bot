@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 const DisTube = require('distube');
 
-const Guild = require('../../models/guild');
-const colors = require('../../files/colors.json');
+const Guild = require('../models/guild');
+const colors = require('../files/colors.json');
 const notVC = new discord.MessageEmbed()
     .setDescription("You need to be in a voice channel to play songs!")
     .setColor(colors.COLOR);
@@ -22,8 +22,8 @@ module.exports = {
 
         console.log("Command `repeat` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
 
         const settings = await Guild.findOne({
             guildID: message.guild.id

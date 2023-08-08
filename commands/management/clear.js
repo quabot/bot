@@ -1,6 +1,6 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
+const colors = require('../files/colors.json');
+const Guild = require('../models/guild');
 
 const noPermsAdminUser = new discord.MessageEmbed()
     .setDescription("You do not have administrator permissions.")
@@ -28,27 +28,27 @@ module.exports = {
 
         console.log("Command `clear` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) return message.channel.send({ embeds: [noPermsMsg]});
-        if (!message.member.permissions.has("ADMINISTRATOR")) return message.channel.send({ embeds: [noPermsAdminUser]});
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send(noPermsMsg);
+        if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send(noPermsAdminUser);
 
-        if (!args) return message.channel.send({ embeds: [noAmountMsg]});
-        if (args <= 0) return message.channel.send({ embeds: [msg100Max]});
-        if (args >= 101) return message.channel.send({ embeds: [msg100Max]});
-        if (isNaN(args)) return message.channel.send({ embeds: [msg100Max]});
+        if (!args) return message.channel.send(noAmountMsg);
+        if (args <= 0) return message.channel.send(msg100Max);
+        if (args >= 101) return message.channel.send(msg100Max);
+        if (isNaN(args)) return message.channel.send(msg100Max);
 
-        message.channel.bulkDelete(args[0]).catch(err => message.channel.send({ embeds: [errorMain]}));
+        message.channel.bulkDelete(args[0]).catch(err => message.channel.send(errorMain));
         const clearedAmount = new discord.MessageEmbed()
             .setDescription(`Succesfully cleared **${args[0]}** messages!`)
             .setColor(colors.COLOR)
-        message.channel.send({ embeds: [clearedAmount]});
+        message.channel.send(clearedAmount);
 
         // LOGGING
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain]});
+            if (err) message.channel.send(errorMain);
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -65,9 +65,9 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
 
-                return message.channel.send({ embeds: [addedDatabase]});
+                return message.channel.send(addedDatabase);
             }
         });
 
@@ -79,7 +79,7 @@ module.exports = {
                 .setTitle('Messages Cleared')
                 .addField('Channel', message.channel)
                 .addField('Amount', args)
-            logChannel.send({ embeds: [embed]});
+            logChannel.send(embed);
         } else {
             return;
         }

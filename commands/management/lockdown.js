@@ -1,6 +1,6 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
+const colors = require('../files/colors.json');
+const Guild = require('../models/guild');
 const ms = require('ms');
 
 const errorMain = new discord.MessageEmbed()
@@ -23,10 +23,10 @@ module.exports = {
 
         console.log("Command `lockdown` was used.");
 
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
-        if (!message.guild.me.permissions.has("MANAGE_CHANNELS")) return message.channel.send({ embeds: [noManageChannels]});
-        if (!message.member.permissions.has('ADMINISTRATOR')) return message.channel.send({ embeds: [noAdmin]});
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return message.delete({ timeout: 5000 });
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timout: 5000 });
+        if (!message.guild.me.hasPermission("MANAGE_CHANNELS")) return message.channel.send(noManageChannels);
+        if (!message.member.permissions.has('ADMINISTRATOR')) return message.channel.send(noAdmin);
 
         if (!client.lockit) client.lockit = [];
         let time = args.join(' ');

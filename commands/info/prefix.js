@@ -1,6 +1,6 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
-const Guild = require('../../models/guild');
+const colors = require('../files/colors.json');
+const Guild = require('../models/guild');
 
 const errorMain = new discord.MessageEmbed()
     .setDescription("There was an error!")
@@ -16,13 +16,13 @@ module.exports = {
 
         console.log("Command `prefix` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
          
         const settings = await Guild.findOne({
             guildID: message.guild.id
         }, (err, guild) => {
-            if (err) message.channel.send({ embeds: [errorMain]});
+            if (err) message.channel.send(errorMain);
             if (!guild) {
                 const newGuild = new Guild({
                     _id: mongoose.Types.ObjectID(),
@@ -39,16 +39,16 @@ module.exports = {
                 });
 
                 newGuild.save()
-                    .catch(err => message.channel.send({ embeds: [errorMain]}));
+                    .catch(err => message.channel.send(errorMain));
 
-                return message.channel.send({ embeds: [addedDatabase]});
+                return message.channel.send(addedDatabase);
             }
         });
 
         const embed = new discord.MessageEmbed()
             .setColor(colors.COLOR)
-            .setDescription(`This server's prefix is: **${settings.prefix}**`);
-        message.channel.send({ embeds: [embed]});
+            .setDescription(`This server's prefix is: **${settings.prefix}**!`);
+        message.channel.send(embed);
 
     }
 }

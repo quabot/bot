@@ -1,5 +1,5 @@
 const discord = require('discord.js');
-const colors = require('../../files/colors.json');
+const colors = require('../files/colors.json');
 const config = require('../../files/config.json');
 const fs = require('fs');
 
@@ -14,9 +14,9 @@ module.exports = {
 
         console.log("Command `debug` was used.");
 
-        if (message.guild.me.permissions.has("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
-        if (!message.guild.me.permissions.has("SEND_MESSAGES")) return;
-        if (!message.guild.me.permissions.has("MANAGE_MESSAGES")) return message.channel.send("I don't have permission to manage messages!");
+        if (message.guild.me.hasPermission("MANAGE_MESSAGES")) message.delete({ timeout: 5000 });
+        if (!message.guild.me.hasPermission("SEND_MESSAGES")) return;
+        if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) return message.channel.send(noPermsMsg);
 
         if (message.author.id === "486563467810308096") {
             if (!args[0]) return message.channel.send(validDebugs)
@@ -84,10 +84,6 @@ module.exports = {
                 } else {
                     message.channel.send("Enter either idle, dnd, online or invisible");
                 }
-            }
-            if (args[0] === "destroy") {
-                message.channel.send("QuaBot Shutting down.");
-                client.destroy();
             }
         } else {
             return;

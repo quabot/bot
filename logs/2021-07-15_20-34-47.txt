@@ -1,0 +1,90 @@
+npm WARN discord-bot@1.0.43 No description
+npm WARN discord-bot@1.0.43 No repository field.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.13 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.13: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+audited 615 packages in 3.871s
+
+75 packages are looking for funding
+  run `npm fund` for details
+
+found 4 vulnerabilities (2 low, 2 moderate)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+> discord-bot@1.0.43 start /home/minecraft/multicraft/servers/server193021
+> node index.js
+
+Loaded cat.js
+Loaded coin.js
+Loaded dog.js
+Loaded meme.js
+Loaded rps.js
+Loaded type.js
+Loaded all commands in category fun
+Loaded donate.js
+Loaded help.js
+Loaded info.js
+Loaded leaderboard.js
+Loaded online.js
+Loaded ping.js
+Loaded prefix.js
+Loaded rank.js
+Loaded serverinfo.js
+Loaded stats.js
+Loaded support.js
+Loaded uptime.js
+Loaded userinfo.js
+Loaded all commands in category info
+Loaded clear.js
+Loaded config.js
+Loaded debug.js
+Loaded end.js
+Loaded giveaway.js
+Loaded lockdown.js
+Loaded reroll.js
+Loaded unlock.js
+Loaded all commands in category management
+Loaded avatar.js
+Loaded emotes.js
+Loaded members.js
+Loaded nick.js
+Loaded all commands in category misc
+Loaded ban.js
+Loaded clearpunishments.js
+Loaded kick.js
+Loaded mute.js
+Loaded punishments.js
+Loaded tempban.js
+Loaded tempmute.js
+Loaded unban.js
+Loaded unmute.js
+Loaded warn.js
+Loaded all commands in category moderation
+Loaded autoplay.js
+Loaded join.js
+Loaded nowplaying.js
+Loaded pause.js
+Loaded play.js
+Loaded queue.js
+Loaded repeat.js
+Loaded resume.js
+Loaded seek.js
+Loaded shuffle.js
+Loaded skip.js
+Loaded status.js
+Loaded stop.js
+Loaded volume.js
+Loaded all commands in category music
+[DisTube] Downloaded youtube-dl 2021.06.06
+Connected to the Quabot database.
+ 
+GENERAL INFORMATION: 
+Client: QuaBeta#3338
+Channels: 18
+Servers: 1
+Users: 4
+Version: 1.0.5.2
+ 
+ 
+You are running Quabot, this project is made by do#8888. It is not allowed to distribute these files punblicly without the creator's consent.
+ 
