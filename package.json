@@ -5,6 +5,9 @@
   "author": "Joa_sss",
   "license": "none",
   "private": true,
+  "scripts": {
+    "start": "node ."
+  },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.41",
     "axios": "^1.4.0",
