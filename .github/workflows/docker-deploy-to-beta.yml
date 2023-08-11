@@ -18,4 +18,4 @@ jobs:
     - name: Build the new Docker image
       run: docker build . --file Dockerfile --tag quabot/beta-bot:$(date +%s)
     - name: Running the container from this image
-      run: docker run --network=api-bot-ws --restart=always --name quabot-beta-bot -p 127.0.0.1:8082:8081 --env-file /root/beta/bot.env -d $(docker images --filter "reference=quabot/beta-bot" | awk '{print $3}' | awk 'NR==2')
+      run: docker run --network="host" --restart=always --name quabot-beta-bot -p 8082:8081 --env-file /root/beta/bot.env -d $(docker images --filter "reference=quabot/beta-bot" | awk '{print $3}' | awk 'NR==2')
