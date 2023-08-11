@@ -11,8 +11,8 @@ module.exports = {
    */
   async execute(client) {
 
-    const wss = new WebSocketServer({ port: 8082 });
-    consola.info('Listening on port :8082');
+    const wss = new WebSocketServer({ port: process.env.WEBSOCKET_PORT });
+    consola.info(`Listening on port :${process.env.WEBSOCKET_PORT}`);
 
     wss.on('connection', function connection(ws) {
       ws.on('error', console.error);
