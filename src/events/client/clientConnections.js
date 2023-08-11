@@ -39,6 +39,8 @@ module.exports = {
 
         // Post the stats to top.gg
         if (process.env.NODE_ENV !== 'production') return;
+        if (!process.env.TOPGG_API_KEY) return;
+        
         AutoPoster(process.env.TOPGG_API_KEY ?? '', client).on('posted', stats =>
             consola.info(`Published statistics: ${stats.serverCount} servers.`)
         );
