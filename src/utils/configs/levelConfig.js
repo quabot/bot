@@ -25,15 +25,15 @@ const getLevelConfig = async (guildId, client) => {
 
                             border: {
                                 enabled: false, // default false
-                                color: "#000", // default #fff
+                                color: "#ffffff", // default #fff
                                 size: 10 // default 10
                             },
 
                             colors: {
                                 accent: "#37CF74", // default: #37CF74,
-                                displayname: "#fff", // default: #fff,
+                                displayname: "#ffffff", // default: #fff,
                                 username: "#B5B9BF", // default: #B5B9BF,
-                                xp: "#fff", // default: #fff,
+                                xp: "#ffffff", // default: #fff,
                                 xp_bar: "#1E1F22", // default: #1E1F22,
 
                                 level_bg: "#1E1F22", // default: #1E1F22,
