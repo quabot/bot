@@ -16,7 +16,7 @@ module.exports = {
 	* @param {Client} client 
 	*/
 	async execute(message, client) {
-		// if (!message.guildId) return;
+		if (!message.guildId) return;
 		try {
 			if (message.author.bot) return;
 		} catch (e) { }
