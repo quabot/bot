@@ -57,14 +57,14 @@ module.exports = {
 			});
 		}
 
-		levelDB.xp = xp;
-		levelDB.level = level;
+		if (xp) levelDB.xp = xp;
+		if(level) levelDB.level = level;
 		await levelDB.save();
 
 		await interaction.editReply({
 			embeds: [
 				new Embed(color)
-					.setDescription(`Successfully set ${user}'s level to ${level} and xp to ${xp}. Some level rewards might be out of sync.`)
+					.setDescription(`Successfully set ${user}'s level to ${level ?? levelDB.level} and xp to ${xp ?? levelDB.xp}. Some level rewards might be out of sync.`)
 			]
 		});
 	}
