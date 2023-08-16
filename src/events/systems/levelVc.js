@@ -42,21 +42,18 @@ module.exports = {
             (function loop() {
                 setTimeout(async function () {
                     if (newState.member.voice.channelId === null) {
-                        console.log('not in vc anymore lmfao');
                         return
                     }
 
                     if (newState.member.voice.selfMute) {
-                        console.log('muted');
+                        // console.log('muted');
                     } else if (newState.member.voice.selfDeaf) {
-                        console.log('deafened');
+                        // console.log('deafened');
                     } else if (newState.member.voice.deaf) {
-                        console.log('server deafened');
+                        // console.log('server deafened');
                     } else if (newState.member.voice.channel.members.size === 1) {
-                        console.log('only 1 user')
+                        // console.log('only 1 user')
                     } else {
-
-
                         const configColor = await getServerConfig(client, newState.guild.id);
                         const color = configColor?.color ?? '#416683';
                         if (!color) return;
