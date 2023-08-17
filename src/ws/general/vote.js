@@ -1,3 +1,5 @@
+const { Embed } = require('../../utils/constants/embed');
+const Vote = require('../../structures/schemas/Vote');
 
 //* Handle the vote of a user. Send a message and update DB.
 module.exports = {
