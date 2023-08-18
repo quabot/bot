@@ -25,41 +25,27 @@ module.exports = {
                         {
                             name: '**General:**',
                             value: `
-                         **• Name**: ${guild.name}
-                         **• ID**: ${guild.id}
-                         **• Created**: <t:${Math.floor(guild.createdTimestamp / 1000)}:R>
-                         **• Owner**: <@${guild.ownerId}>
-                         **• Description**: ${guild.description ?? 'Unset'}
+                            - **Name**: ${guild.name}\n- **ID**: ${guild.id}\n- **Created**: <t:${Math.floor(guild.createdTimestamp / 1000)}:R>\n- **Owner**: <@${guild.ownerId}>\n- **Description**: ${guild.description ?? 'Unset'}
                          `,
                             inline: false,
                         },
                         {
                             name: '**Members**',
                             value: `
-                         **• Total Members**: ${totalMembersSize}
-                         **• Humans**: ${humanMembersSize}
-                         **• Bots**: ${totalMembersSize - humanMembersSize}
+                         - **Total Members**: ${totalMembersSize}\n- **Humans**: ${humanMembersSize}\n- **Bots**: ${totalMembersSize - humanMembersSize}
                          `,
                             inline: false,
                         },
                         {
                             name: '**Channels:**',
                             value: `
-                            **• Total**: ${guild.channels.cache.size}
-                            **• Text**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildText).size}
-                            **• Categories**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildCategory).size
-                                }
-                            **• Voice**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildVoice).size}${guild.features.includes('COMMUNITY')
-                                    ? `\n**• News**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildAnnouncement)
-                                        .size
-                                    }
-                                    **• Stages**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildStageVoice).size
-                                    }`
+                            - **Total**: ${guild.channels.cache.size}\n- **Text**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildText).size}\n- **Categories**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildCategory).size
+                                }\n- **Voice**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildVoice).size}
+                                ${guild.features.includes('COMMUNITY')
+                                    ? `\n- **News**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildAnnouncement).size}
+                                    \n- **Stages**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildStageVoice).size}`
                                     : ''
-                                }
-                            **• Threads**: ${guild.channels.cache.filter(c => c.type === ChannelType.PublicThread).size +
-                                guild.channels.cache.filter(c => c.type === ChannelType.PrivateThread).size
-                                }
+                                }\n- **Threads**: ${guild.channels.cache.filter(c => c.type === ChannelType.PublicThread).size + guild.channels.cache.filter(c => c.type === ChannelType.PrivateThread).size}
                     `,
                             inline: false,
                         }

@@ -28,18 +28,11 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
-                    **• User**: ${user}
-                    **• Displayname**: ${user.globalName ?? 'None'}
-                    **• Username**: @${user.username}
-                    **• ID**: ${user.id}
-                    **• Roles**: ${member.roles.cache
+                - **User**: ${user}\n- **Displayname**: ${user.globalName ?? 'None'}\n- **Username**: @${user.username}\n- **ID**: ${user.id}\n- **Roles**: ${member.roles.cache
                         .map((r) => r)
                         .join(' ')
                         .replace('@everyone', ' ') ?? 'None'
-                    }
-                    **• Joined Server**: <t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>
-                    **• Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>
-                    **• House**: ${badges.join(' ')} ${badges.length === 0 ? 'None' : ''}
+                    }\n- **Joined Server**: <t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>\n- **Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>\n- **House**: ${badges.join(' ')} ${badges.length === 0 ? 'None' : ''}
                 `),
             ],
         });

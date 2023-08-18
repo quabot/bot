@@ -17,12 +17,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new Embed(role.color ?? color).setTitle('Role Info').setDescription(`
-                    **• Name:** ${role.name}
-                    **• Role:** ${role}
-                    **• ID:** ${role.id}
-                    **• Users:** ${role.members.size}
-                    **• Mentionable:** ${role.mentionable ? 'Yes' : 'No'}
-                    **• Separated:** ${role.hoist ? 'Yes' : 'No'}
+                - **Name:** ${role.name}\n- **Role:** ${role}\n- **ID:** ${role.id}\n- **Users:** ${role.members.size}\n- **Mentionable:** ${role.mentionable ? 'Yes' : 'No'}\n- **Separated:** ${role.hoist ? 'Yes' : 'No'}
                     `),
             ],
         });
