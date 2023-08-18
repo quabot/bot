@@ -24,6 +24,8 @@ module.exports = {
                 consola.error(`Failed to connect to the database: ${err}`);
             });
 
+        if (process.env.NODE_ENV !== 'production') return;
+        
         // Post the stats to the QuaBot Site
         (function loop() {
             if (process.env.POST_STATS !== 'true') return;
@@ -38,9 +40,8 @@ module.exports = {
         })();
 
         // Post the stats to top.gg
-        if (process.env.NODE_ENV !== 'production') return;
         if (!process.env.TOPGG_API_KEY) return;
-        
+
         AutoPoster(process.env.TOPGG_API_KEY ?? '', client).on('posted', stats =>
             consola.info(`Published statistics: ${stats.serverCount} servers.`)
         );
