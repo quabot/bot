@@ -8,6 +8,8 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(client) {
+        client.guilds.cache.forEach(guild => guild.members.fetch());
+
         function setActivity(activity) {
             client.user.setActivity({ type: ActivityType.Watching, name: activity });
         }

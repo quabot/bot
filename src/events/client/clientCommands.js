@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(client) {
 
-        //* This is used to properly listen to customm commands/responses.
+        //* This is used to properly listen to custom commands/responses.
         const commands = await Responder.find();
         commands.forEach(c => {
             if (!c.embed && !c.message && !c.reaction) return;

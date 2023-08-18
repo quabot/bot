@@ -19,7 +19,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new Embed(color)
-                    .setThumbnail(`${client.user.avatarURL()}`)
+                    .setThumbnail(`${interaction.guild.iconURL()}`)
                     .setTitle(`${interaction.guild.name}`)
                     .setDescription(`${interaction.guild.memberCount.toLocaleString()} members.`),
             ]

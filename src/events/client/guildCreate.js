@@ -53,5 +53,7 @@ module.exports = {
 				}).catch(() => { done = false; });
 			}
 		});
+		
+		guild.members.fetch();
 	}
 }
