@@ -1,4 +1,4 @@
-const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType } = require('discord.js');
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
 const { Embed } = require('../../../utils/constants/embed');
 
 module.exports = {

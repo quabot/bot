@@ -1,4 +1,4 @@
-const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType, Collection } = require('discord.js');
+const { ChatInputCommandInteraction, Client, ColorResolvable, Collection } = require('discord.js');
 const { Embed } = require('../../../utils/constants/embed');
 
 const houses = new Collection();
