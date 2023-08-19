@@ -24,7 +24,10 @@ module.exports = {
         const ws = client.ws_events.get(data.type);
         if (!ws) return consola.warn('Unhandled WebSocket event: ' + data.type + '.');
 
-        ws.execute(client, data).catch((e) => consola.error('WebSocket error:' + e));
+        ws.execute(client, data).catch((e) => {
+          consola.error('WebSocket error:' + e);
+          console.log(e)
+        });
       });
     });
   }
