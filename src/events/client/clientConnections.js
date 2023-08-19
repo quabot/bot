@@ -30,7 +30,7 @@ module.exports = {
         (function loop() {
             if (process.env.POST_STATS !== 'true') return;
             setTimeout(function () {
-                axios.post(`${API_URL}/site/set-stats`, { servers: client.guilds.cache.size(), channels: client.channels.cache.size, users: client.users.cache.size }, {
+                axios.post(`${API_URL}/site/set-stats`, { servers: client.guilds.cache.size, channels: client.channels.cache.size, users: client.users.cache.size }, {
                     headers: {
                         authorization: process.env.STATS_KEY
                     }
