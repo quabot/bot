@@ -204,7 +204,7 @@ module.exports = {
         }
 
         if (config.channel) {
-            const channel = interaction.guild.channels.cache.get(config.channelId);
+            const channel = interaction.guild.channels.fetch().get(config.channelId);
             if (!channel) return;
 
             await channel.send({
