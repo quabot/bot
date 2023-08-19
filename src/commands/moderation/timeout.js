@@ -57,6 +57,7 @@ module.exports = {
                     .setDescription('Please fill out all the required fields.')
             ]
         });
+        await getUser(interaction.guildId, member.id)
 
         if (!ms(duration)) return await interaction.editReply({
             embeds: [

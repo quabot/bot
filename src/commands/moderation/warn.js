@@ -51,6 +51,7 @@ module.exports = {
                     .setDescription('Please fill out all the required fields.')
             ]
         });
+        await getUser(interaction.guildId, user.id);
 
         
         if (user === interaction.member) return interaction.editReply({

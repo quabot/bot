@@ -58,6 +58,7 @@ module.exports = {
                     .setDescription('Please fill out all the required fields.')
             ]
         });
+        await getUser(interaction.guildId, member.id);
 
 
         //* Prevent a non-allowed kick.
