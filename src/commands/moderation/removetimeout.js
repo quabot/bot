@@ -9,7 +9,7 @@ const ms = require('ms');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('untimeout')
+        .setName('removetimeout')
         .setDescription('Remove the timeout from a user.')
         .addUserOption(option => option
             .setName('user')
@@ -40,6 +40,8 @@ module.exports = {
         });
 
         const member = interaction.options.getMember('user');
+        await getUser(interaction.guildId, member.id);
+
         if (!member) return await interaction.editReply({
             embeds: [
                 new Embed(color)
@@ -61,9 +63,6 @@ module.exports = {
                     .setDescription('You cannot remove a timeout from a user with roles higher than your own.')
             ]
         });
-
-
-        await getUser(interaction.guildId, member.id);
 
         let timeout = true;
         await member.timeout(1, `Timeout removed by @${interaction.user.username}`).catch(async e => {
@@ -101,7 +100,7 @@ module.exports = {
         });
 
         if (config.channel) {
-            const channel = interaction.guild.channels.fetch().get(config.channelId);
+            const channel = interaction.guild.channels.cache.get(config.channelId);
             if (!channel) return;
 
             await channel.send({

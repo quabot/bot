@@ -40,7 +40,7 @@ module.exports = {
 		await getWelcomeConfig(client, guild.id);
 
 		let done = false;
-		guild.channels.fetch().forEach(channel => {
+		guild.channels.cache.forEach(channel => {
 			if (channel.type === ChannelType.GuildText && !done && !channel.name.includes('rules') && !channel.name.includes('announcements') && !channel.name.includes('info') && !channel.name.includes('information')) {
 				done = true;
 				channel.send({
@@ -54,6 +54,6 @@ module.exports = {
 			}
 		});
 		
-		guild.members.fetch();
+		guild.members.fetch().catch(() => { });
 	}
 }

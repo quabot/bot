@@ -69,7 +69,7 @@ module.exports = {
         await ticket.save();
 
 
-        const ticketMsg = (await interaction.channel.messages.fetch()).last();
+        const ticketMsg = (await interaction.channel.messages.cache).last();
         if (ticketMsg.author.id !== process.env.CLIENT_ID) return await interaction.editReply({
             embeds: [
                 new Embed(color)

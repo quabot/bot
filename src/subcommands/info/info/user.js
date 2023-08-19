@@ -28,7 +28,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
-                - **User**: ${user}\n- **Displayname**: ${user.globalName ?? 'None'}\n- **Username**: @${user.username}\n- **ID**: ${user.id}\n- **Roles**: ${member.roles.cache
+                - **User**: ${user}\n- **Displayname**: ${user.globalName ?? 'None'}\n- **Username**: @${user.username}\n- **NicknIame**: ${member.nickname ?? 'None'}\n- **ID**: ${user.id}\n- **Roles**: ${member.roles.cache
                         .map((r) => r)
                         .join(' ')
                         .replace('@everyone', ' ') ?? 'None'
