@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const Config = require('../../structures/schemas/ReactionConfig');
+const Config = require('@schemas/ReactionConfig');
 
 /**
  * @param {Client} client 

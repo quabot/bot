@@ -1,10 +1,10 @@
 const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getModerationConfig } = require('../../utils/configs/moderationConfig');
-const { getUser } = require('../../utils/configs/user');
-const { Embed } = require('../../utils/constants/embed');
-const Punishment = require('../../structures/schemas/Punishment');
+const { getModerationConfig } = require('@configs/moderationConfig');
+const { getUser } = require('@configs/user');
+const { Embed } = require('@constants/embed');
+const Punishment = require('@schemas/Punishment');
 const { randomUUID } = require('crypto');
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const { CustomEmbed } = require('@constants/customEmbed');
 const ms = require('ms');
 
 module.exports = {

@@ -1,6 +1,6 @@
 const { Client, Events, Colors, GuildMember } = require('discord.js');
-const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
-const { Embed } = require('../../utils/constants/embed');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	event: Events.GuildMemberUpdate,

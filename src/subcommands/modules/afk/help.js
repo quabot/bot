@@ -3,9 +3,9 @@ const {
 	Client,
 	ColorResolvable
 } = require('discord.js');
-const { getAfkConfig } = require('../../../utils/configs/afkConfig');
-const { getUser } = require('../../../utils/configs/user');
-const { Embed } = require('../../../utils/constants/embed');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getUser } = require('@configs/user');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	parent: 'afk',

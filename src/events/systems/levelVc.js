@@ -1,9 +1,9 @@
 const { Client, Events, VoiceState, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder } = require('discord.js');
-const { getLevelConfig } = require('../../utils/configs/levelConfig');
-const { getLevel } = require('../../utils/configs/level');
-const { getServerConfig } = require('../../utils/configs/serverConfig');
-const Vote = require('../../structures/schemas/Vote');
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getLevel } = require('@configs/level');
+const { getServerConfig } = require('@configs/serverConfig');
+const Vote = require('@schemas/Vote');
+const { CustomEmbed } = require('@constants/customEmbed');
 const { drawCard } = require('../../utils/functions/levelCard');
 
 module.exports = {

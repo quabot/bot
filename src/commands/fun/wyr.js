@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 const axios = require('axios');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.

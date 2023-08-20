@@ -33,5 +33,13 @@
   },
   "devDependencies": {
     "eslint": "^8.47.0"
-  }
+  },
+  "_moduleAliases": {
+    "@configs": "src/utils/configs/",
+    "@constants": "src/utils/constants/",
+    "@functions": "src/utils/functions/",
+    "@assets": "src/utils/assets/",
+    "@schemas": "src/structures/schemas/",
+    "@handlers": "src/structures/handlers/"
+}
 }

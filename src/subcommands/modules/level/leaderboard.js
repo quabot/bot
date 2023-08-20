@@ -1,6 +1,6 @@
 const { Client, ChatInputCommandInteraction } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
-const { getLevelConfig } = require('../../../utils/configs/levelConfig');
+const { Embed } = require('@constants/embed');
+const { getLevelConfig } = require('@configs/levelConfig');
 
 module.exports = {
 	parent: 'level',
@@ -27,7 +27,7 @@ module.exports = {
 			]
 		});
 
-		const Level = require('../../../structures/schemas/Level');
+		const Level = require('@schemas/Level');
 		const leaderboard = await Level.find({
 			guildId: interaction.guildId,
 			active: true

@@ -3,7 +3,7 @@ const { getServerConfig } = require('../configs/serverConfig');
 const { Embed } = require('../constants/embed');
 
 async function tempUnban(client, document) {
-	const Punishment = require('../../structures/schemas/Punishment');
+	const Punishment = require('@schemas/Punishment');
 	const guild = client.guilds.cache.get(`${document.guildId}`);
 	if (!guild) return;
 

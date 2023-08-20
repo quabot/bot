@@ -1,4 +1,4 @@
-const User = require('../../structures/schemas/User');
+const User = require('@schemas/User');
 
 const getUser = async (guildId, userId) => {
 	const user = await User.findOne(

@@ -1,10 +1,10 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType } = require('discord.js');
-const { getGiveawayConfig } = require('../../../utils/configs/giveawayConfig');
-const { getIdConfig } = require('../../../utils/configs/idConfig');
-const { Embed } = require('../../../utils/constants/embed');
+const { getGiveawayConfig } = require('@configs/giveawayConfig');
+const { getIdConfig } = require('@configs/idConfig');
+const { Embed } = require('@constants/embed');
 const ms = require('ms');
 const { endGiveaway } = require('../../../utils/functions/giveaway');
-const Giveaway = require('../../../structures/schemas/Giveaway');
+const Giveaway = require('@schemas/Giveaway');
 
 module.exports = {
 	parent: 'giveaway',

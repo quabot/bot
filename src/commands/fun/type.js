@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, Colors, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('../../utils/constants/embed');
-const { getUserGame } = require('../../utils/configs/userGame');
+const { Embed } = require('@constants/embed');
+const { getUserGame } = require('@configs/userGame');
 
 //* Create a list of sentences.
 const sentences = [

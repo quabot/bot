@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { reqString, reqBool } = require('../../utils/constants/schemas');
+const { reqString, reqBool } = require('@constants/schemas');
 
 const Punishment = new Schema({
 	guildId: reqString,

@@ -1,8 +1,8 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getTicketConfig } = require('../../../utils/configs/ticketConfig');
-const Ticket = require('../../../structures/schemas/Ticket');
-const { Embed } = require('../../../utils/constants/embed');
-const { getIdConfig } = require('../../../utils/configs/idConfig');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const Ticket = require('@schemas/Ticket');
+const { Embed } = require('@constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
 
 module.exports = {
 	parent: 'ticket',

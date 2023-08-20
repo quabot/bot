@@ -1,5 +1,5 @@
 const { Client, GuildMember } = require('discord.js');
-const Level = require('../../structures/schemas/Level');
+const Level = require('@schemas/Level');
 
 module.exports = {
 	event: 'guildMemberRemove',

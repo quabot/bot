@@ -3,8 +3,8 @@ const {
 	Client,
 	ColorResolvable
 } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
-const { getApplicationConfig } = require('../../../utils/configs/applicationConfig');
+const { Embed } = require('@constants/embed');
+const { getApplicationConfig } = require('@configs/applicationConfig');
 
 module.exports = {
 	parent: 'applications',

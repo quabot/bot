@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { reqString, reqNum, reqBool, reqObject } = require('../../utils/constants/schemas');
+const { reqString, reqNum, reqBool, reqObject } = require('@constants/schemas');
 
 const SuggestionConfig = new Schema({
 	guildId: reqString,

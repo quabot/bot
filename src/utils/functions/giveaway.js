@@ -1,7 +1,7 @@
-const Giveaway = require('../../structures/schemas/Giveaway');
+const Giveaway = require('@schemas/Giveaway');
 const { shuffleArray } = require('./array');
 const { getGiveawayConfig } = require('../configs/giveawayConfig');
-const { Embed } = require('../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 const { getServerConfig } = require('../configs/serverConfig');
 
 async function endGiveaway(client, document, forceEarly) {

@@ -1,6 +1,6 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, ButtonBuilder, ActionRowBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
-const { channelBlacklist } = require('../../../utils/constants/discord');
-const { Embed } = require('../../../utils/constants/embed');
+const { channelBlacklist } = require('@constants/discord');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	parent: 'message',

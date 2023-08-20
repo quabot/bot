@@ -1,6 +1,6 @@
 const { Client, Interaction, Colors, ChannelType } = require('discord.js');
-const { getServerConfig } = require('../../utils/configs/serverConfig');
-const { handleError } = require('../../utils/constants/errorHandler');
+const { getServerConfig } = require('@configs/serverConfig');
+const { handleError } = require('@constants/errorHandler');
 
 module.exports = {
 	event: 'interactionCreate',

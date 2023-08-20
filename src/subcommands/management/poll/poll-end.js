@@ -1,9 +1,9 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const ms = require('ms');
-const Poll = require('../../../structures/schemas/Poll');
-const { getIdConfig } = require('../../../utils/configs/idConfig');
-const { getPollConfig } = require('../../../utils/configs/pollConfig');
-const { Embed } = require('../../../utils/constants/embed');
+const Poll = require('@schemas/Poll');
+const { getIdConfig } = require('@configs/idConfig');
+const { getPollConfig } = require('@configs/pollConfig');
+const { Embed } = require('@constants/embed');
 const { endPoll } = require('../../../utils/functions/poll');
 
 module.exports = {

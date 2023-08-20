@@ -1,5 +1,5 @@
 const { Client, ButtonInteraction, ColorResolvable, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 const { isValidHttpUrl } = require('../../../utils/functions/string');
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
 			], ephemeral: true
 		});
 
-		const Punishment = require('../../../structures/schemas/Punishment');
+		const Punishment = require('@schemas/Punishment');
 		const punishment = await Punishment.findOne({ guildId: interaction.guildId, id });
 		if (!punishment) return await interaction.reply({
 			embeds: [

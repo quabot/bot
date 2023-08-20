@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 //* QuaBot Ticket Message Sender Handler.
 module.exports = {

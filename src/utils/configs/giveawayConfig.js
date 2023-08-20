@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const GiveawayConfig = require('../../structures/schemas/GiveawayConfig');
+const GiveawayConfig = require('@schemas/GiveawayConfig');
 
 /**
  * @param {Client} client 

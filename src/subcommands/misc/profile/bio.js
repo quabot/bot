@@ -1,6 +1,6 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
-const { getUserGame } = require('../../../utils/configs/userGame');
-const { Embed } = require('../../../utils/constants/embed');
+const { getUserGame } = require('@configs/userGame');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	parent: 'profile',

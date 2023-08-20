@@ -1,10 +1,10 @@
 const { SlashCommandBuilder, Client, ModalSubmitInteraction, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
-const Suggestion = require('../../../structures/schemas/Suggestion');
-const { getIdConfig } = require('../../../utils/configs/idConfig');
-const { getSuggestConfig } = require('../../../utils/configs/suggestConfig');
-const { CustomEmbed } = require('../../../utils/constants/customEmbed');
-const { Embed } = require('../../../utils/constants/embed');
-const { getUserGame } = require('../../../utils/configs/userGame');
+const Suggestion = require('@schemas/Suggestion');
+const { getIdConfig } = require('@configs/idConfig');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { CustomEmbed } = require('@constants/customEmbed');
+const { Embed } = require('@constants/embed');
+const { getUserGame } = require('@configs/userGame');
 
 module.exports = {
 	name: 'profile-bio',

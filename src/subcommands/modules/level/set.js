@@ -1,7 +1,7 @@
 const { Client, ChatInputCommandInteraction, PermissionFlagsBits } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
-const { getLevelConfig } = require('../../../utils/configs/levelConfig');
-const { getLevel } = require('../../../utils/configs/level');
+const { Embed } = require('@constants/embed');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getLevel } = require('@configs/level');
 
 module.exports = {
 	parent: 'level',

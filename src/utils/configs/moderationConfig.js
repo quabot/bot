@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const ModerationConfig = require('../../structures/schemas/ModerationConfig');
+const ModerationConfig = require('@schemas/ModerationConfig');
 
 /**
  * @param {Client} client 

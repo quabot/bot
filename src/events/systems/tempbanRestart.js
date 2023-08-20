@@ -1,6 +1,6 @@
 const { Client } = require('discord.js');
 const ms = require('ms');
-const Punishment = require('../../structures/schemas/Punishment');
+const Punishment = require('@schemas/Punishment');
 const { tempUnban } = require('../../utils/functions/unban');
 
 module.exports = {

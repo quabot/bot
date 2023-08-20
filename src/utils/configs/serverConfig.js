@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const Server = require('../../structures/schemas/Server');
+const Server = require('@schemas/Server');
 
 /**
  * @param {Client} client 

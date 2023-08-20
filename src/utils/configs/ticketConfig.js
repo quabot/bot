@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const TicketConfig = require('../../structures/schemas/TicketConfig');
+const TicketConfig = require('@schemas/TicketConfig');
 
 /**
  * @param {Client} client 

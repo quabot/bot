@@ -1,5 +1,5 @@
 const { Client, ButtonInteraction, ColorResolvable, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	name: 'embed-description',

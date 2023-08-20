@@ -1,7 +1,7 @@
 const { Client, Events, GuildMember } = require('discord.js');
-const { getServerConfig } = require('../../utils/configs/serverConfig');
-const { getWelcomeConfig } = require('../../utils/configs/welcomeConfig');
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const { getServerConfig } = require('@configs/serverConfig');
+const { getWelcomeConfig } = require('@configs/welcomeConfig');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 module.exports = {
 	event: Events.GuildMemberAdd,

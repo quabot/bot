@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const ApplicationConfig = require('../../structures/schemas/AfkConfig');
+const ApplicationConfig = require('@schemas/AfkConfig');
 
 const getApplicationConfig = async (guildId, client) => {
 	const applicationConfig =

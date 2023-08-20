@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const PollConfig = require('../../structures/schemas/PollConfig');
+const PollConfig = require('@schemas/PollConfig');
 
 /**
  * @param {Client} client 

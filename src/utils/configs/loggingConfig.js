@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const LoggingConfig = require('../../structures/schemas/LoggingConfig');
+const LoggingConfig = require('@schemas/LoggingConfig');
 
 /**
  * @param {Client} client 

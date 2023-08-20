@@ -1,9 +1,9 @@
 const { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Colors } = require('discord.js');
-const { CustomEmbed } = require('../../../utils/constants/customEmbed');
-const { Embed } = require('../../../utils/constants/embed');
-const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswer');
-const Application = require('../../../structures/schemas/Application');
-const { getSuggestConfig } = require('../../../utils/configs/suggestConfig');
+const { CustomEmbed } = require('@constants/customEmbed');
+const { Embed } = require('@constants/embed');
+const ApplicationAnswer = require('@schemas/ApplicationAnswer');
+const Application = require('@schemas/Application');
+const { getSuggestConfig } = require('@configs/suggestConfig');
 
 module.exports = {
 	name: 'application-accept',

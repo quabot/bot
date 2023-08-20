@@ -1,8 +1,8 @@
 const { Client, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction, Colors, EmbedBuilder } = require('discord.js');
-const { getSuggestConfig } = require('../../../utils/configs/suggestConfig');
-const { Embed } = require('../../../utils/constants/embed');
-const Suggest = require('../../../structures/schemas/Suggestion');
-const { CustomEmbed } = require('../../../utils/constants/customEmbed');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { Embed } = require('@constants/embed');
+const Suggest = require('@schemas/Suggestion');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 module.exports = {
 	parent: 'suggestion',

@@ -8,7 +8,7 @@ const {
 	Colors,
 	ActionRowBuilder
 } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 const ms = require('ms');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
 		const type = interaction.options.getString('type');
 		const id = interaction.options.getString('id');
 
-		const Punishment = require('../../../structures/schemas/Punishment');
+		const Punishment = require('@schemas/Punishment');
 		let punishment;
 		if (user) punishment = await Punishment.findOne({ guildId: interaction.guildId, id, userId: user.id, type });
 		if (!user) punishment = await Punishment.findOne({ guildId: interaction.guildId, id, type });

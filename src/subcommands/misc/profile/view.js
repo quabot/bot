@@ -1,8 +1,8 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
-const { getLevelConfig } = require('../../../utils/configs/levelConfig');
-const { getUserGame } = require('../../../utils/configs/userGame');
-const Level = require('../../../structures/schemas/Level');
+const { Embed } = require('@constants/embed');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getUserGame } = require('@configs/userGame');
+const Level = require('@schemas/Level');
 
 module.exports = {
 	parent: 'profile',

@@ -3,7 +3,7 @@ const { connect, set } = require('mongoose');
 const consola = require('consola');
 const { AutoPoster } = require('topgg-autoposter');
 const axios = require('axios');
-const { API_URL } = require('../../utils/constants/discord');
+const { API_URL } = require('@constants/discord');
 
 module.exports = {
 	event: 'ready',

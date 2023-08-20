@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const WelcomeConfig = require('../../structures/schemas/WelcomeConfig');
+const WelcomeConfig = require('@schemas/WelcomeConfig');
 
 /**
  * @param {Client} client 

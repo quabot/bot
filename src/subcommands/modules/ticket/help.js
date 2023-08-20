@@ -1,7 +1,7 @@
 const { Client, ChatInputCommandInteraction } = require('discord.js');
-const { getIdConfig } = require('../../../utils/configs/idConfig');
-const { getTicketConfig } = require('../../../utils/configs/ticketConfig');
-const { Embed } = require('../../../utils/constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	parent: 'ticket',

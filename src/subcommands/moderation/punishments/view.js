@@ -8,7 +8,7 @@ const {
 	Colors,
 	ActionRowBuilder
 } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	parent: 'punishments',
@@ -27,7 +27,7 @@ module.exports = {
 		const id = interaction.options.getString('id');
 		const userId = interaction.options.getString('user-id');
 
-		const Punishment = require('../../../structures/schemas/Punishment');
+		const Punishment = require('@schemas/Punishment');
 		const punishments = await Punishment.find({ guildId: interaction.guildId });
 
 		let filtered = punishments;

@@ -1,5 +1,5 @@
 const { Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { Embed } = require('../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 
 //* Handle what happens when a form gets responded to.
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
 		if (!guild) return;
 
 		//* Check if the form exists and if anything should happen.
-		const Application = require('../../structures/schemas/Application');
+		const Application = require('@schemas/Application');
 		const FoundForm = await Application.findOne({
 			guildId: form.guildId,
 			id: form.id

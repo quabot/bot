@@ -1,8 +1,8 @@
 const { Client, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction, AttachmentBuilder } = require('discord.js');
-const { getSuggestConfig } = require('../../../utils/configs/suggestConfig');
-const { Embed } = require('../../../utils/constants/embed');
-const { getLevelConfig } = require('../../../utils/configs/levelConfig');
-const { getLevel } = require('../../../utils/configs/level');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { Embed } = require('@constants/embed');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getLevel } = require('@configs/level');
 const { drawCard } = require('../../../utils/functions/levelCard');
 
 module.exports = {

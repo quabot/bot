@@ -1,8 +1,8 @@
 /* eslint-disable no-case-declarations */
 const { ReactionManager, User, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getReactionConfig } = require('../../utils/configs/reactionConfig');
-const { getServerConfig } = require('../../utils/configs/serverConfig');
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const { getReactionConfig } = require('@configs/reactionConfig');
+const { getServerConfig } = require('@configs/serverConfig');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 module.exports = {
 	event: 'messageReactionRemove',
@@ -15,7 +15,7 @@ module.exports = {
      */
 	async execute(reaction, user, client) {
 		if (!reaction.message.guildId) return;
-		const Reaction = require('../../structures/schemas/ReactionRole');
+		const Reaction = require('@schemas/ReactionRole');
 		let reactionRole = await Reaction.findOne({
 			guildId: reaction.message.guildId,
 			messageId: reaction.message.id,

@@ -1,4 +1,4 @@
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 //* QuaBot Staff Update Message Sender.
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
 		const sentEmbed = new CustomEmbed(message, getParsedString);
 		let total = 0;
 		client.guilds.cache.forEach(async (guild) => {
-			const Server = require('../../structures/schemas/Server');
+			const Server = require('@schemas/Server');
 			const config = await Server.findOne({ guildId: guild.id });
 			if (config) {
 				const channel = guild.channels.cache.get(config.updatesChannel);

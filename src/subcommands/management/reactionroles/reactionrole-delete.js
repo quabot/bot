@@ -1,8 +1,8 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
-const { getIdConfig } = require('../../../utils/configs/idConfig');
-const { getReactionConfig } = require('../../../utils/configs/reactionConfig');
-const { Embed } = require('../../../utils/constants/embed');
-const Reaction = require('../../../structures/schemas/ReactionRole');
+const { getIdConfig } = require('@configs/idConfig');
+const { getReactionConfig } = require('@configs/reactionConfig');
+const { Embed } = require('@constants/embed');
+const Reaction = require('@schemas/ReactionRole');
 
 module.exports = {
 	parent: 'reactionroles',

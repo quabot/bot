@@ -9,7 +9,7 @@ module.exports = {
      * @param {Client} client 
      */
 	async execute(client) {
-		const Giveaway = require('../../structures/schemas/Giveaway');
+		const Giveaway = require('@schemas/Giveaway');
 		const giveaways = await Giveaway.find({ ended: false });
 
 		giveaways.forEach(async giveaway => {

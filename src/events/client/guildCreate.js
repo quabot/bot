@@ -1,19 +1,19 @@
 const { Guild, ChannelType } = require('discord.js');
-const { getApplicationConfig } = require('../../utils/configs/applicationConfig');
-const { getAfkConfig } = require('../../utils/configs/afkConfig');
-const { getGiveawayConfig } = require('../../utils/configs/giveawayConfig');
-const { getLevelConfig } = require('../../utils/configs/levelConfig');
-const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
-const { getIdConfig } = require('../../utils/configs/idConfig');
-const { getModerationConfig } = require('../../utils/configs/moderationConfig');
-const { getPollConfig } = require('../../utils/configs/pollConfig');
-const { getReactionConfig } = require('../../utils/configs/reactionConfig');
-const { getResponderConfig } = require('../../utils/configs/responderConfig');
-const { getServerConfig } = require('../../utils/configs/serverConfig');
-const { getSuggestConfig } = require('../../utils/configs/suggestConfig');
-const { getTicketConfig } = require('../../utils/configs/ticketConfig');
-const { getWelcomeConfig } = require('../../utils/configs/welcomeConfig');
-const { Embed } = require('../../utils/constants/embed');
+const { getApplicationConfig } = require('@configs/applicationConfig');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getGiveawayConfig } = require('@configs/giveawayConfig');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { getIdConfig } = require('@configs/idConfig');
+const { getModerationConfig } = require('@configs/moderationConfig');
+const { getPollConfig } = require('@configs/pollConfig');
+const { getReactionConfig } = require('@configs/reactionConfig');
+const { getResponderConfig } = require('@configs/responderConfig');
+const { getServerConfig } = require('@configs/serverConfig');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const { getWelcomeConfig } = require('@configs/welcomeConfig');
+const { Embed } = require('@constants/embed');
 
 
 module.exports = {

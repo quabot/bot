@@ -1,7 +1,7 @@
 const { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
-const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswer');
-const Application = require('../../../structures/schemas/Application');
+const { Embed } = require('@constants/embed');
+const ApplicationAnswer = require('@schemas/ApplicationAnswer');
+const Application = require('@schemas/Application');
 
 module.exports = {
 	name: 'application-deny',

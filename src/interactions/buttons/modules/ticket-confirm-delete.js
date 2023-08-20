@@ -1,8 +1,8 @@
 const { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
-const Ticket = require('../../../structures/schemas/Ticket');
-const { getIdConfig } = require('../../../utils/configs/idConfig');
-const { getTicketConfig } = require('../../../utils/configs/ticketConfig');
-const { Embed } = require('../../../utils/constants/embed');
+const Ticket = require('@schemas/Ticket');
+const { getIdConfig } = require('@configs/idConfig');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	name: 'confirm-delete-ticket',

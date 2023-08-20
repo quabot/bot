@@ -1,4 +1,4 @@
-const UserGame = require('../../structures/schemas/UserGame');
+const UserGame = require('@schemas/UserGame');
 
 const getUserGame = async (userId) => {
 	const userGame = await UserGame.findOne(

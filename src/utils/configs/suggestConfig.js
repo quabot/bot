@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const { Client } = require('discord.js');
-const SuggestConfig = require('../../structures/schemas/SuggestionConfig');
+const SuggestConfig = require('@schemas/SuggestionConfig');
 
 /**
  * @param {Client} client 

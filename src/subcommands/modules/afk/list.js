@@ -8,8 +8,8 @@ const {
 	ButtonBuilder,
 	ActionRowBuilder
 } = require('discord.js');
-const { getAfkConfig } = require('../../../utils/configs/afkConfig');
-const { Embed } = require('../../../utils/constants/embed');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	parent: 'afk',
@@ -38,7 +38,7 @@ module.exports = {
 		});
 
 
-		const User = require('../../../structures/schemas/User');
+		const User = require('@schemas/User');
 		const found = await User.find({
 			guildId: interaction.guildId,
 			userId: interaction.user.id,

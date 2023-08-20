@@ -1,4 +1,4 @@
-const { Embed } = require('../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 
 //* Handle what happens when a form gets responded to.
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 		if (!guild) return;
 
 		//* Get the form and the member.
-		const Application = require('../../structures/schemas/Application');
+		const Application = require('@schemas/Application');
 		const FoundForm = await Application.findOne({
 			guildId: form.guildId,
 			id: form.id

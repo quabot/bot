@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);

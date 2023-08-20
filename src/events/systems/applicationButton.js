@@ -1,8 +1,8 @@
 const { Client, Message, Events, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getUser } = require('../../utils/configs/user');
-const { Embed } = require('../../utils/constants/embed');
-const { getServerConfig } = require('../../utils/configs/serverConfig');
-const Application = require('../../structures/schemas/Application');
+const { getUser } = require('@configs/user');
+const { Embed } = require('@constants/embed');
+const { getServerConfig } = require('@configs/serverConfig');
+const Application = require('@schemas/Application');
 
 module.exports = {
 	event: Events.InteractionCreate,

@@ -1,4 +1,4 @@
-const Ids = require('../../structures/schemas/Ids');
+const Ids = require('@schemas/Ids');
 
 const getIdConfig = async (guildId) => {
 	const idConfig = await Ids.findOne(

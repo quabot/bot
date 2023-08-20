@@ -1,7 +1,7 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType } = require('discord.js');
-const { getGiveawayConfig } = require('../../../utils/configs/giveawayConfig');
-const { Embed } = require('../../../utils/constants/embed');
-const Giveaway = require('../../../structures/schemas/Giveaway');
+const { getGiveawayConfig } = require('@configs/giveawayConfig');
+const { Embed } = require('@constants/embed');
+const Giveaway = require('@schemas/Giveaway');
 const { endGiveaway } = require('../../../utils/functions/giveaway');
 
 module.exports = {

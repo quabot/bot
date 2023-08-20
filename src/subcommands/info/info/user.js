@@ -1,5 +1,5 @@
 const { ChatInputCommandInteraction, Client, ColorResolvable, Collection } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 
 const houses = new Collection();
 houses.set('HypeSquadOnlineHouse1', '<:QBravery:1011633937296138341> Bravery');

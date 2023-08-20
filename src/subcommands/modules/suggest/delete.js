@@ -1,8 +1,8 @@
 const { Client, ChatInputCommandInteraction } = require('discord.js');
-const { getSuggestConfig } = require('../../../utils/configs/suggestConfig');
-const { Embed } = require('../../../utils/constants/embed');
-const { CustomEmbed } = require('../../../utils/constants/customEmbed');
-const Suggest = require('../../../structures/schemas/Suggestion');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { Embed } = require('@constants/embed');
+const { CustomEmbed } = require('@constants/customEmbed');
+const Suggest = require('@schemas/Suggestion');
 
 module.exports = {
 	parent: 'suggestion',

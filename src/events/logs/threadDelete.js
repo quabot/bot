@@ -1,7 +1,7 @@
 const { Client, Events, Colors, ThreadChannel } = require('discord.js');
-const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
-const { Embed } = require('../../utils/constants/embed');
-const { channelTypesById } = require('../../utils/constants/discord');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
+const { channelTypesById } = require('@constants/discord');
 
 module.exports = {
 	event: Events.ThreadDelete,

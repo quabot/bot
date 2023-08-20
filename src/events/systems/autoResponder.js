@@ -1,8 +1,8 @@
 const { Client, Message } = require('discord.js');
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
-const Responder = require('../../structures/schemas/Responder');
-const { getServerConfig } = require('../../utils/configs/serverConfig');
-const { getResponderConfig } = require('../../utils/configs/responderConfig');
+const { CustomEmbed } = require('@constants/customEmbed');
+const Responder = require('@schemas/Responder');
+const { getServerConfig } = require('@configs/serverConfig');
+const { getResponderConfig } = require('@configs/responderConfig');
 
 module.exports = {
 	event: 'messageCreate',

@@ -1,7 +1,7 @@
 const { Client, ModalSubmitInteraction } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
-const { getAfkConfig } = require('../../../utils/configs/afkConfig');
-const { getUser } = require('../../../utils/configs/user');
+const { Embed } = require('@constants/embed');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getUser } = require('@configs/user');
 
 module.exports = {
 	name: 'afk-set',

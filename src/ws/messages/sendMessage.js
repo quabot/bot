@@ -1,4 +1,4 @@
-const { CustomEmbed } = require('../../utils/constants/customEmbed');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 //* QuaBot Dashboard Message Sender Handler.
 module.exports = {

@@ -1,5 +1,5 @@
 const { Client, Events, GuildMember } = require('discord.js');
-const { getWelcomeConfig } = require('../../utils/configs/welcomeConfig');
+const { getWelcomeConfig } = require('@configs/welcomeConfig');
 
 module.exports = {
 	event: Events.GuildMemberAdd,

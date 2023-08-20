@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { reqString } = require('../../utils/constants/schemas');
+const { reqString } = require('@constants/schemas');
 
 const VoteSchema = new Schema({
 	userId: reqString,

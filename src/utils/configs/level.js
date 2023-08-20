@@ -1,4 +1,4 @@
-const Level = require('../../structures/schemas/Level');
+const Level = require('@schemas/Level');
 
 const getLevel = async (guildId, userId) => {
 	const levelConfig = await Level.findOne(

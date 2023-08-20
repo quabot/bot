@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
-const { getModerationConfig } = require('../../utils/configs/moderationConfig');
-const { Embed } = require('../../utils/constants/embed');
+const { getModerationConfig } = require('@configs/moderationConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	data: new SlashCommandBuilder()

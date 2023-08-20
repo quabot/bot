@@ -1,7 +1,7 @@
 const { Client, Events, Colors, GuildChannel } = require('discord.js');
-const { getLoggingConfig } = require('../../utils/configs/loggingConfig');
-const { channelTypesById } = require('../../utils/constants/discord');
-const { Embed } = require('../../utils/constants/embed');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { channelTypesById } = require('@constants/discord');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
 	event: Events.ChannelCreate,

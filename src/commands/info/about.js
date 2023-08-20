@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('../../utils/constants/embed');
+const { Embed } = require('@constants/embed');
 
 //* Create the buttons for the about command.
 const aboutComponents = [
