@@ -7,23 +7,19 @@ const WelcomeConfig = new Schema({
     joinEnabled: reqBool,
     joinChannel: reqString,
     joinType: reqString,
-    joinText: reqString,
-    joinCard: reqObject,
     joinMessage: reqObject,
 
     leaveEnabled: reqBool,
     leaveChannel: reqString,
     leaveType: reqString,
-    leaveText: reqString,
     leaveMessage: reqObject,
 
-    role: reqArray,
-    roleEnabled: reqBool,
+    joinRole: reqArray,
+    joinRoleEnabled: reqBool,
 
-    dm: reqBool,
-    dmType: reqString,
-    dmMessage: reqObject,
-    dmText: reqString,
+    joinDM: reqBool,
+    joinDMType: reqString,
+    dm: reqObject
 });
 
 module.exports = model('Welcome-Config', WelcomeConfig);
