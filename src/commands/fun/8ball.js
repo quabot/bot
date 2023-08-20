@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
 const { Embed } = require('../../utils/constants/embed');
 
 

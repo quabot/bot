@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
 const { Embed } = require('../../utils/constants/embed');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
@@ -9,7 +9,7 @@ module.exports = {
 		.setDMPermission(false),
 	/**
      * @param {Client} client 
-     * @param {ChatInputCommandInteraction} interaction
+     * @param {CommandInteraction} interaction
      */
 	async execute(client, interaction, color) {
 		//* Defer the reply to give the user an instant response.

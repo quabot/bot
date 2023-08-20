@@ -39,13 +39,13 @@ module.exports = {
 
 		const modal = new ModalBuilder()
 			.setCustomId('afk-set')
-			.setTitle('Set AFK status')
+			.setTitle('Set AFK status');
 
 		const afkRow = new ActionRowBuilder()
 			.addComponents(
 				new TextInputBuilder()
 					.setCustomId('afk-status')
-					.setLabel("Enter your new AFK status")
+					.setLabel('Enter your new AFK status')
 					.setMinLength(1)
 					.setMaxLength(200)
 					.setPlaceholder('I\'m sleeping...')

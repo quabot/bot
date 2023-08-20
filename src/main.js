@@ -1,4 +1,4 @@
-import 'module-alias/register';
+// import 'module-alias/register';
 
 const { Client, Collection, Partials } = require('discord.js');
 const { Channel, Reaction, Message } = Partials;
@@ -20,7 +20,7 @@ client.custom_commands = [];
 
 //* Call the handlers for each type of event/interaction and start them.
 ['buttonHandler', 'commandHandler', 'eventHandler', 'menuHandler', 'modalHandler', 'subcommandHandler', 'wsHandler'].forEach(handler => {
-    require(`./structures/handlers/${handler}`)(client);
+	require(`./structures/handlers/${handler}`)(client);
 });
 
 

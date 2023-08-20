@@ -1,9 +1,9 @@
-const { Client, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction, AttachmentBuilder } = require("discord.js");
-const { getSuggestConfig } = require("../../../utils/configs/suggestConfig");
-const { Embed } = require("../../../utils/constants/embed");
-const { getLevelConfig } = require("../../../utils/configs/levelConfig");
-const { getLevel } = require("../../../utils/configs/level");
-const { drawCard } = require("../../../utils/functions/levelCard");
+const { Client, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ChatInputCommandInteraction, AttachmentBuilder } = require('discord.js');
+const { getSuggestConfig } = require('../../../utils/configs/suggestConfig');
+const { Embed } = require('../../../utils/constants/embed');
+const { getLevelConfig } = require('../../../utils/configs/levelConfig');
+const { getLevel } = require('../../../utils/configs/level');
+const { drawCard } = require('../../../utils/functions/levelCard');
 
 module.exports = {
 	parent: 'level',
@@ -46,7 +46,7 @@ module.exports = {
 				embeds: [
 					new Embed(color)
 						.setThumbnail(user.displayAvatarURL({ dynamic: true }))
-						.setTitle(`${user.displayName}\'s level status`)
+						.setTitle(`${user.displayName}'s level status`)
 						.setDescription(`${user} is level **${levelDB.level}** and has **${levelDB.xp}/${formula(levelDB.level)}** xp.`)
 				]
 			});

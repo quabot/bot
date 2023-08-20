@@ -1,8 +1,8 @@
-const { ApplicationCommandType, ContextMenuCommandBuilder } = require("discord.js");
-const { Embed } = require("../../utils/constants/embed");
-const { getLevelConfig } = require("../../utils/configs/levelConfig");
-const { getUserGame } = require("../../utils/configs/userGame");
-const Level = require("../../structures/schemas/Level");
+const { ApplicationCommandType, ContextMenuCommandBuilder } = require('discord.js');
+const { Embed } = require('../../utils/constants/embed');
+const { getLevelConfig } = require('../../utils/configs/levelConfig');
+const { getUserGame } = require('../../utils/configs/userGame');
+const Level = require('../../structures/schemas/Level');
 
 module.exports = {
 	data: new ContextMenuCommandBuilder()
@@ -42,7 +42,7 @@ module.exports = {
 			.setThumbnail(user.displayAvatarURL({ dynamic: true }))
 			.addFields(
 				{ name: 'Birthday', value: `${userSchema.birthday.configured ? `${userSchema.birthday.day}/${userSchema.birthday.month}/${userSchema.birthday.year}` : 'Unset'}`, inline: true }
-			)
+			);
 
 		if (levelConfig.enabled) embed.addFields(
 			{ name: 'Level', value: `${levelUser.level ?? 0}`, inline: true },
@@ -54,11 +54,11 @@ module.exports = {
 			{ name: 'Displayname', value: `${user.displayName ?? 'None'}`, inline: true },
 			// { name: 'Discriminator', value: `${user.user.discriminator ?? 'None'}`, inline: true },
 			{ name: 'Joined server on', value: `<t:${Math.floor(user.joinedTimestamp / 1000)}:R>`, inline: true },
-			{ name: 'Account created on', value: `<t:${Math.floor(user.user.createdTimestamp / 1000)}:R>`, inline: true })
+			{ name: 'Account created on', value: `<t:${Math.floor(user.user.createdTimestamp / 1000)}:R>`, inline: true });
 
 
 		await interaction.editReply({
 			embeds: [embed]
 		});
 	}
-}
+};

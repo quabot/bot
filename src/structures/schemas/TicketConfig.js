@@ -1,19 +1,19 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqNum, reqBool, reqObject, reqArray } = require("../../utils/constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqNum, reqBool, reqObject, reqArray } = require('../../utils/constants/schemas');
 
 const TicketConfig = new Schema({
-    guildId: reqString,
+	guildId: reqString,
 
-    enabled: reqBool, 
-    openCategory: reqString,
-    closedCategory: reqString,
+	enabled: reqBool, 
+	openCategory: reqString,
+	closedCategory: reqString,
 
-    staffRoles: reqArray,
-    staffPing: reqString,
-    topicButton: reqBool,
+	staffRoles: reqArray,
+	staffPing: reqString,
+	topicButton: reqBool,
 
-    logChannel: reqString,
-    logEnabled: reqBool,
+	logChannel: reqString,
+	logEnabled: reqBool,
 });
 
 module.exports = model('Ticket-Config', TicketConfig);

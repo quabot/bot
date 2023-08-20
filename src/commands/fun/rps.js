@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors } = require('discord.js');
+const { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors, Client, CommandInteraction } = require('discord.js');
 const { Embed } = require('../../utils/constants/embed');
 const { getUserGame } = require('../../utils/configs/userGame');
 
@@ -93,8 +93,7 @@ module.exports = {
 
 				userDB.rpsPoints -= 1;
 				await userDB.save();
-			}
-			else if (choices[myChoice].weakTo === userChoice) {
+			} else if (choices[myChoice].weakTo === userChoice) {
 				await i.update({
 					embeds: [
 						new Embed(Colors.Green)
@@ -116,8 +115,7 @@ module.exports = {
 
 				userDB.rpsPoints += 1;
 				await userDB.save();
-			}
-			else {
+			} else {
 				await i.update({
 					embeds: [
 						new Embed(Colors.Orange)

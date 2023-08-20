@@ -17,8 +17,8 @@ const { Embed } = require('../../utils/constants/embed');
 
 
 module.exports = {
-	event: "guildCreate",
-	name: "guildCreate",
+	event: 'guildCreate',
+	name: 'guildCreate',
 	/**
 	 * @param {Guild} guild 
 	 */
@@ -48,7 +48,7 @@ module.exports = {
 						new Embed('#416683')
 							.setTitle('Hi, I\'m QuaBot!')
 							.setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
-							.setDescription("I'm a multipurpose Discord bot with loads of features. To configure me, go to [my dashboard](https://quabot.net/dashboard). If you need help with anything, join [my support server](https://discord.quabot.net).\nThanks for adding me to your server!")
+							.setDescription('I\'m a multipurpose Discord bot with loads of features. To configure me, go to [my dashboard](https://quabot.net/dashboard). If you need help with anything, join [my support server](https://discord.quabot.net).\nThanks for adding me to your server!')
 					]
 				}).catch(() => { done = false; });
 			}
@@ -56,4 +56,4 @@ module.exports = {
 		
 		guild.members.fetch().catch(() => { });
 	}
-}
+};

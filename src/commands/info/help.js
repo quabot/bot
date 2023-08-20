@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder } = require('discord.js');
+const { SlashCommandBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, Client, CommandInteraction } = require('discord.js');
 const { Embed } = require('../../utils/constants/embed');
 const { promisify } = require('util');
 const { glob } = require('glob');
@@ -24,7 +24,7 @@ module.exports = {
 		.setDMPermission(false),
 	/**
      * @param {Client} client 
-     * @param {ChatInputCommandInteraction} interaction
+     * @param {CommandInteraction} interaction
      */
 	async execute(client, interaction, color) {
 		//* Defer the reply to give the user an instant response.
@@ -126,7 +126,7 @@ module.exports = {
 							embeds: [embeds[page].setFooter({ text: `Page ${page + 1} / ${embeds.length}` })],
 							components: [helpButtons],
 						})
-						.catch(() => { });
+						.catch((e) => { });
 					collector.resetTimer();
 				});
 

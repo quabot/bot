@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, Client, CommandInteraction } = require('discord.js');
 const { Embed } = require('../../utils/constants/embed');
 const axios = require('axios');
 const { shuffleArray } = require('../../utils/functions/array');
@@ -110,8 +110,7 @@ module.exports = {
 
 				if (userDB) userDB.quizPoints += 1;
 				if (userDB) await userDB.save();
-			}
-			else {
+			} else {
 				const row2 = new ActionRowBuilder();
 
 				const button = new ButtonBuilder()

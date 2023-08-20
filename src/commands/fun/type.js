@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, Colors } = require('discord.js');
+const { SlashCommandBuilder, Colors, Client, CommandInteraction } = require('discord.js');
 const { Embed } = require('../../utils/constants/embed');
 const { getUserGame } = require('../../utils/configs/userGame');
 
@@ -790,8 +790,7 @@ module.exports = {
 					userDB.typeTries += 1;
 					if (totalTime < userDB.typeFastest) userDB.typeFastest = totalTime;
 					await userDB.save();
-				}
-				else {
+				} else {
 					//* If it is incorrect, handle the loss, get the time and send the msg.
 					const totalTime = (new Date().getTime() - startTime) / 1000;
 					await interaction.editReply({

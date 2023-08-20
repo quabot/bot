@@ -6,7 +6,7 @@ module.exports = {
 	name: 'clientSocket',
 	once: true,
 	/**
-   * @param {require('discord.js').Client} client
+   * @param {Client} client
    */
 	async execute(client) {
 
@@ -20,10 +20,10 @@ module.exports = {
 				const data = JSON.parse(d);
 				if (data.status !== 200) return;
 
-				const ws = client.ws_events.get(data.type);
-				if (!ws) return consola.warn('Unhandled WebSocket event: ' + data.type + '.');
+				const WebSocket = client.ws_events.get(data.type);
+				if (!WebSocket) return consola.warn('Unhandled WebSocket event: ' + data.type + '.');
 
-				ws.execute(client, data).catch((e) => {
+				WebSocket.execute(client, data).catch((e) => {
 					consola.error('WebSocket error:' + e);
 					console.log(e);
 				});

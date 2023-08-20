@@ -1,5 +1,5 @@
-const { ChatInputCommandInteraction, Client } = require("discord.js");
-const { Embed } = require("../../../utils/constants/embed");
+const { ChatInputCommandInteraction, Client } = require('discord.js');
+const { Embed } = require('../../../utils/constants/embed');
 
 module.exports = {
 	parent: 'reactionroles',
@@ -15,9 +15,9 @@ module.exports = {
 		await interaction.editReply({
 			embeds: [
 				new Embed(color)
-				.setTitle('What is the reactionroles module and how do I use it?')
-				.setDescription('Reactionroles are an easy way for users in the server to collect roles, simply by clicking on the reaction of the message. Some roles require certain permissions and some others have specific settings. Staff members are the only ones who can create, delete and manage reactionroles.')
+					.setTitle('What is the reactionroles module and how do I use it?')
+					.setDescription('Reactionroles are an easy way for users in the server to collect roles, simply by clicking on the reaction of the message. Some roles require certain permissions and some others have specific settings. Staff members are the only ones who can create, delete and manage reactionroles.')
 			]
 		});
 	}
-}
+};

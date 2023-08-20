@@ -9,8 +9,8 @@ const Vote = require('../../structures/schemas/Vote');
 const { drawCard } = require('../../utils/functions/levelCard');
 
 module.exports = {
-	event: "messageCreate",
-	name: "levels",
+	event: 'messageCreate',
+	name: 'levels',
 	/**
 * @param {Message} message
 	* @param {Client} client 
@@ -19,7 +19,9 @@ module.exports = {
 		if (!message.guildId) return;
 		try {
 			if (message.author.bot) return;
-		} catch (e) { }
+		} catch (e) {
+			// no
+		}
 
 		if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
 		const current_time = Date.now();
@@ -69,7 +71,7 @@ module.exports = {
 		let level = levelDB.level;
 
 		const formula = (lvl) => 120 * (lvl ** 2) + 100;
-		let reqXp = formula(level);
+		const reqXp = formula(level);
 
 		let rndXp = Math.floor(Math.random() * 5);
 		if (message.content.length > 200) rndXp += 1;
@@ -77,12 +79,12 @@ module.exports = {
 
 		const vote = await Vote.findOne(
 			{ userId: message.author.id },
-			(err, config) => {
+			(err, c) => {
 				if (err) console.log(err);
-				if (!config)
+				if (!c)
 					new Vote({
 						userId: message.author.id,
-						lastVote: `0`
+						lastVote: '0'
 					}).save();
 			}
 		).clone().catch(() => { });
@@ -108,8 +110,8 @@ module.exports = {
 					.replaceAll('{server.icon}', `${message.guild.icon}` ?? '')
 					.replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
 					.replaceAll('{server.owner}', `<@${message.guild.ownerId}>` ?? '')
-					.replaceAll('{icon}', `${message.guild.iconURL()}` ?? '') // Deprecated
-					.replaceAll('{id}', `${message.author.id}` ?? '') // Deprecated
+					.replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
+					.replaceAll('{id}', `${message.author.id}` ?? '')
 					.replaceAll('{server.owner_id}', `${message.guild.ownerId}` ?? '')
 					.replaceAll('{server.members}', `${message.guild.memberCount}` ?? '')
 					.replaceAll('{members}', `${message.guild.memberCount}` ?? '')
@@ -118,13 +120,13 @@ module.exports = {
 					.replaceAll('{user.name}', `${message.author.username}` ?? '')
 					.replaceAll('{user.username}', `${message.author.username}` ?? '')
 					.replaceAll('{user.tag}', `${message.author.tag}` ?? '')
-					.replaceAll('{tag}', `${message.author.tag}` ?? '') // Deprecated
+					.replaceAll('{tag}', `${message.author.tag}` ?? '')
 					.replaceAll('{user.discriminator}', `${message.author.discriminator}` ?? '')
 					.replaceAll('{user.displayname}', `${message.author.displayName}` ?? '')
 					.replaceAll('{user.id}', `${message.author.id}` ?? '')
 					.replaceAll('{user.avatar_url}', `${message.author.avatarURL()}` ?? '')
 					.replaceAll('{user.avatar}', `${message.author.avatar}` ?? '')
-					.replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '') // Deprecated
+					.replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '')
 					.replaceAll('{user.created_at}', `${message.author.createdAt}` ?? '')
 					.replaceAll('{user.joined_at}', `${message.member.joinedAt}` ?? '')
 					.replaceAll('{channel}', `${message.channel}` ?? '')
@@ -133,11 +135,11 @@ module.exports = {
 					.replaceAll('{level}', `${level}` ?? '')
 					.replaceAll('{xp}', `${xp}` ?? '')
 					.replaceAll('{required_xp}', `${formula(level)}` ?? '')
-					.replaceAll('{color}', `${color}` ?? '')
+					.replaceAll('{color}', `${color}` ?? '');
 			};
 
 			if (config.channel !== 'none') {
-				let channel = config.channel === 'current' ? message.channel : message.guild.channels.cache.get(`${config.channel}`);
+				const channel = config.channel === 'current' ? message.channel : message.guild.channels.cache.get(`${config.channel}`);
 				if (!channel) return;
 
 				const embed = new CustomEmbed(config.message, parse);
@@ -185,8 +187,8 @@ module.exports = {
 						.replaceAll('{server.icon}', `${message.guild.icon}` ?? '')
 						.replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
 						.replaceAll('{server.owner}', `<@${message.guild.ownerId}>` ?? '')
-						.replaceAll('{icon}', `${message.guild.iconURL()}` ?? '') // Deprecated
-						.replaceAll('{id}', `${message.author.id}` ?? '') // Deprecated
+						.replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
+						.replaceAll('{id}', `${message.author.id}` ?? '')
 						.replaceAll('{server.owner_id}', `${message.guild.ownerId}` ?? '')
 						.replaceAll('{server.members}', `${message.guild.memberCount}` ?? '')
 						.replaceAll('{members}', `${message.guild.memberCount}` ?? '')
@@ -195,13 +197,13 @@ module.exports = {
 						.replaceAll('{user.name}', `${message.author.username}` ?? '')
 						.replaceAll('{user.username}', `${message.author.username}` ?? '')
 						.replaceAll('{user.tag}', `${message.author.tag}` ?? '')
-						.replaceAll('{tag}', `${message.author.tag}` ?? '') // Deprecated
+						.replaceAll('{tag}', `${message.author.tag}` ?? '')
 						.replaceAll('{user.discriminator}', `${message.author.discriminator}` ?? '')
 						.replaceAll('{user.displayname}', `${message.author.displayName}` ?? '')
 						.replaceAll('{user.id}', `${message.author.id}` ?? '')
 						.replaceAll('{user.avatar_url}', `${message.author.avatarURL()}` ?? '')
 						.replaceAll('{user.avatar}', `${message.author.avatar}` ?? '')
-						.replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '') // Deprecated
+						.replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '')
 						.replaceAll('{user.created_at}', `${message.author.createdAt}` ?? '')
 						.replaceAll('{user.joined_at}', `${message.member.joinedAt}` ?? '')
 						.replaceAll('{channel}', `${message.channel}` ?? '')
@@ -215,7 +217,7 @@ module.exports = {
 						.replaceAll('{reward}', `<@&${check.role}>` ?? '')
 						.replaceAll('{required_level}', `${check.level}` ?? '')
 						.replaceAll('{reward.level}', `${check.level}` ?? '')
-						.replaceAll('{reward.role}', `<@&${check.role}>` ?? '')
+						.replaceAll('{reward.role}', `<@&${check.role}>` ?? '');
 				};
 
 				if (config.rewardsMode === 'replace') {
@@ -248,4 +250,4 @@ module.exports = {
 			await levelDB.save();
 		}
 	}
-}
+};

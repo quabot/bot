@@ -59,6 +59,6 @@ module.exports = {
 				new Embed(color)
 					.setDescription(`In order to fillout that application, go to our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/user/applications/form/${id}).`)
 			]
-		})
+		});
 	}
 };
