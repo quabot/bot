@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 const { Client, Collection, Partials } = require('discord.js');
 const { Channel, Reaction, Message } = Partials;
 
