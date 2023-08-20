@@ -1,7 +1,7 @@
 
 //* Add a reaction to a message for reactionroles.
 module.exports = {
-    code: 'responder-reload',
+    code: 'add-reaction',
     async execute(client, data) {
       //* Get all the required variables.
       const item = data.message;

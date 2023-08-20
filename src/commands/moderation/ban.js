@@ -46,7 +46,6 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction
      */
     async execute(client, interaction, color) {
-        await getUser(interaction.guildId, member.id)
 
         //* Determine if the command should be ephemeral or not.
         const private = interaction.options.getBoolean('private') ?? false;

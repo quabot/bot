@@ -58,7 +58,7 @@ module.exports = {
                         new ButtonBuilder()
                             .setLabel('Apply')
                             .setStyle(ButtonStyle.Link)
-                            .setURL(`https://quabot.net/dashboard/1007810461347086357/user/applications/form/${application.id}`)
+                            .setURL(`https://quabot.net/dashboard/${interaction.guildId}/user/applications/form/${application.id}`)
                     )
             ]
         });

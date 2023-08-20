@@ -46,6 +46,9 @@ class CustomEmbed extends EmbedBuilder {
         if (newFields.length !== 0) embed.addFields(newFields);
         
         if (!embed.data.title && !embed.data.footer.text && !embed.data.footer.icon_url && !embed.data.author.name && !embed.data.description && !embed.data.fields && !embed.data.image && !embed.data.thumbnail && !embed.data.timestamp && !embed.data.title) return new EmbedBuilder().setDescription('** **');
+        
+        
+        if (embed.length >= 6000) return new EmbedBuilder().setDescription('Your custom embed length is too long, please remove text to make it send properly next time.');
         return embed;
     }
 }
