@@ -1,7 +1,7 @@
-const { Client, ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js");
-const { Embed } = require("../../../utils/constants/embed");
-const { getLevelConfig } = require("../../../utils/configs/levelConfig");
-const { getLevel } = require("../../../utils/configs/level");
+const { Client, ChatInputCommandInteraction, PermissionFlagsBits } = require('discord.js');
+const { Embed } = require('../../../utils/constants/embed');
+const { getLevelConfig } = require('../../../utils/configs/levelConfig');
+const { getLevel } = require('../../../utils/configs/level');
 
 module.exports = {
 	parent: 'level',
@@ -58,7 +58,7 @@ module.exports = {
 		}
 
 		if (xp) levelDB.xp = xp;
-		if(level) levelDB.level = level;
+		if (level) levelDB.level = level;
 		await levelDB.save();
 
 		await interaction.editReply({

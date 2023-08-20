@@ -4,25 +4,25 @@ const Punishment = require('../../structures/schemas/Punishment');
 const { tempUnban } = require('../../utils/functions/unban');
 
 module.exports = {
-    event: "ready",
-    name: "tempbanRestart",
-    once: true,
-    /**
+	event: 'ready',
+	name: 'tempbanRestart',
+	once: true,
+	/**
      * @param {Client} client 
      */
-    async execute(client) {
-        const Punishments = await Punishment.find({
-            type: 'tempban',
-            active: true
-        });
+	async execute(client) {
+		const Punishments = await Punishment.find({
+			type: 'tempban',
+			active: true
+		});
 
-        Punishments.forEach(async punishment => {
-            let timeToUnban = (parseInt(punishment.time) - new Date().getTime()) + ms(punishment.duration);
-            if (timeToUnban < 0) timeToUnban = 1;
+		Punishments.forEach(async punishment => {
+			let timeToUnban = (parseInt(punishment.time) - new Date().getTime()) + ms(punishment.duration);
+			if (timeToUnban < 0) timeToUnban = 1;
             
-            setTimeout(async () => {
-                await tempUnban(client, punishment);
-            }, timeToUnban);
-        });
-    }
-}
+			setTimeout(async () => {
+				await tempUnban(client, punishment);
+			}, timeToUnban);
+		});
+	}
+};

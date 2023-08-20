@@ -14,7 +14,7 @@ module.exports = {
 	 * @param {ColorResolvable} color
 	 */
 	async execute(client, interaction, color) {
-			await interaction.deferReply({ ephemeral: false });
+		await interaction.deferReply({ ephemeral: false });
 
 		await interaction.editReply({
 			embeds: [
@@ -30,6 +30,6 @@ module.exports = {
 					\`/untimeout\` - Remove the timeout from a user.
 					\`/warn\` - Warn a user.`)
 			]
-		})
+		});
 	}
 };

@@ -5,7 +5,8 @@ const {
 	ButtonStyle,
 	Colors,
 	EmbedBuilder,
-	ButtonBuilder
+	ButtonBuilder,
+	ActionRowBuilder
 } = require('discord.js');
 const { getAfkConfig } = require('../../../utils/configs/afkConfig');
 const { Embed } = require('../../../utils/constants/embed');
@@ -82,9 +83,9 @@ module.exports = {
 		const collector = msg.createMessageComponentCollector({ filter: ({ user }) => user.id === user.id });
 
 		let currentIndex = 0;
-		collector.on('collect', async interaction => {
-			interaction.customId === backId ? (currentIndex -= 15) : (currentIndex += 15);
-			await interaction.update({
+		collector.on('collect', async i => {
+			i.customId === backId ? (currentIndex -= 15) : (currentIndex += 15);
+			await i.update({
 				embeds: [await makeEmbed(currentIndex)],
 				components: [
 					new ActionRowBuilder({

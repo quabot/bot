@@ -15,21 +15,21 @@ module.exports = {
 	 * @param {ColorResolvable} color
 	 */
 	async execute(client, interaction, color) {
-			await interaction.deferReply({ ephemeral: false });
+		await interaction.deferReply({ ephemeral: false });
 
-			const config = await getApplicationConfig(interaction.guildId, client);
-			if (!config) return await interaction.editReply({
-				embeds: [
-						new Embed(color)
-								.setDescription('We\'re still setting up some documents for first-time use! Please run the command again.')
-				]
+		const config = await getApplicationConfig(interaction.guildId, client);
+		if (!config) return await interaction.editReply({
+			embeds: [
+				new Embed(color)
+					.setDescription('We\'re still setting up some documents for first-time use! Please run the command again.')
+			]
 		});
 
 		if (!config.enabled) return await interaction.editReply({
-				embeds: [
-						new Embed(color)
-								.setDescription('This module is disabled in this server.')
-				]
+			embeds: [
+				new Embed(color)
+					.setDescription('This module is disabled in this server.')
+			]
 		});
 
 		await interaction.editReply({
@@ -37,6 +37,6 @@ module.exports = {
 				new Embed(color)
 					.setDescription(`In order to manage applications, please go to our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/modules/applications).`)
 			]
-		})
+		});
 	}
 };

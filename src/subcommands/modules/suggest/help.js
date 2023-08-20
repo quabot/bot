@@ -1,5 +1,5 @@
-const { Client, ChatInputCommandInteraction } = require("discord.js");
-const { Embed } = require("../../../utils/constants/embed");
+const { Client, ChatInputCommandInteraction } = require('discord.js');
+const { Embed } = require('../../../utils/constants/embed');
 
 module.exports = {
 	parent: 'suggestion',
@@ -23,6 +23,6 @@ module.exports = {
 					\`/suggestion delete\` - Delete a suggestion (admin).
 					\`/suggestion help\` - Receive help about the suggestions module.`)
 			]
-		})
+		});
 	}
 };

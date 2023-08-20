@@ -10,7 +10,7 @@ const { drawCard } = require('../../utils/functions/levelCard');
 
 module.exports = {
 	event: Events.InteractionCreate,
-	name: "levelInteractions",
+	name: 'levelInteractions',
 	/**
 	* @param {import('discord.js').Interaction} interaction
 	* @param {Client} client 
@@ -19,7 +19,9 @@ module.exports = {
 		if (!interaction.guildId) return;
 		try {
 			if (interaction.user.bot) return;
-		} catch (e) { }
+		} catch (e) {
+			// no
+		}
 
 		if (!cooldowns.has(interaction.user)) cooldowns.set(interaction.user, new Collection());
 		const current_time = Date.now();
@@ -41,7 +43,7 @@ module.exports = {
 		if (!config) return;
 		if (!config.enabled) return;
 		if (!config.commandXp) return;
-			if (config.excludedChannels.includes(interaction.channelId)) return;
+		if (config.excludedChannels.includes(interaction.channelId)) return;
 
 		const levelDB = await getLevel(interaction.guildId, interaction.user.id);
 
@@ -70,19 +72,19 @@ module.exports = {
 		let level = levelDB.level;
 
 		const formula = (lvl) => 120 * (lvl ** 2) + 100;
-		let reqXp = formula(level);
+		const reqXp = formula(level);
 
 		let rndXp = Math.floor(Math.random() * 3);
 		rndXp = rndXp * config.commandXpMultiplier ?? 1;
 
 		const vote = await Vote.findOne(
 			{ userId: interaction.user.id },
-			(err, config) => {
+			(err, c) => {
 				if (err) console.log(err);
-				if (!config)
+				if (!c)
 					new Vote({
 						userId: interaction.user.id,
-						lastVote: `0`
+						lastVote: '0'
 					}).save();
 			}
 		).clone().catch(() => { });
@@ -108,8 +110,8 @@ module.exports = {
 					.replaceAll('{server.icon}', `${interaction.guild.icon}` ?? '')
 					.replaceAll('{icon}', `${interaction.guild.iconURL()}` ?? '')
 					.replaceAll('{server.owner}', `<@${interaction.guild.ownerId}>` ?? '')
-					.replaceAll('{icon}', `${interaction.guild.iconURL()}` ?? '') // Deprecated
-					.replaceAll('{id}', `${interaction.user.id}` ?? '') // Deprecated
+					.replaceAll('{icon}', `${interaction.guild.iconURL()}` ?? '')
+					.replaceAll('{id}', `${interaction.user.id}` ?? '')
 					.replaceAll('{server.owner_id}', `${interaction.guild.ownerId}` ?? '')
 					.replaceAll('{server.members}', `${interaction.guild.memberCount}` ?? '')
 					.replaceAll('{members}', `${interaction.guild.memberCount}` ?? '')
@@ -118,13 +120,13 @@ module.exports = {
 					.replaceAll('{user.name}', `${interaction.user.username}` ?? '')
 					.replaceAll('{user.username}', `${interaction.user.username}` ?? '')
 					.replaceAll('{user.tag}', `${interaction.user.tag}` ?? '')
-					.replaceAll('{tag}', `${interaction.user.tag}` ?? '') // Deprecated
+					.replaceAll('{tag}', `${interaction.user.tag}` ?? '')
 					.replaceAll('{user.discriminator}', `${interaction.user.discriminator}` ?? '')
 					.replaceAll('{user.displayname}', `${interaction.user.displayName}` ?? '')
 					.replaceAll('{user.id}', `${interaction.user.id}` ?? '')
 					.replaceAll('{user.avatar_url}', `${interaction.user.avatarURL()}` ?? '')
 					.replaceAll('{user.avatar}', `${interaction.user.avatar}` ?? '')
-					.replaceAll('{avatar}', `${interaction.user.avatarURL()}` ?? '') // Deprecated
+					.replaceAll('{avatar}', `${interaction.user.avatarURL()}` ?? '')
 					.replaceAll('{user.created_at}', `${interaction.user.createdAt}` ?? '')
 					.replaceAll('{user.joined_at}', `${interaction.member.joinedAt}` ?? '')
 					.replaceAll('{channel}', `${interaction.channel}` ?? '')
@@ -133,11 +135,11 @@ module.exports = {
 					.replaceAll('{level}', `${level}` ?? '')
 					.replaceAll('{xp}', `${xp}` ?? '')
 					.replaceAll('{required_xp}', `${formula(level)}` ?? '')
-					.replaceAll('{color}', `${color}` ?? '')
+					.replaceAll('{color}', `${color}` ?? '');
 			};
 
 			if (config.channel !== 'none') {
-				let channel = config.channel === 'current' ? interaction.channel : interaction.guild.channels.cache.get(`${config.channel}`);
+				const channel = config.channel === 'current' ? interaction.channel : interaction.guild.channels.cache.get(`${config.channel}`);
 				if (!channel) return;
 
 				const embed = new CustomEmbed(config.message, parse);
@@ -185,8 +187,8 @@ module.exports = {
 						.replaceAll('{server.icon}', `${interaction.guild.icon}` ?? '')
 						.replaceAll('{icon}', `${interaction.guild.iconURL()}` ?? '')
 						.replaceAll('{server.owner}', `<@${interaction.guild.ownerId}>` ?? '')
-						.replaceAll('{icon}', `${interaction.guild.iconURL()}` ?? '') // Deprecated
-						.replaceAll('{id}', `${interaction.user.id}` ?? '') // Deprecated
+						.replaceAll('{icon}', `${interaction.guild.iconURL()}` ?? '')
+						.replaceAll('{id}', `${interaction.user.id}` ?? '')
 						.replaceAll('{server.owner_id}', `${interaction.guild.ownerId}` ?? '')
 						.replaceAll('{server.members}', `${interaction.guild.memberCount}` ?? '')
 						.replaceAll('{members}', `${interaction.guild.memberCount}` ?? '')
@@ -195,13 +197,13 @@ module.exports = {
 						.replaceAll('{user.name}', `${interaction.user.username}` ?? '')
 						.replaceAll('{user.username}', `${interaction.user.username}` ?? '')
 						.replaceAll('{user.tag}', `${interaction.user.tag}` ?? '')
-						.replaceAll('{tag}', `${interaction.user.tag}` ?? '') // Deprecated
+						.replaceAll('{tag}', `${interaction.user.tag}` ?? '')
 						.replaceAll('{user.discriminator}', `${interaction.user.discriminator}` ?? '')
 						.replaceAll('{user.displayname}', `${interaction.user.displayName}` ?? '')
 						.replaceAll('{user.id}', `${interaction.user.id}` ?? '')
 						.replaceAll('{user.avatar_url}', `${interaction.user.avatarURL()}` ?? '')
 						.replaceAll('{user.avatar}', `${interaction.user.avatar}` ?? '')
-						.replaceAll('{avatar}', `${interaction.user.avatarURL()}` ?? '') // Deprecated
+						.replaceAll('{avatar}', `${interaction.user.avatarURL()}` ?? '')
 						.replaceAll('{user.created_at}', `${interaction.user.createdAt}` ?? '')
 						.replaceAll('{user.joined_at}', `${interaction.member.joinedAt}` ?? '')
 						.replaceAll('{channel}', `${interaction.channel}` ?? '')
@@ -215,7 +217,7 @@ module.exports = {
 						.replaceAll('{reward}', `<@&${check.role}>` ?? '')
 						.replaceAll('{required_level}', `${check.level}` ?? '')
 						.replaceAll('{reward.level}', `${check.level}` ?? '')
-						.replaceAll('{reward.role}', `<@&${check.role}>` ?? '')
+						.replaceAll('{reward.role}', `<@&${check.role}>` ?? '');
 				};
 
 				if (config.rewardsMode === 'replace') {
@@ -248,4 +250,4 @@ module.exports = {
 			await levelDB.save();
 		}
 	}
-}
+};

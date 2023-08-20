@@ -4,48 +4,50 @@ const { Embed } = require('../../utils/constants/embed');
 const { channelTypesById } = require('../../utils/constants/discord');
 
 module.exports = {
-    event: Events.VoiceStateUpdate,
-    name: "voiceJoinLeave",
-    /**
+	event: Events.VoiceStateUpdate,
+	name: 'voiceJoinLeave',
+	/**
      * @param {VoiceState} oldState
      * @param {VoiceState} newState
      * @param {Client} client 
      */
-    async execute(oldState, newState, client) {
+	async execute(oldState, newState, client) {
 		try {
 			if (!newState.guild.id) return;
-		} catch (e) { }
+		} catch (e) {
+			// no
+		}
 
-        if (oldState.member.user.bot || newState.member.user.bot) return;
+		if (oldState.member.user.bot || newState.member.user.bot) return;
 
-        const config = await getLoggingConfig(client, oldState.guild.id);
-        if (!config) return;
-        if (!config.enabled) return;
+		const config = await getLoggingConfig(client, oldState.guild.id);
+		if (!config) return;
+		if (!config.enabled) return;
 
-        if (!config.events.includes('voiceJoinLeave')) return;
-        if (newState.channelId && (config.excludedCategories.includes(newState.channel.parentId) || config.excludedChannels.includes(newState.channelId))) return;
-        if (oldState.channelId && (config.excludedCategories.includes(oldState.channel.parentId) || config.excludedChannels.includes(oldState.channelId))) return;
-
-
-        const channel = newState.guild.channels.cache.get(config.channelId);
-        if (!channel) return;
+		if (!config.events.includes('voiceJoinLeave')) return;
+		if (newState.channelId && (config.excludedCategories.includes(newState.channel.parentId) || config.excludedChannels.includes(newState.channelId))) return;
+		if (oldState.channelId && (config.excludedCategories.includes(oldState.channel.parentId) || config.excludedChannels.includes(oldState.channelId))) return;
 
 
-        if (oldState.channelId && newState.channelId) return;
-        if (!oldState.channelId) {
+		const channel = newState.guild.channels.cache.get(config.channelId);
+		if (!channel) return;
+
+
+		if (oldState.channelId && newState.channelId) return;
+		if (!oldState.channelId) {
             
-            await channel.send({ embeds: [
-                new Embed(Colors.Green)
-                    .setDescription(`**Voice Channel Joined**\n${newState.member} joined ${newState.channel}`)
-            ]});
+			await channel.send({ embeds: [
+				new Embed(Colors.Green)
+					.setDescription(`**Voice Channel Joined**\n${newState.member} joined ${newState.channel}`)
+			] });
 
-        } else {
+		} else {
             
-            await channel.send({ embeds: [
-                new Embed(Colors.Red)
-                    .setDescription(`**Voice Channel Left**\n${newState.member} left ${oldState.channel}`)
-            ]});
+			await channel.send({ embeds: [
+				new Embed(Colors.Red)
+					.setDescription(`**Voice Channel Left**\n${newState.member} left ${oldState.channel}`)
+			] });
 
-        }
-    }
-}
+		}
+	}
+};

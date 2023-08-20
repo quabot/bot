@@ -28,62 +28,62 @@ module.exports = {
 
 		const Punishment = require('../../../structures/schemas/Punishment');
 		let punishment;
-        if (user) punishment = await Punishment.findOne({ guildId: interaction.guildId, id, userId: user.id, type });
-        if (!user) punishment = await Punishment.findOne({ guildId: interaction.guildId, id, type });
+		if (user) punishment = await Punishment.findOne({ guildId: interaction.guildId, id, userId: user.id, type });
+		if (!user) punishment = await Punishment.findOne({ guildId: interaction.guildId, id, type });
 
-        if (!punishment) return await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                .setDescription('No punishment with those filters found.')
-            ]
-        });
+		if (!punishment) return await interaction.editReply({
+			embeds: [
+				new Embed(color)
+					.setDescription('No punishment with those filters found.')
+			]
+		});
 
-        const row = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setStyle(ButtonStyle.Danger)
-                    .setLabel('Delete')
-                    .setEmoji('🗑️')
-                    .setCustomId('delete-punishment')
-            );
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setStyle(ButtonStyle.Danger)
+					.setLabel('Delete')
+					.setEmoji('🗑️')
+					.setCustomId('delete-punishment')
+			);
 
-        await interaction.editReply({
-            embeds: [
-                new Embed(color)
-                    .setTitle('Manage Punishment')
-                    .setFooter({ text: `${punishment.id}` })
-                    .addFields({
-                        name: 'Type',
-                        value: punishment.type,
-                        inline: true
-                    },
-                    {
-                        name: 'User',
-                        value: `<@${punishment.userId}>`,
-                        inline: true
-                    },
-                    {
-                        name: 'Moderator',
-                        value: `<@${punishment.moderatorId}>`,
-                        inline: true
-                    },
-                    {
-                        name: 'Time',
-                        value: `<t:${Math.floor((punishment.time) / 1000)}:R>`,
-                        inline: true
-                    },
-                    {
-                        name: 'Duration',
-                        value: punishment.duration ? punishment.duration : 'Permanent',
-                        inline: true
-                    },
-                    {
-                        name: 'Reason',
-                        value: punishment.reason,
-                        inline: false
-                    })
-            ],
-            components: [row]
-        });
+		await interaction.editReply({
+			embeds: [
+				new Embed(color)
+					.setTitle('Manage Punishment')
+					.setFooter({ text: `${punishment.id}` })
+					.addFields({
+						name: 'Type',
+						value: punishment.type,
+						inline: true
+					},
+					{
+						name: 'User',
+						value: `<@${punishment.userId}>`,
+						inline: true
+					},
+					{
+						name: 'Moderator',
+						value: `<@${punishment.moderatorId}>`,
+						inline: true
+					},
+					{
+						name: 'Time',
+						value: `<t:${Math.floor((punishment.time) / 1000)}:R>`,
+						inline: true
+					},
+					{
+						name: 'Duration',
+						value: punishment.duration ? punishment.duration : 'Permanent',
+						inline: true
+					},
+					{
+						name: 'Reason',
+						value: punishment.reason,
+						inline: false
+					})
+			],
+			components: [row]
+		});
 	}
 };

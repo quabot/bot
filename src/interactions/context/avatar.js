@@ -1,5 +1,5 @@
-const { ApplicationCommandType, ContextMenuCommandBuilder } = require("discord.js");
-const { Embed } = require("../../utils/constants/embed");
+const { ApplicationCommandType, ContextMenuCommandBuilder } = require('discord.js');
+const { Embed } = require('../../utils/constants/embed');
 
 module.exports = {
 	data: new ContextMenuCommandBuilder()
@@ -16,14 +16,14 @@ module.exports = {
 		if (!user) return await interaction.editReply('Couldn\'t find a user.');
 
 		await interaction.editReply({
-				embeds: [
-						new Embed(color)
-								.setImage(
-										user.avatarURL({ size: 1024, forceStatic: false }) ??
+			embeds: [
+				new Embed(color)
+					.setImage(
+						user.avatarURL({ size: 1024, forceStatic: false }) ??
 										'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png'
-								)
-								.setTitle(`${user.username}'s avatar`),
-				],
+					)
+					.setTitle(`${user.username}'s avatar`),
+			],
 		});
 	}
-}
+};

@@ -1,6 +1,6 @@
-const { Client, ChatInputCommandInteraction } = require("discord.js");
-const { Embed } = require("../../../utils/constants/embed");
-const { getLevelConfig } = require("../../../utils/configs/levelConfig");
+const { Client, ChatInputCommandInteraction } = require('discord.js');
+const { Embed } = require('../../../utils/constants/embed');
+const { getLevelConfig } = require('../../../utils/configs/levelConfig');
 
 module.exports = {
 	parent: 'level',
@@ -34,14 +34,14 @@ module.exports = {
 		}).sort({ level: -1, xp: -1 }).limit(25);
 
 		let lb = '';
-		leaderboard.forEach(i => lb = lb + `**${leaderboard.indexOf(i)+1}.** <@${i.userId}> - Level: ${i.level}, XP: ${i.xp}\n`);
+		leaderboard.forEach(i => lb = lb + `**${leaderboard.indexOf(i) + 1}.** <@${i.userId}> - Level: ${i.level}, XP: ${i.xp}\n`);
 
 		await interaction.editReply({
 			embeds: [
 				new Embed(color)
-				.setTitle(`${interaction.guild.name}'s level leaderboard`)
-				.setDescription(`To view the full leaderboard, visit our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/levels/leaderboard)\n\n${lb}`)
+					.setTitle(`${interaction.guild.name}'s level leaderboard`)
+					.setDescription(`To view the full leaderboard, visit our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/levels/leaderboard)\n\n${lb}`)
 			]
-		})
+		});
 	}
 };

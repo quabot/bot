@@ -1,5 +1,5 @@
-const { ApplicationCommandType, ContextMenuCommandBuilder, Collection } = require("discord.js");
-const { Embed } = require("../../utils/constants/embed");
+const { ApplicationCommandType, ContextMenuCommandBuilder, Collection } = require('discord.js');
+const { Embed } = require('../../utils/constants/embed');
 
 const houses = new Collection();
 houses.set('HypeSquadOnlineHouse1', '<:QBravery:1011633937296138341> Bravery');
@@ -34,10 +34,10 @@ module.exports = {
                     **• Username**: @${user.username}
                     **• ID**: ${user.id}
                     **• Roles**: ${member.roles.cache
-						.map((r) => r)
-						.join(' ')
-						.replace('@everyone', ' ') ?? 'None'
-					}
+		.map((r) => r)
+		.join(' ')
+		.replace('@everyone', ' ') ?? 'None'
+}
                     **• Joined Server**: <t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>
                     **• Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>
                     **• House**: ${badges.join(' ')}
@@ -46,4 +46,4 @@ module.exports = {
 		});
 
 	}
-}
+};
