@@ -1,4 +1,4 @@
-const { Client, Interaction, Colors } = require('discord.js');
+const { Client, Interaction } = require('discord.js');
 const { getServerConfig } = require('@configs/serverConfig');
 const { handleError } = require('@constants/errorHandler');
 
@@ -20,4 +20,4 @@ module.exports = {
 
 		modal.execute(client, interaction, color).catch((e) => handleError(client, e, interaction.customId));
 	}
-};
+}; 
