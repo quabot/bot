@@ -2,6 +2,7 @@ require('module-alias/register');
 
 const NodeCache = require('node-cache');
 const { Client, Collection, Partials } = require('discord.js');
+
 const { Channel, Reaction, Message } = Partials;
 
 //* Create the client & set intents and partials.
