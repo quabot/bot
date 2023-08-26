@@ -1,21 +1,20 @@
 name: Deploy bot to β
 
-on:
-  workflow_dispatch
+on: workflow_dispatch
 
 jobs:
   build:
     runs-on: server
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Stopping existing bot container
-      run: docker stop quabot-beta-bot || echo
-    - name: Removing existing bot container
-      run: docker rm quabot-beta-bot || echo
-    - name: Removing unused images
-      run: docker image prune -a -f
-    - name: Build the new Docker image
-      run: docker build . --file Dockerfile --tag quabot/beta-bot:$(date +%s)
-    - name: Running the container from this image
-      run: docker run --network="host" --restart=always --name quabot-beta-bot -p 8082:8081 --env-file /root/beta/bot.env -d $(docker images --filter "reference=quabot/beta-bot" | awk '{print $3}' | awk 'NR==2')
+      - uses: actions/checkout@v3
+      - name: Stopping existing bot container
+        run: docker stop quabot-beta-bot || echo
+      - name: Removing existing bot container
+        run: docker rm quabot-beta-bot || echo
+      - name: Removing unused images
+        run: docker image prune -a -f
+      - name: Build the new Docker image
+        run: docker build . --file Dockerfile --tag quabot/beta-bot:$(date +%s)
+      - name: Running the container from this image
+        run: docker run --network="host" --restart=always --name quabot-beta-bot -p 8082:8081 --env-file /root/beta/bot.env -d $(docker images --filter "reference=quabot/beta-bot" | awk '{print $3}' | awk 'NR==2')
