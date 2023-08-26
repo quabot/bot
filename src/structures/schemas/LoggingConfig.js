@@ -2,12 +2,12 @@ const { Schema, model } = require('mongoose');
 const { reqString, reqId, reqBool, reqArray } = require('@constants/schemas');
 
 const LoggingConfig = new Schema({
-  guildId: reqString,
-  enabled: reqBool,
-  channelId: reqString,
-  excludedChannels: reqArray,
-  excludedCategories: reqArray,
-  events: reqArray,
+	guildId: reqString,
+	enabled: reqBool,
+	channelId: reqString,
+	excludedChannels: reqArray,
+	excludedCategories: reqArray,
+	events: reqArray
 });
 
 module.exports = model('Logging-Config', LoggingConfig);

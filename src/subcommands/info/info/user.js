@@ -7,41 +7,34 @@ houses.set('HypeSquadOnlineHouse2', '<:QBrilliance:1011633938441195572> Brillian
 houses.set('HypeSquadOnlineHouse3', '<:QBalance:1011633936088182834> Balance');
 
 module.exports = {
-  parent: 'info',
-  name: 'user',
-  /**
-   * @param {Client} client
-   * @param {ChatInputCommandInteraction} interaction
-   * @param {ColorResolvable} color
-   */
-  async execute(client, interaction, color) {
-    await interaction.deferReply();
+	parent: 'info',
+	name: 'user',
+	/**
+     * @param {Client} client 
+     * @param {ChatInputCommandInteraction} interaction 
+     * @param {ColorResolvable} color 
+     */
+	async execute(client, interaction, color) {
+		await interaction.deferReply();
 
-    const member = interaction.options.getMember('user') ?? interaction.member;
-    const { user } = member;
+		const member = (interaction.options.getMember('user') ?? interaction.member);
+		const { user } = member;
 
-    const badges = [];
-    user.flags?.toArray().forEach(flag => {
-      badges.push(houses.get(flag) ?? '');
-    });
-
-    await interaction.editReply({
-      embeds: [
-        new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
-                - **User**: ${user}\n- **Displayname**: ${user.globalName ?? 'None'}\n- **Username**: @${
-                  user.username
-                }\n- **Nickname**: ${member.nickname ?? 'None'}\n- **ID**: ${user.id}\n- **Roles**: ${
-                  member.roles.cache
-                    .map(r => r)
-                    .join(' ')
-                    .replace('@everyone', ' ') ?? 'None'
-                }\n- **Joined Server**: <t:${Math.floor(
-                  (member.joinedTimestamp ?? 0) / 1000,
-                )}:R>\n- **Joined Discord**: <t:${Math.floor(
-                  user.createdTimestamp / 1000,
-                )}:R>\n- **House**: ${badges.join(' ')} ${badges.length === 0 ? 'None' : ''}
+		const badges = [];
+		user.flags?.toArray().forEach(flag => {
+			badges.push(houses.get(flag) ?? '');
+		});
+        
+		await interaction.editReply({
+			embeds: [
+				new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
+                - **User**: ${user}\n- **Displayname**: ${user.globalName ?? 'None'}\n- **Username**: @${user.username}\n- **Nickname**: ${member.nickname ?? 'None'}\n- **ID**: ${user.id}\n- **Roles**: ${member.roles.cache
+	.map((r) => r)
+	.join(' ')
+	.replace('@everyone', ' ') ?? 'None'
+}\n- **Joined Server**: <t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>\n- **Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>\n- **House**: ${badges.join(' ')} ${badges.length === 0 ? 'None' : ''}
                 `),
-      ],
-    });
-  },
+			],
+		});
+	},
 };

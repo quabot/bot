@@ -7,39 +7,43 @@ houses.set('HypeSquadOnlineHouse2', '<:QBrilliance:1011633938441195572> Brillian
 houses.set('HypeSquadOnlineHouse3', '<:QBalance:1011633936088182834> Balance');
 
 module.exports = {
-  data: new ContextMenuCommandBuilder().setName('Userinfo').setType(ApplicationCommandType.User).setDMPermission(false),
-  /**
-   * @param {import("discord.js").Interaction} interaction
-   */
-  async execute(client, interaction, color) {
-    await interaction.deferReply();
+	data: new ContextMenuCommandBuilder()
+		.setName('Userinfo')
+		.setType(ApplicationCommandType.User)
+		.setDMPermission(false),
+	/**
+	 * @param {import("discord.js").Interaction} interaction
+	 */
+	async execute(client, interaction, color) {
 
-    const member = interaction.targetMember;
-    const user = interaction.targetUser;
+		await interaction.deferReply();
 
-    const badges = [];
-    user.flags?.toArray().forEach(flag => {
-      badges.push(houses.get(flag) ?? '');
-    });
+		const member = interaction.targetMember;
+		const user = interaction.targetUser;
 
-    await interaction.editReply({
-      embeds: [
-        new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
+		const badges = [];
+		user.flags?.toArray().forEach(flag => {
+			badges.push(houses.get(flag) ?? '');
+		});
+
+		await interaction.editReply({
+			embeds: [
+				new Embed(color).setTitle('User Info').setThumbnail(user.displayAvatarURL()).setDescription(`
                     **• User**: ${user}
                     **• Displayname**: ${user.globalName ?? 'Unknown'}
                     **• Username**: @${user.username}
                     **• ID**: ${user.id}
-                    **• Roles**: ${
-                      member.roles.cache
-                        .map(r => r)
-                        .join(' ')
-                        .replace('@everyone', ' ') ?? 'None'
-                    }
+                    **• Roles**: ${member.roles.cache
+		.map((r) => r)
+		.join(' ')
+		.replace('@everyone', ' ') ?? 'None'
+}
                     **• Joined Server**: <t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>
                     **• Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>
                     **• House**: ${badges.join(' ')}
                 `),
-      ],
-    });
-  },
+			],
+		});
+
+	}
 };
