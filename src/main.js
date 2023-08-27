@@ -8,7 +8,6 @@ const client = new Client({
   intents: 46847,
   partials: [Channel, Reaction, Message],
 });
-require('dotenv').config();
 
 //* Define the collections that will store different types of events/interactions and the websocket events.
 client.buttons = new Collection();

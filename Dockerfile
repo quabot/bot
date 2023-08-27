@@ -6,8 +6,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
-
+RUN yarn deploy
 EXPOSE 8081
 
 CMD ["yarn", "start"]

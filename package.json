@@ -6,7 +6,11 @@
   "license": "none",
   "private": true,
   "scripts": {
-    "start": "node .",
+    "dev": "nodemon",
+    "production": "yarn deploy && yarn start",
+    "start": "node --require dotenv/config dist",
+    "build": "tsc",
+    "deploy": "sh ./deploy.sh",
     "prettier": "prettier --write src"
   },
   "dependencies": {
@@ -34,7 +38,10 @@
   },
   "devDependencies": {
     "eslint": "^8.47.0",
-    "prettier": "^3.0.2"
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.2",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.2.2"
   },
   "_moduleAliases": {
     "@configs": "src/utils/configs/",
