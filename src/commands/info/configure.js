@@ -1,14 +1,10 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("configure")
+    .setName('configure')
     .setDescription("Configure QuaBot's settings.")
     .setDMPermission(false),
   /**

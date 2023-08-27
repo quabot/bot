@@ -1,8 +1,8 @@
-const Giveaway = require("@schemas/Giveaway");
-const { shuffleArray } = require("./array");
-const { getGiveawayConfig } = require("../configs/giveawayConfig");
-const { Embed } = require("@constants/embed");
-const { getServerConfig } = require("../configs/serverConfig");
+const Giveaway = require('@schemas/Giveaway');
+const { shuffleArray } = require('./array');
+const { getGiveawayConfig } = require('../configs/giveawayConfig');
+const { Embed } = require('@constants/embed');
+const { getServerConfig } = require('../configs/serverConfig');
 
 async function endGiveaway(client, document, forceEarly) {
   const config = await getGiveawayConfig(client, document.guildId);
@@ -25,32 +25,30 @@ async function endGiveaway(client, document, forceEarly) {
 
   channel.messages
     .fetch(`${giveaway.message}`)
-    .then(async (message) => {
+    .then(async message => {
       if (!message) return;
 
-      const reactions = await message.reactions.cache.get("🎉").users.fetch();
+      const reactions = await message.reactions.cache.get('🎉').users.fetch();
       const shuffled = await shuffleArray(
         // eslint-disable-next-line no-undef
         (array = Array.from(
-          reactions.filter((u) => u.id !== client.user.id),
+          reactions.filter(u => u.id !== client.user.id),
           ([name, value]) => ({ name, value }),
         )),
       );
 
       const winners = shuffled.slice(0, giveaway.winners);
       const isWinner = winners.length !== 0;
-      let winMsg = winners.map((u) => `<@${u.value.id}>`).join(", ");
-      if (!isWinner) winMsg = "Not enough entries!";
+      let winMsg = winners.map(u => `<@${u.value.id}>`).join(', ');
+      if (!isWinner) winMsg = 'Not enough entries!';
 
       await message.edit({
         embeds: [
-          new Embed(colorConfig.color ?? "#fff")
+          new Embed(colorConfig.color ?? '#fff')
             .setTitle(`${giveaway.prize}`)
             .setDescription(
               `Ended: <t:${
-                forceEarly
-                  ? Math.floor(new Date().getTime() / 1000)
-                  : Math.floor(giveaway.endTimestamp / 1000)
+                forceEarly ? Math.floor(new Date().getTime() / 1000) : Math.floor(giveaway.endTimestamp / 1000)
               }:R>
                             Winners: **${winMsg}**
                             Hosted by: <@${giveaway.host}>`,
@@ -61,19 +59,15 @@ async function endGiveaway(client, document, forceEarly) {
 
       if (isWinner)
         await message.reply({
-          embeds: [
-            new Embed(colorConfig.color ?? "#fff").setDescription(
-              `${winMsg}, you won **${giveaway.prize}**!`,
-            ),
-          ],
+          embeds: [new Embed(colorConfig.color ?? '#fff').setDescription(`${winMsg}, you won **${giveaway.prize}**!`)],
           content: `${winMsg}`,
         });
 
       if (!isWinner)
         await message.reply({
           embeds: [
-            new Embed(colorConfig.color ?? "#fff").setDescription(
-              "There were not enough entries for a winner to be determined.",
+            new Embed(colorConfig.color ?? '#fff').setDescription(
+              'There were not enough entries for a winner to be determined.',
             ),
           ],
         });

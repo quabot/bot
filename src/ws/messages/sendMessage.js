@@ -1,8 +1,8 @@
-const { CustomEmbed } = require("@constants/customEmbed");
+const { CustomEmbed } = require('@constants/customEmbed');
 
 //* QuaBot Dashboard Message Sender Handler.
 module.exports = {
-  code: "send-message",
+  code: 'send-message',
   async execute(client, data) {
     //* Get the guild and channel.
     const guild = client.guilds.cache.get(data.guildId);
@@ -12,21 +12,19 @@ module.exports = {
     if (!channel) return;
 
     //* Send the message.
-    const getParsedString = (s) => {
-      return `${s}`
-        .replaceAll("{guild}", guild.name)
-        .replaceAll("{members}", guild.memberCount);
+    const getParsedString = s => {
+      return `${s}`.replaceAll('{guild}', guild.name).replaceAll('{members}', guild.memberCount);
     };
 
     const sentEmbed = new CustomEmbed(data.message, getParsedString);
     if (embed)
       await channel.send({
         embeds: [sentEmbed],
-        content: getParsedString(data.message.content) ?? "",
+        content: getParsedString(data.message.content) ?? '',
       });
-    if (!embed && (getParsedString(data.message.content) ?? "** **") !== "")
+    if (!embed && (getParsedString(data.message.content) ?? '** **') !== '')
       await channel.send({
-        content: getParsedString(data.message.content) ?? "** **",
+        content: getParsedString(data.message.content) ?? '** **',
       });
   },
 };

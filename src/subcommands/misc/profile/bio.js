@@ -6,13 +6,13 @@ const {
   ActionRowBuilder,
   TextInputBuilder,
   TextInputStyle,
-} = require("discord.js");
-const { getUserGame } = require("@configs/userGame");
-const { Embed } = require("@constants/embed");
+} = require('discord.js');
+const { getUserGame } = require('@configs/userGame');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "profile",
-  name: "bio",
+  parent: 'profile',
+  name: 'bio',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -30,17 +30,17 @@ module.exports = {
       });
 
     const modal = new ModalBuilder()
-      .setTitle("Set your profile bio")
-      .setCustomId("profile-bio")
+      .setTitle('Set your profile bio')
+      .setCustomId('profile-bio')
       .addComponents(
         new ActionRowBuilder().setComponents(
           new TextInputBuilder()
-            .setCustomId("bio")
+            .setCustomId('bio')
             .setMaxLength(350)
             .setMinLength(1)
-            .setLabel("Bio")
+            .setLabel('Bio')
             .setValue(userSchema.bio)
-            .setPlaceholder("I am...")
+            .setPlaceholder('I am...')
             .setRequired(true)
             .setStyle(TextInputStyle.Paragraph),
         ),

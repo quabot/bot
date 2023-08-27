@@ -1,15 +1,11 @@
-const {
-  Client,
-  ChatInputCommandInteraction,
-  PermissionFlagsBits,
-} = require("discord.js");
-const { getLevelConfig } = require("@configs/levelConfig");
-const Level = require("@schemas/Level");
-const { Embed } = require("@constants/embed");
+const { Client, ChatInputCommandInteraction, PermissionFlagsBits } = require('discord.js');
+const { getLevelConfig } = require('@configs/levelConfig');
+const Level = require('@schemas/Level');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "level",
-  name: "reset",
+  parent: 'level',
+  name: 'reset',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -18,22 +14,16 @@ module.exports = {
   async execute(client, interaction, color) {
     await interaction.deferReply();
 
-    const user = interaction.options.getUser("user");
+    const user = interaction.options.getUser('user');
 
     if (!user)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("You need to specify a user."),
-        ],
+        embeds: [new Embed(color).setDescription('You need to specify a user.')],
       });
 
     if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You do not have the required permissions.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You do not have the required permissions.')],
       });
 
     const config = await getLevelConfig(interaction.guildId, client);
@@ -47,11 +37,7 @@ module.exports = {
       });
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Levels are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Levels are disabled in this server.')],
       });
 
     await Level.findOneAndDelete({
@@ -60,18 +46,14 @@ module.exports = {
     });
 
     if (config.removeRewards) {
-      config.rewards.forEach(async (reward) => {
+      config.rewards.forEach(async reward => {
         const role = interaction.guild.roles.cache.get(reward.role);
         if (role) await interaction.member.roles.remove(role).catch(() => {});
       });
     }
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          `Reset ${user}'s level to 0 and xp to 0.`,
-        ),
-      ],
+      embeds: [new Embed(color).setDescription(`Reset ${user}'s level to 0 and xp to 0.`)],
     });
   },
 };

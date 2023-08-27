@@ -6,15 +6,15 @@ const {
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
-} = require("discord.js");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const Ticket = require("@schemas/Ticket");
-const { Embed } = require("@constants/embed");
-const { getIdConfig } = require("@configs/idConfig");
+} = require('discord.js');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const Ticket = require('@schemas/Ticket');
+const { Embed } = require('@constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
 
 module.exports = {
-  parent: "ticket",
-  name: "unclaim",
+  parent: 'ticket',
+  name: 'unclaim',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -37,11 +37,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
     const ticket = await Ticket.findOne({
@@ -49,64 +45,49 @@ module.exports = {
     });
     if (!ticket)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("This is not a valid ticket."),
-        ],
+        embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
     if (ticket.staff !== interaction.user.id)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("The ticket isn't claimed by you."),
-        ],
+        embeds: [new Embed(color).setDescription("The ticket isn't claimed by you.")],
       });
 
-    ticket.staff = "none";
+    ticket.staff = 'none';
     await ticket.save();
 
     const ticketMsg = (await interaction.channel.messages.fetch()).last();
     if (ticketMsg.author.id !== process.env.CLIENT_ID)
       return await interaction.editReply({
         embeds: [
-          new Embed(color).setDescription(
-            "There was an internal error. The original QuaBot message was deleted.",
-          ),
+          new Embed(color).setDescription('There was an internal error. The original QuaBot message was deleted.'),
         ],
       });
 
     await ticketMsg.edit({
       embeds: [
         new Embed(color)
-          .setTitle("New Ticket")
-          .setDescription("Please wait, staff will be with you shortly.")
+          .setTitle('New Ticket')
+          .setDescription('Please wait, staff will be with you shortly.')
           .addFields(
-            { name: "Topic", value: `${ticket.topic}`, inline: true },
-            { name: "Topic", value: `<@${ticket.owner}>`, inline: true },
-            { name: "Claimed By", value: "Unclaimed", inline: true },
+            { name: 'Topic', value: `${ticket.topic}`, inline: true },
+            { name: 'Topic', value: `<@${ticket.owner}>`, inline: true },
+            { name: 'Claimed By', value: 'Unclaimed', inline: true },
           ),
       ],
       components: [
         new ActionRowBuilder().addComponents(
-          new ButtonBuilder()
-            .setCustomId("close-ticket")
-            .setLabel("🔒 Close")
-            .setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
         ),
       ],
     });
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          "You have successfully unclaimed the ticket.",
-        ),
-      ],
+      embeds: [new Embed(color).setDescription('You have successfully unclaimed the ticket.')],
     });
 
     await interaction.channel.send({
-      embeds: [
-        new Embed(color).setDescription("This ticket is no longer claimed."),
-      ],
+      embeds: [new Embed(color).setDescription('This ticket is no longer claimed.')],
     });
 
     const logChannel = interaction.guild.channels.cache.get(config.logChannel);
@@ -114,19 +95,19 @@ module.exports = {
       await logChannel.send({
         embeds: [
           new Embed(color)
-            .setTitle("Ticket Unclaimed")
+            .setTitle('Ticket Unclaimed')
             .addFields(
               {
-                name: "Ticket Owner",
+                name: 'Ticket Owner',
                 value: `<@${ticket.owner}>`,
                 inline: true,
               },
               {
-                name: "Channel",
+                name: 'Channel',
                 value: `${interaction.channel}`,
                 inline: true,
               },
-              { name: "Claimed By", value: "Nobody", inline: true },
+              { name: 'Claimed By', value: 'Nobody', inline: true },
             )
             .setFooter({ text: `ID: ${ticket.id}` }),
         ],

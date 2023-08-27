@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require("discord.js");
-const ModerationConfig = require("@schemas/ModerationConfig");
+const { Client } = require('discord.js');
+const ModerationConfig = require('@schemas/ModerationConfig');
 
 /**
  * @param {Client} client
@@ -14,121 +14,118 @@ const getModerationConfig = async (client, guildId) => {
         new ModerationConfig({
           guildId,
           channel: false,
-          channelId: "none",
+          channelId: 'none',
 
           warnDM: true,
           warnDMMessage: {
-            content: "",
-            title: "You were warned!",
-            color: "{color}",
+            content: '',
+            title: 'You were warned!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description:
-              "You were warned on **{server}**.\n**Warned by:** {moderator}\n**Reason:** {reason}",
+            description: 'You were warned on **{server}**.\n**Warned by:** {moderator}\n**Reason:** {reason}',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
 
           timeoutDM: true,
           timeoutDMMessage: {
-            content: "",
-            title: "You were timed out!",
-            color: "{color}",
+            content: '',
+            title: 'You were timed out!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
             description:
-              "You were timed out on **{server}**.\n**Timed out by:** {moderator}\n**Duration:** {duration}\n**Reason:** {reason}",
+              'You were timed out on **{server}**.\n**Timed out by:** {moderator}\n**Duration:** {duration}\n**Reason:** {reason}',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
 
           kickDM: true,
           kickDMMessage: {
-            content: "",
-            title: "You were kicked!",
-            color: "{color}",
+            content: '',
+            title: 'You were kicked!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description:
-              "You were kicked from **{server}**.\n**Kicked by:** {moderator}\n**Reason:** {reason}",
+            description: 'You were kicked from **{server}**.\n**Kicked by:** {moderator}\n**Reason:** {reason}',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
 
           banDM: true,
           banDMMessage: {
-            content: "",
-            title: "You were banned!",
-            color: "{color}",
+            content: '',
+            title: 'You were banned!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description:
-              "You were banned from **{server}**.\n**Banned by:** {moderator}\n**Reason:** {reason}",
+            description: 'You were banned from **{server}**.\n**Banned by:** {moderator}\n**Reason:** {reason}',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
 
           tempbanDM: true,
           tempbanDMMessage: {
-            content: "",
-            title: "You were temporarily banned!",
-            color: "{color}",
+            content: '',
+            title: 'You were temporarily banned!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
             description:
-              "You were banned from **{server}**.\n**Banned by:** {moderator}\n**Unban after:** {duration}\n**Reason:** {reason}",
+              'You were banned from **{server}**.\n**Banned by:** {moderator}\n**Unban after:** {duration}\n**Reason:** {reason}',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
         }).save();
     })

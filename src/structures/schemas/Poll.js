@@ -1,10 +1,5 @@
-const { Schema, model } = require("mongoose");
-const {
-  reqString,
-  reqArray,
-  reqNum,
-  optString,
-} = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqArray, reqNum, optString } = require('@constants/schemas');
 
 const Poll = new Schema({
   guildId: reqString,
@@ -25,4 +20,4 @@ const Poll = new Schema({
   endTimestamp: reqString,
 });
 
-module.exports = model("Poll", Poll);
+module.exports = model('Poll', Poll);

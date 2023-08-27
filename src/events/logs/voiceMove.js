@@ -1,17 +1,11 @@
-const {
-  Client,
-  Events,
-  Colors,
-  ThreadChannel,
-  VoiceState,
-} = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
-const { channelTypesById } = require("@constants/discord");
+const { Client, Events, Colors, ThreadChannel, VoiceState } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
+const { channelTypesById } = require('@constants/discord');
 
 module.exports = {
   event: Events.VoiceStateUpdate,
-  name: "voiceMove",
+  name: 'voiceMove',
   /**
    * @param {VoiceState} oldState
    * @param {VoiceState} newState
@@ -38,13 +32,9 @@ module.exports = {
       oldState.selfDeaf !== newState.selfDeaf
     )
       return;
-    if (
-      oldState.serverDeaf !== newState.serverDeaf ||
-      oldState.serverMute !== newState.serverMute
-    )
-      return;
+    if (oldState.serverDeaf !== newState.serverDeaf || oldState.serverMute !== newState.serverMute) return;
 
-    if (!config.events.includes("voiceMove")) return;
+    if (!config.events.includes('voiceMove')) return;
     if (
       newState.channelId &&
       (config.excludedCategories.includes(newState.channel.parentId) ||

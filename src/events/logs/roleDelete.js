@@ -1,10 +1,10 @@
-const { Client, Events, Colors, Role } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, Role } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildRoleDelete,
-  name: "roleDelete",
+  name: 'roleDelete',
   /**
    * @param {Role} role
    * @param {Client} client
@@ -20,16 +20,15 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("roleDelete")) return;
+    if (!config.events.includes('roleDelete')) return;
 
     const channel = role.guild.channels.cache.get(config.channelId);
     if (!channel) return;
 
-    let description = "";
-    const perms = role.permissions.toArray().join("\n");
+    let description = '';
+    const perms = role.permissions.toArray().join('\n');
     const permsLength = String(perms);
-    if (permsLength.length < 970 && permsLength.length !== 0)
-      description += `\n**Permissions:**\n${perms}`;
+    if (permsLength.length < 970 && permsLength.length !== 0) description += `\n**Permissions:**\n${perms}`;
 
     await channel.send({
       embeds: [

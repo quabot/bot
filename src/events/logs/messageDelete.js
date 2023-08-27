@@ -1,10 +1,10 @@
-const { Client, Events, Colors, Message } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, Message } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.MessageDelete,
-  name: "messageDelete",
+  name: 'messageDelete',
   /**
    * @param {Message} message
    * @param {Client} client
@@ -21,14 +21,14 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("messageDelete")) return;
+    if (!config.events.includes('messageDelete')) return;
     if (config.excludedChannels.includes(message.channelId)) return;
     if (config.excludedCategories.includes(message.channel.parentId)) return;
 
     const channel = message.guild.channels.cache.get(config.channelId);
     if (!channel) return;
 
-    let description = "";
+    let description = '';
     if (message.content) description += message.content.slice(0, 1002);
 
     try {
@@ -44,18 +44,18 @@ module.exports = {
             ${description}
             `,
       )
-      .addFields({ name: "Channel", value: `${message.channel}`, inline: true })
+      .addFields({ name: 'Channel', value: `${message.channel}`, inline: true })
       .setFooter({
-        text: `User: @${message.author.username ?? "none"}`,
+        text: `User: @${message.author.username ?? 'none'}`,
         iconURL: `${message.author.avatarURL({ dynamic: true })}`,
       });
 
     const attachments = [];
-    message.attachments.map((i) => attachments.push(i.url));
+    message.attachments.map(i => attachments.push(i.url));
     if (attachments.length !== 0)
       embed.addFields({
-        name: "**Attachments**",
-        value: `${attachments.join("\n")}`.slice(0, 1024),
+        name: '**Attachments**',
+        value: `${attachments.join('\n')}`.slice(0, 1024),
       });
 
     await channel.send({

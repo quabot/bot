@@ -1,14 +1,8 @@
-const {
-  ApplicationCommandType,
-  ContextMenuCommandBuilder,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { ApplicationCommandType, ContextMenuCommandBuilder } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  data: new ContextMenuCommandBuilder()
-    .setName("Avatar")
-    .setType(ApplicationCommandType.User)
-    .setDMPermission(false),
+  data: new ContextMenuCommandBuilder().setName('Avatar').setType(ApplicationCommandType.User).setDMPermission(false),
   /**
    * @param {import("discord.js").UserContextMenuCommandInteraction} interaction
    */
@@ -23,7 +17,7 @@ module.exports = {
         new Embed(color)
           .setImage(
             user.avatarURL({ size: 1024, forceStatic: false }) ??
-              "https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png",
+              'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png',
           )
           .setTitle(`${user.username}'s avatar`),
       ],

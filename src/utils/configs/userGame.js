@@ -1,6 +1,6 @@
-const UserGame = require("@schemas/UserGame");
+const UserGame = require('@schemas/UserGame');
 
-const getUserGame = async (userId) => {
+const getUserGame = async userId => {
   const userGame = await UserGame.findOne({ userId }, (err, document) => {
     if (err) console.log(err);
     if (!document)
@@ -16,7 +16,7 @@ const getUserGame = async (userId) => {
         rpsTries: 0,
         rpsPoints: 0,
 
-        bio: "-",
+        bio: '-',
         birthday: {
           configured: false,
           day: 0,

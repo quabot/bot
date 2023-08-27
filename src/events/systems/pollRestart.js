@@ -1,10 +1,10 @@
-const { Client } = require("discord.js");
-const Poll = require("@schemas/Poll");
-const { endPoll } = require("../../utils/functions/poll");
+const { Client } = require('discord.js');
+const Poll = require('@schemas/Poll');
+const { endPoll } = require('../../utils/functions/poll');
 
 module.exports = {
-  event: "ready",
-  name: "pollRestart",
+  event: 'ready',
+  name: 'pollRestart',
   once: true,
   /**
    * @param {Client} client
@@ -12,7 +12,7 @@ module.exports = {
   async execute(client) {
     const Polls = await Poll.find();
 
-    Polls.forEach(async (poll) => {
+    Polls.forEach(async poll => {
       if (parseInt(poll.endTimestamp) < new Date().getTime()) {
         return await endPoll(client, poll);
       }

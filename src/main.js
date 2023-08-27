@@ -1,6 +1,6 @@
-require("module-alias/register");
+require('module-alias/register');
 
-const { Client, Collection, Partials } = require("discord.js");
+const { Client, Collection, Partials } = require('discord.js');
 const { Channel, Reaction, Message } = Partials;
 
 //* Create the client & set intents and partials.
@@ -8,7 +8,7 @@ const client = new Client({
   intents: 46847,
   partials: [Channel, Reaction, Message],
 });
-require("dotenv").config();
+require('dotenv').config();
 
 //* Define the collections that will store different types of events/interactions and the websocket events.
 client.buttons = new Collection();
@@ -22,19 +22,19 @@ client.custom_commands = [];
 
 //* Call the handlers for each type of event/interaction and start them.
 [
-  "buttonHandler",
-  "commandHandler",
-  "eventHandler",
-  "menuHandler",
-  "modalHandler",
-  "subcommandHandler",
-  "wsHandler",
-].forEach((handler) => {
+  'buttonHandler',
+  'commandHandler',
+  'eventHandler',
+  'menuHandler',
+  'modalHandler',
+  'subcommandHandler',
+  'wsHandler',
+].forEach(handler => {
   require(`./structures/handlers/${handler}`)(client);
 });
 
 //* Setup the Client's cache.
-const NodeCache = require("node-cache");
+const NodeCache = require('node-cache');
 const cache = new NodeCache();
 client.cache = cache;
 

@@ -6,15 +6,15 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const Ticket = require("@schemas/Ticket");
-const { Embed } = require("@constants/embed");
-const { getIdConfig } = require("@configs/idConfig");
+} = require('discord.js');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const Ticket = require('@schemas/Ticket');
+const { Embed } = require('@constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
 
 module.exports = {
-  parent: "ticket",
-  name: "transcript",
+  parent: 'ticket',
+  name: 'transcript',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -37,11 +37,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
     const ticket = await Ticket.findOne({
@@ -49,47 +45,33 @@ module.exports = {
     });
     if (!ticket)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("This is not a valid ticket."),
-        ],
+        embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
     let valid = false;
     if (ticket.owner === interaction.user.id) valid = true;
     if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
-      valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
     if (!valid)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You are not allowed to request a transcript of this ticket.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You are not allowed to request a transcript of this ticket.')],
       });
 
-    const discordTranscripts = require("discord-html-transcripts");
-    const attachment = await discordTranscripts.createTranscript(
-      interaction.channel,
-      {
-        limit: -1,
-        minify: true,
-        saveImages: false,
-        useCND: true,
-      },
-    );
+    const discordTranscripts = require('discord-html-transcripts');
+    const attachment = await discordTranscripts.createTranscript(interaction.channel, {
+      limit: -1,
+      minify: true,
+      saveImages: false,
+      useCND: true,
+    });
 
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setTitle("Ticket Transcript")
-          .setDescription(
-            "The transcript is in the attachment. Open it in the browser to view it.",
-          ),
+          .setTitle('Ticket Transcript')
+          .setDescription('The transcript is in the attachment. Open it in the browser to view it.'),
       ],
       files: [attachment],
     });

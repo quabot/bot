@@ -6,15 +6,15 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const Ticket = require("@schemas/Ticket");
-const { Embed } = require("@constants/embed");
-const { getIdConfig } = require("@configs/idConfig");
+} = require('discord.js');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const Ticket = require('@schemas/Ticket');
+const { Embed } = require('@constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
 
 module.exports = {
-  parent: "ticket",
-  name: "create",
+  parent: 'ticket',
+  name: 'create',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -37,21 +37,13 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
-    const topic = interaction.options.getString("topic");
+    const topic = interaction.options.getString('topic');
     if (!topic)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please enter all the required fields.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please enter all the required fields.')],
       });
 
     const category = interaction.guild.channels.cache.get(config.openCategory);
@@ -70,9 +62,7 @@ module.exports = {
     });
     if (!channel)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("Failed to create the channel."),
-        ],
+        embeds: [new Embed(color).setDescription('Failed to create the channel.')],
       });
 
     await channel.setParent(category, { lockPermissions: true });
@@ -85,7 +75,7 @@ module.exports = {
       SendMessages: true,
     });
 
-    config.staffRoles.forEach((r) => {
+    config.staffRoles.forEach(r => {
       const role = interaction.guild.roles.cache.get(r);
       if (role)
         channel.permissionOverwrites.create(role, {
@@ -97,24 +87,18 @@ module.exports = {
     await channel.send({
       embeds: [
         new Embed(color)
-          .setTitle("New Ticket")
-          .setDescription("Please wait, staff will be with you shortly.")
+          .setTitle('New Ticket')
+          .setDescription('Please wait, staff will be with you shortly.')
           .addFields(
-            { name: "Topic", value: `${topic}`, inline: true },
-            { name: "Created By", value: `${interaction.user}`, inline: true },
-            { name: "Claimed by", value: "Not claimed yet", inline: true },
+            { name: 'Topic', value: `${topic}`, inline: true },
+            { name: 'Created By', value: `${interaction.user}`, inline: true },
+            { name: 'Claimed by', value: 'Not claimed yet', inline: true },
           ),
       ],
       components: [
         new ActionRowBuilder().addComponents(
-          new ButtonBuilder()
-            .setCustomId("close-ticket")
-            .setLabel("🔒 Close")
-            .setStyle(ButtonStyle.Secondary),
-          new ButtonBuilder()
-            .setCustomId("claim-ticket")
-            .setLabel("🙋‍♂️ Claim")
-            .setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId('claim-ticket').setLabel('🙋‍♂️ Claim').setStyle(ButtonStyle.Secondary),
         ),
       ],
     });
@@ -133,17 +117,15 @@ module.exports = {
 
       owner: interaction.user.id,
       users: [],
-      staff: "none",
+      staff: 'none',
     });
     await newTicket.save();
 
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setTitle("Ticket created!")
-          .setDescription(
-            `Check it out here: ${channel}, staff will be with you shortly.`,
-          ),
+          .setTitle('Ticket created!')
+          .setDescription(`Check it out here: ${channel}, staff will be with you shortly.`),
       ],
     });
 
@@ -152,15 +134,15 @@ module.exports = {
       await logChannel.send({
         embeds: [
           new Embed(color)
-            .setTitle("Ticket Created")
+            .setTitle('Ticket Created')
             .addFields(
-              { name: "User", value: `${interaction.user}`, inline: true },
+              { name: 'User', value: `${interaction.user}`, inline: true },
               {
-                name: "Channel",
+                name: 'Channel',
                 value: `${interaction.channel}`,
                 inline: true,
               },
-              { name: "Topic", value: `${topic}`, inline: true },
+              { name: 'Topic', value: `${topic}`, inline: true },
             )
             .setFooter({ text: `ID: ${ids.ticketId}` }),
         ],

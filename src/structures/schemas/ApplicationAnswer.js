@@ -1,11 +1,5 @@
-const { Schema, model } = require("mongoose");
-const {
-  reqString,
-  reqBool,
-  reqArray,
-  reqNum,
-  optString,
-} = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqBool, reqArray, reqNum, optString } = require('@constants/schemas');
 
 const ApplicationAnswer = new Schema({
   guildId: reqString,
@@ -17,4 +11,4 @@ const ApplicationAnswer = new Schema({
   state: reqString, // pending, approved or denied
 });
 
-module.exports = model("Application-Answer", ApplicationAnswer);
+module.exports = model('Application-Answer', ApplicationAnswer);

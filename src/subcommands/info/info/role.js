@@ -1,13 +1,9 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "info",
-  name: "role",
+  parent: 'info',
+  name: 'role',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -16,16 +12,14 @@ module.exports = {
   async execute(client, interaction, color) {
     await interaction.deferReply();
 
-    const role = interaction.options.getRole("role", true);
+    const role = interaction.options.getRole('role', true);
 
     await interaction.editReply({
       embeds: [
-        new Embed(role.color ?? color).setTitle("Role Info").setDescription(`
-                - **Name:** ${role.name}\n- **Role:** ${role}\n- **ID:** ${
-                  role.id
-                }\n- **Users:** ${role.members.size}\n- **Mentionable:** ${
-                  role.mentionable ? "Yes" : "No"
-                }\n- **Separated:** ${role.hoist ? "Yes" : "No"}
+        new Embed(role.color ?? color).setTitle('Role Info').setDescription(`
+                - **Name:** ${role.name}\n- **Role:** ${role}\n- **ID:** ${role.id}\n- **Users:** ${
+                  role.members.size
+                }\n- **Mentionable:** ${role.mentionable ? 'Yes' : 'No'}\n- **Separated:** ${role.hoist ? 'Yes' : 'No'}
                     `),
       ],
     });

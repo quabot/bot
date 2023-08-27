@@ -1,62 +1,43 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-  PermissionFlagsBits,
-} = require("discord.js");
+const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No execute function is needed because this command is only used for subcommands.
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("poll")
-    .setDescription("Create and end polls.")
+    .setName('poll')
+    .setDescription('Create and end polls.')
 
-    .addSubcommand((command) =>
+    .addSubcommand(command =>
       command
-        .setName("create")
-        .setDescription("Create a poll.")
-        .addChannelOption((option) =>
-          option
-            .setName("channel")
-            .setDescription("The channel where the poll should be in.")
-            .setRequired(true),
+        .setName('create')
+        .setDescription('Create a poll.')
+        .addChannelOption(option =>
+          option.setName('channel').setDescription('The channel where the poll should be in.').setRequired(true),
         )
-        .addNumberOption((option) =>
-          option
-            .setName("choices")
-            .setDescription("The amount of poll choices.")
-            .setRequired(true),
+        .addNumberOption(option =>
+          option.setName('choices').setDescription('The amount of poll choices.').setRequired(true),
         )
-        .addStringOption((option) =>
-          option
-            .setName("duration")
-            .setDescription("The length that the poll should last for.")
-            .setRequired(true),
+        .addStringOption(option =>
+          option.setName('duration').setDescription('The length that the poll should last for.').setRequired(true),
         )
-        .addRoleOption((option) =>
+        .addRoleOption(option =>
           option
-            .setName("role-mention")
-            .setDescription("The role to mention when the poll is created.")
+            .setName('role-mention')
+            .setDescription('The role to mention when the poll is created.')
             .setRequired(false),
         ),
     )
 
-    .addSubcommand((command) =>
+    .addSubcommand(command =>
       command
-        .setName("end")
-        .setDescription("End a poll.")
-        .addNumberOption((option) =>
-          option
-            .setName("poll-id")
-            .setDescription("The id of the poll to end.")
-            .setRequired(true),
+        .setName('end')
+        .setDescription('End a poll.')
+        .addNumberOption(option =>
+          option.setName('poll-id').setDescription('The id of the poll to end.').setRequired(true),
         ),
     )
     .setDefaultMemberPermissions(
-      PermissionFlagsBits.Administrator |
-        PermissionFlagsBits.ManageChannels |
-        PermissionFlagsBits.ManageGuild,
+      PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild,
     )
     .setDMPermission(false),
   /**

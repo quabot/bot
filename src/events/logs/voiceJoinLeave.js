@@ -1,17 +1,11 @@
-const {
-  Client,
-  Events,
-  Colors,
-  ThreadChannel,
-  VoiceState,
-} = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
-const { channelTypesById } = require("@constants/discord");
+const { Client, Events, Colors, ThreadChannel, VoiceState } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
+const { channelTypesById } = require('@constants/discord');
 
 module.exports = {
   event: Events.VoiceStateUpdate,
-  name: "voiceJoinLeave",
+  name: 'voiceJoinLeave',
   /**
    * @param {VoiceState} oldState
    * @param {VoiceState} newState
@@ -30,7 +24,7 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("voiceJoinLeave")) return;
+    if (!config.events.includes('voiceJoinLeave')) return;
     if (
       newState.channelId &&
       (config.excludedCategories.includes(newState.channel.parentId) ||
@@ -59,9 +53,7 @@ module.exports = {
     } else {
       await channel.send({
         embeds: [
-          new Embed(Colors.Red).setDescription(
-            `**Voice Channel Left**\n${newState.member} left ${oldState.channel}`,
-          ),
+          new Embed(Colors.Red).setDescription(`**Voice Channel Left**\n${newState.member} left ${oldState.channel}`),
         ],
       });
     }

@@ -1,15 +1,11 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { getAfkConfig } = require("@configs/afkConfig");
-const { getUser } = require("@configs/user");
-const { Embed } = require("@constants/embed");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getUser } = require('@configs/user');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "afk",
-  name: "help",
+  parent: 'afk',
+  name: 'help',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -31,16 +27,12 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "The afk module is disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
       });
 
     await interaction.editReply({
       embeds: [
-        new Embed(color).setTitle("What is the AFK module and how do i use it?")
+        new Embed(color).setTitle('What is the AFK module and how do i use it?')
           .setDescription(`The AFK module is a way for you to set your 'status' to AFK. If you're AFK and you get mentioned by a user, they will be notified that you're AFK. You can set a custom message as to why you're AFK that users will see when they ping you. A full list of commands:
 					\`/afk toggle\` - Enable/Disable your AFK status.
 					\`/afk status\` - Set your AFK message.

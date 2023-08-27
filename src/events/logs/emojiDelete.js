@@ -1,10 +1,10 @@
-const { Client, Events, GuildEmoji, Colors } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, GuildEmoji, Colors } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildEmojiDelete,
-  name: "emojiDelete",
+  name: 'emojiDelete',
   /**
    * @param {GuildEmoji} emoji
    * @param {Client} client
@@ -16,7 +16,7 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("emojiDelete")) return;
+    if (!config.events.includes('emojiDelete')) return;
 
     const channel = emoji.guild.channels.cache.get(config.channelId);
     if (!channel) return;
@@ -26,7 +26,7 @@ module.exports = {
         new Embed(Colors.Red)
           .setDescription(
             `
-                        **${emoji.animated ? "Animated " : ""}Emoji Deleted**
+                        **${emoji.animated ? 'Animated ' : ''}Emoji Deleted**
                         ${emoji.name} - [Full image](${emoji.url})
                         `,
           )

@@ -1,42 +1,31 @@
-const Canvas = require("@napi-rs/canvas");
-const { readFile } = require("fs/promises");
-const { join } = require("path");
-const moment = require("moment");
-const { request } = require("undici");
+const Canvas = require('@napi-rs/canvas');
+const { readFile } = require('fs/promises');
+const { join } = require('path');
+const moment = require('moment');
+const { request } = require('undici');
 
 /**
  * @param {canvas} Canvas.Canvas
  * @returns
  */
 
-Canvas.GlobalFonts.registerFromPath(
-  join(__dirname, "..", "assets", "fonts", "ggsans-Normal.ttf"),
-  "GG Sans",
-);
-Canvas.GlobalFonts.registerFromPath(
-  join(__dirname, "..", "assets", "fonts", "ggsans-Bold.ttf"),
-  "GG Sans Bold",
-);
+Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Normal.ttf'), 'GG Sans');
+Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Bold.ttf'), 'GG Sans Bold');
 
 async function drawCard(member, user, level, xp, reqXp, options) {
   // Defining canvas
   const canvas = Canvas.createCanvas(719, 251); // <- Canvas size here
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext('2d');
 
   // Background
-  if (options.bg.type === "color") {
+  if (options.bg.type === 'color') {
     // Static Color BG
     context.fillStyle = options.bg.color;
     context.fillRect(0, 0, canvas.width, canvas.height);
-  } else if (options.bg.type === "image") {
+  } else if (options.bg.type === 'image') {
     // do imgs
-    let background = await readFile(
-      `./src/utils/assets/backgrounds/${options.bg.image}.jpg`,
-    ).catch(() => {});
-    if (!background)
-      background = await readFile(
-        "./src/utils/assets/backgrounds/fallback.jpg",
-      );
+    let background = await readFile(`./src/utils/assets/backgrounds/${options.bg.image}.jpg`).catch(() => {});
+    if (!background) background = await readFile('./src/utils/assets/backgrounds/fallback.jpg');
     const backgroundImage = new Canvas.Image();
     backgroundImage.src = background;
     context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
@@ -53,17 +42,15 @@ async function drawCard(member, user, level, xp, reqXp, options) {
   }
 
   // "Displayname"
-  context.font = "32px GG Sans Bold";
+  context.font = '32px GG Sans Bold';
   context.fillStyle = options.colors.displayname;
   const usernameWidth = context.measureText(user.displayName).width;
   context.fillText(`${user.displayName}`, 166, 51 + 43 / 2);
   // Username & Joined Date
-  context.font = "28px GG Sans";
+  context.font = '28px GG Sans';
   context.fillStyle = options.colors.username;
   context.fillText(
-    `@${user.username} • Joined ${moment(member.joinedTimestamp).format(
-      "MMM D, YYYY",
-    )}`,
+    `@${user.username} • Joined ${moment(member.joinedTimestamp).format('MMM D, YYYY')}`,
     166,
     90 + 37 / 2,
   );
@@ -93,41 +80,29 @@ async function drawCard(member, user, level, xp, reqXp, options) {
 
   // Bottom XP/LV info
   // XP Counter
-  context.font = "24px GG Sans";
+  context.font = '24px GG Sans';
   context.fillStyle = options.colors.xp;
   context.fillText(`${xp} XP`, 32, 162 + 16);
   // "until next level"
-  context.font = "24px GG Sans";
+  context.font = '24px GG Sans';
   context.fillStyle = options.colors.xp;
   context.fillText(
     `${reqXp - xp} XP until next level`,
-    canvas.width -
-      40 -
-      context.measureText(`${reqXp - xp} XP until next level`).width,
+    canvas.width - 40 - context.measureText(`${reqXp - xp} XP until next level`).width,
     162 + 16,
   );
 
   // Level
-  context.font = "24px GG Sans";
+  context.font = '24px GG Sans';
   const levelWidth = context.measureText(`LEVEL ${level}`).width;
   // Level blob
   context.fillStyle = options.colors.level_bg;
   context.beginPath();
-  context.roundRect(
-    102 + 33 + 32 + usernameWidth + 15,
-    11.75 * 3 + 8,
-    levelWidth + 16 + 17,
-    39,
-    100,
-  );
+  context.roundRect(102 + 33 + 32 + usernameWidth + 15, 11.75 * 3 + 8, levelWidth + 16 + 17, 39, 100);
   context.fill();
   // Level text
   context.fillStyle = options.colors.level_text;
-  context.fillText(
-    `LEVEL ${level}`,
-    102 + 33 + 32 + usernameWidth + 32,
-    48 + 32 / 2 + 8,
-  );
+  context.fillText(`LEVEL ${level}`, 102 + 33 + 32 + usernameWidth + 32, 48 + 32 / 2 + 8);
 
   // Profile Picture
   // Make it rounded (if enabled)
@@ -139,13 +114,13 @@ async function drawCard(member, user, level, xp, reqXp, options) {
   }
 
   // Drawing pfp image itself
-  const { body } = await request(user.displayAvatarURL({ format: "jpg" }));
+  const { body } = await request(user.displayAvatarURL({ format: 'jpg' }));
   const avatar = new Canvas.Image();
   avatar.src = Buffer.from(await body.arrayBuffer());
   context.drawImage(avatar, 32, 32, 102, 102);
 
   // Exporting it as PNG image
-  const result = await canvas.encode("png");
+  const result = await canvas.encode('png');
   return result;
 }
 

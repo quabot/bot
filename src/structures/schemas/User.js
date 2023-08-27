@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqNum, reqBool } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqNum, reqBool } = require('@constants/schemas');
 
 const User = new Schema({
   guildId: reqString,
@@ -15,4 +15,4 @@ const User = new Schema({
   afkMessage: reqString,
 });
 
-module.exports = model("User", User);
+module.exports = model('User', User);

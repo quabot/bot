@@ -1,10 +1,10 @@
-const { Client, Events, Sticker, Colors } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Sticker, Colors } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildStickerDelete,
-  name: "stickerDelete",
+  name: 'stickerDelete',
   /**
    * @param {Sticker} sticker
    * @param {Client} client
@@ -20,7 +20,7 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("stickerDelete")) return;
+    if (!config.events.includes('stickerDelete')) return;
 
     const channel = sticker.guild.channels.cache.get(config.channelId);
     if (!channel) return;

@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require("discord.js");
-const PollConfig = require("@schemas/PollConfig");
+const { Client } = require('discord.js');
+const PollConfig = require('@schemas/PollConfig');
 
 /**
  * @param {Client} client
@@ -15,7 +15,7 @@ const getPollConfig = async (client, guildId) => {
           guildId,
           enabled: true,
           logEnabled: false,
-          logChannel: "none",
+          logChannel: 'none',
         }).save();
     })
       .clone()

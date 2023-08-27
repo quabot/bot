@@ -1,8 +1,8 @@
-const { Client } = require("discord.js");
-const Poll = require("@schemas/Poll");
-const { getPollConfig } = require("../configs/pollConfig");
-const { getServerConfig } = require("../configs/serverConfig");
-const { Embed } = require("../constants/embed");
+const { Client } = require('discord.js');
+const Poll = require('@schemas/Poll');
+const { getPollConfig } = require('../configs/pollConfig');
+const { getServerConfig } = require('../configs/serverConfig');
+const { Embed } = require('../constants/embed');
 
 /**
  * @param {Client} client
@@ -27,12 +27,12 @@ async function endPoll(client, document) {
 
   channel.messages
     .fetch(`${poll.message}`)
-    .then(async (message) => {
+    .then(async message => {
       if (!message) return;
 
       const reactions = message.reactions.cache
-        .each(async (reaction) => await reaction.users.fetch())
-        .map((reaction) => reaction.count)
+        .each(async reaction => await reaction.users.fetch())
+        .map(reaction => reaction.count)
         .flat();
 
       const winner = Math.max(...reactions);
@@ -48,18 +48,16 @@ async function endPoll(client, document) {
         embeds: [
           new Embed(colorConfig.color)
             .setTitle(`${message.embeds[0].title}`)
-            .setDescription(
-              `${message.embeds[0].description}\n\nPoll is over, the poll was won by ${winMsg}!`,
-            )
+            .setDescription(`${message.embeds[0].description}\n\nPoll is over, the poll was won by ${winMsg}!`)
             .addFields(
               {
-                name: "Hosted by",
+                name: 'Hosted by',
                 value: `${message.embeds[0].fields[0].value}`,
                 inline: true,
               },
-              { name: "Winner", value: `${winMsg}`, inline: true },
+              { name: 'Winner', value: `${winMsg}`, inline: true },
               {
-                name: "Ended",
+                name: 'Ended',
                 value: `${message.embeds[0].fields[1].value}`,
                 inline: true,
               },

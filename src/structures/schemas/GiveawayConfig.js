@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqId, reqBool } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqId, reqBool } = require('@constants/schemas');
 
 const GiveawayConfig = new Schema({
   guildId: reqString,
@@ -7,4 +7,4 @@ const GiveawayConfig = new Schema({
   pingEveryone: reqBool,
 });
 
-module.exports = model("Giveaway-Config", GiveawayConfig);
+module.exports = model('Giveaway-Config', GiveawayConfig);

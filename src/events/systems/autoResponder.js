@@ -1,12 +1,12 @@
-const { Client, Message } = require("discord.js");
-const { CustomEmbed } = require("@constants/customEmbed");
-const Responder = require("@schemas/Responder");
-const { getServerConfig } = require("@configs/serverConfig");
-const { getResponderConfig } = require("@configs/responderConfig");
+const { Client, Message } = require('discord.js');
+const { CustomEmbed } = require('@constants/customEmbed');
+const Responder = require('@schemas/Responder');
+const { getServerConfig } = require('@configs/serverConfig');
+const { getResponderConfig } = require('@configs/responderConfig');
 
 module.exports = {
-  event: "messageCreate",
-  name: "autoReponder",
+  event: 'messageCreate',
+  name: 'autoReponder',
   /**
    * @param {Message} message
    * @param {Client} client
@@ -20,19 +20,16 @@ module.exports = {
     if (!respondConfig.enabled) return;
 
     const configColor = await getServerConfig(client, message.guildId);
-    const color = configColor?.color ?? "#416683";
+    const color = configColor?.color ?? '#416683';
 
-    const commands_list = client.custom_commands.filter(
-      (c) => c.guildId === message.guildId,
-    );
-    commands_list.forEach(async (cL) => {
+    const commands_list = client.custom_commands.filter(c => c.guildId === message.guildId);
+    commands_list.forEach(async cL => {
       let run = false;
       if (!cL.wildcard && cL.trigger === message.content) run = true;
-      if (cL.wildcard && message.content.toLowerCase().includes(cL.trigger))
-        run = true;
+      if (cL.wildcard && message.content.toLowerCase().includes(cL.trigger)) run = true;
 
       if (cL.ignored_channels.includes(message.channel.id)) run = false;
-      cL.ignored_roles.forEach((r) => {
+      cL.ignored_roles.forEach(r => {
         if (message.member.roles.cache.has(r)) run = false;
       });
 
@@ -40,25 +37,25 @@ module.exports = {
     });
 
     async function runTrigger(document) {
-      const parse = (s) => {
+      const parse = s => {
         return `${s}`
-          .replaceAll("{color}", `${color}`)
-          .replaceAll("{guild}", `${message.guild.name}`)
-          .replaceAll("{server}", `${message.guild.name}`)
-          .replaceAll("{members}", `${message.guild.memberCount}`)
-          .replaceAll("{user}", message.author)
-          .replaceAll("{username}", message.author.username)
-          .replaceAll("{tag}", message.author.tag);
+          .replaceAll('{color}', `${color}`)
+          .replaceAll('{guild}', `${message.guild.name}`)
+          .replaceAll('{server}', `${message.guild.name}`)
+          .replaceAll('{members}', `${message.guild.memberCount}`)
+          .replaceAll('{user}', message.author)
+          .replaceAll('{username}', message.author.username)
+          .replaceAll('{tag}', message.author.tag);
       };
 
-      if (document.type === "message") {
+      if (document.type === 'message') {
         await message.reply({
-          content: parse(document.message) ?? "** **",
+          content: parse(document.message) ?? '** **',
           allowedMentions: false,
         });
-      } else if (document.type === "reaction") {
+      } else if (document.type === 'reaction') {
         await message.react(document.reaction);
-      } else if (document.type === "embed") {
+      } else if (document.type === 'embed') {
         const embed = new CustomEmbed(document.embed, parse);
         await message.reply({
           embeds: [embed],

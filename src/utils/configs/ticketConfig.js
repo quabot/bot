@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require("discord.js");
-const TicketConfig = require("@schemas/TicketConfig");
+const { Client } = require('discord.js');
+const TicketConfig = require('@schemas/TicketConfig');
 
 /**
  * @param {Client} client
@@ -15,14 +15,14 @@ const getTicketConfig = async (client, guildId) => {
           guildId,
 
           enabled: false,
-          openCategory: "none",
-          closedCategory: "none",
+          openCategory: 'none',
+          closedCategory: 'none',
 
           staffRoles: [],
-          staffPing: "none",
+          staffPing: 'none',
           topicButton: true,
 
-          logChannel: "none",
+          logChannel: 'none',
           logEnabled: false,
         }).save();
     })

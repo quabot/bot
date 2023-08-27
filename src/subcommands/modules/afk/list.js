@@ -7,13 +7,13 @@ const {
   EmbedBuilder,
   ButtonBuilder,
   ActionRowBuilder,
-} = require("discord.js");
-const { getAfkConfig } = require("@configs/afkConfig");
-const { Embed } = require("@constants/embed");
+} = require('discord.js');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "afk",
-  name: "list",
+  parent: 'afk',
+  name: 'list',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -34,46 +34,38 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "The afk module is disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
       });
 
-    const User = require("@schemas/User");
+    const User = require('@schemas/User');
     const found = await User.find({
       guildId: interaction.guildId,
       userId: interaction.user.id,
       afk: true,
     });
 
-    const backId = "back-afk";
-    const forwardId = "forward-afk";
+    const backId = 'back-afk';
+    const forwardId = 'forward-afk';
     const backButton = new ButtonBuilder({
       style: ButtonStyle.Secondary,
-      label: "Back",
-      emoji: "⬅️",
+      label: 'Back',
+      emoji: '⬅️',
       customId: backId,
     });
     const forwardButton = new ButtonBuilder({
       style: ButtonStyle.Secondary,
-      label: "Forward",
-      emoji: "➡️",
+      label: 'Forward',
+      emoji: '➡️',
       customId: forwardId,
     });
 
-    const makeEmbed = async (start) => {
+    const makeEmbed = async start => {
       const current = found.slice(start, start + 15);
 
       return new EmbedBuilder({
-        title: `AFK users in ${interaction.guild.name} | ${start + 1}-${
-          start + current.length
-        }/${found.length}`,
+        title: `AFK users in ${interaction.guild.name} | ${start + 1}-${start + current.length}/${found.length}`,
         color: Colors.Green,
-        description: `${await Promise.all(
-          current.map(async (item) => `<@${item.userId}>\n`),
-        )}`,
+        description: `${await Promise.all(current.map(async item => `<@${item.userId}>\n`))}`,
       });
     };
 
@@ -81,9 +73,7 @@ module.exports = {
     const msg = await interaction.editReply({
       embeds: [await makeEmbed(0)],
       fetchReply: true,
-      components: canFit
-        ? []
-        : [new ActionRowBuilder({ components: [forwardButton] })],
+      components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
     });
     if (canFit) return;
 
@@ -92,7 +82,7 @@ module.exports = {
     });
 
     let currentIndex = 0;
-    collector.on("collect", async (i) => {
+    collector.on('collect', async i => {
       i.customId === backId ? (currentIndex -= 15) : (currentIndex += 15);
       await i.update({
         embeds: [await makeEmbed(currentIndex)],

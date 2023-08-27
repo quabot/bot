@@ -1,11 +1,11 @@
-const { Client, Message } = require("discord.js");
-const { getUser } = require("@configs/user");
-const { Embed } = require("@constants/embed");
-const { getServerConfig } = require("@configs/serverConfig");
+const { Client, Message } = require('discord.js');
+const { getUser } = require('@configs/user');
+const { Embed } = require('@constants/embed');
+const { getServerConfig } = require('@configs/serverConfig');
 
 module.exports = {
-  event: "messageCreate",
-  name: "afkHandler",
+  event: 'messageCreate',
+  name: 'afkHandler',
   /**
    * @param {Message} message
    * @param {Client} client
@@ -20,18 +20,14 @@ module.exports = {
 
     const config = await getUser(message.guildId, user.id);
     const configColor = await getServerConfig(client, message.guildId);
-    const color = configColor?.color ?? "#416683";
+    const color = configColor?.color ?? '#416683';
     if (!config || !color) return;
 
     if (config.userId === user.id) return;
 
     if (config.afk) {
       message.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            `${user.username} is afk.\n\`${config.afkMessage}\``,
-          ),
-        ],
+        embeds: [new Embed(color).setDescription(`${user.username} is afk.\n\`${config.afkMessage}\``)],
       });
     }
   },

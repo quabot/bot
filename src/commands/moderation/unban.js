@@ -1,27 +1,16 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-  PermissionFlagsBits,
-} = require("discord.js");
-const { getModerationConfig } = require("@configs/moderationConfig");
-const { Embed } = require("@constants/embed");
+const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
+const { getModerationConfig } = require('@configs/moderationConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("unban")
-    .setDescription("Unban a user.")
-    .addStringOption((option) =>
-      option
-        .setName("userid")
-        .setDescription("The id of the user you wish to unban.")
-        .setRequired(true),
+    .setName('unban')
+    .setDescription('Unban a user.')
+    .addStringOption(option =>
+      option.setName('userid').setDescription('The id of the user you wish to unban.').setRequired(true),
     )
-    .addBooleanOption((option) =>
-      option
-        .setName("private")
-        .setDescription("Should the message be visible to you only?")
-        .setRequired(false),
+    .addBooleanOption(option =>
+      option.setName('private').setDescription('Should the message be visible to you only?').setRequired(false),
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
@@ -30,7 +19,7 @@ module.exports = {
    * @param {CommandInteraction} interaction
    */
   async execute(client, interaction, color) {
-    const private = interaction.options.getBoolean("private") ?? false;
+    const private = interaction.options.getBoolean('private') ?? false;
 
     await interaction.deferReply({ ephemeral: private });
 
@@ -44,38 +33,30 @@ module.exports = {
         ],
       });
 
-    const userId = interaction.options.getString("userid").slice(0, 800);
+    const userId = interaction.options.getString('userid').slice(0, 800);
     if (!userId)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please fill out all the required fields.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
       });
 
     if (userId === interaction.user.id)
       return interaction.editReply({
-        embeds: [new Embed(color).setDescription("You cannot unban yourself.")],
+        embeds: [new Embed(color).setDescription('You cannot unban yourself.')],
       });
 
     let unban = true;
-    await interaction.guild.members.unban(userId).catch(async (e) => {
+    await interaction.guild.members.unban(userId).catch(async e => {
       unban = false;
 
       await interaction.editReply({
-        embeds: [new Embed(color).setDescription("Failed to ban the user.")],
+        embeds: [new Embed(color).setDescription('Failed to ban the user.')],
       });
     });
 
     if (!unban) return;
 
     interaction.editReply({
-      embeds: [
-        new Embed(color)
-          .setTitle("User Unbanned")
-          .setDescription(`**User-ID:** ${userId}`),
-      ],
+      embeds: [new Embed(color).setTitle('User Unbanned').setDescription(`**User-ID:** ${userId}`)],
     });
 
     if (config.channel) {
@@ -85,7 +66,7 @@ module.exports = {
       await channel.send({
         embeds: [
           new Embed(color)
-            .setTitle("Member Unbanned")
+            .setTitle('Member Unbanned')
             .setDescription(`**User-ID:** ${userId}\n**User:** <@${userId}>.`),
         ],
       });

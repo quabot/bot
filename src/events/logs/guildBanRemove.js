@@ -1,10 +1,10 @@
-const { Client, Events, GuildBan, Colors } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, GuildBan, Colors } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildBanRemove,
-  name: "guildBanRemove",
+  name: 'guildBanRemove',
   /**
    * @param {GuildBan} ban
    * @param {Client} client
@@ -16,7 +16,7 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("guildBanRemove")) return;
+    if (!config.events.includes('guildBanRemove')) return;
 
     const channel = ban.guild.channels.cache.get(config.channelId);
     if (!channel) return;

@@ -6,14 +6,14 @@ const {
   ButtonBuilder,
   ButtonStyle,
   Colors,
-} = require("discord.js");
-const Suggest = require("@schemas/Suggestion");
-const { getSuggestConfig } = require("@configs/suggestConfig");
-const { CustomEmbed } = require("@constants/customEmbed");
-const { Embed } = require("@constants/embed");
+} = require('discord.js');
+const Suggest = require('@schemas/Suggestion');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { CustomEmbed } = require('@constants/customEmbed');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  name: "suggestion-delete",
+  name: 'suggestion-delete',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -29,92 +29,74 @@ module.exports = {
     });
     if (!suggestion)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("Couldn't find the suggestion."),
-        ],
+        embeds: [new Embed(color).setDescription("Couldn't find the suggestion.")],
       });
 
     const config = await getSuggestConfig(client, interaction.guildId);
     if (!config)
       return await interaction.editReply({
         embeds: [
-          new Embed(color).setDescription(
-            "We just created a new document! Could you please run that command again?",
-          ),
+          new Embed(color).setDescription('We just created a new document! Could you please run that command again?'),
         ],
       });
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Suggestions are disabled in this server!",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Suggestions are disabled in this server!')],
       });
 
     const channel = interaction.guild.channels.cache.get(config.channelId);
     if (!channel)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Couldn't find the suggestions channel.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription("Couldn't find the suggestions channel.")],
       });
 
-    await channel.messages.fetch(suggestion.msgId).then(async (message) => {
+    await channel.messages.fetch(suggestion.msgId).then(async message => {
       if (!message)
         return interaction.editReply({
-          embeds: [
-            new Embed(color).setDescription(
-              "Couldn't find the suggestion! Are you sure it wasn't deleted?",
-            ),
-          ],
+          embeds: [new Embed(color).setDescription("Couldn't find the suggestion! Are you sure it wasn't deleted?")],
         });
 
       await message.delete();
       await interaction.editReply({
-        embeds: [new Embed(color).setDescription("Suggestion deleted.")],
+        embeds: [new Embed(color).setDescription('Suggestion deleted.')],
       });
 
       await Suggest.findOneAndDelete({ id, guildId: interaction.guildId });
 
       await interaction.message.edit({
         embeds: [
-          new Embed(Colors.DarkRed)
-            .setTitle("New Suggestion")
-            .addFields(
-              {
-                name: "User",
-                value: `${interaction.message.embeds[0].fields[0].value}`,
-                inline: true,
-              },
-              { name: "State", value: "Deleted", inline: true },
-              { name: "ID", value: `${suggestion.id}`, inline: true },
-              {
-                name: "Suggestion",
-                value: `${suggestion.suggestion}`,
-                inline: false,
-              },
-            ),
+          new Embed(Colors.DarkRed).setTitle('New Suggestion').addFields(
+            {
+              name: 'User',
+              value: `${interaction.message.embeds[0].fields[0].value}`,
+              inline: true,
+            },
+            { name: 'State', value: 'Deleted', inline: true },
+            { name: 'ID', value: `${suggestion.id}`, inline: true },
+            {
+              name: 'Suggestion',
+              value: `${suggestion.suggestion}`,
+              inline: false,
+            },
+          ),
         ],
         components: [
           new ActionRowBuilder().addComponents(
             new ButtonBuilder()
-              .setCustomId("suggestion-approve")
-              .setLabel("Approve")
+              .setCustomId('suggestion-approve')
+              .setLabel('Approve')
               .setDisabled(true)
               .setStyle(ButtonStyle.Success),
             new ButtonBuilder()
               .setDisabled(true)
-              .setCustomId("suggestion-deny")
-              .setLabel("Deny")
+              .setCustomId('suggestion-deny')
+              .setLabel('Deny')
               .setStyle(ButtonStyle.Danger),
             new ButtonBuilder()
               .setDisabled(true)
-              .setCustomId("suggestion-delete")
-              .setLabel("Delete")
+              .setCustomId('suggestion-delete')
+              .setLabel('Delete')
               .setStyle(ButtonStyle.Secondary),
           ),
         ],
@@ -123,16 +105,16 @@ module.exports = {
       if (!config.dm) return;
 
       const user = interaction.guild.members.cache.get(`${suggestion.userId}`);
-      const parseString = (text) =>
+      const parseString = text =>
         text
-          .replaceAll("{suggestion}", suggestion.suggestion)
-          .replaceAll("{user}", `${user}`)
-          .replaceAll("{avatar}", user.displayAvatarURL() ?? "")
-          .replaceAll("{server}", interaction.guild?.name ?? "")
-          .replaceAll("{staff}", `${interaction.user ?? ""}`)
-          .replaceAll("{state}", "deleted")
-          .replaceAll("{color}", color)
-          .replaceAll("{icon}", interaction.guild?.iconURL() ?? "");
+          .replaceAll('{suggestion}', suggestion.suggestion)
+          .replaceAll('{user}', `${user}`)
+          .replaceAll('{avatar}', user.displayAvatarURL() ?? '')
+          .replaceAll('{server}', interaction.guild?.name ?? '')
+          .replaceAll('{staff}', `${interaction.user ?? ''}`)
+          .replaceAll('{state}', 'deleted')
+          .replaceAll('{color}', color)
+          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
       const embed = new CustomEmbed(config.dmMessage, parseString);
       user.send({

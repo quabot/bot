@@ -1,6 +1,6 @@
-const Ids = require("@schemas/Ids");
+const Ids = require('@schemas/Ids');
 
-const getIdConfig = async (guildId) => {
+const getIdConfig = async guildId => {
   const idConfig = await Ids.findOne({ guildId }, (err, ids) => {
     if (err) console.log(err);
     if (!ids)

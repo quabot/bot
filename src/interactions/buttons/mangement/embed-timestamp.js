@@ -7,12 +7,12 @@ const {
   TextInputBuilder,
   TextInputStyle,
   EmbedBuilder,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { isValidHttpUrl } = require("../../../utils/functions/string");
+} = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { isValidHttpUrl } = require('../../../utils/functions/string');
 
 module.exports = {
-  name: "embed-timestamp",
+  name: 'embed-timestamp',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -29,7 +29,7 @@ module.exports = {
     });
 
     await interaction.editReply({
-      embeds: [new Embed(color).setDescription("Set the timestamp!")],
+      embeds: [new Embed(color).setDescription('Set the timestamp!')],
     });
   },
 };

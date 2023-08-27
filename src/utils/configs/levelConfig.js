@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const Level = require("@schemas/LevelConfig");
+const Level = require('@schemas/LevelConfig');
 
 const getLevelConfig = async (guildId, client) => {
   const levelConfig =
@@ -10,32 +10,32 @@ const getLevelConfig = async (guildId, client) => {
         new Level({
           guildId,
           enabled: false,
-          channel: "current", // none, current, other
+          channel: 'current', // none, current, other
 
-          messageType: "embed", // Embed, Text or card
+          messageType: 'embed', // Embed, Text or card
           levelCard: {
             bg: {
-              type: "color", // none, color and image // default: color
-              color: "#2B2D31", // default: #2B2D31
-              image: "amsterdam", // default: amsterdam,
-              image_overlay: "rgba(0,0,0,0.6)", // default: rgba(0,0,0,0.6)
+              type: 'color', // none, color and image // default: color
+              color: '#2B2D31', // default: #2B2D31
+              image: 'amsterdam', // default: amsterdam,
+              image_overlay: 'rgba(0,0,0,0.6)', // default: rgba(0,0,0,0.6)
             },
 
             border: {
               enabled: false, // default false
-              color: "#ffffff", // default #fff
+              color: '#ffffff', // default #fff
               size: 10, // default 10
             },
 
             colors: {
-              accent: "#37CF74", // default: #37CF74,
-              displayname: "#ffffff", // default: #fff,
-              username: "#B5B9BF", // default: #B5B9BF,
-              xp: "#ffffff", // default: #fff,
-              xp_bar: "#1E1F22", // default: #1E1F22,
+              accent: '#37CF74', // default: #37CF74,
+              displayname: '#ffffff', // default: #fff,
+              username: '#B5B9BF', // default: #B5B9BF,
+              xp: '#ffffff', // default: #fff,
+              xp_bar: '#1E1F22', // default: #1E1F22,
 
-              level_bg: "#1E1F22", // default: #1E1F22,
-              level_text: "#B5B9BF", // default: #B5B9BF,
+              level_bg: '#1E1F22', // default: #1E1F22,
+              level_text: '#B5B9BF', // default: #B5B9BF,
             },
 
             pfp: {
@@ -43,51 +43,51 @@ const getLevelConfig = async (guildId, client) => {
             },
           },
           cardMention: true,
-          messageText: "{user} leveled up to level {level}!",
+          messageText: '{user} leveled up to level {level}!',
           message: {
-            content: "",
-            title: "{user.displayname} leveled up!",
-            color: "{color}",
+            content: '',
+            title: '{user.displayname} leveled up!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description: "{user} is now level **{level}** with **{xp}** xp!",
+            description: '{user} is now level **{level}** with **{xp}** xp!',
             fields: [],
-            url: "",
-            thumbnail: "{user.avatar_url}",
-            image: "",
+            url: '',
+            thumbnail: '{user.avatar_url}',
+            image: '',
           },
 
           dmEnabled: false,
-          dmType: "embed",
+          dmType: 'embed',
           dmMessageText:
-            "You leveled up in **{server}** to level {level}. You now have {xp} xp and need {required_xp} for the next level.",
+            'You leveled up in **{server}** to level {level}. You now have {xp} xp and need {required_xp} for the next level.',
           dmMessage: {
-            content: "",
-            title: "{user.displayname} leveled up!",
-            color: "{color}",
+            content: '',
+            title: '{user.displayname} leveled up!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description: "{user} is now level **{level}** with **{xp}** xp!",
+            description: '{user} is now level **{level}** with **{xp}** xp!',
             fields: [],
-            url: "",
-            thumbnail: "{avatar}",
-            image: "",
+            url: '',
+            thumbnail: '{avatar}',
+            image: '',
           },
 
           voiceXp: true,
@@ -101,33 +101,31 @@ const getLevelConfig = async (guildId, client) => {
           excludedRoles: [],
 
           rewards: [],
-          rewardsMode: "stack",
+          rewardsMode: 'stack',
           removeRewards: true,
 
           rewardDm: false,
-          rewardDmType: "embed",
-          rewardDmMessageText:
-            "You received the role {reward} in **{server}** for surpassing level {level}!",
+          rewardDmType: 'embed',
+          rewardDmMessageText: 'You received the role {reward} in **{server}** for surpassing level {level}!',
           rewardDmMessage: {
-            content: "",
-            title: "Reward received!",
-            color: "{color}",
+            content: '',
+            title: 'Reward received!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description:
-              "You received the role {role} in **{server}** for surpassing level **{level}**!",
+            description: 'You received the role {role} in **{server}** for surpassing level **{level}**!',
             fields: [],
-            url: "",
-            thumbnail: "{avatar}",
-            image: "",
+            url: '',
+            thumbnail: '{avatar}',
+            image: '',
           },
 
           viewCard: false,

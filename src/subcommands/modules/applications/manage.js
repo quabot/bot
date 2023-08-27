@@ -1,14 +1,10 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { getApplicationConfig } = require("@configs/applicationConfig");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { getApplicationConfig } = require('@configs/applicationConfig');
 
 module.exports = {
-  parent: "applications",
-  name: "help",
+  parent: 'applications',
+  name: 'help',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -29,11 +25,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "This module is disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('This module is disabled in this server.')],
       });
 
     await interaction.editReply({

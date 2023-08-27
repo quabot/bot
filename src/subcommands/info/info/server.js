@@ -1,14 +1,9 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ChannelType,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "info",
-  name: "server",
+  parent: 'info',
+  name: 'server',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -19,33 +14,25 @@ module.exports = {
 
     const { guild } = interaction;
     const totalMembersSize = guild.members.cache.size;
-    const humanMembersSize = guild.members.cache.filter(
-      (m) => !m.user.bot,
-    ).size;
+    const humanMembersSize = guild.members.cache.filter(m => !m.user.bot).size;
 
     await interaction.editReply({
       embeds: [
         new Embed(color)
           .setThumbnail(guild.iconURL())
-          .setTitle("Server Info")
+          .setTitle('Server Info')
           .addFields(
             {
-              name: "**General:**",
+              name: '**General:**',
               value: `
-                            - **Name**: ${guild.name}\n- **ID**: ${
-                              guild.id
-                            }\n- **Created**: <t:${Math.floor(
+                            - **Name**: ${guild.name}\n- **ID**: ${guild.id}\n- **Created**: <t:${Math.floor(
                               guild.createdTimestamp / 1000,
-                            )}:R>\n- **Owner**: <@${
-                              guild.ownerId
-                            }>\n- **Description**: ${
-                              guild.description ?? "Unset"
-                            }
+                            )}:R>\n- **Owner**: <@${guild.ownerId}>\n- **Description**: ${guild.description ?? 'Unset'}
                          `,
               inline: false,
             },
             {
-              name: "**Members**",
+              name: '**Members**',
               value: `
                          - **Total Members**: ${totalMembersSize}\n- **Humans**: ${humanMembersSize}\n- **Bots**: ${
                            totalMembersSize - humanMembersSize
@@ -54,47 +41,25 @@ module.exports = {
               inline: false,
             },
             {
-              name: "**Channels:**",
+              name: '**Channels:**',
               value: `
-                            - **Total**: ${
-                              guild.channels.cache.size
-                            }\n- **Text**: ${
-                              guild.channels.cache.filter(
-                                (c) => c.type === ChannelType.GuildText,
-                              ).size
+                            - **Total**: ${guild.channels.cache.size}\n- **Text**: ${
+                              guild.channels.cache.filter(c => c.type === ChannelType.GuildText).size
                             }\n- **Categories**: ${
-                              guild.channels.cache.filter(
-                                (c) => c.type === ChannelType.GuildCategory,
-                              ).size
-                            }\n- **Voice**: ${
-                              guild.channels.cache.filter(
-                                (c) => c.type === ChannelType.GuildVoice,
-                              ).size
-                            }
+                              guild.channels.cache.filter(c => c.type === ChannelType.GuildCategory).size
+                            }\n- **Voice**: ${guild.channels.cache.filter(c => c.type === ChannelType.GuildVoice).size}
                                 ${
-                                  guild.features.includes("COMMUNITY")
+                                  guild.features.includes('COMMUNITY')
                                     ? `\n- **News**: ${
-                                        guild.channels.cache.filter(
-                                          (c) =>
-                                            c.type ===
-                                            ChannelType.GuildAnnouncement,
-                                        ).size
+                                        guild.channels.cache.filter(c => c.type === ChannelType.GuildAnnouncement).size
                                       }
                                     \n- **Stages**: ${
-                                      guild.channels.cache.filter(
-                                        (c) =>
-                                          c.type ===
-                                          ChannelType.GuildStageVoice,
-                                      ).size
+                                      guild.channels.cache.filter(c => c.type === ChannelType.GuildStageVoice).size
                                     }`
-                                    : ""
+                                    : ''
                                 }\n- **Threads**: ${
-                                  guild.channels.cache.filter(
-                                    (c) => c.type === ChannelType.PublicThread,
-                                  ).size +
-                                  guild.channels.cache.filter(
-                                    (c) => c.type === ChannelType.PrivateThread,
-                                  ).size
+                                  guild.channels.cache.filter(c => c.type === ChannelType.PublicThread).size +
+                                  guild.channels.cache.filter(c => c.type === ChannelType.PrivateThread).size
                                 }
                     `,
               inline: false,

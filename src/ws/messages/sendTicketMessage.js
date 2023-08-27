@@ -1,9 +1,9 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { CustomEmbed } = require("@constants/customEmbed");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 //* QuaBot Ticket Message Sender Handler.
 module.exports = {
-  code: "send-message-ticket",
+  code: 'send-message-ticket',
   async execute(client, data) {
     //* Get the server and channel & embed.
     const guild = client.guilds.cache.get(data.guildId);
@@ -14,22 +14,19 @@ module.exports = {
     const embed = data.embedEnabled;
 
     //* Send the message to the channel.
-    const getParsedString = (s) => {
+    const getParsedString = s => {
       return `${s}`
-        .replaceAll("{guild}", guild.name)
-        .replaceAll("{members}", guild.memberCount)
-        .replaceAll("{color}", "#416683");
+        .replaceAll('{guild}', guild.name)
+        .replaceAll('{members}', guild.memberCount)
+        .replaceAll('{color}', '#416683');
     };
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("ticket-create")
-        .setLabel("Create Ticket")
-        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId('ticket-create').setLabel('Create Ticket').setStyle(ButtonStyle.Secondary),
     );
 
     if (!embed)
       return await channel.send({
-        content: getParsedString(data.message.content) ?? "",
+        content: getParsedString(data.message.content) ?? '',
         components: [row],
       });
 
@@ -37,7 +34,7 @@ module.exports = {
 
     await channel.send({
       embeds: [sentEmbed],
-      content: getParsedString(data.message.content) ?? "",
+      content: getParsedString(data.message.content) ?? '',
       components: [row],
     });
   },

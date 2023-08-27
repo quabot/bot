@@ -1,14 +1,10 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { getApplicationConfig } = require("@configs/applicationConfig");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { getApplicationConfig } = require('@configs/applicationConfig');
 
 module.exports = {
-  parent: "applications",
-  name: "apply",
+  parent: 'applications',
+  name: 'apply',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -17,7 +13,7 @@ module.exports = {
   async execute(client, interaction, color) {
     await interaction.deferReply({ ephemeral: false });
 
-    const id = interaction.options.getString("id");
+    const id = interaction.options.getString('id');
     const config = await getApplicationConfig(interaction.guildId, client);
     if (!config)
       return await interaction.editReply({
@@ -30,23 +26,15 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "This module is disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('This module is disabled in this server.')],
       });
 
     if (!id)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please specify a valid application ID.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please specify a valid application ID.')],
       });
 
-    const Application = require("@schemas/Application");
+    const Application = require('@schemas/Application');
     const fApplication = await Application.findOne({
       guildId: interaction.guildId,
       id,
@@ -54,11 +42,7 @@ module.exports = {
 
     if (!fApplication)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please specify a valid application ID.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please specify a valid application ID.')],
       });
 
     await interaction.editReply({

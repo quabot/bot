@@ -6,13 +6,13 @@ const {
   Colors,
   SlashCommandBuilder,
   CommandInteraction,
-} = require("discord.js");
+} = require('discord.js');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("emotes")
-    .setDescription("List all the server emojis.")
+    .setName('emotes')
+    .setDescription('List all the server emojis.')
     .setDMPermission(false),
   /**
    * @param {CommandInteraction} interaction
@@ -24,28 +24,28 @@ module.exports = {
     //* Create an array of all the emojis in the guild.
     const emoteList = [];
     interaction.guild.emojis.fetch().for;
-    interaction.guild.emojis.fetch().forEach((e) => {
+    interaction.guild.emojis.fetch().forEach(e => {
       emoteList.push(e);
     });
 
     //* Create the multi-page system.
     // ? don't touch it lol
-    const backId = "backMusic";
-    const forwardId = "forwardMusic";
+    const backId = 'backMusic';
+    const forwardId = 'forwardMusic';
     const backButton = new ButtonBuilder({
       style: ButtonStyle.Secondary,
-      label: "Back",
-      emoji: "⬅️",
+      label: 'Back',
+      emoji: '⬅️',
       customId: backId,
     });
     const forwardButton = new ButtonBuilder({
       style: ButtonStyle.Secondary,
-      label: "Forward",
-      emoji: "➡️",
+      label: 'Forward',
+      emoji: '➡️',
       customId: forwardId,
     });
 
-    const makeEmbed = async (start) => {
+    const makeEmbed = async start => {
       const current = emoteList.slice(start, start + 10);
 
       return new EmbedBuilder({
@@ -53,7 +53,7 @@ module.exports = {
         timestamp: Date.now(),
         title: `Emotes ${start + 1}-${start + 10}/${emoteList.length}`,
         fields: await Promise.all(
-          current.map(async (emote) => {
+          current.map(async emote => {
             return {
               name: `${emote.name}`,
               value: `${emote}`,
@@ -70,9 +70,7 @@ module.exports = {
     const msg = await interaction.editReply({
       embeds: [await makeEmbed(0)],
       ephemeral: true,
-      components: canFit
-        ? []
-        : [new ActionRowBuilder({ components: [forwardButton] })],
+      components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
     });
     if (canFit) return;
 
@@ -80,7 +78,7 @@ module.exports = {
       filter: ({ user }) => user.id === user.id,
     });
 
-    collector.on("collect", async (i) => {
+    collector.on('collect', async i => {
       i.customId === backId ? (currentIndex -= 10) : (currentIndex += 10);
       await i.update({
         embeds: [await makeEmbed(currentIndex)],

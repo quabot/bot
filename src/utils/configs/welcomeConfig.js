@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require("discord.js");
-const WelcomeConfig = require("@schemas/WelcomeConfig");
+const { Client } = require('discord.js');
+const WelcomeConfig = require('@schemas/WelcomeConfig');
 
 /**
  * @param {Client} client
@@ -15,77 +15,76 @@ const getWelcomeConfig = async (client, guildId) => {
           guildId,
 
           joinEnabled: false,
-          joinChannel: "none",
-          joinType: "embed",
+          joinChannel: 'none',
+          joinType: 'embed',
           joinMessage: {
-            content: "",
-            title: "Welcome {username}!",
-            color: "{color}",
+            content: '',
+            title: 'Welcome {username}!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "@{username}",
-              icon: "{avatar}",
-              url: "",
+              text: '@{username}',
+              icon: '{avatar}',
+              url: '',
             },
-            description:
-              "Welcome to **{server}**, {user}! You are the {members}th member.",
+            description: 'Welcome to **{server}**, {user}! You are the {members}th member.',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
 
           leaveEnabled: false,
-          leaveChannel: "none",
-          leaveType: "embed",
+          leaveChannel: 'none',
+          leaveType: 'embed',
           leaveMessage: {
-            content: "",
-            title: "Goodbye {username}!",
-            color: "{color}",
+            content: '',
+            title: 'Goodbye {username}!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "@{username}",
-              icon: "{avatar}",
-              url: "",
+              text: '@{username}',
+              icon: '{avatar}',
+              url: '',
             },
-            description: "{user} left **{server}**.",
+            description: '{user} left **{server}**.',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
 
           joinRole: [],
           joinRoleEnabled: true,
 
           joinDM: false,
-          joinDMType: "embed",
+          joinDMType: 'embed',
           dm: {
-            content: "",
-            title: "Welcome to {server}!",
-            color: "{color}",
+            content: '',
+            title: 'Welcome to {server}!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             description: "You can add the server's rules here.",
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
           },
         }).save();

@@ -6,15 +6,15 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const Ticket = require("@schemas/Ticket");
-const { Embed } = require("@constants/embed");
-const { getIdConfig } = require("@configs/idConfig");
+} = require('discord.js');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const Ticket = require('@schemas/Ticket');
+const { Embed } = require('@constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
 
 module.exports = {
-  parent: "ticket",
-  name: "rename",
+  parent: 'ticket',
+  name: 'rename',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -25,7 +25,7 @@ module.exports = {
 
     const config = await getTicketConfig(client, interaction.guildId);
     const ids = await getIdConfig(interaction.guildId);
-    const newTopic = interaction.options.getString("new-topic");
+    const newTopic = interaction.options.getString('new-topic');
 
     if (!config || !ids)
       return await interaction.editReply({
@@ -38,11 +38,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
     const ticket = await Ticket.findOne({
@@ -50,36 +46,23 @@ module.exports = {
     });
     if (!ticket)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("This is not a valid ticket."),
-        ],
+        embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
     if (ticket.closed)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "This ticket is closed, reopen it to change the topic.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('This ticket is closed, reopen it to change the topic.')],
       });
 
     let valid = false;
     if (ticket.owner === interaction.user.id) valid = true;
     if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
-      valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
     if (!valid)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You are not allowed to change the ticket topic.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You are not allowed to change the ticket topic.')],
       });
 
     const ticketMsg = (await interaction.channel.messages.fetch()).last();
@@ -87,26 +70,21 @@ module.exports = {
       await ticketMsg.edit({
         embeds: [
           new Embed(color)
-            .setTitle("New Ticket")
-            .setDescription("Please wait, staff will be with you shortly.")
+            .setTitle('New Ticket')
+            .setDescription('Please wait, staff will be with you shortly.')
             .addFields(
-              { name: "Topic", value: `${newTopic}`, inline: true },
-              { name: "Topic", value: `<@${ticket.owner}>`, inline: true },
+              { name: 'Topic', value: `${newTopic}`, inline: true },
+              { name: 'Topic', value: `<@${ticket.owner}>`, inline: true },
               {
-                name: "Claimed By",
-                value: `${
-                  ticket.staff === "none" ? "Unclaimed" : `<@${ticket.staff}>`
-                }`,
+                name: 'Claimed By',
+                value: `${ticket.staff === 'none' ? 'Unclaimed' : `<@${ticket.staff}>`}`,
                 inline: true,
               },
             ),
         ],
         components: [
           new ActionRowBuilder().addComponents(
-            new ButtonBuilder()
-              .setCustomId("close-ticket")
-              .setLabel("🔒 Close")
-              .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
           ),
         ],
       });
@@ -116,11 +94,7 @@ module.exports = {
     await ticket.save();
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          `Changed the topic to \`${newTopic}\`.`,
-        ),
-      ],
+      embeds: [new Embed(color).setDescription(`Changed the topic to \`${newTopic}\`.`)],
     });
   },
 };

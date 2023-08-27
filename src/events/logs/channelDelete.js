@@ -1,11 +1,11 @@
-const { Client, Events, Colors, GuildChannel } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { channelTypesById } = require("@constants/discord");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, GuildChannel } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { channelTypesById } = require('@constants/discord');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.ChannelDelete,
-  name: "channelDelete",
+  name: 'channelDelete',
   /**
    * @param {GuildChannel} channel
    * @param {Client} client
@@ -17,12 +17,8 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("channelDelete")) return;
-    if (
-      channel.parentId &&
-      config.excludedCategories.includes(channel.parentId)
-    )
-      return;
+    if (!config.events.includes('channelDelete')) return;
+    if (channel.parentId && config.excludedCategories.includes(channel.parentId)) return;
     if (config.excludedChannels.includes(channel.id)) return;
 
     const logChannel = channel.guild.channels.cache.get(config.channelId);

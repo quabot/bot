@@ -1,10 +1,10 @@
-const { Client, Events, GuildEmoji, Colors } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, GuildEmoji, Colors } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildEmojiUpdate,
-  name: "emojiUpdate",
+  name: 'emojiUpdate',
   /**
    * @param {GuildEmoji} oldEmoji
    * @param {GuildEmoji} newEmoji
@@ -17,7 +17,7 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("emojiUpdate")) return;
+    if (!config.events.includes('emojiUpdate')) return;
 
     const channel = oldEmoji.guild.channels.cache.get(config.channelId);
     if (!channel) return;
@@ -27,10 +27,8 @@ module.exports = {
         new Embed(Colors.Yellow)
           .setDescription(
             `
-                        **${newEmoji.animated ? "Animated " : ""}Emoji Edited**
-                        ${oldEmoji.name} -> ${newEmoji.name} - [Full image](${
-                          newEmoji.url
-                        })
+                        **${newEmoji.animated ? 'Animated ' : ''}Emoji Edited**
+                        ${oldEmoji.name} -> ${newEmoji.name} - [Full image](${newEmoji.url})
                         `,
           )
           .setFooter({ text: `${newEmoji.name}`, iconURL: `${newEmoji.url}` }),

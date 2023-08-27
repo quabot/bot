@@ -6,13 +6,13 @@ const {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const ApplicationAnswer = require("@schemas/ApplicationAnswer");
-const Application = require("@schemas/Application");
+} = require('discord.js');
+const { Embed } = require('@constants/embed');
+const ApplicationAnswer = require('@schemas/ApplicationAnswer');
+const Application = require('@schemas/Application');
 
 module.exports = {
-  name: "application-deny",
+  name: 'application-deny',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -28,20 +28,12 @@ module.exports = {
     });
     if (!answer)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Couldn't find the application answer.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription("Couldn't find the application answer.")],
       });
 
-    if (answer.state !== "pending")
+    if (answer.state !== 'pending')
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "The application has already been approved/denied.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('The application has already been approved/denied.')],
       });
 
     const form = await Application.findOne({
@@ -50,55 +42,45 @@ module.exports = {
     });
     if (!form)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("Couldn't find the application."),
-        ],
+        embeds: [new Embed(color).setDescription("Couldn't find the application.")],
       });
 
     let allowed = true;
     if (form.submissions_managers.length !== 0) {
       allowed = false;
-      form.submissions_managers.forEach((manager) => {
+      form.submissions_managers.forEach(manager => {
         if (interaction.member._roles.has(manager)) allowed = true;
       });
     }
     if (!allowed)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You don't have the required roles to deny this application.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription("You don't have the required roles to deny this application.")],
       });
 
-    answer.state = "denied";
+    answer.state = 'denied';
     await answer.save();
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription("Successfully denied the application."),
-      ],
+      embeds: [new Embed(color).setDescription('Successfully denied the application.')],
     });
 
     await interaction.message.edit({
       embeds: [
         EmbedBuilder.from(interaction.message.embeds[0]).addFields({
-          name: "Status",
-          value: "Rejected",
+          name: 'Status',
+          value: 'Rejected',
           inline: true,
         }),
       ],
       components: [],
     });
 
-    const member = await interaction.guild.members
-      .fetch(answer.userId)
-      .catch(() => {});
+    const member = await interaction.guild.members.fetch(answer.userId).catch(() => {});
     if (!member) return;
     await member
       .send({
         embeds: [
-          new Embed("#416683").setDescription(
+          new Embed('#416683').setDescription(
             `Your application response for the form **${form.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${interaction.guild.id}/user/applications/answers/${id}).`,
           ),
         ],

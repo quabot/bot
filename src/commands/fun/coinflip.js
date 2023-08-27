@@ -1,16 +1,9 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("coinflip")
-    .setDescription("Flip a coin.")
-    .setDMPermission(false),
+  data: new SlashCommandBuilder().setName('coinflip').setDescription('Flip a coin.').setDMPermission(false),
   /**
    * @param {Client} client
    * @param {CommandInteraction} interaction
@@ -20,13 +13,9 @@ module.exports = {
     await interaction.deferReply();
 
     //* Return the result of the coin flip from an array.
-    const flips = ["**🪙 Heads!**", "**🪙 Tails!**"];
+    const flips = ['**🪙 Heads!**', '**🪙 Tails!**'];
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          flips[Math.floor(Math.random() * flips.length)],
-        ),
-      ],
+      embeds: [new Embed(color).setDescription(flips[Math.floor(Math.random() * flips.length)])],
     });
   },
 };

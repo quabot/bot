@@ -1,11 +1,5 @@
-const { Schema, model } = require("mongoose");
-const {
-  reqString,
-  reqBool,
-  reqArray,
-  reqNum,
-  optString,
-} = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqBool, reqArray, reqNum, optString } = require('@constants/schemas');
 
 const Application = new Schema({
   guildId: reqString,
@@ -39,4 +33,4 @@ const Application = new Schema({
   date: reqString,
 });
 
-module.exports = model("Application", Application);
+module.exports = model('Application', Application);

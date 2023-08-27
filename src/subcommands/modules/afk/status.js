@@ -6,14 +6,14 @@ const {
   ActionRowBuilder,
   TextInputBuilder,
   TextInputStyle,
-} = require("discord.js");
-const { getAfkConfig } = require("@configs/afkConfig");
-const { getUser } = require("@configs/user");
-const { Embed } = require("@constants/embed");
+} = require('discord.js');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getUser } = require('@configs/user');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "afk",
-  name: "status",
+  parent: 'afk',
+  name: 'status',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -34,22 +34,16 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "The afk module is disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
         ephemeral: true,
       });
 
-    const modal = new ModalBuilder()
-      .setCustomId("afk-set")
-      .setTitle("Set AFK status");
+    const modal = new ModalBuilder().setCustomId('afk-set').setTitle('Set AFK status');
 
     const afkRow = new ActionRowBuilder().addComponents(
       new TextInputBuilder()
-        .setCustomId("afk-status")
-        .setLabel("Enter your new AFK status")
+        .setCustomId('afk-status')
+        .setLabel('Enter your new AFK status')
         .setMinLength(1)
         .setMaxLength(200)
         .setPlaceholder("I'm sleeping...")

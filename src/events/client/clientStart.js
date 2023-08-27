@@ -1,17 +1,15 @@
-const { ActivityType, Client } = require("discord.js");
-const consola = require("consola");
+const { ActivityType, Client } = require('discord.js');
+const consola = require('consola');
 
 module.exports = {
-  event: "ready",
-  name: "clientStart",
+  event: 'ready',
+  name: 'clientStart',
   once: true,
   /**
    * @param {Client} client
    */
   async execute(client) {
-    client.guilds.cache.forEach((guild) =>
-      guild.members.fetch().catch(() => {}),
-    );
+    client.guilds.cache.forEach(guild => guild.members.fetch().catch(() => {}));
 
     function setActivity(activity) {
       client.user.setActivity({ type: ActivityType.Watching, name: activity });
@@ -21,12 +19,10 @@ module.exports = {
         setActivity(`${client.commands.size} commands | /help`);
       }, 10000);
       setTimeout(function () {
-        setActivity(
-          `${client.users.cache.size.toLocaleString()} users |  /help`,
-        );
+        setActivity(`${client.users.cache.size.toLocaleString()} users |  /help`);
       }, 20000);
       setTimeout(function () {
-        setActivity("quabot.net |  /help");
+        setActivity('quabot.net |  /help');
       }, 30000);
       setTimeout(function () {
         setActivity(`${client.guilds.cache.size} servers |  /help`);

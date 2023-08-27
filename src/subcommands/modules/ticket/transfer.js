@@ -6,15 +6,15 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const Ticket = require("@schemas/Ticket");
-const { Embed } = require("@constants/embed");
-const { getIdConfig } = require("@configs/idConfig");
+} = require('discord.js');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const Ticket = require('@schemas/Ticket');
+const { Embed } = require('@constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
 
 module.exports = {
-  parent: "ticket",
-  name: "transfer",
+  parent: 'ticket',
+  name: 'transfer',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -22,7 +22,7 @@ module.exports = {
    */
   async execute(client, interaction, color) {
     await interaction.deferReply({ ephemeral: false });
-    const user = interaction.options.getUser("user");
+    const user = interaction.options.getUser('user');
 
     const config = await getTicketConfig(client, interaction.guildId);
     const ids = await getIdConfig(interaction.guildId);
@@ -38,11 +38,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
     const ticket = await Ticket.findOne({
@@ -50,9 +46,7 @@ module.exports = {
     });
     if (!ticket)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("This is not a valid ticket."),
-        ],
+        embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
     if (!user) return;
@@ -61,20 +55,12 @@ module.exports = {
     if (ticket.owner === interaction.user.id) valid = true;
     if (!valid)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You are not allowed to transfer the ticket ownership.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You are not allowed to transfer the ticket ownership.')],
       });
 
     if (!ticket.users.includes(user.id))
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please add the user to the ticket before changing the ownership.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please add the user to the ticket before changing the ownership.')],
       });
 
     const array = ticket.users;
@@ -96,35 +82,28 @@ module.exports = {
       await ticketMsg.edit({
         embeds: [
           new Embed(color)
-            .setTitle("New Ticket")
-            .setDescription("Please wait, staff will be with you shortly.")
+            .setTitle('New Ticket')
+            .setDescription('Please wait, staff will be with you shortly.')
             .addFields(
-              { name: "Topic", value: `${ticket.topic}`, inline: true },
-              { name: "Topic", value: `${user}`, inline: true },
+              { name: 'Topic', value: `${ticket.topic}`, inline: true },
+              { name: 'Topic', value: `${user}`, inline: true },
               {
-                name: "Claimed By",
-                value: `${
-                  ticket.staff === "none" ? "Unclaimed" : `<@${ticket.staff}>`
-                }`,
+                name: 'Claimed By',
+                value: `${ticket.staff === 'none' ? 'Unclaimed' : `<@${ticket.staff}>`}`,
                 inline: true,
               },
             ),
         ],
         components: [
           new ActionRowBuilder().addComponents(
-            new ButtonBuilder()
-              .setCustomId("close-ticket")
-              .setLabel("🔒 Close")
-              .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
           ),
         ],
       });
     }
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(`Made ${user} the ticket owner.`),
-      ],
+      embeds: [new Embed(color).setDescription(`Made ${user} the ticket owner.`)],
     });
   },
 };

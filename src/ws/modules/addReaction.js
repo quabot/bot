@@ -1,6 +1,6 @@
 //* Add a reaction to a message for reactionroles.
 module.exports = {
-  code: "add-reaction",
+  code: 'add-reaction',
   async execute(client, data) {
     //* Get all the required variables.
     const item = data.message;
@@ -13,7 +13,7 @@ module.exports = {
     if (!channel) return;
 
     //* Fetch the messsage and add a reaction.
-    await channel.messages.fetch(item.messageId).then(async (message) => {
+    await channel.messages.fetch(item.messageId).then(async message => {
       if (!message) return;
       await message.react(item.emoji);
     });

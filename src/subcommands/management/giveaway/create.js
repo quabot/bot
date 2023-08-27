@@ -1,19 +1,14 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ChannelType,
-} = require("discord.js");
-const { getGiveawayConfig } = require("@configs/giveawayConfig");
-const { getIdConfig } = require("@configs/idConfig");
-const { Embed } = require("@constants/embed");
-const ms = require("ms");
-const { endGiveaway } = require("../../../utils/functions/giveaway");
-const Giveaway = require("@schemas/Giveaway");
+const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType } = require('discord.js');
+const { getGiveawayConfig } = require('@configs/giveawayConfig');
+const { getIdConfig } = require('@configs/idConfig');
+const { Embed } = require('@constants/embed');
+const ms = require('ms');
+const { endGiveaway } = require('../../../utils/functions/giveaway');
+const Giveaway = require('@schemas/Giveaway');
 
 module.exports = {
-  parent: "giveaway",
-  name: "create",
+  parent: 'giveaway',
+  name: 'create',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -36,73 +31,44 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Giveaways are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Giveaways are disabled in this server.')],
       });
 
-    const channel = interaction.options.getChannel("channel");
-    const prize = interaction.options.getString("prize");
-    const winners = interaction.options.getNumber("winners");
-    const duration = interaction.options.getString("duration");
+    const channel = interaction.options.getChannel('channel');
+    const prize = interaction.options.getString('prize');
+    const winners = interaction.options.getNumber('winners');
+    const duration = interaction.options.getString('duration');
 
     if (!channel || !prize || !winners || !duration)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please enter all the required fields.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please enter all the required fields.')],
       });
 
-    if (
-      channel.type !== ChannelType.GuildAnnouncement &&
-      channel.type !== ChannelType.GuildText
-    )
+    if (channel.type !== ChannelType.GuildAnnouncement && channel.type !== ChannelType.GuildText)
       return await interaction.editReply({
         embeds: [
-          new Embed(color).setDescription(
-            "Please create the giveaway in either a text or announcement channel.",
-          ),
+          new Embed(color).setDescription('Please create the giveaway in either a text or announcement channel.'),
         ],
       });
 
     if (!ms(duration))
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please enter a valid duration. Eg. 1h, 5m, 1d etc.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please enter a valid duration. Eg. 1h, 5m, 1d etc.')],
       });
 
     if (ms(duration) > 2147483647)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please enter a value that is below 24 days.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please enter a value that is below 24 days.')],
       });
 
     if (winners > 25 || winners < 1)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "The amount of winners needs to be between 1 and 25.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('The amount of winners needs to be between 1 and 25.')],
       });
 
     if (prize.length > 500)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please enter a prize with a maximum length of 500.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please enter a prize with a maximum length of 500.')],
       });
 
     const endTime = Math.round((new Date().getTime() + ms(duration)) / 1000);
@@ -120,22 +86,18 @@ module.exports = {
           )
           .setFooter({ text: `ID: ${ids.giveawayId}` }),
       ],
-      content: `${
-        config.pingEveryone
-          ? "@everyone\n**:tada: GIVEAWAY :tada:**"
-          : "**:tada: GIVEAWAY :tada:**"
-      }`,
+      content: `${config.pingEveryone ? '@everyone\n**:tada: GIVEAWAY :tada:**' : '**:tada: GIVEAWAY :tada:**'}`,
     });
 
     if (!message)
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription(
-            "Failed to send the message. Please make sure I have the permissions required to post there.",
+            'Failed to send the message. Please make sure I have the permissions required to post there.',
           ),
         ],
       });
-    message.react("🎉");
+    message.react('🎉');
 
     const newGiveaway = new Giveaway({
       guildId: interaction.guildId,

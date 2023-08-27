@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const Afk = require("@schemas/AfkConfig");
+const Afk = require('@schemas/AfkConfig');
 
 const getAfkConfig = async (guildId, client) => {
   const afkConfig =

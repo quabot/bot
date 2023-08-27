@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqNum } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqNum } = require('@constants/schemas');
 
 const SuggestionSchema = new Schema({
   guildId: reqString,
@@ -10,4 +10,4 @@ const SuggestionSchema = new Schema({
   userId: reqString,
 });
 
-module.exports = model("Suggestion", SuggestionSchema);
+module.exports = model('Suggestion', SuggestionSchema);

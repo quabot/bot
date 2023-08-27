@@ -1,23 +1,23 @@
-const { Guild, ChannelType } = require("discord.js");
-const { getApplicationConfig } = require("@configs/applicationConfig");
-const { getAfkConfig } = require("@configs/afkConfig");
-const { getGiveawayConfig } = require("@configs/giveawayConfig");
-const { getLevelConfig } = require("@configs/levelConfig");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { getIdConfig } = require("@configs/idConfig");
-const { getModerationConfig } = require("@configs/moderationConfig");
-const { getPollConfig } = require("@configs/pollConfig");
-const { getReactionConfig } = require("@configs/reactionConfig");
-const { getResponderConfig } = require("@configs/responderConfig");
-const { getServerConfig } = require("@configs/serverConfig");
-const { getSuggestConfig } = require("@configs/suggestConfig");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const { getWelcomeConfig } = require("@configs/welcomeConfig");
-const { Embed } = require("@constants/embed");
+const { Guild, ChannelType } = require('discord.js');
+const { getApplicationConfig } = require('@configs/applicationConfig');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getGiveawayConfig } = require('@configs/giveawayConfig');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { getIdConfig } = require('@configs/idConfig');
+const { getModerationConfig } = require('@configs/moderationConfig');
+const { getPollConfig } = require('@configs/pollConfig');
+const { getReactionConfig } = require('@configs/reactionConfig');
+const { getResponderConfig } = require('@configs/responderConfig');
+const { getServerConfig } = require('@configs/serverConfig');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const { getWelcomeConfig } = require('@configs/welcomeConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  event: "guildCreate",
-  name: "guildCreate",
+  event: 'guildCreate',
+  name: 'guildCreate',
   /**
    * @param {Guild} guild
    */
@@ -39,20 +39,20 @@ module.exports = {
     await getWelcomeConfig(client, guild.id);
 
     let done = false;
-    guild.channels.cache.forEach((channel) => {
+    guild.channels.cache.forEach(channel => {
       if (
         channel.type === ChannelType.GuildText &&
         !done &&
-        !channel.name.includes("rules") &&
-        !channel.name.includes("announcements") &&
-        !channel.name.includes("info") &&
-        !channel.name.includes("information")
+        !channel.name.includes('rules') &&
+        !channel.name.includes('announcements') &&
+        !channel.name.includes('info') &&
+        !channel.name.includes('information')
       ) {
         done = true;
         channel
           .send({
             embeds: [
-              new Embed("#416683")
+              new Embed('#416683')
                 .setTitle("Hi, I'm QuaBot!")
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
                 .setDescription(

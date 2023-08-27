@@ -1,10 +1,10 @@
-const { Client, Events, Colors, Message } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, Message } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.MessageUpdate,
-  name: "messageUpdate",
+  name: 'messageUpdate',
   /**
    * @param {Message} oldMessage
    * @param {Message} newMessage
@@ -21,7 +21,7 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("messageUpdate")) return;
+    if (!config.events.includes('messageUpdate')) return;
     if (config.excludedChannels.includes(newMessage.channelId)) return;
     if (config.excludedCategories.includes(newMessage.channel.parentId)) return;
 
@@ -38,40 +38,34 @@ module.exports = {
             ${newMessage.channel} - [Jump to Message](${newMessage.url})`);
 
     if (
-      (!oldMessage.content || oldMessage.content === "") &&
+      (!oldMessage.content || oldMessage.content === '') &&
       oldMessage.attachments === null &&
       newMessage.attachments === null
     )
       return;
     if (oldMessage.content !== newMessage.content) {
       embed.addFields(
-        { name: "Old Content", value: `${oldMessage.content}`.slice(0, 1020) },
-        { name: "New Content", value: `${newMessage.content}`.slice(0, 1020) },
+        { name: 'Old Content', value: `${oldMessage.content}`.slice(0, 1020) },
+        { name: 'New Content', value: `${newMessage.content}`.slice(0, 1020) },
       );
     }
 
     if (newMessage.author)
       embed.setFooter({
         text: `@${newMessage.author.username}`,
-        iconURL: `${
-          newMessage.author.avatarURL({ dynamic: true }) ??
-          "https://i.imgur.com/VUwD8zP.png"
-        }`,
+        iconURL: `${newMessage.author.avatarURL({ dynamic: true }) ?? 'https://i.imgur.com/VUwD8zP.png'}`,
       });
 
     const oldAttachments = [];
-    oldMessage.attachments.map((i) => oldAttachments.push(i.url));
+    oldMessage.attachments.map(i => oldAttachments.push(i.url));
 
     const newAttachments = [];
-    newMessage.attachments.map((i) => newAttachments.push(i.url));
+    newMessage.attachments.map(i => newAttachments.push(i.url));
 
-    if (
-      oldAttachments.length > newAttachments.length &&
-      oldMessage.attachments !== newMessage.attachments
-    )
+    if (oldAttachments.length > newAttachments.length && oldMessage.attachments !== newMessage.attachments)
       embed.addFields({
-        name: "**Attachments**",
-        value: `${oldAttachments.join("\n")}`.slice(0, 1024),
+        name: '**Attachments**',
+        value: `${oldAttachments.join('\n')}`.slice(0, 1024),
       });
 
     await channel.send({

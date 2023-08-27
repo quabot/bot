@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require("discord.js");
-const Server = require("@schemas/Server");
+const { Client } = require('discord.js');
+const Server = require('@schemas/Server');
 
 /**
  * @param {Client} client
@@ -13,9 +13,9 @@ const getServerConfig = async (client, guildId) => {
       if (!server)
         new Server({
           guildId,
-          locale: "en-us",
-          color: "#416683",
-          updatesChannel: "none",
+          locale: 'en-us',
+          color: '#416683',
+          updatesChannel: 'none',
           disabledCommands: [],
         }).save();
     })

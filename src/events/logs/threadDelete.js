@@ -1,11 +1,11 @@
-const { Client, Events, Colors, ThreadChannel } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
-const { channelTypesById } = require("@constants/discord");
+const { Client, Events, Colors, ThreadChannel } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
+const { channelTypesById } = require('@constants/discord');
 
 module.exports = {
   event: Events.ThreadDelete,
-  name: "threadDelete",
+  name: 'threadDelete',
   /**
    * @param {ThreadChannel} thread
    * @param {boolean} newlyCreated
@@ -22,11 +22,10 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("threadDelete")) return;
+    if (!config.events.includes('threadDelete')) return;
     if (
       thread.parentId &&
-      (config.excludedCategories.includes(thread.parent.parentId) ||
-        config.excludedChannels.includes(thread.parentId))
+      (config.excludedCategories.includes(thread.parent.parentId) || config.excludedChannels.includes(thread.parentId))
     )
       return;
 

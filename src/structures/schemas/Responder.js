@@ -1,11 +1,5 @@
-const { Schema, model } = require("mongoose");
-const {
-  reqString,
-  reqBool,
-  optString,
-  reqArray,
-  optObject,
-} = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqBool, optString, reqArray, optObject } = require('@constants/schemas');
 
 const ResponderConfig = new Schema({
   guildId: reqString,
@@ -21,4 +15,4 @@ const ResponderConfig = new Schema({
   ignored_roles: reqArray,
 });
 
-module.exports = model("Responses", ResponderConfig);
+module.exports = model('Responses', ResponderConfig);

@@ -1,17 +1,12 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  PermissionFlagsBits,
-} = require("discord.js");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const Ticket = require("@schemas/Ticket");
-const { Embed } = require("@constants/embed");
-const { getIdConfig } = require("@configs/idConfig");
+const { ChatInputCommandInteraction, Client, ColorResolvable, PermissionFlagsBits } = require('discord.js');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const Ticket = require('@schemas/Ticket');
+const { Embed } = require('@constants/embed');
+const { getIdConfig } = require('@configs/idConfig');
 
 module.exports = {
-  parent: "ticket",
-  name: "add",
+  parent: 'ticket',
+  name: 'add',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -19,7 +14,7 @@ module.exports = {
    */
   async execute(client, interaction, color) {
     await interaction.deferReply({ ephemeral: false });
-    const user = interaction.options.getUser("user");
+    const user = interaction.options.getUser('user');
 
     const config = await getTicketConfig(client, interaction.guildId);
     const ids = await getIdConfig(interaction.guildId);
@@ -35,11 +30,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
     const ticket = await Ticket.findOne({
@@ -47,9 +38,7 @@ module.exports = {
     });
     if (!ticket)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("This is not a valid ticket."),
-        ],
+        embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
     if (!user) return;
@@ -57,19 +46,12 @@ module.exports = {
     let valid = false;
     if (ticket.owner === interaction.user.id) valid = true;
     if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
-      valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
     if (!valid)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You are not allowed to add users to the ticket.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You are not allowed to add users to the ticket.')],
       });
 
     const array = ticket.users;

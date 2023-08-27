@@ -5,16 +5,16 @@ const {
   ActionRowBuilder,
   ButtonStyle,
   ButtonBuilder,
-} = require("discord.js");
-const Suggestion = require("@schemas/Suggestion");
-const { getIdConfig } = require("@configs/idConfig");
-const { getSuggestConfig } = require("@configs/suggestConfig");
-const { CustomEmbed } = require("@constants/customEmbed");
-const { Embed } = require("@constants/embed");
-const { getUserGame } = require("@configs/userGame");
+} = require('discord.js');
+const Suggestion = require('@schemas/Suggestion');
+const { getIdConfig } = require('@configs/idConfig');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { CustomEmbed } = require('@constants/customEmbed');
+const { Embed } = require('@constants/embed');
+const { getUserGame } = require('@configs/userGame');
 
 module.exports = {
-  name: "profile-bio",
+  name: 'profile-bio',
   /**
    * @param {Client} client
    * @param {ModalSubmitInteraction} interaction
@@ -32,13 +32,13 @@ module.exports = {
         ],
       });
 
-    const bio = interaction.fields.getTextInputValue("bio");
+    const bio = interaction.fields.getTextInputValue('bio');
 
-    userSchema.bio = bio ?? "-";
+    userSchema.bio = bio ?? '-';
     await userSchema.save();
 
     await interaction.editReply({
-      embeds: [new Embed(color).setDescription("Updated your bio!")],
+      embeds: [new Embed(color).setDescription('Updated your bio!')],
     });
   },
 };

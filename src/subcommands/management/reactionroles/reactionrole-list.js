@@ -6,15 +6,15 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   Colors,
-} = require("discord.js");
-const { getIdConfig } = require("@configs/idConfig");
-const { getReactionConfig } = require("@configs/reactionConfig");
-const { Embed } = require("@constants/embed");
-const Reaction = require("@schemas/ReactionRole");
+} = require('discord.js');
+const { getIdConfig } = require('@configs/idConfig');
+const { getReactionConfig } = require('@configs/reactionConfig');
+const { Embed } = require('@constants/embed');
+const Reaction = require('@schemas/ReactionRole');
 
 module.exports = {
-  parent: "reactionroles",
-  name: "list",
+  parent: 'reactionroles',
+  name: 'list',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -36,23 +36,18 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Reaction roles are not enabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Reaction roles are not enabled in this server.')],
       });
 
-    const messageId = interaction.options.getString("message-id");
-    const role = interaction.options.getRole("role");
-    const channel = interaction.options.getChannel("channel");
+    const messageId = interaction.options.getString('message-id');
+    const role = interaction.options.getRole('role');
+    const channel = interaction.options.getChannel('channel');
 
     let found = await Reaction.find({
       guildId: interaction.guild.id,
     });
 
-    if (messageId && !role && !channel)
-      found = await Reaction.find({ guildId: interaction.guild.id, messageId });
+    if (messageId && !role && !channel) found = await Reaction.find({ guildId: interaction.guild.id, messageId });
     if (messageId && role && !channel)
       found = await Reaction.find({
         guildId: interaction.guild.id,
@@ -112,38 +107,32 @@ module.exports = {
 
     if (found.length === 0)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Couldn't find any reaction roles with those criteria.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription("Couldn't find any reaction roles with those criteria.")],
       });
 
-    const backId = "backRR";
-    const forwardId = "forwardRR";
+    const backId = 'backRR';
+    const forwardId = 'forwardRR';
     const backButton = new ButtonBuilder({
-      style: "SECONDARY",
-      label: "Back",
-      emoji: "⬅️",
+      style: 'SECONDARY',
+      label: 'Back',
+      emoji: '⬅️',
       customId: backId,
     });
     const forwardButton = new ButtonBuilder({
-      style: "SECONDARY",
-      label: "Forward",
-      emoji: "➡️",
+      style: 'SECONDARY',
+      label: 'Forward',
+      emoji: '➡️',
       customId: forwardId,
     });
 
-    const makeEmbed = async (start) => {
+    const makeEmbed = async start => {
       const current = found.slice(start, start + 3);
 
       return new EmbedBuilder({
-        title: `Reaction roles ${start + 1}-${start + current.length}/${
-          found.length
-        }`,
+        title: `Reaction roles ${start + 1}-${start + current.length}/${found.length}`,
         color: Colors.Green,
         fields: await Promise.all(
-          current.map(async (item) => ({
+          current.map(async item => ({
             name: `Emoji: ${item.emoji} - Mode: ${item.type}`,
             value: `Role: <@&${item.roleId}> - [Jump to message](https://discord.com/channels/${interaction.guild.id}/${item.channelId}/${item.messageId})`,
           })),
@@ -155,9 +144,7 @@ module.exports = {
     const msg = await interaction.editReply({
       embeds: [await makeEmbed(0)],
       fetchReply: true,
-      components: canFit
-        ? []
-        : [new ActionRowBuilder({ components: [forwardButton] })],
+      components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
     });
     if (canFit) return;
 
@@ -166,7 +153,7 @@ module.exports = {
     });
 
     let currentIndex = 0;
-    collector.on("collect", async (a) => {
+    collector.on('collect', async a => {
       a.customId === backId ? (currentIndex -= 3) : (currentIndex += 3);
       await a.update({
         embeds: [await makeEmbed(currentIndex)],

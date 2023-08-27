@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require("discord.js");
-const SuggestConfig = require("@schemas/SuggestionConfig");
+const { Client } = require('discord.js');
+const SuggestConfig = require('@schemas/SuggestionConfig');
 
 /**
  * @param {Client} client
@@ -14,62 +14,61 @@ const getSuggestConfig = async (client, guildId) => {
         new SuggestConfig({
           guildId,
           enabled: false,
-          channelId: "none",
+          channelId: 'none',
           logEnabled: false,
-          logChannelId: "none",
+          logChannelId: 'none',
           message: {
-            content: "",
-            title: "New Suggestion!",
-            color: "#8f8d8d",
+            content: '',
+            title: 'New Suggestion!',
+            color: '#8f8d8d',
             timestamp: true,
             footer: {
-              text: "Vote with the 🟢 and 🔴 below this message.",
-              icon: "",
+              text: 'Vote with the 🟢 and 🔴 below this message.',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description: "",
+            description: '',
             fields: [
-              { name: "Suggestion", value: "{suggestion}", inline: false },
-              { name: "Suggested By", value: "{user}", inline: true },
+              { name: 'Suggestion', value: '{suggestion}', inline: false },
+              { name: 'Suggested By', value: '{user}', inline: true },
             ],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
-          emojiRed: "🔴",
-          emojiGreen: "🟢",
+          emojiRed: '🔴',
+          emojiGreen: '🟢',
           reasonRequired: true,
           dm: true,
           dmMessage: {
-            content: "",
-            title: "Your suggestion was {state}!",
-            color: "{color}",
+            content: '',
+            title: 'Your suggestion was {state}!',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description:
-              "Hello {user}! Your suggestion in {server} was {state} by {staff}!",
+            description: 'Hello {user}! Your suggestion in {server} was {state} by {staff}!',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
           colors: {
-            approve: "#40ff3d",
-            deny: "#ff3d3d",
-            pending: "#8f8d8d",
-            deleted: " #b30000",
+            approve: '#40ff3d',
+            deny: '#ff3d3d',
+            pending: '#8f8d8d',
+            deleted: ' #b30000',
           },
         }).save();
     })

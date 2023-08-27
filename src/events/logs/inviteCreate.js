@@ -1,10 +1,10 @@
-const { Client, Events, Colors, Invite } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, Invite } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.InviteCreate,
-  name: "inviteCreate",
+  name: 'inviteCreate',
   /**
    * @param {Invite} invite
    * @param {Client} client
@@ -16,13 +16,9 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("inviteDelete")) return;
+    if (!config.events.includes('inviteDelete')) return;
     if (config.excludedChannels.includes(invite.channel.id)) return;
-    if (
-      invite.channel.parentId &&
-      config.excludedCategories.includes(invite.channel.parentId)
-    )
-      return;
+    if (invite.channel.parentId && config.excludedCategories.includes(invite.channel.parentId)) return;
 
     const channel = invite.guild.channels.cache.get(config.channelId);
     if (!channel) return;
@@ -30,18 +26,14 @@ module.exports = {
     await channel.send({
       embeds: [
         new Embed(Colors.Green).setDescription(`**Invite Created**
-                        [discord.gg/${invite.code}](https://discord.gg/${
-                          invite.code
-                        })
+                        [discord.gg/${invite.code}](https://discord.gg/${invite.code})
                         ${invite.inviter} - ${invite.channel}
 
                         **Expires in:**
                         ${
                           invite.maxAge === 0
-                            ? "Never"
-                            : `<t:${Math.floor(
-                                new Date().getTime() / 1000 + invite.maxAge,
-                              )}:R>`
+                            ? 'Never'
+                            : `<t:${Math.floor(new Date().getTime() / 1000 + invite.maxAge)}:R>`
                         }
                         `),
       ],

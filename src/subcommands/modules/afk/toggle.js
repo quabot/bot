@@ -1,15 +1,11 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { getAfkConfig } = require("@configs/afkConfig");
-const { getUser } = require("@configs/user");
-const { Embed } = require("@constants/embed");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getUser } = require('@configs/user');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "afk",
-  name: "toggle",
+  parent: 'afk',
+  name: 'toggle',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -18,7 +14,7 @@ module.exports = {
   async execute(client, interaction, color) {
     await interaction.deferReply({ ephemeral: true });
 
-    let enabled = interaction.options.getBoolean("enabled");
+    let enabled = interaction.options.getBoolean('enabled');
 
     const config = await getAfkConfig(interaction.guildId, client);
     const user = await getUser(interaction.guildId, interaction.user.id);
@@ -34,22 +30,14 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "The afk module is disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
       });
 
     user.afk = enabled;
     await user.save();
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          `${enabled ? "Enabled" : "Disabled"} your afk status.`,
-        ),
-      ],
+      embeds: [new Embed(color).setDescription(`${enabled ? 'Enabled' : 'Disabled'} your afk status.`)],
     });
   },
 };

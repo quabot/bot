@@ -6,14 +6,14 @@ const {
   ButtonBuilder,
   ButtonStyle,
   PermissionFlagsBits,
-} = require("discord.js");
-const Ticket = require("@schemas/Ticket");
-const { getIdConfig } = require("@configs/idConfig");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const { Embed } = require("@constants/embed");
+} = require('discord.js');
+const Ticket = require('@schemas/Ticket');
+const { getIdConfig } = require('@configs/idConfig');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  name: "reopen-ticket",
+  name: 'reopen-ticket',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -36,11 +36,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
     const ticket = await Ticket.findOne({
@@ -48,9 +44,7 @@ module.exports = {
     });
     if (!ticket)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("This is not a valid ticket."),
-        ],
+        embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
     if (!ticket.closed)
@@ -61,29 +55,20 @@ module.exports = {
     let valid = false;
     if (ticket.owner === interaction.user.id) valid = true;
     if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
-      valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
     if (!valid)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You are not allowed to close the ticket.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You are not allowed to close the ticket.')],
       });
 
-    const openCategory = interaction.guild.channels.cache.get(
-      config.openCategory,
-    );
+    const openCategory = interaction.guild.channels.cache.get(config.openCategory);
     if (!openCategory)
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription(
-            "There is no category to move this ticket to once reopened. Configure this on our [dashboard](https://quabot.net/dashboard).",
+            'There is no category to move this ticket to once reopened. Configure this on our [dashboard](https://quabot.net/dashboard).',
           ),
         ],
       });
@@ -96,7 +81,7 @@ module.exports = {
       ViewChannel: true,
       SendMessages: true,
     });
-    ticket.users.forEach(async (user) => {
+    ticket.users.forEach(async user => {
       await interaction.channel.permissionOverwrites.edit(user, {
         ViewChannel: true,
         SendMessages: true,
@@ -108,22 +93,22 @@ module.exports = {
         new ActionRowBuilder()
           .addComponents(
             new ButtonBuilder()
-              .setCustomId("reopen-ticket")
-              .setLabel("🔓 Reopen")
+              .setCustomId('reopen-ticket')
+              .setLabel('🔓 Reopen')
               .setStyle(ButtonStyle.Primary)
               .setDisabled(true),
           )
           .addComponents(
             new ButtonBuilder()
-              .setCustomId("delete-ticket")
-              .setLabel("🗑️ Delete")
+              .setCustomId('delete-ticket')
+              .setLabel('🗑️ Delete')
               .setStyle(ButtonStyle.Danger)
               .setDisabled(true),
           )
           .addComponents(
             new ButtonBuilder()
-              .setCustomId("transcript-ticket")
-              .setLabel("📝 Transcript")
+              .setCustomId('transcript-ticket')
+              .setLabel('📝 Transcript')
               .setStyle(ButtonStyle.Success)
               .setDisabled(true),
           ),
@@ -133,17 +118,12 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setTitle("Ticket Reopened")
-          .setDescription(
-            "Close the ticket with the button below this message",
-          ),
+          .setTitle('Ticket Reopened')
+          .setDescription('Close the ticket with the button below this message'),
       ],
       components: [
         new ActionRowBuilder().addComponents(
-          new ButtonBuilder()
-            .setCustomId("close-ticket")
-            .setLabel("🔒 Close")
-            .setStyle(ButtonStyle.Primary),
+          new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Primary),
         ),
       ],
     });
@@ -156,20 +136,20 @@ module.exports = {
       await logChannel.send({
         embeds: [
           new Embed(color)
-            .setTitle("Ticket Reopened")
+            .setTitle('Ticket Reopened')
             .addFields(
               {
-                name: "Ticket Owner",
+                name: 'Ticket Owner',
                 value: `<@${ticket.owner}>`,
                 inline: true,
               },
               {
-                name: "Channel",
+                name: 'Channel',
                 value: `${interaction.channel}`,
                 inline: true,
               },
               {
-                name: "Reopened By",
+                name: 'Reopened By',
                 value: `${interaction.user}`,
                 inline: true,
               },

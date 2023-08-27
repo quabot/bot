@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqId, reqBool } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqId, reqBool } = require('@constants/schemas');
 
 const PollConfig = new Schema({
   guildId: reqString,
@@ -8,4 +8,4 @@ const PollConfig = new Schema({
   logChannel: reqString,
 });
 
-module.exports = model("Poll-Config", PollConfig);
+module.exports = model('Poll-Config', PollConfig);

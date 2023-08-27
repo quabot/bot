@@ -1,16 +1,12 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { getIdConfig } = require("@configs/idConfig");
-const { getReactionConfig } = require("@configs/reactionConfig");
-const { Embed } = require("@constants/embed");
-const Reaction = require("@schemas/ReactionRole");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { getIdConfig } = require('@configs/idConfig');
+const { getReactionConfig } = require('@configs/reactionConfig');
+const { Embed } = require('@constants/embed');
+const Reaction = require('@schemas/ReactionRole');
 
 module.exports = {
-  parent: "reactionroles",
-  name: "delete",
+  parent: 'reactionroles',
+  name: 'delete',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -32,24 +28,16 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Reaction roles are not enabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Reaction roles are not enabled in this server.')],
       });
 
-    const channel = interaction.options.getChannel("channel");
-    const messageId = interaction.options.getString("message-id");
-    const emoji = interaction.options.getString("emoji");
+    const channel = interaction.options.getChannel('channel');
+    const messageId = interaction.options.getString('message-id');
+    const emoji = interaction.options.getString('emoji');
 
     if (!channel || !messageId || !emoji)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please fill out all the required fields.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
       });
 
     if (
@@ -61,11 +49,7 @@ module.exports = {
       }))
     )
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "That reaction role doesn't exist yet.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription("That reaction role doesn't exist yet.")],
       });
 
     await Reaction.findOneAndDelete({
@@ -77,17 +61,13 @@ module.exports = {
 
     await interaction.editReply({
       embeds: [
-        new Embed(color).setDescription(
-          "Deleted the reaction role. I will attempt to remove my reaction now...",
-        ),
+        new Embed(color).setDescription('Deleted the reaction role. I will attempt to remove my reaction now...'),
       ],
     });
 
-    const message = await channel.messages
-      .fetch({ message: messageId })
-      .catch(async (e) => {
-        return;
-      });
+    const message = await channel.messages.fetch({ message: messageId }).catch(async e => {
+      return;
+    });
 
     if (!message) return;
 
@@ -95,11 +75,7 @@ module.exports = {
     if (m) m.users.remove(client.user.id);
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          "Successfully deleted the reaction role.",
-        ),
-      ],
+      embeds: [new Embed(color).setDescription('Successfully deleted the reaction role.')],
     });
   },
 };

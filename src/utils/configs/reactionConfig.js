@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require("discord.js");
-const Config = require("@schemas/ReactionConfig");
+const { Client } = require('discord.js');
+const Config = require('@schemas/ReactionConfig');
 
 /**
  * @param {Client} client
@@ -16,25 +16,24 @@ const getReactionConfig = async (client, guildId) => {
           enabled: true,
           dmEnabled: false,
           dm: {
-            content: "",
-            title: "Role {action}",
-            color: "{color}",
+            content: '',
+            title: 'Role {action}',
+            color: '{color}',
             timestamp: true,
             footer: {
-              text: "",
-              icon: "",
+              text: '',
+              icon: '',
             },
             author: {
-              text: "",
-              icon: "",
-              url: "",
+              text: '',
+              icon: '',
+              url: '',
             },
-            description:
-              "Your role ({role}) in **{server}** has been {action}.",
+            description: 'Your role ({role}) in **{server}** has been {action}.',
             fields: [],
-            url: "",
-            thumbnail: "",
-            image: "",
+            url: '',
+            thumbnail: '',
+            image: '',
           },
         }).save();
     })

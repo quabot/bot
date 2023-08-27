@@ -1,10 +1,10 @@
-const { Client, ModalSubmitInteraction } = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { getAfkConfig } = require("@configs/afkConfig");
-const { getUser } = require("@configs/user");
+const { Client, ModalSubmitInteraction } = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { getAfkConfig } = require('@configs/afkConfig');
+const { getUser } = require('@configs/user');
 
 module.exports = {
-  name: "afk-set",
+  name: 'afk-set',
   /**
    * @param {Client} client
    * @param {ModalSubmitInteraction} interaction
@@ -26,24 +26,16 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "The afk module is disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
         ephemeral: true,
       });
 
-    const status = interaction.fields.getTextInputValue("afk-status");
+    const status = interaction.fields.getTextInputValue('afk-status');
     user.afkMessage = status;
     await user.save();
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          `Set your AFK status message to: \`${status}\``,
-        ),
-      ],
+      embeds: [new Embed(color).setDescription(`Set your AFK status message to: \`${status}\``)],
     });
   },
 };

@@ -1,10 +1,10 @@
-const { Client, Events, Colors, GuildMember } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, GuildMember } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildMemberUpdate,
-  name: "roleAddRemove",
+  name: 'roleAddRemove',
   /**
    * @param {GuildMember} oldMember
    * @param {GuildMember} newMember
@@ -21,16 +21,11 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("roleAddRemove")) return;
+    if (!config.events.includes('roleAddRemove')) return;
 
     if (oldMember.nickname !== newMember.nickname) return;
-    if (
-      oldMember.communicationDisabledUntilTimestamp !==
-      newMember.communicationDisabledUntilTimestamp
-    )
-      return;
-    if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp)
-      return;
+    if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) return;
+    if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) return;
     if (oldMember.avatar !== newMember.avatar) return;
 
     const channel = oldMember.guild.channels.cache.get(config.channelId);
@@ -38,31 +33,19 @@ module.exports = {
 
     let role;
     if (oldMember._roles < newMember._roles)
-      role = `<@&${newMember._roles
-        .filter((n) => !oldMember._roles.includes(n))
-        .join(">\n<@&")}>`;
+      role = `<@&${newMember._roles.filter(n => !oldMember._roles.includes(n)).join('>\n<@&')}>`;
     if (oldMember._roles > newMember._roles)
-      role = `<@&${oldMember._roles
-        .filter((n) => !newMember._roles.includes(n))
-        .join(">\n<@&")}>`;
+      role = `<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`;
 
-    if (role === "<@&>") return;
+    if (role === '<@&>') return;
     if (!role) return;
 
     await channel.send({
       embeds: [
-        new Embed(
-          oldMember._roles.length > newMember._roles.length
-            ? Colors.Red
-            : Colors.Green,
-        )
+        new Embed(oldMember._roles.length > newMember._roles.length ? Colors.Red : Colors.Green)
           .setDescription(
             `
-                        **Role(s) ${
-                          oldMember._roles.length > newMember._roles.length
-                            ? "Removed"
-                            : "Given"
-                        }**
+                        **Role(s) ${oldMember._roles.length > newMember._roles.length ? 'Removed' : 'Given'}**
                         **User:** ${newMember}
                         ${role}
                         `,

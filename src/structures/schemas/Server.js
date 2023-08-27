@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqArray } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqArray } = require('@constants/schemas');
 
 const ServerSchema = new Schema({
   guildId: reqString,
@@ -9,4 +9,4 @@ const ServerSchema = new Schema({
   disabledCommands: reqArray,
 });
 
-module.exports = model("Server", ServerSchema);
+module.exports = model('Server', ServerSchema);

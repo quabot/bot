@@ -1,13 +1,9 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "role",
-  name: "edit",
+  parent: 'role',
+  name: 'edit',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -16,11 +12,10 @@ module.exports = {
   async execute(client, interaction, color) {
     await interaction.deferReply({ ephemeral: true });
 
-    const role = interaction.options.getRole("role");
-    const role_name = interaction.options.getString("name") ?? role.name;
-    const role_hoist = interaction.options.getBoolean("hoist") ?? role.hoist;
-    const role_mentionable =
-      interaction.options.getBoolean("mentionable") ?? role.mentionable;
+    const role = interaction.options.getRole('role');
+    const role_name = interaction.options.getString('name') ?? role.name;
+    const role_hoist = interaction.options.getBoolean('hoist') ?? role.hoist;
+    const role_mentionable = interaction.options.getBoolean('mentionable') ?? role.mentionable;
 
     await interaction.guild.roles
       .edit(role, {
@@ -29,21 +24,15 @@ module.exports = {
         mentionable: role_mentionable,
         reason: `Role edited by ${interaction.user.username}`,
       })
-      .then(async (d) => {
+      .then(async d => {
         await interaction.editReply({
-          embeds: [
-            new Embed(role.color ?? color).setDescription(
-              `Updated the role ${d}.`,
-            ),
-          ],
+          embeds: [new Embed(role.color ?? color).setDescription(`Updated the role ${d}.`)],
         });
       })
-      .catch(async (e) => {
+      .catch(async e => {
         await interaction.editReply({
           embeds: [
-            new Embed(role.color ?? color).setDescription(
-              `Failed to edit the role. Error message: ${e.message}.`,
-            ),
+            new Embed(role.color ?? color).setDescription(`Failed to edit the role. Error message: ${e.message}.`),
           ],
         });
       });

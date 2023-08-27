@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqArray } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqArray } = require('@constants/schemas');
 
 const ReactionRole = new Schema({
   guildId: reqString,
@@ -13,4 +13,4 @@ const ReactionRole = new Schema({
   type: reqString,
 });
 
-module.exports = model("Reaction-Roles", ReactionRole);
+module.exports = model('Reaction-Roles', ReactionRole);

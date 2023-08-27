@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqBool, reqObject } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqBool, reqObject } = require('@constants/schemas');
 
 const ModerationConfig = new Schema({
   guildId: reqString,
@@ -22,4 +22,4 @@ const ModerationConfig = new Schema({
   tempbanDMMessage: reqObject,
 });
 
-module.exports = model("Moderation-Config", ModerationConfig);
+module.exports = model('Moderation-Config', ModerationConfig);

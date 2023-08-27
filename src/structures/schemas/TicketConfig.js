@@ -1,11 +1,5 @@
-const { Schema, model } = require("mongoose");
-const {
-  reqString,
-  reqNum,
-  reqBool,
-  reqObject,
-  reqArray,
-} = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqNum, reqBool, reqObject, reqArray } = require('@constants/schemas');
 
 const TicketConfig = new Schema({
   guildId: reqString,
@@ -22,4 +16,4 @@ const TicketConfig = new Schema({
   logEnabled: reqBool,
 });
 
-module.exports = model("Ticket-Config", TicketConfig);
+module.exports = model('Ticket-Config', TicketConfig);

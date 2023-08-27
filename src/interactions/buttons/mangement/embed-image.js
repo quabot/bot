@@ -7,12 +7,12 @@ const {
   TextInputBuilder,
   TextInputStyle,
   EmbedBuilder,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { isValidHttpUrl } = require("../../../utils/functions/string");
+} = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { isValidHttpUrl } = require('../../../utils/functions/string');
 
 module.exports = {
-  name: "embed-image",
+  name: 'embed-image',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -20,18 +20,18 @@ module.exports = {
    */
   async execute(client, interaction, color) {
     const mainModal = new ModalBuilder()
-      .setCustomId("embed-image-modal")
-      .setTitle("Embed Image")
+      .setCustomId('embed-image-modal')
+      .setTitle('Embed Image')
       .addComponents(
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId("image")
-            .setLabel("New image")
-            .setValue(interaction.message.embeds[1].data.image.url ?? "")
+            .setCustomId('image')
+            .setLabel('New image')
+            .setValue(interaction.message.embeds[1].data.image.url ?? '')
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(true)
             .setMaxLength(500)
-            .setPlaceholder("Insert your awesome hippo photo url here..."),
+            .setPlaceholder('Insert your awesome hippo photo url here...'),
         ),
       );
 
@@ -40,34 +40,28 @@ module.exports = {
     const modal = await interaction
       .awaitModalSubmit({
         time: 180000,
-        filter: (i) => i.user.id === interaction.user.id,
+        filter: i => i.user.id === interaction.user.id,
       })
-      .catch((e) => {
+      .catch(e => {
         return null;
       });
 
     if (modal) {
-      if (modal.customId !== "embed-image-modal") return;
+      if (modal.customId !== 'embed-image-modal') return;
 
-      await modal.deferReply({ ephemeral: true }).catch((e) => {});
-      const image = modal.fields.getTextInputValue("image");
+      await modal.deferReply({ ephemeral: true }).catch(e => {});
+      const image = modal.fields.getTextInputValue('image');
       if (!image)
         return await modal.editReply({
-          embeds: [
-            new Embed(color).setDescription("No image entered, try again."),
-          ],
+          embeds: [new Embed(color).setDescription('No image entered, try again.')],
         });
 
       if (!isValidHttpUrl(image))
         return await modal.editReply({
-          embeds: [
-            new Embed(color).setDescription(
-              "No valid image entered, try again.",
-            ),
-          ],
+          embeds: [new Embed(color).setDescription('No valid image entered, try again.')],
         });
 
-      if (interaction.message.embeds[1].data.description === "\u200b")
+      if (interaction.message.embeds[1].data.description === '\u200b')
         delete interaction.message.embeds[1].data.description;
 
       await interaction.message.edit({
@@ -78,11 +72,7 @@ module.exports = {
       });
 
       await modal.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            `Set the image to: \n**${image}**`.slice(0, 2000),
-          ),
-        ],
+        embeds: [new Embed(color).setDescription(`Set the image to: \n**${image}**`.slice(0, 2000))],
       });
     }
   },

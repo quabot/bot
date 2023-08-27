@@ -1,7 +1,7 @@
-const { glob } = require("glob");
-const { promisify } = require("util");
-const { Client } = require("discord.js");
-const consola = require("consola");
+const { glob } = require('glob');
+const { promisify } = require('util');
+const { Client } = require('discord.js');
+const consola = require('consola');
 
 const PG = promisify(glob);
 let loaded = 0;
@@ -9,14 +9,12 @@ let loaded = 0;
 /**
  * @param {Client} client
  */
-const getContexts = async (client) => {
+const getContexts = async client => {
   const ContextList = [];
 
-  const files = await PG(
-    `${process.cwd().replace(/\\/g, "/")}/src/interactions/context/*.js`,
-  );
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/context/*.js`);
 
-  files.forEach(async (file) => {
+  files.forEach(async file => {
     const menu = require(file);
     if (!menu.data) return;
 

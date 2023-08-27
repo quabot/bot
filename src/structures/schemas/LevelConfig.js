@@ -1,11 +1,5 @@
-const { Schema, model } = require("mongoose");
-const {
-  reqString,
-  reqBool,
-  reqArray,
-  reqObject,
-  reqNum,
-} = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqBool, reqArray, reqObject, reqNum } = require('@constants/schemas');
 
 const LevelConfig = new Schema({
   guildId: reqString,
@@ -46,4 +40,4 @@ const LevelConfig = new Schema({
   leaderboardPublic: reqBool, // Should everyone be able to see the leaderboard
 });
 
-module.exports = model("Level-Config", LevelConfig);
+module.exports = model('Level-Config', LevelConfig);

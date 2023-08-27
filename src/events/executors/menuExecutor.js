@@ -1,10 +1,10 @@
-const { Client, Interaction, Colors } = require("discord.js");
-const { getServerConfig } = require("@configs/serverConfig");
-const { handleError } = require("@constants/errorHandler");
+const { Client, Interaction, Colors } = require('discord.js');
+const { getServerConfig } = require('@configs/serverConfig');
+const { handleError } = require('@constants/errorHandler');
 
 module.exports = {
-  event: "interactionCreate",
-  name: "menuExecutor",
+  event: 'interactionCreate',
+  name: 'menuExecutor',
   /**
    * @param {Interaction} interaction
    * @param {Client} client
@@ -16,10 +16,8 @@ module.exports = {
     if (!menu) return;
 
     const config = await getServerConfig(client, interaction.guildId);
-    const color = config?.color ?? "#416683";
+    const color = config?.color ?? '#416683';
 
-    menu
-      .execute(client, interaction, color)
-      .catch((e) => handleError(client, e, interaction.customId));
+    menu.execute(client, interaction, color).catch(e => handleError(client, e, interaction.customId));
   },
 };

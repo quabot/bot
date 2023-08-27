@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqBool } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqBool } = require('@constants/schemas');
 
 const Punishment = new Schema({
   guildId: reqString,
@@ -16,4 +16,4 @@ const Punishment = new Schema({
   active: reqBool,
 });
 
-module.exports = model("Punishment", Punishment);
+module.exports = model('Punishment', Punishment);

@@ -1,10 +1,10 @@
-const { Client, Events, Colors, GuildMember } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, GuildMember } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildMemberUpdate,
-  name: "nickChange",
+  name: 'nickChange',
   /**
    * @param {GuildMember} oldMember
    * @param {GuildMember} newMember
@@ -21,20 +21,15 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("nickChange")) return;
+    if (!config.events.includes('nickChange')) return;
 
     const channel = oldMember.guild.channels.cache.get(config.channelId);
     if (!channel) return;
 
     if (oldMember.nickName === newMember.nickname) return;
     if (!oldMember.nickName && !newMember.nickname) return;
-    if (
-      oldMember.communicationDisabledUntilTimestamp !==
-      newMember.communicationDisabledUntilTimestamp
-    )
-      return;
-    if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp)
-      return;
+    if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) return;
+    if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) return;
     if (oldMember.avatar !== newMember.avatar) return;
 
     await channel.send({
@@ -44,9 +39,7 @@ module.exports = {
             `
                         **Nickname Changed**
                         **User:** ${newMember}
-                        ${oldMember.nickname ?? "None"} -> ${
-                          newMember.nickname ?? "None"
-                        }
+                        ${oldMember.nickname ?? 'None'} -> ${newMember.nickname ?? 'None'}
                         `,
           )
           .setFooter({

@@ -1,15 +1,11 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("members")
-    .setDescription("Get the amount of members in the server.")
+    .setName('members')
+    .setDescription('Get the amount of members in the server.')
     .setDMPermission(false),
   /**
    * @param {Client} client
@@ -25,9 +21,7 @@ module.exports = {
         new Embed(color)
           .setThumbnail(`${interaction.guild.iconURL()}`)
           .setTitle(`${interaction.guild.name}`)
-          .setDescription(
-            `${interaction.guild.memberCount.toLocaleString()} members.`,
-          ),
+          .setDescription(`${interaction.guild.memberCount.toLocaleString()} members.`),
       ],
     });
   },

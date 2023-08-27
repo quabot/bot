@@ -1,15 +1,11 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
+const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
+const { Embed } = require('@constants/embed');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("vote")
-    .setDescription("Get the URL to vote for QuaBot.")
+    .setName('vote')
+    .setDescription('Get the URL to vote for QuaBot.')
     .setDMPermission(false),
   /**
    * @param {Client} client
@@ -24,9 +20,9 @@ module.exports = {
       embeds: [
         new Embed(color)
           .setThumbnail(`${client.user.avatarURL()}`)
-          .setTitle("QuaBot Voting")
+          .setTitle('QuaBot Voting')
           .setDescription(
-            "You can vote for QuaBot [here](https://top.gg/bot/995243562134409296)! You will receive a 1.5x level multiplier and be listed in our [support server](https://discord.quabot.net).",
+            'You can vote for QuaBot [here](https://top.gg/bot/995243562134409296)! You will receive a 1.5x level multiplier and be listed in our [support server](https://discord.quabot.net).',
           ),
       ],
     });

@@ -1,9 +1,9 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { CustomEmbed } = require("@constants/customEmbed");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { CustomEmbed } = require('@constants/customEmbed');
 
 //* QuaBot Applications Message Sender Handler.
 module.exports = {
-  code: "send-message-applications",
+  code: 'send-message-applications',
   async execute(client, data) {
     //* Ge the guild, channel, id and embed.
     const guild = client.guilds.cache.get(data.guildId);
@@ -18,8 +18,8 @@ module.exports = {
     //* Send the message.
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId("applications-fill-" + applicationId)
-        .setLabel("Apply")
+        .setCustomId('applications-fill-' + applicationId)
+        .setLabel('Apply')
         .setStyle(ButtonStyle.Primary),
     );
 
@@ -29,13 +29,13 @@ module.exports = {
         components: [row],
       });
 
-    const sentEmbed = new CustomEmbed(data.message, (e) => {
+    const sentEmbed = new CustomEmbed(data.message, e => {
       return e;
     });
 
     await channel.send({
       embeds: [sentEmbed],
-      content: data.message.content ?? "",
+      content: data.message.content ?? '',
       components: [row],
     });
   },

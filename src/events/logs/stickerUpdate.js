@@ -1,10 +1,10 @@
-const { Client, Events, Sticker, Colors } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Sticker, Colors } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.GuildStickerUpdate,
-  name: "stickerUpdate",
+  name: 'stickerUpdate',
   /**
    * @param {Sticker} oldSticker
    * @param {Sticker} newSticker
@@ -21,20 +21,18 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("stickerUpdate")) return;
+    if (!config.events.includes('stickerUpdate')) return;
 
     const channel = newSticker.guild.channels.cache.get(config.channelId);
     if (!channel) return;
 
-    let description = "";
+    let description = '';
     if (oldSticker.name !== newSticker.name)
-      description += `\n**Name:** \`${oldSticker.name ?? "None"}\` -> \`${
-        newSticker.name ?? "None"
-      }\``;
+      description += `\n**Name:** \`${oldSticker.name ?? 'None'}\` -> \`${newSticker.name ?? 'None'}\``;
     if (oldSticker.description !== newSticker.description)
-      description += `\n**Description:** \`${
-        oldSticker.description ?? "None"
-      }\` -> \`${newSticker.description ?? "None"}\``;
+      description += `\n**Description:** \`${oldSticker.description ?? 'None'}\` -> \`${
+        newSticker.description ?? 'None'
+      }\``;
 
     await channel.send({
       embeds: [

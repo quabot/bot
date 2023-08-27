@@ -1,4 +1,4 @@
-const User = require("@schemas/User");
+const User = require('@schemas/User');
 
 const getUser = async (guildId, userId) => {
   const user = await User.findOne({ guildId, userId }, (err, document) => {
@@ -14,7 +14,7 @@ const getUser = async (guildId, userId) => {
         timeouts: 0,
 
         afk: false,
-        afkMessage: "No afk message set.",
+        afkMessage: 'No afk message set.',
       }).save();
   })
     .clone()

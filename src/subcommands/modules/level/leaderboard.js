@@ -1,10 +1,10 @@
-const { Client, ChatInputCommandInteraction } = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { getLevelConfig } = require("@configs/levelConfig");
+const { Client, ChatInputCommandInteraction } = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { getLevelConfig } = require('@configs/levelConfig');
 
 module.exports = {
-  parent: "level",
-  name: "leaderboard",
+  parent: 'level',
+  name: 'leaderboard',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -24,14 +24,10 @@ module.exports = {
       });
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Levels are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Levels are disabled in this server.')],
       });
 
-    const Level = require("@schemas/Level");
+    const Level = require('@schemas/Level');
     const leaderboard = await Level.find({
       guildId: interaction.guildId,
       active: true,
@@ -39,14 +35,9 @@ module.exports = {
       .sort({ level: -1, xp: -1 })
       .limit(25);
 
-    let lb = "";
+    let lb = '';
     leaderboard.forEach(
-      (i) =>
-        (lb =
-          lb +
-          `**${leaderboard.indexOf(i) + 1}.** <@${i.userId}> - Level: ${
-            i.level
-          }, XP: ${i.xp}\n`),
+      i => (lb = lb + `**${leaderboard.indexOf(i) + 1}.** <@${i.userId}> - Level: ${i.level}, XP: ${i.xp}\n`),
     );
 
     await interaction.editReply({

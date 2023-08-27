@@ -9,12 +9,12 @@ const {
   EmbedBuilder,
   ButtonStyle,
   ButtonBuilder,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { isValidHttpUrl } = require("../../../utils/functions/string");
+} = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { isValidHttpUrl } = require('../../../utils/functions/string');
 
 module.exports = {
-  name: "delete-punishment",
+  name: 'delete-punishment',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -25,35 +25,29 @@ module.exports = {
     if (!id)
       return await interaction.reply({
         embeds: [
-          new Embed(color).setDescription(
-            "An internal error occurred: no punishment ID in embed footer found.",
-          ),
+          new Embed(color).setDescription('An internal error occurred: no punishment ID in embed footer found.'),
         ],
         ephemeral: true,
       });
 
-    const Punishment = require("@schemas/Punishment");
+    const Punishment = require('@schemas/Punishment');
     const punishment = await Punishment.findOne({
       guildId: interaction.guildId,
       id,
     });
     if (!punishment)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "An internal error occurred: no punishment found for the ID.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('An internal error occurred: no punishment found for the ID.')],
         ephemeral: true,
       });
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setStyle(ButtonStyle.Danger)
-        .setLabel("Delete")
-        .setEmoji("🗑️")
+        .setLabel('Delete')
+        .setEmoji('🗑️')
         .setDisabled(true)
-        .setCustomId("delete-punishment"),
+        .setCustomId('delete-punishment'),
     );
 
     await interaction.update({
@@ -61,7 +55,7 @@ module.exports = {
     });
 
     await interaction.followUp({
-      embeds: [new Embed(color).setDescription("Punishment deleted.")],
+      embeds: [new Embed(color).setDescription('Punishment deleted.')],
       ephemeral: true,
     });
 

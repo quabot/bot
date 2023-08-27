@@ -1,10 +1,10 @@
-const { Client, Events, Colors, Invite } = require("discord.js");
-const { getLoggingConfig } = require("@configs/loggingConfig");
-const { Embed } = require("@constants/embed");
+const { Client, Events, Colors, Invite } = require('discord.js');
+const { getLoggingConfig } = require('@configs/loggingConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
   event: Events.InviteDelete,
-  name: "inviteDelete",
+  name: 'inviteDelete',
   /**
    * @param {Invite} invite
    * @param {Client} client
@@ -16,13 +16,9 @@ module.exports = {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes("inviteCreate")) return;
+    if (!config.events.includes('inviteCreate')) return;
     if (config.excludedChannels.includes(invite.channel.id)) return;
-    if (
-      invite.channel.parentId &&
-      config.excludedCategories.includes(invite.channel.parentId)
-    )
-      return;
+    if (invite.channel.parentId && config.excludedCategories.includes(invite.channel.parentId)) return;
 
     const channel = invite.guild.channels.cache.get(config.channelId);
     if (!channel) return;

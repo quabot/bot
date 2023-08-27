@@ -5,36 +5,32 @@ const {
   TextInputBuilder,
   TextInputStyle,
   ChatInputCommandInteraction,
-} = require("discord.js");
-const { getSuggestConfig } = require("@configs/suggestConfig");
-const { Embed } = require("@constants/embed");
+} = require('discord.js');
+const { getSuggestConfig } = require('@configs/suggestConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  parent: "suggestion",
-  name: "create",
+  parent: 'suggestion',
+  name: 'create',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
    * @param {ColorResolvable} color
    */
   async execute(client, interaction, color) {
-    const config = await getSuggestConfig(client, interaction.guildId ?? "");
+    const config = await getSuggestConfig(client, interaction.guildId ?? '');
     if (!config)
       return await interaction.reply({
         embeds: [
           new Embed(color).setDescription(
-            "We are setting up suggestions for first-time use, please run the command again.",
+            'We are setting up suggestions for first-time use, please run the command again.',
           ),
         ],
       });
 
     if (!config.enabled)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Suggestions are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Suggestions are disabled in this server.')],
       });
 
     const channel = interaction.guild?.channels.cache.get(config.channelId);
@@ -42,22 +38,22 @@ module.exports = {
       return await interaction.reply({
         embeds: [
           new Embed(color).setDescription(
-            "The suggestions channel has not been configured. This can be done our [dashboard](https://quabot.net).",
+            'The suggestions channel has not been configured. This can be done our [dashboard](https://quabot.net).',
           ),
         ],
       });
 
     const modal = new ModalBuilder()
-      .setTitle("Leave a suggestion...")
-      .setCustomId("suggest")
+      .setTitle('Leave a suggestion...')
+      .setCustomId('suggest')
       .addComponents(
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId("suggestion")
-            .setLabel("Suggestion")
+            .setCustomId('suggestion')
+            .setLabel('Suggestion')
             .setMaxLength(800)
             .setMinLength(2)
-            .setPlaceholder("Leave a suggestion...")
+            .setPlaceholder('Leave a suggestion...')
             .setRequired(true)
             .setStyle(TextInputStyle.Paragraph),
         ),

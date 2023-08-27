@@ -1,15 +1,11 @@
-const {
-  Client,
-  ChatInputCommandInteraction,
-  PermissionFlagsBits,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { getLevelConfig } = require("@configs/levelConfig");
-const { getLevel } = require("@configs/level");
+const { Client, ChatInputCommandInteraction, PermissionFlagsBits } = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getLevel } = require('@configs/level');
 
 module.exports = {
-  parent: "level",
-  name: "set",
+  parent: 'level',
+  name: 'set',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -20,11 +16,7 @@ module.exports = {
 
     if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You do not have the permissions required.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You do not have the permissions required.')],
       });
 
     const config = await getLevelConfig(interaction.guildId, client);
@@ -38,15 +30,11 @@ module.exports = {
       });
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Levels are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Levels are disabled in this server.')],
       });
 
-    const user = interaction.options.getUser("user");
-    const member = interaction.options.getMember("user");
+    const user = interaction.options.getUser('user');
+    const member = interaction.options.getMember('user');
     const levelDB = await getLevel(interaction.guildId, user.id);
     if (!levelDB)
       return await interaction.editReply({
@@ -57,15 +45,14 @@ module.exports = {
         ],
       });
 
-    const xp = interaction.options.getNumber("xp");
-    const level = interaction.options.getNumber("level");
+    const xp = interaction.options.getNumber('xp');
+    const level = interaction.options.getNumber('level');
 
     if (config.removeRewards) {
-      config.rewards.forEach(async (reward) => {
+      config.rewards.forEach(async reward => {
         if (reward.level > level) {
           const role = interaction.guild.roles.cache.get(reward.role);
-          if (member.roles.cache.has(role.id))
-            await member.roles.remove(role).catch(() => {});
+          if (member.roles.cache.has(role.id)) await member.roles.remove(role).catch(() => {});
         }
       });
     }
@@ -77,9 +64,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         new Embed(color).setDescription(
-          `Successfully set ${user}'s level to ${
-            level ?? levelDB.level
-          } and xp to ${
+          `Successfully set ${user}'s level to ${level ?? levelDB.level} and xp to ${
             xp ?? levelDB.xp
           }. Some level rewards might be out of sync.`,
         ),

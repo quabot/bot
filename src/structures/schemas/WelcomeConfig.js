@@ -1,11 +1,5 @@
-const { Schema, model } = require("mongoose");
-const {
-  reqString,
-  reqNum,
-  reqBool,
-  reqObject,
-  reqArray,
-} = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqNum, reqBool, reqObject, reqArray } = require('@constants/schemas');
 
 const WelcomeConfig = new Schema({
   guildId: reqString,
@@ -28,4 +22,4 @@ const WelcomeConfig = new Schema({
   dm: reqObject,
 });
 
-module.exports = model("Welcome-Config", WelcomeConfig);
+module.exports = model('Welcome-Config', WelcomeConfig);

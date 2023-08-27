@@ -1,12 +1,11 @@
-const { Client, Colors, EmbedBuilder } = require("discord.js");
+const { Client, Colors, EmbedBuilder } = require('discord.js');
 
 /**
  * @param {Client} client
  */
 const handleError = (client, error, location) => {
   const blocked_codes = [
-    4014, 10004, 10003, 10007, 10008, 10062, 30005, 30010, 30013, 40060, 50006,
-    50007, 50008, 240000, 200001, 200000,
+    4014, 10004, 10003, 10007, 10008, 10062, 30005, 30010, 30013, 40060, 50006, 50007, 50008, 240000, 200001, 200000,
   ];
   if (blocked_codes.includes(error.code)) return;
 
@@ -22,9 +21,7 @@ const handleError = (client, error, location) => {
         .setColor(Colors.Red)
         .setFooter({ text: error.name })
         .setTimestamp()
-        .setDescription(
-          `\`\`\`${error.message}\`\`\`\n**Location/Command:**\n\`${location}\``,
-        ),
+        .setDescription(`\`\`\`${error.message}\`\`\`\n**Location/Command:**\n\`${location}\``),
     ],
   });
 };

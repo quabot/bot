@@ -1,17 +1,11 @@
-const {
-  ApplicationCommandType,
-  ContextMenuCommandBuilder,
-} = require("discord.js");
-const { Embed } = require("@constants/embed");
-const { getLevelConfig } = require("@configs/levelConfig");
-const { getUserGame } = require("@configs/userGame");
-const Level = require("@schemas/Level");
+const { ApplicationCommandType, ContextMenuCommandBuilder } = require('discord.js');
+const { Embed } = require('@constants/embed');
+const { getLevelConfig } = require('@configs/levelConfig');
+const { getUserGame } = require('@configs/userGame');
+const Level = require('@schemas/Level');
 
 module.exports = {
-  data: new ContextMenuCommandBuilder()
-    .setName("Profile")
-    .setType(ApplicationCommandType.User)
-    .setDMPermission(false),
+  data: new ContextMenuCommandBuilder().setName('Profile').setType(ApplicationCommandType.User).setDMPermission(false),
   /**
    * @param {import("discord.js").UserContextMenuCommandInteraction} interaction
    */
@@ -51,36 +45,36 @@ module.exports = {
       .setDescription(userSchema.bio)
       .setThumbnail(user.displayAvatarURL({ dynamic: true }))
       .addFields({
-        name: "Birthday",
+        name: 'Birthday',
         value: `${
           userSchema.birthday.configured
             ? `${userSchema.birthday.day}/${userSchema.birthday.month}/${userSchema.birthday.year}`
-            : "Unset"
+            : 'Unset'
         }`,
         inline: true,
       });
 
     if (levelConfig.enabled)
       embed.addFields(
-        { name: "Level", value: `${levelUser.level ?? 0}`, inline: true },
-        { name: "Level XP", value: `${levelUser.xp ?? 0}`, inline: true },
+        { name: 'Level', value: `${levelUser.level ?? 0}`, inline: true },
+        { name: 'Level XP', value: `${levelUser.xp ?? 0}`, inline: true },
       );
 
     embed.addFields(
-      { name: "Username", value: `${user.user.username}`, inline: true },
+      { name: 'Username', value: `${user.user.username}`, inline: true },
       {
-        name: "Displayname",
-        value: `${user.displayName ?? "None"}`,
+        name: 'Displayname',
+        value: `${user.displayName ?? 'None'}`,
         inline: true,
       },
       // { name: 'Discriminator', value: `${user.user.discriminator ?? 'None'}`, inline: true },
       {
-        name: "Joined server on",
+        name: 'Joined server on',
         value: `<t:${Math.floor(user.joinedTimestamp / 1000)}:R>`,
         inline: true,
       },
       {
-        name: "Account created on",
+        name: 'Account created on',
         value: `<t:${Math.floor(user.user.createdTimestamp / 1000)}:R>`,
         inline: true,
       },

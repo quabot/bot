@@ -1,20 +1,13 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-} = require("discord.js");
-const { getIdConfig } = require("@configs/idConfig");
-const { getReactionConfig } = require("@configs/reactionConfig");
-const {
-  channelBlacklist,
-  permissionBitToString,
-} = require("@constants/discord");
-const { Embed } = require("@constants/embed");
-const Reaction = require("@schemas/ReactionRole");
+const { ChatInputCommandInteraction, Client, ColorResolvable } = require('discord.js');
+const { getIdConfig } = require('@configs/idConfig');
+const { getReactionConfig } = require('@configs/reactionConfig');
+const { channelBlacklist, permissionBitToString } = require('@constants/discord');
+const { Embed } = require('@constants/embed');
+const Reaction = require('@schemas/ReactionRole');
 
 module.exports = {
-  parent: "reactionroles",
-  name: "create",
+  parent: 'reactionroles',
+  name: 'create',
   /**
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
@@ -36,52 +29,30 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Reaction roles are not enabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Reaction roles are not enabled in this server.')],
       });
 
-    const channel = interaction.options.getChannel("channel");
-    const messageId = interaction.options.getString("message-id");
-    const role = interaction.options.getRole("role");
-    const emoji = interaction.options.getString("emoji");
-    const mode = interaction.options.getString("mode");
-    const requiredPermission =
-      interaction.options.getString("required-permission") ?? "None";
+    const channel = interaction.options.getChannel('channel');
+    const messageId = interaction.options.getString('message-id');
+    const role = interaction.options.getRole('role');
+    const emoji = interaction.options.getString('emoji');
+    const mode = interaction.options.getString('mode');
+    const requiredPermission = interaction.options.getString('required-permission') ?? 'None';
 
-    if (
-      !channel ||
-      !messageId ||
-      !role ||
-      !emoji ||
-      !mode ||
-      !requiredPermission
-    )
+    if (!channel || !messageId || !role || !emoji || !mode || !requiredPermission)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Please fill out all the required fields.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
       });
 
     if (channelBlacklist.includes(channel.type))
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("Please enter a valid channel type."),
-        ],
+        embeds: [new Embed(color).setDescription('Please enter a valid channel type.')],
       });
 
-    if (
-      role.rawPosition > interaction.guild.members.me.roles.highest.rawPosition
-    )
+    if (role.rawPosition > interaction.guild.members.me.roles.highest.rawPosition)
       return await interaction.editReply({
         embeds: [
-          new Embed(color).setDescription(
-            "I cannot give that role to users! Make sure the role is below my roles.",
-          ),
+          new Embed(color).setDescription('I cannot give that role to users! Make sure the role is below my roles.'),
         ],
       });
 
@@ -93,23 +64,15 @@ module.exports = {
       })
     )
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "That emoji is already used for a reactionrole on that message.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('That emoji is already used for a reactionrole on that message.')],
       });
 
     channel.messages
       .fetch({ message: messageId })
-      .then(async (message) => {
+      .then(async message => {
         if (!message)
           return await interaction.editReply({
-            embeds: [
-              new Embed(color).setDescription(
-                `Couldn't find any messages with that id in ${channel}.`,
-              ),
-            ],
+            embeds: [new Embed(color).setDescription(`Couldn't find any messages with that id in ${channel}.`)],
           });
 
         await message
@@ -117,23 +80,19 @@ module.exports = {
           .then(async () => {
             await interaction.editReply({
               embeds: [
-                new Embed(color)
-                  .setDescription("Successfully created a new reaction role.")
-                  .addFields(
-                    { name: "Emoji", value: `${emoji}`, inline: true },
-                    { name: "Channel", value: `${channel}`, inline: true },
-                    { name: "Role", value: `${role}`, inline: true },
-                    { name: "Mode", value: `${mode}`, inline: true },
-                    {
-                      name: "Required Permission",
-                      value: `${
-                        requiredPermission === "None"
-                          ? "none"
-                          : await permissionBitToString(requiredPermission)
-                      }`,
-                      inline: true,
-                    },
-                  ),
+                new Embed(color).setDescription('Successfully created a new reaction role.').addFields(
+                  { name: 'Emoji', value: `${emoji}`, inline: true },
+                  { name: 'Channel', value: `${channel}`, inline: true },
+                  { name: 'Role', value: `${role}`, inline: true },
+                  { name: 'Mode', value: `${mode}`, inline: true },
+                  {
+                    name: 'Required Permission',
+                    value: `${
+                      requiredPermission === 'None' ? 'none' : await permissionBitToString(requiredPermission)
+                    }`,
+                    inline: true,
+                  },
+                ),
               ],
             });
 
@@ -151,21 +110,15 @@ module.exports = {
 
             await newReaction.save();
           })
-          .catch(async (e) => {
+          .catch(async e => {
             return await interaction.editReply({
-              embeds: [
-                new Embed(color).setDescription("That is not a valid emoji."),
-              ],
+              embeds: [new Embed(color).setDescription('That is not a valid emoji.')],
             });
           });
       })
-      .catch(async (e) => {
+      .catch(async e => {
         return await interaction.editReply({
-          embeds: [
-            new Embed(color).setDescription(
-              `Couldn't find any messages with that id in ${channel}.`,
-            ),
-          ],
+          embeds: [new Embed(color).setDescription(`Couldn't find any messages with that id in ${channel}.`)],
         });
       });
   },

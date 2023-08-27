@@ -1,16 +1,11 @@
-const {
-  Client,
-  ButtonInteraction,
-  ColorResolvable,
-  PermissionFlagsBits,
-} = require("discord.js");
-const Ticket = require("@schemas/Ticket");
-const { getIdConfig } = require("@configs/idConfig");
-const { getTicketConfig } = require("@configs/ticketConfig");
-const { Embed } = require("@constants/embed");
+const { Client, ButtonInteraction, ColorResolvable, PermissionFlagsBits } = require('discord.js');
+const Ticket = require('@schemas/Ticket');
+const { getIdConfig } = require('@configs/idConfig');
+const { getTicketConfig } = require('@configs/ticketConfig');
+const { Embed } = require('@constants/embed');
 
 module.exports = {
-  name: "transcript-ticket",
+  name: 'transcript-ticket',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -33,11 +28,7 @@ module.exports = {
 
     if (!config.enabled)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "Tickets are disabled in this server.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
     const ticket = await Ticket.findOne({
@@ -45,52 +36,38 @@ module.exports = {
     });
     if (!ticket)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription("This is not a valid ticket."),
-        ],
+        embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
     if (!ticket.closed)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription("This ticket is not closed.")],
+        embeds: [new Embed(color).setDescription('This ticket is not closed.')],
       });
 
     let valid = false;
     if (ticket.owner === interaction.user.id) valid = true;
     if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels))
-      valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
-      valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
+    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
     if (!valid)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "You are not allowed to request a transcript of this ticket.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('You are not allowed to request a transcript of this ticket.')],
       });
 
-    const discordTranscripts = require("discord-html-transcripts");
-    const attachment = await discordTranscripts.createTranscript(
-      interaction.channel,
-      {
-        limit: -1,
-        minify: true,
-        saveImages: false,
-        useCND: true,
-      },
-    );
+    const discordTranscripts = require('discord-html-transcripts');
+    const attachment = await discordTranscripts.createTranscript(interaction.channel, {
+      limit: -1,
+      minify: true,
+      saveImages: false,
+      useCND: true,
+    });
 
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setTitle("Ticket Transcript")
-          .setDescription(
-            "The transcript is in the attachment. Open it in the browser to view it.",
-          ),
+          .setTitle('Ticket Transcript')
+          .setDescription('The transcript is in the attachment. Open it in the browser to view it.'),
       ],
       files: [attachment],
     });

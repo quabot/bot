@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const { reqString, reqId, reqBool, reqNum } = require("@constants/schemas");
+const { Schema, model } = require('mongoose');
+const { reqString, reqId, reqBool, reqNum } = require('@constants/schemas');
 
 const Giveaway = new Schema({
   guildId: reqString,
@@ -16,4 +16,4 @@ const Giveaway = new Schema({
   ended: reqBool,
 });
 
-module.exports = model("Giveaway", Giveaway);
+module.exports = model('Giveaway', Giveaway);

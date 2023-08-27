@@ -1,10 +1,10 @@
-const { Client, Interaction, Colors, EmbedBuilder } = require("discord.js");
-const { getServerConfig } = require("@configs/serverConfig");
-const { handleError } = require("@constants/errorHandler");
+const { Client, Interaction, Colors, EmbedBuilder } = require('discord.js');
+const { getServerConfig } = require('@configs/serverConfig');
+const { handleError } = require('@constants/errorHandler');
 
 module.exports = {
-  event: "interactionCreate",
-  name: "subcommandExecutor",
+  event: 'interactionCreate',
+  name: 'subcommandExecutor',
   /**
    * @param {Interaction} interaction
    * @param {Client} client
@@ -16,9 +16,7 @@ module.exports = {
       const subcommandName = interaction.options.getSubcommand();
       if (!subcommandName) return;
 
-      const subcommand = client.subcommands.get(
-        `${subcommandName}/${interaction.commandName}`,
-      );
+      const subcommand = client.subcommands.get(`${subcommandName}/${interaction.commandName}`);
       if (!subcommand)
         return await interaction.reply({
           embeds: [
@@ -32,31 +30,21 @@ module.exports = {
         });
 
       const config = await getServerConfig(client, interaction.guildId);
-      if (
-        config &&
-        config.disabledCommands &&
-        config.disabledCommands.includes(interaction.commandName)
-      )
+      if (config && config.disabledCommands && config.disabledCommands.includes(interaction.commandName))
         return await interaction.reply({
           embeds: [
             new EmbedBuilder()
-              .setColor(config.color ?? "#416683")
-              .setDescription("That command is not enabled in this server."),
+              .setColor(config.color ?? '#416683')
+              .setDescription('That command is not enabled in this server.'),
           ],
           ephemeral: true,
         });
 
-      const color = config?.color ?? "#416683";
+      const color = config?.color ?? '#416683';
 
       subcommand
         .execute(client, interaction, color)
-        .catch((e) =>
-          handleError(
-            client,
-            e,
-            `${interaction.options.getSubcommand()}/${interaction.commandName}`,
-          ),
-        );
+        .catch(e => handleError(client, e, `${interaction.options.getSubcommand()}/${interaction.commandName}`));
     } catch (e) {
       return;
     }
