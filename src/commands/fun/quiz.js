@@ -124,7 +124,7 @@ module.exports = {
 					const buttonDis = new ButtonBuilder()
 						.setCustomId(`${answers.indexOf(answer)}`)
 						.setLabel(answer.replaceAll('&quot;', '"').replaceAll('&amp;', '&').replaceAll('&reg;', '®').replaceAll('&#039;', '\''))
-						.setStyle(answer === question.correct_answer ? ButtonStyle.Success : (answers.indexOf(answer) === parseInt(interaction.customId) ? ButtonStyle.Danger : ButtonStyle.Secondary))
+						.setStyle(answer === question.correct_answer ? ButtonStyle.Success : (answers.indexOf(answer) === parseInt(i.customId) ? ButtonStyle.Danger : ButtonStyle.Secondary))
 						.setDisabled(true);
 
 					row2.addComponents(buttonDis);
