@@ -32,5 +32,15 @@
 
         // Completeness
         "skipLibCheck": true
+    },
+    "baseUrl": "./src",
+    "paths": {
+        "@configs/*": ["utils/configs/*"],
+        "@constants/*": ["utils/constants/*"],
+        "@functions/*":  ["utils/functions/*"],
+        "@assets/*": ["utils/assets/*"],
+        "@typings/*": ["utils/typings/*"],
+        "@schemas/*": ["structures/schemas/*"],
+        "@handlers": ["structures/handlers/*"],
     }
 }

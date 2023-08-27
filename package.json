@@ -49,6 +49,7 @@
     "@functions": "src/utils/functions/",
     "@assets": "src/utils/assets/",
     "@schemas": "src/structures/schemas/",
-    "@handlers": "src/structures/handlers/"
+    "@handlers": "src/structures/handlers/",
+    "@typings": "src/utils/typings"
   }
 }
