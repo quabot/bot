@@ -1,38 +1,44 @@
-const { SlashCommandBuilder, Client, ModalSubmitInteraction, ActionRowBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
-const Suggestion = require('@schemas/Suggestion');
-const { getIdConfig } = require('@configs/idConfig');
-const { getSuggestConfig } = require('@configs/suggestConfig');
-const { CustomEmbed } = require('@constants/customEmbed');
-const { Embed } = require('@constants/embed');
-const { getUserGame } = require('@configs/userGame');
+const {
+  SlashCommandBuilder,
+  Client,
+  ModalSubmitInteraction,
+  ActionRowBuilder,
+  ButtonStyle,
+  ButtonBuilder,
+} = require("discord.js");
+const Suggestion = require("@schemas/Suggestion");
+const { getIdConfig } = require("@configs/idConfig");
+const { getSuggestConfig } = require("@configs/suggestConfig");
+const { CustomEmbed } = require("@constants/customEmbed");
+const { Embed } = require("@constants/embed");
+const { getUserGame } = require("@configs/userGame");
 
 module.exports = {
-	name: 'profile-bio',
-	/**
-     * @param {Client} client 
-     * @param {ModalSubmitInteraction} interaction
-     */
-	async execute(client, interaction, color) {
-		await interaction.deferReply({ ephemeral: true });
-        
-		const userSchema = await getUserGame(interaction.user.id);
-		if (!userSchema) return await interaction.editReply({
-			embeds: [
-				new Embed(color)
-					.setDescription('We\'re still setting up some documents for first-time use! Please run the command again.')
-			]
-		});
+  name: "profile-bio",
+  /**
+   * @param {Client} client
+   * @param {ModalSubmitInteraction} interaction
+   */
+  async execute(client, interaction, color) {
+    await interaction.deferReply({ ephemeral: true });
 
-		const bio = interaction.fields.getTextInputValue('bio');
+    const userSchema = await getUserGame(interaction.user.id);
+    if (!userSchema)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "We're still setting up some documents for first-time use! Please run the command again.",
+          ),
+        ],
+      });
 
-		userSchema.bio = bio ?? '-';
-		await userSchema.save();
+    const bio = interaction.fields.getTextInputValue("bio");
 
-		await interaction.editReply({
-			embeds: [
-				new Embed(color)
-					.setDescription('Updated your bio!')
-			]
-		});
-	}
+    userSchema.bio = bio ?? "-";
+    await userSchema.save();
+
+    await interaction.editReply({
+      embeds: [new Embed(color).setDescription("Updated your bio!")],
+    });
+  },
 };

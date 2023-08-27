@@ -1,49 +1,58 @@
-const { glob } = require('glob');
-const { promisify } = require('util');
-const { Client, Routes } = require('discord.js');
-const consola = require('consola');
+const { glob } = require("glob");
+const { promisify } = require("util");
+const { Client, Routes } = require("discord.js");
+const consola = require("consola");
 
-const { REST } = require('@discordjs/rest');
-const getContexts = require('./contextHandler');
+const { REST } = require("@discordjs/rest");
+const getContexts = require("./contextHandler");
 
 const PG = promisify(glob);
-const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 /**
- * @param {Client} client 
+ * @param {Client} client
  */
 module.exports = async (client) => {
-	const commandsList = [];
-	const contexts = await getContexts(client);
-	contexts.forEach(context => commandsList.push(context));
+  const commandsList = [];
+  const contexts = await getContexts(client);
+  contexts.forEach((context) => commandsList.push(context));
 
-	const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
-	files.forEach(async file => {
-		const command = require(file);
-		if (!command.data) return;
+  const files = await PG(
+    `${process.cwd().replace(/\\/g, "/")}/src/commands/*/*.js`,
+  );
+  files.forEach(async (file) => {
+    const command = require(file);
+    if (!command.data) return;
 
-		client.commands.set(command.data.name, command);
-		commandsList.push(command.data);
-	});
+    client.commands.set(command.data.name, command);
+    commandsList.push(command.data);
+  });
 
+  consola.success(
+    `Loaded ${commandsList.length - contexts.length}/${files.length} commands.`,
+  );
 
-	consola.success(`Loaded ${commandsList.length - contexts.length}/${files.length} commands.`);
+  try {
+    if (process.env.RELOAD_COMMANDS === "false") return;
 
-	try {
-		if (process.env.RELOAD_COMMANDS === 'false') return;
+    if (process.env.NODE_ENV === "development") {
+      await rest.put(
+        Routes.applicationGuildCommands(
+          process.env.CLIENT_ID,
+          process.env.GUILD_ID,
+        ),
+        {
+          body: commandsList,
+        },
+      );
+    } else {
+      await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+        body: commandsList,
+      });
+    }
 
-		if (process.env.NODE_ENV === 'development') {
-			await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
-				body: commandsList,
-			});
-		} else {
-			await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
-				body: commandsList,
-			});
-		}
-
-		consola.info('Reloaded all commands.');
-	} catch (error) {
-		consola.warn(`Failed to reload commands: ${error}`);
-	}
+    consola.info("Reloaded all commands.");
+  } catch (error) {
+    consola.warn(`Failed to reload commands: ${error}`);
+  }
 };

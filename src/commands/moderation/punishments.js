@@ -1,92 +1,101 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
+const {
+  SlashCommandBuilder,
+  Client,
+  CommandInteraction,
+  PermissionFlagsBits,
+} = require("discord.js");
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('punishments')
-		.setDescription('Manage punishments.')
-		.addSubcommand(subcommand =>
-			subcommand
-				.setName('manage')
-				.setDescription('Manage punishments, delete and deactivate.')
-				.addStringOption(option =>
-					option
-						.setName('type')
-						.setDescription('The type of punishment.')
-						.setRequired(true)
-						.addChoices(
-							{ name: 'Kick', value: 'kick' },
-							{ name: 'Ban', value: 'ban' },
-							{ name: 'Tempban', value: 'tempban' },
-							{ name: 'Timeout', value: 'timeout' },
-							{ name: 'Warn', value: 'warn' }
-						)
-				)
-				.addStringOption(option =>
-					option
-						.setName('id')
-						.setDescription('The ID of the punishment.')
-						.setRequired(true)
-				)
-				.addUserOption(option =>
-					option
-						.setName('user')
-						.setDescription('The user to manage the punishment of.')
-						.setRequired(false)
-				)
-		)
-		.addSubcommand(subcommand =>
-			subcommand
-				.setName('view')
-				.setDescription('View punishments. (With filters)')
-				.addStringOption(option =>
-					option
-						.setName('type')
-						.setDescription('The type of punishment.')
-						.setRequired(false)
-						.addChoices(
-							{ name: 'Kick', value: 'kick' },
-							{ name: 'Ban', value: 'ban' },
-							{ name: 'Tempban', value: 'tempban' },
-							{ name: 'Timeout', value: 'timeout' },
-							{ name: 'Warn', value: 'warn' }
-						)
-				)
-				.addStringOption(option =>
-					option
-						.setName('id')
-						.setDescription('The ID of the punishment(s).')
-						.setRequired(false)
-				)
-				.addUserOption(option =>
-					option
-						.setName('user')
-						.setDescription('The user to view the punishments of.')
-						.setRequired(false)
-				)
-				.addStringOption(option =>
-					option
-						.setName('user-id')
-						.setDescription('The user (ID) to view the punishments of.')
-						.setRequired(false)
-				)
-				.addUserOption(option =>
-					option
-						.setName('staff-member')
-						.setDescription('The staff member that carried out the infraction.')
-						.setRequired(false)
-				)
-		)
-		.addSubcommand(subcommand =>
-			subcommand
-				.setName('help')
-				.setDescription('Get some information about the punishments module.')
-		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.BanMembers | PermissionFlagsBits.KickMembers)
-		.setDMPermission(false),
-	/**
-     * @param {Client} client 
-     * @param {CommandInteraction} interaction
-     */
-	async execute(client, interaction, color) {}
+  data: new SlashCommandBuilder()
+    .setName("punishments")
+    .setDescription("Manage punishments.")
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("manage")
+        .setDescription("Manage punishments, delete and deactivate.")
+        .addStringOption((option) =>
+          option
+            .setName("type")
+            .setDescription("The type of punishment.")
+            .setRequired(true)
+            .addChoices(
+              { name: "Kick", value: "kick" },
+              { name: "Ban", value: "ban" },
+              { name: "Tempban", value: "tempban" },
+              { name: "Timeout", value: "timeout" },
+              { name: "Warn", value: "warn" },
+            ),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("id")
+            .setDescription("The ID of the punishment.")
+            .setRequired(true),
+        )
+        .addUserOption((option) =>
+          option
+            .setName("user")
+            .setDescription("The user to manage the punishment of.")
+            .setRequired(false),
+        ),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("view")
+        .setDescription("View punishments. (With filters)")
+        .addStringOption((option) =>
+          option
+            .setName("type")
+            .setDescription("The type of punishment.")
+            .setRequired(false)
+            .addChoices(
+              { name: "Kick", value: "kick" },
+              { name: "Ban", value: "ban" },
+              { name: "Tempban", value: "tempban" },
+              { name: "Timeout", value: "timeout" },
+              { name: "Warn", value: "warn" },
+            ),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("id")
+            .setDescription("The ID of the punishment(s).")
+            .setRequired(false),
+        )
+        .addUserOption((option) =>
+          option
+            .setName("user")
+            .setDescription("The user to view the punishments of.")
+            .setRequired(false),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("user-id")
+            .setDescription("The user (ID) to view the punishments of.")
+            .setRequired(false),
+        )
+        .addUserOption((option) =>
+          option
+            .setName("staff-member")
+            .setDescription("The staff member that carried out the infraction.")
+            .setRequired(false),
+        ),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("help")
+        .setDescription("Get some information about the punishments module."),
+    )
+    .setDefaultMemberPermissions(
+      PermissionFlagsBits.Administrator |
+        PermissionFlagsBits.BanMembers |
+        PermissionFlagsBits.KickMembers,
+    )
+    .setDMPermission(false),
+  /**
+   * @param {Client} client
+   * @param {CommandInteraction} interaction
+   */
+  async execute(client, interaction, color) {},
 };

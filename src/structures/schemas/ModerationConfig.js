@@ -1,25 +1,25 @@
-const { Schema, model } = require('mongoose');
-const { reqString, reqBool, reqObject } = require('@constants/schemas');
+const { Schema, model } = require("mongoose");
+const { reqString, reqBool, reqObject } = require("@constants/schemas");
 
 const ModerationConfig = new Schema({
-	guildId: reqString,
-	channel: reqBool,
-	channelId: reqString,
+  guildId: reqString,
+  channel: reqBool,
+  channelId: reqString,
 
-	warnDM: reqBool,
-	warnDMMessage: reqObject,
+  warnDM: reqBool,
+  warnDMMessage: reqObject,
 
-	timeoutDM: reqBool,
-	timeoutDMMessage: reqObject,
+  timeoutDM: reqBool,
+  timeoutDMMessage: reqObject,
 
-	kickDM: reqBool,
-	kickDMMessage: reqObject,
+  kickDM: reqBool,
+  kickDMMessage: reqObject,
 
-	banDM: reqBool,
-	banDMMessage: reqObject,
+  banDM: reqBool,
+  banDMMessage: reqObject,
 
-	tempbanDM: reqBool,
-	tempbanDMMessage: reqObject
+  tempbanDM: reqBool,
+  tempbanDMMessage: reqObject,
 });
 
-module.exports = model('Moderation-Config', ModerationConfig);
+module.exports = model("Moderation-Config", ModerationConfig);

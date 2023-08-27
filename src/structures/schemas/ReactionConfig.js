@@ -1,11 +1,11 @@
-const { Schema, model } = require('mongoose');
-const { reqString, reqBool, reqObject } = require('@constants/schemas');
+const { Schema, model } = require("mongoose");
+const { reqString, reqBool, reqObject } = require("@constants/schemas");
 
 const ReactionConfig = new Schema({
-	guildId: reqString,
-	enabled: reqBool,
-	dmEnabled: reqBool,
-	dm: reqObject
+  guildId: reqString,
+  enabled: reqBool,
+  dmEnabled: reqBool,
+  dm: reqObject,
 });
 
-module.exports = model('Reaction-Config', ReactionConfig);
+module.exports = model("Reaction-Config", ReactionConfig);
