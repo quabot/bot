@@ -20,11 +20,7 @@ module.exports = {
     const config = await getPollConfig(client, interaction.guildId);
     if (!config)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use. Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)

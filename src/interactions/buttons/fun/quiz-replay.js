@@ -1,5 +1,5 @@
 const { Client, ButtonInteraction, ColorResolvable } = require('discord.js');
-const { execute } = require('../../../commands/fun/quiz');
+const { execute } = require('@commands/fun/quiz');
 
 module.exports = {
   name: 'quiz-replay',

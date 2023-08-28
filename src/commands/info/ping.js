@@ -7,11 +7,8 @@ module.exports = {
     .setName('ping')
     .setDescription('Get the latency between QuaBot and the Discord API.')
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+  
+  async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 

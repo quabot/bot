@@ -1,6 +1,6 @@
 const { Client } = require('discord.js');
 const Poll = require('@schemas/Poll');
-const { endPoll } = require('../../utils/functions/poll');
+const { endPoll } = require('@functions/poll');
 
 module.exports = {
   event: 'ready',

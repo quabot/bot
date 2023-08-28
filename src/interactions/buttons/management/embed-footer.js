@@ -9,10 +9,10 @@ const {
   EmbedBuilder,
 } = require('discord.js');
 const { Embed } = require('@constants/embed');
-const { isValidHttpUrl } = require('../../../utils/functions/string');
+const { isValidHttpUrl } = require('@functions/string');
 
 module.exports = {
-  name: 'embed-addfield',
+  name: 'embed-footer',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -20,35 +20,28 @@ module.exports = {
    */
   async execute(client, interaction, color) {
     const mainModal = new ModalBuilder()
-      .setCustomId('embed-addfield-modal')
-      .setTitle('Embed Add Field')
+      .setCustomId('embed-footer-modal')
+      .setTitle('Embed Footer')
       .addComponents(
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId('title')
-            .setLabel('Field Title')
+            .setCustomId('text')
+            .setLabel('Footer Text')
             .setStyle(TextInputStyle.Paragraph)
+            .setValue(interaction.message.embeds[1].data.footer?.text ?? '')
             .setRequired(true)
-            .setMaxLength(256)
-            .setPlaceholder('I am a field title!    '),
+            .setMaxLength(2048)
+            .setPlaceholder('My footer text...'),
         ),
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId('value')
-            .setLabel('Field Value')
+            .setCustomId('icon')
+            .setLabel('Footer Icon')
             .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true)
-            .setMaxLength(1024)
-            .setPlaceholder('I am a field value!'),
-        ),
-        new ActionRowBuilder().addComponents(
-          new TextInputBuilder()
-            .setCustomId('inline')
-            .setLabel('Field inline?')
-            .setStyle(TextInputStyle.Short)
+            .setValue(interaction.message.embeds[1].data.footer?.icon_url ?? '')
             .setRequired(false)
             .setMaxLength(500)
-            .setPlaceholder('true/false'),
+            .setPlaceholder('Insert your favorite footer image here...'),
         ),
       );
 
@@ -64,16 +57,17 @@ module.exports = {
       });
 
     if (modal) {
-      if (modal.customId !== 'embed-addfield-modal') return;
+      if (modal.customId !== 'embed-footer-modal') return;
 
       await modal.deferReply({ ephemeral: true }).catch(e => {});
-      const title = modal.fields.getTextInputValue('title');
-      const value = modal.fields.getTextInputValue('value');
-      const inline = modal.fields.getTextInputValue('inline') === 'true';
-      if (!title || !value)
+      const text = modal.fields.getTextInputValue('text');
+      let url = modal.fields.getTextInputValue('icon') ?? null;
+      if (!text)
         return await modal.editReply({
           embeds: [new Embed(color).setDescription('Not all fields were filled out, try again.')],
         });
+
+      if (!isValidHttpUrl(url)) url = null;
 
       if (interaction.message.embeds[1].data.description === '\u200b')
         delete interaction.message.embeds[1].data.description;
@@ -81,16 +75,15 @@ module.exports = {
       await interaction.message.edit({
         embeds: [
           EmbedBuilder.from(interaction.message.embeds[0]),
-          EmbedBuilder.from(interaction.message.embeds[1]).addFields({
-            name: title,
-            value: value,
-            inline: inline,
+          EmbedBuilder.from(interaction.message.embeds[1]).setFooter({
+            text: text,
+            iconURL: url,
           }),
         ],
       });
 
       await modal.editReply({
-        embeds: [new Embed(color).setDescription('Added a field!')],
+        embeds: [new Embed(color).setDescription('Changed the footer!')],
       });
     }
   },

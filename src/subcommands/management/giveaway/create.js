@@ -3,7 +3,7 @@ const { getGiveawayConfig } = require('@configs/giveawayConfig');
 const { getIdConfig } = require('@configs/idConfig');
 const { Embed } = require('@constants/embed');
 const ms = require('ms');
-const { endGiveaway } = require('../../../utils/functions/giveaway');
+const { endGiveaway } = require('@functions/giveaway');
 const Giveaway = require('@schemas/Giveaway');
 
 module.exports = {

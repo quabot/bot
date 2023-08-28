@@ -31,9 +31,7 @@ module.exports = {
     const config = await getSuggestConfig(client, interaction.guildId);
     if (!config)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription('We just created a new document! Could you please run that command again?'),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
         ephemeral: true,
       });
 

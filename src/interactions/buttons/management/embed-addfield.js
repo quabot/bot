@@ -9,10 +9,10 @@ const {
   EmbedBuilder,
 } = require('discord.js');
 const { Embed } = require('@constants/embed');
-const { isValidHttpUrl } = require('../../../utils/functions/string');
+const { isValidHttpUrl } = require('@functions/string');
 
 module.exports = {
-  name: 'embed-author',
+  name: 'embed-addfield',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -20,38 +20,35 @@ module.exports = {
    */
   async execute(client, interaction, color) {
     const mainModal = new ModalBuilder()
-      .setCustomId('embed-author-modal')
-      .setTitle('Embed Author')
+      .setCustomId('embed-addfield-modal')
+      .setTitle('Embed Add Field')
       .addComponents(
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId('text')
-            .setLabel('Author Name')
+            .setCustomId('title')
+            .setLabel('Field Title')
             .setStyle(TextInputStyle.Paragraph)
-            .setValue(interaction.message.embeds[1].data.author?.name ?? '')
             .setRequired(true)
             .setMaxLength(256)
-            .setPlaceholder('My author name...'),
+            .setPlaceholder('I am a field title!    '),
         ),
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId('icon')
-            .setLabel('Author Icon')
+            .setCustomId('value')
+            .setLabel('Field Value')
             .setStyle(TextInputStyle.Paragraph)
-            .setValue(interaction.message.embeds[1].data.author?.icon_url ?? '')
-            .setRequired(false)
-            .setMaxLength(250)
-            .setPlaceholder('Insert your favorite author icon here...'),
+            .setRequired(true)
+            .setMaxLength(1024)
+            .setPlaceholder('I am a field value!'),
         ),
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId('url')
-            .setLabel('Author Url')
-            .setStyle(TextInputStyle.Paragraph)
-            .setValue(interaction.message.embeds[1].data.author?.url ?? '')
+            .setCustomId('inline')
+            .setLabel('Field inline?')
+            .setStyle(TextInputStyle.Short)
             .setRequired(false)
-            .setMaxLength(250)
-            .setPlaceholder('https://quabot.net'),
+            .setMaxLength(500)
+            .setPlaceholder('true/false'),
         ),
       );
 
@@ -67,19 +64,16 @@ module.exports = {
       });
 
     if (modal) {
-      if (modal.customId !== 'embed-author-modal') return;
+      if (modal.customId !== 'embed-addfield-modal') return;
 
       await modal.deferReply({ ephemeral: true }).catch(e => {});
-      const text = modal.fields.getTextInputValue('text');
-      let url = modal.fields.getTextInputValue('url') ?? null;
-      let icon = modal.fields.getTextInputValue('icon') ?? null;
-      if (!text)
+      const title = modal.fields.getTextInputValue('title');
+      const value = modal.fields.getTextInputValue('value');
+      const inline = modal.fields.getTextInputValue('inline') === 'true';
+      if (!title || !value)
         return await modal.editReply({
           embeds: [new Embed(color).setDescription('Not all fields were filled out, try again.')],
         });
-
-      if (!isValidHttpUrl(url)) url = null;
-      if (!isValidHttpUrl(icon)) icon = null;
 
       if (interaction.message.embeds[1].data.description === '\u200b')
         delete interaction.message.embeds[1].data.description;
@@ -87,16 +81,16 @@ module.exports = {
       await interaction.message.edit({
         embeds: [
           EmbedBuilder.from(interaction.message.embeds[0]),
-          EmbedBuilder.from(interaction.message.embeds[1]).setAuthor({
-            name: text,
-            iconURL: icon,
-            url,
+          EmbedBuilder.from(interaction.message.embeds[1]).addFields({
+            name: title,
+            value: value,
+            inline: inline,
           }),
         ],
       });
 
       await modal.editReply({
-        embeds: [new Embed(color).setDescription('Changed the author!')],
+        embeds: [new Embed(color).setDescription('Added a field!')],
       });
     }
   },

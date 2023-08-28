@@ -2,8 +2,8 @@ const { ChatInputCommandInteraction, Client, ColorResolvable, ChannelType } = re
 const { getGiveawayConfig } = require('@configs/giveawayConfig');
 const { Embed } = require('@constants/embed');
 const Giveaway = require('@schemas/Giveaway');
-const { endGiveaway } = require('../../../utils/functions/giveaway');
-const { shuffleArray } = require('../../../utils/functions/array');
+const { endGiveaway } = require('@functions/giveaway');
+const { shuffleArray } = require('@functions/array');
 
 module.exports = {
   parent: 'giveaway',

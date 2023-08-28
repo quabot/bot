@@ -1,7 +1,7 @@
-const { EmbedBuilder } = require('discord.js');
+import { type ColorResolvable, EmbedBuilder } from 'discord.js';
 
-class Embed extends EmbedBuilder {
-  constructor(color) {
+export class Embed extends EmbedBuilder {
+  constructor(color: ColorResolvable) {
     super();
 
     return new EmbedBuilder().setTimestamp().setColor(color).setFooter({

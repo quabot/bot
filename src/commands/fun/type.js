@@ -733,11 +733,8 @@ const sentences = [
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder().setName('type').setDescription('Play a typing game.').setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+  
+  async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
     {

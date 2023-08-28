@@ -1,8 +1,8 @@
 const { Client } = require('discord.js');
 const Poll = require('@schemas/Poll');
-const { getPollConfig } = require('../configs/pollConfig');
-const { getServerConfig } = require('../configs/serverConfig');
-const { Embed } = require('../constants/embed');
+const { getPollConfig } = require('@configs/pollConfig');
+const { getServerConfig } = require('@configs/serverConfig');
+const { Embed } = require('@constants/embed');
 
 /**
  * @param {Client} client

@@ -9,10 +9,10 @@ const {
   EmbedBuilder,
 } = require('discord.js');
 const { Embed } = require('@constants/embed');
-const { isValidHttpUrl } = require('../../../utils/functions/string');
+const { isValidHttpUrl } = require('@functions/string');
 
 module.exports = {
-  name: 'embed-image',
+  name: 'embed-color',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -20,18 +20,17 @@ module.exports = {
    */
   async execute(client, interaction, color) {
     const mainModal = new ModalBuilder()
-      .setCustomId('embed-image-modal')
-      .setTitle('Embed Image')
+      .setCustomId('embed-color-modal')
+      .setTitle('Embed Color')
       .addComponents(
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId('image')
-            .setLabel('New image')
-            .setValue(interaction.message.embeds[1].data.image.url ?? '')
-            .setStyle(TextInputStyle.Paragraph)
+            .setCustomId('color')
+            .setLabel('New color')
+            .setStyle(TextInputStyle.Short)
             .setRequired(true)
             .setMaxLength(500)
-            .setPlaceholder('Insert your awesome hippo photo url here...'),
+            .setPlaceholder('#fffff'),
         ),
       );
 
@@ -47,32 +46,29 @@ module.exports = {
       });
 
     if (modal) {
-      if (modal.customId !== 'embed-image-modal') return;
+      if (modal.customId !== 'embed-color-modal') return;
 
       await modal.deferReply({ ephemeral: true }).catch(e => {});
-      const image = modal.fields.getTextInputValue('image');
-      if (!image)
+      const enteredColor = modal.fields.getTextInputValue('color');
+      if (!enteredColor)
         return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No image entered, try again.')],
+          embeds: [new Embed(color).setDescription('No color entered, try again.')],
         });
 
-      if (!isValidHttpUrl(image))
+      if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor))
         return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No valid image entered, try again.')],
+          embeds: [new Embed(color).setDescription('No valid color entered, try again.')],
         });
-
-      if (interaction.message.embeds[1].data.description === '\u200b')
-        delete interaction.message.embeds[1].data.description;
 
       await interaction.message.edit({
         embeds: [
           EmbedBuilder.from(interaction.message.embeds[0]),
-          EmbedBuilder.from(interaction.message.embeds[1]).setImage(image),
+          EmbedBuilder.from(interaction.message.embeds[1]).setColor(enteredColor),
         ],
       });
 
       await modal.editReply({
-        embeds: [new Embed(color).setDescription(`Set the image to: \n**${image}**`.slice(0, 2000))],
+        embeds: [new Embed(color).setDescription(`Set the color to: \n**${enteredColor}**`.slice(0, 2000))],
       });
     }
   },

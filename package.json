@@ -9,7 +9,7 @@
     "dev": "nodemon",
     "production": "yarn deploy && yarn start",
     "start": "node --require dotenv/config dist",
-    "build": "tsc",
+    "build": "yarn tsc",
     "deploy": "sh ./deploy.sh",
     "prettier": "prettier --write src"
   },
@@ -37,6 +37,7 @@
     "ws": "^8.12.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.197",
     "eslint": "^8.47.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.2",

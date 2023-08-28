@@ -11,7 +11,7 @@ const { getSuggestConfig } = require('@configs/suggestConfig');
 const { Embed } = require('@constants/embed');
 const { getLevelConfig } = require('@configs/levelConfig');
 const { getLevel } = require('@configs/level');
-const { drawCard } = require('../../../utils/functions/levelCard');
+const { drawCard } = require('@functions/levelCard');
 
 module.exports = {
   parent: 'level',

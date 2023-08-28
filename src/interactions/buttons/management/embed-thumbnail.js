@@ -9,7 +9,7 @@ const {
   EmbedBuilder,
 } = require('discord.js');
 const { Embed } = require('@constants/embed');
-const { isValidHttpUrl } = require('../../../utils/functions/string');
+const { isValidHttpUrl } = require('@functions/string');
 
 module.exports = {
   name: 'embed-thumbnail',

@@ -9,10 +9,10 @@ const {
   EmbedBuilder,
 } = require('discord.js');
 const { Embed } = require('@constants/embed');
-const { isValidHttpUrl } = require('../../../utils/functions/string');
+const { isValidHttpUrl } = require('@functions/string');
 
 module.exports = {
-  name: 'embed-color',
+  name: 'embed-url',
   /**
    * @param {Client} client
    * @param {ButtonInteraction} interaction
@@ -20,17 +20,18 @@ module.exports = {
    */
   async execute(client, interaction, color) {
     const mainModal = new ModalBuilder()
-      .setCustomId('embed-color-modal')
-      .setTitle('Embed Color')
+      .setCustomId('embed-url-modal')
+      .setTitle('Embed Url')
       .addComponents(
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId('color')
-            .setLabel('New color')
-            .setStyle(TextInputStyle.Short)
+            .setCustomId('url')
+            .setLabel('New url')
+            .setStyle(TextInputStyle.Paragraph)
+            .setValue(interaction.message.embeds[1].data.url ?? '')
             .setRequired(true)
             .setMaxLength(500)
-            .setPlaceholder('#fffff'),
+            .setPlaceholder('https://quabot.net'),
         ),
       );
 
@@ -46,29 +47,32 @@ module.exports = {
       });
 
     if (modal) {
-      if (modal.customId !== 'embed-color-modal') return;
+      if (modal.customId !== 'embed-url-modal') return;
 
       await modal.deferReply({ ephemeral: true }).catch(e => {});
-      const enteredColor = modal.fields.getTextInputValue('color');
-      if (!enteredColor)
+      const url = modal.fields.getTextInputValue('url');
+      if (!url)
         return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No color entered, try again.')],
+          embeds: [new Embed(color).setDescription('No url entered, try again.')],
         });
 
-      if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor))
+      if (!isValidHttpUrl(url))
         return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No valid color entered, try again.')],
+          embeds: [new Embed(color).setDescription('No valid url entered, try again.')],
         });
+
+      if (interaction.message.embeds[1].data.description === '\u200b')
+        delete interaction.message.embeds[1].data.description;
 
       await interaction.message.edit({
         embeds: [
           EmbedBuilder.from(interaction.message.embeds[0]),
-          EmbedBuilder.from(interaction.message.embeds[1]).setColor(enteredColor),
+          EmbedBuilder.from(interaction.message.embeds[1]).setURL(url),
         ],
       });
 
       await modal.editReply({
-        embeds: [new Embed(color).setDescription(`Set the color to: \n**${enteredColor}**`.slice(0, 2000))],
+        embeds: [new Embed(color).setDescription(`Set the url to: \n**${url}**`.slice(0, 2000))],
       });
     }
   },

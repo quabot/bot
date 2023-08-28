@@ -14,11 +14,8 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+  
+  async execute({ client, interaction, color }: CommandArgs) {
     const private = interaction.options.getBoolean('private') ?? false;
 
     await interaction.deferReply({ ephemeral: private });
@@ -28,7 +25,7 @@ module.exports = {
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription(
-            "We're still setting up moderation for first-time use! Please run the command again.",
+            "There was an error. Please try again.",
           ),
         ],
       });

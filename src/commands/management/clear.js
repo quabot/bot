@@ -11,11 +11,8 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+  
+  async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     //* Ephemeral to make it private.
     await interaction.deferReply({ ephemeral: true });

@@ -16,9 +16,6 @@ module.exports = {
     .addSubcommand(command => command.setName('list').setDescription('See a list of AFK users in the server.'))
     .addSubcommand(command => command.setName('help').setDescription('Get some information about the afk module.'))
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {},
+  
+  async execute({ client, interaction, color }: CommandArgs) {},
 };

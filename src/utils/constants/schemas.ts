@@ -1,52 +1,41 @@
-const reqString = {
+export const reqString = {
   type: String,
   required: true,
 };
 
-const optString = {
+export const optString = {
   type: String,
   required: false,
 };
 
-const reqNum = {
+export const reqNum = {
   type: Number,
   required: true,
   default: 0,
 };
 
-const optObject = {
+export const optObject = {
   type: Object,
   required: false,
 };
 
-const optId = {
+export const optId = {
   type: Number,
   default: 1,
   required: true,
 };
 
-const reqBool = {
+export const reqBool = {
   type: Boolean,
   required: true,
 };
 
-const reqObject = {
+export const reqObject = {
   type: Object,
   required: true,
 };
 
-const reqArray = {
+export const reqArray = {
   type: Array,
   required: true,
-};
-
-module.exports = {
-  optString,
-  reqArray,
-  reqObject,
-  reqBool,
-  reqString,
-  reqNum,
-  optId,
-  optObject,
 };

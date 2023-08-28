@@ -1,10 +1,13 @@
-const Giveaway = require('@schemas/Giveaway');
-const { shuffleArray } = require('./array');
-const { getGiveawayConfig } = require('../configs/giveawayConfig');
-const { Embed } = require('@constants/embed');
-const { getServerConfig } = require('../configs/serverConfig');
+import type { Client } from 'discord.js';
+import type { MongooseReturn } from '@types/mongoose';
 
-async function endGiveaway(client, document, forceEarly) {
+import Giveaway from '@schemas/Giveaway';
+import { shuffleArray } from './array';
+import { getGiveawayConfig } from '@configs/giveawayConfig';
+import { Embed } from '@constants/embed';
+import { getServerConfig } from '@configs/serverConfig';
+
+async function endGiveaway(client: Client, document: MongooseReturn<>, forceEarly: boolean) {
   const config = await getGiveawayConfig(client, document.guildId);
   if (!config.enabled) return;
 

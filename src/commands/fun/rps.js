@@ -13,11 +13,8 @@ const { getUserGame } = require('@configs/userGame');
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder().setName('rps').setDescription('Play rock, paper, scissors.').setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+  
+  async execute({ client, interaction, color }: CommandArgs) {
     //* Get the user's game data to pre-load it.
     await getUserGame(interaction.user.id);
 

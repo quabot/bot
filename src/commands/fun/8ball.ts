@@ -1,5 +1,6 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
@@ -8,16 +9,13 @@ module.exports = {
     .setDescription('Ask a question to the 8ball.')
     .addStringOption(option => option.setName('question').setDescription('What is your question?').setRequired(true))
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply({ ephemeral: true });
 
     //* Get the question from the interaction options
-    const question = interaction.options.get('question').value;
+    const question = interaction.options.get('question')?.value;
     if (!question)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please enter a question to ask.')],

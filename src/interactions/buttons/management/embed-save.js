@@ -11,7 +11,7 @@ const {
   ButtonStyle,
 } = require('discord.js');
 const { Embed } = require('@constants/embed');
-const { getUrls } = require('../../../utils/functions/string');
+const { getUrls } = require('@functions/string');
 
 module.exports = {
   name: 'embed-save',

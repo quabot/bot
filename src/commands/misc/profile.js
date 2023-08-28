@@ -24,9 +24,6 @@ module.exports = {
         .addNumberOption(option => option.setName('year').setDescription('Year of your birthday').setRequired(true)),
     )
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {},
+  
+  async execute({ client, interaction, color }: CommandArgs) {},
 };

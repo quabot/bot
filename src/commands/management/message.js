@@ -25,9 +25,6 @@ module.exports = {
           option.setDescription('URL of the message to edit.').setRequired(true).setName('message'),
         ),
     ),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {},
+  
+  async execute({ client, interaction, color }: CommandArgs) {},
 };

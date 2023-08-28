@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 const Level = require('@schemas/LevelConfig');
 
 const getLevelConfig = async (guildId, client) => {

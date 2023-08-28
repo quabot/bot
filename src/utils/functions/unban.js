@@ -1,6 +1,6 @@
-const { getModerationConfig } = require('../configs/moderationConfig');
-const { getServerConfig } = require('../configs/serverConfig');
-const { Embed } = require('../constants/embed');
+const { getModerationConfig } = require('@configs/moderationConfig');
+const { getServerConfig } = require('@configs/serverConfig');
+const { Embed } = require('@constants/embed');
 
 async function tempUnban(client, document) {
   const Punishment = require('@schemas/Punishment');

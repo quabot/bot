@@ -15,7 +15,7 @@ const Poll = require('@schemas/Poll');
 const { getIdConfig } = require('@configs/idConfig');
 const { getPollConfig } = require('@configs/pollConfig');
 const { Embed } = require('@constants/embed');
-const { endPoll } = require('../../../utils/functions/poll');
+const { endPoll } = require('@functions/poll');
 
 module.exports = {
   parent: 'poll',

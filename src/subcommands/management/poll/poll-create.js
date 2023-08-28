@@ -15,7 +15,7 @@ const Poll = require('@schemas/Poll');
 const { getIdConfig } = require('@configs/idConfig');
 const { getPollConfig } = require('@configs/pollConfig');
 const { Embed } = require('@constants/embed');
-const { endPoll } = require('../../../utils/functions/poll');
+const { endPoll } = require('@functions/poll');
 
 module.exports = {
   parent: 'poll',
@@ -30,11 +30,7 @@ module.exports = {
     const ids = await getIdConfig(interaction.guildId);
     if (!config || !ids)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use. Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)

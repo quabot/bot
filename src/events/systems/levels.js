@@ -6,7 +6,7 @@ const cooldowns = new Map();
 const { CustomEmbed } = require('@constants/customEmbed');
 const { getServerConfig } = require('@configs/serverConfig');
 const Vote = require('@schemas/Vote');
-const { drawCard } = require('../../utils/functions/levelCard');
+const { drawCard } = require('@functions/levelCard');
 
 module.exports = {
   event: 'messageCreate',

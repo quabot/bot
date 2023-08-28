@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require('discord.js');
-const _ = require('lodash');
-const { isValidHttpUrl } = require('../functions/string');
+import { EmbedBuilder } from '@discordjs/builders';
+import _ from 'lodash';
+import { isValidHttpUrl } from '@functions/string';
 
 class CustomEmbed extends EmbedBuilder {
   constructor(rawEmbed, getParsedString) {

@@ -55,9 +55,6 @@ module.exports = {
         ),
     )
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {},
+  
+  async execute({ client, interaction, color }: CommandArgs) {},
 };

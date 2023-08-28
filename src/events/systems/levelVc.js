@@ -12,7 +12,7 @@ const { getLevel } = require('@configs/level');
 const { getServerConfig } = require('@configs/serverConfig');
 const Vote = require('@schemas/Vote');
 const { CustomEmbed } = require('@constants/customEmbed');
-const { drawCard } = require('../../utils/functions/levelCard');
+const { drawCard } = require('@functions/levelCard');
 
 module.exports = {
   event: Events.VoiceStateUpdate,

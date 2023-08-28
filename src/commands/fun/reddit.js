@@ -24,10 +24,7 @@ module.exports = {
     )
     .addSubcommand(subcommand => subcommand.setName('meme').setDescription('Get a meme.'))
     .setDMPermission(false),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
+  
   async execute() {
     //* This command is just a placeholder for the subcommands.
   },

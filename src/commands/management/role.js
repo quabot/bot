@@ -45,9 +45,6 @@ module.exports = {
           option.setDescription('Should the role be separated in the sidebar?').setRequired(false).setName('hoist'),
         ),
     ),
-  /**
-   * @param {Client} client
-   * @param {CommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {},
+  
+  async execute({ client, interaction, color }: CommandArgs) {},
 };

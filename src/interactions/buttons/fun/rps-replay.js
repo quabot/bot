@@ -1,4 +1,4 @@
-const { execute } = require('../../../commands/fun/rps');
+const { execute } = require('@commands/fun/rps');
 
 module.exports = {
   name: 'rps-replay',
