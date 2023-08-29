@@ -1,6 +1,7 @@
-const { SlashCommandBuilder, Colors, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
-const { getUserGame } = require('@configs/userGame');
+import { SlashCommandBuilder, Colors } from 'discord.js';
+import { Embed } from '@constants/embed';
+import { getUserGame } from '@configs/userGame';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create a list of sentences.
 const sentences = [
@@ -733,8 +734,8 @@ const sentences = [
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder().setName('type').setDescription('Play a typing game.').setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {
+
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
     {
@@ -748,9 +749,8 @@ module.exports = {
       //* Get the User's DB and create a collector.
       await getUserGame(interaction.user.id);
 
-      const filter = m => m.author.id === interaction.user.id;
-      const collector = interaction.channel.createMessageCollector({
-        filter,
+      const collector = interaction.channel!.createMessageCollector({
+        filter: m => m.author.id === interaction.user.id,
         time: 15000,
       });
       const startTime = new Date().getTime();
@@ -780,7 +780,7 @@ module.exports = {
                     name: 'Points',
                     value: `${userDB.typePoints + 1}`,
                     inline: true,
-                  },
+                  }
                 ),
             ],
           });
@@ -810,7 +810,7 @@ module.exports = {
                     name: 'Points',
                     value: `${userDB.typePoints - 1}`,
                     inline: true,
-                  },
+                  }
                 ),
             ],
           });
@@ -825,7 +825,7 @@ module.exports = {
       //* If the user doesn't respond in time, send a message.
       collector.on('end', collected => {
         if (collected.size === 0)
-          return interaction.editReply({
+          interaction.editReply({
             embeds: [new Embed(color).setDescription('Failed to respond in time.')],
           });
       });

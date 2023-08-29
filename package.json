@@ -37,6 +37,7 @@
     "ws": "^8.12.1"
   },
   "devDependencies": {
+    "@types/glob": "^8.1.0",
     "@types/lodash": "^4.14.197",
     "eslint": "^8.47.0",
     "nodemon": "^3.0.1",

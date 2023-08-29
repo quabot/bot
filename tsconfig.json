@@ -16,7 +16,6 @@
 
     // Emit
     "importHelpers": true,
-    "verbatimModuleSyntax": true,
     "newLine": "lf",
     "outDir": "dist",
 

@@ -1,20 +1,13 @@
-const {
-  SlashCommandBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ActionRowBuilder,
-  Colors,
-  Client,
-  CommandInteraction,
-} = require('discord.js');
-const { Embed } = require('@constants/embed');
-const { getUserGame } = require('@configs/userGame');
+import { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Colors } from 'discord.js';
+import { Embed } from '@constants/embed';
+import { getUserGame } from '@configs/userGame';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder().setName('rps').setDescription('Play rock, paper, scissors.').setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {
+
+  async execute({ interaction, color }: CommandArgs) {
     //* Get the user's game data to pre-load it.
     await getUserGame(interaction.user.id);
 
@@ -22,14 +15,14 @@ module.exports = {
     const msg = await interaction.reply({
       embeds: [new Embed(color).setDescription('Rock, paper or scissors?')],
       components: [
-        new ActionRowBuilder().setComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Rock').setEmoji('🪨').setCustomId('rock'),
           new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Paper').setEmoji('📄').setCustomId('paper'),
           new ButtonBuilder()
             .setStyle(ButtonStyle.Secondary)
             .setLabel('Scissors')
             .setEmoji('✂️')
-            .setCustomId('scissors'),
+            .setCustomId('scissors')
         ),
       ],
       fetchReply: true,
@@ -39,17 +32,17 @@ module.exports = {
       time: 60000,
     });
 
-    const userDB = await getUserGame(interaction.user.id);
+    const userDB = (await getUserGame(interaction.user.id))!;
 
     //* Stop listening when a button is clicked.
     collector.on('collect', async i => {
       collector.stop();
 
       //* Update the tries
-      userDB.rpsTries += 1;
+      if (userDB) userDB.rpsTries += 1;
 
       //* Pick an option as bot and check the user's choice.
-      const options = ['rock', 'paper', 'scissors'];
+      const options: ('rock' | 'paper' | 'scissors')[] = ['rock', 'paper', 'scissors'];
       const myChoice = options[Math.floor(Math.random() * options.length)];
       const userChoice = i.customId;
 
@@ -72,12 +65,12 @@ module.exports = {
                   value: `${userDB.rpsPoints - 1}`,
                   inline: true,
                 },
-                { name: 'Entered By', value: `${i.user}`, inline: true },
+                { name: 'Entered By', value: `${i.user}`, inline: true }
               ),
           ],
           components: [
-            new ActionRowBuilder().setComponents(
-              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
+            new ActionRowBuilder<ButtonBuilder>().setComponents(
+              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
             ),
           ],
         });
@@ -95,12 +88,12 @@ module.exports = {
                   value: `${userDB.rpsPoints + 1}`,
                   inline: true,
                 },
-                { name: 'Entered By', value: `${i.user}`, inline: true },
+                { name: 'Entered By', value: `${i.user}`, inline: true }
               ),
           ],
           components: [
-            new ActionRowBuilder().setComponents(
-              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
+            new ActionRowBuilder<ButtonBuilder>().setComponents(
+              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
             ),
           ],
         });
@@ -118,12 +111,12 @@ module.exports = {
                   value: `${userDB.rpsPoints}`,
                   inline: true,
                 },
-                { name: 'Entered By', value: `${i.user}`, inline: true },
+                { name: 'Entered By', value: `${i.user}`, inline: true }
               ),
           ],
           components: [
-            new ActionRowBuilder().setComponents(
-              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
+            new ActionRowBuilder<ButtonBuilder>().setComponents(
+              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
             ),
           ],
         });
@@ -136,8 +129,8 @@ module.exports = {
     collector.on('end', async () => {
       await interaction.editReply({
         components: [
-          new ActionRowBuilder().setComponents(
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
+          new ActionRowBuilder<ButtonBuilder>().setComponents(
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
           ),
         ],
       });

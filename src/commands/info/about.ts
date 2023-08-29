@@ -1,12 +1,6 @@
-const {
-  SlashCommandBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ActionRowBuilder,
-  Client,
-  CommandInteraction,
-} = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the buttons for the about command.
 const aboutComponents = [
@@ -14,7 +8,7 @@ const aboutComponents = [
   new ButtonBuilder().setCustomId('next-about').setStyle(ButtonStyle.Secondary).setEmoji('▶️'),
 ];
 
-const aboutButtons = new ActionRowBuilder().addComponents(
+const aboutButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
   new ButtonBuilder().setCustomId('previous-about').setStyle(ButtonStyle.Secondary).setEmoji('◀️'),
   new ButtonBuilder().setCustomId('next-about').setStyle(ButtonStyle.Secondary).setEmoji('▶️'),
 );
@@ -25,18 +19,21 @@ module.exports = {
     .setName('about')
     .setDescription('View some information about QuaBot.')
     .setDMPermission(false),
-  
+
   async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
+
+    //* Create clientUser variable. Now we don't have to do `client.user!` everytime
+    const clientUser = client.user!;
 
     //* Create the different embeds for the about system.
     const embed1 = new Embed(color)
       .setAuthor({
         name: `QuaBot v${require('../../../package.json').version}`,
-        iconURL: `${client.user.avatarURL({ dynamic: true })}`,
+        iconURL: `${clientUser.avatarURL({ forceStatic: false })}`,
       })
-      .setThumbnail(`${client.user.avatarURL({ dynamic: true })}`)
+      .setThumbnail(`${clientUser.avatarURL({ forceStatic: false })}`)
       .setFooter({ text: 'Created by @joa_sss' })
       .setDescription(`Welcome to information center for **<:QLogo:1009229825908674570> [QuaBot](https://quabot.net)**! Here you can find loads of info about QuaBot and it's features. QuaBot uses slash commands, so the prefix to use it is \`/\`! We use interactions all throughout our commands and modules.
         
@@ -49,9 +46,9 @@ module.exports = {
     const embed2 = new Embed(color)
       .setAuthor({
         name: 'QuaBot | Dashboard',
-        iconURL: `${client.user.avatarURL({ dynamic: true })}`,
+        iconURL: `${clientUser.avatarURL({ forceStatic: false })}`,
       })
-      .setThumbnail(`${client.user.avatarURL({ dynamic: true })}`)
+      .setThumbnail(`${clientUser.avatarURL({ forceStatic: false })}`)
       .setFooter({ text: 'Created by @joa_sss' })
       .setDescription(`In order to make it easier for the end-user to use QuaBot, we created an online dashboard. On our dashboard you can configure every setting to your liking.
         
@@ -65,9 +62,9 @@ module.exports = {
     const embed3 = new Embed(color)
       .setAuthor({
         name: 'QuaBot | Voting',
-        iconURL: `${client.user.avatarURL({ dynamic: true })}`,
+        iconURL: `${clientUser.avatarURL({ forceStatic: false })}`,
       })
-      .setThumbnail(`${client.user.avatarURL({ dynamic: true })}`)
+      .setThumbnail(`${clientUser.avatarURL({ forceStatic: false })}`)
       .setFooter({ text: 'Created by @joa_sss' })
       .setDescription(`By voting for QuaBot you're helping us __a lot__.  When you vote with the links below you're getting us more users.
             \n**Why should you vote?**
@@ -81,9 +78,9 @@ module.exports = {
     const embed4 = new Embed(color)
       .setAuthor({
         name: 'QuaBot | Terms of Service',
-        iconURL: `${client.user.avatarURL({ dynamic: true })}`,
+        iconURL: `${clientUser.avatarURL({ forceStatic: false })}`,
       })
-      .setThumbnail(`${client.user.avatarURL({ dynamic: true })}`)
+      .setThumbnail(`${clientUser.avatarURL({ forceStatic: false })}`)
       .setFooter({ text: 'Created by @joa_sss' }).setDescription(`
             Our Terms of Service constitute a legally binding agreement made between you and QuaBot, concerning your access to and use of the bot. You agree that by utilizing the bot, you have read, understood, and agreed to be bound by all of our Terms of Service.
             > By using our bot you agree to those terms. If you do not agree with our Terms of Service then you are expressly prohibited from using the bot and you must discontinue use immediately.
@@ -104,14 +101,11 @@ module.exports = {
         }),
       ],
       components: [aboutButtons],
-      fetchReply: true,
     });
 
     //* Create the collector and update the pages accordingly.
-    const filter = i => i.customId === 'previous-about' || i.customId === 'next-about';
-
-    const collector = await currentPage.createMessageComponentCollector({
-      filter,
+    const collector = currentPage.createMessageComponentCollector({
+      filter: i => i.customId === 'previous-about' || i.customId === 'next-about',
       time: 40000,
     });
 
@@ -139,7 +133,7 @@ module.exports = {
     //* Disable the buttons when the collector ends.
     collector.on('end', async (_, reason) => {
       if (reason !== 'messageDelete') {
-        const disabledRow = new ActionRowBuilder().addComponents(
+        const disabledRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
           aboutComponents[0].setDisabled(true),
           aboutComponents[1].setDisabled(true),
         );

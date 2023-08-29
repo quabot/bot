@@ -1,11 +1,12 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
   data: new SlashCommandBuilder().setName('truthordare').setDescription('Get a truth or dare.').setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {
+
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 
@@ -627,7 +628,7 @@ module.exports = {
         new Embed(color).setDescription(
           `**Truth**\n${truths[Math.floor(Math.random() * truths.length)].question}\n**Dare**\n${
             dares[Math.floor(Math.random() * dares.length)].question
-          }`,
+          }`
         ),
       ],
     });

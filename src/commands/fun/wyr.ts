@@ -1,6 +1,7 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
-const axios = require('axios');
+import { SlashCommandBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import axios from 'axios';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {
@@ -8,8 +9,8 @@ module.exports = {
     .setName('wyr')
     .setDescription('Get a would you rather dillema.')
     .setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {
+
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 

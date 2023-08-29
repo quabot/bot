@@ -1,14 +1,8 @@
-const {
-  SlashCommandBuilder,
-  ButtonStyle,
-  ButtonBuilder,
-  ActionRowBuilder,
-  Client,
-  CommandInteraction,
-} = require('discord.js');
-const { Embed } = require('@constants/embed');
-const { promisify } = require('util');
-const { glob } = require('glob');
+import { SlashCommandBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, ComponentType } from 'discord.js';
+import { Embed } from '@constants/embed';
+import { promisify } from 'util';
+import { glob } from 'glob';
+import type { CommandArgs } from '@typings/functionArgs';
 const PG = promisify(glob);
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
@@ -31,15 +25,15 @@ module.exports = {
         ),
     )
     .setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {
+
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 
     //* Get the module and list the different categories.
     const module = interaction.options.getString('module');
 
-    const embeds = [];
+    const embeds: Embed[] = [];
 
     const categories = [
       {
@@ -92,7 +86,7 @@ module.exports = {
           new ButtonBuilder().setCustomId('next-help').setStyle(ButtonStyle.Secondary).setEmoji('▶️'),
         ];
 
-        const helpButtons = new ActionRowBuilder().addComponents(
+        const helpButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder().setCustomId('previous-help').setStyle(ButtonStyle.Secondary).setEmoji('◀️'),
           new ButtonBuilder().setCustomId('next-help').setStyle(ButtonStyle.Secondary).setEmoji('▶️'),
         );
@@ -100,23 +94,19 @@ module.exports = {
         let page = 0;
         if (module) page = categories.map(e => e.path).indexOf(module);
 
-        const currentPage = await interaction
-          .editReply({
-            embeds: [
-              embeds[page].setFooter({
-                text: `Page ${page + 1} / ${embeds.length}`,
-              }),
-            ],
-            components: [helpButtons],
-            fetchReply: true,
-          })
-          .catch(() => {});
+        const currentPage = await interaction.editReply({
+          embeds: [
+            embeds[page].setFooter({
+              text: `Page ${page + 1} / ${embeds.length}`,
+            }),
+          ],
+          components: [helpButtons],
+        });
 
-        const filter = i => i.customId === 'previous-help' || i.customId === 'next-help';
-
-        const collector = await currentPage.createMessageComponentCollector({
-          filter,
+        const collector = currentPage.createMessageComponentCollector({
+          filter: i => i.customId === 'previous-help' || i.customId === 'next-help',
           time: 40000,
+          componentType: ComponentType.Button,
         });
 
         collector.on('collect', async i => {
@@ -138,13 +128,13 @@ module.exports = {
               ],
               components: [helpButtons],
             })
-            .catch(e => {});
+            .catch(() => {});
           collector.resetTimer();
         });
 
         collector.on('end', async (_, reason) => {
           if (reason !== 'messageDelete') {
-            const disabledRow = new ActionRowBuilder().addComponents(
+            const disabledRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
               helpComponents[0].setDisabled(true),
               helpComponents[1].setDisabled(true),
             );
