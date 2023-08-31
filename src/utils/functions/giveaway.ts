@@ -1,5 +1,5 @@
 import type { Client } from 'discord.js';
-import type { MongooseReturn } from '@types/mongoose';
+import type { MongooseReturn } from '@typings/mongoose';
 
 import Giveaway from '@schemas/Giveaway';
 import { shuffleArray } from './array';

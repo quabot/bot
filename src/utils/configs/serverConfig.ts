@@ -1,14 +1,12 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-const { Client } = require('discord.js');
-const Server = require('@schemas/Server');
+import { Client, Snowflake } from 'discord.js';
+import Server from '@schemas/Server';
+import { CallbackError } from 'mongoose';
+import { IServer, MongooseReturn } from '@typings/mongoose';
 
-/**
- * @param {Client} client
- */
-const getServerConfig = async (client, guildId) => {
+export async function getServerConfig(client: Client, guildId: Snowflake) {
   const serverConfig =
     client.cache.get(`${guildId}-server-config`) ??
-    (await Server.findOne({ guildId }, (err, server) => {
+    (await Server.findOne({ guildId }, (err: CallbackError, server: MongooseReturn<IServer>) => {
       if (err) console.log(err);
       if (!server)
         new Server({
@@ -24,6 +22,4 @@ const getServerConfig = async (client, guildId) => {
 
   client.cache.set(`${guildId}-server-config`, serverConfig);
   return serverConfig;
-};
-
-module.exports = { getServerConfig };
+}

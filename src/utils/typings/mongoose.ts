@@ -206,10 +206,18 @@ export interface IPoll {
 
   duration: string;
   optionsCount: number;
-  options: any[]; //* Debug to see value
+  options: any[]; //todo Debug to see value
 
   created: string;
   endTimestamp: string;
+}
+
+export interface IServer {
+  guildId: Snowflake;
+  locale: string;
+  color: ColorResolvable;
+  updatesChannel: Snowflake;
+  disabledCommands: string[]; //todo Debug to be sure
 }
 
 export type Status = 'pending' | 'approved' | 'denied';

@@ -61,14 +61,14 @@ async function drawCard(member: GuildMember, level: number, xp: number, reqXp: n
 
   context.fillStyle = options.colors.xp_bar;
   context.beginPath();
-  // @ts-ignore
   context.roundRect(
     35,
     canvas.height - 48,
     canvas.width - 70,
     13,
     100,
-    Math.max((canvas.width - 70) * percent, canvas.width - 70),
+    // @ts-ignore
+    Math.max((canvas.width - 70) * percent, canvas.width - 70), //todo Has to be debugged
   );
   context.fill();
 
@@ -77,7 +77,6 @@ async function drawCard(member: GuildMember, level: number, xp: number, reqXp: n
 
   context.fillStyle = options.colors.accent;
   context.beginPath();
-  // @ts-ignore
   context.roundRect(35, canvas.height - 48, width, 13, 100);
   context.fill();
 
@@ -101,7 +100,6 @@ async function drawCard(member: GuildMember, level: number, xp: number, reqXp: n
   // Level blob
   context.fillStyle = options.colors.level_bg;
   context.beginPath();
-  // @ts-ignore
   context.roundRect(102 + 33 + 32 + usernameWidth + 15, 11.75 * 3 + 8, levelWidth + 16 + 17, 39, 100);
   context.fill();
   // Level text
