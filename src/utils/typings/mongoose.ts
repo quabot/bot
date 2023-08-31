@@ -198,7 +198,7 @@ export interface IPoll {
   id: number;
   channel: Snowflake;
   message: Snowflake;
-  interaction: string;
+  interaction: Snowflake; //* Message id
   role?: Snowflake;
 
   topic: string;
@@ -206,7 +206,7 @@ export interface IPoll {
 
   duration: string;
   optionsCount: number;
-  options: any[]; //* <-- HERE!!!!!!!!
+  options: any[]; //* Debug to see value
 
   created: string;
   endTimestamp: string;
@@ -247,7 +247,7 @@ export interface LevelCard {
       | 'new york 4'
       | 'san francisco'
       | 'prague';
-    imageOverlay: Color;
+    image_overlay: Color;
   };
 
   border: {

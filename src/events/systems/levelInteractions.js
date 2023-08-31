@@ -149,14 +149,7 @@ module.exports = {
           });
         if (config.messageType === 'text') await channel.send({ content: `${parse(config.messageText)}` });
         if (config.messageType === 'card') {
-          const card = await drawCard(
-            interaction.member,
-            interaction.member.user,
-            level,
-            xp,
-            formula(level),
-            config.levelCard,
-          );
+          const card = await drawCard(interaction.member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
 
           const attachment = new AttachmentBuilder(card, {

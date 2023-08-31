@@ -1,18 +1,19 @@
-const Canvas = require('@napi-rs/canvas');
-const { readFile } = require('fs/promises');
-const { join } = require('path');
-const moment = require('moment');
-const { request } = require('undici');
+import type { LevelCard } from '@typings/mongoose';
+import type { GuildMember } from 'discord.js';
 
-/**
- * @param {canvas} Canvas.Canvas
- * @returns
- */
+import Canvas from '@napi-rs/canvas';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
+import moment from 'moment';
+import { request } from 'undici';
 
 Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Normal.ttf'), 'GG Sans');
 Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Bold.ttf'), 'GG Sans Bold');
 
-async function drawCard(member, user, level, xp, reqXp, options) {
+async function drawCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
+  // Destructuring user
+  const { user } = member;
+
   // Defining canvas
   const canvas = Canvas.createCanvas(719, 251); // <- Canvas size here
   const context = canvas.getContext('2d');
@@ -60,6 +61,7 @@ async function drawCard(member, user, level, xp, reqXp, options) {
 
   context.fillStyle = options.colors.xp_bar;
   context.beginPath();
+  // @ts-ignore
   context.roundRect(
     35,
     canvas.height - 48,
@@ -75,6 +77,7 @@ async function drawCard(member, user, level, xp, reqXp, options) {
 
   context.fillStyle = options.colors.accent;
   context.beginPath();
+  // @ts-ignore
   context.roundRect(35, canvas.height - 48, width, 13, 100);
   context.fill();
 
@@ -98,6 +101,7 @@ async function drawCard(member, user, level, xp, reqXp, options) {
   // Level blob
   context.fillStyle = options.colors.level_bg;
   context.beginPath();
+  // @ts-ignore
   context.roundRect(102 + 33 + 32 + usernameWidth + 15, 11.75 * 3 + 8, levelWidth + 16 + 17, 39, 100);
   context.fill();
   // Level text
@@ -114,7 +118,7 @@ async function drawCard(member, user, level, xp, reqXp, options) {
   }
 
   // Drawing pfp image itself
-  const { body } = await request(user.displayAvatarURL({ format: 'jpg' }));
+  const { body } = await request(user.displayAvatarURL({ extension: 'jpg' }));
   const avatar = new Canvas.Image();
   avatar.src = Buffer.from(await body.arrayBuffer());
   context.drawImage(avatar, 32, 32, 102, 102);
