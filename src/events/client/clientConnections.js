@@ -29,10 +29,10 @@ module.exports = {
     // Post the stats to the QuaBot Site
     (function loop() {
       if (process.env.POST_STATS !== 'true') return;
-      setTimeout(function () {
+      setTimeout(function() {
         axios
           .post(
-            `${API_URL}/site/set-stats`,
+            `${API_URL}/staff/set-stats`,
             {
               servers: client.guilds.cache.size,
               channels: client.channels.cache.size,
