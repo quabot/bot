@@ -38,11 +38,6 @@ module.exports = {
               channels: client.channels.cache.size,
               users: client.users.cache.size,
             },
-            {
-              headers: {
-                authorization: process.env.STATS_KEY,
-              },
-            },
           )
           .catch(() => {});
         loop();
