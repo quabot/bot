@@ -1,6 +1,7 @@
-require('module-alias/register');
+import('module-alias/register');
 
-const { Client, Collection, Partials } = require('discord.js');
+import { Client } from '@classes/discord';
+import { Collection, Partials } from 'discord.js';
 const { Channel, Reaction, Message } = Partials;
 
 //* Create the client & set intents and partials.
@@ -34,8 +35,7 @@ client.custom_commands = [];
 
 //* Setup the Client's cache.
 const NodeCache = require('node-cache');
-const cache = new NodeCache();
-client.cache = cache;
+client.cache = new NodeCache();
 
 //* Login to Discord.
 client.login(process.env.TOKEN);

@@ -1,5 +1,5 @@
-import type { Client } from 'discord.js';
-import type { MongooseReturn } from '@typings/mongoose';
+import type { Client, GuildTextBasedChannel } from 'discord.js';
+import type { IGiveaway, NonNullMongooseReturn } from '@typings/mongoose';
 
 import Giveaway from '@schemas/Giveaway';
 import { shuffleArray } from './array';
@@ -7,7 +7,7 @@ import { getGiveawayConfig } from '@configs/giveawayConfig';
 import { Embed } from '@constants/embed';
 import { getServerConfig } from '@configs/serverConfig';
 
-async function endGiveaway(client: Client, document: MongooseReturn<>, forceEarly: boolean) {
+async function endGiveaway(client: Client, document: NonNullMongooseReturn<IGiveaway>, forceEarly: boolean) {
   const config = await getGiveawayConfig(client, document.guildId);
   if (!config.enabled) return;
 
@@ -18,10 +18,10 @@ async function endGiveaway(client: Client, document: MongooseReturn<>, forceEarl
     .clone()
     .catch();
 
-  const guild = await client.guilds.cache.get(document.guildId);
+  const guild = client.guilds.cache.get(document.guildId);
   if (!giveaway || !guild) return;
 
-  const channel = await guild.channels.cache.get(giveaway.channel);
+  const channel = guild.channels.cache.get(giveaway.channel) as GuildTextBasedChannel | undefined;
   if (!channel) return;
 
   const colorConfig = await getServerConfig(client, document.guildId);
@@ -31,13 +31,13 @@ async function endGiveaway(client: Client, document: MongooseReturn<>, forceEarl
     .then(async message => {
       if (!message) return;
 
-      const reactions = await message.reactions.cache.get('🎉').users.fetch();
-      const shuffled = await shuffleArray(
-        // eslint-disable-next-line no-undef
-        (array = Array.from(
-          reactions.filter(u => u.id !== client.user.id),
+      const reactions = await message.reactions.cache.get('🎉')?.users.fetch();
+      if (!reactions) return;
+      const shuffled = shuffleArray(
+        Array.from(
+          reactions.filter(u => u.id !== client.user!.id),
           ([name, value]) => ({ name, value }),
-        )),
+        ),
       );
 
       const winners = shuffled.slice(0, giveaway.winners);
@@ -51,7 +51,9 @@ async function endGiveaway(client: Client, document: MongooseReturn<>, forceEarl
             .setTitle(`${giveaway.prize}`)
             .setDescription(
               `Ended: <t:${
-                forceEarly ? Math.floor(new Date().getTime() / 1000) : Math.floor(giveaway.endTimestamp / 1000)
+                forceEarly
+                  ? Math.floor(new Date().getTime() / 1000)
+                  : Math.floor(parseInt(giveaway.endTimestamp) / 1000)
               }:R>
                             Winners: **${winMsg}**
                             Hosted by: <@${giveaway.host}>`,

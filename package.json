@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.41",
+    "@types/module-alias": "^2.0.2",
     "axios": "^1.4.0",
     "consola": "^2.15.3",
     "discord-arts": "^0.4.0",
@@ -50,8 +51,9 @@
     "@constants": "src/utils/constants/",
     "@functions": "src/utils/functions/",
     "@assets": "src/utils/assets/",
+    "@typings": "src/utils/typings",
+    "@classes": "src/utils/classes",
     "@schemas": "src/structures/schemas/",
-    "@handlers": "src/structures/handlers/",
-    "@typings": "src/utils/typings"
+    "@handlers": "src/structures/handlers/"
   }
 }

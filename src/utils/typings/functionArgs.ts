@@ -1,7 +1,29 @@
-import type { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
+import { Client } from '@classes/discord';
+import type {
+  ButtonInteraction,
+  ChatInputCommandInteraction,
+  ColorResolvable,
+  ModalSubmitInteraction,
+  UserContextMenuCommandInteraction,
+} from 'discord.js';
 
-export interface CommandArgs {
+export interface BaseArgs {
   client: Client;
-  interaction: ChatInputCommandInteraction;
   color: ColorResolvable;
+}
+
+export interface CommandArgs extends BaseArgs {
+  interaction: ChatInputCommandInteraction;
+}
+
+export interface ButtonArgs extends BaseArgs {
+  interaction: ButtonInteraction;
+}
+
+export interface ContextArgs extends BaseArgs {
+  interaction: UserContextMenuCommandInteraction;
+}
+
+export interface ModalArgs extends BaseArgs {
+  interaction: ModalSubmitInteraction;
 }
