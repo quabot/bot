@@ -1,4 +1,4 @@
-import type { ButtonArgs, CommandArgs, ContextArgs, ModalArgs } from '@typings/functionArgs';
+import type { ButtonArgs, CommandArgs, ContextArgs, ModalArgs, WsEventArgs } from '@typings/functionArgs';
 import {
   Client as BaseClient,
   type ContextMenuCommandBuilder,
@@ -15,6 +15,7 @@ export interface Client {
   contexts: Collection<string, { data: ContextMenuCommandBuilder; execute: (argo0: ContextArgs) => any }>;
   menus: Collection<string, any>;
   modals: Collection<string, { name: string; execute: (arg0: ModalArgs) => any }>;
+  ws_events: Collection<string, { code: string; execute: (arg0: WsEventArgs) => any }>;
 }
 
 export class Client extends BaseClient {
