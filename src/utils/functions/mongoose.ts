@@ -2,22 +2,20 @@ import type { Client } from '@classes/discord';
 import type { NonNullMongooseReturn } from '@typings/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 
-export async function getFromCollection<T>({
-  Schema,
-  query,
-  defaultObj,
-  client,
-  cacheName,
-}: GetFromCollectionParams<T>) {
+export async function getFromCollection<T>(
+  Schema: Model<T>,
+  query: FilterQuery<T>,
+  client: Client,
+  cacheName: string,
+  defaultObj?: T,
+) {
   try {
-    let res: NonNullMongooseReturn<T> | T | undefined;
-    if (cacheName) res = client.cache.get<T>(cacheName);
+    let res: NonNullMongooseReturn<T> | T | undefined = client.cache.get<T>(cacheName);
 
     if (res) return res;
-    res =
-      (await Schema.findOne(query)
-        .clone()
-        .catch(() => {})) ?? (await new Schema(defaultObj).save());
+    res = ((await Schema.findOne<T>(query)
+      .clone()
+      .catch(() => {})) ?? (await new Schema(defaultObj).save())) as NonNullMongooseReturn<T>;
 
     client.cache.set(cacheName, res);
 
@@ -33,9 +31,3 @@ export async function getFromCollection<T>({
     console.log(err);
   }
 }
-
-export type GetFromCollectionParams<T> = {
-  Schema: Model<T>;
-  query: FilterQuery<T>;
-  defaultObj?: T;
-} & ({ client: Client; cacheName: string } | { client?: undefined; cacheName?: undefined });
