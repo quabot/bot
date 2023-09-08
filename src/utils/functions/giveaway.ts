@@ -1,4 +1,4 @@
-import type { Client, GuildTextBasedChannel } from 'discord.js';
+import type { GuildTextBasedChannel } from 'discord.js';
 import type { IGiveaway, NonNullMongooseReturn } from '@typings/mongoose';
 
 import Giveaway from '@schemas/Giveaway';
@@ -6,6 +6,7 @@ import { shuffleArray } from './array';
 import { getGiveawayConfig } from '@configs/giveawayConfig';
 import { Embed } from '@constants/embed';
 import { getServerConfig } from '@configs/serverConfig';
+import type { Client } from '@classes/discord';
 
 async function endGiveaway(client: Client, document: NonNullMongooseReturn<IGiveaway>, forceEarly: boolean) {
   const config = await getGiveawayConfig(client, document.guildId);

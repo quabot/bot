@@ -1,7 +1,8 @@
-import { Client, Snowflake } from 'discord.js';
+import { Snowflake } from 'discord.js';
 import GiveawayConfig from '@schemas/GiveawayConfig';
 import { CallbackError } from 'mongoose';
 import { IGiveawayConfig, MongooseReturn } from '@typings/mongoose';
+import type { Client } from '@classes/discord';
 
 export async function getGiveawayConfig(client: Client, guildId: Snowflake) {
   const giveawayConfig =
@@ -21,5 +22,3 @@ export async function getGiveawayConfig(client: Client, guildId: Snowflake) {
   client.cache.set(`${guildId}-giveaway-config`, giveawayConfig);
   return giveawayConfig;
 }
-
-module.exports = { getGiveawayConfig };

@@ -1,7 +1,8 @@
-import { Client, Snowflake } from 'discord.js';
+import { Snowflake } from 'discord.js';
 import Server from '@schemas/Server';
 import { CallbackError } from 'mongoose';
 import { IServer, MongooseReturn } from '@typings/mongoose';
+import type { Client } from '@classes/discord';
 
 export async function getServerConfig(client: Client, guildId: Snowflake) {
   const serverConfig =

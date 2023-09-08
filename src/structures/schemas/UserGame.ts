@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqNum, reqObject } from '@constants/schemas';
+import { IUserGame } from '@typings/mongoose';
 
-export default model(
+export default model<IUserGame>(
   'User-Game',
   new Schema({
     userId: reqString,

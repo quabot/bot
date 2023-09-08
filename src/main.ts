@@ -34,7 +34,7 @@ client.custom_commands = [];
 });
 
 //* Setup the Client's cache.
-const NodeCache = require('node-cache');
+import NodeCache from 'node-cache';
 client.cache = new NodeCache();
 
 //* Login to Discord.
