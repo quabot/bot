@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon",
     "production": "yarn deploy && yarn start",
-    "start": "node --require dotenv/config dist",
+    "start": "node --require dotenv/config dist/main.js",
     "build": "yarn tsc",
     "deploy": "sh ./deploy.sh",
     "prettier": "prettier --write src"

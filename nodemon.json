@@ -1,4 +1,4 @@
 {
   "watch": ["src"],
-  "exec": "rimraf ./dist && tsc && node --require dotenv/config dist/index.js"
+  "exec": "rimraf ./dist && tsc && node --require dotenv/config dist/main.js"
 }
