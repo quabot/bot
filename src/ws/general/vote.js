@@ -7,6 +7,23 @@ module.exports = {
 	async execute(client, data) {
 		//* Get the votes channel and send the Vote message.
 		if (data.body.type !== 'upvote') return;
+
+		//* Update the DB.
+		const config = await Vote.findOne(
+			{ userId: data.body.user },
+			(err, c) => {
+				if (err) console.log(err);
+				if (!c)
+					new Vote({
+						userId: data.body.user,
+						lastVote: `${new Date().getTime()}`
+					}).save();
+			}
+		).clone().catch(() => { });
+
+		if (!config) return;
+		config.lastVote = `${new Date().getTime()}`;
+		
 		const guild = client.guilds.cache.get('1007810461347086357');
 		if (!guild) return;
 		const ch = guild.channels.cache.get('1024600377628299266');
@@ -32,22 +49,5 @@ module.exports = {
 					.setDescription(`Hey ${user}! Thank you so much for voting for QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level XP multiplier for 12 hours! We hope you enjoy your time with QuaBot!`)
 			]
 		}).catch(() => { });
-
-
-		//* Update the DB.
-		const config = await Vote.findOne(
-			{ userId: data.body.user },
-			(err, c) => {
-				if (err) console.log(err);
-				if (!c)
-					new Vote({
-						userId: data.body.user,
-						lastVote: `${new Date().getTime()}`
-					}).save();
-			}
-		).clone().catch(() => { });
-
-		if (!config) return;
-		config.lastVote = `${new Date().getTime()}`;
 	}
 };
