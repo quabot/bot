@@ -732,10 +732,10 @@ const sentences = [
 ];
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder().setName('type').setDescription('Play a typing game.').setDMPermission(false),
 
-  async execute({ interaction, color }: CommandArgs) {
+  async execute({ interaction, color, client }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
     {
@@ -747,7 +747,8 @@ module.exports = {
       });
 
       //* Get the User's DB and create a collector.
-      await getUserGame(interaction.user.id);
+      //? Why would you get the user's db?
+      // await getUserGame(interaction.user.id, client);
 
       const collector = interaction.channel!.createMessageCollector({
         filter: m => m.author.id === interaction.user.id,
@@ -757,7 +758,13 @@ module.exports = {
 
       collector.on('collect', async m => {
         collector.stop();
-        const userDB = await getUserGame(interaction.user.id);
+        const userDB = await getUserGame(interaction.user.id, client);
+        if (!userDB) {
+          await interaction.editReply({
+            embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
+          });
+          return;
+        }
 
         //* If it is correct, handle the win.
         if (m.content === sentence) {
@@ -780,7 +787,7 @@ module.exports = {
                     name: 'Points',
                     value: `${userDB.typePoints + 1}`,
                     inline: true,
-                  }
+                  },
                 ),
             ],
           });
@@ -810,7 +817,7 @@ module.exports = {
                     name: 'Points',
                     value: `${userDB.typePoints - 1}`,
                     inline: true,
-                  }
+                  },
                 ),
             ],
           });

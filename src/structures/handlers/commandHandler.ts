@@ -1,25 +1,23 @@
-const { glob } = require('glob');
-const { promisify } = require('util');
-const { Client, Routes } = require('discord.js');
-const consola = require('consola');
+import { glob } from 'glob';
+import { promisify } from 'util';
+import { type ContextMenuCommandBuilder, Routes, type SlashCommandBuilder } from 'discord.js';
+import consola from 'consola';
 
-const { REST } = require('@discordjs/rest');
-const getContexts = require('./contextHandler');
+import { REST } from '@discordjs/rest';
+import getContexts from './contextHandler';
+import { Client } from '@classes/discord';
 
 const PG = promisify(glob);
-const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+const rest = new REST({ version: '10' }).setToken(process.env.TOKEN!);
 
-/**
- * @param {Client} client
- */
-module.exports = async client => {
-  const commandsList = [];
+export default async (client: Client) => {
+  const commandsList: (SlashCommandBuilder | ContextMenuCommandBuilder)[] = [];
   const contexts = await getContexts(client);
   contexts.forEach(context => commandsList.push(context));
 
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
   files.forEach(async file => {
-    const command = require(file);
+    const command = await import(file);
     if (!command.data) return;
 
     client.commands.set(command.data.name, command);
@@ -32,11 +30,11 @@ module.exports = async client => {
     if (process.env.RELOAD_COMMANDS === 'false') return;
 
     if (process.env.NODE_ENV === 'development') {
-      await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
+      await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID!, process.env.GUILD_ID!), {
         body: commandsList,
       });
     } else {
-      await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+      await rest.put(Routes.applicationCommands(process.env.CLIENT_ID!), {
         body: commandsList,
       });
     }

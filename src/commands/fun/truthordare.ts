@@ -3,7 +3,7 @@ import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder().setName('truthordare').setDescription('Get a truth or dare.').setDMPermission(false),
 
   async execute({ interaction, color }: CommandArgs) {
@@ -628,7 +628,7 @@ module.exports = {
         new Embed(color).setDescription(
           `**Truth**\n${truths[Math.floor(Math.random() * truths.length)].question}\n**Dare**\n${
             dares[Math.floor(Math.random() * dares.length)].question
-          }`
+          }`,
         ),
       ],
     });

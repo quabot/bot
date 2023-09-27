@@ -1,21 +1,20 @@
-const { glob } = require('glob');
-const { promisify } = require('util');
-const { Client } = require('discord.js');
-const consola = require('consola');
+import { glob } from 'glob';
+import { promisify } from 'util';
+import consola from 'consola';
+import type { Client } from '@classes/discord';
+import { Context } from '@typings/discord';
+import type { ContextMenuCommandBuilder } from 'discord.js';
 
 const PG = promisify(glob);
 let loaded = 0;
 
-/**
- * @param {Client} client
- */
-const getContexts = async client => {
-  const ContextList = [];
+export default async (client: Client) => {
+  const ContextList: ContextMenuCommandBuilder[] = [];
 
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/context/*.js`);
 
   files.forEach(async file => {
-    const menu = require(file);
+    const menu = (await import(file)) as Context;
     if (!menu.data) return;
 
     client.contexts.set(menu.data.name, menu);
@@ -28,5 +27,3 @@ const getContexts = async client => {
 
   return ContextList;
 };
-
-module.exports = getContexts;

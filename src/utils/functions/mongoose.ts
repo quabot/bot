@@ -1,33 +1,42 @@
 import type { Client } from '@classes/discord';
-import type { NonNullMongooseReturn } from '@typings/mongoose';
+import type { MongooseReturn, NonNullMongooseReturn } from '@typings/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 
 export async function getFromCollection<T>(
-  Schema: Model<T>,
-  query: FilterQuery<T>,
-  client: Client,
-  cacheName: string,
-  defaultObj?: T,
-) {
+  arg0: GetFromCollectionArgs<T> & { defaultObj: T },
+): Promise<NonNullMongooseReturn<T> | undefined>;
+export async function getFromCollection<T>(
+  arg0: Omit<GetFromCollectionArgs<T>, 'defaultObj'>,
+): Promise<MongooseReturn<T> | undefined>;
+export async function getFromCollection<T>({ Schema, query, client, cacheName, defaultObj }: GetFromCollectionArgs<T>) {
   try {
-    let res: NonNullMongooseReturn<T> | T | undefined = client.cache.get<T>(cacheName);
+    let res: MongooseReturn<T> | undefined = client.cache.get<NonNullMongooseReturn<T>>(cacheName);
 
-    if (res) return res;
-    res = ((await Schema.findOne<T>(query)
-      .clone()
-      .catch(() => {})) ?? (await new Schema(defaultObj).save())) as NonNullMongooseReturn<T>;
+    if (res !== undefined) return res;
+    res = await find();
 
-    client.cache.set(cacheName, res);
+    if (res === null && defaultObj !== undefined) {
+      await new Schema(defaultObj).save();
 
-    // return (
-    //   client.cache.get<T>(cacheName) ??
-    //   (await Schema.findOne(query)
-    //     .clone()
-    //     .catch(() => {})) ??
-    //   (await new Schema(defaultObj).save())
-    // );
+      res = await find();
+    }
+
+    if (res !== null) client.cache.set(cacheName, res);
+
     return res;
   } catch (err) {
     console.log(err);
   }
+
+  async function find() {
+    return (await Schema.findOne<T>(query).catch(() => {})) as MongooseReturn<T>;
+  }
 }
+
+export type GetFromCollectionArgs<T> = {
+  Schema: Model<T>;
+  query: FilterQuery<T>;
+  client: Client;
+  cacheName: string;
+  defaultObj?: T;
+};

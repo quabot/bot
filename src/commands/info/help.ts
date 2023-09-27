@@ -6,7 +6,7 @@ import type { CommandArgs } from '@typings/functionArgs';
 const PG = promisify(glob);
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('help')
     .setDescription('Get a list of QuaBot commands and their descriptions.')

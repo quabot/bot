@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqArray } from '@constants/schemas';
 
+//! should add type
 export default model(
   'Server',
   new Schema({
