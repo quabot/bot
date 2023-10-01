@@ -1,4 +1,4 @@
 {
   "watch": ["src"],
-  "exec": "rimraf ./dist && tsc && node --require dotenv/config dist/main.js"
+  "exec": "yarn build && yarn start"
 }

@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, reqNum } from '@constants/schemas';
+import type { IGiveaway } from '@typings/schemas';
 
-export default model(
+export default model<IGiveaway>(
   'Giveaway',
   new Schema({
     guildId: reqString,

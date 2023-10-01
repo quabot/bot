@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqNum, reqObject } from '@constants/schemas';
-import { IUserGame } from '@typings/mongoose';
+import { IUserGame } from '@typings/schemas';
 
 export default model(
   'User-Game',

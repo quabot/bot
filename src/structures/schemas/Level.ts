@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqNum, reqBool } from '@constants/schemas';
+import type { ILevel } from '@typings/schemas';
 
-export default model(
+export default model<ILevel>(
   'Level',
   new Schema({
     guildId: reqString,

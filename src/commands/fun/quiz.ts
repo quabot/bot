@@ -10,7 +10,7 @@ import { replaceHtmlCharCodes } from '@functions/string';
 export default {
   data: new SlashCommandBuilder().setName('quiz').setDescription('Play a multiple choice quiz.').setDMPermission(false),
 
-  async execute({ interaction, color }: CommandArgs) {
+  async execute({ interaction, color, client }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 
@@ -67,7 +67,7 @@ export default {
       if (i.customId === 'quiz-replay') return;
 
       //* Set the user's attempts for the score
-      const userDB = await getUserGame(i.user.id);
+      const userDB = await getUserGame(i.user.id, client);
       if (userDB) userDB.quizTries += 1;
 
       //* Check what the user answered and update the message accordingly.

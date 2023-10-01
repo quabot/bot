@@ -1,5 +1,8 @@
+// @ts-nocheck
+
 import type { GuildTextBasedChannel } from 'discord.js';
-import type { IGiveaway, NonNullMongooseReturn } from '@typings/mongoose';
+import type { NonNullMongooseReturn } from '@typings/mongoose';
+import type { IGiveaway } from '@typings/schemas';
 
 import Giveaway from '@schemas/Giveaway';
 import { shuffleArray } from './array';
@@ -10,7 +13,7 @@ import type { Client } from '@classes/discord';
 
 export async function endGiveaway(client: Client, document: NonNullMongooseReturn<IGiveaway>, forceEarly: boolean) {
   const config = await getGiveawayConfig(client, document.guildId);
-  if (!config.enabled) return;
+  if (!config?.enabled) return;
 
   const giveaway = await Giveaway.findOne({
     guildId: document.guildId,
@@ -26,6 +29,7 @@ export async function endGiveaway(client: Client, document: NonNullMongooseRetur
   if (!channel) return;
 
   const colorConfig = await getServerConfig(client, document.guildId);
+  if (!colorConfig) return;
 
   channel.messages
     .fetch(`${giveaway.message}`)

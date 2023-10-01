@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqArray, optString } from '@constants/schemas';
 
+//! type has to be added
 export default model(
   'Application-Answer',
   new Schema({

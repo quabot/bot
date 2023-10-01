@@ -18,7 +18,7 @@ export default async function (client: Client) {
 
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
   files.forEach(async file => {
-    const command = require(file);
+    const command = await import(file);
     if (!command.data) return;
 
     client.commands.set(command.data.name, command);
