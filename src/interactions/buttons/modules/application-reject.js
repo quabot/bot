@@ -1,4 +1,4 @@
-const { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+ccccccccccccconst { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const { Embed } = require('../../../utils/constants/embed');
 const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswer');
 const Application = require('../../../structures/schemas/Application');
@@ -47,9 +47,7 @@ module.exports = {
 		if (form.submissions_managers.length !== 0) {
 			allowed = false;
 			form.submissions_managers.forEach((manager) => {
-				if (interaction.member._roles) {
-					if (interaction.member._roles.has(manager)) allowed = true;
-				}
+       				if (interaction.member.roles.find(r => r.id === manager)) allowed = true;
 			});
 		}
 		if (!allowed) return await interaction.editReply({
