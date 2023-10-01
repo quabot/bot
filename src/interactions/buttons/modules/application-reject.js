@@ -47,7 +47,9 @@ module.exports = {
 		if (form.submissions_managers.length !== 0) {
 			allowed = false;
 			form.submissions_managers.forEach((manager) => {
-				if (interaction.member._roles.has(manager)) allowed = true;
+				if (interaction.member._roles) {
+					if (interaction.member._roles.has(manager)) allowed = true;
+				}
 			});
 		}
 		if (!allowed) return await interaction.editReply({
