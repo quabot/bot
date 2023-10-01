@@ -221,6 +221,20 @@ export interface IServer {
   disabledCommands: string[]; //todo Debug to be sure
 }
 
+export interface IResponder {
+  guildId: Snowflake;
+  trigger: string;
+  wildcard: boolean;
+
+  type: 'message' | 'reaction';
+  embed: any; //! Option not implemented in Dashboard
+  message: string;
+  reaction: string;
+
+  ignored_channels: Snowflake[];
+  ignoredRoles: Snowflake[];
+}
+
 export type Status = 'pending' | 'approved' | 'denied';
 
 export type MessageTypeWithCard = MessageType | 'card';
@@ -277,7 +291,7 @@ export interface LevelCard {
   };
 
   pfp: {
-    rounded: boolean;
+    rounded: boolean; //! Option not implemented in Dashboard
   };
 }
 

@@ -2,9 +2,9 @@ import { Schema, model } from 'mongoose';
 import { reqString, reqNum, reqObject } from '@constants/schemas';
 import { IUserGame } from '@typings/mongoose';
 
-export default model<IUserGame>(
+export default model(
   'User-Game',
-  new Schema({
+  new Schema<IUserGame>({
     userId: reqString,
     typePoints: reqNum,
     typeTries: reqNum,

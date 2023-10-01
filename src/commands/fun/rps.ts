@@ -4,7 +4,7 @@ import { getUserGame } from '@configs/userGame';
 import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder().setName('rps').setDescription('Play rock, paper, scissors.').setDMPermission(false),
 
   async execute({ interaction, color }: CommandArgs) {
@@ -22,7 +22,7 @@ module.exports = {
             .setStyle(ButtonStyle.Secondary)
             .setLabel('Scissors')
             .setEmoji('✂️')
-            .setCustomId('scissors')
+            .setCustomId('scissors'),
         ),
       ],
       fetchReply: true,
@@ -65,12 +65,12 @@ module.exports = {
                   value: `${userDB.rpsPoints - 1}`,
                   inline: true,
                 },
-                { name: 'Entered By', value: `${i.user}`, inline: true }
+                { name: 'Entered By', value: `${i.user}`, inline: true },
               ),
           ],
           components: [
             new ActionRowBuilder<ButtonBuilder>().setComponents(
-              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
+              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
             ),
           ],
         });
@@ -88,12 +88,12 @@ module.exports = {
                   value: `${userDB.rpsPoints + 1}`,
                   inline: true,
                 },
-                { name: 'Entered By', value: `${i.user}`, inline: true }
+                { name: 'Entered By', value: `${i.user}`, inline: true },
               ),
           ],
           components: [
             new ActionRowBuilder<ButtonBuilder>().setComponents(
-              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
+              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
             ),
           ],
         });
@@ -111,12 +111,12 @@ module.exports = {
                   value: `${userDB.rpsPoints}`,
                   inline: true,
                 },
-                { name: 'Entered By', value: `${i.user}`, inline: true }
+                { name: 'Entered By', value: `${i.user}`, inline: true },
               ),
           ],
           components: [
             new ActionRowBuilder<ButtonBuilder>().setComponents(
-              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
+              new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
             ),
           ],
         });
@@ -130,7 +130,7 @@ module.exports = {
       await interaction.editReply({
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay')
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel('Play Again').setCustomId('rps-replay'),
           ),
         ],
       });

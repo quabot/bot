@@ -14,7 +14,7 @@ const aboutButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
 );
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('about')
     .setDescription('View some information about QuaBot.')

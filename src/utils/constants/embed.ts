@@ -10,5 +10,3 @@ export class Embed extends EmbedBuilder {
     });
   }
 }
-
-module.exports = { Embed };

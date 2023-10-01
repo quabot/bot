@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('reddit')
     .setDescription('Get images from a subreddit.')
@@ -13,14 +13,14 @@ module.exports = {
         .setName('subreddit')
         .setDescription('Get an image/post from any subreddit.')
         .addStringOption(option =>
-          option.setName('subreddit').setDescription('The subreddit to get an image from.').setRequired(true)
+          option.setName('subreddit').setDescription('The subreddit to get an image from.').setRequired(true),
         )
         .addBooleanOption(option =>
           option
             .setName('imageonly')
             .setDescription('Whether to give only an image or normal posts.')
-            .setRequired(false)
-        )
+            .setRequired(false),
+        ),
     )
     .addSubcommand(subcommand => subcommand.setName('meme').setDescription('Get a meme.'))
     .setDMPermission(false),

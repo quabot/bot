@@ -4,7 +4,7 @@ import axios from 'axios';
 import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('wyr')
     .setDescription('Get a would you rather dillema.')

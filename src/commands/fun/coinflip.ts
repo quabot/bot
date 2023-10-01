@@ -3,7 +3,7 @@ import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder().setName('coinflip').setDescription('Flip a coin.').setDMPermission(false),
 
   async execute({ interaction, color }: CommandArgs) {

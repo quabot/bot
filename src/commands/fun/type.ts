@@ -732,7 +732,7 @@ const sentences = [
 ];
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder().setName('type').setDescription('Play a typing game.').setDMPermission(false),
 
   async execute({ interaction, color }: CommandArgs) {
@@ -780,7 +780,7 @@ module.exports = {
                     name: 'Points',
                     value: `${userDB.typePoints + 1}`,
                     inline: true,
-                  }
+                  },
                 ),
             ],
           });
@@ -810,7 +810,7 @@ module.exports = {
                     name: 'Points',
                     value: `${userDB.typePoints - 1}`,
                     inline: true,
-                  }
+                  },
                 ),
             ],
           });

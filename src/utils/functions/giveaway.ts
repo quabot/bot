@@ -8,7 +8,7 @@ import { Embed } from '@constants/embed';
 import { getServerConfig } from '@configs/serverConfig';
 import type { Client } from '@classes/discord';
 
-async function endGiveaway(client: Client, document: NonNullMongooseReturn<IGiveaway>, forceEarly: boolean) {
+export async function endGiveaway(client: Client, document: NonNullMongooseReturn<IGiveaway>, forceEarly: boolean) {
   const config = await getGiveawayConfig(client, document.guildId);
   if (!config.enabled) return;
 
@@ -83,5 +83,3 @@ async function endGiveaway(client: Client, document: NonNullMongooseReturn<IGive
     })
     .catch(() => {});
 }
-
-module.exports = { endGiveaway };

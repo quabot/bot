@@ -7,7 +7,7 @@ import type { CommandArgs } from '@typings/functionArgs';
 import { replaceHtmlCharCodes } from '@functions/string';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder().setName('quiz').setDescription('Play a multiple choice quiz.').setDMPermission(false),
 
   async execute({ interaction, color }: CommandArgs) {

@@ -3,7 +3,7 @@ import { isValidHttpUrl } from '@functions/string';
 import { Message } from '@typings/mongoose';
 import { APIEmbedField, ColorResolvable, EmbedAuthorOptions, EmbedBuilder } from 'discord.js';
 
-class CustomEmbed extends EmbedBuilder {
+export class CustomEmbed extends EmbedBuilder {
   constructor(rawEmbed: Omit<Message, 'content'>, getParsedString: (str: string) => string) {
     super();
 
@@ -72,5 +72,3 @@ class CustomEmbed extends EmbedBuilder {
     return this;
   }
 }
-
-module.exports = { CustomEmbed };

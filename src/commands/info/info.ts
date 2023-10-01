@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('info')
     .setDescription('Get loads of usefull information.')
@@ -33,7 +33,7 @@ module.exports = {
     )
     .addSubcommand(subcommand => subcommand.setName('server').setDescription('Get information about the server.'))
     .setDMPermission(false),
-  
+
   async execute() {
     //* This command is just a placeholder for the subcommands.
   },

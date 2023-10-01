@@ -10,7 +10,7 @@ import { request } from 'undici';
 Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Normal.ttf'), 'GG Sans');
 Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Bold.ttf'), 'GG Sans Bold');
 
-async function drawCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
+export async function drawCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
   // Destructuring user
   const { user } = member;
 
@@ -125,5 +125,3 @@ async function drawCard(member: GuildMember, level: number, xp: number, reqXp: n
   const result = await canvas.encode('png');
   return result;
 }
-
-module.exports = { drawCard };
