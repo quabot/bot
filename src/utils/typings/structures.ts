@@ -1,58 +1,40 @@
-import type { ButtonArgs, CommandArgs, ContextArgs, ModalArgs, WsEventArgs } from '@typings/functionArgs';
-import {
-  Client as BaseClient,
-  type ContextMenuCommandBuilder,
-  type ClientOptions,
-  type Collection,
-  type SlashCommandBuilder,
-} from 'discord.js';
-import NodeCache from 'node-cache';
+import type { ButtonArgs, CommandArgs, ContextArgs, EventArgs, ModalArgs, WsEventArgs } from '@typings/functionArgs';
+import { type ContextMenuCommandBuilder, type SlashCommandBuilder } from 'discord.js';
 
 export interface Button {
   name: string;
-  execute: (arg0: ButtonArgs) => any;
+  execute: (arg0: ButtonArgs) => Promise<any>;
 }
 
 export interface Command {
   data: SlashCommandBuilder;
-  execute: (arg0: CommandArgs) => any;
+  execute: (arg0: CommandArgs) => Promise<any>;
 }
 
 export interface Context {
   data: ContextMenuCommandBuilder;
-  execute: (argo0: ContextArgs) => any;
+  execute: (argo0: ContextArgs) => Promise<any>;
 }
 
 export interface Modal {
   name: string;
-  execute: (arg0: ModalArgs) => any;
+  execute: (arg0: ModalArgs) => Promise<any>;
 }
 
 export interface WsEvent {
   code: string;
-  execute: (arg0: WsEventArgs) => any;
+  execute: (arg0: WsEventArgs) => Promise<any>;
 }
 
 export interface Subcommand {
   parent: string;
   name: string;
-  execute: (arg0: CommandArgs) => any;
+  execute: (arg0: CommandArgs) => Promise<any>;
 }
 
-export interface Client {
-  cache: NodeCache;
-  buttons: Collection<string, { name: string; execute: (arg0: ButtonArgs) => any }>;
-  commands: Collection<string, { data: SlashCommandBuilder; execute: (arg0: CommandArgs) => any }>;
-  contexts: Collection<string, { data: ContextMenuCommandBuilder; execute: (argo0: ContextArgs) => any }>;
-  menus: Collection<string, any>;
-  modals: Collection<string, { name: string; execute: (arg0: ModalArgs) => any }>;
-  ws_events: Collection<string, { code: string; execute: (arg0: WsEventArgs) => any }>;
-  subcommands: Collection<string, { parent: string; name: string; execute: (arg0: CommandArgs) => any }>;
-  custom_commands: undefined[];
-}
-
-export class Client extends BaseClient {
-  constructor(options: ClientOptions) {
-    super(options);
-  }
+export interface Event {
+  event: string;
+  name: string;
+  once: boolean;
+  execute: (arg0: EventArgs, ...lastArgs: any[]) => Promise<any>;
 }

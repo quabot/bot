@@ -47,13 +47,13 @@
     "typescript": "^5.2.2"
   },
   "_moduleAliases": {
-    "@configs": "src/utils/configs/",
-    "@constants": "src/utils/constants/",
-    "@functions": "src/utils/functions/",
-    "@assets": "src/utils/assets/",
-    "@typings": "src/utils/typings",
-    "@classes": "src/utils/classes",
-    "@schemas": "src/structures/schemas/",
-    "@handlers": "src/structures/handlers/"
+    "@configs": "dist/utils/configs/",
+    "@constants": "dist/utils/constants/",
+    "@functions": "dist/utils/functions/",
+    "@assets": "dist/utils/assets/",
+    "@typings": "dist/utils/typings",
+    "@classes": "dist/utils/classes",
+    "@schemas": "dist/structures/schemas/",
+    "@handlers": "dist/structures/handlers/"
   }
 }

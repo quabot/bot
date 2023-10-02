@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
+import { SlashCommandBuilder } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('profile')
     .setDescription("View a user's profile.")
@@ -24,6 +24,6 @@ module.exports = {
         .addNumberOption(option => option.setName('year').setDescription('Year of your birthday').setRequired(true)),
     )
     .setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {},
+
+  async execute() {},
 };

@@ -1,4 +1,4 @@
-import { Client } from '@classes/discord';
+import type { Client } from '@classes/discord';
 import type {
   ButtonInteraction,
   ChatInputCommandInteraction,
@@ -9,28 +9,27 @@ import type {
 
 export interface BaseArgs {
   client: Client;
-}
-
-export interface BaseInteractinoArgs extends BaseArgs {
   color: ColorResolvable;
 }
 
-export interface CommandArgs extends BaseInteractinoArgs {
+export interface CommandArgs extends BaseArgs {
   interaction: ChatInputCommandInteraction;
 }
 
-export interface ButtonArgs extends BaseInteractinoArgs {
+export interface ButtonArgs extends BaseArgs {
   interaction: ButtonInteraction;
 }
 
-export interface ContextArgs extends BaseInteractinoArgs {
+export interface ContextArgs extends BaseArgs {
   interaction: UserContextMenuCommandInteraction;
 }
 
-export interface ModalArgs extends BaseInteractinoArgs {
+export interface ModalArgs extends BaseArgs {
   interaction: ModalSubmitInteraction;
 }
 
-export interface WsEventArgs extends BaseInteractinoArgs {
+export interface WsEventArgs extends BaseArgs {
   data: any;
 }
+
+export interface EventArgs extends BaseArgs {}

@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No execute function is needed because this command is only used for subcommands.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('role')
     .setDescription('Manage roles.')
@@ -45,6 +45,6 @@ module.exports = {
           option.setDescription('Should the role be separated in the sidebar?').setRequired(false).setName('hoist'),
         ),
     ),
-  
-  async execute({ client, interaction, color }: CommandArgs) {},
+
+  async execute() {},
 };

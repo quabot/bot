@@ -1,30 +1,28 @@
-const {
+import {
   EmbedBuilder,
   ButtonStyle,
   ButtonBuilder,
   ActionRowBuilder,
   Colors,
   SlashCommandBuilder,
-  CommandInteraction,
-} = require('discord.js');
+  GuildEmoji,
+} from 'discord.js';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('emotes')
     .setDescription('List all the server emojis.')
     .setDMPermission(false),
-  /**
-   * @param {CommandInteraction} interaction
-   */
-  async execute({ client, interaction, color }: CommandArgs) {
+
+  async execute({ interaction }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     //* Create an array of all the emojis in the guild.
-    const emoteList = [];
-    interaction.guild.emojis.fetch().for;
-    interaction.guild.emojis.fetch().forEach(e => {
+    const emoteList: GuildEmoji[] = [];
+    (await interaction.guild!.emojis.fetch()).forEach(e => {
       emoteList.push(e);
     });
 
@@ -45,7 +43,7 @@ module.exports = {
       customId: forwardId,
     });
 
-    const makeEmbed = async start => {
+    const makeEmbed = async (start: number) => {
       const current = emoteList.slice(start, start + 10);
 
       return new EmbedBuilder({
@@ -69,8 +67,7 @@ module.exports = {
     const canFit = emoteList.length <= 10;
     const msg = await interaction.editReply({
       embeds: [await makeEmbed(0)],
-      ephemeral: true,
-      components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
+      components: canFit ? [] : [new ActionRowBuilder<ButtonBuilder>({ components: [forwardButton] })],
     });
     if (canFit) return;
 
@@ -83,7 +80,7 @@ module.exports = {
       await i.update({
         embeds: [await makeEmbed(currentIndex)],
         components: [
-          new ActionRowBuilder({
+          new ActionRowBuilder<ButtonBuilder>({
             components: [
               ...(currentIndex ? [backButton] : []),
               ...(currentIndex + 10 < emoteList.length ? [forwardButton] : []),

@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('giveaway')
     .setDescription('Create, edit, reroll and end giveaways.')
@@ -45,6 +45,6 @@ module.exports = {
       PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild,
     )
     .setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {},
+
+  async execute() {},
 };

@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('channel')
     .setDescription('Manage channels.')
@@ -48,10 +48,7 @@ module.exports = {
         .addStringOption(option => option.setDescription('The new channel name.').setRequired(false).setName('name'))
         .addStringOption(option => option.setDescription('The new channel topic.').setRequired(false).setName('topic')),
     ),
-  /**
-   * @param {Client} client
-   * @param {ChatInputCommandInteraction} interaction
-   */
+
   async execute() {
     //* This command is just a placeholder for the subcommands.
   },

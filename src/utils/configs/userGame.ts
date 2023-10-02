@@ -1,7 +1,7 @@
 import type { Snowflake } from 'discord.js';
 import UserGame from '@schemas/UserGame';
 import { getFromCollection } from '@functions/mongoose';
-import { Client } from '@classes/discord';
+import type { Client } from '@classes/discord';
 import { IUserGame } from '@typings/schemas';
 
 export async function getUserGame(userId: Snowflake, client: Client) {

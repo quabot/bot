@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
+import { SlashCommandBuilder } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('avatar')
     .setDescription('Get the server or user icon.')
@@ -16,6 +16,6 @@ module.exports = {
         ),
     )
     .setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {},
+
+  async execute() {},
 };

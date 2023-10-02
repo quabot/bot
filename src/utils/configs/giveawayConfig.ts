@@ -2,7 +2,7 @@ import type { Snowflake } from 'discord.js';
 import { getFromCollection } from '@functions/mongoose';
 import GiveawayConfig from '@schemas/GiveawayConfig';
 import { IGiveawayConfig } from '@typings/schemas';
-import { Client } from '@classes/discord';
+import type { Client } from '@classes/discord';
 
 export async function getGiveawayConfig(guildId: Snowflake, client: Client) {
   return await getFromCollection<IGiveawayConfig>({

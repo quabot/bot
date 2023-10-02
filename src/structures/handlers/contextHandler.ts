@@ -1,7 +1,7 @@
 import { glob } from 'glob';
 import { promisify } from 'util';
 import consola from 'consola';
-import { Client } from '@classes/discord';
+import type { Client } from '@classes/discord';
 import { Context } from '@typings/structures';
 
 const PG = promisify(glob);

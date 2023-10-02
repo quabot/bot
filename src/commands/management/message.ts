@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('message')
     .setDescription('Send a message to a channel.')
@@ -25,6 +25,6 @@ module.exports = {
           option.setDescription('URL of the message to edit.').setRequired(true).setName('message'),
         ),
     ),
-  
-  async execute({ client, interaction, color }: CommandArgs) {},
+
+  async execute() {},
 };

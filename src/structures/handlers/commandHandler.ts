@@ -5,8 +5,8 @@ import consola from 'consola';
 
 import { REST } from '@discordjs/rest';
 import getContexts from './contextHandler';
-import { Client } from '@classes/discord';
-import { Context } from '@typings/structures';
+import type { Client } from '@classes/discord';
+import type { Command, Context } from '@typings/structures';
 
 const PG = promisify(glob);
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN!);
@@ -18,7 +18,7 @@ export default async function (client: Client) {
 
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
   files.forEach(async file => {
-    const command = await import(file);
+    const command: Command = await import(file);
     if (!command.data) return;
 
     client.commands.set(command.data.name, command);

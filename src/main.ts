@@ -1,4 +1,5 @@
-import('module-alias/register');
+// ? cant use 'import', cause that's async
+require('module-alias/register');
 
 import { Client } from '@classes/discord';
 import { Collection, Partials } from 'discord.js';
