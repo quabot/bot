@@ -24,7 +24,7 @@ module.exports = {
 		//* Create an array of all the emojis in the guild.
 		const emoteList = [];
 		interaction.guild.emojis.fetch().for;
-		interaction.guild.emojis.fetch().forEach(e => {
+		await interaction.guild.emojis.fetch().forEach(e => {
 			emoteList.push(e);
 		});
 
