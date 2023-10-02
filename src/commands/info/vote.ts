@@ -1,8 +1,9 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('vote')
     .setDescription('Get the URL to vote for QuaBot.')
@@ -16,7 +17,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setThumbnail(`${client.user.avatarURL()}`)
+          .setThumbnail(`${client.user!.avatarURL()}`)
           .setTitle('QuaBot Voting')
           .setDescription(
             'You can vote for QuaBot [here](https://top.gg/bot/995243562134409296)! You will receive a 1.5x level multiplier and be listed in our [support server](https://discord.quabot.net).',

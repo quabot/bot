@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommandBuilder } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.

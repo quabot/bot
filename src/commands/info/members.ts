@@ -1,14 +1,15 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder} from 'discord.js';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs'
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('members')
     .setDescription('Get the amount of members in the server.')
     .setDMPermission(false),
   
-  async execute({ client, interaction, color }: CommandArgs) {
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 
@@ -16,9 +17,9 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setThumbnail(`${interaction.guild.iconURL()}`)
-          .setTitle(`${interaction.guild.name}`)
-          .setDescription(`${interaction.guild.memberCount.toLocaleString()} members.`),
+          .setThumbnail(`${interaction.guild!.iconURL()}`)
+          .setTitle(`${interaction.guild!.name}`)
+          .setDescription(`${interaction.guild!.memberCount.toLocaleString()} members.`),
       ],
     });
   },

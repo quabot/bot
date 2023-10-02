@@ -1,8 +1,9 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('ping')
     .setDescription('Get the latency between QuaBot and the Discord API.')

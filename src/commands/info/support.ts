@@ -1,8 +1,9 @@
-const { SlashCommandBuilder, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('support')
     .setDescription('Get the invite to the QuaBot support server.')
@@ -16,7 +17,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setThumbnail(`${client.user.avatarURL()}`)
+          .setThumbnail(`${client.user!.avatarURL()}`)
           .setTitle('QuaBot Support')
           .setDescription(
             'Join our support server [here](https://discord.gg/kxKHuy47Eq) for fun, events, questions and suggestions!',
