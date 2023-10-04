@@ -255,11 +255,50 @@ export interface IReactionConfig {
 export interface IReactionRoles {
   guildId: Snowflake;
   channelId: Snowflake;
-  reqPermission: string; //todo Debug to see all options, to be more type specific
+  reqPermission: string; //! Gotta make type
   reqRoles: Snowflake[];
   excludedRoles: Snowflake[];
   roleId: Snowflake;
   messageId: Snowflake;
   emoji: string;
-  type: string; //todo Debug to see all options, to be more type specific
+  type: 'normal' | 'verify' | 'drop' | 'reversed' | 'unique' | 'binding';
+}
+
+export interface IResponderConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+}
+
+export interface ISuggestion {
+  guildId: Snowflake;
+  id: number;
+  msgId: Snowflake;
+  suggestion: string;
+  status: string; //todo Debug to see all options, to be more type specific
+  userId: Snowflake;
+}
+
+export interface ISuggestionConfig {
+  guildId: Snowflake;
+
+  enabled: boolean;
+  channelId: Snowflake;
+
+  logEnabled: boolean;
+  logChannelId: Snowflake;
+
+  message: Message;
+  emojiRed: string;
+  emojiGreen: string;
+
+  reasonRequired: boolean;
+  dm: boolean;
+  dmMessage: Message;
+
+  colors: {
+    approve: `#${string}`;
+    deny: `#${string}`;
+    pending: `#${string}`;
+    deleted: `#${string}`;
+  }; //! Option not implemented in Dashboard
 }

@@ -1,10 +1,11 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, optString, reqArray, optObject } from '@constants/schemas';
-import { IResponder } from '@typings/mongoose';
+
+//! type has to be added, but arrayTypes are weird in Mongoose
 
 export default model(
   'Responses',
-  new Schema<IResponder>({
+  new Schema({
     guildId: reqString,
     trigger: reqString,
     wildcard: reqBool,
@@ -14,7 +15,6 @@ export default model(
     message: optString,
     reaction: optString,
 
-    //@ts-ignore
     ignored_channels: reqArray,
     ignored_roles: reqArray,
   }),
