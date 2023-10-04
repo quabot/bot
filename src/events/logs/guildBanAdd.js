@@ -32,7 +32,7 @@ module.exports = {
           )
           .setFooter({
             text: `${ban.user.username}`,
-            iconURL: `${ban.user.displayAvatarURL({ dynamic: true })}`,
+            iconURL: `${ban.user.displayAvatarURL({ forceStatic: false })}`,
           }),
       ],
     });

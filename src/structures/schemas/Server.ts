@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqArray } from '@constants/schemas';
 
-//! should add type
+//! type has to be added, but arrayTypes are weird in Mongoose
 export default model(
   'Server',
   new Schema({

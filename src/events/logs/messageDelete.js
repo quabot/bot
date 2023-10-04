@@ -47,7 +47,7 @@ module.exports = {
       .addFields({ name: 'Channel', value: `${message.channel}`, inline: true })
       .setFooter({
         text: `User: @${message.author.username ?? 'none'}`,
-        iconURL: `${message.author.avatarURL({ dynamic: true })}`,
+        iconURL: `${message.author.avatarURL({ forceStatic: false })}`,
       });
 
     const attachments = [];

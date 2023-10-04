@@ -53,7 +53,7 @@ module.exports = {
     if (newMessage.author)
       embed.setFooter({
         text: `@${newMessage.author.username}`,
-        iconURL: `${newMessage.author.avatarURL({ dynamic: true }) ?? 'https://i.imgur.com/VUwD8zP.png'}`,
+        iconURL: `${newMessage.author.avatarURL({ forceStatic: false }) ?? 'https://i.imgur.com/VUwD8zP.png'}`,
       });
 
     const oldAttachments = [];

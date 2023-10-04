@@ -68,7 +68,7 @@ export async function drawCard(member: GuildMember, level: number, xp: number, r
     13,
     100,
     // @ts-ignore
-    Math.max((canvas.width - 70) * percent, canvas.width - 70), //todo Has to be debugged
+    Math.max((canvas.width - 70) * percent, canvas.width - 70), //? why even is this here, roundRect() only takes 4-5 args
   );
   context.fill();
 

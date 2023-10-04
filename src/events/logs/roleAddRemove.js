@@ -52,7 +52,7 @@ module.exports = {
           )
           .setFooter({
             text: `${newMember.user.username}`,
-            iconURL: `${newMember.user.displayAvatarURL({ dynamic: true })}`,
+            iconURL: `${newMember.user.displayAvatarURL({ forceStatic: false })}`,
           }),
       ],
     });

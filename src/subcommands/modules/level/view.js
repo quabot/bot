@@ -55,7 +55,7 @@ module.exports = {
       await interaction.editReply({
         embeds: [
           new Embed(color)
-            .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(user.displayAvatarURL({ forceStatic: false }))
             .setTitle(`${user.displayName}'s level status`)
             .setDescription(
               `${user} is level **${levelDB.level}** and has **${levelDB.xp}/${formula(levelDB.level)}** xp.`,

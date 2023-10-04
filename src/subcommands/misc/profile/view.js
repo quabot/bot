@@ -46,7 +46,7 @@ module.exports = {
     const embed = new Embed(color)
       .setTitle(`${user.user.username}'s profile`)
       .setDescription(userSchema.bio)
-      .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+      .setThumbnail(user.displayAvatarURL({ forceStatic: false }))
       .addFields({
         name: 'Birthday',
         value: `${

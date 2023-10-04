@@ -206,5 +206,60 @@ export interface IServer {
   locale: string;
   color: ColorResolvable;
   updatesChannel: Snowflake;
-  disabledCommands: string[]; //todo Debug to be sure
+  disabledCommands: string[]; //! Mr Joas should not hardCode this in dashboard
+}
+
+export interface IResponder {
+  guildId: Snowflake;
+  trigger: string;
+  wildcard: boolean;
+
+  type: 'message' | 'reaction';
+  embed: any; //! Option not implemented in Dashboard
+  message: string;
+  reaction: string;
+
+  ignored_channels: Snowflake[];
+  ignoredRoles: Snowflake[];
+}
+
+export interface IPollConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+  logEnabled: boolean;
+  logChannel: Snowflake;
+}
+
+export interface IPunishment {
+  guildId: Snowflake;
+  userId: Snowflake;
+
+  channelId: Snowflake;
+  moderatorId: Snowflake;
+  time: string;
+
+  type: string; //todo Debug to see all options, to be more type specific
+  id: Snowflake;
+  reason: string;
+  duration: string;
+  active: boolean;
+}
+
+export interface IReactionConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+  dmEnabled: boolean;
+  dm: Message;
+}
+
+export interface IReactionRoles {
+  guildId: Snowflake;
+  channelId: Snowflake;
+  reqPermission: string; //todo Debug to see all options, to be more type specific
+  reqRoles: Snowflake[];
+  excludedRoles: Snowflake[];
+  roleId: Snowflake;
+  messageId: Snowflake;
+  emoji: string;
+  type: string; //todo Debug to see all options, to be more type specific
 }
