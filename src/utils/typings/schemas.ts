@@ -302,3 +302,17 @@ export interface ISuggestionConfig {
     deleted: `#${string}`;
   }; //! Option not implemented in Dashboard
 }
+
+export interface ITicket {
+  guildId: Snowflake;
+
+  id: string;
+  channelId: Snowflake;
+
+  topic: string;
+  closed: boolean;
+
+  owner: Snowflake; //todo Debug to be sure
+  users: Snowflake[]; //todo Debug to be sure
+  staff: Snowflake; //todo Debug to be sure
+}
