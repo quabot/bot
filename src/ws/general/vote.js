@@ -6,7 +6,22 @@ module.exports = {
 	code: 'vote',
 	async execute(client, data) {
 		//* Get the votes channel and send the Vote message.
-		if (data.body.type !== 'upvote') return;
+		if (data.body.type !== 'upvote') {
+			const guild = client.guilds.cache.get('1007810461347086357');
+			if (!guild) return;
+			const ch = guild.channels.cache.get('1007810462051737603');
+			if (!ch) return;
+
+			ch.send({
+				content: `<@${data.body.user}>`,
+				embeds: [
+				new Embed('#416683')
+					.setTitle('Received a votifier test ping.')
+					.setDescription(`Check the logs for more details.`)
+				]
+			});
+			return;
+		}
 
 		//* Update the DB.
 		const config = await Vote.findOne(
