@@ -9,6 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        node-version: 16
+        cache: 'npm'
     - name: Stopping existing bot container
       run: docker stop quabot-bot || echo
     - name: Removing existing bot container
