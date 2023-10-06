@@ -12,7 +12,7 @@ module.exports = {
     const ch = guild.channels.cache.get('1024600377628299266');
     if (!ch) return;
 
-    const votes = await axios.get('https://top.gg/api/bots/995243562134409296/votes', {
+    const votes = await axios.get('https://top.gg/api/bots/995243562134409296', {
       headers: {
         Authorization: process.env.TOPGG_API_KEY,
       },
