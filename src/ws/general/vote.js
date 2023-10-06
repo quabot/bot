@@ -3,15 +3,14 @@ const axios = require('axios');
 const { Embed } = require('@constants/embed');
 
 //* Handle the vote of a user. Send a message and update DB.
-module.exports = {
-  code: 'vote',
-  async execute(client, data) {
-    //* Get the votes channel and send the Vote message.
-    // if (data.body.type !== 'upvote') return;
-    const guild = client.guilds.cache.get('1007810461347086357');
-    if (!guild) return;
-    const ch = guild.channels.cache.get('1024600377628299266');
-    if (!ch) return;
+module.exports = {turn;
+	code: 'vote',
+	async execute(client, data) {
+		//* Get the votes channel and send the Vote message.		
+		const guild = client.guilds.cache.get('1007810461347086357');
+		if (!guild) return;
+		const ch = guild.channels.cache.get('1024600377628299266');
+		if (!ch) return;
 
     const votes = await axios.get('https://top.gg/api/bots/995243562134409296/votes', {
       headers: {

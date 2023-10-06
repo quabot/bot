@@ -45,17 +45,19 @@ module.exports = {
         embeds: [new Embed(color).setDescription("Couldn't find the application.")],
       });
 
-    let allowed = true;
-    if (form.submissions_managers.length !== 0) {
-      allowed = false;
-      form.submissions_managers.forEach(manager => {
-        if (interaction.member._roles.has(manager)) allowed = true;
-      });
-    }
-    if (!allowed)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription("You don't have the required roles to deny this application.")],
-      });
+		let allowed = true;
+		if (form.submissions_managers.length !== 0) {
+			allowed = false;
+			form.submissions_managers.forEach((manager) => {
+       				if (interaction.member.roles.find(r => r.id === manager)) allowed = true;
+			});
+		}
+		if (!allowed) return await interaction.editReply({
+			embeds: [
+				new Embed(color)
+					.setDescription('You don\'t have the required roles to deny this application.')
+			]
+		});
 
     answer.state = 'denied';
     await answer.save();
@@ -74,17 +76,13 @@ module.exports = {
       ],
       components: [],
     });
-
-    const member = await interaction.guild.members.fetch(answer.userId).catch(() => {});
-    if (!member) return;
-    await member
-      .send({
-        embeds: [
-          new Embed('#416683').setDescription(
-            `Your application response for the form **${form.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${interaction.guild.id}/user/applications/answers/${id}).`,
-          ),
-        ],
-      })
-      .catch(() => {});
-  },
+		const member = await interaction.guild.members.fetch(answer.userId).catch(() => { });
+		if (!member) return;
+		await member.send({
+			embeds: [
+				new Embed('#416683')
+					.setDescription(`Your application response for the form **${form.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${interaction.guild.id}/user/applications/answers/${id}).`)
+			]
+		}).catch(() => { });
+	},
 };

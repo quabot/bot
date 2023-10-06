@@ -21,12 +21,10 @@ module.exports = {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 
-    //* Create an array of all the emojis in the guild.
-    const emoteList = [];
-    interaction.guild.emojis.fetch().for;
-    interaction.guild.emojis.fetch().forEach(e => {
-      emoteList.push(e);
-    });
+		//* Create an array of all the emojis in the guild.
+		const emoteList = 
+		(await interaction.guild.emojis.fetch()).map(emoji => emoji);
+
 
     //* Create the multi-page system.
     // ? don't touch it lol
