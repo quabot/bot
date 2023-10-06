@@ -312,7 +312,22 @@ export interface ITicket {
   topic: string;
   closed: boolean;
 
-  owner: Snowflake; //todo Debug to be sure
-  users: Snowflake[]; //todo Debug to be sure
-  staff: Snowflake; //todo Debug to be sure
+  owner: Snowflake;
+  users: Snowflake[];
+  staff: Snowflake;
+}
+
+export interface ITicketConfig {
+  guildId: Snowflake;
+
+  enabled: boolean;
+  openCategory: Snowflake;
+  closedCategory: Snowflake;
+
+  staffRoles: Snowflake[];
+  staffPing: Snowflake;
+  topicButton: boolean;
+
+  logChannel: Snowflake;
+  logEnabled: boolean;
 }
