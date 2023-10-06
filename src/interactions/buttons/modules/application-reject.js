@@ -1,47 +1,49 @@
-const { Client, ButtonInteraction, ColorResolvable, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
-const { Embed } = require('../../../utils/constants/embed');
-const ApplicationAnswer = require('../../../structures/schemas/ApplicationAnswer');
-const Application = require('../../../structures/schemas/Application');
+const {
+  Client,
+  ButtonInteraction,
+  ColorResolvable,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+} = require('discord.js');
+const { Embed } = require('@constants/embed');
+const ApplicationAnswer = require('@schemas/ApplicationAnswer');
+const Application = require('@schemas/Application');
 
 module.exports = {
-	name: 'application-deny',
-	/**
-     * @param {Client} client 
-     * @param {ButtonInteraction} interaction 
-     * @param {ColorResolvable} color 
-     */
-	async execute(client, interaction, color) {
-		await interaction.deferReply({ ephemeral: true });
+  name: 'application-deny',
+  /**
+   * @param {Client} client
+   * @param {ButtonInteraction} interaction
+   * @param {ColorResolvable} color
+   */
+  async execute(client, interaction, color) {
+    await interaction.deferReply({ ephemeral: true });
 
-		const id = interaction.message.embeds[0].footer.text;
-		const answer = await ApplicationAnswer.findOne({
-			guildId: interaction.guildId,
-			response_uuid: id
-		});
-		if (!answer) return await interaction.editReply({
-			embeds: [
-				new Embed(color)
-					.setDescription('Couldn\'t find the application answer.')
-			]
-		});
+    const id = interaction.message.embeds[0].footer.text;
+    const answer = await ApplicationAnswer.findOne({
+      guildId: interaction.guildId,
+      response_uuid: id,
+    });
+    if (!answer)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription("Couldn't find the application answer.")],
+      });
 
-		if (answer.state !== 'pending') return await interaction.editReply({
-			embeds: [
-				new Embed(color)
-					.setDescription('The application has already been approved/denied.')
-			]
-		});
+    if (answer.state !== 'pending')
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('The application has already been approved/denied.')],
+      });
 
-		const form = await Application.findOne({
-			guildId: interaction.guildId,
-			id: answer.id,
-		});
-		if (!form) return await interaction.editReply({
-			embeds: [
-				new Embed(color)
-					.setDescription('Couldn\'t find the application.')
-			]
-		});
+    const form = await Application.findOne({
+      guildId: interaction.guildId,
+      id: answer.id,
+    });
+    if (!form)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription("Couldn't find the application.")],
+      });
 
 		let allowed = true;
 		if (form.submissions_managers.length !== 0) {
@@ -57,23 +59,23 @@ module.exports = {
 			]
 		});
 
-		answer.state = 'denied';
-		await answer.save();
+    answer.state = 'denied';
+    await answer.save();
 
-		await interaction.editReply({
-			embeds: [
-				new Embed(color)
-					.setDescription('Successfully denied the application.')
-			]
-		});
+    await interaction.editReply({
+      embeds: [new Embed(color).setDescription('Successfully denied the application.')],
+    });
 
-		await interaction.message.edit({
-			embeds: [
-				EmbedBuilder.from(interaction.message.embeds[0]).addFields({ name: 'Status', value: 'Rejected', inline: true })
-			],
-			components: []
-		});
-
+    await interaction.message.edit({
+      embeds: [
+        EmbedBuilder.from(interaction.message.embeds[0]).addFields({
+          name: 'Status',
+          value: 'Rejected',
+          inline: true,
+        }),
+      ],
+      components: [],
+    });
 		const member = await interaction.guild.members.fetch(answer.userId).catch(() => { });
 		if (!member) return;
 		await member.send({

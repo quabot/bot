@@ -1,15 +1,18 @@
 const { Client, GuildMember } = require('discord.js');
-const Level = require('../../structures/schemas/Level');
+const Level = require('@schemas/Level');
 
 module.exports = {
-	event: 'guildMemberRemove',
-	name: 'levelEnable',
-	/**
-		 * @param {GuildMember} member
-		 * @param {Client} client 
-		 */
-	async execute(member, client) {
-		const user = await Level.findOne({ guildId: member.guild.id, userId: member.id });
-		if (user) user.active = true;
-	}
+  event: 'guildMemberRemove',
+  name: 'levelEnable',
+  /**
+   * @param {GuildMember} member
+   * @param {Client} client
+   */
+  async execute(member, client) {
+    const user = await Level.findOne({
+      guildId: member.guild.id,
+      userId: member.id,
+    });
+    if (user) user.active = true;
+  },
 };

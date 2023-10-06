@@ -1,8 +1,16 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, Client, CommandInteraction } = require('discord.js');
-const { Embed } = require('../../utils/constants/embed');
+const {
+  SlashCommandBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  Colors,
+  Client,
+  CommandInteraction,
+} = require('discord.js');
+const { Embed } = require('@constants/embed');
 const axios = require('axios');
-const { shuffleArray } = require('../../utils/functions/array');
-const { getUserGame } = require('../../utils/configs/userGame');
+const { shuffleArray } = require('@functions/array');
+const { getUserGame } = require('@configs/userGame');
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 module.exports = {

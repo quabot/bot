@@ -7,19 +7,18 @@ const PG = promisify(glob);
 let loaded = 0;
 
 /**
- * @param {Client} client 
+ * @param {Client} client
  */
-module.exports = async (client) => {
-	const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*/*.js`);
-	files.forEach(async file => {
-		const subcommand = require(file);
-		if (!subcommand.parent || !subcommand.name) return;
+module.exports = async client => {
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/subcommands/*/*/*.js`);
+  files.forEach(async file => {
+    const subcommand = require(file);
+    if (!subcommand.parent || !subcommand.name) return;
 
-		client.subcommands.set(`${subcommand.name}/${subcommand.parent}`, subcommand);
+    client.subcommands.set(`${subcommand.name}/${subcommand.parent}`, subcommand);
 
-		loaded += 1;
-	});
+    loaded += 1;
+  });
 
-
-	consola.success(`Loaded ${loaded}/${files.length} subcommands.`);
+  consola.success(`Loaded ${loaded}/${files.length} subcommands.`);
 };

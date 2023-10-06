@@ -6,7 +6,8 @@
   "license": "none",
   "private": true,
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "prettier": "prettier --write src"
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.41",
@@ -32,6 +33,15 @@
     "ws": "^8.12.1"
   },
   "devDependencies": {
-    "eslint": "^8.47.0"
+    "eslint": "^8.47.0",
+    "prettier": "^3.0.2"
+  },
+  "_moduleAliases": {
+    "@configs": "src/utils/configs/",
+    "@constants": "src/utils/constants/",
+    "@functions": "src/utils/functions/",
+    "@assets": "src/utils/assets/",
+    "@schemas": "src/structures/schemas/",
+    "@handlers": "src/structures/handlers/"
   }
 }
