@@ -1,25 +1,27 @@
-const { Schema, model } = require('mongoose');
-const { reqString, reqNum, reqBool, reqObject, reqArray } = require('@constants/schemas');
+import { Schema, model } from 'mongoose';
+import { reqString, reqBool, reqObject, reqArray } from '@constants/schemas';
 
-const WelcomeConfig = new Schema({
-  guildId: reqString,
+//! type has to be added, but arrayTypes are weird in Mongoose
+export default model(
+  'Welcome-Config',
+  new Schema({
+    guildId: reqString,
 
-  joinEnabled: reqBool,
-  joinChannel: reqString,
-  joinType: reqString,
-  joinMessage: reqObject,
+    joinEnabled: reqBool,
+    joinChannel: reqString,
+    joinType: reqString,
+    joinMessage: reqObject,
 
-  leaveEnabled: reqBool,
-  leaveChannel: reqString,
-  leaveType: reqString,
-  leaveMessage: reqObject,
+    leaveEnabled: reqBool,
+    leaveChannel: reqString,
+    leaveType: reqString,
+    leaveMessage: reqObject,
 
-  joinRole: reqArray,
-  joinRoleEnabled: reqBool,
+    joinRole: reqArray,
+    joinRoleEnabled: reqBool,
 
-  joinDM: reqBool,
-  joinDMType: reqString,
-  dm: reqObject,
-});
-
-module.exports = model('Welcome-Config', WelcomeConfig);
+    joinDM: reqBool,
+    joinDMType: reqString,
+    dm: reqObject,
+  }),
+);

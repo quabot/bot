@@ -163,7 +163,7 @@ export interface ILoggingConfig {
 
 export interface IModerationConfig {
   guildId: Snowflake;
-  channel: Snowflake;
+  channel: boolean;
   channelId: Snowflake;
 
   warnDM: boolean;
@@ -330,4 +330,44 @@ export interface ITicketConfig {
 
   logChannel: Snowflake;
   logEnabled: boolean;
+}
+
+export interface IUser {
+  guildId: Snowflake;
+  userId: Snowflake;
+
+  bans: number;
+  tempbans: number;
+  warns: number;
+  kicks: number;
+  timeouts: number;
+
+  afk: boolean;
+  afkMessage: string;
+}
+
+export interface IWelcomeConfig {
+  guildId: Snowflake;
+
+  joinEnabled: boolean;
+  joinChannel: Snowflake;
+  joinType: MessageType;
+  joinMessage: Message;
+
+  leaveEnabled: boolean;
+  leaveChannel: Snowflake;
+  leaveType: MessageType;
+  leaveMessage: Message;
+
+  joinRole: { role: Snowflake; delay: number; bot: true }[];
+  joinRoleEnabled: boolean;
+
+  joinDm: boolean;
+  joinDmType: MessageType;
+  dm: Message;
+}
+
+export interface IVote {
+  userId: Snowflake;
+  lastVote: string; //todo debug to be more type specific
 }

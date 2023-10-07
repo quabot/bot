@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, reqObject } from '@constants/schemas';
+import type { IModerationConfig } from '@typings/schemas';
 
-//! type has to be added, but this boolType is also weird in Mongoose
-export default model(
+export default model<IModerationConfig>(
   'Moderation-Config',
   new Schema({
     guildId: reqString,
