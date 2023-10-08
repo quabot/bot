@@ -17,7 +17,6 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
       openCategory: 'none',
       closedCategory: 'none',
 
-      staffRoles: [],
       staffPing: 'none',
       topicButton: true,
 

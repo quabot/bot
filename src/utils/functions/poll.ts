@@ -40,12 +40,14 @@ export async function endPoll(client: Client, document: NonNullMongooseReturn<IP
 
       const winner = Math.max(...reactions);
 
+      const options = poll.options!;
+
       let winMsg;
-      if (reactions[0] === winner) winMsg = poll.options[0];
-      if (reactions[1] === winner) winMsg = poll.options[1];
-      if (reactions[2] === winner) winMsg = poll.options[2];
-      if (reactions[3] === winner) winMsg = poll.options[3];
-      if (reactions[4] === winner) winMsg = poll.options[4];
+      if (reactions[0] === winner) winMsg = options[0];
+      if (reactions[1] === winner) winMsg = options[1];
+      if (reactions[2] === winner) winMsg = options[2];
+      if (reactions[3] === winner) winMsg = options[3];
+      if (reactions[4] === winner) winMsg = options[4];
 
       await message.edit({
         embeds: [

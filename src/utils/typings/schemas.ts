@@ -36,7 +36,7 @@ export interface IApplication {
   name: string;
   description?: string;
 
-  questions: Types.Array<{
+  questions?: Types.Array<{
     question: string;
     description?: string;
     type: 'multiple' | 'checkbox' | 'short' | 'paragraph';
@@ -44,18 +44,18 @@ export interface IApplication {
   }>;
 
   submissions_channel: Snowflake;
-  submissions_managers: Types.Array<Snowflake>;
+  submissions_managers?: Types.Array<Snowflake>;
 
-  ignored_roles: Types.Array<Snowflake>;
-  allowed_roles: Types.Array<Snowflake>;
+  ignored_roles?: Types.Array<Snowflake>;
+  allowed_roles?: Types.Array<Snowflake>;
   reapply: boolean;
   dashboard_allowed: boolean;
   anonymous: boolean;
   cooldown_enabled: boolean;
   cooldown: string;
 
-  add_roles: Types.Array<Snowflake>;
-  remove_roles: Types.Array<Snowflake>;
+  add_roles?: Types.Array<Snowflake>;
+  remove_roles?: Types.Array<Snowflake>;
 
   date: string;
 }
@@ -67,7 +67,7 @@ export interface IApplicationAnswer {
 
   userId?: Snowflake;
   time: string;
-  answers: Types.Array<string>;
+  answers?: Types.Array<string>;
   state: Status;
 }
 
@@ -138,10 +138,10 @@ export interface ILevelConfig {
   commandXp: boolean;
   commandXpMultiplier: number;
 
-  excludedChannels: Types.Array<Snowflake> | never[];
-  excludedRoles: Types.Array<Snowflake> | never[];
+  excludedChannels?: Types.Array<Snowflake>;
+  excludedRoles?: Types.Array<Snowflake>;
 
-  rewards: Types.Array<{ level: number; role: Snowflake }> | never[];
+  rewards?: Types.Array<{ level: number; role: Snowflake }>;
   rewardsMode: 'stack' | 'replace';
   removeRewards: boolean;
 
@@ -158,9 +158,9 @@ export interface ILoggingConfig {
   guildId: Snowflake;
   enabled: boolean;
   channelId: string;
-  excludedChannels: Types.Array<Snowflake> | never[];
-  excludedCategories: Types.Array<Snowflake> | never[];
-  events: Types.Array<string>;
+  excludedChannels?: Types.Array<Snowflake>;
+  excludedCategories?: Types.Array<Snowflake>;
+  events?: Types.Array<string>;
 }
 
 export interface IModerationConfig {
@@ -197,7 +197,7 @@ export interface IPoll {
 
   duration: string;
   optionsCount: number;
-  options: Types.Array<any>; //todo Debug to see value
+  options?: Types.Array<any>; //todo Debug to see value
 
   created: string;
   endTimestamp: string;
@@ -208,7 +208,7 @@ export interface IServer {
   locale: string;
   color: ColorResolvable;
   updatesChannel: Snowflake;
-  disabledCommands: Types.Array<string> | never[];
+  disabledCommands?: Types.Array<string>;
 }
 
 export interface IResponder {
@@ -217,12 +217,12 @@ export interface IResponder {
   wildcard: boolean;
 
   type: 'message' | 'reaction';
-  embed: any; //? Option not implemented in Dashboard
-  message: string;
-  reaction: string;
+  embed?: any; //? Option not implemented in Dashboard
+  message?: string;
+  reaction?: string;
 
-  ignored_channels: Types.Array<Snowflake>;
-  ignored_roles: Types.Array<Snowflake>;
+  ignored_channels?: Types.Array<Snowflake>;
+  ignored_roles?: Types.Array<Snowflake>;
 }
 
 export interface IPollConfig {
@@ -258,8 +258,8 @@ export interface IReactionRoles {
   guildId: Snowflake;
   channelId: Snowflake;
   reqPermission: Perm;
-  reqRoles: Types.Array<Snowflake>;
-  excludedRoles: Types.Array<Snowflake>;
+  reqRoles?: Types.Array<Snowflake>;
+  excludedRoles?: Types.Array<Snowflake>;
   roleId: Snowflake;
   messageId: Snowflake;
   emoji: string;
@@ -315,7 +315,7 @@ export interface ITicket {
   closed: boolean;
 
   owner: Snowflake;
-  users: Types.Array<Snowflake>;
+  users?: Types.Array<Snowflake>;
   staff: Snowflake;
 }
 
@@ -326,7 +326,7 @@ export interface ITicketConfig {
   openCategory: Snowflake;
   closedCategory: Snowflake;
 
-  staffRoles: Types.Array<Snowflake> | never[];
+  staffRoles?: Types.Array<Snowflake>;
   staffPing: Snowflake;
   topicButton: boolean;
 
@@ -361,7 +361,7 @@ export interface IWelcomeConfig {
   leaveType: MessageType;
   leaveMessage: Message;
 
-  joinRole: Types.Array<{ role: Snowflake; delay: number; bot: true }> | never[];
+  joinRole?: Types.Array<{ role: Snowflake; delay: number; bot: true }>;
   joinRoleEnabled: boolean;
 
   joinDM: boolean;

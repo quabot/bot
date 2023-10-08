@@ -5,7 +5,6 @@ export const reqString = {
 
 export const optString = {
   type: String,
-  required: false,
 };
 
 export const reqNum = {
@@ -16,7 +15,6 @@ export const reqNum = {
 
 export const optObject = {
   type: Object,
-  required: false,
 };
 
 export const optId = {
@@ -38,4 +36,5 @@ export const reqObject = {
 export const reqArray = {
   type: Array,
   required: true,
+  default: [],
 };

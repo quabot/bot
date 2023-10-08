@@ -31,7 +31,7 @@ export async function getWelcomeConfig(client: Client, guildId: Snowflake) {
           url: '',
         },
         description: 'Welcome to **{server}**, {user}! You are the {members}th member.',
-        fields: [], //? is this right
+        fields: [],
         url: '',
         thumbnail: '',
         image: '',
@@ -61,7 +61,6 @@ export async function getWelcomeConfig(client: Client, guildId: Snowflake) {
         image: '',
       },
 
-      joinRole: [], //? is this right
       joinRoleEnabled: true,
 
       joinDM: false,

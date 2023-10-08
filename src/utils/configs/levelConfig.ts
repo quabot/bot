@@ -100,10 +100,6 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
       commandXp: true, // xp when quabot interactions are done
       commandXpMultiplier: 0.5,
 
-      excludedChannels: [],
-      excludedRoles: [],
-
-      rewards: [],
       rewardsMode: 'stack',
       removeRewards: true,
 

@@ -15,7 +15,6 @@ export async function getServerConfig(client: Client, guildId: Snowflake) {
       locale: 'en-us',
       color: '#416683',
       updatesChannel: 'none',
-      disabledCommands: [],
     },
   });
 }

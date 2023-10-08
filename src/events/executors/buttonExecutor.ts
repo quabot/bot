@@ -3,7 +3,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import { handleError } from '@constants/errorHandler';
 import { EventArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   event: 'interactionCreate',
   name: 'buttonExecutor',
   async execute({ client }: EventArgs, interaction: ButtonInteraction) {

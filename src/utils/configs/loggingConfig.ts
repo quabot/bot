@@ -15,8 +15,8 @@ export async function getLoggingConfig(client: Client, guildId: Snowflake) {
       guildId,
       enabled: false,
       channelId: 'none',
-      excludedChannels: [],
-      excludedCategories: [],
+      excludedChannels: new Types.Array(),
+      excludedCategories: new Types.Array(),
       events: new Types.Array(
         'emojiCreate',
         'emojiDelete',
