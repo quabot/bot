@@ -1,29 +1,32 @@
-const { Client } = require('discord.js');
-const Poll = require('@schemas/Poll');
-const { getPollConfig } = require('@configs/pollConfig');
-const { getServerConfig } = require('@configs/serverConfig');
-const { Embed } = require('@constants/embed');
+import type { Client } from '@classes/discord';
+import Poll from '@schemas/Poll';
+import { getPollConfig } from '@configs/pollConfig';
+import { getServerConfig } from '@configs/serverConfig';
+import { Embed } from '@constants/embed';
+import type { NonNullMongooseReturn } from '@typings/mongoose';
+import type { IPoll } from '@typings/schemas';
+import { ChannelType } from 'discord.js';
 
-/**
- * @param {Client} client
- */
-async function endPoll(client, document) {
-  const poll = await Poll.findOne({
+export async function endPoll(client: Client, document: NonNullMongooseReturn<IPoll>) {
+  const query = {
     guildId: document.guildId,
     interaction: document.interaction,
-  });
+  };
+
+  const poll = await Poll.findOne(query);
   if (!poll) return;
 
   const guild = client.guilds.cache.get(poll.guildId);
   if (!guild) return;
 
   const channel = guild.channels.cache.get(poll.channel);
-  if (!channel) return;
+  if (!channel || channel.type === ChannelType.GuildCategory) return;
 
   const config = await getPollConfig(client, document.guildId);
-  if (!config.enabled) return;
+  if (!config?.enabled) return;
 
   const colorConfig = await getServerConfig(client, document.guildId);
+  if (!colorConfig) return;
 
   channel.messages
     .fetch(`${poll.message}`)
@@ -67,7 +70,5 @@ async function endPoll(client, document) {
     })
     .catch(() => {});
 
-  await Poll.findOneAndDelete(poll);
+  await Poll.findOneAndDelete(query);
 }
-
-module.exports = { endPoll };

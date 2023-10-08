@@ -1,9 +1,6 @@
-const { Client, Colors, EmbedBuilder } = require('discord.js');
+import { ChannelType, Client, Colors, EmbedBuilder } from 'discord.js';
 
-/**
- * @param {Client} client
- */
-const handleError = (client, error, location) => {
+export async function handleError(client: Client, error: any, location: string) {
   const blocked_codes = [
     4014, 10004, 10003, 10007, 10008, 10062, 30005, 30010, 30013, 40060, 50006, 50007, 50008, 240000, 200001, 200000,
   ];
@@ -11,11 +8,11 @@ const handleError = (client, error, location) => {
 
   console.log(error);
 
-  const guild = client.guilds.cache.get(process.env.GUILD_ID);
-  const channel = guild.channels.cache.get(process.env.ERROR_CHANNEL_ID);
-  if (!channel) return;
+  const guild = client.guilds.cache.get(process.env.GUILD_ID!);
+  const channel = guild?.channels.cache.get(process.env.ERROR_CHANNEL_ID!);
+  if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-  channel.send({
+  await channel.send({
     embeds: [
       new EmbedBuilder()
         .setColor(Colors.Red)
@@ -24,6 +21,4 @@ const handleError = (client, error, location) => {
         .setDescription(`\`\`\`${error.message}\`\`\`\n**Location/Command:**\n\`${location}\``),
     ],
   });
-};
-
-module.exports = { handleError };
+}

@@ -7,12 +7,11 @@ import type { Event } from '@typings/structures';
 import type { EventArgs } from '@typings/functionArgs';
 
 let loaded = 0;
-let total = 0;
 
 export default async (client: Client) => {
-  (await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.js`)).map(async eventFile => {
-    total += 1;
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.js`);
 
+  files.forEach(async eventFile => {
     const event: Event = await import(eventFile);
     if (!event.name || !event.event) return;
 
@@ -24,8 +23,8 @@ export default async (client: Client) => {
       client.on(event.event, (...args) => event.execute(defaultArgs, ...args).catch(e => console.log(e)));
     }
 
-    loaded += 1;
+    loaded++;
   });
 
-  consola.success(`Loaded ${loaded}/${total} events.`);
+  consola.success(`Loaded ${loaded}/${files.length} events.`);
 };

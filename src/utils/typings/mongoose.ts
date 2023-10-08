@@ -1,4 +1,4 @@
-import type { ColorResolvable, EmbedField } from 'discord.js';
+import type { EmbedField } from 'discord.js';
 import type { Document as MongooseDoc, Types } from 'mongoose';
 
 //* The return type of Mongoose function like 'findOne' and 'save'
@@ -21,7 +21,7 @@ export type MessageType = 'embed' | 'text';
 export interface Message {
   content: string;
   title: string;
-  color: ColorResolvable;
+  color: string;
   timestamp: boolean;
   footer: { text: string; icon: string };
   author: { text: string; icon: string; url: string };
@@ -75,5 +75,5 @@ export interface LevelCard {
 
 export type Color =
   | `#${string}`
-  | `rgb(${number}, ${number}, ${number})`
-  | `rgba(${number}, ${number}, ${number}, ${number})`;
+  | `rgb(${number},${number},${number})`
+  | `rgba(${number},${number},${number},${number})`;

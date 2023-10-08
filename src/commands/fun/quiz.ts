@@ -68,7 +68,7 @@ export default {
 
       //* Set the user's attempts for the score
       const userDB = await getUserGame(i.user.id, client);
-      if (userDB) userDB.quizTries += 1;
+      if (userDB) userDB.quizTries++;
 
       //* Check what the user answered and update the message accordingly.
       const answeredAnswer = answers[parseInt(i.customId)];
@@ -111,7 +111,7 @@ export default {
           components: [row2],
         });
 
-        if (userDB) userDB.quizPoints += 1;
+        if (userDB) userDB.quizPoints++;
         if (userDB) await userDB.save();
       } else {
         const row2 = new ActionRowBuilder<ButtonBuilder>();

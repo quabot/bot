@@ -793,8 +793,8 @@ export default {
           });
 
           //* Update the DB and save it.
-          userDB.typePoints += 1;
-          userDB.typeTries += 1;
+          userDB.typePoints++;
+          userDB.typeTries++;
           if (totalTime < userDB.typeFastest) userDB.typeFastest = totalTime;
           await userDB.save();
         } else {
@@ -824,7 +824,7 @@ export default {
 
           //* Update the DB and save it.
           userDB.typePoints -= 1;
-          userDB.typeTries += 1;
+          userDB.typeTries++;
           await userDB.save();
         }
       });

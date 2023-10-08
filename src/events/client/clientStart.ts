@@ -10,8 +10,8 @@ module.exports = {
   async execute({ client }: EventArgs) {
     client.guilds.cache.forEach(guild => guild.members.fetch().catch(() => {}));
 
-    function setActivity(activity) {
-      client.user.setActivity({ type: ActivityType.Watching, name: activity });
+    function setActivity(activity: string) {
+      client.user?.setActivity({ type: ActivityType.Watching, name: activity });
     }
     (function loop() {
       setTimeout(function () {
@@ -29,6 +29,6 @@ module.exports = {
       }, 40000);
     })();
 
-    consola.info(`Logged in as ${client.user.tag}.`);
+    consola.info(`Logged in as ${client.user?.tag}.`);
   },
 };

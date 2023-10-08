@@ -40,6 +40,7 @@
   "devDependencies": {
     "@types/glob": "^8.1.0",
     "@types/lodash": "^4.14.197",
+    "@types/ms": "^0.7.32",
     "eslint": "^8.47.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.2",
@@ -47,6 +48,7 @@
     "typescript": "^5.2.2"
   },
   "_moduleAliases": {
+    "@root": "./",
     "@configs": "dist/utils/configs/",
     "@constants": "dist/utils/constants/",
     "@functions": "dist/utils/functions/",

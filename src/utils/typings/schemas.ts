@@ -1,5 +1,7 @@
 import type { ColorResolvable, Snowflake } from 'discord.js';
 import type { LevelCard, Message, MessageType, MessageTypeWithCard, Status } from '@typings/mongoose';
+import type { Perm } from '@constants/discord';
+import { Types } from 'mongoose';
 
 export interface IUserGame {
   userId: Snowflake;
@@ -34,26 +36,26 @@ export interface IApplication {
   name: string;
   description?: string;
 
-  questions: {
+  questions: Types.Array<{
     question: string;
     description?: string;
     type: 'multiple' | 'checkbox' | 'short' | 'paragraph';
     required: boolean;
-  }[];
+  }>;
 
   submissions_channel: Snowflake;
-  submissions_managers: Snowflake[];
+  submissions_managers: Types.Array<Snowflake>;
 
-  ignored_roles: Snowflake[];
-  allowed_roles: Snowflake[];
+  ignored_roles: Types.Array<Snowflake>;
+  allowed_roles: Types.Array<Snowflake>;
   reapply: boolean;
   dashboard_allowed: boolean;
   anonymous: boolean;
   cooldown_enabled: boolean;
   cooldown: string;
 
-  add_roles: Snowflake[];
-  remove_roles: Snowflake[];
+  add_roles: Types.Array<Snowflake>;
+  remove_roles: Types.Array<Snowflake>;
 
   date: string;
 }
@@ -65,7 +67,7 @@ export interface IApplicationAnswer {
 
   userId?: Snowflake;
   time: string;
-  answers: string[];
+  answers: Types.Array<string>;
   state: Status;
 }
 
@@ -136,10 +138,10 @@ export interface ILevelConfig {
   commandXp: boolean;
   commandXpMultiplier: number;
 
-  excludedChannels: Snowflake[];
-  excludedRoles: Snowflake[];
+  excludedChannels: Types.Array<Snowflake> | never[];
+  excludedRoles: Types.Array<Snowflake> | never[];
 
-  rewards: { level: number; role: Snowflake }[];
+  rewards: Types.Array<{ level: number; role: Snowflake }> | never[];
   rewardsMode: 'stack' | 'replace';
   removeRewards: boolean;
 
@@ -156,9 +158,9 @@ export interface ILoggingConfig {
   guildId: Snowflake;
   enabled: boolean;
   channelId: string;
-  excludedChannels: Snowflake[];
-  excludedCategories: Snowflake[];
-  events: string[];
+  excludedChannels: Types.Array<Snowflake> | never[];
+  excludedCategories: Types.Array<Snowflake> | never[];
+  events: Types.Array<string>;
 }
 
 export interface IModerationConfig {
@@ -195,7 +197,7 @@ export interface IPoll {
 
   duration: string;
   optionsCount: number;
-  options: any[]; //todo Debug to see value
+  options: Types.Array<any>; //todo Debug to see value
 
   created: string;
   endTimestamp: string;
@@ -206,7 +208,7 @@ export interface IServer {
   locale: string;
   color: ColorResolvable;
   updatesChannel: Snowflake;
-  disabledCommands: string[]; //! Mr Joas should not hardCode this in dashboard
+  disabledCommands: Types.Array<string> | never[];
 }
 
 export interface IResponder {
@@ -215,12 +217,12 @@ export interface IResponder {
   wildcard: boolean;
 
   type: 'message' | 'reaction';
-  embed: any; //! Option not implemented in Dashboard
+  embed: any; //? Option not implemented in Dashboard
   message: string;
   reaction: string;
 
-  ignored_channels: Snowflake[];
-  ignoredRoles: Snowflake[];
+  ignored_channels: Types.Array<Snowflake>;
+  ignored_roles: Types.Array<Snowflake>;
 }
 
 export interface IPollConfig {
@@ -255,9 +257,9 @@ export interface IReactionConfig {
 export interface IReactionRoles {
   guildId: Snowflake;
   channelId: Snowflake;
-  reqPermission: string; //! Gotta make type
-  reqRoles: Snowflake[];
-  excludedRoles: Snowflake[];
+  reqPermission: Perm;
+  reqRoles: Types.Array<Snowflake>;
+  excludedRoles: Types.Array<Snowflake>;
   roleId: Snowflake;
   messageId: Snowflake;
   emoji: string;
@@ -300,7 +302,7 @@ export interface ISuggestionConfig {
     deny: `#${string}`;
     pending: `#${string}`;
     deleted: `#${string}`;
-  }; //! Option not implemented in Dashboard
+  }; //? Option not implemented in Dashboard
 }
 
 export interface ITicket {
@@ -313,7 +315,7 @@ export interface ITicket {
   closed: boolean;
 
   owner: Snowflake;
-  users: Snowflake[];
+  users: Types.Array<Snowflake>;
   staff: Snowflake;
 }
 
@@ -324,7 +326,7 @@ export interface ITicketConfig {
   openCategory: Snowflake;
   closedCategory: Snowflake;
 
-  staffRoles: Snowflake[];
+  staffRoles: Types.Array<Snowflake> | never[];
   staffPing: Snowflake;
   topicButton: boolean;
 
@@ -350,20 +352,20 @@ export interface IWelcomeConfig {
   guildId: Snowflake;
 
   joinEnabled: boolean;
-  joinChannel: Snowflake;
+  joinChannel: Snowflake | 'none';
   joinType: MessageType;
   joinMessage: Message;
 
   leaveEnabled: boolean;
-  leaveChannel: Snowflake;
+  leaveChannel: Snowflake | 'none';
   leaveType: MessageType;
   leaveMessage: Message;
 
-  joinRole: { role: Snowflake; delay: number; bot: true }[];
+  joinRole: Types.Array<{ role: Snowflake; delay: number; bot: true }> | never[];
   joinRoleEnabled: boolean;
 
-  joinDm: boolean;
-  joinDmType: MessageType;
+  joinDM: boolean;
+  joinDMType: MessageType;
   dm: Message;
 }
 

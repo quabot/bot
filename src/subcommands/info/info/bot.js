@@ -13,9 +13,11 @@ module.exports = {
   async execute(client, interaction, color) {
     await interaction.deferReply();
 
+    const package = require('../../../../package.json');
+
     if (!client.cache.has('client-info'))
       client.cache.set('client-info', {
-        djs: require('../../../../package.json').dependencies['discord.js'],
+        djs: package.dependencies['discord.js'],
         njs: process.version,
         cpu: cpus()[0].model,
         platform: process.platform.replace('win32', 'windows'),
@@ -62,7 +64,7 @@ module.exports = {
             { name: 'Node.js', value: `\`${info.njs}\``, inline: true },
             {
               name: 'Version',
-              value: `\`${require('../../../../package.json').version}\``,
+              value: `\`${package.version}\``,
               inline: true,
             },
 
@@ -76,7 +78,7 @@ module.exports = {
             },
             { name: 'Commands', value: `${info.commands}`, inline: true },
 
-            { name: 'CPU', value: `\`\`\`${info.cpu}\`\`\``, inline: false },
+            { name: 'CPU', value: `\`\`\`${info.cpu}\`\`\`` },
           ),
       ],
     });

@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, reqArray, reqObject, reqNum } from '@constants/schemas';
+import type { ILevelConfig } from '@typings/schemas';
 
-//! type has to be added, but arrayTypes are weird in Mongoose
-export default model(
+export default model<ILevelConfig>(
   'Level-Config',
   new Schema({
     guildId: reqString,

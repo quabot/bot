@@ -8,7 +8,7 @@ export async function getGiveawayConfig(guildId: Snowflake, client: Client) {
   return await getFromCollection<IGiveawayConfig>({
     Schema: GiveawayConfig,
     query: { guildId },
-    cacheName: `${guildId}-user-game`,
+    cacheName: `${guildId}-giveaway-config`,
     client,
     defaultObj: {
       guildId,

@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, reqArray } from '@constants/schemas';
+import type { ILoggingConfig } from '@typings/schemas';
 
-//! type has to be added, but arrayTypes are weird in Mongoose
-export default model(
+export default model<ILoggingConfig>(
   'Loggin-Config',
   new Schema({
     guildId: reqString,

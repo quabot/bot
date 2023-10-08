@@ -1,22 +1,15 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-  PermissionFlagsBits,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require('discord.js');
-const { getModerationConfig } = require('@configs/moderationConfig');
-const { getUser } = require('@configs/user');
-const { Embed } = require('@constants/embed');
-const Punishment = require('@schemas/Punishment');
-const { randomUUID } = require('crypto');
-const { CustomEmbed } = require('@constants/customEmbed');
-const ms = require('ms');
-const { tempUnban } = require('@functions/unban');
+import { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { getModerationConfig } from '@configs/moderationConfig';
+import { getUser } from '@configs/user';
+import { Embed } from '@constants/embed';
+import Punishment from '@schemas/Punishment';
+import { randomUUID } from 'crypto';
+import { CustomEmbed } from '@constants/customEmbed';
+import ms from 'ms';
+import { tempUnban } from '@functions/unban';
+import type { CommandArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('tempban')
     .setDescription('Temporarily ban a user.')
@@ -47,20 +40,16 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {
-    const private = interaction.options.getBoolean('private') ?? false;
 
-    await interaction.deferReply({ ephemeral: private });
+  async execute({ client, interaction, color }: CommandArgs) {
+    const ephemeral = interaction.options.getBoolean('private') ?? false;
+
+    await interaction.deferReply({ ephemeral });
 
     const config = await getModerationConfig(client, interaction.guildId);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "There was an error. Please try again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
@@ -95,9 +84,7 @@ module.exports = {
     const userDatabase = await getUser(interaction.guildId, member.id);
     if (!userDatabase)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription('The user has been added to our database. Please run the command again.'),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     let ban = true;
@@ -222,7 +209,7 @@ module.exports = {
               value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
               inline: true,
             },
-            { name: 'Reason', value: `${reason}`, inline: false },
+            { name: 'Reason', value: `${reason}` },
           ),
         ],
       });

@@ -28,7 +28,8 @@ export interface ModalArgs extends BaseArgs {
   interaction: ModalSubmitInteraction;
 }
 
-export interface WsEventArgs extends BaseArgs {
+export interface WsEventArgs {
+  client: Client;
   data: any;
 }
 

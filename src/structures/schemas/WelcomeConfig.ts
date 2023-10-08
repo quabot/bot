@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, reqObject, reqArray } from '@constants/schemas';
+import { IWelcomeConfig } from '@typings/schemas';
 
-//! type has to be added, but arrayTypes are weird in Mongoose
-export default model(
+export default model<IWelcomeConfig>(
   'Welcome-Config',
   new Schema({
     guildId: reqString,

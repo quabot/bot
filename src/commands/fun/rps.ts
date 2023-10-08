@@ -40,7 +40,7 @@ export default {
       collector.stop();
 
       //* Update the tries
-      if (userDB) userDB.rpsTries += 1;
+      if (userDB) userDB.rpsTries++;
 
       //* Pick an option as bot and check the user's choice.
       const options: ('rock' | 'paper' | 'scissors')[] = ['rock', 'paper', 'scissors'];
@@ -99,7 +99,7 @@ export default {
           ],
         });
 
-        userDB.rpsPoints += 1;
+        userDB.rpsPoints++;
         await userDB.save();
       } else {
         await i.update({

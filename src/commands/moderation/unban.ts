@@ -1,8 +1,9 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
-const { getModerationConfig } = require('@configs/moderationConfig');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { getModerationConfig } from '@configs/moderationConfig';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('unban')
     .setDescription('Unban a user.')
@@ -14,20 +15,16 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
-  
-  async execute({ client, interaction, color }: CommandArgs) {
-    const private = interaction.options.getBoolean('private') ?? false;
 
-    await interaction.deferReply({ ephemeral: private });
+  async execute({ client, interaction, color }: CommandArgs) {
+    const ephemeral = interaction.options.getBoolean('private') ?? false;
+
+    await interaction.deferReply({ ephemeral });
 
     const config = await getModerationConfig(client, interaction.guildId);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "There was an error. Please try again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     const userId = interaction.options.getString('userid').slice(0, 800);

@@ -89,7 +89,7 @@ module.exports = {
             {
               name: 'Reason',
               value: punishment.reason,
-              inline: false,
+              ,
             },
           ),
       ],

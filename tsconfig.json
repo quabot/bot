@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*.ts", "src/structures/handlers/wsHandler.js"],
+  "include": ["src/**/*.ts", "src/structures/handlers/wsHandler.ts"],
   "compilerOptions": {
     // Type Checking
     "allowUnreachableCode": false,
@@ -31,6 +31,9 @@
 
     // Completeness
     "skipLibCheck": true,
+
+    // JSON
+    "resolveJsonModule": true,
 
     // _moduleAliases
     "baseUrl": "./src",

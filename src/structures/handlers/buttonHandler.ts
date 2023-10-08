@@ -15,7 +15,7 @@ export default async (client: Client) => {
     if (!button.name) return;
 
     client.buttons.set(button.name, button);
-    loaded += 1;
+    loaded++;
   });
 
   consola.success(`Loaded ${loaded}/${files.length} buttons.`);

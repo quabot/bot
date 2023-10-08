@@ -30,7 +30,7 @@ export default {
     //* Create the different embeds for the about system.
     const embed1 = new Embed(color)
       .setAuthor({
-        name: `QuaBot v${require('../../../package.json').version}`,
+        name: `QuaBot v${(await import('../../../package.json')).version}`,
         iconURL: `${clientUser.avatarURL({ forceStatic: false })}`,
       })
       .setThumbnail(`${clientUser.avatarURL({ forceStatic: false })}`)

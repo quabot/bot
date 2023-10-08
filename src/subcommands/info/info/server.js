@@ -29,7 +29,7 @@ module.exports = {
                               guild.createdTimestamp / 1000,
                             )}:R>\n- **Owner**: <@${guild.ownerId}>\n- **Description**: ${guild.description ?? 'Unset'}
                          `,
-              inline: false,
+              ,
             },
             {
               name: '**Members**',
@@ -38,7 +38,7 @@ module.exports = {
                            totalMembersSize - humanMembersSize
                          }
                          `,
-              inline: false,
+              ,
             },
             {
               name: '**Channels:**',
@@ -62,7 +62,7 @@ module.exports = {
                                   guild.channels.cache.filter(c => c.type === ChannelType.PrivateThread).size
                                 }
                     `,
-              inline: false,
+              ,
             },
           ),
       ],

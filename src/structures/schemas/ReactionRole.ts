@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqArray } from '@constants/schemas';
+import type { IReactionRoles } from '@typings/schemas';
 
-//! type has to be added, but arrayTypes are weird in Mongoose
-export default model(
+export default model<IReactionRoles>(
   'Reaction-Roles',
   new Schema({
     guildId: reqString,

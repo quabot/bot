@@ -19,7 +19,7 @@ export default async function (client: Client) {
     client.contexts.set(menu.data.name, menu);
     ContextList.push(menu.data);
 
-    loaded += 1;
+    loaded++;
   });
 
   consola.success(`Loaded ${loaded}/${files.length} context menus.`);

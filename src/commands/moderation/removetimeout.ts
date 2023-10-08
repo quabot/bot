@@ -1,9 +1,10 @@
-const { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
-const { getModerationConfig } = require('@configs/moderationConfig');
-const { getUser } = require('@configs/user');
-const { Embed } = require('@constants/embed');
+import { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } from 'discord.js';
+import { getModerationConfig } from '@configs/moderationConfig';
+import { getUser } from '@configs/user';
+import { Embed } from '@constants/embed';
+import type { CommandArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('removetimeout')
     .setDescription('Remove the timeout from a user.')
@@ -15,24 +16,20 @@ module.exports = {
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .setDMPermission(false),
-  
+
   async execute({ client, interaction, color }: CommandArgs) {
-    const private = interaction.options.getBoolean('private') ?? false;
+    const ephemeral = interaction.options.getBoolean('private') ?? false;
 
-    await interaction.deferReply({ ephemeral: private });
+    await interaction.deferReply({ ephemeral });
 
-    const config = await getModerationConfig(client, interaction.guildId);
+    const config = await getModerationConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "There was an error. Please try again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     const member = interaction.options.getMember('user');
-    await getUser(interaction.guildId, member.id);
+    await getUser(interaction.guildId, member.id, client);
 
     if (!member)
       return await interaction.editReply({
@@ -43,6 +40,8 @@ module.exports = {
       return interaction.editReply({
         embeds: [new Embed(color).setDescription('You cannot remove a timeout from yourself.')],
       });
+
+    if (!(interaction.member?.roles as any) instanceof GuildMemberRoleManager) return;
 
     if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition)
       return interaction.editReply({

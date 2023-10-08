@@ -75,7 +75,7 @@ module.exports = {
             {
               name: 'Suggestion',
               value: `${suggestion.suggestion}`,
-              inline: false,
+              ,
             },
           ),
         ],

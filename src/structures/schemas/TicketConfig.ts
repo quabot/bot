@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, reqArray } from '@constants/schemas';
+import type { ITicketConfig } from '@typings/schemas';
 
-//! type has to be added, but arrayTypes are weird in Mongoose
-export default model(
+export default model<ITicketConfig>(
   'Ticket-Config',
   new Schema({
     guildId: reqString,

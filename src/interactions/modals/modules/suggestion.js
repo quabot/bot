@@ -124,7 +124,7 @@ module.exports = {
             value: `[Click to jump](${msg.url})`,
             inline: true,
           },
-          { name: 'Suggestion', value: `${suggestion}`, inline: false },
+          { name: 'Suggestion', value: `${suggestion}` },
         ),
       ],
       components: [

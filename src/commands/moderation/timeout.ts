@@ -1,95 +1,87 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  CommandInteraction,
-  PermissionFlagsBits,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require('discord.js');
-const { getModerationConfig } = require('@configs/moderationConfig');
-const { getUser } = require('@configs/user');
-const { Embed } = require('@constants/embed');
-const Punishment = require('@schemas/Punishment');
-const { randomUUID } = require('crypto');
-const { CustomEmbed } = require('@constants/customEmbed');
+import { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { getModerationConfig } from '@configs/moderationConfig';
+import { getUser } from '@configs/user';
+import { Embed } from '@constants/embed';
+import Punishment from '@schemas/Punishment';
+import { randomUUID } from 'crypto';
+import { CustomEmbed } from '@constants/customEmbed';
+import ms from 'ms';
+import type { CommandArgs } from '@typings/functionArgs';
 
-//* Create the command and pass the SlashCommandBuilder to the handler.
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
-    .setName('kick')
-    .setDescription('Kick a user.')
-    .addUserOption(option => option.setName('user').setDescription('The user you wish to kick.').setRequired(true))
+    .setName('timeout')
+    .setDescription('Timeout a user.')
+    .addUserOption(option => option.setName('user').setDescription('The user you wish to timeout.').setRequired(true))
     .addStringOption(option =>
-      option.setName('reason').setDescription('The reason for kicking the user.').setRequired(false),
+      option.setName('duration').setDescription('How long should the user be timed out.').setRequired(true),
+    )
+    .addStringOption(option =>
+      option.setName('reason').setDescription('The reason for timing out the user.').setRequired(false),
     )
     .addBooleanOption(option =>
       option.setName('private').setDescription('Should the message be visible to you only?').setRequired(false),
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .setDMPermission(false),
-  
+
   async execute({ client, interaction, color }: CommandArgs) {
-    //* Determine if the command should be ephemeral or not.
-    const private = interaction.options.getBoolean('private') ?? false;
+    const ephemeral = interaction.options.getBoolean('private') ?? false;
 
-    //* Defer the reply to give the user an instant response.
-    await interaction.deferReply({ ephemeral: private });
+    await interaction.deferReply({ ephemeral });
 
-    //* Get the moderation config and return if it doesn't exist.
     const config = await getModerationConfig(client, interaction.guildId);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "There was an error. Please try again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    //* Get the reason and member and return if it doesn't exist.
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
+    const duration = interaction.options.getString('duration').slice(0, 800);
     const member = interaction.options.getMember('user');
-    if (!member || !reason)
+    if (!member || !reason || !duration)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
       });
     await getUser(interaction.guildId, member.id);
 
-    //* Prevent a non-allowed kick.
+    if (!ms(duration))
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            'Please enter a valid duration. This could be "1d" for 1 day, "1w" for 1 week or "1hour" for 1 hour.',
+          ),
+        ],
+      });
+
     if (member === interaction.member)
       return interaction.editReply({
-        embeds: [new Embed(color).setDescription('You cannot kick yourself.')],
+        embeds: [new Embed(color).setDescription('You cannot timeout yourself.')],
       });
 
     if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition)
       return interaction.editReply({
-        embeds: [new Embed(color).setDescription('You cannot kick a user with roles higher than your own.')],
+        embeds: [new Embed(color).setDescription('You cannot timeout a user with roles higher than your own.')],
       });
 
-    //* Get the user's database and return if it doesn't exist.
     const userDatabase = await getUser(interaction.guildId, member.id);
     if (!userDatabase)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription('The user has been added to our database. Please run the command again.'),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    //* Kick the user and return if it fails.
-    let kick = true;
-    await member.kick(reason).catch(async e => {
-      kick = false;
+    let timeout = true;
+    await member.timeout(ms(duration), reason).catch(async e => {
+      timeout = false;
 
       await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Failed to kick the user.')],
+        embeds: [new Embed(color).setDescription('Failed to timeout the user.')],
       });
     });
 
-    if (!kick) return;
+    if (!timeout) return;
 
-    //* Update the database.
-    userDatabase.kicks += 1;
+    userDatabase.timeouts += 1;
     await userDatabase.save();
 
     const id = randomUUID();
@@ -102,19 +94,18 @@ module.exports = {
       moderatorId: interaction.user.id,
       time: new Date().getTime(),
 
-      type: 'kick',
+      type: 'timeout',
       id,
       reason,
-      duration: 'none',
+      duration,
       active: false,
     });
     await NewPunishment.save();
 
-    //* Update the reply to confirm the kick.
     interaction.editReply({
       embeds: [
         new Embed(color)
-          .setTitle('User Kicked')
+          .setTitle('User Timed Out')
           .setDescription(`**User:** ${member} (@${member.user.username})\n**Reason:** ${reason}`)
           .addFields(
             {
@@ -132,7 +123,6 @@ module.exports = {
       ],
     });
 
-    //* Send the DM to the user.
     const sentFrom = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
@@ -141,12 +131,13 @@ module.exports = {
         .setDisabled(true),
     );
 
-    if (config.kickDM) {
+    if (config.timeoutDM) {
       const parseString = text =>
         text
           .replaceAll('{reason}', reason)
           .replaceAll('{user}', `${member}`)
           .replaceAll('{moderator}', interaction.user)
+          .replaceAll('{duration}', duration)
           .replaceAll('{staff}', interaction.user)
           .replaceAll('{server}', interaction.guild?.name ?? '')
           .replaceAll('{color}', color)
@@ -157,35 +148,38 @@ module.exports = {
 
       await member
         .send({
-          embeds: [new CustomEmbed(config.kickDMMessage, parseString)],
+          embeds: [new CustomEmbed(config.timeoutDMMessage, parseString)],
           components: [sentFrom],
-          content: parseString(config.kickDMMessage.content),
+          content: parseString(config.timeoutDMMessage.content),
         })
         .catch(() => {});
     }
 
-    //* Send the log to the log channel.
     if (config.channel) {
       const channel = interaction.guild.channels.cache.get(config.channelId);
       if (!channel) return;
 
       await channel.send({
         embeds: [
-          new Embed(color).setTitle('Member Kicked').addFields(
+          new Embed(color).setTitle('Member Timed Out').addFields(
             {
               name: 'User',
               value: `${member} (@${member.user.username})`,
               inline: true,
             },
-            { name: 'Kicked By', value: `${interaction.user}`, inline: true },
             {
-              name: 'Kicked In',
+              name: 'Timed Out By',
+              value: `${interaction.user}`,
+              inline: true,
+            },
+            {
+              name: 'Timed Out In',
               value: `${interaction.channel}`,
               inline: true,
             },
             {
-              name: 'User Total Kicks',
-              value: `${userDatabase.kicks}`,
+              name: 'User Total Timeouts',
+              value: `${userDatabase.timeouts}`,
               inline: true,
             },
             {
@@ -198,7 +192,7 @@ module.exports = {
               value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
               inline: true,
             },
-            { name: 'Reason', value: `${reason}`, inline: false },
+            { name: 'Reason', value: `${reason}` },
           ),
         ],
       });

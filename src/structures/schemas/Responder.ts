@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { reqString, reqBool, optString, reqArray, optObject } from '@constants/schemas';
+import type { IResponder } from '@typings/schemas';
 
-//! type has to be added, but arrayTypes are weird in Mongoose
-
-export default model(
+export default model<IResponder>(
   'Responses',
   new Schema({
     guildId: reqString,

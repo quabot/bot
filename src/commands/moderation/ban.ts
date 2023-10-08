@@ -1,100 +1,107 @@
-const {
+import {
   SlashCommandBuilder,
-  Client,
-  CommandInteraction,
   PermissionFlagsBits,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-} = require('discord.js');
-const { getModerationConfig } = require('@configs/moderationConfig');
-const { getUser } = require('@configs/user');
-const { Embed } = require('@constants/embed');
-const Punishment = require('@schemas/Punishment');
-const { randomUUID } = require('crypto');
-const { CustomEmbed } = require('@constants/customEmbed');
-const ms = require('ms');
+  GuildMemberRoleManager,
+} from 'discord.js';
+import { getModerationConfig } from '@configs/moderationConfig';
+import { getUser } from '@configs/user';
+import { Embed } from '@constants/embed';
+import Punishment from '@schemas/Punishment';
+import { randomUUID } from 'crypto';
+import { CustomEmbed } from '@constants/customEmbed';
+import type { CommandArgs } from '@typings/functionArgs';
 
-module.exports = {
+//* Create the command and pass the SlashCommandBuilder to the handler.
+export default {
   data: new SlashCommandBuilder()
-    .setName('timeout')
-    .setDescription('Timeout a user.')
-    .addUserOption(option => option.setName('user').setDescription('The user you wish to timeout.').setRequired(true))
-    .addStringOption(option =>
-      option.setName('duration').setDescription('How long should the user be timed out.').setRequired(true),
+    .setName('ban')
+    .setDescription('Ban a user.')
+    .addUserOption(option => option.setName('user').setDescription('The user you wish to ban.').setRequired(true))
+    .addIntegerOption(option =>
+      option
+        .setName('delete_messages')
+        .setDescription('How many of their recent messages to delete.')
+        .setRequired(true)
+        .addChoices(
+          { name: "Don't delete any", value: 0 },
+          { name: 'Previous hour', value: 3600 },
+          { name: 'Previous 6 hours', value: 21600 },
+          { name: 'Previous 12 hours', value: 43200 },
+          { name: 'Previous 24 hours', value: 86400 },
+          { name: 'Previous 3 days', value: 259200 },
+          { name: 'Previous 7 days', value: 604800 },
+        ),
     )
     .addStringOption(option =>
-      option.setName('reason').setDescription('The reason for timing out the user.').setRequired(false),
+      option.setName('reason').setDescription('The reason for banning the user.').setRequired(false),
     )
     .addBooleanOption(option =>
       option.setName('private').setDescription('Should the message be visible to you only?').setRequired(false),
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
-  
+
   async execute({ client, interaction, color }: CommandArgs) {
-    const private = interaction.options.getBoolean('private') ?? false;
+    //* Determine if the command should be ephemeral or not.
+    const ephemeral = interaction.options.getBoolean('private') ?? false;
 
-    await interaction.deferReply({ ephemeral: private });
+    //* Defer the reply to give the user an instant response.
+    await interaction.deferReply({ ephemeral });
 
-    const config = await getModerationConfig(client, interaction.guildId);
+    //* Get the moderation config and return if it doesn't exist.
+    const config = await getModerationConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "There was an error. Please try again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
+    //* Get the user-defined variables and return errors if they're invalid
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
-    const duration = interaction.options.getString('duration').slice(0, 800);
     const member = interaction.options.getMember('user');
-    if (!member || !reason || !duration)
+    const seconds = interaction.options.getInteger('delete_messages');
+    if (!member || !reason || seconds === undefined)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
       });
-    await getUser(interaction.guildId, member.id);
+    await getUser(interaction.guildId!, member.id, client);
 
-    if (!ms(duration))
-      return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            'Please enter a valid duration. This could be "1d" for 1 day, "1w" for 1 week or "1hour" for 1 hour.',
-          ),
-        ],
-      });
-
+    //* Prevent non-allowed bans.
     if (member === interaction.member)
       return interaction.editReply({
-        embeds: [new Embed(color).setDescription('You cannot timeout yourself.')],
+        embeds: [new Embed(color).setDescription('You cannot ban yourself.')],
       });
 
-    if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition)
+    if (!(interaction.member?.roles as any) instanceof GuildMemberRoleManager) return;
+
+    if (member.roles.highest.rawPosition > interaction.member?.roles.highest.rawPosition)
       return interaction.editReply({
-        embeds: [new Embed(color).setDescription('You cannot timeout a user with roles higher than your own.')],
+        embeds: [new Embed(color).setDescription('You cannot ban a user with roles higher than your own.')],
       });
 
-    const userDatabase = await getUser(interaction.guildId, member.id);
+    //* Get the user's database and add them if they don't exist.
+    const userDatabase = await getUser(interaction.guildId, member.id, client);
     if (!userDatabase)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription('The user has been added to our database. Please run the command again.'),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    let timeout = true;
-    await member.timeout(ms(duration), reason).catch(async e => {
-      timeout = false;
+    //* Try to ban the user and return if it fails.
+    let ban = true;
+    await member.ban({ reason, deleteMessageSeconds: seconds }).catch(async e => {
+      ban = false;
 
       await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Failed to timeout the user.')],
+        embeds: [new Embed(color).setDescription('Failed to ban the user.')],
       });
     });
 
-    if (!timeout) return;
+    if (!ban) return;
 
-    userDatabase.timeouts += 1;
+    //* Update the databases
+    userDatabase.bans += 1;
     await userDatabase.save();
 
     const id = randomUUID();
@@ -107,18 +114,19 @@ module.exports = {
       moderatorId: interaction.user.id,
       time: new Date().getTime(),
 
-      type: 'timeout',
+      type: 'ban',
       id,
       reason,
-      duration,
+      duration: 'none',
       active: false,
     });
     await NewPunishment.save();
 
+    //* Edit the reply to confirm the ban.
     interaction.editReply({
       embeds: [
         new Embed(color)
-          .setTitle('User Timed Out')
+          .setTitle('User Banned')
           .setDescription(`**User:** ${member} (@${member.user.username})\n**Reason:** ${reason}`)
           .addFields(
             {
@@ -136,6 +144,7 @@ module.exports = {
       ],
     });
 
+    //* Send the ban message to the user.
     const sentFrom = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
@@ -144,13 +153,12 @@ module.exports = {
         .setDisabled(true),
     );
 
-    if (config.timeoutDM) {
+    if (config.banDM) {
       const parseString = text =>
         text
           .replaceAll('{reason}', reason)
           .replaceAll('{user}', `${member}`)
           .replaceAll('{moderator}', interaction.user)
-          .replaceAll('{duration}', duration)
           .replaceAll('{staff}', interaction.user)
           .replaceAll('{server}', interaction.guild?.name ?? '')
           .replaceAll('{color}', color)
@@ -161,38 +169,35 @@ module.exports = {
 
       await member
         .send({
-          embeds: [new CustomEmbed(config.timeoutDMMessage, parseString)],
+          embeds: [new CustomEmbed(config.banDMMessage, parseString)],
+          content: parseString(config.banDMMessage.content),
           components: [sentFrom],
-          content: parseString(config.timeoutDMMessage.content),
         })
         .catch(() => {});
     }
 
+    //* Send the log message.
     if (config.channel) {
       const channel = interaction.guild.channels.cache.get(config.channelId);
       if (!channel) return;
 
       await channel.send({
         embeds: [
-          new Embed(color).setTitle('Member Timed Out').addFields(
+          new Embed(color).setTitle('Member Banned').addFields(
             {
               name: 'User',
               value: `${member} (@${member.user.username})`,
               inline: true,
             },
+            { name: 'Banned By', value: `${interaction.user}`, inline: true },
             {
-              name: 'Timed Out By',
-              value: `${interaction.user}`,
-              inline: true,
-            },
-            {
-              name: 'Timed Out In',
+              name: 'Banned In',
               value: `${interaction.channel}`,
               inline: true,
             },
             {
-              name: 'User Total Timeouts',
-              value: `${userDatabase.timeouts}`,
+              name: 'User Total Bans',
+              value: `${userDatabase.bans}`,
               inline: true,
             },
             {
@@ -205,7 +210,7 @@ module.exports = {
               value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
               inline: true,
             },
-            { name: 'Reason', value: `${reason}`, inline: false },
+            { name: 'Reason', value: `${reason}` },
           ),
         ],
       });
