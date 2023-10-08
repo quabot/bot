@@ -39,7 +39,7 @@ module.exports = {
             .setLabel('Footer Icon')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.footer?.icon_url ?? '')
-            .setRequired(false)
+
             .setMaxLength(500)
             .setPlaceholder('Insert your favorite footer image here...'),
         ),

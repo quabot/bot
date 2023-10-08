@@ -23,9 +23,7 @@ export default {
             ),
         )
         .addStringOption(option => option.setName('id').setDescription('The ID of the punishment.').setRequired(true))
-        .addUserOption(option =>
-          option.setName('user').setDescription('The user to manage the punishment of.').setRequired(false),
-        ),
+        .addUserOption(option => option.setName('user').setDescription('The user to manage the punishment of.')),
     )
     .addSubcommand(subcommand =>
       subcommand
@@ -35,7 +33,7 @@ export default {
           option
             .setName('type')
             .setDescription('The type of punishment.')
-            .setRequired(false)
+
             .addChoices(
               { name: 'Kick', value: 'kick' },
               { name: 'Ban', value: 'ban' },
@@ -44,20 +42,13 @@ export default {
               { name: 'Warn', value: 'warn' },
             ),
         )
+        .addStringOption(option => option.setName('id').setDescription('The ID of the punishment(s).'))
+        .addUserOption(option => option.setName('user').setDescription('The user to view the punishments of.'))
         .addStringOption(option =>
-          option.setName('id').setDescription('The ID of the punishment(s).').setRequired(false),
+          option.setName('user-id').setDescription('The user (ID) to view the punishments of.'),
         )
         .addUserOption(option =>
-          option.setName('user').setDescription('The user to view the punishments of.').setRequired(false),
-        )
-        .addStringOption(option =>
-          option.setName('user-id').setDescription('The user (ID) to view the punishments of.').setRequired(false),
-        )
-        .addUserOption(option =>
-          option
-            .setName('staff-member')
-            .setDescription('The staff member that carried out the infraction.')
-            .setRequired(false),
+          option.setName('staff-member').setDescription('The staff member that carried out the infraction.'),
         ),
     )
     .addSubcommand(subcommand =>

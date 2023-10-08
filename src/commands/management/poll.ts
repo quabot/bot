@@ -21,10 +21,7 @@ export default {
           option.setName('duration').setDescription('The length that the poll should last for.').setRequired(true),
         )
         .addRoleOption(option =>
-          option
-            .setName('role-mention')
-            .setDescription('The role to mention when the poll is created.')
-            .setRequired(false),
+          option.setName('role-mention').setDescription('The role to mention when the poll is created.'),
         ),
     )
 

@@ -14,7 +14,7 @@ export default {
       option
         .setName('module')
         .setDescription('The module to get the commands from.')
-        .setRequired(false)
+
         .addChoices(
           { name: 'fun', value: 'fun' },
           { name: 'info', value: 'info' },

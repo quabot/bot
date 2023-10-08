@@ -5,8 +5,8 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ChannelType,
-  type GuildMember,
   type APIEmbedField,
+  GuildMemberRoleManager,
 } from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';
@@ -24,9 +24,7 @@ export default {
     .addStringOption(option =>
       option.setName('reason').setDescription('The reason for warning the user.').setRequired(true),
     )
-    .addBooleanOption(option =>
-      option.setName('private').setDescription('Should the message be visible to you only?').setRequired(false),
-    )
+    .addBooleanOption(option => option.setName('private').setDescription('Should the message be visible to you only?'))
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .setDMPermission(false),
 
@@ -35,29 +33,31 @@ export default {
 
     await interaction.deferReply({ ephemeral });
 
-    const config = await getModerationConfig(client, interaction.guildId);
+    const config = await getModerationConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     const reason = interaction.options.getString('reason', true).slice(0, 800);
-    const member = interaction.options.getMember('user', true);
-    const isGuildMember = !('deaf' in member);
+    const user = interaction.options.getUser('user', true);
+    const member = interaction.guild?.members.cache.get(user.id)!;
 
-    await getUser(interaction.guildId, member.id);
+    await getUser(interaction.guildId!, member.id, client);
 
     if (member === interaction.member)
       return interaction.editReply({
         embeds: [new Embed(color).setDescription('You cannot warn yourself.')],
       });
 
-    if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition)
+    if (!((interaction.member?.roles as any) instanceof GuildMemberRoleManager)) return;
+
+    if (member.roles.highest.rawPosition > (interaction.member!.roles as GuildMemberRoleManager).highest.rawPosition)
       return interaction.editReply({
         embeds: [new Embed(color).setDescription('You cannot warn a user with roles higher than your own.')],
       });
 
-    const userDatabase = await getUser(interaction.guildId, member.id);
+    const userDatabase = await getUser(interaction.guildId!, member.id, client);
     if (!userDatabase)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
@@ -84,31 +84,27 @@ export default {
     });
     await NewPunishment.save();
 
-    const fields: APIEmbedField[] = [];
-
-    if (isGuildMember) {
-      const guildMember = member as GuildMember;
-
-      fields.push({
+    const fields: APIEmbedField[] = [
+      {
         name: 'Account Created',
-        value: `<t:${member.user.createdTimestamp / 1000}:R>`,
+        value: `<t:${user.createdTimestamp / 1000}:R>`,
+        inline: true,
+      },
+    ];
+
+    if (member.joinedTimestamp !== null) {
+      fields.splice(0, 0, {
+        name: 'Joined Server',
+        value: `<t:${member.joinedTimestamp / 1000}:R>`,
         inline: true,
       });
-
-      if (guildMember.joinedTimestamp) {
-        fields.splice(0, 0, {
-          name: 'Joined Server',
-          value: `<t:${member.joinedTimestamp / 1000}:R>`,
-          inline: true,
-        });
-      }
     }
 
     await interaction.editReply({
       embeds: [
         new Embed(color)
           .setTitle('User Warned')
-          .setDescription(`**User:** ${member} (@${member.user.username})\n**Reason:** ${reason}`)
+          .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
           .setFields(fields)
           .setFooter({ text: `ID: ${id}` }),
       ],
@@ -124,7 +120,7 @@ export default {
       );
 
       const parseString = (text: string) => {
-        let res = text
+        const res = text
           .replaceAll('{reason}', reason)
           .replaceAll('{user}', `${member}`)
           .replaceAll('{moderator}', interaction.user.toString())
@@ -132,29 +128,23 @@ export default {
           .replaceAll('{server}', interaction.guild?.name ?? '')
           .replaceAll('{color}', color.toString())
           .replaceAll('{id}', `${id}`)
+          .replaceAll('{created}', `<t:${user.createdTimestamp / 1000}:R>`)
           .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
-        if (isGuildMember) {
-          const guildMember = member as GuildMember;
-          if (guildMember.joinedTimestamp !== null) {
-            return text
-              .replaceAll('{joined}', `<t:${guildMember.joinedTimestamp / 1000}:R>`)
-              .replaceAll('{created}', `<t:${guildMember.joinedTimestamp / 1000}:R>`);
-          }
+        if (member.joinedTimestamp !== null) {
+          return text.replaceAll('{joined}', `<t:${member.joinedTimestamp / 1000}:R>`);
         }
 
         return res;
       };
 
-      if (isGuildMember) {
-        ((await member) as GuildMember)
-          .send({
-            embeds: [new CustomEmbed(config.warnDMMessage, parseString)],
-            components: [sentFrom],
-            content: parseString(config.warnDMMessage.content),
-          })
-          .catch(() => {});
-      }
+      await user
+        .send({
+          embeds: [new CustomEmbed(config.warnDMMessage, parseString)],
+          components: [sentFrom],
+          content: parseString(config.warnDMMessage.content),
+        })
+        .catch(() => {});
     }
 
     if (config.channel) {
@@ -162,6 +152,11 @@ export default {
       if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
       const fields = [
+        {
+          name: 'User',
+          value: `${member} (@${user.username})`,
+          inline: true,
+        },
         { name: 'Warned By', value: `${interaction.user}`, inline: true },
         {
           name: 'Warned In',
@@ -176,29 +171,12 @@ export default {
         { name: 'Reason', value: `${reason}` },
       ];
 
-      if (isGuildMember) {
-        let guildMember = member as GuildMember;
-        {
-          fields.splice(0, 0, {
-            name: 'User',
-            value: `${guildMember} (@${guildMember.user.username})`,
-            inline: true,
-          });
-
-          fields.splice(4, 0, {
-            name: 'Joined Server',
-            value: `<t:${(guildMember.joinedTimestamp ?? 0) / 1000}:R>`,
-            inline: true,
-          });
-
-          if ('joinedTimestamp' in guildMember) {
-            fields.splice(4, 0, {
-              name: 'Joined Server',
-              value: `<t:${(guildMember.joinedTimestamp ?? 0) / 1000}:R>`,
-              inline: true,
-            });
-          }
-        }
+      if (member.joinedTimestamp !== null) {
+        fields.splice(4, 0, {
+          name: 'Joined Server',
+          value: `<t:${member.joinedTimestamp / 1000}:R>`,
+          inline: true,
+        });
       }
 
       await channel.send({

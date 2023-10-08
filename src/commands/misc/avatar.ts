@@ -11,9 +11,7 @@ export default {
       subcommand
         .setName('user')
         .setDescription("Get a user's avatar.")
-        .addUserOption(option =>
-          option.setName('user').setRequired(false).setDescription('The user to get the avatar of.'),
-        ),
+        .addUserOption(option => option.setName('user').setDescription('The user to get the avatar of.')),
     )
     .setDMPermission(false),
 

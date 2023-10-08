@@ -16,10 +16,7 @@ export default {
           option.setName('subreddit').setDescription('The subreddit to get an image from.').setRequired(true),
         )
         .addBooleanOption(option =>
-          option
-            .setName('imageonly')
-            .setDescription('Whether to give only an image or normal posts.')
-            .setRequired(false),
+          option.setName('imageonly').setDescription('Whether to give only an image or normal posts.'),
         ),
     )
     .addSubcommand(subcommand => subcommand.setName('meme').setDescription('Get a meme.'))

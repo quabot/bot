@@ -13,10 +13,8 @@ export default {
         .setName('create')
         .setDescription('Create a channel.')
         .addStringOption(option => option.setDescription('The channel name.').setRequired(true).setName('name'))
-        .addStringOption(option => option.setDescription('The channel topic.').setRequired(false).setName('topic'))
-        .addBooleanOption(option =>
-          option.setDescription('Should the channel be marked as NSFW?').setRequired(false).setName('nsfw'),
-        ),
+        .addStringOption(option => option.setDescription('The channel topic.').setName('topic'))
+        .addBooleanOption(option => option.setDescription('Should the channel be marked as NSFW?').setName('nsfw')),
     )
     .addSubcommand(subcommand =>
       subcommand
@@ -45,8 +43,8 @@ export default {
         .setName('edit')
         .setDescription('Edit a channel.')
         .addChannelOption(option => option.setDescription('The channel to edit.').setRequired(true).setName('channel'))
-        .addStringOption(option => option.setDescription('The new channel name.').setRequired(false).setName('name'))
-        .addStringOption(option => option.setDescription('The new channel topic.').setRequired(false).setName('topic')),
+        .addStringOption(option => option.setDescription('The new channel name.').setName('name'))
+        .addStringOption(option => option.setDescription('The new channel topic.').setName('topic')),
     ),
 
   async execute() {

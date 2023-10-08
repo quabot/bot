@@ -46,7 +46,7 @@ module.exports = {
             .setCustomId('inline')
             .setLabel('Field inline?')
             .setStyle(TextInputStyle.Short)
-            .setRequired(false)
+
             .setMaxLength(500)
             .setPlaceholder('true/false'),
         ),

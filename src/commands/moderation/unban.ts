@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ChannelType } from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
@@ -10,9 +10,7 @@ export default {
     .addStringOption(option =>
       option.setName('userid').setDescription('The id of the user you wish to unban.').setRequired(true),
     )
-    .addBooleanOption(option =>
-      option.setName('private').setDescription('Should the message be visible to you only?').setRequired(false),
-    )
+    .addBooleanOption(option => option.setName('private').setDescription('Should the message be visible to you only?'))
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
 
@@ -21,13 +19,13 @@ export default {
 
     await interaction.deferReply({ ephemeral });
 
-    const config = await getModerationConfig(client, interaction.guildId);
+    const config = await getModerationConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    const userId = interaction.options.getString('userid').slice(0, 800);
+    const userId = interaction.options.getString('userid', true).slice(0, 800);
     if (!userId)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
@@ -39,7 +37,8 @@ export default {
       });
 
     let unban = true;
-    await interaction.guild.members.unban(userId).catch(async e => {
+
+    await interaction.guild!.members.unban(userId).catch(async () => {
       unban = false;
 
       await interaction.editReply({
@@ -54,8 +53,8 @@ export default {
     });
 
     if (config.channel) {
-      const channel = interaction.guild.channels.cache.get(config.channelId);
-      if (!channel) return;
+      const channel = interaction.guild?.channels.cache.get(config.channelId);
+      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
       await channel.send({
         embeds: [

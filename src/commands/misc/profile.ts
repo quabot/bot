@@ -10,9 +10,7 @@ export default {
       subcommand
         .setName('view')
         .setDescription("View a user's profile.")
-        .addUserOption(option =>
-          option.setName('user').setDescription('The user to view the profile of.').setRequired(false),
-        ),
+        .addUserOption(option => option.setName('user').setDescription('The user to view the profile of.')),
     )
     .addSubcommand(subcommand => subcommand.setName('bio').setDescription('Set your profile bio.'))
     .addSubcommand(subcommand =>

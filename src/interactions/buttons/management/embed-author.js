@@ -39,7 +39,7 @@ module.exports = {
             .setLabel('Author Icon')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.author?.icon_url ?? '')
-            .setRequired(false)
+
             .setMaxLength(250)
             .setPlaceholder('Insert your favorite author icon here...'),
         ),
@@ -49,7 +49,7 @@ module.exports = {
             .setLabel('Author Url')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.author?.url ?? '')
-            .setRequired(false)
+
             .setMaxLength(250)
             .setPlaceholder('https://quabot.net'),
         ),

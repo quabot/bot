@@ -9,7 +9,7 @@ module.exports = {
         .setName('toggle')
         .setDescription('Set your AFK to enabled/disabled.')
         .addBooleanOption(option =>
-          option.setName('enabled').setDescription('Should the AFK module be enabled/disabled.').setRequired(false),
+          option.setName('enabled').setDescription('Should the AFK module be enabled/disabled.'),
         ),
     )
     .addSubcommand(command => command.setName('status').setDescription('Set your AFK status.'))

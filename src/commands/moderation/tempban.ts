@@ -1,4 +1,13 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  GuildMemberRoleManager,
+  type APIEmbedField,
+  ChannelType,
+} from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';
 import { Embed } from '@constants/embed';
@@ -32,12 +41,8 @@ export default {
           { name: 'Previous 7 days', value: 604800 },
         ),
     )
-    .addStringOption(option =>
-      option.setName('reason').setDescription('The reason for banning the user.').setRequired(false),
-    )
-    .addBooleanOption(option =>
-      option.setName('private').setDescription('Should the message be visible to you only?').setRequired(false),
-    )
+    .addStringOption(option => option.setName('reason').setDescription('The reason for banning the user.'))
+    .addBooleanOption(option => option.setName('private').setDescription('Should the message be visible to you only?'))
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
 
@@ -46,21 +51,19 @@ export default {
 
     await interaction.deferReply({ ephemeral });
 
-    const config = await getModerationConfig(client, interaction.guildId);
+    const config = await getModerationConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
-    const duration = interaction.options.getString('duration').slice(0, 800);
-    const member = interaction.options.getMember('user');
-    const seconds = interaction.options.getInteger('delete_messages');
-    if (!member || !reason || !duration || seconds === undefined)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
-      });
-    await getUser(interaction.guildId, member.id);
+    const duration = interaction.options.getString('duration', true).slice(0, 800);
+    const seconds = interaction.options.getInteger('delete_messages', true);
+    const user = interaction.options.getUser('user', true);
+    const member = interaction.guild?.members.cache.get(user.id)!;
+
+    await getUser(interaction.guildId!, member.id, client);
 
     if (!ms(duration))
       return await interaction.editReply({
@@ -76,19 +79,21 @@ export default {
         embeds: [new Embed(color).setDescription('You cannot ban yourself.')],
       });
 
-    if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition)
+    if (!((interaction.member?.roles as any) instanceof GuildMemberRoleManager)) return;
+
+    if (member.roles.highest.rawPosition > (interaction.member!.roles as GuildMemberRoleManager).highest.rawPosition)
       return interaction.editReply({
         embeds: [new Embed(color).setDescription('You cannot ban a user with roles higher than your own.')],
       });
 
-    const userDatabase = await getUser(interaction.guildId, member.id);
+    const userDatabase = await getUser(interaction.guildId!, member.id, client);
     if (!userDatabase)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     let ban = true;
-    await member.ban({ reason, deleteMessageSeconds: seconds }).catch(async e => {
+    await member.ban({ reason, deleteMessageSeconds: seconds }).catch(async () => {
       ban = false;
 
       await interaction.editReply({
@@ -123,28 +128,33 @@ export default {
       await tempUnban(client, NewPunishment);
     }, ms(duration));
 
-    interaction.editReply({
+    const fields: APIEmbedField[] = [
+      {
+        name: 'Account Created',
+        value: `<t:${user.createdTimestamp / 1000}:R>`,
+        inline: true,
+      },
+    ];
+
+    if (member.joinedTimestamp !== null) {
+      fields.splice(0, 0, {
+        name: 'Joined Server',
+        value: `<t:${member.joinedTimestamp / 1000}:R>`,
+        inline: true,
+      });
+    }
+
+    await interaction.editReply({
       embeds: [
         new Embed(color)
           .setTitle('User Temporarily Banned')
-          .setDescription(`**User:** ${member} (@${member.user.username})\n**Reason:** ${reason}`)
-          .addFields(
-            {
-              name: 'Joined Server',
-              value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-            {
-              name: 'Account Created',
-              value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-          )
+          .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
+          .addFields(fields)
           .setFooter({ text: `ID: ${id}` }),
       ],
     });
 
-    const sentFrom = new ActionRowBuilder().addComponents(
+    const sentFrom = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
         .setLabel('Sent from server: ' + interaction.guild?.name ?? 'Unknown')
@@ -153,19 +163,25 @@ export default {
     );
 
     if (config.tempbanDM) {
-      const parseString = text =>
-        text
+      const parseString = (text: string) => {
+        const res = text
           .replaceAll('{reason}', reason)
           .replaceAll('{user}', `${member}`)
-          .replaceAll('{moderator}', interaction.user)
+          .replaceAll('{moderator}', interaction.user.toString())
           .replaceAll('{duration}', duration)
-          .replaceAll('{staff}', interaction.user)
+          .replaceAll('{staff}', interaction.user.toString())
           .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{color}', color)
+          .replaceAll('{color}', color.toString())
           .replaceAll('{id}', `${id}`)
-          .replaceAll('{joined}', `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`)
-          .replaceAll('{created}', `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`)
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
+          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '')
+          .replaceAll('{created}', `<t:${user.createdTimestamp / 1000}:R>`);
+
+        if (member.joinedTimestamp !== null) {
+          return text.replaceAll('{joined}', `<t:${member.joinedTimestamp / 1000}:R>`);
+        }
+
+        return res;
+      };
 
       await member
         .send({
@@ -177,41 +193,44 @@ export default {
     }
 
     if (config.channel) {
-      const channel = interaction.guild.channels.cache.get(config.channelId);
-      if (!channel) return;
+      const channel = interaction.guild?.channels.cache.get(config.channelId);
+      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+
+      const fields = [
+        {
+          name: 'User',
+          value: `${member} (@${user.username})`,
+          inline: true,
+        },
+        { name: 'Banned By', value: `${interaction.user}`, inline: true },
+        {
+          name: 'Banned In',
+          value: `${interaction.channel}`,
+          inline: true,
+        },
+        {
+          name: 'User Total Tempbans',
+          value: `${userDatabase.tempbans}`,
+          inline: true,
+        },
+        {
+          name: 'Account Created',
+          value: `<t:${user.createdTimestamp / 1000}:R>`,
+          inline: true,
+        },
+        { name: 'Reason', value: `${reason}` },
+      ];
+
+      if (member.joinedTimestamp !== null) {
+        fields.splice(4, 0, {
+          name: 'Joined Server',
+          value: `<t:${member.joinedTimestamp / 1000}:R>`,
+          inline: true,
+        });
+      }
 
       await channel.send({
-        embeds: [
-          new Embed(color).setTitle('Member Temporarily Banned').addFields(
-            {
-              name: 'User',
-              value: `${member} (@${member.user.username})`,
-              inline: true,
-            },
-            { name: 'Banned By', value: `${interaction.user}`, inline: true },
-            {
-              name: 'Banned In',
-              value: `${interaction.channel}`,
-              inline: true,
-            },
-            {
-              name: 'User Total Tempbans',
-              value: `${userDatabase.tempbans}`,
-              inline: true,
-            },
-            {
-              name: 'Joined Server',
-              value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-            {
-              name: 'Account Created',
-              value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-            { name: 'Reason', value: `${reason}` },
-          ),
-        ],
+        embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields)],
       });
     }
   },

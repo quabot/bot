@@ -1,4 +1,10 @@
-import { SlashCommandBuilder, Client, CommandInteraction, PermissionFlagsBits } from 'discord.js';
+import {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  GuildMemberRoleManager,
+  type APIEmbedField,
+  ChannelType,
+} from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';
 import { Embed } from '@constants/embed';
@@ -11,9 +17,7 @@ export default {
     .addUserOption(option =>
       option.setName('user').setDescription('The user you wish to remove the timeout from.').setRequired(true),
     )
-    .addBooleanOption(option =>
-      option.setName('private').setDescription('Should the message be visible to you only?').setRequired(false),
-    )
+    .addBooleanOption(option => option.setName('private').setDescription('Should the message be visible to you only?'))
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .setDMPermission(false),
 
@@ -28,22 +32,19 @@ export default {
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    const member = interaction.options.getMember('user');
-    await getUser(interaction.guildId, member.id, client);
+    const user = interaction.options.getUser('user', true);
+    const member = interaction.guild?.members.cache.get(user.id)!;
 
-    if (!member)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
-      });
+    await getUser(interaction.guildId!, member.id, client);
 
     if (member === interaction.member)
       return interaction.editReply({
         embeds: [new Embed(color).setDescription('You cannot remove a timeout from yourself.')],
       });
 
-    if (!(interaction.member?.roles as any) instanceof GuildMemberRoleManager) return;
+    if (!((interaction.member?.roles as any) instanceof GuildMemberRoleManager)) return;
 
-    if (member.roles.highest.rawPosition > interaction.member.roles.highest.rawPosition)
+    if (member.roles.highest.rawPosition > (interaction.member!.roles as GuildMemberRoleManager).highest.rawPosition)
       return interaction.editReply({
         embeds: [
           new Embed(color).setDescription('You cannot remove a timeout from a user with roles higher than your own.'),
@@ -51,7 +52,7 @@ export default {
       });
 
     let timeout = true;
-    await member.timeout(1, `Timeout removed by @${interaction.user.username}`).catch(async e => {
+    await member.timeout(1, `Timeout removed by @${interaction.user.username}`).catch(async () => {
       timeout = false;
 
       await interaction.editReply({
@@ -61,56 +62,64 @@ export default {
 
     if (!timeout) return;
 
-    interaction.editReply({
+    const fields: APIEmbedField[] = [
+      {
+        name: 'Account Created',
+        value: `<t:${user.createdTimestamp / 1000}:R>`,
+        inline: true,
+      },
+    ];
+
+    if (member.joinedTimestamp !== null) {
+      fields.splice(0, 0, {
+        name: 'Joined Server',
+        value: `<t:${member.joinedTimestamp / 1000}:R>`,
+        inline: true,
+      });
+    }
+
+    await interaction.editReply({
       embeds: [
         new Embed(color)
           .setTitle('User Timeout Removed')
-          .setDescription(`**User:** ${member} (@${member.user.username})`)
-          .addFields(
-            {
-              name: 'Joined Server',
-              value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-            {
-              name: 'Account Created',
-              value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-          ),
+          .setDescription(`**User:** ${member} (@${user.username})`)
+          .addFields(fields),
       ],
     });
 
     if (config.channel) {
-      const channel = interaction.guild.channels.cache.get(config.channelId);
-      if (!channel) return;
+      const channel = interaction.guild?.channels.cache.get(config.channelId);
+      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+
+      const fields = [
+        {
+          name: 'User',
+          value: `${member} (@${user.username})`,
+          inline: true,
+        },
+        { name: 'Removed By', value: `${interaction.user}`, inline: true },
+        {
+          name: 'Removed In',
+          value: `${interaction.channel}`,
+          inline: true,
+        },
+        {
+          name: 'Account Created',
+          value: `<t:${user.createdTimestamp / 1000}:R>`,
+          inline: true,
+        },
+      ];
+
+      if (member.joinedTimestamp !== null) {
+        fields.splice(3, 0, {
+          name: 'Joined Server',
+          value: `<t:${member.joinedTimestamp / 1000}:R>`,
+          inline: true,
+        });
+      }
 
       await channel.send({
-        embeds: [
-          new Embed(color).setTitle('Member Timeout Removed').addFields(
-            {
-              name: 'User',
-              value: `${member} (@${member.user.username})`,
-              inline: true,
-            },
-            { name: 'Removed By', value: `${interaction.user}`, inline: true },
-            {
-              name: 'Removed In',
-              value: `${interaction.channel}`,
-              inline: true,
-            },
-            {
-              name: 'Joined Server',
-              value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-            {
-              name: 'Account Created',
-              value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
-              inline: true,
-            },
-          ),
-        ],
+        embeds: [new Embed(color).setTitle('Member Timeout Removed').setFields(fields)],
       });
     }
   },

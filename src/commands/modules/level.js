@@ -9,7 +9,7 @@ module.exports = {
         .setName('view')
         .setDescription("View someone's current XP and level.")
         .addUserOption(option =>
-          option.setName('user').setDescription('The user to view the XP of.').setRequired(false),
+          option.setName('user').setDescription('The user to view the XP of.'),
         ),
     )
     .addSubcommand(command => command.setName('leaderboard').setDescription('View the server XP leaderboard.'))
@@ -19,9 +19,9 @@ module.exports = {
         .setName('set')
         .addUserOption(option => option.setName('user').setDescription('The user to set the XP of.').setRequired(true))
         .addNumberOption(option =>
-          option.setName('level').setDescription('The level value to set it to.').setRequired(false),
+          option.setName('level').setDescription('The level value to set it to.'),
         )
-        .addNumberOption(option => option.setName('xp').setDescription('The XP value to set it to.').setRequired(false))
+        .addNumberOption(option => option.setName('xp').setDescription('The XP value to set it to.'))
         .setDescription("Set a user's XP or level."),
     )
     .addSubcommand(command =>

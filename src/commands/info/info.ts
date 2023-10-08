@@ -11,17 +11,13 @@ export default {
       subcommand
         .setName('channel')
         .setDescription('Get information about a channel in the server.')
-        .addChannelOption(option =>
-          option.setName('channel').setRequired(false).setDescription('The channel to get information of.'),
-        ),
+        .addChannelOption(option => option.setName('channel').setDescription('The channel to get information of.')),
     )
     .addSubcommand(subcommand =>
       subcommand
         .setName('user')
         .setDescription('Get information about a user (or yourself).')
-        .addUserOption(option =>
-          option.setName('user').setRequired(false).setDescription('The user to get information of.'),
-        ),
+        .addUserOption(option => option.setName('user').setDescription('The user to get information of.')),
     )
     .addSubcommand(subcommand =>
       subcommand

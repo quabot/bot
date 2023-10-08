@@ -16,13 +16,13 @@ export default {
         .addBooleanOption(option =>
           option
             .setDescription('Should the role be separated in the sidebar? (Defaults to false)')
-            .setRequired(false)
+
             .setName('hoist'),
         )
         .addBooleanOption(option =>
           option
             .setDescription('Should the role be mentionable by everyone? (Defaults to false)')
-            .setRequired(false)
+
             .setName('mentionable'),
         ),
     )
@@ -37,12 +37,10 @@ export default {
         .setName('edit')
         .setDescription('Edit a role.')
         .addRoleOption(option => option.setDescription('The role to edit.').setRequired(true).setName('role'))
-        .addStringOption(option => option.setDescription('The new role name.').setRequired(false).setName('name'))
+        .addStringOption(option => option.setDescription('The new role name.').setName('name'))
+        .addBooleanOption(option => option.setDescription('Should the role be mentionable?').setName('mentionable'))
         .addBooleanOption(option =>
-          option.setDescription('Should the role be mentionable?').setRequired(false).setName('mentionable'),
-        )
-        .addBooleanOption(option =>
-          option.setDescription('Should the role be separated in the sidebar?').setRequired(false).setName('hoist'),
+          option.setDescription('Should the role be separated in the sidebar?').setName('hoist'),
         ),
     ),
 

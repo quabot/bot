@@ -44,7 +44,7 @@ export default {
           option
             .setName('required-permission')
             .setDescription('The permission users need to have to use the reaction role.')
-            .setRequired(false)
+
             .addChoices(
               {
                 name: 'Create Instant Invite',
@@ -162,13 +162,11 @@ export default {
         .setName('list')
         .setDescription('List all reaction roles.')
         .addStringOption(option =>
-          option.setDescription('The message to list the reaction roles for.').setRequired(false).setName('message-id'),
+          option.setDescription('The message to list the reaction roles for.').setName('message-id'),
         )
-        .addRoleOption(option =>
-          option.setDescription('The role to list the reaction roles for.').setRequired(false).setName('role'),
-        )
+        .addRoleOption(option => option.setDescription('The role to list the reaction roles for.').setName('role'))
         .addChannelOption(option =>
-          option.setDescription('The channel to list the reaction roles for.').setRequired(false).setName('channel'),
+          option.setDescription('The channel to list the reaction roles for.').setName('channel'),
         ),
     )
 
