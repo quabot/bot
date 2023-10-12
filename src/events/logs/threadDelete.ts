@@ -3,7 +3,7 @@ const { getLoggingConfig } from'@configs/loggingConfig');
 const { Embed } from'@constants/embed');
 const { channelTypesById } from'@constants/discord');
 
-module.exports = {
+export default {
   event: Events.ThreadDelete,
   name: 'threadDelete',
   /**

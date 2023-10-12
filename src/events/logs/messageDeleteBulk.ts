@@ -1,7 +1,7 @@
 const { Client, Events } from'discord.js');
 const { execute } from'./messageDelete');
 
-module.exports = {
+export default {
   event: Events.MessageBulkDelete,
   name: 'messageDeleteBulk',
   /**

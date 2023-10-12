@@ -2,7 +2,7 @@ const { Client, Events, Colors, Invite } from'discord.js');
 const { getLoggingConfig } from'@configs/loggingConfig');
 const { Embed } from'@constants/embed');
 
-module.exports = {
+export default {
   event: Events.InviteCreate,
   name: 'inviteCreate',
   /**

@@ -4,7 +4,7 @@ import { CHANNEL_TYPES_BY_ID } from '@constants/discord';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   event: Events.ChannelDelete,
   name: 'channelDelete',
 

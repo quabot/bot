@@ -2,7 +2,7 @@ const { Client, Events, GuildBan, Colors } from'discord.js');
 const { getLoggingConfig } from'@configs/loggingConfig');
 const { Embed } from'@constants/embed');
 
-module.exports = {
+export default {
   event: Events.GuildBanAdd,
   name: 'guildBanAdd',
   /**
