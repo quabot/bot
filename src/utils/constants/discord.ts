@@ -16,7 +16,7 @@ export const CHANNEL_TYPES = [
   'GUILD_DIRECTORY',
   'GUILD_FORUM',
   //? Isn't fully supported yet
-  //'GUILD_MEDIA',
+  'GUILD_MEDIA',
 ];
 
 export const CHANNEL_TYPES_BY_ID = [...CHANNEL_TYPES.slice(0, 6), '', '', '', '', '', ...CHANNEL_TYPES.slice(6)];
