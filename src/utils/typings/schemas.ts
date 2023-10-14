@@ -65,7 +65,7 @@ export interface IApplicationAnswer {
   id: string;
   response_uuid: string;
 
-  userId?: Snowflake;
+  userId: Snowflake;
   time: string;
   answers?: Types.Array<string>;
   state: Status;

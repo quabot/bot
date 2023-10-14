@@ -1,12 +1,3 @@
-import type { ContextMenuCommandBuilder, SlashCommandBuilder } from 'discord.js';
-import type { CommandArgs, ContextArgs } from '@typings/functionArgs';
+import { CategoryChannel, ForumChannel, NewsChannel, StageChannel, TextChannel, VoiceChannel } from 'discord.js';
 
-export interface Command {
-  data: SlashCommandBuilder;
-  execute: (arg0: CommandArgs) => any;
-}
-
-export interface Context {
-  data: ContextMenuCommandBuilder;
-  execute: (argo0: ContextArgs) => any;
-}
+export type GuildChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StageChannel | ForumChannel;

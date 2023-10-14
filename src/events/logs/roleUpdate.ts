@@ -1,30 +1,23 @@
-const { Client, Events, Colors, Role } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { ChannelType, Events, Role } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.GuildRoleUpdate,
   name: 'roleUpdate',
-  /**
-   * @param {Role} oldRole
-   * @param {Role} newRole
-   * @param {Client} client
-   */
-  async execute(oldRole, newRole, client) {
-    try {
-      if (!newRole.guild.id) return;
-    } catch (e) {
-      // no
-    }
+
+  async execute({ client }: EventArgs, oldRole: Role, newRole: Role) {
+    if (!newRole.guild.id) return;
 
     const config = await getLoggingConfig(client, newRole.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('roleUpdate')) return;
+    if (!config.events!.includes('roleUpdate')) return;
 
     const channel = newRole.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
     let description = `**Role Edited**\n${newRole}`;
     if (oldRole.mentionable !== newRole.mentionable)

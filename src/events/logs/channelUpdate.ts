@@ -1,8 +1,9 @@
-import { Events, Colors, type GuildChannel, ChannelType } from 'discord.js';
+import { Events, Colors, ChannelType } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { CHANNEL_TYPES_BY_ID } from '@constants/discord';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
+import type { GuildChannel } from '@typings/discord';
 
 export default {
   event: Events.ChannelUpdate,
@@ -23,50 +24,64 @@ export default {
     if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
       return;
 
-    let description = '';
+    let actions = ['', '', '', '', '', '', '', '', '', ''];
     if (oldChannel.rawPosition !== newChannel.rawPosition) return;
+
+    //* On every GuildChannel
     if (oldChannel.type !== newChannel.type)
-      description += `\n**Type:**\n\`${CHANNEL_TYPES_BY_ID[oldChannel.type]}\` -> \`${
+      actions[0] = `\n**Type:**\n\`${CHANNEL_TYPES_BY_ID[oldChannel.type]}\` -> \`${
         CHANNEL_TYPES_BY_ID[newChannel.type]
       }\``;
+
     if (oldChannel.name !== newChannel.name)
-      description += `\n**Name:** \n\`${oldChannel.name}\` -> \`${newChannel.name}\``;
-
-    if ('topic' in oldChannel && 'topic' in newChannel) {
-      if (oldChannel.topic !== newChannel.topic)
-        description += `\n**Description:** \n\`${oldChannel.topic ? `${oldChannel.topic}` : 'None'}\` -> \`${
-          newChannel.topic ? `${newChannel.topic}` : 'None'
-        }\``;
-    } //VoiceChannel CategoryChannel
-
+      actions[1] = `\n**Name:** \n\`${oldChannel.name}\` -> \`${newChannel.name}\``;
     if (oldChannel.parentId !== newChannel.parentId)
-      description += `\n**Category:** \n${oldChannel.parentId ? `<#${oldChannel.parentId}>` : 'none'} -> ${
+      actions[3] = `\n**Category:** \n${oldChannel.parentId ? `<#${oldChannel.parentId}>` : 'none'} -> ${
         newChannel.parentId ? `<#${newChannel.parentId}>` : 'none'
       }`;
 
+    //* Not on GuildCategory
     if (oldChannel.type !== ChannelType.GuildCategory && newChannel.type !== ChannelType.GuildCategory) {
-      oldChannel = oldChannel as ;
-      newChannel = ;
-
       if (oldChannel.nsfw !== newChannel.nsfw)
-        description += `\n**NSFW:** \n\`${oldChannel.nsfw ? 'Yes' : 'No'}\` -> \`${newChannel.nsfw ? 'Yes' : 'No'}\``;
+        actions[4] = `\n**NSFW:** \n\`${oldChannel.nsfw ? 'Yes' : 'No'}\` -> \`${newChannel.nsfw ? 'Yes' : 'No'}\``;
+
+      if (oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser)
+        actions[5] = `\n**Ratelimit:** \n\`${oldChannel.rateLimitPerUser}s\` -> \`${newChannel.rateLimitPerUser}s\``;
+
+      //* Not on GuildCategory & GuildVoice
+      if (oldChannel.type !== ChannelType.GuildVoice && newChannel.type !== ChannelType.GuildVoice) {
+        if (oldChannel.topic !== newChannel.topic)
+          actions[2] = `\n**Description:** \n\`${oldChannel.topic ? `${oldChannel.topic}` : 'None'}\` -> \`${
+            newChannel.topic ? `${newChannel.topic}` : 'None'
+          }\``;
+
+        //* Not on GuildCategory, GuildVoice & GuildStageVoice
+        if (oldChannel.type !== ChannelType.GuildStageVoice && newChannel.type !== ChannelType.GuildStageVoice)
+          if (oldChannel.defaultAutoArchiveDuration !== newChannel.defaultAutoArchiveDuration)
+            actions[9] = `\n**Auto Archive:** \n\`${oldChannel.defaultAutoArchiveDuration}s\` -> \`${newChannel.defaultAutoArchiveDuration}s\``;
+      }
     }
-    // CategoryChannel
 
-    if (oldChannel.rateLimitPerUser !== newChannel.rateLimitPerUser)
-      description += `\n**Ratelimit:** \n\`${oldChannel.rateLimitPerUser}s\` -> \`${newChannel.rateLimitPerUser}s\``;
-    if (oldChannel.rtcRegion !== newChannel.rtcRegion)
-      description += `\n**Region:** \n\`${oldChannel.rtcRegion ? `${oldChannel.rtcRegion}` : 'Automatic'}\` -> \`${
-        newChannel.rtcRegion ? `${newChannel.rtcRegion}` : 'Automatic'
-      }\``;
-    if (oldChannel.bitrate !== newChannel.bitrate)
-      description += `\n**Bitrate:** \n\`${oldChannel.bitrate / 1000}kbps\` -> \`${newChannel.bitrate / 1000}kbps\``;
-    if (oldChannel.userLimit !== newChannel.userLimit)
-      description += `\n**User Limit:** \n\`${oldChannel.userLimit}\` -> \`${newChannel.userLimit}\``;
-    if (oldChannel.defaultAutoArchiveDuration !== newChannel.defaultAutoArchiveDuration)
-      description += `\n**Auto Archive:** \n\`${oldChannel.defaultAutoArchiveDuration}s\` -> \`${newChannel.defaultAutoArchiveDuration}s\``;
+    //* Only on GuildVoice & GuildStageVoice
+    if (
+      (oldChannel.type === ChannelType.GuildVoice || oldChannel.type === ChannelType.GuildStageVoice) &&
+      (newChannel.type === ChannelType.GuildVoice || newChannel.type === ChannelType.GuildStageVoice)
+    ) {
+      if (oldChannel.rtcRegion !== newChannel.rtcRegion)
+        actions[6] = `\n**Region:** \n\`${oldChannel.rtcRegion ? `${oldChannel.rtcRegion}` : 'Automatic'}\` -> \`${
+          newChannel.rtcRegion ? `${newChannel.rtcRegion}` : 'Automatic'
+        }\``;
 
-    if (description === '') return;
+      if (oldChannel.bitrate !== newChannel.bitrate)
+        actions[7] = `\n**Bitrate:** \n\`${oldChannel.bitrate / 1000}kbps\` -> \`${newChannel.bitrate / 1000}kbps\``;
+
+      if (oldChannel.userLimit !== newChannel.userLimit)
+        actions[8] = `\n**User Limit:** \n\`${oldChannel.userLimit}\` -> \`${newChannel.userLimit}\``;
+    }
+
+    const description = actions.join('');
+
+    if (!description) return;
     await logChannel.send({
       embeds: [
         new Embed(Colors.Yellow).setDescription(`

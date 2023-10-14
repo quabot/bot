@@ -1,24 +1,16 @@
-const { Client, Events, Colors, ThreadChannel, VoiceState } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
-const { channelTypesById } from'@constants/discord');
+import { Events, Colors, VoiceState, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.VoiceStateUpdate,
   name: 'voiceMove',
-  /**
-   * @param {VoiceState} oldState
-   * @param {VoiceState} newState
-   * @param {Client} client
-   */
-  async execute(oldState, newState, client) {
-    try {
-      if (!newState.guild.id) return;
-    } catch (e) {
-      // no
-    }
 
-    if (oldState.member.user.bot || newState.member.user.bot) return;
+  async execute({ client }: EventArgs, oldState: VoiceState, newState: VoiceState) {
+    if (!newState.guild.id) return;
+
+    if (oldState.member?.user.bot || newState.member?.user.bot) return;
 
     const config = await getLoggingConfig(client, oldState.guild.id);
     if (!config) return;
@@ -34,22 +26,21 @@ export default {
       return;
     if (oldState.serverDeaf !== newState.serverDeaf || oldState.serverMute !== newState.serverMute) return;
 
-    if (!config.events.includes('voiceMove')) return;
     if (
       newState.channelId &&
-      (config.excludedCategories.includes(newState.channel.parentId) ||
-        config.excludedChannels.includes(newState.channelId))
+      ((newState.channel?.parentId && config.excludedCategories!.includes(newState.channel.parentId)) ||
+        config.excludedChannels!.includes(newState.channelId))
     )
       return;
     if (
       oldState.channelId &&
-      (config.excludedCategories.includes(oldState.channel.parentId) ||
-        config.excludedChannels.includes(oldState.channelId))
+      ((oldState.channel?.parentId && config.excludedCategories!.includes(oldState.channel.parentId)) ||
+        config.excludedChannels!.includes(oldState.channelId))
     )
       return;
 
     const channel = newState.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
     if (!oldState.channelId || !newState.channelId) return;
 

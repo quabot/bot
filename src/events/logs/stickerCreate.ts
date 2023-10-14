@@ -1,29 +1,23 @@
-const { Client, Events, Sticker, Colors } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { Events, Sticker, Colors, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.GuildStickerCreate,
   name: 'stickerCreate',
-  /**
-   * @param {Sticker} sticker
-   * @param {Client} client
-   */
-  async execute(sticker, client) {
-    try {
-      if (!sticker.guild.id) return;
-    } catch (e) {
-      // no
-    }
+
+  async execute({ client }: EventArgs, sticker: Sticker) {
+    if (!sticker.guild?.id) return;
 
     const config = await getLoggingConfig(client, sticker.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('stickerCreate')) return;
+    if (!config.events!.includes('stickerCreate')) return;
 
     const channel = sticker.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
     await channel.send({
       embeds: [

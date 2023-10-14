@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqArray, optString } from '@constants/schemas';
+import { reqString, reqArray } from '@constants/schemas';
 import type { IApplicationAnswer } from '@typings/schemas';
 
 export default model<IApplicationAnswer>(
@@ -8,7 +8,8 @@ export default model<IApplicationAnswer>(
     guildId: reqString,
     id: reqString, // Application ID
     response_uuid: reqString, // unique identifier for the response
-    userId: optString, // user id or none if anonymous
+    //! should NEVER be undefined, we NEED it for giving roles, sending messages etc.
+    userId: reqString, // user id or none if anonymous
     time: reqString, // time of fillout
     answers: reqArray, // the users answers
     state: reqString, // pending, approved or denied

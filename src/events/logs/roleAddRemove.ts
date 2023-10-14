@@ -1,27 +1,20 @@
-const { Client, Events, Colors, GuildMember } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { Events, Colors, GuildMember, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.GuildMemberUpdate,
   name: 'roleAddRemove',
-  /**
-   * @param {GuildMember} oldMember
-   * @param {GuildMember} newMember
-   * @param {Client} client
-   */
-  async execute(oldMember, newMember, client) {
-    try {
-      if (!newMember.guild.id) return;
-    } catch (e) {
-      // no
-    }
+
+  async execute({ client }: EventArgs, oldMember: GuildMember, newMember: GuildMember) {
+    if (!newMember.guild.id) return;
 
     const config = await getLoggingConfig(client, oldMember.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('roleAddRemove')) return;
+    if (!config.events!.includes('roleAddRemove')) return;
 
     if (oldMember.nickname !== newMember.nickname) return;
     if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) return;
@@ -29,23 +22,30 @@ export default {
     if (oldMember.avatar !== newMember.avatar) return;
 
     const channel = oldMember.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+
+    const moreRoles = oldMember.roles.cache.size > newMember.roles.cache.size;
 
     let role;
-    if (oldMember._roles < newMember._roles)
-      role = `<@&${newMember._roles.filter(n => !oldMember._roles.includes(n)).join('>\n<@&')}>`;
-    if (oldMember._roles > newMember._roles)
-      role = `<@&${oldMember._roles.filter(n => !newMember._roles.includes(n)).join('>\n<@&')}>`;
+    if (oldMember.roles.cache.size < newMember.roles.cache.size)
+      role = newMember.roles.cache
+        .filter(n => !oldMember.roles.cache.has(n.id))
+        .map(r => r.toString())
+        .join('');
+    if (moreRoles)
+      role = oldMember.roles.cache
+        .filter(n => !newMember.roles.cache.has(n.id))
+        .map(r => r.toString())
+        .join('');
 
-    if (role === '<@&>') return;
     if (!role) return;
 
     await channel.send({
       embeds: [
-        new Embed(oldMember._roles.length > newMember._roles.length ? Colors.Red : Colors.Green)
+        new Embed(moreRoles ? Colors.Green : Colors.Red)
           .setDescription(
             `
-                        **Role(s) ${oldMember._roles.length > newMember._roles.length ? 'Removed' : 'Given'}**
+                        **Role(s) ${moreRoles ? 'Removed' : 'Given'}**
                         **User:** ${newMember}
                         ${role}
                         `,

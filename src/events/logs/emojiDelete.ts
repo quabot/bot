@@ -1,25 +1,23 @@
-const { Client, Events, GuildEmoji, Colors } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { Events, GuildEmoji, Colors, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.GuildEmojiDelete,
   name: 'emojiDelete',
-  /**
-   * @param {GuildEmoji} emoji
-   * @param {Client} client
-   */
-  async execute(emoji, client) {
+
+  async execute({ client }: EventArgs, emoji: GuildEmoji) {
     if (!emoji.guild.id) return;
 
     const config = await getLoggingConfig(client, emoji.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('emojiDelete')) return;
+    if (!config.events!.includes('emojiDelete')) return;
 
     const channel = emoji.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
     await channel.send({
       embeds: [

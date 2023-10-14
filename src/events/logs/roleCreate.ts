@@ -1,29 +1,23 @@
-const { Client, Events, Colors, Role } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { Events, Colors, Role, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.GuildRoleCreate,
   name: 'roleCreate',
-  /**
-   * @param {Role} role
-   * @param {Client} client
-   */
-  async execute(role, client) {
-    try {
-      if (!role.guild.id) return;
-    } catch (e) {
-      // no
-    }
+
+  async execute({ client }: EventArgs, role: Role) {
+    if (!role.guild?.id) return;
 
     const config = await getLoggingConfig(client, role.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('roleCreate')) return;
+    if (!config.events!.includes('roleCreate')) return;
 
     const channel = role.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
     let description = '';
     const perms = role.permissions.toArray().join('\n');

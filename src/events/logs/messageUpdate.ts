@@ -1,38 +1,29 @@
-const { Client, Events, Colors, Message } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { Events, Colors, Message, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.MessageUpdate,
   name: 'messageUpdate',
-  /**
-   * @param {Message} oldMessage
-   * @param {Message} newMessage
-   * @param {Client} client
-   */
-  async execute(oldMessage, newMessage, client) {
-    try {
-      if (!newMessage.guild.id) return;
-    } catch (e) {
-      // no
-    }
 
-    const config = await getLoggingConfig(client, newMessage.guildId);
+  async execute({ client }: EventArgs, oldMessage: Message, newMessage: Message) {
+    if (!newMessage.guild?.id) return;
+
+    const config = await getLoggingConfig(client, newMessage.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('messageUpdate')) return;
-    if (config.excludedChannels.includes(newMessage.channelId)) return;
-    if (config.excludedCategories.includes(newMessage.channel.parentId)) return;
+    if (!config.events!.includes('messageDelete')) return;
+    if (config.excludedChannels!.includes(newMessage.channelId)) return;
+    if (newMessage.channel.type !== ChannelType.DM) {
+      if (newMessage.channel.parentId && config.excludedCategories!.includes(newMessage.channel.parentId)) return;
+    }
 
     const channel = newMessage.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    try {
-      if (oldMessage.author.bot) return;
-    } catch (e) {
-      // no
-    }
+    if (oldMessage.author.bot) return;
 
     const embed = new Embed(Colors.Yellow).setDescription(`**Message Edited**
             ${newMessage.channel} - [Jump to Message](${newMessage.url})`);
@@ -56,8 +47,7 @@ export default {
         iconURL: `${newMessage.author.avatarURL({ forceStatic: false }) ?? 'https://i.imgur.com/VUwD8zP.png'}`,
       });
 
-    const oldAttachments = [];
-    oldMessage.attachments.map(i => oldAttachments.push(i.url));
+    const oldAttachments = oldMessage.attachments.map(i => i.url);
 
     const newAttachments = [];
     newMessage.attachments.map(i => newAttachments.push(i.url));

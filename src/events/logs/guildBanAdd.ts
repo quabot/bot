@@ -1,25 +1,23 @@
-const { Client, Events, GuildBan, Colors } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { Events, GuildBan, Colors, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.GuildBanAdd,
   name: 'guildBanAdd',
-  /**
-   * @param {GuildBan} ban
-   * @param {Client} client
-   */
-  async execute(ban, client) {
+
+  async execute({ client }: EventArgs, ban: GuildBan) {
     if (!ban.guild.id) return;
 
     const config = await getLoggingConfig(client, ban.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('guildBanAdd')) return;
+    if (!config.events!.includes('guildBanAdd')) return;
 
     const channel = ban.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
     await channel.send({
       embeds: [

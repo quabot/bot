@@ -1,41 +1,35 @@
-const { Client, Events, Colors, Message } from'discord.js');
-const { getLoggingConfig } from'@configs/loggingConfig');
-const { Embed } from'@constants/embed');
+import { Events, Colors, Message, ChannelType } from 'discord.js';
+import { getLoggingConfig } from '@configs/loggingConfig';
+import { Embed } from '@constants/embed';
+import type { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: Events.MessageDelete,
   name: 'messageDelete',
-  /**
-   * @param {Message} message
-   * @param {Client} client
-   */
-  async execute(message, client) {
-    try {
-      if (!message.guild.id) return;
-      if (!message.author) return;
-    } catch (e) {
-      console.log(e);
-    }
 
-    const config = await getLoggingConfig(client, message.guildId);
+  async execute({ client }: Omit<EventArgs, 'color'>, message: Message) {
+    if (!message.guild?.id) return;
+    if (!message.author) return;
+
+    const config = await getLoggingConfig(client, message.guild.id);
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events.includes('messageDelete')) return;
-    if (config.excludedChannels.includes(message.channelId)) return;
-    if (config.excludedCategories.includes(message.channel.parentId)) return;
+    if (!config.events!.includes('messageDelete')) return;
+    if (config.excludedChannels!.includes(message.channelId)) return;
+    if (message.channel.type !== ChannelType.DM) {
+      if (message.channel.parentId && config.excludedCategories!.includes(message.channel.parentId)) return;
+    }
 
     const channel = message.guild.channels.cache.get(config.channelId);
-    if (!channel) return;
+    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
     let description = '';
-    if (message.content) description += message.content.slice(0, 1002);
+    if (message.content)
+      description +=
+        message.content.length > 1002 ? `${message.content.slice(0, 999)}...` : message.content.slice(0, 1002);
 
-    try {
-      if (message.author.bot) return;
-    } catch (e) {
-      // no
-    }
+    if (message.author.bot) return;
 
     const embed = new Embed(Colors.Red)
       .setDescription(
@@ -50,8 +44,7 @@ export default {
         iconURL: `${message.author.avatarURL({ forceStatic: false })}`,
       });
 
-    const attachments = [];
-    message.attachments.map(i => attachments.push(i.url));
+    const attachments = message.attachments.map(i => i.url);
     if (attachments.length !== 0)
       embed.addFields({
         name: '**Attachments**',

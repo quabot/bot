@@ -1,8 +1,8 @@
-import { type ColorResolvable, EmbedBuilder } from 'discord.js';
+import { type ColorResolvable, EmbedBuilder, type EmbedData, type APIEmbed } from 'discord.js';
 
 export class Embed extends EmbedBuilder {
-  constructor(color: ColorResolvable) {
-    super();
+  constructor(color: ColorResolvable, data?: EmbedData | APIEmbed | undefined) {
+    super(data);
 
     return new EmbedBuilder().setTimestamp().setColor(color).setFooter({
       text: 'quabot.net',
