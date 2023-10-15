@@ -1,23 +1,13 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  ModalSubmitInteraction,
-  ActionRowBuilder,
-  ButtonStyle,
-  ButtonBuilder,
-} = require('discord.js');
-const Poll = require('@schemas/Poll');
-const { getPollConfig } = require('@configs/pollConfig');
-const { Embed } = require('@constants/embed');
+import Poll from '@schemas/Poll';
+import { getPollConfig } from '@configs/pollConfig';
+import { Embed } from '@constants/embed';
+import type { ModalArgs } from '@typings/functionArgs';
 
 module.exports = {
   name: 'info-poll',
-  /**
-   * @param {Client} client
-   * @param {ModalSubmitInteraction} interaction
-   */
-  async execute(client, interaction, color) {
-    const config = await getPollConfig(client, interaction.guildId);
+
+  async execute({ client, interaction, color }: ModalArgs) {
+    const config = await getPollConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
@@ -30,10 +20,10 @@ module.exports = {
 
     const poll = await Poll.findOne({
       guildId: interaction.guildId,
-      interaction: interaction.message.id,
+      interaction: interaction.message?.id,
     })
       .clone()
-      .catch(e => {});
+      .catch(() => {});
 
     if (!poll)
       return await interaction.reply({
@@ -55,7 +45,7 @@ module.exports = {
     const embed = new Embed(color)
       .setDescription(
         `Click the blue button below this message to enter the details for the poll. When entered, click the gray button to enter the choices.${
-          poll.options.length !== 0 ? `\n\n**Entered Choices:**${poll.options.map(o => `\n${o}`)}` : ''
+          poll.options!.length !== 0 ? `\n\n**Entered Choices:**${poll.options!.map(o => `\n${o}`)}` : ''
         }`,
       )
       .addFields(
@@ -70,6 +60,6 @@ module.exports = {
         { name: 'Question', value: `${question}`, inline: true },
         { name: 'Description', value: `${description}`, inline: true },
       );
-    await interaction.update({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
   },
 };

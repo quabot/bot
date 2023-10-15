@@ -1,14 +1,11 @@
-const { Client, GuildMember } = require('discord.js');
-const Level = require('@schemas/Level');
+import type { GuildMember } from 'discord.js';
+import Level from '@schemas/Level';
 
 module.exports = {
   event: 'guildMemberRemove',
   name: 'levelDisable',
-  /**
-   * @param {GuildMember} member
-   * @param {Client} client
-   */
-  async execute(member, client) {
+
+  async execute({}, member: GuildMember) {
     const user = await Level.findOne({
       guildId: member.guild.id,
       userId: member.id,

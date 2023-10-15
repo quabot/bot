@@ -31,7 +31,7 @@ client.custom_commands = [];
   'subcommandHandler',
   'wsHandler',
 ].forEach(handler => {
-  require(`./structures/handlers/${handler}`)(client);
+  require(`./structures/handlers/${handler}`).default(client);
 });
 
 //* Setup the Client's cache.

@@ -7,12 +7,12 @@ const {
   ButtonStyle,
   AttachmentBuilder,
 } = require('discord.js');
-const { getLevelConfig } = require('@configs/levelConfig');
-const { getLevel } = require('@configs/level');
-const { getServerConfig } = require('@configs/serverConfig');
-const Vote = require('@schemas/Vote');
-const { CustomEmbed } = require('@constants/customEmbed');
-const { drawCard } = require('@functions/levelCard');
+import { getLevelConfig } from '@configs/levelConfig';
+import { getLevel } from '@configs/level';
+import { getServerConfig } from '@configs/serverConfig';
+import Vote from '@schemas/Vote';
+import { CustomEmbed } from '@constants/customEmbed';
+import { drawCard } from '@functions/levelCard';
 
 module.exports = {
   event: Events.VoiceStateUpdate,
@@ -75,7 +75,7 @@ module.exports = {
             let xp = levelDB.xp;
             let level = levelDB.level;
 
-            const formula = lvl => 120 * lvl ** 2 + 100;
+            const formula = (lvl: number) => 120 * lvl ** 2 + 100;
             const reqXp = formula(level);
 
             let rndXp = Math.floor(Math.random() * 3);
@@ -103,7 +103,7 @@ module.exports = {
               xp = xp += rndXp;
               level = level += 1;
 
-              const parse = s => {
+              const parse = (s: string) => {
                 return s
                   .replaceAll('{server.name}', `${newState.guild.name}`)
                   .replaceAll('{server}', `${newState.guild.name}` ?? '')
@@ -226,7 +226,7 @@ module.exports = {
 
               const nextCheck = config.rewards.filter(i => i.level === level) ?? [];
               nextCheck.forEach(async check => {
-                const parseCheck = s => {
+                const parseCheck = (s: string) => {
                   return s
                     .replaceAll('{server.name}', `${newState.guild.name}`)
                     .replaceAll('{server}', `${newState.guild.name}` ?? '')

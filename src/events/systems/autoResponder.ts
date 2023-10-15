@@ -1,17 +1,15 @@
-const { Client, Message } = require('discord.js');
-const { CustomEmbed } = require('@constants/customEmbed');
-const Responder = require('@schemas/Responder');
-const { getServerConfig } = require('@configs/serverConfig');
-const { getResponderConfig } = require('@configs/responderConfig');
+import type { Message } from 'discord.js';
+import { CustomEmbed } from '@constants/customEmbed';
+import { getServerConfig } from '@configs/serverConfig';
+import { getResponderConfig } from '@configs/responderConfig';
+import type { EventArgs } from '@typings/functionArgs';
+import { hasAnyRole } from '@functions/discord';
 
 module.exports = {
   event: 'messageCreate',
   name: 'autoReponder',
-  /**
-   * @param {Message} message
-   * @param {Client} client
-   */
-  async execute(message, client) {
+
+  async execute({ client }: EventArgs, message: Message) {
     if (message.author.bot) return;
     if (!message.guildId) return;
 
@@ -29,21 +27,19 @@ module.exports = {
       if (cL.wildcard && message.content.toLowerCase().includes(cL.trigger)) run = true;
 
       if (cL.ignored_channels.includes(message.channel.id)) run = false;
-      cL.ignored_roles.forEach(r => {
-        if (message.member.roles.cache.has(r)) run = false;
-      });
-
+      if (hasAnyRole(message.member, cL.ignored_roles)) run = false;
       if (run) runTrigger(cL);
     });
 
-    async function runTrigger(document) {
-      const parse = s => {
+    //TODO CHANGE WHEN DEBUGGED
+    async function runTrigger(document: any) {
+      const parse = (s: string) => {
         return `${s}`
           .replaceAll('{color}', `${color}`)
-          .replaceAll('{guild}', `${message.guild.name}`)
-          .replaceAll('{server}', `${message.guild.name}`)
-          .replaceAll('{members}', `${message.guild.memberCount}`)
-          .replaceAll('{user}', message.author)
+          .replaceAll('{guild}', `${message.guild?.name}`)
+          .replaceAll('{server}', `${message.guild?.name}`)
+          .replaceAll('{members}', `${message.guild?.memberCount}`)
+          .replaceAll('{user}', message.author?.toString())
           .replaceAll('{username}', message.author.username)
           .replaceAll('{tag}', message.author.tag);
       };
@@ -51,7 +47,7 @@ module.exports = {
       if (document.type === 'message') {
         await message.reply({
           content: parse(document.message) ?? '** **',
-          allowedMentions: false,
+          allowedMentions: { repliedUser: false },
         });
       } else if (document.type === 'reaction') {
         await message.react(document.reaction);

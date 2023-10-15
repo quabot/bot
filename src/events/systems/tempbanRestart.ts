@@ -7,10 +7,8 @@ module.exports = {
   event: 'ready',
   name: 'tempbanRestart',
   once: true,
-  /**
-   * @param {Client} client
-   */
-  async execute(client) {
+
+  async execute({ client }: EventArgs) {
     const Punishments = await Punishment.find({
       type: 'tempban',
       active: true,

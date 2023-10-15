@@ -1,8 +1,8 @@
 /* eslint-disable no-case-declarations */
 const { ReactionManager, User, GuildMember, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { getReactionConfig } = require('@configs/reactionConfig');
-const { getServerConfig } = require('@configs/serverConfig');
-const { CustomEmbed } = require('@constants/customEmbed');
+import { getServerConfig } from '@configs/serverConfig';
+import { CustomEmbed } from '@constants/customEmbed';
 
 module.exports = {
   event: 'messageReactionAdd',
@@ -55,7 +55,7 @@ module.exports = {
     });
     if (excluded && !required && reactionRole.reqRoles.length === 0) return;
 
-    const sentFrom = new ActionRowBuilder().addComponents(
+    const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
         .setLabel('Sent from server: ' + reaction.message.guild?.name ?? 'Unknown')
@@ -69,7 +69,7 @@ module.exports = {
         case 'normal':
           await member.roles.add(role);
 
-          const parseNormal = s =>
+          const parseNormal = (s: string) =>
             s
               .replaceAll('{action}', 'added')
               .replaceAll('{id}', user.id)
@@ -99,7 +99,7 @@ module.exports = {
         case 'verify':
           await member.roles.add(role);
 
-          const parseVerify = s =>
+          const parseVerify = (s: string) =>
             s
               .replaceAll('{action}', 'added')
               .replaceAll('{id}', user.id)
@@ -129,7 +129,7 @@ module.exports = {
         case 'drop':
           await member.roles.remove(role);
 
-          const parseDrop = s =>
+          const parseDrop = (s: string) =>
             s
               .replaceAll('{action}', 'removed')
               .replaceAll('{id}', user.id)
@@ -159,7 +159,7 @@ module.exports = {
         case 'reversed':
           await member.roles.remove(role);
 
-          const parseReversed = s =>
+          const parseReversed = (s: string) =>
             s
               .replaceAll('{action}', 'removed')
               .replaceAll('{id}', user.id)
@@ -207,7 +207,7 @@ module.exports = {
           if (!hasRole) {
             await member.roles.add(role);
 
-            const parseUnique = s =>
+            const parseUnique = (s: string) =>
               s
                 .replaceAll('{action}', 'added')
                 .replaceAll('{id}', user.id)
@@ -237,7 +237,7 @@ module.exports = {
         case 'binding':
           await member.roles.add(role);
 
-          const parseBinding = s =>
+          const parseBinding = (s: string) =>
             s
               .replaceAll('{action}', 'added')
               .replaceAll('{id}', user.id)

@@ -16,6 +16,10 @@ export interface CommandArgs extends BaseArgs {
   interaction: ChatInputCommandInteraction;
 }
 
+export interface CommandExecutableFromButtonArgs extends BaseArgs {
+  interaction: ChatInputCommandInteraction | ButtonInteraction;
+}
+
 export interface ButtonArgs extends BaseArgs {
   interaction: ButtonInteraction;
 }

@@ -1,15 +1,13 @@
-const { Client } = require('discord.js');
-const { endGiveaway } = require('@functions/giveaway');
+import { endGiveaway } from '@functions/giveaway';
+import type { EventArgs } from '@typings/functionArgs';
+import Giveaway from '@schemas/Giveaway';
 
 module.exports = {
   event: 'ready',
   name: 'giveawayRestart',
   once: true,
-  /**
-   * @param {Client} client
-   */
-  async execute(client) {
-    const Giveaway = require('@schemas/Giveaway');
+
+  async execute({ client }: EventArgs) {
     const giveaways = await Giveaway.find({ ended: false });
 
     giveaways.forEach(async giveaway => {

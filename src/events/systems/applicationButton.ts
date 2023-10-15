@@ -1,17 +1,14 @@
-const { Client, Message, Events, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getUser } = require('@configs/user');
-const { Embed } = require('@constants/embed');
-const { getServerConfig } = require('@configs/serverConfig');
-const Application = require('@schemas/Application');
+import { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle, type Interaction } from 'discord.js';
+import { Embed } from '@constants/embed';
+import { getServerConfig } from '@configs/serverConfig';
+import Application from '@schemas/Application';
+import type { EventArgs } from '@typings/functionArgs';
 
 module.exports = {
   event: Events.InteractionCreate,
   name: 'applicationButton',
-  /**
-   * @param {import('discord.js').Interaction} interaction
-   * @param {Client} client
-   */
-  async execute(interaction, client) {
+
+  async execute({ client }: EventArgs, interaction: Interaction) {
     if (!interaction.isButton() || !interaction.guildId) return;
 
     const id = interaction.customId;
@@ -51,7 +48,7 @@ module.exports = {
         new Embed(color).setDescription(`You can apply for **${application.name}** by clicking the button below.`),
       ],
       components: [
-        new ActionRowBuilder().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder()
             .setLabel('Apply')
             .setStyle(ButtonStyle.Link)

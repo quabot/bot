@@ -64,7 +64,7 @@ export default {
       });
     if (closedCategory.type !== ChannelType.GuildCategory)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription("This channel doesn't have the right type.")],
+        embeds: [new Embed(color).setDescription("The closed ticket category doesn't have the right type.")],
       });
 
     const interChannel = interaction.channel as GuildTextBasedChannel | null;

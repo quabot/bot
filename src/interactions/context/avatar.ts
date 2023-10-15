@@ -1,12 +1,11 @@
-const { ApplicationCommandType, ContextMenuCommandBuilder } = require('discord.js');
-const { Embed } = require('@constants/embed');
+import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
+import type { ContextArgs } from '@typings/functionArgs';
 
 module.exports = {
   data: new ContextMenuCommandBuilder().setName('Avatar').setType(ApplicationCommandType.User).setDMPermission(false),
-  /**
-   * @param {import("discord.js").UserContextMenuCommandInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+
+  async execute({ interaction, color }: ContextArgs) {
     await interaction.deferReply();
 
     const user = interaction.targetUser;

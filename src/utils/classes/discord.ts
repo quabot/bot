@@ -11,6 +11,7 @@ export interface Client {
   modals: Collection<string, Modal>;
   ws_events: Collection<string, WsEvent>;
   subcommands: Collection<string, Subcommand>;
+  //todo debug to be sure
   custom_commands: any[];
 }
 

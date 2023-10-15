@@ -6,10 +6,8 @@ module.exports = {
   event: 'ready',
   name: 'pollRestart',
   once: true,
-  /**
-   * @param {Client} client
-   */
-  async execute(client) {
+
+  async execute({ client }: EventArgs) {
     const Polls = await Poll.find();
 
     Polls.forEach(async poll => {

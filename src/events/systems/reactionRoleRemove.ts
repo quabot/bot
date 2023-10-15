@@ -1,8 +1,8 @@
 /* eslint-disable no-case-declarations */
 const { ReactionManager, User, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { getReactionConfig } = require('@configs/reactionConfig');
-const { getServerConfig } = require('@configs/serverConfig');
-const { CustomEmbed } = require('@constants/customEmbed');
+import { getServerConfig } from '@configs/serverConfig';
+import { CustomEmbed } from '@constants/customEmbed';
 
 module.exports = {
   event: 'messageReactionRemove',
@@ -55,7 +55,7 @@ module.exports = {
     });
     if (excluded && !required && reactionRole.reqRoles.length === 0) return;
 
-    const sentFrom = new ActionRowBuilder().addComponents(
+    const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
         .setLabel('Sent from server: ' + reaction.message.guild?.name ?? 'Unknown')
@@ -69,7 +69,7 @@ module.exports = {
         case 'normal':
           await member.roles.remove(role);
 
-          const parseNormal = s =>
+          const parseNormal = (s: string) =>
             s
               .replaceAll('{action}', 'removed')
               .replaceAll('{id}', user.id)
@@ -107,7 +107,7 @@ module.exports = {
         case 'reversed':
           await member.roles.add(role);
 
-          const parseReversed = s =>
+          const parseReversed = (s: string) =>
             s
               .replaceAll('{action}', 'added')
               .replaceAll('{id}', user.id)
@@ -137,7 +137,7 @@ module.exports = {
         case 'unique':
           await member.roles.remove(role);
 
-          const parseUnique = s =>
+          const parseUnique = (s: string) =>
             s
               .replaceAll('{action}', 'removed')
               .replaceAll('{id}', user.id)

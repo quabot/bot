@@ -7,18 +7,14 @@ export function prepareEmbed(embed: Embed) {
   return res;
 }
 
-export function hasAnyRole(member: GuildMember | APIInteractionGuildMember | null, roles: Snowflake[]) {
-  return (
-    !!member &&
-    roles
-      .map(manager => {
-        const hasRole =
-          'cache' in member.roles
-            ? (member.roles as GuildMemberRoleManager).cache.get
-            : (member.roles as Snowflake[]).includes;
+export function hasAnyRole(member: GuildMember | APIInteractionGuildMember | null, query: Snowflake[]) {
+  const roles = getRoleIds(member);
 
-        return !!hasRole(manager);
-      })
-      .some(v => v === true)
-  );
+  return query.map(manager => roles.includes(manager)).some(v => v === true);
+}
+
+export function getRoleIds(member: GuildMember | APIInteractionGuildMember | null) {
+  if (!member) return [];
+
+  return 'cache' in member.roles ? (member.roles as GuildMemberRoleManager).cache.map(r => r.id) : member.roles;
 }

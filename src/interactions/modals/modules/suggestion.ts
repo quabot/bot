@@ -1,34 +1,23 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  ModalSubmitInteraction,
-  ActionRowBuilder,
-  ButtonStyle,
-  ButtonBuilder,
-} = require('discord.js');
-const Suggestion = require('@schemas/Suggestion');
-const { getIdConfig } = require('@configs/idConfig');
-const { getSuggestConfig } = require('@configs/suggestConfig');
-const { CustomEmbed } = require('@constants/customEmbed');
-const { Embed } = require('@constants/embed');
+import { ActionRowBuilder, ButtonStyle, ButtonBuilder, ChannelType } from 'discord.js';
+import Suggestion from '@schemas/Suggestion';
+import { getIdConfig } from '@configs/idConfig';
+import { getSuggestConfig } from '@configs/suggestConfig';
+import { CustomEmbed } from '@constants/customEmbed';
+import { Embed } from '@constants/embed';
+import type { ModalArgs } from '@typings/functionArgs';
+import { IIds } from '@typings/schemas';
+import { NonNullMongooseReturn } from '@typings/mongoose';
 
 module.exports = {
   name: 'suggest',
-  /**
-   * @param {Client} client
-   * @param {ModalSubmitInteraction} interaction
-   */
-  async execute(client, interaction, color) {
+
+  async execute({ client, interaction, color }: ModalArgs) {
     await interaction.deferReply({ ephemeral: true });
 
     const config = await getSuggestConfig(client, interaction.guildId ?? '');
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            'We are setting up suggestions for first-time use, please run the command again.',
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -45,6 +34,10 @@ module.exports = {
           ),
         ],
       });
+    if (channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription("The suggestions channel isn't the right type.")],
+      });
 
     const suggestion = interaction.fields.getTextInputValue('suggestion');
     if (!suggestion)
@@ -52,15 +45,17 @@ module.exports = {
         embeds: [new Embed(color).setDescription("You didn't give a suggestion.")],
       });
 
-    const ids = await getIdConfig(interaction.guildId);
-    if (!ids)
+    const rawIds = await getIdConfig(interaction.guildId!, client);
+    if (!rawIds)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription('We are setting up some final documents, please run the command again.'),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    const getParsedString = text =>
+    if (!rawIds.suggestId && rawIds.suggestId !== 0) rawIds.suggestId = -1;
+
+    const ids = rawIds as Omit<NonNullMongooseReturn<IIds>, 'suggestId'> & { suggestId: number };
+
+    const getParsedString = (text: string) =>
       text
         .replaceAll('{suggestion}', suggestion)
         .replaceAll('{user}', `${interaction.user}`)
@@ -68,8 +63,8 @@ module.exports = {
         .replaceAll('{username}', `${interaction.user.username}`)
         .replaceAll('{tag}', `${interaction.user.tag}`)
         .replaceAll('{discriminator}', `${interaction.user.discriminator}`)
-        .replaceAll('{servername}', `${interaction.guild.name}`)
-        .replaceAll('{id}', ids.suggestId + 1 ?? 0)
+        .replaceAll('{servername}', `${interaction.guild?.name}`)
+        .replaceAll('{id}', (++ids.suggestId).toString())
         .replaceAll('{server}', interaction.guild?.name ?? '')
         .replaceAll('{guild}', interaction.guild?.name ?? '')
         .replaceAll('{servername}', interaction.guild?.name ?? '')
@@ -84,7 +79,7 @@ module.exports = {
     await msg.react(config.emojiGreen);
     await msg.react(config.emojiRed);
 
-    ids.suggestId += 1;
+    ids.suggestId++;
     await ids.save();
 
     const newSuggestion = new Suggestion({
@@ -111,7 +106,8 @@ module.exports = {
 
     if (!config.logEnabled) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannelId);
-    if (!logChannel) return;
+    if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
+      return;
 
     await logChannel.send({
       embeds: [
@@ -128,7 +124,7 @@ module.exports = {
         ),
       ],
       components: [
-        new ActionRowBuilder().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder().setCustomId('suggestion-approve').setLabel('Approve').setStyle(ButtonStyle.Success),
           new ButtonBuilder().setCustomId('suggestion-deny').setLabel('Deny').setStyle(ButtonStyle.Danger),
           new ButtonBuilder().setCustomId('suggestion-delete').setLabel('Delete').setStyle(ButtonStyle.Secondary),

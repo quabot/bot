@@ -3,14 +3,14 @@ import { Embed } from '@constants/embed';
 import axios from 'axios';
 import { shuffleArray } from '@functions/array';
 import { getUserGame } from '@configs/userGame';
-import type { CommandArgs } from '@typings/functionArgs';
+import type { CommandExecutableFromButtonArgs } from '@typings/functionArgs';
 import { replaceHtmlCharCodes } from '@functions/string';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
   data: new SlashCommandBuilder().setName('quiz').setDescription('Play a multiple choice quiz.').setDMPermission(false),
 
-  async execute({ interaction, color, client }: CommandArgs) {
+  async execute({ interaction, color, client }: CommandExecutableFromButtonArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
 

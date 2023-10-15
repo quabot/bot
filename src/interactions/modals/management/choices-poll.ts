@@ -1,23 +1,16 @@
-const {
-  SlashCommandBuilder,
-  Client,
-  ModalSubmitInteraction,
-  ActionRowBuilder,
-  ButtonStyle,
-  ButtonBuilder,
-} = require('discord.js');
-const Poll = require('@schemas/Poll');
-const { getPollConfig } = require('@configs/pollConfig');
-const { Embed } = require('@constants/embed');
+import Poll from '@schemas/Poll';
+import { getPollConfig } from '@configs/pollConfig';
+import { Embed } from '@constants/embed';
+import type { ModalArgs } from '@typings/functionArgs';
+import { Types } from 'mongoose';
 
 module.exports = {
   name: 'choices-poll',
-  /**
-   * @param {Client} client
-   * @param {ModalSubmitInteraction} interaction
-   */
-  async execute(client, interaction, color) {
-    const config = await getPollConfig(client, interaction.guildId);
+
+  async execute({ client, interaction, color }: ModalArgs) {
+    await interaction.deferReply();
+
+    const config = await getPollConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
@@ -30,17 +23,18 @@ module.exports = {
 
     const poll = await Poll.findOne({
       guildId: interaction.guildId,
-      interaction: interaction.message.id,
+      interaction: interaction.message?.id,
     })
       .clone()
-      .catch(e => {});
+      .catch(() => {});
 
     if (!poll)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription("Couldn't find the poll, this is an error. Please try again.")],
       });
 
-    const options = [];
+    //TODO CHANGE WHEN DEBUGGED
+    const options: any[] = [];
     interaction.components.map(item => options.push(`${item.components[0].value}`));
 
     if (options.length < 2 || options.length > 5)
@@ -48,7 +42,7 @@ module.exports = {
         embeds: [new Embed(color).setDescription('You need at least two options and a maximum of 5.')],
       });
 
-    poll.options = options;
+    poll.options = new Types.Array(options);
     await poll.save();
 
     const embed = new Embed(color)
@@ -81,6 +75,8 @@ module.exports = {
         inline: true,
       });
 
-    await interaction.update({ embeds: [embed] });
+    await interaction.message?.edit({ embeds: [embed] });
+
+    await interaction.deleteReply();
   },
 };

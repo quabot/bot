@@ -1,27 +1,28 @@
-const { Client, Message, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getLevelConfig } = require('@configs/levelConfig');
-const { AttachmentBuilder } = require('discord.js');
-const { getLevel } = require('@configs/level');
+import { type Message, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { getLevelConfig } from '@configs/levelConfig';
+import { AttachmentBuilder } from 'discord.js';
+import { getLevel } from '@configs/level';
 const cooldowns = new Map();
-const { CustomEmbed } = require('@constants/customEmbed');
-const { getServerConfig } = require('@configs/serverConfig');
-const Vote = require('@schemas/Vote');
-const { drawCard } = require('@functions/levelCard');
+import { CustomEmbed } from '@constants/customEmbed';
+import { getServerConfig } from '@configs/serverConfig';
+import Vote from '@schemas/Vote';
+import { drawCard } from '@functions/levelCard';
+import type { EventArgs } from '@typings/functionArgs';
+import type { CallbackError } from 'mongoose';
+import type { MongooseReturn } from '@typings/mongoose';
+import type { IVote } from '@typings/schemas';
 
 module.exports = {
   event: 'messageCreate',
   name: 'levels',
-  /**
-   * @param {Message} message
-   * @param {Client} client
-   */
-  async execute(message, client) {
-    if (!message.guildId) return;
-    try {
-      if (message.author.bot) return;
-    } catch (e) {
-      // no
-    }
+
+  async execute({ client }: EventArgs, message: Message) {
+    if (!message.guild || !message.channel || !message.member) return;
+    if (message.author.bot) return;
+
+    const guild = message.guild!;
+    const msgChannel = message.channel!;
+    const member = message.member!;
 
     if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
     const current_time = Date.now();
@@ -38,26 +39,26 @@ module.exports = {
     time_stamps.set(message.author.id, current_time);
     setTimeout(() => time_stamps.delete(message.author.id), cooldown_amount);
 
-    const config = await getLevelConfig(message.guildId, client);
+    const config = await getLevelConfig(guild.id, client);
     if (!config) return;
     if (!config.enabled) return;
-    if (config.excludedChannels.includes(message.channelId)) return;
+    if (config.excludedChannels!.includes(msgChannel.id)) return;
 
-    const levelDB = await getLevel(message.guildId, message.author.id);
+    const levelDB = await getLevel(guild.id, message.author.id, client);
 
-    for (let i = 0; i < config.excludedRoles.length; i++) {
-      const role = config.excludedRoles[i];
-      if (message.member.roles.cache.has(role)) return;
+    for (let i = 0; i < config.excludedRoles!.length; i++) {
+      const role = config.excludedRoles![i];
+      if (member.roles.cache.has(role)) return;
     }
 
-    const configColor = await getServerConfig(client, message.guildId);
+    const configColor = await getServerConfig(client, guild.id);
     const color = configColor?.color ?? '#416683';
     if (!color) return;
 
-    const sentFrom = new ActionRowBuilder().addComponents(
+    const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
-        .setLabel('Sent from server: ' + message.guild?.name ?? 'Unknown')
+        .setLabel('Sent from server: ' + guild?.name ?? 'Unknown')
         .setStyle(ButtonStyle.Primary)
         .setDisabled(true),
     );
@@ -67,14 +68,14 @@ module.exports = {
     let xp = levelDB.xp;
     let level = levelDB.level;
 
-    const formula = lvl => 120 * lvl ** 2 + 100;
+    const formula = (lvl: number) => 120 * lvl ** 2 + 100;
     const reqXp = formula(level);
 
     let rndXp = Math.floor(Math.random() * 5);
     if (message.content.length > 200) rndXp += 1;
     rndXp = rndXp * config.xpMultiplier ?? 1;
 
-    const vote = await Vote.findOne({ userId: message.author.id }, (err, c) => {
+    const vote = await Vote.findOne({ userId: message.author.id }, (err: CallbackError, c: MongooseReturn<IVote>) => {
       if (err) console.log(err);
       if (!c)
         new Vote({
@@ -96,20 +97,20 @@ module.exports = {
       xp = xp += rndXp;
       level = level += 1;
 
-      const parse = s => {
+      const parse = (s: string) => {
         return s
-          .replaceAll('{server.name}', `${message.guild.name}`)
-          .replaceAll('{server}', `${message.guild.name}` ?? '')
-          .replaceAll('{server.id}', `${message.guildId}` ?? '')
-          .replaceAll('{server.icon_url}', `${message.guild.iconURL()}` ?? '')
-          .replaceAll('{server.icon}', `${message.guild.icon}` ?? '')
-          .replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
-          .replaceAll('{server.owner}', `<@${message.guild.ownerId}>` ?? '')
-          .replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
+          .replaceAll('{server.name}', `${guild.name}`)
+          .replaceAll('{server}', `${guild.name}` ?? '')
+          .replaceAll('{server.id}', `${guild.id}` ?? '')
+          .replaceAll('{server.icon_url}', `${guild.iconURL()}` ?? '')
+          .replaceAll('{server.icon}', `${guild.icon}` ?? '')
+          .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
+          .replaceAll('{server.owner}', `<@${guild.ownerId}>` ?? '')
+          .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
           .replaceAll('{id}', `${message.author.id}` ?? '')
-          .replaceAll('{server.owner_id}', `${message.guild.ownerId}` ?? '')
-          .replaceAll('{server.members}', `${message.guild.memberCount}` ?? '')
-          .replaceAll('{members}', `${message.guild.memberCount}` ?? '')
+          .replaceAll('{server.owner_id}', `${guild.ownerId}` ?? '')
+          .replaceAll('{server.members}', `${guild.memberCount}` ?? '')
+          .replaceAll('{members}', `${guild.memberCount}` ?? '')
           .replaceAll('{user}', `${message.author}` ?? '')
           .replaceAll('{username}', `${message.author.username}` ?? '')
           .replaceAll('{user.name}', `${message.author.username}` ?? '')
@@ -123,10 +124,10 @@ module.exports = {
           .replaceAll('{user.avatar}', `${message.author.avatar}` ?? '')
           .replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '')
           .replaceAll('{user.created_at}', `${message.author.createdAt}` ?? '')
-          .replaceAll('{user.joined_at}', `${message.member.joinedAt}` ?? '')
-          .replaceAll('{channel}', `${message.channel}` ?? '')
-          .replaceAll('{channel.name}', `${message.channel.name}` ?? '')
-          .replaceAll('{channel.id}', `${message.channel.id}` ?? '')
+          .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
+          .replaceAll('{channel}', `${msgChannel}` ?? '')
+          .replaceAll('{channel.name}', 'name' in msgChannel ? `${msgChannel.name}` : '')
+          .replaceAll('{channel.id}', `${msgChannel.id}` ?? '')
           .replaceAll('{level}', `${level}` ?? '')
           .replaceAll('{xp}', `${xp}` ?? '')
           .replaceAll('{required_xp}', `${formula(level)}` ?? '')
@@ -134,9 +135,8 @@ module.exports = {
       };
 
       if (config.channel !== 'none') {
-        const channel =
-          config.channel === 'current' ? message.channel : message.guild.channels.cache.get(`${config.channel}`);
-        if (!channel) return;
+        const channel = config.channel === 'current' ? msgChannel : guild.channels.cache.get(`${config.channel}`);
+        if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
         const embed = new CustomEmbed(config.message, parse);
 
@@ -147,7 +147,7 @@ module.exports = {
           });
         if (config.messageType === 'text') await channel.send({ content: `${parse(config.messageText)}` });
         if (config.messageType === 'card') {
-          const card = await drawCard(message.member, message.member.user, level, xp, formula(level), config.levelCard);
+          const card = await drawCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
 
           const attachment = new AttachmentBuilder(card, {
@@ -167,19 +167,19 @@ module.exports = {
         const embed = new CustomEmbed(config.dmMessage, parse);
 
         if (config.dmType === 'embed')
-          await message.member.send({
+          await member.send({
             embeds: [embed],
             content: `${parse(config.dmMessage.content)}`,
             components: [sentFrom],
           });
         if (config.dmType === 'text')
-          await message.member.send({
+          await member.send({
             content: `${parse(config.dmMessageText)}`,
           });
         if (config.dmType === 'card') {
-          const card = await drawCard(message.member, message.member.user, level, xp, formula(level), config.levelCard);
+          const card = await drawCard(member, level, xp, formula(level), config.levelCard);
           if (!card)
-            return message.member.send(
+            return member.send(
               'You leveled up! Sorry, we tried to send a card to the configured channel, but there was an error. Sorry for the inconvinience! All level rewards have been given.',
             );
 
@@ -188,9 +188,9 @@ module.exports = {
               name: 'level_card.png',
             });
 
-            if (!config.cardMention) await message.member.send({ files: [attachment] });
+            if (!config.cardMention) await member.send({ files: [attachment] });
             if (config.cardMention)
-              await message.member.send({
+              await member.send({
                 files: [attachment],
                 content: `${message.author}`,
               });
@@ -198,22 +198,22 @@ module.exports = {
         }
       }
 
-      const nextCheck = config.rewards.filter(i => i.level === level) ?? [];
+      const nextCheck = config.rewards!.filter(i => i.level === level) ?? [];
       nextCheck.forEach(async check => {
-        const parseCheck = s => {
+        const parseCheck = (s: string) => {
           return s
-            .replaceAll('{server.name}', `${message.guild.name}`)
-            .replaceAll('{server}', `${message.guild.name}` ?? '')
-            .replaceAll('{server.id}', `${message.guildId}` ?? '')
-            .replaceAll('{server.icon_url}', `${message.guild.iconURL()}` ?? '')
-            .replaceAll('{server.icon}', `${message.guild.icon}` ?? '')
-            .replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
-            .replaceAll('{server.owner}', `<@${message.guild.ownerId}>` ?? '')
-            .replaceAll('{icon}', `${message.guild.iconURL()}` ?? '')
+            .replaceAll('{server.name}', `${guild.name}`)
+            .replaceAll('{server}', `${guild.name}` ?? '')
+            .replaceAll('{server.id}', `${guild.id}` ?? '')
+            .replaceAll('{server.icon_url}', `${guild.iconURL()}` ?? '')
+            .replaceAll('{server.icon}', `${guild.icon}` ?? '')
+            .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
+            .replaceAll('{server.owner}', `<@${guild.ownerId}>` ?? '')
+            .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
             .replaceAll('{id}', `${message.author.id}` ?? '')
-            .replaceAll('{server.owner_id}', `${message.guild.ownerId}` ?? '')
-            .replaceAll('{server.members}', `${message.guild.memberCount}` ?? '')
-            .replaceAll('{members}', `${message.guild.memberCount}` ?? '')
+            .replaceAll('{server.owner_id}', `${guild.ownerId}` ?? '')
+            .replaceAll('{server.members}', `${guild.memberCount}` ?? '')
+            .replaceAll('{members}', `${guild.memberCount}` ?? '')
             .replaceAll('{user}', `${message.author}` ?? '')
             .replaceAll('{username}', `${message.author.username}` ?? '')
             .replaceAll('{user.name}', `${message.author.username}` ?? '')
@@ -227,10 +227,10 @@ module.exports = {
             .replaceAll('{user.avatar}', `${message.author.avatar}` ?? '')
             .replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '')
             .replaceAll('{user.created_at}', `${message.author.createdAt}` ?? '')
-            .replaceAll('{user.joined_at}', `${message.member.joinedAt}` ?? '')
-            .replaceAll('{channel}', `${message.channel}` ?? '')
-            .replaceAll('{channel.name}', `${message.channel.name}` ?? '')
-            .replaceAll('{channel.id}', `${message.channel.id}` ?? '')
+            .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
+            .replaceAll('{channel}', `${msgChannel}` ?? '')
+            .replaceAll('{channel.name}', 'name' in msgChannel ? `${msgChannel.name}` : '')
+            .replaceAll('{channel.id}', `${msgChannel.id}` ?? '')
             .replaceAll('{level}', `${level}` ?? '')
             .replaceAll('{xp}', `${xp}` ?? '')
             .replaceAll('{required_xp}', `${formula(level)}` ?? '')
@@ -244,19 +244,19 @@ module.exports = {
 
         if (config.rewardsMode === 'replace') {
           if (levelDB.role !== 'none') {
-            const role = message.guild.roles.cache.get(levelDB.role);
-            if (role) await message.member.roles.remove(role).catch(() => {});
+            const role = guild.roles.cache.get(levelDB.role);
+            if (role) await member.roles.remove(role).catch(() => {});
           }
 
-          const role = message.guild.roles.cache.get(check.role);
-          if (role) await message.member.roles.add(role).catch(() => {});
+          const role = guild.roles.cache.get(check.role);
+          if (role) await member.roles.add(role).catch(() => {});
           levelDB.role = check.role;
           await levelDB.save();
         }
 
         if (config.rewardsMode === 'stack') {
-          const role = message.guild.roles.cache.get(check.role);
-          if (role) await message.member.roles.add(role).catch(() => {});
+          const role = guild.roles.cache.get(check.role);
+          if (role) await member.roles.add(role).catch(() => {});
           levelDB.role = check.role;
           await levelDB.save();
         }
@@ -264,13 +264,13 @@ module.exports = {
         if (config.rewardDm === false) return;
 
         if (config.rewardDmType === 'embed')
-          await message.member.send({
+          await member.send({
             embeds: [new CustomEmbed(config.rewardDmMessage, parseCheck)],
             content: `${parseCheck(config.rewardDmMessage.content)}`,
             components: [sentFrom],
           });
         if (config.rewardDmType === 'text')
-          await message.member.send({
+          await member.send({
             content: `${parseCheck(config.rewardDmMessageText)}`,
             components: [sentFrom],
           });

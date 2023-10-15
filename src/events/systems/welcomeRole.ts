@@ -1,14 +1,11 @@
-const { Client, Events, GuildMember } = require('discord.js');
-const { getWelcomeConfig } = require('@configs/welcomeConfig');
+import { Events, type GuildMember } from 'discord.js';
+import { getWelcomeConfig } from '@configs/welcomeConfig';
 
 module.exports = {
   event: Events.GuildMemberAdd,
   name: 'welcomeRole',
-  /**
-   * @param {GuildMember} member
-   * @param {Client} client
-   */
-  async execute(member, client) {
+
+  async execute({ client }: EventArgs, member: GuildMember) {
     const config = await getWelcomeConfig(client, member.guild.id);
     if (!config) return;
     if (!config.joinRoleEnabled) return;

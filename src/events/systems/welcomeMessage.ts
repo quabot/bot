@@ -1,16 +1,13 @@
-const { Client, Events, GuildMember } = require('discord.js');
-const { getServerConfig } = require('@configs/serverConfig');
-const { getWelcomeConfig } = require('@configs/welcomeConfig');
-const { CustomEmbed } = require('@constants/customEmbed');
+import { Events, type GuildMember } from 'discord.js';
+import { getServerConfig } from '@configs/serverConfig';
+import { getWelcomeConfig } from '@configs/welcomeConfig';
+import { CustomEmbed } from '@constants/customEmbed';
 
 module.exports = {
   event: Events.GuildMemberAdd,
   name: 'welcomeMessage',
-  /**
-   * @param {GuildMember} member
-   * @param {Client} client
-   */
-  async execute(member, client) {
+
+  async execute({ client }: EventArgs, member: GuildMember) {
     const config = await getWelcomeConfig(client, member.guild.id);
     const custom = await getServerConfig(client, member.guild.id);
     if (!config) return;
@@ -19,7 +16,7 @@ module.exports = {
     const channel = member.guild.channels.cache.get(config.joinChannel);
     if (!channel) return;
 
-    const parseString = text =>
+    const parseString = (text: string) =>
       text
         .replaceAll('{user}', `${member}`)
         .replaceAll('{id}', `${member.user.id}`)
@@ -29,7 +26,7 @@ module.exports = {
         .replaceAll('{avatar}', member.displayAvatarURL() ?? '')
         .replaceAll('{icon}', member.guild.iconURL() ?? '')
         .replaceAll('{server}', member.guild.name ?? '')
-        .replaceAll('{members}', member.guild.memberCount ?? '')
+        .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
         .replaceAll('{color}', `${custom.color ?? '#416683'}`);
 
     if (config.joinType === 'embed') {

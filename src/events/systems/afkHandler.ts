@@ -1,16 +1,14 @@
-const { Client, Message } = require('discord.js');
-const { getUser } = require('@configs/user');
-const { Embed } = require('@constants/embed');
-const { getServerConfig } = require('@configs/serverConfig');
+import { getUser } from '@configs/user';
+import { Embed } from '@constants/embed';
+import { getServerConfig } from '@configs/serverConfig';
+import type { EventArgs } from '@typings/functionArgs';
+import type { Message } from 'discord.js';
 
 module.exports = {
   event: 'messageCreate',
   name: 'afkHandler',
-  /**
-   * @param {Message} message
-   * @param {Client} client
-   */
-  async execute(message, client) {
+
+  async execute({ client }: EventArgs, message: Message) {
     if (message.author.bot) return;
     if (!message.guildId) return;
 
@@ -18,7 +16,7 @@ module.exports = {
     if (!user) return;
     if (user.bot) return;
 
-    const config = await getUser(message.guildId, user.id);
+    const config = await getUser(message.guildId, user.id, client);
     const configColor = await getServerConfig(client, message.guildId);
     const color = configColor?.color ?? '#416683';
     if (!config || !color) return;

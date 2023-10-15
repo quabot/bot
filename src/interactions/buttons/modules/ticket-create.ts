@@ -85,7 +85,7 @@ export default {
         });
 
       await channel.setParent(category, { lockPermissions: true });
-      channel.permissionOverwrites.create(interaction.guild.id, {
+      channel.permissionOverwrites.create(interaction.guild!.id, {
         ViewChannel: false,
         SendMessages: false,
       });
@@ -94,8 +94,8 @@ export default {
         SendMessages: true,
       });
 
-      config.staffRoles.forEach(r => {
-        const role = interaction.guild.roles.cache.get(r);
+      config.staffRoles!.forEach(r => {
+        const role = interaction.guild?.roles.cache.get(r);
         if (role)
           channel.permissionOverwrites.create(role, {
             ViewChannel: true,
@@ -126,7 +126,7 @@ export default {
         ],
       });
 
-      const pingRole = interaction.guild.roles.cache.get(config.staffPing);
+      const pingRole = interaction.guild?.roles.cache.get(config.staffPing);
       if (pingRole) await channel.send(`${pingRole}`);
 
       const newTicket = new Ticket({
@@ -153,8 +153,15 @@ export default {
         ephemeral: true,
       });
 
-      const logChannel = interaction.guild.channels.cache.get(config.logChannel);
-      if (logChannel)
+      const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+      if (
+        !(
+          !logChannel ||
+          logChannel.type === ChannelType.GuildCategory ||
+          logChannel.type === ChannelType.GuildForum ||
+          !config.logEnabled
+        )
+      )
         await logChannel.send({
           embeds: [
             new Embed(color)
@@ -172,13 +179,14 @@ export default {
           ],
         });
 
-      ids.ticketId += 1;
+      if (!ids.ticketId) ids.ticketId = 0;
+      ids.ticketId++;
       await ids.save();
 
       return;
     }
 
-    const category = interaction.guild.channels.cache.get(config.openCategory);
+    const category = interaction.guild?.channels.cache.get(config.openCategory);
     if (!category || category.type !== ChannelType.GuildCategory)
       return await interaction.reply({
         embeds: [
@@ -189,7 +197,7 @@ export default {
         ephemeral: true,
       });
 
-    const channel = await interaction.guild.channels.create({
+    const channel = await interaction.guild?.channels.create({
       name: `ticket-${ids.ticketId}`,
       type: ChannelType.GuildText,
     });
@@ -200,7 +208,7 @@ export default {
       });
 
     await channel.setParent(category, { lockPermissions: true });
-    channel.permissionOverwrites.create(interaction.guild.id, {
+    channel.permissionOverwrites.create(interaction.guild!.id, {
       ViewChannel: false,
       SendMessages: false,
     });
@@ -209,8 +217,8 @@ export default {
       SendMessages: true,
     });
 
-    config.staffRoles.forEach(r => {
-      const role = interaction.guild.roles.cache.get(r);
+    config.staffRoles!.forEach(r => {
+      const role = interaction.guild?.roles.cache.get(r);
       if (role)
         channel.permissionOverwrites.create(role, {
           ViewChannel: true,
@@ -237,7 +245,7 @@ export default {
       ],
     });
 
-    const pingRole = interaction.guild.roles.cache.get(config.staffPing);
+    const pingRole = interaction.guild?.roles.cache.get(config.staffPing);
     if (pingRole) await channel.send(`${pingRole}`);
 
     const newTicket = new Ticket({
@@ -264,8 +272,15 @@ export default {
       ephemeral: true,
     });
 
-    const logChannel = interaction.guild.channels.cache.get(config.logChannel);
-    if (logChannel)
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (
+      !(
+        !logChannel ||
+        logChannel.type === ChannelType.GuildCategory ||
+        logChannel.type === ChannelType.GuildForum ||
+        !config.logEnabled
+      )
+    )
       await logChannel.send({
         embeds: [
           new Embed(color)
@@ -283,6 +298,7 @@ export default {
         ],
       });
 
+    if (!ids.ticketId) ids.ticketId = 0;
     ids.ticketId += 1;
     await ids.save();
   },

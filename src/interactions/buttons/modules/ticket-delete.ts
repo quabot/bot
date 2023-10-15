@@ -1,17 +1,10 @@
-import {
-  Client,
-  ButtonInteraction,
-  ColorResolvable,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  PermissionFlagsBits,
-} from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { checkUserPerms } from '@functions/tickets';
 
 export default {
   name: 'delete-ticket',
@@ -19,8 +12,8 @@ export default {
   async execute({ client, interaction, color }: ButtonArgs) {
     await interaction.deferReply({ ephemeral: false });
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
@@ -45,12 +38,7 @@ export default {
         embeds: [new Embed(color).setDescription('This ticket is not closed.')],
       });
 
-    let valid = false;
-    if (ticket.owner === interaction.user.id) valid = true;
-    if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
+    const valid = checkUserPerms(ticket, interaction.user, interaction.member);
     if (!valid)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You are not allowed to delete the ticket.')],

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import type { GuildTextBasedChannel } from 'discord.js';
 import type { NonNullMongooseReturn } from '@typings/mongoose';
 import type { IGiveaway } from '@typings/schemas';
@@ -11,8 +9,12 @@ import { Embed } from '@constants/embed';
 import { getServerConfig } from '@configs/serverConfig';
 import type { Client } from '@classes/discord';
 
-export async function endGiveaway(client: Client, document: NonNullMongooseReturn<IGiveaway>, forceEarly: boolean) {
-  const config = await getGiveawayConfig(client, document.guildId);
+export async function endGiveaway(
+  client: Client,
+  document: NonNullMongooseReturn<IGiveaway>,
+  forceEarly: boolean = false,
+) {
+  const config = await getGiveawayConfig(document.guildId, client);
   if (!config?.enabled) return;
 
   const giveaway = await Giveaway.findOne({
