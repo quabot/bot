@@ -1,19 +1,15 @@
 /* eslint-disable no-case-declarations */
-const { ReactionManager, User, GuildMember, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getReactionConfig } = require('@configs/reactionConfig');
+import { ReactionManager, User, GuildMember, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { getReactionConfig } from '@configs/reactionConfig';
 import { getServerConfig } from '@configs/serverConfig';
 import { CustomEmbed } from '@constants/customEmbed';
+import type { EventArgs } from '@typings/functionArgs';
 
 module.exports = {
   event: 'messageReactionAdd',
   name: 'reactionRoleAdd',
-  /**
-   *
-   * @param {ReactionManager} reaction
-   * @param {User} user
-   * @param {GuildMember} member
-   */
-  async execute(reaction, user, client) {
+
+  async execute({ client }: EventArgs, reaction: ReactionManager, user: User) {
     if (!reaction.message.guildId) return;
     const Reaction = require('@schemas/ReactionRole');
     let reactionRole = await Reaction.findOne({

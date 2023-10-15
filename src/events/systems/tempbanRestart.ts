@@ -1,7 +1,7 @@
-const { Client } = require('discord.js');
-const ms = require('ms');
-const Punishment = require('@schemas/Punishment');
-const { tempUnban } = require('@functions/unban');
+import type { EventArgs } from '@typings/functionArgs';
+import ms from 'ms';
+import Punishment from '@schemas/Punishment';
+import { tempUnban } from '@functions/unban';
 
 module.exports = {
   event: 'ready',
