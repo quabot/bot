@@ -2,6 +2,7 @@ import { Events, type GuildMember } from 'discord.js';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
+import type { EventArgs } from '@typings/functionArgs';
 
 module.exports = {
   event: Events.GuildMemberAdd,

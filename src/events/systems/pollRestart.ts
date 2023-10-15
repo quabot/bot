@@ -1,6 +1,6 @@
-const { Client } = require('discord.js');
-const Poll = require('@schemas/Poll');
-const { endPoll } = require('@functions/poll');
+import Poll from '@schemas/Poll';
+import { endPoll } from '@functions/poll';
+import type { EventArgs } from '@typings/functionArgs';
 
 module.exports = {
   event: 'ready',

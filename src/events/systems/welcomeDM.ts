@@ -1,4 +1,5 @@
 import { Events, type GuildMember } from 'discord.js';
+import type { EventArgs } from '@typings/functionArgs';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
@@ -24,7 +25,7 @@ module.exports = {
         .replaceAll('{icon}', member.guild.iconURL() ?? '')
         .replaceAll('{server}', member.guild.name ?? '')
         .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
-        .replaceAll('{color}', `${custom.color ?? '#416683'}`);
+        .replaceAll('{color}', `${custom?.color ?? '#416683'}`);
 
     if (config.joinDMType === 'embed') {
       const embed = new CustomEmbed(config.dm, parseString);
