@@ -1,6 +1,5 @@
-import { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { Embed } from '@constants/embed';
-const { getApplicationConfig } = require('@configs/applicationConfig');
+import { getApplicationConfig } from '@configs/applicationConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -11,14 +10,10 @@ export default {
     await interaction.deferReply({ ephemeral: false });
 
     const id = interaction.options.getString('id');
-    const config = await getApplicationConfig(interaction.guildId, client);
+    const config = await getApplicationConfig(interaction.guildId!, client);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)

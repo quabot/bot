@@ -1,17 +1,11 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  PermissionFlagsBits,
-} = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import { checkUserPerms } from '@functions/ticket';
+import { hasAnyRole } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -20,16 +14,12 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -50,15 +40,9 @@ export default {
         embeds: [new Embed(color).setDescription('The ticket is already claimed.')],
       });
 
-    let allowed = false;
-    if (ticket.owner === interaction.user.id) allowed = true;
-    if (ticket.users.includes(interaction.user.id)) allowed = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) allowed = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) allowed = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) allowed = true;
-    config.staffRoles.forEach(r => {
-      if (interaction.member.roles.cache.some(role => role.id === r)) allowed = true;
-    });
+    const allowed =
+      checkUserPerms(ticket, interaction.user, interaction.member) ||
+      hasAnyRole(interaction.member, config.staffRoles!);
     if (!allowed)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You are not allowed to claim this ticket.')],
@@ -67,8 +51,8 @@ export default {
     ticket.staff = interaction.user.id;
     await ticket.save();
 
-    const ticketMsg = (await interaction.channel.messages.fetch()).last();
-    if (ticketMsg.author.id !== process.env.CLIENT_ID)
+    const ticketMsg = (await interaction.channel?.messages.fetch())?.last();
+    if (ticketMsg?.author.id !== process.env.CLIENT_ID!)
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription('There was an internal error. The original QuaBot message was deleted.'),
@@ -87,7 +71,7 @@ export default {
           ),
       ],
       components: [
-        new ActionRowBuilder().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
         ),
       ],
@@ -97,35 +81,41 @@ export default {
       embeds: [new Embed(color).setDescription('You have successfully claimed the ticket.')],
     });
 
-    await interaction.channel.send({
+    await interaction.channel?.send({
       embeds: [new Embed(color).setDescription(`This ticket has been claimed by ${interaction.user}.`)],
     });
 
-    const logChannel = interaction.guild.channels.cache.get(config.logChannel);
-    if (logChannel && config.logEnabled)
-      await logChannel.send({
-        embeds: [
-          new Embed(color)
-            .setTitle('Ticket Claimed')
-            .addFields(
-              {
-                name: 'Ticket Owner',
-                value: `<@${ticket.owner}>`,
-                inline: true,
-              },
-              {
-                name: 'Channel',
-                value: `${interaction.channel}`,
-                inline: true,
-              },
-              {
-                name: 'Claimed By',
-                value: `${interaction.user}`,
-                inline: true,
-              },
-            )
-            .setFooter({ text: `ID: ${ticket.id}` }),
-        ],
-      });
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (
+      !logChannel ||
+      logChannel.type === ChannelType.GuildCategory ||
+      logChannel.type === ChannelType.GuildForum ||
+      !config.logEnabled
+    )
+      return;
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('Ticket Claimed')
+          .addFields(
+            {
+              name: 'Ticket Owner',
+              value: `<@${ticket.owner}>`,
+              inline: true,
+            },
+            {
+              name: 'Channel',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            {
+              name: 'Claimed By',
+              value: `${interaction.user}`,
+              inline: true,
+            },
+          )
+          .setFooter({ text: `ID: ${ticket.id}` }),
+      ],
+    });
   },
 };

@@ -5,7 +5,7 @@ import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import discordTranscripts from 'discord-html-transcripts';
-import { checkUserPerms } from '@functions/tickets';
+import { checkUserPerms } from '@functions/ticket';
 
 export default {
   name: 'confirm-delete-ticket',

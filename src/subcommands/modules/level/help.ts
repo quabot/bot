@@ -1,4 +1,3 @@
-const { Client, ChatInputCommandInteraction } = require('discord.js');
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
@@ -6,7 +5,7 @@ export default {
   parent: 'level',
   name: 'help',
 
-  async execute({ client, interaction, color }: CommandArgs) {
+  async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
     await interaction.editReply({

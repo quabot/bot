@@ -1,17 +1,16 @@
-const {
-  Client,
+import {
   ModalBuilder,
   ActionRowBuilder,
   TextInputBuilder,
   TextInputStyle,
-  ChatInputCommandInteraction,
   Colors,
   EmbedBuilder,
-} = require('discord.js');
-const { getSuggestConfig } = require('@configs/suggestConfig');
+  ChannelType,
+} from 'discord.js';
+import { getSuggestConfig } from '@configs/suggestConfig';
 import { Embed } from '@constants/embed';
-const Suggest = require('@schemas/Suggestion');
-const { CustomEmbed } = require('@constants/customEmbed');
+import Suggest from '@schemas/Suggestion';
+import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -25,7 +24,7 @@ export default {
       id: id,
     });
 
-    const config = await getSuggestConfig(client, interaction.guildId);
+    const config = await getSuggestConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
@@ -49,10 +48,15 @@ export default {
         embeds: [new Embed(color).setDescription('The suggestion has already been denied.')],
       });
 
-    const channel = interaction.guild.channels.cache.get(config.channelId);
+    const channel = interaction.guild?.channels.cache.get(config.channelId);
     if (!channel)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription("Couldn't find the suggestions channel.")],
+        ephemeral: true,
+      });
+    if (channel.type === ChannelType.GuildCategory)
+      return await interaction.reply({
+        embeds: [new Embed(color).setDescription("Suggestions channel can't be a category.")],
         ephemeral: true,
       });
 
@@ -69,7 +73,7 @@ export default {
           .setTitle('Reason for rejecting')
           .setCustomId('reject-suggest')
           .addComponents(
-            new ActionRowBuilder().addComponents(
+            new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('reason')
                 .setLabel('Rejection Reason')
@@ -123,22 +127,22 @@ export default {
       if (!config.dm) return;
 
       const user = interaction.guild?.members.cache.get(`${suggestion.userId}`);
-      const parseString = text =>
+      const parseString = (text: string) =>
         text
           .replaceAll('{suggestion}', suggestion.suggestion)
           .replaceAll('{user}', `${user}`)
-          .replaceAll('{avatar}', user.displayAvatarURL() ?? '')
+          .replaceAll('{avatar}', user?.displayAvatarURL() ?? '')
           .replaceAll('{server}', interaction.guild?.name ?? '')
           .replaceAll('{staff}', `${interaction.user ?? ''}`)
           .replaceAll('{state}', 'denied')
-          .replaceAll('{color}', color)
+          .replaceAll('{color}', color.toString())
           .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
       const embed = new CustomEmbed(config.dmMessage, parseString).addFields(
         { name: 'Denied by', value: `${interaction.user}`, inline: true },
         { name: 'Reason', value: `${rejectionReason}`, inline: true },
       );
-      user.send({
+      user?.send({
         embeds: [embed],
         content: parseString(config.dmMessage.content),
       });

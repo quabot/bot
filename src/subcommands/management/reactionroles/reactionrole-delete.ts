@@ -13,7 +13,7 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     const config = await getReactionConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const ids = await getIdConfig(interaction.guildId!, client);
     if (!config || !ids)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

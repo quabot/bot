@@ -1,12 +1,5 @@
-const {
-  Client,
-  ModalBuilder,
-  ActionRowBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  ChatInputCommandInteraction,
-} = require('discord.js');
-const { getSuggestConfig } = require('@configs/suggestConfig');
+import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { getSuggestConfig } from '@configs/suggestConfig';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
@@ -43,8 +36,8 @@ export default {
     const modal = new ModalBuilder()
       .setTitle('Leave a suggestion...')
       .setCustomId('suggest')
-      .addComponents(
-        new ActionRowBuilder().addComponents(
+      .setComponents(
+        new ActionRowBuilder<TextInputBuilder>().setComponents(
           new TextInputBuilder()
             .setCustomId('suggestion')
             .setLabel('Suggestion')

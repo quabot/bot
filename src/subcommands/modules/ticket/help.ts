@@ -1,6 +1,5 @@
-const { Client, ChatInputCommandInteraction } = require('discord.js');
 import { getIdConfig } from '@configs/idConfig';
-const { getTicketConfig } = require('@configs/ticketConfig');
+import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
@@ -11,8 +10,8 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: false });
 
-    await getTicketConfig(client, interaction.guildId);
-    await getIdConfig(interaction.guildId);
+    await getTicketConfig(client, interaction.guildId!);
+    await getIdConfig(interaction.guildId!, client);
 
     await interaction.editReply({
       embeds: [

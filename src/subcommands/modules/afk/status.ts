@@ -1,14 +1,6 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ModalBuilder,
-  ActionRowBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-} = require('discord.js');
-const { getAfkConfig } = require('@configs/afkConfig');
-const { getUser } = require('@configs/user');
+import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { getAfkConfig } from '@configs/afkConfig';
+import { getUser } from '@configs/user';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
@@ -17,15 +9,11 @@ export default {
   name: 'status',
 
   async execute({ client, interaction, color }: CommandArgs) {
-    const config = await getAfkConfig(interaction.guildId, client);
-    const user = await getUser(interaction.guildId, interaction.user.id);
+    const config = await getAfkConfig(interaction.guildId!, client);
+    const user = await getUser(interaction.guildId!, interaction.user.id, client);
     if (!config || !user)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
         ephemeral: true,
       });
 
@@ -37,7 +25,7 @@ export default {
 
     const modal = new ModalBuilder().setCustomId('afk-set').setTitle('Set AFK status');
 
-    const afkRow = new ActionRowBuilder().addComponents(
+    const afkRow = new ActionRowBuilder<TextInputBuilder>().setComponents(
       new TextInputBuilder()
         .setCustomId('afk-status')
         .setLabel('Enter your new AFK status')

@@ -1,17 +1,11 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  PermissionFlagsBits,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import { checkUserPerms } from '@functions/ticket';
+import { hasAnyRole } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -20,16 +14,12 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: false });
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -45,15 +35,10 @@ export default {
         embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
-    let allowed = false;
-    if (ticket.owner === interaction.user.id) allowed = true;
-    if (ticket.users.includes(interaction.user.id)) allowed = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) allowed = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) allowed = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) allowed = true;
-    config.staffRoles.forEach(r => {
-      if (interaction.member.roles.cache.some(role => role.id === r)) allowed = true;
-    });
+    const allowed =
+      checkUserPerms(ticket, interaction.user, interaction.member) ||
+      hasAnyRole(interaction.member, config.staffRoles!);
+
     if (!allowed)
       return await interaction.editReply({
         embeds: [
@@ -66,7 +51,7 @@ export default {
     await interaction.editReply({
       embeds: [new Embed(color).setDescription('Delete this ticket with the button below this message.')],
       components: [
-        new ActionRowBuilder().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('delete-ticket').setLabel('🗑️ Delete'),
         ),
       ],

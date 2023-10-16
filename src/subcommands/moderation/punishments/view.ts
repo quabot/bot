@@ -1,21 +1,13 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-  Colors,
-  ActionRowBuilder,
-} = require('discord.js');
+import { ButtonBuilder, ButtonStyle, EmbedBuilder, Colors, ActionRowBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
+import Punishment from '@schemas/Punishment';
 
 export default {
   parent: 'punishments',
   name: 'view',
 
-  async execute({ client, interaction, color }: CommandArgs) {
+  async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
     const user = interaction.options.getUser('user');
@@ -24,7 +16,6 @@ export default {
     const id = interaction.options.getString('id');
     const userId = interaction.options.getString('user-id');
 
-    const Punishment = require('@schemas/Punishment');
     const punishments = await Punishment.find({ guildId: interaction.guildId });
 
     let filtered = punishments;
@@ -54,7 +45,7 @@ export default {
       customId: forwardId,
     });
 
-    const makeEmbed = async start => {
+    const makeEmbed = async (start: number) => {
       const current = filtered.slice(start, start + 3);
 
       return new EmbedBuilder({
@@ -72,13 +63,12 @@ export default {
     const canFit = filtered.length <= 3;
     const msg = await interaction.editReply({
       embeds: [await makeEmbed(0)],
-      fetchReply: true,
-      components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
+      components: canFit ? [] : [new ActionRowBuilder<ButtonBuilder>({ components: [forwardButton] })],
     });
     if (canFit) return;
 
     const collector = msg.createMessageComponentCollector({
-      filter: ({ u }) => u.id === interaction.user.id,
+      filter: ({ user }) => user.id === interaction.user.id,
     });
 
     let currentIndex = 0;
@@ -87,7 +77,7 @@ export default {
       await i.update({
         embeds: [await makeEmbed(currentIndex)],
         components: [
-          new ActionRowBuilder({
+          new ActionRowBuilder<ButtonBuilder>({
             components: [
               ...(currentIndex ? [backButton] : []),
               ...(currentIndex + 3 < filtered.length ? [forwardButton] : []),

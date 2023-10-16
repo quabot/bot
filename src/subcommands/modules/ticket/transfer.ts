@@ -1,14 +1,6 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  PermissionFlagsBits,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
@@ -21,16 +13,12 @@ export default {
     await interaction.deferReply({ ephemeral: false });
     const user = interaction.options.getUser('user');
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -55,12 +43,12 @@ export default {
         embeds: [new Embed(color).setDescription('You are not allowed to transfer the ticket ownership.')],
       });
 
-    if (!ticket.users.includes(user.id))
+    if (!ticket.users!.includes(user.id))
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please add the user to the ticket before changing the ownership.')],
       });
 
-    const array = ticket.users;
+    const array = ticket.users!;
 
     for (var i = 0; i < array.length; i++) {
       if (array[i] === `${user.id}`) {
@@ -74,8 +62,8 @@ export default {
       owner: user.id,
     });
 
-    const ticketMsg = (await interaction.channel.messages.fetch()).last();
-    if (ticketMsg.author.id === process.env.CLIENT_ID) {
+    const ticketMsg = (await interaction.channel?.messages.fetch())?.last();
+    if (ticketMsg?.author.id === process.env.CLIENT_ID!) {
       await ticketMsg.edit({
         embeds: [
           new Embed(color)
@@ -92,7 +80,7 @@ export default {
             ),
         ],
         components: [
-          new ActionRowBuilder().addComponents(
+          new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
           ),
         ],

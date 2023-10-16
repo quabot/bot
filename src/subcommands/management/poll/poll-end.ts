@@ -1,7 +1,4 @@
 const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
   ChannelType,
   ActionRowBuilder,
   ButtonBuilder,

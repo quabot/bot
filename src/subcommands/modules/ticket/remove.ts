@@ -1,9 +1,10 @@
-const { ChatInputCommandInteraction, Client, ColorResolvable, PermissionFlagsBits } = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import { checkUserPerms } from '@functions/ticket';
+import { ChannelType, GuildTextBasedChannel, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
 
 export default {
   parent: 'ticket',
@@ -13,16 +14,12 @@ export default {
     await interaction.deferReply({ ephemeral: false });
     const user = interaction.options.getUser('user');
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -40,24 +37,19 @@ export default {
 
     if (!user) return;
 
-    let valid = false;
-    if (ticket.owner === interaction.user.id) valid = true;
-    if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
+    const valid = checkUserPerms(ticket, interaction.user, interaction.member);
     if (!valid)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You are not allowed to add users to the ticket.')],
       });
 
-    const array = ticket.users;
+    const array = ticket.users!;
     if (!array.includes(user.id))
-      return interaction
+      return await interaction
         .editReply({
           embeds: [new Embed(color).setDescription("That user isn't in this ticket!")],
         })
-        .catch(e => {});
+        .catch(() => {});
 
     for (var i = 0; i < array.length; i++) {
       if (array[i] === `${user.id}`) {
@@ -70,7 +62,16 @@ export default {
       users: array,
     });
 
-    await interaction.channel.permissionOverwrites.edit(user, {
+    const interChannel = interaction.channel as GuildTextBasedChannel | null;
+
+    if (interChannel?.type === ChannelType.PrivateThread || interChannel?.type === ChannelType.PublicThread)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription("This command can't be used in threads.")],
+      });
+
+    const channel = interChannel as Exclude<GuildTextBasedChannel, PrivateThreadChannel | PublicThreadChannel>;
+
+    await channel?.permissionOverwrites.edit(user, {
       ViewChannel: false,
       SendMessages: false,
     });

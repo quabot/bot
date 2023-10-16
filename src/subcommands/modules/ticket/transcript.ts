@@ -1,17 +1,9 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  PermissionFlagsBits,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import { checkUserPerms } from '@functions/ticket';
 
 export default {
   parent: 'ticket',
@@ -20,16 +12,12 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: false });
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -45,12 +33,7 @@ export default {
         embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
-    let valid = false;
-    if (ticket.owner === interaction.user.id) valid = true;
-    if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
+    const valid = checkUserPerms(ticket, interaction.user, interaction.member);
     if (!valid)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You are not allowed to request a transcript of this ticket.')],

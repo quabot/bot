@@ -1,17 +1,10 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  PermissionFlagsBits,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import { checkUserPerms } from '@functions/ticket';
 
 export default {
   parent: 'ticket',
@@ -20,17 +13,13 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: false });
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
-    const newTopic = interaction.options.getString('new-topic');
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
+    const newTopic = interaction.options.getString('new-topic', true);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -51,19 +40,14 @@ export default {
         embeds: [new Embed(color).setDescription('This ticket is closed, reopen it to change the topic.')],
       });
 
-    let valid = false;
-    if (ticket.owner === interaction.user.id) valid = true;
-    if (ticket.users.includes(interaction.user.id)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageChannels)) valid = true;
-    if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) valid = true;
+    const valid = checkUserPerms(ticket, interaction.user, interaction.member);
     if (!valid)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You are not allowed to change the ticket topic.')],
       });
 
-    const ticketMsg = (await interaction.channel.messages.fetch()).last();
-    if (ticketMsg.author.id === process.env.CLIENT_ID) {
+    const ticketMsg = (await interaction.channel?.messages.fetch())?.last();
+    if (ticketMsg?.author.id === process.env.CLIENT_ID!) {
       await ticketMsg.edit({
         embeds: [
           new Embed(color)
@@ -80,7 +64,7 @@ export default {
             ),
         ],
         components: [
-          new ActionRowBuilder().addComponents(
+          new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
           ),
         ],

@@ -4,7 +4,7 @@ import { getIdConfig } from '@configs/idConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
-import { checkUserPerms } from '@functions/tickets';
+import { checkUserPerms } from '@functions/ticket';
 
 export default {
   name: 'cancel-delete-ticket',

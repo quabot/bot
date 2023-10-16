@@ -1,6 +1,5 @@
-import { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
-const { getAfkConfig } = require('@configs/afkConfig');
-const { getUser } = require('@configs/user');
+import { getAfkConfig } from '@configs/afkConfig';
+import { getUser } from '@configs/user';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
@@ -13,15 +12,11 @@ export default {
 
     let enabled = interaction.options.getBoolean('enabled');
 
-    const config = await getAfkConfig(interaction.guildId, client);
-    const user = await getUser(interaction.guildId, interaction.user.id);
+    const config = await getAfkConfig(interaction.guildId!, client);
+    const user = await getUser(interaction.guildId!, interaction.user.id, client);
     if (!config || !user)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
     if (enabled === null) enabled = !user.afk;
 

@@ -1,13 +1,5 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ModalBuilder,
-  ActionRowBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-} = require('discord.js');
-const { getUserGame } = require('@configs/userGame');
+import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { getUserGame } from '@configs/userGame';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
@@ -16,21 +8,17 @@ export default {
   name: 'bio',
 
   async execute({ client, interaction, color }: CommandArgs) {
-    const userSchema = await getUserGame(interaction.user.id);
+    const userSchema = await getUserGame(interaction.user.id, client);
     if (!userSchema)
       return await interaction.reply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     const modal = new ModalBuilder()
       .setTitle('Set your profile bio')
       .setCustomId('profile-bio')
       .addComponents(
-        new ActionRowBuilder().setComponents(
+        new ActionRowBuilder<TextInputBuilder>().setComponents(
           new TextInputBuilder()
             .setCustomId('bio')
             .setMaxLength(350)

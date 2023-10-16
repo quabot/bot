@@ -1,12 +1,4 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  Colors,
-} = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors } = require('discord.js');
 import { getIdConfig } from '@configs/idConfig';
 const { getReactionConfig } = require('@configs/reactionConfig');
 import { Embed } from '@constants/embed';
@@ -21,7 +13,7 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     const config = await getReactionConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const ids = await getIdConfig(interaction.guildId!, client);
     if (!config || !ids)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

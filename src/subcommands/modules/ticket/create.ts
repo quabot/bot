@@ -1,14 +1,6 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ChannelType,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
@@ -20,16 +12,12 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -43,7 +31,7 @@ export default {
         embeds: [new Embed(color).setDescription('Please enter all the required fields.')],
       });
 
-    const category = interaction.guild.channels.cache.get(config.openCategory);
+    const category = interaction.guild?.channels.cache.get(config.openCategory);
     if (!category || category.type !== ChannelType.GuildCategory)
       return await interaction.editReply({
         embeds: [
@@ -53,7 +41,7 @@ export default {
         ],
       });
 
-    const channel = await interaction.guild.channels.create({
+    const channel = await interaction.guild?.channels.create({
       name: `ticket-${ids.ticketId}`,
       type: ChannelType.GuildText,
     });
@@ -63,7 +51,7 @@ export default {
       });
 
     await channel.setParent(category, { lockPermissions: true });
-    channel.permissionOverwrites.create(interaction.guild.id, {
+    channel.permissionOverwrites.create(interaction.guild!.id, {
       ViewChannel: false,
       SendMessages: false,
     });
@@ -72,8 +60,8 @@ export default {
       SendMessages: true,
     });
 
-    config.staffRoles.forEach(r => {
-      const role = interaction.guild.roles.cache.get(r);
+    config.staffRoles!.forEach(r => {
+      const role = interaction.guild?.roles.cache.get(r);
       if (role)
         channel.permissionOverwrites.create(role, {
           ViewChannel: true,
@@ -93,14 +81,14 @@ export default {
           ),
       ],
       components: [
-        new ActionRowBuilder().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
           new ButtonBuilder().setCustomId('claim-ticket').setLabel('🙋‍♂️ Claim').setStyle(ButtonStyle.Secondary),
         ),
       ],
     });
 
-    const pingRole = interaction.guild.roles.cache.get(config.staffPing);
+    const pingRole = interaction.guild?.roles.cache.get(config.staffPing);
     if (pingRole) await channel.send(`${pingRole}`);
 
     const newTicket = new Ticket({
@@ -126,26 +114,28 @@ export default {
       ],
     });
 
-    const logChannel = interaction.guild.channels.cache.get(config.logChannel);
-    if (logChannel)
-      await logChannel.send({
-        embeds: [
-          new Embed(color)
-            .setTitle('Ticket Created')
-            .addFields(
-              { name: 'User', value: `${interaction.user}`, inline: true },
-              {
-                name: 'Channel',
-                value: `${interaction.channel}`,
-                inline: true,
-              },
-              { name: 'Topic', value: `${topic}`, inline: true },
-            )
-            .setFooter({ text: `ID: ${ids.ticketId}` }),
-        ],
-      });
-
-    ids.ticketId += 1;
+    ids.ticketId = ids.ticketId ? ids.ticketId + 1 : 0;
     await ids.save();
+
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
+      return;
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('Ticket Created')
+          .addFields(
+            { name: 'User', value: `${interaction.user}`, inline: true },
+            {
+              name: 'Channel',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            { name: 'Topic', value: `${topic}`, inline: true },
+          )
+          .setFooter({ text: `ID: ${ids.ticketId}` }),
+      ],
+    });
   },
 };

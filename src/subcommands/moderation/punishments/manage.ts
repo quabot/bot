@@ -1,29 +1,19 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-  Colors,
-  ActionRowBuilder,
-} = require('discord.js');
-import { Embed }from '@constants/embed';
-import ms from 'ms'
+import { ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
+import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
+import Punishment from '@schemas/Punishment';
 
 export default {
   parent: 'punishments',
   name: 'manage',
-  
-async execute({ client, interaction, color }: CommandArgs) {
+
+  async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
     const user = interaction.options.getUser('user');
     const type = interaction.options.getString('type');
     const id = interaction.options.getString('id');
 
-    const Punishment = require('@schemas/Punishment');
     let punishment;
     if (user)
       punishment = await Punishment.findOne({
@@ -75,7 +65,7 @@ async execute({ client, interaction, color }: CommandArgs) {
             },
             {
               name: 'Time',
-              value: `<t:${Math.floor(punishment.time / 1000)}:R>`,
+              value: `<t:${Math.floor(parseFloat(punishment.time) / 1000)}:R>`,
               inline: true,
             },
             {
@@ -86,7 +76,6 @@ async execute({ client, interaction, color }: CommandArgs) {
             {
               name: 'Reason',
               value: punishment.reason,
-              ,
             },
           ),
       ],

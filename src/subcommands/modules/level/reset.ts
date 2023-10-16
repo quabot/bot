@@ -1,7 +1,8 @@
-const { Client, ChatInputCommandInteraction, PermissionFlagsBits } = require('discord.js');
-const { getLevelConfig } = require('@configs/levelConfig');
-const Level = require('@schemas/Level');
+import { PermissionFlagsBits } from 'discord.js';
+import { getLevelConfig } from '@configs/levelConfig';
+import Level from '@schemas/Level';
 import { Embed } from '@constants/embed';
+import { hasAnyPerms } from '@functions/discord';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -18,19 +19,15 @@ export default {
         embeds: [new Embed(color).setDescription('You need to specify a user.')],
       });
 
-    if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
+    if (hasAnyPerms(interaction.member, [PermissionFlagsBits.ManageGuild]))
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You do not have the required permissions.')],
       });
 
-    const config = await getLevelConfig(interaction.guildId, client);
+    const config = await getLevelConfig(interaction.guildId!, client);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use, please try again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
     if (!config.enabled)
       return await interaction.editReply({
@@ -43,9 +40,9 @@ export default {
     });
 
     if (config.removeRewards) {
-      config.rewards.forEach(async reward => {
-        const role = interaction.guild.roles.cache.get(reward.role);
-        if (role) await interaction.member.roles.remove(role).catch(() => {});
+      config.rewards!.forEach(async reward => {
+        if (interaction.member && 'remove' in interaction.member.roles)
+          await interaction.member.roles.remove(reward.role).catch(() => {});
       });
     }
 

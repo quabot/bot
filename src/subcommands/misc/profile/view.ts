@@ -1,9 +1,8 @@
-import { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { Embed } from '@constants/embed';
-const { getLevelConfig } = require('@configs/levelConfig');
-const { getUserGame } = require('@configs/userGame');
-const Level = require('@schemas/Level');
+import { getLevelConfig } from '@configs/levelConfig';
+import { getUserGame } from '@configs/userGame';
 import type { CommandArgs } from '@typings/functionArgs';
+import { getLevel } from '@configs/level';
 
 export default {
   parent: 'profile',
@@ -12,38 +11,22 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const user = interaction.options.getMember('user') ?? interaction.member;
-    if (!user) return await interaction.editReply("Couldn't find a user.");
+    const member = interaction.options.getMember('user') ?? interaction.member;
+    if (!member || !('id' in member)) return await interaction.editReply("Couldn't find the member.");
 
-    const levelConfig = await getLevelConfig(interaction.guildId, client);
-    if (!levelConfig)
+    const levelConfig = await getLevelConfig(interaction.guildId!, client);
+    const levelUser = await getLevel(interaction.guildId!, member.id, client);
+    const userSchema = await getUserGame(member.id, client);
+
+    if (!levelConfig || !levelUser || !userSchema)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
-      });
-
-    const levelUser = await Level.findOne({
-      guildId: interaction.guildId,
-      userId: user.id,
-    });
-
-    const userSchema = await getUserGame(user.id);
-    if (!userSchema)
-      return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     const embed = new Embed(color)
-      .setTitle(`${user.user.username}'s profile`)
+      .setTitle(`${member.user.username}'s profile`)
       .setDescription(userSchema.bio)
-      .setThumbnail(user.displayAvatarURL({ forceStatic: false }))
+      .setThumbnail(member.displayAvatarURL({ forceStatic: false }))
       .addFields({
         name: 'Birthday',
         value: `${
@@ -61,21 +44,21 @@ export default {
       );
 
     embed.addFields(
-      { name: 'Username', value: `${user.user.username}`, inline: true },
+      { name: 'Username', value: `${member.user.username}`, inline: true },
       {
         name: 'Displayname',
-        value: `${user.globalName ?? 'None'}`,
+        value: `${member.displayName ?? 'None'}`,
         inline: true,
       },
       // { name: 'Discriminator', value: `${user.user.discriminator ?? 'None'}`, inline: true },
       {
         name: 'Joined server on',
-        value: `<t:${Math.floor(user.joinedTimestamp / 1000)}:R>`,
+        value: `<t:${Math.floor(member.joinedTimestamp ?? 0 / 1000)}:R>`,
         inline: true,
       },
       {
         name: 'Account created on',
-        value: `<t:${Math.floor(user.user.createdTimestamp / 1000)}:R>`,
+        value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>`,
         inline: true,
       },
     );

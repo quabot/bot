@@ -11,7 +11,7 @@ export default {
 
     const role = interaction.options.getRole('role');
 
-    await interaction.guild.roles.delete(role.id, `Role deleted by ${interaction.user.username}`).catch(async e => {});
+    await interaction.guild.roles.delete(role.id, `Role deleted by ${interaction.user.username}`).catch(async () => {});
 
     await interaction.editReply({
       embeds: [new Embed(role.color ?? color).setDescription('Deleted the role.')],

@@ -17,9 +17,20 @@ export default {
       subcommand
         .setName('birthday')
         .setDescription('Set your birthday.')
-        .addNumberOption(option => option.setName('day').setDescription('Day of your birthday').setRequired(true))
-        .addNumberOption(option => option.setName('month').setDescription('Month of your birthday').setRequired(true))
-        .addNumberOption(option => option.setName('year').setDescription('Year of your birthday').setRequired(true)),
+        .addNumberOption(option =>
+          option.setName('day').setDescription('Day of your birthday').setMinValue(1).setMaxValue(31).setRequired(true),
+        )
+        .addNumberOption(option =>
+          option
+            .setName('month')
+            .setDescription('Month of your birthday')
+            .setMinValue(1)
+            .setMaxValue(12)
+            .setRequired(true),
+        )
+        .addNumberOption(option =>
+          option.setName('year').setDescription('Year of your birthday').setMinValue(1900).setRequired(true),
+        ),
     )
     .setDMPermission(false),
 

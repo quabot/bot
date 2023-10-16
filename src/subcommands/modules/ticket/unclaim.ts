@@ -1,14 +1,6 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  PermissionFlagsBits,
-} = require('discord.js');
-const { getTicketConfig } = require('@configs/ticketConfig');
-const Ticket = require('@schemas/Ticket');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { getTicketConfig } from '@configs/ticketConfig';
+import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
@@ -20,16 +12,12 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getTicketConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId);
+    const config = await getTicketConfig(client, interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
 
     if (!config || !ids)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -53,8 +41,8 @@ export default {
     ticket.staff = 'none';
     await ticket.save();
 
-    const ticketMsg = (await interaction.channel.messages.fetch()).last();
-    if (ticketMsg.author.id !== process.env.CLIENT_ID)
+    const ticketMsg = (await interaction.channel?.messages.fetch())?.last();
+    if (ticketMsg?.author.id !== process.env.CLIENT_ID!)
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription('There was an internal error. The original QuaBot message was deleted.'),
@@ -73,7 +61,7 @@ export default {
           ),
       ],
       components: [
-        new ActionRowBuilder().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder().setCustomId('close-ticket').setLabel('🔒 Close').setStyle(ButtonStyle.Secondary),
         ),
       ],
@@ -83,31 +71,33 @@ export default {
       embeds: [new Embed(color).setDescription('You have successfully unclaimed the ticket.')],
     });
 
-    await interaction.channel.send({
+    await interaction.channel?.send({
       embeds: [new Embed(color).setDescription('This ticket is no longer claimed.')],
     });
 
-    const logChannel = interaction.guild.channels.cache.get(config.logChannel);
-    if (logChannel && config.logEnabled)
-      await logChannel.send({
-        embeds: [
-          new Embed(color)
-            .setTitle('Ticket Unclaimed')
-            .addFields(
-              {
-                name: 'Ticket Owner',
-                value: `<@${ticket.owner}>`,
-                inline: true,
-              },
-              {
-                name: 'Channel',
-                value: `${interaction.channel}`,
-                inline: true,
-              },
-              { name: 'Claimed By', value: 'Nobody', inline: true },
-            )
-            .setFooter({ text: `ID: ${ticket.id}` }),
-        ],
-      });
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
+      return;
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('Ticket Unclaimed')
+          .addFields(
+            {
+              name: 'Ticket Owner',
+              value: `<@${ticket.owner}>`,
+              inline: true,
+            },
+            {
+              name: 'Channel',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            { name: 'Claimed By', value: 'Nobody', inline: true },
+          )
+          .setFooter({ text: `ID: ${ticket.id}` }),
+      ],
+    });
   },
 };

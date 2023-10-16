@@ -1,7 +1,5 @@
-import { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { Embed } from '@constants/embed';
-const { getUserGame } = require('@configs/userGame');
-const Level = require('@schemas/Level');
+import { getUserGame } from '@configs/userGame';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -11,24 +9,17 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const userSchema = await getUserGame(interaction.user.id);
+    const userSchema = await getUserGame(interaction.user.id, client);
     if (!userSchema)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    const day = interaction.options.getNumber('day');
-    const month = interaction.options.getNumber('month');
-    const year = interaction.options.getNumber('year');
-    if (day === undefined || month === undefined || year === undefined)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please fill out all the fields.')],
-      });
-    if (day < 0 || day > 31 || month < 0 || month > 12 || year < 1900 || year > new Date().getFullYear())
+    const day = interaction.options.getNumber('day', true);
+    const month = interaction.options.getNumber('month', true);
+    const year = interaction.options.getNumber('year', true);
+
+    if (year > new Date().getFullYear())
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please enter a valid birthday.')],
       });

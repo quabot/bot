@@ -1,16 +1,8 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  ColorResolvable,
-  ButtonStyle,
-  Colors,
-  EmbedBuilder,
-  ButtonBuilder,
-  ActionRowBuilder,
-} = require('discord.js');
-const { getAfkConfig } = require('@configs/afkConfig');
+import { ButtonStyle, Colors, EmbedBuilder, ButtonBuilder, ActionRowBuilder } from 'discord.js';
+import { getAfkConfig } from '@configs/afkConfig';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
+import User from '@schemas/User';
 
 export default {
   parent: 'afk',
@@ -19,14 +11,10 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getAfkConfig(interaction.guildId, client);
+    const config = await getAfkConfig(interaction.guildId!, client);
     if (!config)
       return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            "We're still setting up some documents for first-time use! Please run the command again.",
-          ),
-        ],
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
@@ -34,7 +22,6 @@ export default {
         embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
       });
 
-    const User = require('@schemas/User');
     const found = await User.find({
       guildId: interaction.guildId,
       userId: interaction.user.id,
@@ -56,21 +43,20 @@ export default {
       customId: forwardId,
     });
 
-    const makeEmbed = async start => {
+    const makeEmbed = async (start: number) => {
       const current = found.slice(start, start + 15);
 
       return new EmbedBuilder({
-        title: `AFK users in ${interaction.guild.name} | ${start + 1}-${start + current.length}/${found.length}`,
+        title: `AFK users in ${interaction.guild?.name} | ${start + 1}-${start + current.length}/${found.length}`,
         color: Colors.Green,
-        description: `${await Promise.all(current.map(async item => `<@${item.userId}>\n`))}`,
+        description: `${current.map(item => `<@${item.userId}>\n`)}`,
       });
     };
 
     const canFit = found.length <= 5;
     const msg = await interaction.editReply({
       embeds: [await makeEmbed(0)],
-      fetchReply: true,
-      components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
+      components: canFit ? [] : [new ActionRowBuilder<ButtonBuilder>({ components: [forwardButton] })],
     });
     if (canFit) return;
 
@@ -84,7 +70,7 @@ export default {
       await i.update({
         embeds: [await makeEmbed(currentIndex)],
         components: [
-          new ActionRowBuilder({
+          new ActionRowBuilder<ButtonBuilder>({
             components: [
               ...(currentIndex ? [backButton] : []),
               ...(currentIndex + 15 < found.length ? [forwardButton] : []),
