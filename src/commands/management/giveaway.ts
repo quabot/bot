@@ -1,3 +1,4 @@
+import { GuildTextBasedChannel } from '@typings/discord';
 import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
@@ -11,7 +12,11 @@ export default {
         .setName('create')
         .setDescription('Create a giveaway.')
         .addChannelOption(option =>
-          option.setName('channel').setDescription('The channel where the giveaway should be in.').setRequired(true),
+          option
+            .setName('channel')
+            .setDescription('The channel where the giveaway should be in.')
+            .setRequired(true)
+            .addChannelTypes(...GuildTextBasedChannel),
         )
         .addStringOption(option =>
           option.setName('prize').setDescription('The prize for winning the giveaway.').setRequired(true),

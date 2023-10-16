@@ -1,8 +1,8 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors } = require('discord.js');
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } from 'discord.js';
 import { getIdConfig } from '@configs/idConfig';
-const { getReactionConfig } = require('@configs/reactionConfig');
+import { getReactionConfig } from '@configs/reactionConfig';
 import { Embed } from '@constants/embed';
-const Reaction = require('@schemas/ReactionRole');
+import Reaction from '@schemas/ReactionRole';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -12,8 +12,11 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getReactionConfig(client, interaction.guildId);
-    const ids = await getIdConfig(interaction.guildId!, client);
+    //? I think that 'guildId' is only undefined when it's in DM, and that's never the case
+    const guildId = interaction.guildId!;
+
+    const config = await getReactionConfig(client, guildId);
+    const ids = await getIdConfig(guildId, client);
     if (!config || !ids)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
@@ -29,62 +32,62 @@ export default {
     const channel = interaction.options.getChannel('channel');
 
     let found = await Reaction.find({
-      guildId: interaction.guild.id,
+      guildId,
     });
 
-    if (messageId && !role && !channel) found = await Reaction.find({ guildId: interaction.guild.id, messageId });
+    if (messageId && !role && !channel) found = await Reaction.find({ guildId, messageId });
     if (messageId && role && !channel)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         messageId,
         roleId: role.id,
       });
     if (messageId && !role && channel)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         messageId,
         channelId: channel.id,
       });
 
     if (role && !messageId && !channel)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         roleId: role.id,
       });
     if (role && messageId && !channel)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         roleId: role.id,
         messageId: messageId,
       });
     if (role && !messageId && channel)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         roleId: role.id,
         channelId: channel.id,
       });
 
     if (channel && !messageId && !role)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         channelId: channel.id,
       });
     if (channel && messageId && !role)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         channelId: channel.id,
         messageId,
       });
     if (channel && !messageId && role)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         channelId: channel.id,
         roleId: role.id,
       });
 
     if (role && messageId && channel)
       found = await Reaction.find({
-        guildId: interaction.guild.id,
+        guildId,
         roleId: role.id,
         messageId,
         channelId: channel.id,
@@ -98,19 +101,19 @@ export default {
     const backId = 'backRR';
     const forwardId = 'forwardRR';
     const backButton = new ButtonBuilder({
-      style: 'SECONDARY',
+      style: ButtonStyle.Secondary,
       label: 'Back',
       emoji: '⬅️',
       customId: backId,
     });
     const forwardButton = new ButtonBuilder({
-      style: 'SECONDARY',
+      style: ButtonStyle.Secondary,
       label: 'Forward',
       emoji: '➡️',
       customId: forwardId,
     });
 
-    const makeEmbed = async start => {
+    const makeEmbed = async (start: number) => {
       const current = found.slice(start, start + 3);
 
       return new EmbedBuilder({
@@ -119,7 +122,7 @@ export default {
         fields: await Promise.all(
           current.map(async item => ({
             name: `Emoji: ${item.emoji} - Mode: ${item.type}`,
-            value: `Role: <@&${item.roleId}> - [Jump to message](https://discord.com/channels/${interaction.guild.id}/${item.channelId}/${item.messageId})`,
+            value: `Role: <@&${item.roleId}> - [Jump to message](https://discord.com/channels/${guildId}/${item.channelId}/${item.messageId})`,
           })),
         ),
       });
@@ -128,8 +131,7 @@ export default {
     const canFit = found.length <= 3;
     const msg = await interaction.editReply({
       embeds: [await makeEmbed(0)],
-      fetchReply: true,
-      components: canFit ? [] : [new ActionRowBuilder({ components: [forwardButton] })],
+      components: canFit ? [] : [new ActionRowBuilder<ButtonBuilder>({ components: [forwardButton] })],
     });
     if (canFit) return;
 
@@ -143,7 +145,7 @@ export default {
       await a.update({
         embeds: [await makeEmbed(currentIndex)],
         components: [
-          new ActionRowBuilder({
+          new ActionRowBuilder<ButtonBuilder>({
             components: [
               ...(currentIndex ? [backButton] : []),
               ...(currentIndex + 3 < found.length ? [forwardButton] : []),

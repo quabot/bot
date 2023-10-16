@@ -10,7 +10,7 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const channel = interaction.options.getChannel('channel');
+    const channel = interaction.options.getChannel('channel', true);
     if (channelBlacklist.includes(channel.type))
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please enter a valid channel type.')],

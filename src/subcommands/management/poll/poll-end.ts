@@ -1,18 +1,7 @@
-const {
-  ChannelType,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-} = require('discord.js');
-import ms from 'ms';
-const Poll = require('@schemas/Poll');
-import { getIdConfig } from '@configs/idConfig';
+import Poll from '@schemas/Poll';
 import { getPollConfig } from '@configs/pollConfig';
 import { Embed } from '@constants/embed';
-const { endPoll } = require('@functions/poll');
+import { endPoll } from '@functions/poll';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -22,7 +11,12 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getPollConfig(client, interaction.guildId);
+    const config = await getPollConfig(client, interaction.guildId!);
+    if (!config)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('There was an error. Please try again')],
+      });
+
     if (!config.enabled)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Polls are not enabled in this server.')],

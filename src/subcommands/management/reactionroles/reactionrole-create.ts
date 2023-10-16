@@ -1,10 +1,11 @@
-import { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { getIdConfig } from '@configs/idConfig';
-const { getReactionConfig } = require('@configs/reactionConfig');
-const { channelBlacklist, permissionBitToString } = require('@constants/discord');
+import { getReactionConfig } from '@configs/reactionConfig';
+import { channelBlacklist, permissionBitToString } from '@constants/discord';
 import { Embed } from '@constants/embed';
-const Reaction = require('@schemas/ReactionRole');
+import Reaction from '@schemas/ReactionRole';
 import type { CommandArgs } from '@typings/functionArgs';
+import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/discord';
+import type { GuildTextBasedChannel } from 'discord.js';
 
 export default {
   parent: 'reactionroles',
@@ -13,7 +14,7 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getReactionConfig(client, interaction.guildId);
+    const config = await getReactionConfig(client, interaction.guildId!);
     const ids = await getIdConfig(interaction.guildId!, client);
     if (!config || !ids)
       return await interaction.editReply({
@@ -25,7 +26,7 @@ export default {
         embeds: [new Embed(color).setDescription('Reaction roles are not enabled in this server.')],
       });
 
-    const channel = interaction.options.getChannel('channel');
+    const channel = interaction.options.getChannel('channel', true, GuildTextBasedChannelEnum) as GuildTextBasedChannel;
     const messageId = interaction.options.getString('message-id');
     const role = interaction.options.getRole('role');
     const emoji = interaction.options.getString('emoji');
@@ -42,7 +43,7 @@ export default {
         embeds: [new Embed(color).setDescription('Please enter a valid channel type.')],
       });
 
-    if (role.rawPosition > interaction.guild.members.me.roles.highest.rawPosition)
+    if (role.position > (interaction.guild?.members.me?.roles.highest.rawPosition ?? 0))
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription('I cannot give that role to users! Make sure the role is below my roles.'),
@@ -103,13 +104,13 @@ export default {
 
             await newReaction.save();
           })
-          .catch(async e => {
+          .catch(async () => {
             return await interaction.editReply({
               embeds: [new Embed(color).setDescription('That is not a valid emoji.')],
             });
           });
       })
-      .catch(async e => {
+      .catch(async () => {
         return await interaction.editReply({
           embeds: [new Embed(color).setDescription(`Couldn't find any messages with that id in ${channel}.`)],
         });

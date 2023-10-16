@@ -9,8 +9,10 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const messageUrl = interaction.options.getString('message');
+    const messageUrl = interaction.options.getString('message', true);
+    //? I think I already said it somewhere, but pls put a comment at this thing, cuz I don't fucking understand it
     const ids = messageUrl.match(/\d+/g);
+    if (!ids) return;
 
     const channel = interaction.guild?.channels.cache.get(ids[1]);
     if (!channel || channel.type === ChannelType.GuildCategory)

@@ -10,7 +10,7 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     const channel = interaction.options.getChannel('channel');
-    let slowmode = Math.round(ms(interaction.options.getString('slowmode')) / 1000);
+    let slowmode = Math.round(ms(interaction.options.getString('slowmode', true)) / 1000);
 
     if (!slowmode)
       return interaction

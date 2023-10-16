@@ -9,11 +9,11 @@ import {
   MessageCreateOptions,
 } from 'discord.js';
 import ms from 'ms';
-const Poll = require('@schemas/Poll');
+import Poll from '@schemas/Poll';
 import { getIdConfig } from '@configs/idConfig';
 import { getPollConfig } from '@configs/pollConfig';
 import { Embed } from '@constants/embed';
-const { endPoll } = require('@functions/poll');
+import { endPoll } from '@functions/poll';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -22,7 +22,7 @@ export default {
 
   async execute({ client, interaction, color }: CommandArgs) {
     const config = await getPollConfig(client, interaction.guildId!);
-    const ids = await getIdConfig(interaction.guildId!);
+    const ids = await getIdConfig(interaction.guildId!, client);
     if (!config || !ids)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
@@ -34,7 +34,7 @@ export default {
       });
 
     const channel = interaction.options.getChannel('channel');
-    let choices = interaction.options.getNumber('choices');
+    let choices = interaction.options.getNumber('choices', true);
     const duration = interaction.options.getString('duration');
     const role = interaction.options.getRole('role-mention') ?? null;
 
@@ -230,7 +230,7 @@ export default {
           return;
         }
 
-        if (!document.topic || !document.description || document.options.length === 0) {
+        if (!document.topic || !document.description || document.options?.length == 0) {
           await i.reply({
             embeds: [new Embed(color).setDescription('Please fill out all the required fields.')],
             ephemeral: true,
@@ -239,8 +239,8 @@ export default {
         }
 
         let description = document.description;
-        for (let index = 0; index < document.options.length; index++) {
-          const option = document.options[index];
+        for (let index = 0; index < (document.options?.length ?? 0); index++) {
+          const option = (document.options ?? [])[index];
           const emoji = `${index}`
             .replace('0', ':one:')
             .replace('1', ':two:')
@@ -363,7 +363,7 @@ export default {
         });
 
         if (!config.logEnabled) return;
-        const logChannel = i.guild.channels.cache.get(config.logChannel);
+        const logChannel = i.guild?.channels.cache.get(config.logChannel);
         if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
           return;
 
@@ -392,6 +392,7 @@ export default {
           guildId: i.guildId,
           interaction: message.id,
         });
+        const options = document?.options ?? [];
 
         const modal = new ModalBuilder().setTitle('Configure Poll').setCustomId('choices-poll');
 
@@ -403,7 +404,7 @@ export default {
                 .setLabel(`Option ${index + 1}`)
                 .setRequired(true)
                 .setMaxLength(180)
-                .setValue(document ? `${document.options[index] ? document.options[index] : ''}` : '')
+                .setValue(document ? `${options[index] ? options[index] : ''}` : '')
                 .setStyle(TextInputStyle.Short),
             ),
           );

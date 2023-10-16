@@ -1,9 +1,10 @@
-import { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { getIdConfig } from '@configs/idConfig';
-const { getReactionConfig } = require('@configs/reactionConfig');
+import { getReactionConfig } from '@configs/reactionConfig';
 import { Embed } from '@constants/embed';
-const Reaction = require('@schemas/ReactionRole');
+import Reaction from '@schemas/ReactionRole';
+import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/discord';
 import type { CommandArgs } from '@typings/functionArgs';
+import type { GuildTextBasedChannel } from 'discord.js';
 
 export default {
   parent: 'reactionroles',
@@ -12,7 +13,7 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getReactionConfig(client, interaction.guildId);
+    const config = await getReactionConfig(client, interaction.guildId!);
     const ids = await getIdConfig(interaction.guildId!, client);
     if (!config || !ids)
       return await interaction.editReply({
@@ -24,7 +25,7 @@ export default {
         embeds: [new Embed(color).setDescription('Reaction roles are not enabled in this server.')],
       });
 
-    const channel = interaction.options.getChannel('channel');
+    const channel = interaction.options.getChannel('channel', true, GuildTextBasedChannelEnum) as GuildTextBasedChannel;
     const messageId = interaction.options.getString('message-id');
     const emoji = interaction.options.getString('emoji');
 
@@ -46,7 +47,7 @@ export default {
       });
 
     await Reaction.findOneAndDelete({
-      guildId: interaction.guild.id,
+      guildId: interaction.guild?.id,
       messageId,
       emoji: emoji,
       channelId: channel.id,
@@ -58,14 +59,14 @@ export default {
       ],
     });
 
-    const message = await channel.messages.fetch({ message: messageId }).catch(async e => {
+    const message = await channel.messages.fetch({ message: messageId }).catch(async () => {
       return;
     });
 
     if (!message) return;
 
     const m = await message.reactions.resolve(emoji);
-    if (m) m.users.remove(client.user.id);
+    if (m) m.users.remove(client.user?.id);
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription('Successfully deleted the reaction role.')],

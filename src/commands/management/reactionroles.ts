@@ -1,3 +1,4 @@
+import { GuildTextBasedChannel } from '@typings/discord';
 import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
@@ -12,7 +13,11 @@ export default {
         .setName('create')
         .setDescription('Create a reaction role.')
         .addChannelOption(option =>
-          option.setName('channel').setDescription('The channel where the message is located.').setRequired(true),
+          option
+            .setName('channel')
+            .setDescription('The channel where the message is located.')
+            .setRequired(true)
+            .addChannelTypes(...GuildTextBasedChannel),
         )
         .addStringOption(option =>
           option
@@ -153,7 +158,11 @@ export default {
         )
         .addStringOption(option => option.setDescription('The emoji to remove.').setRequired(true).setName('emoji'))
         .addChannelOption(option =>
-          option.setDescription('The channel where the message is located.').setRequired(true).setName('channel'),
+          option
+            .setDescription('The channel where the message is located.')
+            .setRequired(true)
+            .setName('channel')
+            .addChannelTypes(...GuildTextBasedChannel),
         ),
     )
 

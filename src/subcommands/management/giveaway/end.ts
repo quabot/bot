@@ -11,7 +11,7 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const config = await getGiveawayConfig(interaction.guildId, client);
+    const config = await getGiveawayConfig(interaction.guildId!, client);
 
     if (!config)
       return await interaction.editReply({

@@ -1,3 +1,22 @@
-import { CategoryChannel, ForumChannel, NewsChannel, StageChannel, TextChannel, VoiceChannel } from 'discord.js';
+import {
+  type ApplicationCommandOptionAllowedChannelTypes,
+  type CategoryChannel,
+  ChannelType,
+  type ForumChannel,
+  type NewsChannel,
+  type StageChannel,
+  type TextChannel,
+  type VoiceChannel,
+} from 'discord.js';
 
 export type GuildChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StageChannel | ForumChannel;
+
+export const GuildTextBasedChannel: ApplicationCommandOptionAllowedChannelTypes[] = [
+  ChannelType.GuildText,
+  ChannelType.GuildAnnouncement,
+  ChannelType.PublicThread,
+  ChannelType.PublicThread,
+  ChannelType.AnnouncementThread,
+  ChannelType.GuildVoice,
+  ChannelType.GuildStageVoice,
+];

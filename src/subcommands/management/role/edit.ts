@@ -1,4 +1,3 @@
-import { ChatInputCommandInteraction, Client, ColorResolvable } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 
@@ -6,16 +5,16 @@ export default {
   parent: 'role',
   name: 'edit',
 
-  async execute({ client, interaction, color }: CommandArgs) {
+  async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const role = interaction.options.getRole('role');
+    const role = interaction.options.getRole('role', true);
     const role_name = interaction.options.getString('name') ?? role.name;
     const role_hoist = interaction.options.getBoolean('hoist') ?? role.hoist;
     const role_mentionable = interaction.options.getBoolean('mentionable') ?? role.mentionable;
 
-    await interaction.guild.roles
-      .edit(role, {
+    await interaction.guild?.roles
+      .edit(role.id, {
         name: role_name,
         hoist: role_hoist,
         mentionable: role_mentionable,

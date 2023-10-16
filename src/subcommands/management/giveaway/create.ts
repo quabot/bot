@@ -1,4 +1,4 @@
-import { ChannelType } from 'discord.js';
+import { ChannelType, type GuildTextBasedChannel } from 'discord.js';
 import { getGiveawayConfig } from '@configs/giveawayConfig';
 import { getIdConfig } from '@configs/idConfig';
 import { Embed } from '@constants/embed';
@@ -8,6 +8,7 @@ import Giveaway from '@schemas/Giveaway';
 import type { CommandArgs } from '@typings/functionArgs';
 import type { NonNullMongooseReturn } from '@typings/mongoose';
 import type { IIds } from '@typings/schemas';
+import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/discord';
 
 export default {
   parent: 'giveaway',
@@ -29,7 +30,7 @@ export default {
         embeds: [new Embed(color).setDescription('Giveaways are disabled in this server.')],
       });
 
-    const channel = interaction.options.getChannel('channel');
+    const channel = interaction.options.getChannel('channel', true, GuildTextBasedChannelEnum) as GuildTextBasedChannel;
     const prize = interaction.options.getString('prize');
     const winners = interaction.options.getNumber('winners');
     const duration = interaction.options.getString('duration');
