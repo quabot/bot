@@ -32,13 +32,13 @@ module.exports = async client => {
     if (process.env.RELOAD_COMMANDS === 'false') return;
 
     if (process.env.NODE_ENV === 'development') {
-      await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
-        body: commandsList,
-      });
+      ///await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
+       //body: commandsList,
+      //});
     } else {
-      await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
-        body: commandsList,
-      });
+      //await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+      // body: commandsList,
+      //});
     }
 
     consola.info('Reloaded all commands.');
