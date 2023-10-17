@@ -1,4 +1,5 @@
-import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { GuildTextBasedChannel } from '@typings/discord';
+import { SlashCommandBuilder, PermissionFlagsBits, ChannelType } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.
@@ -13,7 +14,6 @@ export default {
         .setName('create')
         .setDescription('Create a channel.')
         .addStringOption(option => option.setDescription('The channel name.').setRequired(true).setName('name'))
-        .addStringOption(option => option.setDescription('The channel topic.').setName('topic'))
         .addBooleanOption(option => option.setDescription('Should the channel be marked as NSFW?').setName('nsfw')),
     )
     .addSubcommand(subcommand =>
@@ -29,7 +29,11 @@ export default {
         .setName('slowmode')
         .setDescription("Set a channel's slowmode.")
         .addChannelOption(option =>
-          option.setDescription('The channel to set the slowmode of.').setRequired(true).setName('channel'),
+          option
+            .setDescription('The channel to set the slowmode of.')
+            .setRequired(true)
+            .setName('channel')
+            .addChannelTypes(...GuildTextBasedChannel, ChannelType.GuildForum),
         )
         .addStringOption(option =>
           option
@@ -43,8 +47,9 @@ export default {
         .setName('edit')
         .setDescription('Edit a channel.')
         .addChannelOption(option => option.setDescription('The channel to edit.').setRequired(true).setName('channel'))
-        .addStringOption(option => option.setDescription('The new channel name.').setName('name'))
-        .addStringOption(option => option.setDescription('The new channel topic.').setName('topic')),
+        .addStringOption(option =>
+          option.setDescription('The new channel name/topic.').setName('name').setRequired(true),
+        ),
     ),
 
   async execute() {

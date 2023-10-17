@@ -8,14 +8,12 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const channel_name = interaction.options.getString('name');
-    const channel_topic = interaction.options.getString('topic');
+    const name = interaction.options.getString('name', true);
     const channel_nsfw = interaction.options.getBoolean('nsfw') ?? false;
 
     await interaction.guild?.channels
       .create({
-        name: channel_name,
-        topic: channel_topic,
+        name,
         nsfw: channel_nsfw,
         reason: `Channel created by ${interaction.user.username}`,
       })

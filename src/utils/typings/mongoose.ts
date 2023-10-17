@@ -13,6 +13,8 @@ export type NonNullMongooseReturn<T> = MongooseDoc<unknown, any, T> &
     never
   >;
 
+export type ReactionRoleType = 'normal' | 'verify' | 'drop' | 'reversed' | 'unique' | 'binding';
+
 export type Status = 'pending' | 'approved' | 'denied';
 
 export type MessageTypeWithCard = MessageType | 'card';

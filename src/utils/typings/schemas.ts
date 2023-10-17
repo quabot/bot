@@ -1,6 +1,5 @@
 import type { ColorResolvable, Snowflake } from 'discord.js';
-import type { LevelCard, Message, MessageType, MessageTypeWithCard, Status } from '@typings/mongoose';
-import type { Perm } from '@constants/discord';
+import type { LevelCard, Message, MessageType, MessageTypeWithCard, ReactionRoleType, Status } from '@typings/mongoose';
 import { Types } from 'mongoose';
 
 export interface IUserGame {
@@ -257,13 +256,13 @@ export interface IReactionConfig {
 export interface IReactionRoles {
   guildId: Snowflake;
   channelId: Snowflake;
-  reqPermission: Perm;
+  reqPermission: string;
   reqRoles?: Types.Array<Snowflake>;
   excludedRoles?: Types.Array<Snowflake>;
   roleId: Snowflake;
   messageId: Snowflake;
   emoji: string;
-  type: 'normal' | 'verify' | 'drop' | 'reversed' | 'unique' | 'binding';
+  type: ReactionRoleType;
 }
 
 export interface IResponderConfig {

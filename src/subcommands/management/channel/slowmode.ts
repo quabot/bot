@@ -1,6 +1,8 @@
 import { Embed } from '@constants/embed';
 import ms from 'ms';
 import type { CommandArgs } from '@typings/functionArgs';
+import { GuildChannel, GuildTextBasedChannel } from '@typings/discord';
+import { CategoryChannel, ChannelType } from 'discord.js';
 
 export default {
   parent: 'channel',
@@ -9,7 +11,10 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const channel = interaction.options.getChannel('channel');
+    const channel = interaction.options.getChannel('channel', true, [
+      ...GuildTextBasedChannel,
+      ChannelType.GuildForum,
+    ]) as Exclude<GuildChannel, CategoryChannel>;
     let slowmode = Math.round(ms(interaction.options.getString('slowmode', true)) / 1000);
 
     if (!slowmode)

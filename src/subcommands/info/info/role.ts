@@ -1,5 +1,6 @@
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
+import type { Role } from 'discord.js';
 
 export default {
   parent: 'info',
@@ -8,7 +9,17 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const role = interaction.options.getRole('role', true);
+    const rawRole = interaction.options.getRole('role', true);
+    if ('unicode_emoji' in rawRole)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            `Sorry, Discord didn't give the role to us in the right way. Please try again.`,
+          ),
+        ],
+      });
+
+    const role = rawRole as Role;
 
     await interaction.editReply({
       embeds: [

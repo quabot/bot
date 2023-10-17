@@ -15,7 +15,7 @@ module.exports = {
     if (!config.joinEnabled) return;
 
     const channel = member.guild.channels.cache.get(config.joinChannel);
-    if (!channel) return;
+    if (!channel?.isTextBased()) return;
 
     const parseString = (text: string) =>
       text
@@ -28,7 +28,7 @@ module.exports = {
         .replaceAll('{icon}', member.guild.iconURL() ?? '')
         .replaceAll('{server}', member.guild.name ?? '')
         .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
-        .replaceAll('{color}', `${custom.color ?? '#416683'}`);
+        .replaceAll('{color}', `${custom?.color ?? '#416683'}`);
 
     if (config.joinType === 'embed') {
       const embed = new CustomEmbed(config.joinMessage, parseString);

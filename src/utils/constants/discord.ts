@@ -127,5 +127,5 @@ export const PERMS = [
 ];
 
 export function permissionBitToString(permission: string) {
-  return PERMS.find(i => i.code === parseInt(permission))!.perm;
+  return PERMS.find(i => i.code === parseInt(permission))!.perm as Perm;
 }

@@ -1,59 +1,81 @@
-/* eslint-disable no-case-declarations */
-const { ReactionManager, User, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { getReactionConfig } = require('@configs/reactionConfig');
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  PermissionFlagsBits,
+  type User,
+  type GuildMember,
+  type MessageReaction,
+  type Role,
+} from 'discord.js';
+import { getReactionConfig } from '@configs/reactionConfig';
 import { getServerConfig } from '@configs/serverConfig';
 import { CustomEmbed } from '@constants/customEmbed';
+import type { EventArgs } from '@typings/functionArgs';
+import Reaction from '@schemas/ReactionRole';
+import { permissionBitToString } from '@constants/discord';
+import { screamingSnakeToPascalCase } from '@functions/string';
+import type { NonNullMongooseReturn, ReactionRoleType } from '@typings/mongoose';
+import type { IReactionConfig, IServer } from '@typings/schemas';
 
 module.exports = {
   event: 'messageReactionRemove',
   name: 'reactionRoleRemove',
-  /**
-   *
-   * @param {ReactionManager} reaction
-   * @param {User} user
-   * @param {GuildMember} member
-   */
-  async execute(reaction, user, client) {
-    if (!reaction.message.guildId) return;
-    const Reaction = require('@schemas/ReactionRole');
+
+  async execute({ client, color }: EventArgs, reaction: MessageReaction, user: User) {
+    if (!reaction.message.guild?.id) return;
+
     let reactionRole = await Reaction.findOne({
-      guildId: reaction.message.guildId,
+      guildId: reaction.message.guild.id,
       messageId: reaction.message.id,
-      emoji: reaction._emoji.name,
+      emoji: reaction.emoji.name,
     });
     if (!reactionRole)
       reactionRole = await Reaction.findOne({
-        guildId: reaction.message.guildId,
+        guildId: reaction.message.guild.id,
         messageId: reaction.message.id,
-        emoji: `<:${reaction._emoji.name}:${reaction._emoji.id}>`,
+        emoji: `<:${reaction.emoji.name}:${reaction.emoji.id}>`,
       });
 
     if (!reactionRole) return;
 
-    const role = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
-    const member = reaction.message.guild.members.cache.get(`${user.id}`);
-    if (!role) return;
-    if (role.managed) return;
-    if (role.id === reaction.message.guildId) return;
+    const rawRole = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
+    const rawMember = reaction.message.guild.members.cache.get(`${user.id}`);
 
-    if (reactionRole.reqPermission !== 'None' && reactionRole.reqPermission !== 'none') {
-      if (!member.permissions.has(reactionRole.reqPermission)) return;
+    if (!rawMember || !rawRole) return;
+    const member = rawMember as GuildMember;
+    const role = rawRole as Role;
+
+    if (role.managed) return;
+    if (role.id === reaction.message.guild.id) return;
+
+    if (reactionRole.reqPermission !== 'none') {
+      if (
+        !member.permissions.has(
+          screamingSnakeToPascalCase(
+            permissionBitToString(reactionRole.reqPermission),
+          ) as keyof typeof PermissionFlagsBits,
+        )
+      )
+        return;
     }
 
-    const config = await getReactionConfig(client, reaction.message.guildId);
-    const customConfig = await getServerConfig(client, reaction.message.guildId);
-    if (!config || !customConfig) return;
-    if (!config.enabled) return;
+    const rawConfig = await getReactionConfig(client, reaction.message.guild.id);
+    const rawCustomConfig = await getServerConfig(client, reaction.message.guild.id);
+
+    if (!rawConfig?.enabled || !rawCustomConfig) return;
+    const config = rawConfig as NonNullMongooseReturn<IReactionConfig>;
+    const customConfig = rawCustomConfig as NonNullMongooseReturn<IServer>;
 
     let excluded = false;
-    reactionRole.excludedRoles.forEach(r => {
-      if (reaction.message.member.roles.cache.some(ra => ra.id === r)) excluded = true;
+    reactionRole.excludedRoles?.forEach(r => {
+      if (member.roles.cache.some(ra => ra.id === r)) excluded = true;
     });
     let required = false;
-    reactionRole.reqRoles.forEach(r => {
-      if (reaction.message.member.roles.cache.some(ra => ra.id === r)) required = true;
+    reactionRole.reqRoles?.forEach(r => {
+      if (member.roles.cache.some(ra => ra.id === r)) required = true;
     });
-    if (excluded && !required && reactionRole.reqRoles.length === 0) return;
+    if (excluded && !required && reactionRole.reqRoles?.length == 0) return;
 
     const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -63,7 +85,7 @@ module.exports = {
         .setDisabled(true),
     );
 
-    async function asyncSwitch(type) {
+    async function asyncSwitch(type: ReactionRoleType) {
       switch (type) {
         // ? Give and remove
         case 'normal':
@@ -76,13 +98,13 @@ module.exports = {
               .replaceAll('{username}', user.username)
               .replaceAll('{discriminator}', user.discriminator)
               .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild.iconURL())
-              .replaceAll('{avatar}', user.avatarURL())
-              .replaceAll('{servername}', reaction.message.guild.name)
-              .replaceAll('{color}', customConfig.color)
-              .replaceAll('{server}', reaction.message.guild.name)
+              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
+              .replaceAll('{avatar}', user.displayAvatarURL())
+              .replaceAll('{servername}', reaction.message.guild!.name)
+              .replaceAll('{color}', (customConfig.color ?? color).toString())
+              .replaceAll('{server}', reaction.message.guild!.name)
               .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user)
+              .replaceAll('{user}', user.toString())
               .replaceAll('{message}', reaction.message.url);
 
           if (config.dmEnabled)
@@ -114,13 +136,13 @@ module.exports = {
               .replaceAll('{username}', user.username)
               .replaceAll('{discriminator}', user.discriminator)
               .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild.iconURL())
-              .replaceAll('{avatar}', user.avatarURL())
-              .replaceAll('{servername}', reaction.message.guild.name)
-              .replaceAll('{color}', customConfig.color)
-              .replaceAll('{server}', reaction.message.guild.name)
+              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
+              .replaceAll('{avatar}', user.displayAvatarURL())
+              .replaceAll('{servername}', reaction.message.guild!.name)
+              .replaceAll('{color}', (customConfig.color ?? color).toString())
+              .replaceAll('{server}', reaction.message.guild!.name)
               .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user)
+              .replaceAll('{user}', user.toString())
               .replaceAll('{message}', reaction.message.url);
 
           if (config.dmEnabled)
@@ -144,13 +166,13 @@ module.exports = {
               .replaceAll('{username}', user.username)
               .replaceAll('{discriminator}', user.discriminator)
               .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild.iconURL())
-              .replaceAll('{avatar}', user.avatarURL())
-              .replaceAll('{servername}', reaction.message.guild.name)
-              .replaceAll('{color}', customConfig.color)
-              .replaceAll('{server}', reaction.message.guild.name)
+              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
+              .replaceAll('{avatar}', user.displayAvatarURL())
+              .replaceAll('{servername}', reaction.message.guild!.name)
+              .replaceAll('{color}', (customConfig.color ?? color).toString())
+              .replaceAll('{server}', reaction.message.guild!.name)
               .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user)
+              .replaceAll('{user}', user.toString())
               .replaceAll('{message}', reaction.message.url);
 
           if (config.dmEnabled)

@@ -1,4 +1,4 @@
-import { Collection } from 'discord.js';
+import { Collection, GuildMember } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
 import { getRoleIds } from '@functions/discord';
@@ -15,7 +15,18 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const member = interaction.options.getMember('user') ?? interaction.member;
+    const rawMember = interaction.options.getMember('user') ?? interaction.member!;
+
+    if ('nick' in rawMember)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            `Sorry, Discord didn't give the member to us in the right way. Please try again.`,
+          ),
+        ],
+      });
+
+    const member = rawMember as GuildMember;
     const { user } = member;
 
     const badges: string[] = [];
