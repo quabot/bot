@@ -6,16 +6,17 @@ import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
 
 //* Handle the vote of a user. Send a message and update DB.
-module.exports = {
+export default {
   code: 'vote',
   async execute({ client, data }: WsEventArgs) {
     //* Get the votes channel and send the Vote message.
+    if (data.body.type !== 'upvote') return;
     const guild = client.guilds.cache.get('1007810461347086357');
     if (!guild) return;
     const ch = guild.channels.cache.get('1024600377628299266');
     if (!ch?.isTextBased()) return;
 
-    const votes = await axios
+const votes = await axios
       .get('https://top.gg/api/bots/995243562134409296', {
         headers: {
           Authorization: process.env.TOPGG_API_KEY,
