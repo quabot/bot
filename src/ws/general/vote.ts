@@ -23,7 +23,7 @@ export default {
         new Embed('#416683')
           .setTitle('User Voted!')
           .setDescription(
-            `<@${data.body.user}> has voted for QuaBot! Thank you for your support, you have received a 1.5x level XP multiplier. You can vote again in 12 hours! [Vote here.](https://top.gg/bot/995243562134409296/vote)`,
+            `<@${data.body.user}> has voted for QuaBot, you are the **${voteCount}th** vote! Thank you for your support, you have received a 1.5x level XP multiplier. You can vote again in 12 hours! [Vote here.](https://top.gg/bot/995243562134409296/vote)`,
           ),
       ],
     });
@@ -36,7 +36,7 @@ export default {
       .send({
         embeds: [
           new Embed('#416683').setDescription(
-            `Hey ${user}! Thank you so much for voting for QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level XP multiplier for 12 hours! We hope you enjoy your time with QuaBot!`,
+            `Hey ${user}! Thank you so much for voting for QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level XP multiplier for 12 hours! We hope you enjoy your time with QuaBot! You are our **${voteCount}th** vote this month!`,
           ),
         ],
       })

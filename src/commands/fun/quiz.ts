@@ -73,7 +73,7 @@ export default {
       //* Check what the user answered and update the message accordingly.
       const answeredAnswer = answers[parseInt(i.customId)];
       if (!answeredAnswer) {
-        await i.reply('There was an error.');
+        i.reply('There was an error.');
         return;
       }
       if (answeredAnswer === question.correct_answer) {

@@ -1,12 +1,4 @@
-import {
-  EmbedBuilder,
-  ButtonStyle,
-  ButtonBuilder,
-  ActionRowBuilder,
-  Colors,
-  SlashCommandBuilder,
-  GuildEmoji,
-} from 'discord.js';
+import { EmbedBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, Colors, SlashCommandBuilder } from 'discord.js';
 import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
@@ -21,10 +13,7 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     //* Create an array of all the emojis in the guild.
-    const emoteList: GuildEmoji[] = [];
-    (await interaction.guild!.emojis.fetch()).forEach(e => {
-      emoteList.push(e);
-    });
+    const emoteList = (await interaction.guild!.emojis.fetch()).map(emoji => emoji);
 
     //* Create the multi-page system.
     // ? don't touch it lol
