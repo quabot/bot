@@ -3,7 +3,7 @@ import Responder from '@schemas/Responder';
 
 //* Activate custom commands.
 //* This is a one-time event, so it's set to once: true.
-module.exports = {
+export default {
   event: 'ready',
   name: 'clientCommands',
   once: true,

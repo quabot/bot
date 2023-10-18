@@ -2,7 +2,7 @@ import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ContextArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   data: new ContextMenuCommandBuilder().setName('Avatar').setType(ApplicationCommandType.User).setDMPermission(false),
 
   async execute({ interaction, color }: ContextArgs) {

@@ -4,7 +4,7 @@ import { Embed } from '@constants/embed';
 import type { ModalArgs } from '@typings/functionArgs';
 import { Types } from 'mongoose';
 
-module.exports = {
+export default {
   name: 'choices-poll',
 
   async execute({ client, interaction, color }: ModalArgs) {

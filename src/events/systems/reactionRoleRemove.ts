@@ -18,7 +18,7 @@ import { screamingSnakeToPascalCase } from '@functions/string';
 import type { NonNullMongooseReturn, ReactionRoleType } from '@typings/mongoose';
 import type { IReactionConfig, IServer } from '@typings/schemas';
 
-module.exports = {
+export default {
   event: 'messageReactionRemove',
   name: 'reactionRoleRemove',
 

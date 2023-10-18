@@ -14,7 +14,7 @@ export type GuildChannel = TextChannel | VoiceChannel | CategoryChannel | NewsCh
 export const GuildTextBasedChannel: ApplicationCommandOptionAllowedChannelTypes[] = [
   ChannelType.GuildText,
   ChannelType.GuildAnnouncement,
-  ChannelType.PublicThread,
+  ChannelType.PrivateThread,
   ChannelType.PublicThread,
   ChannelType.AnnouncementThread,
   ChannelType.GuildVoice,

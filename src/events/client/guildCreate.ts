@@ -16,7 +16,7 @@ import { getTicketConfig } from '@configs/ticketConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { Embed } from '@constants/embed';
 
-module.exports = {
+export default {
   event: 'guildCreate',
   name: 'guildCreate',
   /**

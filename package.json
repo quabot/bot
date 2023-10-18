@@ -1,14 +1,14 @@
 {
   "name": "quabot",
   "version": "7.0.3c",
-  "main": "src/main.js",
+  "main": "dist/main.js",
   "author": "Joa_sss",
   "license": "none",
   "private": true,
   "scripts": {
     "dev": "nodemon",
     "production": "yarn deploy && yarn start",
-    "start": "node --require dotenv/config dist/src/main.js",
+    "start": "node --require dotenv/config dist/main.js",
     "build": "rimraf ./dist && yarn tsc",
     "deploy": "sh ./deploy.sh",
     "prettier": "prettier --write src"
@@ -49,13 +49,13 @@
     "typescript": "^5.2.2"
   },
   "_moduleAliases": {
-    "@configs": "dist/src/utils/configs/",
-    "@constants": "dist/src/utils/constants/",
-    "@functions": "dist/src/utils/functions/",
-    "@assets": "dist/src/utils/assets/",
-    "@typings": "dist/src/utils/typings",
-    "@classes": "dist/src/utils/classes",
-    "@schemas": "dist/src/structures/schemas/",
-    "@handlers": "dist/src/structures/handlers/"
+    "@configs": "dist/utils/configs/",
+    "@constants": "dist/utils/constants/",
+    "@functions": "dist/utils/functions/",
+    "@assets": "dist/utils/assets/",
+    "@typings": "dist/utils/typings",
+    "@classes": "dist/utils/classes",
+    "@schemas": "dist/structures/schemas/",
+    "@handlers": "dist/structures/handlers/"
   }
 }

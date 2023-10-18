@@ -2,7 +2,7 @@ import Poll from '@schemas/Poll';
 import { endPoll } from '@functions/poll';
 import type { EventArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   event: 'ready',
   name: 'pollRestart',
   once: true,

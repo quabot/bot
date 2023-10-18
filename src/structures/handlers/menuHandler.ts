@@ -4,19 +4,17 @@ import consola from 'consola';
 import type { Client } from '@classes/discord';
 
 const PG = promisify(glob);
-let loaded = 0;
 
 export default async (client: Client) => {
-  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/menus/*/*.js`);
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/menus/*/*.js`);
 
   files.forEach(async file => {
     //? don't have a type, cause we don't use menus yet
-    const menu = await import(file);
+    const menu = require(file).default;
     if (!menu.id) return;
 
     client.menus.set(menu.id, menu);
-    loaded++;
   });
 
-  consola.success(`Loaded ${loaded}/${files.length} select menus.`);
+  consola.success(`Loaded ${client.menus.size}/${files.length} select menus.`);
 };

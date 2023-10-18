@@ -8,7 +8,7 @@ houses.set('HypeSquadOnlineHouse1', '<:QBravery:1011633937296138341> Bravery');
 houses.set('HypeSquadOnlineHouse2', '<:QBrilliance:1011633938441195572> Brilliance');
 houses.set('HypeSquadOnlineHouse3', '<:QBalance:1011633936088182834> Balance');
 
-module.exports = {
+export default {
   data: new ContextMenuCommandBuilder().setName('Userinfo').setType(ApplicationCommandType.User).setDMPermission(false),
 
   async execute({ interaction, color }: ContextArgs) {

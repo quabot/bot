@@ -5,18 +5,16 @@ import type { Client } from '@classes/discord';
 import { Button } from '@typings/structures';
 
 const PG = promisify(glob);
-let loaded = 0;
 
 export default async (client: Client) => {
-  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/buttons/*/*.js`);
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/buttons/*/*.js`);
 
   files.forEach(async file => {
-    const button: Button = await import(file);
+    const button: Button = require(file).default;
     if (!button.name) return;
 
     client.buttons.set(button.name, button);
-    loaded++;
   });
 
-  consola.success(`Loaded ${loaded}/${files.length} buttons.`);
+  consola.success(`Loaded ${client.buttons.size}/${files.length} buttons.`);
 };

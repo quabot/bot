@@ -1,7 +1,7 @@
 import type { GuildMember } from 'discord.js';
 import Level from '@schemas/Level';
 
-module.exports = {
+export default {
   event: 'guildMemberRemove',
   name: 'levelDisable',
 

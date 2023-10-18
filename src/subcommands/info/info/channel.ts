@@ -38,7 +38,7 @@ export default {
                     }\n- **Cooldown:** ${
                       channel.isTextBased()
                         ? channel.rateLimitPerUser !== 0
-                          ? channel.rateLimitPerUser
+                          ? `${channel.rateLimitPerUser}s`
                           : 'Disabled'
                         : 'Impossable'
                     }\n- **Parent:** ${channel.parentId ? '<#' + channel.parentId + '>' : 'None'}

@@ -4,7 +4,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import Application from '@schemas/Application';
 import type { EventArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   event: Events.InteractionCreate,
   name: 'applicationButton',
 

@@ -4,7 +4,7 @@ import { Embed } from '@constants/embed';
 import { getServerConfig } from '@configs/serverConfig';
 import type { EventArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   event: 'messageCreate',
   name: 'afkStatus',
 

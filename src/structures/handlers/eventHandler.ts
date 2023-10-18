@@ -9,10 +9,10 @@ import type { EventArgs } from '@typings/functionArgs';
 let loaded = 0;
 
 export default async (client: Client) => {
-  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/events/*/*.js`);
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/events/*/*.js`);
 
   files.forEach(async eventFile => {
-    const event: Event = await import(eventFile);
+    const event: Event = require(eventFile).default;
     if (!event.name || !event.event) return;
 
     const defaultArgs: EventArgs = { client, color: '#416683' };

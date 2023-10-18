@@ -4,7 +4,7 @@ import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
   parent: 'applications',
-  name: 'help',
+  name: 'list',
 
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: false });

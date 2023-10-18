@@ -2,7 +2,7 @@ import { endGiveaway } from '@functions/giveaway';
 import type { EventArgs } from '@typings/functionArgs';
 import Giveaway from '@schemas/Giveaway';
 
-module.exports = {
+export default {
   event: 'ready',
   name: 'giveawayRestart',
   once: true,

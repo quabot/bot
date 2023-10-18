@@ -8,7 +8,7 @@ export default {
     .setName('vote')
     .setDescription('Get the URL to vote for QuaBot.')
     .setDMPermission(false),
-  
+
   async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();

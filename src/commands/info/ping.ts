@@ -8,7 +8,7 @@ export default {
     .setName('ping')
     .setDescription('Get the latency between QuaBot and the Discord API.')
     .setDMPermission(false),
-  
+
   async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();

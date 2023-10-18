@@ -5,7 +5,7 @@ import { AutoPoster } from 'topgg-autoposter';
 import axios from 'axios';
 import { API_URL } from '@constants/discord';
 
-module.exports = {
+export default {
   event: 'ready',
   name: 'clientConnections',
   once: true,
@@ -16,7 +16,7 @@ module.exports = {
     // Connect MongoDB
     connect(process.env.DATABASE_URI!)
       .then(db => {
-        consola.info(`Connected to database ${db.connections[0].name}.`);
+        consola.info(`Connected to database '${db.connections[0].name}'.`);
       })
       .catch(err => {
         consola.error(`Failed to connect to the database: ${err}`);

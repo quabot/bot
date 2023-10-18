@@ -3,7 +3,7 @@ import ms from 'ms';
 import Punishment from '@schemas/Punishment';
 import { tempUnban } from '@functions/unban';
 
-module.exports = {
+export default {
   event: 'ready',
   name: 'tempbanRestart',
   once: true,

@@ -3,7 +3,7 @@ import { getAfkConfig } from '@configs/afkConfig';
 import { getUser } from '@configs/user';
 import type { ModalArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   name: 'afk-set',
 
   async execute({ client, interaction, color }: ModalArgs) {

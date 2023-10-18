@@ -4,18 +4,14 @@ const PG = promisify(glob);
 import consola from 'consola';
 import { Client } from '@classes/discord';
 
-let loaded = 0;
-
 export default async (client: Client) => {
-  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/ws/*/*.js`);
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/ws/*/*.js`);
   files.map(async wsFile => {
-    const ws = await import(wsFile);
+    const ws = require(wsFile).default;
     if (!ws.code) return;
 
     client.ws_events.set(ws.code, ws);
-
-    loaded++;
   });
 
-  consola.success(`Loaded ${loaded}/${files.length} WebSocket events.`);
+  consola.success(`Loaded ${client.ws_events.size}/${files.length} WebSocket events.`);
 };

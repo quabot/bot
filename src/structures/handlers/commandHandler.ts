@@ -1,31 +1,31 @@
 import { glob } from 'glob';
 import { promisify } from 'util';
-import { Routes, SlashCommandBuilder } from 'discord.js';
+import { type ContextMenuCommandBuilder, Routes, type SlashCommandBuilder } from 'discord.js';
 import consola from 'consola';
 
 import { REST } from '@discordjs/rest';
 import getContexts from './contextHandler';
 import type { Client } from '@classes/discord';
-import type { Command, Context } from '@typings/structures';
+import type { Command } from '@typings/structures';
 
 const PG = promisify(glob);
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN!);
 
 export default async function (client: Client) {
-  const commandsList: (SlashCommandBuilder | Context)[] = [];
+  const commandsList: (SlashCommandBuilder | ContextMenuCommandBuilder)[] = [];
   const contexts = await getContexts(client);
   contexts.forEach(context => commandsList.push(context));
 
-  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/*/*.js`);
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/commands/*/*.js`);
   files.forEach(async file => {
-    const command: Command = await import(file);
+    const command: Command = require(file).default;
     if (!command.data) return;
 
     client.commands.set(command.data.name, command);
     commandsList.push(command.data);
   });
 
-  consola.success(`Loaded ${commandsList.length - contexts.length}/${files.length} commands.`);
+  consola.success(`Loaded ${client.commands.size}/${files.length} commands.`);
 
   try {
     if (process.env.RELOAD_COMMANDS === 'false') return;

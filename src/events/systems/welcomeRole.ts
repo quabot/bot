@@ -2,7 +2,7 @@ import { Events, type GuildMember } from 'discord.js';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import type { EventArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   event: Events.GuildMemberAdd,
   name: 'welcomeRole',
 

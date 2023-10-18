@@ -70,7 +70,7 @@ export default {
 
     // ? It works, never touch it again.
     categories.map(async c => {
-      const list = (await PG(`${process.cwd().replace(/\\/g, '/')}/src/commands/${c.path}/*.js`))
+      const list = (await PG(`${process.cwd().replace(/\\/g, '/')}/dist/commands/${c.path}/*.js`))
         .map(file => {
           const item = require(file);
           return `**/${item.data.name}** - ${item.data.description}`;

@@ -1,5 +1,5 @@
 import { GuildTextBasedChannel } from '@typings/discord';
-import { SlashCommandBuilder, PermissionFlagsBits, ChannelType } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 //* No executed code since it just creates slash subcommands.
@@ -33,7 +33,7 @@ export default {
             .setDescription('The channel to set the slowmode of.')
             .setRequired(true)
             .setName('channel')
-            .addChannelTypes(...GuildTextBasedChannel, ChannelType.GuildForum),
+            .addChannelTypes(...GuildTextBasedChannel),
         )
         .addStringOption(option =>
           option

@@ -1,6 +1,7 @@
 import { Embed } from '@constants/embed';
 import { getApplicationConfig } from '@configs/applicationConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import Application from '@schemas/Application';
 
 export default {
   parent: 'applications',
@@ -26,7 +27,6 @@ export default {
         embeds: [new Embed(color).setDescription('Please specify a valid application ID.')],
       });
 
-    const Application = require('@schemas/Application');
     const fApplication = await Application.findOne({
       guildId: interaction.guildId,
       id,

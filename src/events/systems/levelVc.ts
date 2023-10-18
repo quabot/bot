@@ -6,8 +6,11 @@ import { getServerConfig } from '@configs/serverConfig';
 import Vote from '@schemas/Vote';
 import { CustomEmbed } from '@constants/customEmbed';
 import { drawCard } from '@functions/levelCard';
+import type { CallbackError } from 'mongoose';
+import type { MongooseReturn } from '@typings/mongoose';
+import type { IVote } from '@typings/schemas';
 
-module.exports = {
+export default {
   event: Events.VoiceStateUpdate,
   name: 'voiceJoinLeave',
 
@@ -53,7 +56,7 @@ module.exports = {
             const color = configColor?.color ?? '#416683';
             if (!color) return;
 
-            const sentFrom = new ActionRowBuilder().addComponents(
+            const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
               new ButtonBuilder()
                 .setCustomId('sentFrom')
                 .setLabel('Sent from server: ' + newState.guild.name ?? 'Unknown')
@@ -72,7 +75,7 @@ module.exports = {
             let rndXp = Math.floor(Math.random() * 3);
             rndXp = rndXp * config.voiceXpMultiplier ?? 1;
 
-            const vote = await Vote.findOne({ userId: member.id }, (err, c) => {
+            const vote = await Vote.findOne({ userId: member.id }, (err: CallbackError, c: MongooseReturn<IVote>) => {
               if (err) console.log(err);
               if (!c)
                 new Vote({
@@ -136,7 +139,7 @@ module.exports = {
                   config.channel === 'current'
                     ? newState.channel
                     : newState.guild.channels.cache.get(`${config.channel}`);
-                if (!channel) return;
+                if (!channel?.isTextBased()) return;
 
                 const embed = new CustomEmbed(config.message, parse);
 

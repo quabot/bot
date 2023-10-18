@@ -2,7 +2,7 @@ import type { EventArgs } from '@typings/functionArgs';
 import { WebSocketServer } from 'ws';
 import consola from 'consola';
 
-module.exports = {
+export default {
   event: 'ready',
   name: 'clientSocket',
   once: true,

@@ -8,7 +8,7 @@ export default {
     .setName('invite')
     .setDescription('Get an invite to add QuaBot to your own server.')
     .setDMPermission(false),
-  
+
   async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();

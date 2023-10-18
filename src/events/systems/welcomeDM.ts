@@ -4,7 +4,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 
-module.exports = {
+export default {
   event: Events.GuildMemberAdd,
   name: 'welcomeDM',
 

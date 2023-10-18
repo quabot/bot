@@ -2,7 +2,7 @@ import type { EventArgs } from '@typings/functionArgs';
 import { ActivityType } from 'discord.js';
 import consola from 'consola';
 
-module.exports = {
+export default {
   event: 'ready',
   name: 'clientStart',
   once: true,
@@ -29,6 +29,6 @@ module.exports = {
       }, 40000);
     })();
 
-    consola.info(`Logged in as ${client.user?.tag}.`);
+    consola.info(`Logged in as '${client.user?.tag}'.`);
   },
 };

@@ -4,7 +4,7 @@ import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   event: Events.GuildMemberAdd,
   name: 'welcomeMessage',
 

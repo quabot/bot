@@ -5,18 +5,16 @@ import consola from 'consola';
 import { Modal } from '@typings/structures';
 
 const PG = promisify(glob);
-let loaded = 0;
 
 export default async (client: Client) => {
-  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/src/interactions/modals/*/*.js`);
+  const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/modals/*/*.js`);
 
   files.forEach(async file => {
-    const modal: Modal = await import(file);
+    const modal: Modal = require(file).default;
     if (!modal.name) return;
 
     client.modals.set(modal.name, modal);
-    loaded++;
   });
 
-  consola.success(`Loaded ${loaded}/${files.length} modals.`);
+  consola.success(`Loaded ${client.modals.size}/${files.length} modals.`);
 };

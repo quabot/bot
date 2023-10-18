@@ -4,7 +4,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import type { EventArgs } from '@typings/functionArgs';
 import type { Message } from 'discord.js';
 
-module.exports = {
+export default {
   event: 'messageCreate',
   name: 'afkHandler',
 

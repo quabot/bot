@@ -5,7 +5,7 @@ import { getUserGame } from '@configs/userGame';
 import Level from '@schemas/Level';
 import type { ContextArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   data: new ContextMenuCommandBuilder().setName('Profile').setType(ApplicationCommandType.User).setDMPermission(false),
 
   async execute({ client, interaction, color }: ContextArgs) {

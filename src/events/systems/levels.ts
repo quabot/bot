@@ -12,7 +12,7 @@ import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
 
-module.exports = {
+export default {
   event: 'messageCreate',
   name: 'levels',
 

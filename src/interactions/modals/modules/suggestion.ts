@@ -8,7 +8,7 @@ import type { ModalArgs } from '@typings/functionArgs';
 import { IIds } from '@typings/schemas';
 import { NonNullMongooseReturn } from '@typings/mongoose';
 
-module.exports = {
+export default {
   name: 'suggest',
 
   async execute({ client, interaction, color }: ModalArgs) {

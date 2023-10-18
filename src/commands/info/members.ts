@@ -1,6 +1,6 @@
-import { SlashCommandBuilder} from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
-import type { CommandArgs } from '@typings/functionArgs'
+import type { CommandArgs } from '@typings/functionArgs';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
@@ -8,7 +8,7 @@ export default {
     .setName('members')
     .setDescription('Get the amount of members in the server.')
     .setDMPermission(false),
-  
+
   async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();

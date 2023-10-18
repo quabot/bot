@@ -4,6 +4,7 @@ import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
+import discordTranscripts from 'discord-html-transcripts';
 
 export default {
   parent: 'ticket',
@@ -39,12 +40,13 @@ export default {
         embeds: [new Embed(color).setDescription('You are not allowed to request a transcript of this ticket.')],
       });
 
-    const discordTranscripts = require('discord-html-transcripts');
-    const attachment = await discordTranscripts.createTranscript(interaction.channel, {
+    const attachment = await discordTranscripts.createTranscript(interaction.channel!, {
       limit: -1,
-      minify: true,
+      //? This isn't a thing, what do you want to do?
+      //minify: true,
       saveImages: false,
-      useCND: true,
+      //? This isn't a thing, what do you want to do?
+      //useCND: true,
     });
 
     await interaction.editReply({

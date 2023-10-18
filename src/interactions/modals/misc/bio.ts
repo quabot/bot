@@ -2,7 +2,7 @@ import { Embed } from '@constants/embed';
 import { getUserGame } from '@configs/userGame';
 import type { ModalArgs } from '@typings/functionArgs';
 
-module.exports = {
+export default {
   name: 'profile-bio',
 
   async execute({ client, interaction, color }: ModalArgs) {

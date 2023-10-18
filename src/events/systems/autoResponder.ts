@@ -5,7 +5,7 @@ import { getResponderConfig } from '@configs/responderConfig';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasAnyRole } from '@functions/discord';
 
-module.exports = {
+export default {
   event: 'messageCreate',
   name: 'autoReponder',
 
