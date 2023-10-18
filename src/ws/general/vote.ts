@@ -1,7 +1,6 @@
 import Vote from '@schemas/Vote';
 import { Embed } from '@constants/embed';
 import type { WsEventArgs } from '@typings/functionArgs';
-import { ChannelType } from 'discord.js';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
@@ -15,7 +14,17 @@ export default {
     const guild = client.guilds.cache.get('1007810461347086357');
     if (!guild) return;
     const ch = guild.channels.cache.get('1024600377628299266');
-    if (!ch || ch.type === ChannelType.GuildCategory || ch.type === ChannelType.GuildForum) return;
+    if (!ch?.isTextBased()) return;
+
+const votes = await axios
+      .get('https://top.gg/api/bots/995243562134409296', {
+        headers: {
+          Authorization: process.env.TOPGG_API_KEY,
+        },
+      })
+      .catch(() => {});
+    let voteCount = -1;
+    if (votes) voteCount = votes.data.monthlyPoints;
 
     ch.send({
       content: `<@${data.body.user}>`,
