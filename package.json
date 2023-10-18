@@ -1,16 +1,21 @@
 {
   "name": "quabot",
   "version": "7.0.3c",
-  "main": "src/main.js",
+  "main": "dist/main.js",
   "author": "Joa_sss",
   "license": "none",
   "private": true,
   "scripts": {
-    "start": "node .",
+    "dev": "nodemon",
+    "production": "yarn deploy && yarn start",
+    "start": "node --require dotenv/config dist/main.js",
+    "build": "rimraf ./dist && yarn tsc",
+    "deploy": "sh ./deploy.sh",
     "prettier": "prettier --write src"
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.41",
+    "@types/module-alias": "^2.0.2",
     "axios": "^1.4.0",
     "consola": "^2.15.3",
     "discord-arts": "^0.4.0",
@@ -21,27 +26,36 @@
     "lodash": "^4.17.21",
     "module-alias": "^2.2.3",
     "moment": "^2.29.4",
-    "mongoose": "^6.11.3",
+    "mongoose": "^7.5.3",
     "ms": "^2.1.3",
     "node-cache": "^5.1.2",
     "openai": "^3.2.1",
     "path": "^0.12.7",
     "random-reddit": "^2.0.3",
+    "reddit-interfaces": "^1.0.7",
     "topgg-autoposter": "^2.0.1",
     "undici": "^5.23.0",
     "util": "^0.12.5",
     "ws": "^8.12.1"
   },
   "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/lodash": "^4.14.197",
+    "@types/ms": "^0.7.32",
     "eslint": "^8.47.0",
-    "prettier": "^3.0.2"
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.2",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.2.2"
   },
   "_moduleAliases": {
-    "@configs": "src/utils/configs/",
-    "@constants": "src/utils/constants/",
-    "@functions": "src/utils/functions/",
-    "@assets": "src/utils/assets/",
-    "@schemas": "src/structures/schemas/",
-    "@handlers": "src/structures/handlers/"
+    "@configs": "dist/utils/configs/",
+    "@constants": "dist/utils/constants/",
+    "@functions": "dist/utils/functions/",
+    "@assets": "dist/utils/assets/",
+    "@typings": "dist/utils/typings",
+    "@classes": "dist/utils/classes",
+    "@schemas": "dist/structures/schemas/",
+    "@handlers": "dist/structures/handlers/"
   }
 }

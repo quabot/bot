@@ -1,0 +1,51 @@
+{
+  "include": ["src/**/*.ts"],
+  "compilerOptions": {
+    // Type Checking
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+
+    // Modules
+    "module": "CommonJS",
+
+    // Emit
+    "importHelpers": true,
+    "newLine": "lf",
+    "outDir": "dist",
+
+    // Interop Constraits
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Language and Environment
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+
+    // Completeness
+    "skipLibCheck": true,
+
+    // JSON
+    "resolveJsonModule": true,
+
+    // _moduleAliases
+    "baseUrl": "./src",
+    "paths": {
+      "@configs/*": ["utils/configs/*"],
+      "@constants/*": ["utils/constants/*"],
+      "@functions/*": ["utils/functions/*"],
+      "@assets/*": ["utils/assets/*"],
+      "@typings/*": ["utils/typings/*"],
+      "@classes/*": ["utils/classes/*"],
+      "@schemas/*": ["structures/schemas/*"],
+      "@handlers": ["structures/handlers/*"]
+    }
+  }
+}

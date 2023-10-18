@@ -1,0 +1,82 @@
+import Poll from '@schemas/Poll';
+import { getPollConfig } from '@configs/pollConfig';
+import { Embed } from '@constants/embed';
+import type { ModalArgs } from '@typings/functionArgs';
+import { Types } from 'mongoose';
+
+export default {
+  name: 'choices-poll',
+
+  async execute({ client, interaction, color }: ModalArgs) {
+    await interaction.deferReply();
+
+    const config = await getPollConfig(client, interaction.guildId!);
+    if (!config)
+      return await interaction.reply({
+        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
+      });
+
+    if (!config.enabled)
+      return await interaction.reply({
+        embeds: [new Embed(color).setDescription('Polls are not enabled in this server.')],
+      });
+
+    const poll = await Poll.findOne({
+      guildId: interaction.guildId,
+      interaction: interaction.message?.id,
+    })
+      .clone()
+      .catch(() => {});
+
+    if (!poll)
+      return await interaction.reply({
+        embeds: [new Embed(color).setDescription("Couldn't find the poll, this is an error. Please try again.")],
+      });
+
+    //TODO CHANGE WHEN DEBUGGED
+    const options: any[] = [];
+    interaction.components.map(item => options.push(`${item.components[0].value}`));
+
+    if (options.length < 2 || options.length > 5)
+      return await interaction.reply({
+        embeds: [new Embed(color).setDescription('You need at least two options and a maximum of 5.')],
+      });
+
+    poll.options = new Types.Array(options);
+    await poll.save();
+
+    const embed = new Embed(color)
+      .setDescription(
+        `Click the blue button below this message to enter the details for the poll. When entered, click the gray button to enter the choices.${
+          options ? `\n\n**Entered Choices:**${options.map(o => `\n${o}`)}` : ''
+        }`,
+      )
+      .addFields(
+        { name: 'Channel', value: `<#${poll.channel}>`, inline: true },
+        { name: 'Duration', value: `${poll.duration}`, inline: true },
+        { name: 'Choices', value: `${poll.optionsCount}`, inline: true },
+        {
+          name: 'Role',
+          value: `${poll.role ? `${poll.role}` : 'None'}`,
+          inline: true,
+        },
+      );
+
+    if (poll.topic !== 'none')
+      embed.addFields({
+        name: 'Question',
+        value: `${poll.topic}`,
+        inline: true,
+      });
+    if (poll.description !== 'none')
+      embed.addFields({
+        name: 'Description',
+        value: `${poll.description}`,
+        inline: true,
+      });
+
+    await interaction.message?.edit({ embeds: [embed] });
+
+    await interaction.deleteReply();
+  },
+};
