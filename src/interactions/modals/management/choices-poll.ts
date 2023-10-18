@@ -8,16 +8,16 @@ export default {
   name: 'choices-poll',
 
   async execute({ client, interaction, color }: ModalArgs) {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     const config = await getPollConfig(client, interaction.guildId!);
     if (!config)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Polls are not enabled in this server.')],
       });
 
@@ -29,20 +29,18 @@ export default {
       .catch(() => {});
 
     if (!poll)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription("Couldn't find the poll, this is an error. Please try again.")],
       });
 
-    //TODO CHANGE WHEN DEBUGGED
-    const options: any[] = [];
-    interaction.components.map(item => options.push(`${item.components[0].value}`));
+    const options = interaction.components.map(item => `${item.components[0].value}`);
 
     if (options.length < 2 || options.length > 5)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You need at least two options and a maximum of 5.')],
       });
 
-    poll.options = new Types.Array(options);
+    poll.options = new Types.Array(...options);
     await poll.save();
 
     const embed = new Embed(color)

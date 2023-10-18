@@ -1,3 +1,4 @@
+import { IResponder } from '@typings/schemas';
 import type { Button, Command, Context, Modal, Subcommand, WsEvent } from '@typings/structures';
 import { Client as BaseClient, type ClientOptions, type Collection } from 'discord.js';
 import NodeCache from 'node-cache';
@@ -11,8 +12,7 @@ export interface Client {
   modals: Collection<string, Modal>;
   ws_events: Collection<string, WsEvent>;
   subcommands: Collection<string, Subcommand>;
-  //todo debug to be sure
-  custom_commands: any[];
+  custom_commands: IResponder[];
 }
 
 export class Client extends BaseClient {

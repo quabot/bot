@@ -10,10 +10,6 @@ export default {
 
   async execute({ client }: EventArgs) {
     //* This is used to properly listen to custom commands/responses.
-    const commands = await Responder.find();
-    commands.forEach(c => {
-      if (!c.embed && !c.message && !c.reaction) return;
-      client.custom_commands.push(c);
-    });
+    client.custom_commands.push(...(await Responder.find()));
   },
 };

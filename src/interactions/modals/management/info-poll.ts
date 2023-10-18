@@ -7,14 +7,16 @@ export default {
   name: 'info-poll',
 
   async execute({ client, interaction, color }: ModalArgs) {
+    await interaction.deferReply({ ephemeral: true });
+
     const config = await getPollConfig(client, interaction.guildId!);
     if (!config)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
     if (!config.enabled)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Polls are not enabled in this server.')],
       });
 
@@ -26,7 +28,7 @@ export default {
       .catch(() => {});
 
     if (!poll)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription("Couldn't find the poll, this is an error. Please try again.")],
       });
 
@@ -34,7 +36,7 @@ export default {
     const description = interaction.fields.getTextInputValue('description');
 
     if (!question || !description)
-      return await interaction.reply({
+      return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Missing some required field values.')],
       });
 

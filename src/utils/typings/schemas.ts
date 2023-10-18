@@ -196,7 +196,7 @@ export interface IPoll {
 
   duration: string;
   optionsCount: number;
-  options?: Types.Array<any>; //todo Debug to see value
+  options?: Types.Array<string>;
 
   created: string;
   endTimestamp: string;
@@ -210,19 +210,21 @@ export interface IServer {
   disabledCommands?: Types.Array<string>;
 }
 
-export interface IResponder {
+export type IResponder = {
   guildId: Snowflake;
   trigger: string;
   wildcard: boolean;
 
-  type: 'message' | 'reaction';
-  embed?: any; //? Option not implemented in Dashboard
-  message?: string;
-  reaction?: string;
-
   ignored_channels?: Types.Array<Snowflake>;
   ignored_roles?: Types.Array<Snowflake>;
-}
+} & (
+  | { type: 'message'; message: string }
+  | { type: 'reaction'; reaction: string }
+  | {
+      type: 'embed';
+      embed?: any; //? Option not implemented in Dashboard
+    }
+);
 
 export interface IPollConfig {
   guildId: Snowflake;
@@ -239,7 +241,7 @@ export interface IPunishment {
   moderatorId: Snowflake;
   time: string;
 
-  type: string; //todo Debug to see all options, to be more type specific
+  type: 'ban' | 'kick' | 'tempban' | 'timeout' | 'warn';
   id: Snowflake;
   reason: string;
   duration: string;
@@ -275,7 +277,7 @@ export interface ISuggestion {
   id: number;
   msgId: Snowflake;
   suggestion: string;
-  status: string; //todo Debug to see all options, to be more type specific
+  status: 'pending' | string; //todo Debug to see all options, to be more type specific
   userId: Snowflake;
 }
 
@@ -370,5 +372,5 @@ export interface IWelcomeConfig {
 
 export interface IVote {
   userId: Snowflake;
-  lastVote: string; //todo debug to be more type specific
+  lastVote: string; //* Date.prototype.getTime().toString()
 }

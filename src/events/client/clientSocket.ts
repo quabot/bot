@@ -15,7 +15,7 @@ export default {
       ws.on('error', console.error);
 
       ws.on('message', async function message(d) {
-        //! gotta debug to see real type
+        //todo gotta debug to see real type
         //@ts-ignore
         const data = JSON.parse(d);
         if (data.status !== 200) return;

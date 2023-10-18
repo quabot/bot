@@ -4,6 +4,7 @@ import type { WsEventArgs } from '@typings/functionArgs';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
+import axios from 'axios';
 
 //* Handle the vote of a user. Send a message and update DB.
 export default {
@@ -16,10 +17,10 @@ export default {
     const ch = guild.channels.cache.get('1024600377628299266');
     if (!ch?.isTextBased()) return;
 
-const votes = await axios
+    const votes = await axios
       .get('https://top.gg/api/bots/995243562134409296', {
         headers: {
-          Authorization: process.env.TOPGG_API_KEY,
+          Authorization: process.env.TOPGG_API_KEY!,
         },
       })
       .catch(() => {});

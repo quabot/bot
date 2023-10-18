@@ -4,6 +4,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import { getResponderConfig } from '@configs/responderConfig';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasAnyRole } from '@functions/discord';
+import type { IResponder } from '@typings/schemas';
 
 export default {
   event: 'messageCreate',
@@ -26,13 +27,12 @@ export default {
       if (!cL.wildcard && cL.trigger === message.content) run = true;
       if (cL.wildcard && message.content.toLowerCase().includes(cL.trigger)) run = true;
 
-      if (cL.ignored_channels.includes(message.channel.id)) run = false;
-      if (hasAnyRole(message.member, cL.ignored_roles)) run = false;
+      if (cL.ignored_channels?.includes(message.channel.id)) run = false;
+      if (hasAnyRole(message.member, cL.ignored_roles ?? [])) run = false;
       if (run) runTrigger(cL);
     });
 
-    //TODO CHANGE WHEN DEBUGGED
-    async function runTrigger(document: any) {
+    async function runTrigger(document: IResponder) {
       const parse = (s: string) => {
         return `${s}`
           .replaceAll('{color}', `${color}`)
