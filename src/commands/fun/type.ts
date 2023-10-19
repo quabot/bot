@@ -746,9 +746,7 @@ export default {
         embeds: [new Embed(color).setDescription(sentence).setTitle('Try to type this sentence as within 15 seconds!')],
       });
 
-      //* Get the User's DB and create a collector.
-      //! Why would you get the user's db?
-      // await getUserGame(interaction.user.id, client);
+      //* Create a collector.
 
       const collector = interaction.channel!.createMessageCollector({
         filter: m => m.author.id === interaction.user.id,

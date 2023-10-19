@@ -8,10 +8,6 @@ export default {
   data: new SlashCommandBuilder().setName('rps').setDescription('Play rock, paper, scissors.').setDMPermission(false),
 
   async execute({ interaction, color, client }: CommandExecutableFromButtonArgs) {
-    //* Get the user's game data to pre-load it.
-    //! why whould you do that?
-    // await getUserGame(interaction.user.id);
-
     //* Give the user the options to choose from and create a collector for the message.
     const msg = await interaction.reply({
       embeds: [new Embed(color).setDescription('Rock, paper or scissors?')],
