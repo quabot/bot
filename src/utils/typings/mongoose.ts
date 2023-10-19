@@ -71,7 +71,7 @@ export interface LevelCard {
   };
 
   pfp: {
-    rounded: boolean; //? Option not implemented in Dashboard
+    rounded: boolean; //! Option not implemented in Dashboard
   };
 }
 

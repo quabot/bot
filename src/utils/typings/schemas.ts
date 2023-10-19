@@ -222,7 +222,7 @@ export type IResponder = {
   | { type: 'reaction'; reaction: string }
   | {
       type: 'embed';
-      embed?: any; //? Option not implemented in Dashboard
+      embed?: any; //! Option not implemented in Dashboard
     }
 );
 
@@ -303,7 +303,7 @@ export interface ISuggestionConfig {
     deny: `#${string}`;
     pending: `#${string}`;
     deleted: `#${string}`;
-  }; //? Option not implemented in Dashboard
+  }; //! Option not implemented in Dashboard
 }
 
 export interface ITicket {

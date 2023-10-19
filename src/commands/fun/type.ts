@@ -747,7 +747,7 @@ export default {
       });
 
       //* Get the User's DB and create a collector.
-      //? Why would you get the user's db?
+      //! Why would you get the user's db?
       // await getUserGame(interaction.user.id, client);
 
       const collector = interaction.channel!.createMessageCollector({

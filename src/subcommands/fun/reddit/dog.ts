@@ -1,5 +1,3 @@
-//? this random-reddit thing is prob just dumb, so let's debug
-//@ts-nocheck
 import { Embed } from '@constants/embed';
 import { getPost } from 'random-reddit';
 import type { CommandArgs } from '@typings/functionArgs';

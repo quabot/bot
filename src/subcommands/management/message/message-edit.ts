@@ -10,7 +10,7 @@ export default {
     await interaction.deferReply();
 
     const messageUrl = interaction.options.getString('message', true);
-    //? I think I already said it somewhere, but pls put a comment at this thing, cuz I don't fucking understand it
+    //! I think I already said it somewhere, but pls put a comment at this thing, cuz I don't fucking understand it
     const ids = messageUrl.match(/\d+/g);
     if (!ids) return;
 

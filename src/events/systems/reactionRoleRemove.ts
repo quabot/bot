@@ -87,7 +87,7 @@ export default {
 
     async function asyncSwitch(type: ReactionRoleType) {
       switch (type) {
-        // ? Give and remove
+        // * Give and remove
         case 'normal':
           await member.roles.remove(role);
 
@@ -117,15 +117,15 @@ export default {
 
           break;
 
-        // ? Only give it.
+        // * Only give it.
         case 'verify':
           break;
 
-        // ? Only remove it when a reaction is added.
+        // * Only remove it when a reaction is added.
         case 'drop':
           break;
 
-        // ? Give and remove, but reversed.
+        // * Give and remove, but reversed.
         case 'reversed':
           await member.roles.add(role);
 
@@ -155,7 +155,7 @@ export default {
 
           break;
 
-        // ? Unique mode
+        // * Unique mode
         case 'unique':
           await member.roles.remove(role);
 

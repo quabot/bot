@@ -86,7 +86,7 @@ export default {
 
     async function asyncSwitch(type: ReactionRoleType) {
       switch (type) {
-        // ? Give and remove
+        // * Give and remove
         case 'normal':
           await member.roles.add(role);
 
@@ -116,7 +116,7 @@ export default {
 
           break;
 
-        // ? Only give it.
+        // * Only give it.
         case 'verify':
           await member.roles.add(role);
 
@@ -146,7 +146,7 @@ export default {
 
           break;
 
-        // ? Only remove it when a reaction is added.
+        // * Only remove it when a reaction is added.
         case 'drop':
           await member.roles.remove(role);
 
@@ -176,7 +176,7 @@ export default {
 
           break;
 
-        // ? Give and removed, but reversed.
+        // * Give and removed, but reversed.
         case 'reversed':
           await member.roles.remove(role);
 
@@ -206,7 +206,7 @@ export default {
 
           break;
 
-        // ? Unique (only pick one role from the message at a time)
+        // * Unique (only pick one role from the message at a time)
         case 'unique':
           const reactions = await Reaction.find({
             guildId: reaction.message.guild!.id,

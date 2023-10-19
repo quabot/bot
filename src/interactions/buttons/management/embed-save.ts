@@ -1,4 +1,4 @@
-//? Idk what this file even does, pls add comments in this thing or write better code
+//! Idk what this file even does, pls add comments in this thing or write better code
 //@ts-nocheck
 import { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { Embed } from '@constants/embed';

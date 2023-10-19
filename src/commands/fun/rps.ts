@@ -9,7 +9,7 @@ export default {
 
   async execute({ interaction, color, client }: CommandExecutableFromButtonArgs) {
     //* Get the user's game data to pre-load it.
-    //? why whould you do that?
+    //! why whould you do that?
     // await getUserGame(interaction.user.id);
 
     //* Give the user the options to choose from and create a collector for the message.

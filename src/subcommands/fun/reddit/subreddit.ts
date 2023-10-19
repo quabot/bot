@@ -1,5 +1,3 @@
-//? this random-reddit thing is prob just dumb, so let's debug
-//@ts-nocheck
 import { Embed } from '@constants/embed';
 import { getPost, getImage } from 'random-reddit';
 import type { CommandArgs } from '@typings/functionArgs';
@@ -11,17 +9,17 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const subreddit = interaction.options.getString('subreddit');
+    const subreddit = interaction.options.getString('subreddit', true);
     const imageonly = interaction.options.getBoolean('imageonly' ?? false);
 
     if (!imageonly) {
-      const post = await getPost(subreddit).catch(async e => {
+      //? Has to be => {}, otherwise it'd return a value and would post not be 'null' (not 100% sure tho)
+      const post = await getPost(subreddit).catch(async () => {
         await interaction.editReply({
           embeds: [
             new Embed(color).setDescription("Couldn't find that subreddit. This could be due to reddit reatelimits."),
           ],
         });
-        return;
       });
       if (!post) return;
 
@@ -44,7 +42,7 @@ export default {
         ],
       });
     } else {
-      const post = await getImage(subreddit).catch(async e => {
+      const post = await getImage(subreddit).catch(async () => {
         return await interaction.editReply({
           embeds: [
             new Embed(color).setDescription("Couldn't find that subreddit. This could be due to reddit reatelimits."),

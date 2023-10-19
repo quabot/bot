@@ -76,10 +76,10 @@ export default {
 
     const attachment = await discordTranscripts.createTranscript(interaction.channel!, {
       limit: -1,
-      //? This isn't a thing, what do you want to do?
+      //! This isn't a thing, what do you want to do?
       //minify: true,
       saveImages: false,
-      //? This isn't a thing, what do you want to do?
+      //! This isn't a thing, what do you want to do?
       //useCND: true,
     });
 
