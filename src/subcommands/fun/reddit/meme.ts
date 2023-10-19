@@ -9,7 +9,9 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    await getPost('meme')
+    const subs = ['memes', 'dankmemes', 'meme', 'dankmemer'];
+
+    await getPost(subs[Math.floor(Math.random() * subs.length)])
       .then(async d => {
         await interaction.editReply({
           embeds: [
