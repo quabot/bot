@@ -23,7 +23,7 @@ export default {
               name: '**General:**',
               value: `
                             - **Name**: ${guild?.name}\n- **ID**: ${guild?.id}\n- **Created**: <t:${Math.floor(
-                              guild?.createdTimestamp ?? 0 / 1000,
+                              (guild?.createdTimestamp ?? 0) / 1000,
                             )}:R>\n- **Owner**: <@${guild?.ownerId}>\n- **Description**: ${
                               guild?.description ?? 'Unset'
                             }
