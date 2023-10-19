@@ -2,7 +2,7 @@ import { Embed } from '@constants/embed';
 import { getLevelConfig } from '@configs/levelConfig';
 import { getLevel } from '@configs/level';
 import type { CommandArgs } from '@typings/functionArgs';
-import { hasAnyPerms, hasAnyRole } from '@functions/discord';
+import { hasAnyPerms } from '@functions/discord';
 import { PermissionFlagsBits } from 'discord.js';
 
 export default {
@@ -45,9 +45,12 @@ export default {
 
     if (config.removeRewards) {
       config.rewards!.forEach(async reward => {
-        if (reward.level > level) {
-          if (hasAnyRole(member, [reward.role]))
-            if ('remove' in member.roles) await member.roles.remove(reward.role).catch(() => {});
+        if (level < reward.level) {
+          if ('remove' in member.roles) await member.roles.remove(reward.role).catch(() => {});
+        }
+
+        if (level >= reward.level) {
+          if ('add' in member.roles) await member.roles.add(reward.role).catch(() => {});
         }
       });
     }
@@ -59,9 +62,7 @@ export default {
     await interaction.editReply({
       embeds: [
         new Embed(color).setDescription(
-          `Successfully set ${user}'s level to ${level ?? levelDB.level} and xp to ${
-            xp ?? levelDB.xp
-          }. Some level rewards might be out of sync.`,
+          `Successfully set ${user}'s level to ${level ?? levelDB.level} and xp to ${xp ?? levelDB.xp}.`,
         ),
       ],
     });
