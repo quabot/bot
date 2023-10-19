@@ -6,6 +6,7 @@ import {
   TextInputStyle,
   TextInputBuilder,
   ChannelType,
+  PermissionFlagsBits,
 } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
@@ -71,6 +72,29 @@ export default {
             ),
           ],
           ephemeral: true,
+        });
+
+      if (
+        !(
+          interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageChannels) &&
+          interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)
+        )
+      )
+        return await interaction.editReply({
+          embeds: [
+            new Embed(color).setDescription(
+              "I don't have the `Manage Channels` & `Manage Roles` permission, please contact a staff member from this server.",
+            ),
+          ],
+        });
+
+      if (!category.members.has(client.user?.id ?? ''))
+        return await interaction.editReply({
+          embeds: [
+            new Embed(color).setDescription(
+              `I don't have access to the configured category for tickets, please contact a staff member from this server.`,
+            ),
+          ],
         });
 
       const channel = await interaction.guild?.channels.create({

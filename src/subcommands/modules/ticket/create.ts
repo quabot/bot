@@ -1,4 +1,4 @@
-import { ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } from 'discord.js';
 import { getTicketConfig } from '@configs/ticketConfig';
 import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
@@ -37,6 +37,29 @@ export default {
         embeds: [
           new Embed(color).setDescription(
             `Couldn't find any valid configured categories for tickets. You can do this on our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/modules/tickets).`,
+          ),
+        ],
+      });
+
+    if (
+      !(
+        interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageChannels) &&
+        interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)
+      )
+    )
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "I don't have the `Manage Channels` & `Manage Roles` permission, please contact a staff member from this server.",
+          ),
+        ],
+      });
+
+    if (!category.members.has(client.user?.id ?? ''))
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            `I don't have access to the configured category for tickets, please contact a staff member from this server.`,
           ),
         ],
       });

@@ -6,7 +6,7 @@
   "license": "none",
   "private": true,
   "scripts": {
-    "dev": "nodemon",
+    "dev": "yarn install && nodemon",
     "production": "yarn deploy && yarn start",
     "start": "node --require dotenv/config dist/main.js",
     "build": "rimraf ./dist && yarn tsc",
