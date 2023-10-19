@@ -70,7 +70,7 @@ export default {
             \n**Why should you vote?**
             It helps us a lot! Show us support without paying money, and it takes just a few seconds. You also get the following benefits:\n- You get listed in the QuaBot support server.\n- You get a 1.5x level xp boost for 12 hours.
             \n\n**How can i vote?**
-            - Go to the sites below.\n- Click the "Vote" button.\n- You will have to login.\n- It's as simple as that! Enjoy your perks. (Note: You only get the 1.5x level xp from Top.gg)
+            - Go to the sites below.\n- Click the "Vote" button.\n- You will have to login.\n- It's as simple as that! Enjoy your perks. (Note: You only get benefits from Top.gg)
         
             \n\n**Vote Links:**
             🔗 **[Top.gg](https://top.gg/bot/995243562134409296)** | 🔗 **[Discordbotlist.com](https://discordbotlist.com/bots/quabot-2212)** | 🔗 **[Bots.gg](https://discord.bots.gg/bots/995243562134409296)**`);
