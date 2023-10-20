@@ -1,11 +1,4 @@
-import {
-  ModalBuilder,
-  ActionRowBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  EmbedBuilder,
-  Embed as DiscordEmbed,
-} from 'discord.js';
+import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { isValidHttpUrl } from '@functions/string';
 import type { ButtonArgs } from '@typings/functionArgs';
@@ -55,12 +48,10 @@ export default {
           embeds: [new Embed(color).setDescription('No valid url entered, try again.')],
         });
 
-      const newEmbed = prepareEmbed(interaction.message.embeds[1]);
-
       await interaction.message.edit({
         embeds: [
           EmbedBuilder.from(interaction.message.embeds[0]),
-          EmbedBuilder.from(newEmbed as DiscordEmbed).setURL(url),
+          prepareEmbed(interaction.message.embeds[1]).setURL(url),
         ],
       });
 

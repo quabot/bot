@@ -1,5 +1,3 @@
-//! Idk what this file even does, pls add comments in this thing or write better code
-//@ts-nocheck
 import { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
@@ -11,14 +9,48 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     const msg = interaction.message.embeds[0].data.description;
-    const url = msg.match(/\b((https?|ftp|file):\/\/|(www|ftp)\.)[-A-Z0-9+&@#%?=~_|$!:,.;]*[A-Z0-9+&@#%=~_|$]/gi);
+    const msgUrls = msg?.match(/\b((https?|ftp|file):\/\/|(www|ftp)\.)[-A-Z0-9+&@#%?=~_|$!:,.;]*[A-Z0-9+&@#%=~_|$]/gi);
+    if (!msgUrls)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "Couldn't get the URL, it's stored in the description of the first embed. Are you sure you didn't edit it?",
+          ),
+        ],
+      });
 
+    const url = msg!.split(msgUrls[0])[1];
     const ids = url.match(/\d+/g);
-    const message =
-      (await interaction.guild.channels.cache
-        .get(ids[1])
-        ?.messages.fetch(ids[2])
-        .catch(err => null)) ?? null;
+
+    if (!ids)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "Couldn't get the ids from the URL, the URL is stored in the description of the first embed. Are you sure you didn't edit it?",
+          ),
+        ],
+      });
+
+    const channel = interaction.guild!.channels.cache.get(ids[1]);
+    if (!channel)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "Couldn't find the channel where the message is located. Are you sure it isn't deleted?",
+          ),
+        ],
+      });
+
+    if (!channel.isTextBased())
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "The channel in the URL points to a channel category, the URL is stored in the description of the first embed. Are you sure you didn't edit it?",
+          ),
+        ],
+      });
+
+    const message = (await channel.messages.fetch(ids[2]).catch(() => null)) ?? null;
 
     if (!message)
       return await interaction.editReply({

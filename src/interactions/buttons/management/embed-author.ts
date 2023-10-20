@@ -4,7 +4,7 @@ import {
   TextInputBuilder,
   TextInputStyle,
   EmbedBuilder,
-  Embed as DiscordEmbed,
+  type EmbedAuthorData,
 } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { isValidHttpUrl } from '@functions/string';
@@ -75,14 +75,15 @@ export default {
       if (!isValidHttpUrl(url)) url = null;
       if (!isValidHttpUrl(icon)) icon = null;
 
-      const newEmbed = prepareEmbed(interaction.message.embeds[1]);
-
-      newEmbed.author = { name: text };
-      if (icon) newEmbed.author.iconURL = icon;
-      if (url) newEmbed.author.url = url;
+      const author: EmbedAuthorData = { name: text };
+      if (icon) author.iconURL = icon;
+      if (url) author.url = url;
 
       await interaction.message.edit({
-        embeds: [EmbedBuilder.from(interaction.message.embeds[0]), newEmbed as DiscordEmbed],
+        embeds: [
+          EmbedBuilder.from(interaction.message.embeds[0]),
+          prepareEmbed(interaction.message.embeds[1]).setAuthor(author),
+        ],
       });
 
       await modal.editReply({

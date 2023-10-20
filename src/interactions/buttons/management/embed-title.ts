@@ -1,11 +1,4 @@
-import {
-  ModalBuilder,
-  ActionRowBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  EmbedBuilder,
-  Embed as DiscordEmbed,
-} from 'discord.js';
+import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { prepareEmbed } from '@functions/discord';
@@ -49,12 +42,10 @@ export default {
           embeds: [new Embed(color).setDescription('No title entered, try again.')],
         });
 
-      const newEmbed = prepareEmbed(interaction.message.embeds[1]);
-
       await interaction.message.edit({
         embeds: [
           EmbedBuilder.from(interaction.message.embeds[0]),
-          EmbedBuilder.from(newEmbed as DiscordEmbed).setTitle(title),
+          prepareEmbed(interaction.message.embeds[1]).setTitle(title),
         ],
       });
 

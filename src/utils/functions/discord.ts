@@ -6,11 +6,12 @@ import {
   type GuildMemberRoleManager,
   type Snowflake,
   APIInteractionDataResolvedGuildMember,
+  EmbedBuilder,
 } from 'discord.js';
 
 export function prepareEmbed(embed: Embed) {
-  const res = { ...(embed as DeepWriteable<Embed>) };
-  if (embed.data.description === '\u200b') delete res.data.description;
+  const res = EmbedBuilder.from(embed);
+  if (res.data.description === '\u200b') res.setDescription(null);
 
   return res;
 }

@@ -4,7 +4,7 @@ import {
   TextInputBuilder,
   TextInputStyle,
   EmbedBuilder,
-  Embed as DiscordEmbed,
+  type EmbedFooterData,
 } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { isValidHttpUrl } from '@functions/string';
@@ -63,13 +63,14 @@ export default {
 
       if (!isValidHttpUrl(url)) url = null;
 
-      const newEmbed = prepareEmbed(interaction.message.embeds[1]);
-
-      newEmbed.footer = { text };
-      if (url) newEmbed.footer.iconURL = url;
+      const footer: EmbedFooterData = { text };
+      if (url) footer.iconURL = url;
 
       await interaction.message.edit({
-        embeds: [EmbedBuilder.from(interaction.message.embeds[0]), newEmbed as DiscordEmbed],
+        embeds: [
+          EmbedBuilder.from(interaction.message.embeds[0]),
+          prepareEmbed(interaction.message.embeds[1]).setFooter(footer),
+        ],
       });
 
       await modal.editReply({

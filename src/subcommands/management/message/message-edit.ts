@@ -10,8 +10,10 @@ export default {
     await interaction.deferReply();
 
     const messageUrl = interaction.options.getString('message', true);
-    //! I think I already said it somewhere, but pls put a comment at this thing, cuz I don't fucking understand it
+    console.log(`🚀 ~ file: message-edit.ts:13 ~ execute ~ messageUrl:`, messageUrl);
+
     const ids = messageUrl.match(/\d+/g);
+    console.log(`🚀 ~ file: message-edit.ts:15 ~ execute ~ ids:`, ids);
     if (!ids) return;
 
     const channel = interaction.guild?.channels.cache.get(ids[1]);

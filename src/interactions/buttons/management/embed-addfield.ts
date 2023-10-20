@@ -1,11 +1,4 @@
-import {
-  ModalBuilder,
-  ActionRowBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  EmbedBuilder,
-  Embed as DiscordEmbed,
-} from 'discord.js';
+import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { prepareEmbed } from '@functions/discord';
@@ -68,12 +61,11 @@ export default {
           embeds: [new Embed(color).setDescription('Not all fields were filled out, try again.')],
         });
 
-      const newEmbed = prepareEmbed(interaction.message.embeds[1]);
-
-      newEmbed.fields = newEmbed.fields.concat({ name: title, value, inline });
-
       await interaction.message.edit({
-        embeds: [EmbedBuilder.from(interaction.message.embeds[0]), newEmbed as DiscordEmbed],
+        embeds: [
+          EmbedBuilder.from(interaction.message.embeds[0]),
+          prepareEmbed(interaction.message.embeds[1]).addFields({ name: title, value, inline }),
+        ],
       });
 
       await modal.editReply({
