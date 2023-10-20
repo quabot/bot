@@ -1,4 +1,4 @@
-import { endGiveaway } from '@functions/giveaway';
+import { rollGiveaway } from '@functions/giveaway';
 import type { EventArgs } from '@typings/functionArgs';
 import Giveaway from '@schemas/Giveaway';
 
@@ -12,12 +12,12 @@ export default {
 
     giveaways.forEach(async giveaway => {
       if (parseInt(giveaway.endTimestamp) < new Date().getTime()) {
-        return await endGiveaway(client, giveaway);
+        return await rollGiveaway(client, giveaway, true);
       }
 
       const timeToGiveawayEnd = parseInt(giveaway.endTimestamp) - new Date().getTime();
       setTimeout(async () => {
-        await endGiveaway(client, giveaway, false);
+        await rollGiveaway(client, giveaway, true);
       }, timeToGiveawayEnd);
     });
   },

@@ -9,9 +9,22 @@ import { Embed } from '@constants/embed';
 import { getServerConfig } from '@configs/serverConfig';
 import type { Client } from '@classes/discord';
 
-export async function endGiveaway(
+export async function rollGiveaway(
   client: Client,
   document: NonNullMongooseReturn<IGiveaway>,
+  end: true,
+  forceEarly?: boolean,
+): Promise<boolean | void>;
+export async function rollGiveaway(
+  client: Client,
+  document: NonNullMongooseReturn<IGiveaway>,
+  end?: false,
+  forceEarly?: false,
+): Promise<boolean | void>;
+export async function rollGiveaway(
+  client: Client,
+  document: NonNullMongooseReturn<IGiveaway>,
+  end: boolean = false,
   forceEarly: boolean = false,
 ) {
   const config = await getGiveawayConfig(document.guildId, client);
@@ -26,6 +39,7 @@ export async function endGiveaway(
 
   const guild = client.guilds.cache.get(document.guildId);
   if (!giveaway || !guild) return;
+  if ((giveaway.ended && end) || (!giveaway.ended && !end)) return false;
 
   const channel = guild.channels.cache.get(giveaway.channel) as GuildTextBasedChannel | undefined;
   if (!channel) return;
@@ -84,8 +98,10 @@ export async function endGiveaway(
           ],
         });
 
-      giveaway.ended = true;
+      if (end) giveaway.ended = true;
       await giveaway.save();
     })
     .catch(() => {});
+
+  return true;
 }

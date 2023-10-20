@@ -3,7 +3,7 @@ import { getGiveawayConfig } from '@configs/giveawayConfig';
 import { getIdConfig } from '@configs/idConfig';
 import { Embed } from '@constants/embed';
 import ms from 'ms';
-import { endGiveaway } from '@functions/giveaway';
+import { rollGiveaway } from '@functions/giveaway';
 import Giveaway from '@schemas/Giveaway';
 import type { CommandArgs } from '@typings/functionArgs';
 import type { NonNullMongooseReturn } from '@typings/mongoose';
@@ -126,8 +126,8 @@ export default {
       ],
     });
 
-    setTimeout(() => {
-      endGiveaway(client, newGiveaway, false);
+    setTimeout(async () => {
+      await rollGiveaway(client, newGiveaway, true);
     }, ms(duration));
   },
 };

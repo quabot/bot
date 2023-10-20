@@ -1,7 +1,6 @@
-import { getGiveawayConfig } from '@configs/giveawayConfig';
 import { Embed } from '@constants/embed';
 import Giveaway from '@schemas/Giveaway';
-import { endGiveaway } from '@functions/giveaway';
+import { rollGiveaway } from '@functions/giveaway';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -10,18 +9,6 @@ export default {
 
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
-
-    const config = await getGiveawayConfig(interaction.guildId!, client);
-
-    if (!config)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
-      });
-
-    if (!config.enabled)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Giveaways are disabled in this server.')],
-      });
 
     const id = interaction.options.getNumber('giveaway-id');
     if (id === null || id === undefined)
@@ -38,7 +25,21 @@ export default {
         embeds: [new Embed(color).setDescription("Couldn't find the giveaway!")],
       });
 
-    await endGiveaway(client, giveaway, true);
+    const giveawayEnded = await rollGiveaway(client, giveaway, true, true);
+
+    if (giveawayEnded === false)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('Giveaway has already been ended!')],
+      });
+
+    if (!giveawayEnded)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            'Something went wrong while ending the giveaway. Are you sure giveaways are enabled in this server?',
+          ),
+        ],
+      });
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription('Ended the giveaway!')],
