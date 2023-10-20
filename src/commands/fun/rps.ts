@@ -7,7 +7,7 @@ import type { CommandExecutableFromButtonArgs } from '@typings/functionArgs';
 export default {
   data: new SlashCommandBuilder().setName('rps').setDescription('Play rock, paper, scissors.').setDMPermission(false),
 
-  async execute({ interaction, color, client }: CommandExecutableFromButtonArgs) {
+  async execute({ interaction, color }: CommandExecutableFromButtonArgs) {
     //* Give the user the options to choose from and create a collector for the message.
     const msg = await interaction.reply({
       embeds: [new Embed(color).setDescription('Rock, paper or scissors?')],
@@ -29,7 +29,7 @@ export default {
       time: 60000,
     });
 
-    const userDB = (await getUserGame(interaction.user.id, client))!;
+    const userDB = (await getUserGame(interaction.user.id))!;
 
     //* Stop listening when a button is clicked.
     collector.on('collect', async i => {

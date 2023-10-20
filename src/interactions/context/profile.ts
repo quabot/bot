@@ -25,7 +25,7 @@ export default {
       userId: user.user.id,
     });
 
-    const userSchema = await getUserGame(user.user.id, client);
+    const userSchema = await getUserGame(user.user.id);
     if (!userSchema)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

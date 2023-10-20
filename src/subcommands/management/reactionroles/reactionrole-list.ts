@@ -16,7 +16,7 @@ export default {
     const guildId = interaction.guildId!;
 
     const config = await getReactionConfig(client, guildId);
-    const ids = await getIdConfig(guildId, client);
+    const ids = await getIdConfig(guildId);
     if (!config || !ids)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

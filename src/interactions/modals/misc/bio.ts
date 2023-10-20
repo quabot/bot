@@ -5,10 +5,10 @@ import type { ModalArgs } from '@typings/functionArgs';
 export default {
   name: 'profile-bio',
 
-  async execute({ client, interaction, color }: ModalArgs) {
+  async execute({ interaction, color }: ModalArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const userSchema = await getUserGame(interaction.user.id, client);
+    const userSchema = await getUserGame(interaction.user.id);
     if (!userSchema)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

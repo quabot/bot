@@ -11,7 +11,7 @@ export default {
     await interaction.deferReply({ ephemeral: false });
 
     await getTicketConfig(client, interaction.guildId!);
-    await getIdConfig(interaction.guildId!, client);
+    await getIdConfig(interaction.guildId!);
 
     await interaction.editReply({
       embeds: [

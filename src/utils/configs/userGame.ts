@@ -1,15 +1,12 @@
 import type { Snowflake } from 'discord.js';
 import UserGame from '@schemas/UserGame';
 import { getFromCollection } from '@functions/mongoose';
-import type { Client } from '@classes/discord';
 import { IUserGame } from '@typings/schemas';
 
-export async function getUserGame(userId: Snowflake, client: Client) {
+export async function getUserGame(userId: Snowflake) {
   return await getFromCollection<IUserGame>({
     Schema: UserGame,
     query: { userId },
-    client,
-    cacheName: `${userId}-user-game`,
     defaultObj: {
       userId,
       typePoints: 0,

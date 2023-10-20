@@ -29,7 +29,7 @@ export default {
     await getGiveawayConfig(guild.id, client);
     await getLevelConfig(guild.id, client);
     await getLoggingConfig(client, guild.id);
-    await getIdConfig(guild.id, client);
+    await getIdConfig(guild.id);
     await getModerationConfig(client, guild.id);
     await getPollConfig(client, guild.id);
     await getReactionConfig(client, guild.id);

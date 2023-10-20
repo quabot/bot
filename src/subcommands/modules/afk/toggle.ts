@@ -13,7 +13,7 @@ export default {
     let enabled = interaction.options.getBoolean('enabled');
 
     const config = await getAfkConfig(interaction.guildId!, client);
-    const user = await getUser(interaction.guildId!, interaction.user.id, client);
+    const user = await getUser(interaction.guildId!, interaction.user.id);
     if (!config || !user)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

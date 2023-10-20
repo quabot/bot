@@ -17,7 +17,7 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 
-    const rawIds = await getIdConfig(interaction.guildId!, client);
+    const rawIds = await getIdConfig(interaction.guildId!);
     const config = await getGiveawayConfig(interaction.guildId!, client);
 
     if (!rawIds || !config)

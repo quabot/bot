@@ -19,7 +19,7 @@ export default {
 
   async execute({ client, interaction, color }: ButtonArgs) {
     const config = await getTicketConfig(client, interaction.guildId!);
-    const ids = await getIdConfig(interaction.guildId!, client);
+    const ids = await getIdConfig(interaction.guildId!);
 
     if (!config || !ids)
       return await interaction.reply({

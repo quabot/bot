@@ -7,8 +7,8 @@ export default {
   parent: 'profile',
   name: 'bio',
 
-  async execute({ client, interaction, color }: CommandArgs) {
-    const userSchema = await getUserGame(interaction.user.id, client);
+  async execute({ interaction, color }: CommandArgs) {
+    const userSchema = await getUserGame(interaction.user.id);
     if (!userSchema)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

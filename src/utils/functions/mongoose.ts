@@ -10,7 +10,7 @@ import { FilterQuery, Model } from 'mongoose';
 // ): Promise<MongooseReturn<T> | undefined>;
 export async function getFromCollection<T>({ Schema, query, client, cacheName, defaultObj }: GetFromCollectionArgs<T>) {
   try {
-    let res: MongooseReturn<T> | undefined = client.cache.get<NonNullMongooseReturn<T>>(cacheName);
+    let res: MongooseReturn<T> | undefined = client?.cache.get<NonNullMongooseReturn<T>>(cacheName);
 
     if (res !== undefined) return res;
     res = await find();
@@ -21,7 +21,7 @@ export async function getFromCollection<T>({ Schema, query, client, cacheName, d
       res = await find();
     }
 
-    if (res !== null) client.cache.set(cacheName, res);
+    if (res !== null) client?.cache.set(cacheName, res);
 
     return res;
   } catch (err) {
@@ -36,7 +36,5 @@ export async function getFromCollection<T>({ Schema, query, client, cacheName, d
 export type GetFromCollectionArgs<T> = {
   Schema: Model<T>;
   query: FilterQuery<T>;
-  client: Client;
-  cacheName: string;
   defaultObj?: T;
-};
+} & ({ client: Client; cacheName: string } | { client?: undefined; cacheName?: undefined });

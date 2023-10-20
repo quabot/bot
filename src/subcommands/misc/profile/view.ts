@@ -15,8 +15,8 @@ export default {
     if (!member || !('id' in member)) return await interaction.editReply("Couldn't find the member.");
 
     const levelConfig = await getLevelConfig(interaction.guildId!, client);
-    const levelUser = await getLevel(interaction.guildId!, member.id, client);
-    const userSchema = await getUserGame(member.id, client);
+    const levelUser = await getLevel(interaction.guildId!, member.id);
+    const userSchema = await getUserGame(member.id);
 
     if (!levelConfig || !levelUser || !userSchema)
       return await interaction.editReply({

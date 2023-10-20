@@ -735,7 +735,7 @@ const sentences = [
 export default {
   data: new SlashCommandBuilder().setName('type').setDescription('Play a typing game.').setDMPermission(false),
 
-  async execute({ interaction, color, client }: CommandArgs) {
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
     {
@@ -756,7 +756,7 @@ export default {
 
       collector.on('collect', async m => {
         collector.stop();
-        const userDB = await getUserGame(interaction.user.id, client);
+        const userDB = await getUserGame(interaction.user.id);
         if (!userDB) {
           await interaction.editReply({
             embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

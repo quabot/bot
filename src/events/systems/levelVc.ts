@@ -32,7 +32,7 @@ export default {
 
     if (oldState.channelId && newState.channelId) return;
 
-    const levelDB = await getLevel(newState.guild.id, member.id, client);
+    const levelDB = await getLevel(newState.guild.id, member.id);
     if (!levelDB) return;
 
     if (!oldState.channelId) {

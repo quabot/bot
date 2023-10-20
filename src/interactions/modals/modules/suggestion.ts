@@ -45,7 +45,7 @@ export default {
         embeds: [new Embed(color).setDescription("You didn't give a suggestion.")],
       });
 
-    const rawIds = await getIdConfig(interaction.guildId!, client);
+    const rawIds = await getIdConfig(interaction.guildId!);
     if (!rawIds)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

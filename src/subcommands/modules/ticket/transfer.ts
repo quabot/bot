@@ -14,7 +14,7 @@ export default {
     const user = interaction.options.getUser('user');
 
     const config = await getTicketConfig(client, interaction.guildId!);
-    const ids = await getIdConfig(interaction.guildId!, client);
+    const ids = await getIdConfig(interaction.guildId!);
 
     if (!config || !ids)
       return await interaction.editReply({

@@ -22,7 +22,7 @@ export default {
 
   async execute({ client, interaction, color }: CommandArgs) {
     const config = await getPollConfig(client, interaction.guildId!);
-    const ids = await getIdConfig(interaction.guildId!, client);
+    const ids = await getIdConfig(interaction.guildId!);
     if (!config || !ids)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

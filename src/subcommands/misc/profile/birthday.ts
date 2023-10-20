@@ -6,10 +6,10 @@ export default {
   parent: 'profile',
   name: 'birthday',
 
-  async execute({ client, interaction, color }: CommandArgs) {
+  async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const userSchema = await getUserGame(interaction.user.id, client);
+    const userSchema = await getUserGame(interaction.user.id);
     if (!userSchema)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

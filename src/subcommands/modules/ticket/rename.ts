@@ -14,7 +14,7 @@ export default {
     await interaction.deferReply({ ephemeral: false });
 
     const config = await getTicketConfig(client, interaction.guildId!);
-    const ids = await getIdConfig(interaction.guildId!, client);
+    const ids = await getIdConfig(interaction.guildId!);
     const newTopic = interaction.options.getString('new-topic', true);
 
     if (!config || !ids)

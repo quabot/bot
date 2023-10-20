@@ -44,7 +44,7 @@ export default {
     if (!config.enabled) return;
     if (config.excludedChannels!.includes(msgChannel.id)) return;
 
-    const levelDB = await getLevel(guild.id, message.author.id, client);
+    const levelDB = await getLevel(guild.id, message.author.id);
 
     for (let i = 0; i < config.excludedRoles!.length; i++) {
       const role = config.excludedRoles![i];

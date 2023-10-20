@@ -63,7 +63,7 @@ export default {
     const user = interaction.options.getUser('user', true);
     const member = interaction.guild?.members.cache.get(user.id)!;
 
-    await getUser(interaction.guildId!, member.id, client);
+    await getUser(interaction.guildId!, member.id);
 
     if (!ms(duration))
       return await interaction.editReply({
@@ -86,7 +86,7 @@ export default {
         embeds: [new Embed(color).setDescription('You cannot ban a user with roles higher than your own.')],
       });
 
-    const userDatabase = await getUser(interaction.guildId!, member.id, client);
+    const userDatabase = await getUser(interaction.guildId!, member.id);
     if (!userDatabase)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

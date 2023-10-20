@@ -56,7 +56,7 @@ export default {
     if (!config.commandXp) return;
     if (config.excludedChannels!.includes(interChannel.id)) return;
 
-    const levelDB = await getLevel(guild.id!, interaction.user.id, client);
+    const levelDB = await getLevel(guild.id!, interaction.user.id);
 
     if (hasAnyRole(member, config.excludedRoles!)) return;
 

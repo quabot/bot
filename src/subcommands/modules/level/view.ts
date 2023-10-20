@@ -23,7 +23,7 @@ export default {
       });
 
     const user = interaction.options.getUser('user') ?? interaction.user;
-    const levelDB = await getLevel(interaction.guildId!, user.id, client);
+    const levelDB = await getLevel(interaction.guildId!, user.id);
     if (!levelDB)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

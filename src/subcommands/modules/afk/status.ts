@@ -10,7 +10,7 @@ export default {
 
   async execute({ client, interaction, color }: CommandArgs) {
     const config = await getAfkConfig(interaction.guildId!, client);
-    const user = await getUser(interaction.guildId!, interaction.user.id, client);
+    const user = await getUser(interaction.guildId!, interaction.user.id);
     if (!config || !user)
       return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],

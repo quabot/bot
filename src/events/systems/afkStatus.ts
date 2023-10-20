@@ -14,7 +14,7 @@ export default {
     if (message.author.bot) return;
     if (!message.guildId) return;
 
-    const config = await getUser(message.guildId, userId, client);
+    const config = await getUser(message.guildId, userId);
     const configColor = await getServerConfig(client, message.guildId);
     const color = configColor?.color ?? '#416683';
     if (!config || !color) return;
