@@ -50,7 +50,6 @@ export default {
         value: `${member.displayName ?? 'None'}`,
         inline: true,
       },
-      // { name: 'Discriminator', value: `${user.user.discriminator ?? 'None'}`, inline: true },
       {
         name: 'Joined server on',
         value: `<t:${Math.floor(member.joinedTimestamp ?? 0 / 1000)}:R>`,

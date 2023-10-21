@@ -65,7 +65,6 @@ export class CustomEmbed extends EmbedBuilder {
     )
       return new EmbedBuilder().setDescription('** **');
 
-    // if (embed.length >= 6000) return new EmbedBuilder().setDescription('Your custom embed length is too long, please remove text to make it send properly next time.');
     return this;
   }
 }

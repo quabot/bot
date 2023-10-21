@@ -59,7 +59,6 @@ export default {
         value: `${'displayName' in user ? user.displayName : 'None'}`,
         inline: true,
       },
-      // { name: 'Discriminator', value: `${user.user.discriminator ?? 'None'}`, inline: true },
     ];
 
     if ('joinedTimestamp' in user) {
