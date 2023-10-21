@@ -7,8 +7,6 @@ export default {
   name: 'info-poll',
 
   async execute({ client, interaction, color }: ModalArgs) {
-    await interaction.deferReply({ ephemeral: true });
-
     const config = await getPollConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.editReply({
@@ -62,6 +60,9 @@ export default {
         { name: 'Question', value: `${question}`, inline: true },
         { name: 'Description', value: `${description}`, inline: true },
       );
-    await interaction.editReply({ embeds: [embed] });
+
+    //? Fuck Discord.js SOURCE: https://discord.js.org/#/docs/discord.js/main/class/ModalSubmitInteraction?scrollTo=update
+    //@ts-ignore
+    await interaction.update({ embeds: [embed] });
   },
 };

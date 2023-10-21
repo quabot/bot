@@ -189,7 +189,7 @@ export interface IPoll {
   channel: Snowflake;
   message: Snowflake;
   interaction: Snowflake; //* Message id
-  role?: Snowflake;
+  role?: `<@&${string}>` | null;
 
   topic: string;
   description: string;

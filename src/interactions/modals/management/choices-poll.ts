@@ -8,8 +8,6 @@ export default {
   name: 'choices-poll',
 
   async execute({ client, interaction, color }: ModalArgs) {
-    await interaction.deferReply({ ephemeral: true });
-
     const config = await getPollConfig(client, interaction.guildId!);
     if (!config)
       return await interaction.editReply({
@@ -40,7 +38,8 @@ export default {
         embeds: [new Embed(color).setDescription('You need at least two options and a maximum of 5.')],
       });
 
-    poll.options = new Types.Array(...options);
+    poll.options = new Types.Array();
+    poll.options.push(...options);
     await poll.save();
 
     const embed = new Embed(color)
@@ -73,8 +72,8 @@ export default {
         inline: true,
       });
 
-    await interaction.message?.edit({ embeds: [embed] });
-
-    await interaction.deleteReply();
+    //? Fuck Discord.js SOURCE: https://discord.js.org/#/docs/discord.js/main/class/ModalSubmitInteraction?scrollTo=update
+    //@ts-ignore
+    await interaction.update({ embeds: [embed] });
   },
 };

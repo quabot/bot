@@ -15,7 +15,12 @@ export default {
           option.setName('channel').setDescription('The channel where the poll should be in.').setRequired(true),
         )
         .addNumberOption(option =>
-          option.setName('choices').setDescription('The amount of poll choices.').setRequired(true),
+          option
+            .setName('choices')
+            .setDescription('The amount of poll choices.')
+            .setMinValue(2)
+            .setMaxValue(5)
+            .setRequired(true),
         )
         .addStringOption(option =>
           option.setName('duration').setDescription('The length that the poll should last for.').setRequired(true),
