@@ -175,7 +175,7 @@ export default {
             inline: true,
           },
           {
-            name: 'interaction.message',
+            name: 'message',
             value: `[Click to jump](${msg.url})`,
             inline: true,
           },

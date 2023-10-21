@@ -100,6 +100,9 @@ export default {
         ],
       });
 
+    ids.pollId = (ids.pollId ?? 0) + 1;
+    ids.save();
+
     client.cache.set(`polldata-${message.id}`, {
       channel: channel.id,
       role: role?.toString() ?? null,
