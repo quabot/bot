@@ -7,7 +7,7 @@ import type { NonNullMongooseReturn } from '@typings/mongoose';
 import type { IPoll } from '@typings/schemas';
 import { ChannelType } from 'discord.js';
 
-export async function endPoll(client: Client, document: NonNullMongooseReturn<IPoll>) {
+export async function endPoll(client: Client, document: NonNullMongooseReturn<IPoll>, forceEarly: boolean = false) {
   const query = {
     guildId: document.guildId,
     interaction: document.interaction,
@@ -63,7 +63,9 @@ export async function endPoll(client: Client, document: NonNullMongooseReturn<IP
               { name: 'Winner' + (winners.length > 1 ? 's' : ''), value: `- ${winMsg}`, inline: true },
               {
                 name: 'Ended',
-                value: `${message.embeds[0].fields[1].value}`,
+                value: forceEarly
+                  ? `<t:${Math.floor(new Date().getTime() / 1000)}:R>`
+                  : message.embeds[0].fields[1].value,
                 inline: true,
               },
             ),

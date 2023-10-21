@@ -35,9 +35,13 @@ export default {
     });
     if (!poll)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please give a valid poll-id.')],
+        embeds: [
+          new Embed(color).setDescription("Please give a valid poll-id of a poll that hasn't already been ended."),
+        ],
       });
 
-    await endPoll(client, poll);
+    await endPoll(client, poll, true);
+
+    await interaction.editReply({ embeds: [new Embed(color).setDescription("'The poll has been ended!'")] });
   },
 };
