@@ -152,7 +152,7 @@ export default {
     await interaction.followUp({
       embeds: [
         new Embed(color).setDescription(
-          `The poll has started in ${ch}! [Click here](${msg.url}) to jump to the interaction.message.`,
+          `The poll has started in ${ch}! [Click here](${msg.url}) to jump to the message.`,
         ),
       ],
       ephemeral: true,

@@ -35,32 +35,32 @@ export async function endPoll(client: Client, document: NonNullMongooseReturn<IP
 
       const reactions = message.reactions.cache
         .each(async reaction => await reaction.users.fetch())
-        .map(reaction => reaction.count)
+        .map(r => r)
+        .map((reaction, i) => {
+          return { i, amount: reaction.count };
+        })
         .flat();
 
-      const winner = Math.max(...reactions);
-
       const options = poll.options!;
+      const winner = Math.max(...reactions.map(r => r.amount));
+      const winners = reactions.filter(r => r.amount === winner);
 
-      let winMsg;
-      if (reactions[0] === winner) winMsg = options[0];
-      if (reactions[1] === winner) winMsg = options[1];
-      if (reactions[2] === winner) winMsg = options[2];
-      if (reactions[3] === winner) winMsg = options[3];
-      if (reactions[4] === winner) winMsg = options[4];
+      let winMsg: string = '';
+
+      winMsg = winners.map(w => options[w.i]).join('\n- ');
 
       await message.edit({
         embeds: [
           new Embed(colorConfig.color)
             .setTitle(`${message.embeds[0].title}`)
-            .setDescription(`${message.embeds[0].description}\n\nPoll is over, the poll was won by ${winMsg}!`)
+            .setDescription(`${message.embeds[0].description}\n\nPoll has been ended!`)
             .addFields(
               {
                 name: 'Hosted by',
                 value: `${message.embeds[0].fields[0].value}`,
                 inline: true,
               },
-              { name: 'Winner', value: `${winMsg}`, inline: true },
+              { name: 'Winner' + (winners.length > 1 ? 's' : ''), value: `- ${winMsg}`, inline: true },
               {
                 name: 'Ended',
                 value: `${message.embeds[0].fields[1].value}`,
