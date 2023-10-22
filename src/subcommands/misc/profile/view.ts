@@ -52,7 +52,7 @@ export default {
       },
       {
         name: 'Joined server on',
-        value: `<t:${Math.floor(member.joinedTimestamp ?? 0 / 1000)}:R>`,
+        value: `<t:${Math.floor((member.joinedTimestamp ?? 0) / 1000)}:R>`,
         inline: true,
       },
       {
