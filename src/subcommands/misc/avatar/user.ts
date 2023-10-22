@@ -17,7 +17,13 @@ export default {
             user.avatarURL({ size: 1024, forceStatic: false }) ??
               'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png',
           )
-          .setTitle(`${user.username}'s avatar`),
+          .setTitle(
+            `${
+              interaction.member && 'displayName' in interaction.member
+                ? interaction.member.displayName
+                : interaction.user.displayName
+            }'s avatar`,
+          ),
       ],
     });
   },
