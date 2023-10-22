@@ -7,10 +7,10 @@
   "private": true,
   "scripts": {
     "dev": "yarn install && nodemon",
-    "production": "yarn deploy && yarn start",
+    "production": "yarn deploy && sh run.sh",
     "start": "node --require dotenv/config dist/main.js",
     "build": "rimraf ./dist && yarn tsc",
-    "deploy": "sh ./deploy.sh",
+    "deploy": "sh deploy.sh",
     "prettier": "prettier --write src"
   },
   "dependencies": {
