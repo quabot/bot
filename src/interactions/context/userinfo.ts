@@ -30,6 +30,7 @@ export default {
       `**• Roles**: ${
         getRoleIds(member)
           .filter(r => r !== interaction.guildId)
+          .map(id => `<@&${id}>`)
           .join(' ') ?? 'None'
       }`,
       `**• Joined Discord**: <t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
