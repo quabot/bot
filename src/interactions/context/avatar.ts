@@ -14,10 +14,7 @@ export default {
     await interaction.editReply({
       embeds: [
         new Embed(color)
-          .setImage(
-            user.avatarURL({ size: 1024, forceStatic: false }) ??
-              'https://www.datanumen.com/blogs/wp-content/uploads/2016/07/The-file-does-not-exist.png',
-          )
+          .setImage(user.displayAvatarURL({ size: 1024, forceStatic: false }))
           .setTitle(`${user.username}'s avatar`),
       ],
     });
