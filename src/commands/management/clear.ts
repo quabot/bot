@@ -28,10 +28,12 @@ export default {
     if (amount < 0) amount = 0;
     if (amount > 100) amount = 100;
 
+    let error = false;
+
     //* Delete the messages, give an error if failed.
     await (interaction.channel as GuildTextBasedChannel).bulkDelete(amount, true).catch(async e => {
       if (e.code === 50013) {
-        return await interaction.editReply({
+        await interaction.editReply({
           embeds: [
             new Embed(color)
               .setDescription(
@@ -40,12 +42,15 @@ export default {
               .setColor(color),
           ],
         });
+
+        error = true;
       }
     });
 
-    //* Confirm that it worked to the user.
-    await interaction.editReply({
-      embeds: [new Embed(color).setDescription(`Deleted ${amount} messages.`)],
-    });
+    //* Confirm that it worked to the user, if there's no error.
+    if (!error)
+      await interaction.editReply({
+        embeds: [new Embed(color).setDescription(`Deleted ${amount} messages.`)],
+      });
   },
 };
