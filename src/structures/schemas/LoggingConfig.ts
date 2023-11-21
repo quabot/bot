@@ -3,7 +3,7 @@ import { reqString, reqBool, reqArray } from '@constants/schemas';
 import type { ILoggingConfig } from '@typings/schemas';
 
 export default model<ILoggingConfig>(
-  'Loggin-Config',
+  'Logging-Config',
   new Schema({
     guildId: reqString,
     enabled: reqBool,
