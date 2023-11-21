@@ -10,11 +10,12 @@ export default {
   async execute({ client }: EventArgs, oldState: VoiceState, newState: VoiceState) {
     if (!newState.guild.id) return;
 
-    if (oldState.member?.user.bot || newState.member?.user.bot) return;
-
     const config = await getLoggingConfig(client, oldState.guild.id);
     if (!config) return;
     if (!config.enabled) return;
+    if (!config.events!.includes('voiceMove')) return;
+
+    if (oldState.member?.user.bot || newState.member?.user.bot) return;
 
     if (
       oldState.streaming !== newState.streaming ||
