@@ -9,6 +9,6 @@ export default {
   async execute({ client }: EventArgs, messages: Collection<Snowflake, Message>, channel: GuildTextBasedChannel) {
     if (!channel.guild.id) return;
 
-    messages.forEach(m => messageDeleteEvent.execute({ client }, m));
+    messages.reverse().forEach(m => messageDeleteEvent.execute({ client }, m));
   },
 };
