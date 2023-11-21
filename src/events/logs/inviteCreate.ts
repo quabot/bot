@@ -30,7 +30,7 @@ export default {
       .send({
         embeds: [
           new Embed(Colors.Green).setDescription(`**Invite Created**
-                        [discord.gg/${invite.code}](https://discord.gg/${invite.code})
+                        [discord*.*gg/${invite.code}](https://discord.gg/${invite.code})
                         ${invite.inviter} - ${invite.channel}
 
                         **Expires in:**
