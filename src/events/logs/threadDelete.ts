@@ -26,15 +26,17 @@ export default {
     const channel = thread.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Red).setDescription(`
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Red).setDescription(`
                         **${CHANNEL_TYPES_BY_ID[thread.type]} Deleted**
                         ${thread.name} - Parent: ${thread.parent}
                         **Created by:** <@${thread.ownerId}>
                         
                         `),
-      ],
-    });
+        ],
+      })
+      .catch(() => {});
   },
 };

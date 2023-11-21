@@ -19,17 +19,19 @@ export default {
     const channel = emoji.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Red)
-          .setDescription(
-            `
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Red)
+            .setDescription(
+              `
                         **${emoji.animated ? 'Animated ' : ''}Emoji Deleted**
                         ${emoji.name} - [Full image](${emoji.url})
                         `,
-          )
-          .setFooter({ text: `${emoji.name}`, iconURL: `${emoji.url}` }),
-      ],
-    });
+            )
+            .setFooter({ text: `${emoji.name}`, iconURL: `${emoji.url}` }),
+        ],
+      })
+      .catch(() => {});
   },
 };

@@ -24,18 +24,20 @@ export default {
     const permsLength = String(perms);
     if (permsLength.length < 970 && permsLength.length !== 0) description += `\n**Permissions:**\n${perms}`;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Green)
-          .setDescription(
-            `
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Green)
+            .setDescription(
+              `
                         **Role Created**
                         ${role}
                         ${description}
                         `,
-          )
-          .setFooter({ text: `@${role.name}` }),
-      ],
-    });
+            )
+            .setFooter({ text: `@${role.name}` }),
+        ],
+      })
+      .catch(() => {});
   },
 };

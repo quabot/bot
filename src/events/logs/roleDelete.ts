@@ -24,13 +24,15 @@ export default {
     const permsLength = String(perms);
     if (permsLength.length < 970 && permsLength.length !== 0) description += `\n**Permissions:**\n${perms}`;
 
-    await channel.send({
-      embeds: [
-        new Embed(role.hexColor).setDescription(`
+    await channel
+      .send({
+        embeds: [
+          new Embed(role.hexColor).setDescription(`
                         **Role Deleted**
                         @${role.name}
                         `),
-      ],
-    });
+        ],
+      })
+      .catch(() => {});
   },
 };

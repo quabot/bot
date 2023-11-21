@@ -58,8 +58,10 @@ export default {
         value: `${oldAttachments.join('\n')}`.slice(0, 1024),
       });
 
-    await channel.send({
-      embeds: [embed],
-    });
+    await channel
+      .send({
+        embeds: [embed],
+      })
+      .catch(() => {});
   },
 };

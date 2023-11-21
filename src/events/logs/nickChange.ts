@@ -25,21 +25,23 @@ export default {
     if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) return;
     if (oldMember.avatar !== newMember.avatar) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Yellow)
-          .setDescription(
-            `
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Yellow)
+            .setDescription(
+              `
                         **Nickname Changed**
                         **User:** ${newMember}
                         ${oldMember.nickname ?? 'None'} -> ${newMember.nickname ?? 'None'}
                         `,
-          )
-          .setFooter({
-            text: `${newMember.user.username}`,
-            iconURL: `${newMember.user.displayAvatarURL({ forceStatic: false })}`,
-          }),
-      ],
-    });
+            )
+            .setFooter({
+              text: `${newMember.user.username}`,
+              iconURL: `${newMember.user.displayAvatarURL({ forceStatic: false })}`,
+            }),
+        ],
+      })
+      .catch(() => {});
   },
 };

@@ -35,19 +35,23 @@ export default {
 
     if (oldState.channelId && newState.channelId) return;
     if (!oldState.channelId) {
-      await channel.send({
-        embeds: [
-          new Embed(Colors.Green).setDescription(
-            `**Voice Channel Joined**\n${newState.member} joined ${newState.channel}`,
-          ),
-        ],
-      });
+      await channel
+        .send({
+          embeds: [
+            new Embed(Colors.Green).setDescription(
+              `**Voice Channel Joined**\n${newState.member} joined ${newState.channel}`,
+            ),
+          ],
+        })
+        .catch(() => {});
     } else {
-      await channel.send({
-        embeds: [
-          new Embed(Colors.Red).setDescription(`**Voice Channel Left**\n${newState.member} left ${oldState.channel}`),
-        ],
-      });
+      await channel
+        .send({
+          embeds: [
+            new Embed(Colors.Red).setDescription(`**Voice Channel Left**\n${newState.member} left ${oldState.channel}`),
+          ],
+        })
+        .catch(() => {});
     }
   },
 };

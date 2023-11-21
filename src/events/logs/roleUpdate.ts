@@ -55,8 +55,10 @@ export default {
         { name: 'New Permissions', value: `\`${newPerms}\``, inline: true },
       );
 
-    await channel.send({
-      embeds: [embed],
-    });
+    await channel
+      .send({
+        embeds: [embed],
+      })
+      .catch(() => {});
   },
 };

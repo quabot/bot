@@ -82,14 +82,16 @@ export default {
     const description = actions.join('');
 
     if (!description) return;
-    await logChannel.send({
-      embeds: [
-        new Embed(Colors.Yellow).setDescription(`
+    await logChannel
+      .send({
+        embeds: [
+          new Embed(Colors.Yellow).setDescription(`
                         **${CHANNEL_TYPES_BY_ID[newChannel.type]} Channel Edited**
                         ${logChannel}
                         ${description}
                         `),
-      ],
-    });
+        ],
+      })
+      .catch(() => {});
   },
 };

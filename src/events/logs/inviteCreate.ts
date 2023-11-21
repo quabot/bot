@@ -26,16 +26,18 @@ export default {
     const channel = invite.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Green).setDescription(`**Invite Created**
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Green).setDescription(`**Invite Created**
                         [discord.gg/${invite.code}](https://discord.gg/${invite.code})
                         ${invite.inviter} - ${invite.channel}
 
                         **Expires in:**
                         ${!invite.maxAge ? 'Never' : `<t:${Math.floor(new Date().getTime() / 1000 + invite.maxAge)}:R>`}
                         `),
-      ],
-    });
+        ],
+      })
+      .catch(() => {});
   },
 };

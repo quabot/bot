@@ -19,20 +19,22 @@ export default {
     const channel = ban.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Green)
-          .setDescription(
-            `
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Green)
+            .setDescription(
+              `
                         **Member Unbanned**
                         ${ban.user} (${ban.user.username})
                         `,
-          )
-          .setFooter({
-            text: `${ban.user.username}`,
-            iconURL: `${ban.user.displayAvatarURL({ forceStatic: false })}`,
-          }),
-      ],
-    });
+            )
+            .setFooter({
+              text: `${ban.user.username}`,
+              iconURL: `${ban.user.displayAvatarURL({ forceStatic: false })}`,
+            }),
+        ],
+      })
+      .catch(() => {});
   },
 };

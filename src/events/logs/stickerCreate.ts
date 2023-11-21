@@ -19,18 +19,20 @@ export default {
     const channel = sticker.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Green)
-          .setDescription(
-            `
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Green)
+            .setDescription(
+              `
                         **Sticker Created**
                         ${sticker.name} - [Full image](${sticker.url})
                         ${sticker.description}
                         `,
-          )
-          .setFooter({ text: `${sticker.name}`, iconURL: `${sticker.url}` }),
-      ],
-    });
+            )
+            .setFooter({ text: `${sticker.name}`, iconURL: `${sticker.url}` }),
+        ],
+      })
+      .catch(() => {});
   },
 };

@@ -23,13 +23,15 @@ export default {
     if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
       return;
 
-    await logChannel.send({
-      embeds: [
-        new Embed(Colors.Red).setDescription(`
+    await logChannel
+      .send({
+        embeds: [
+          new Embed(Colors.Red).setDescription(`
                         **${CHANNEL_TYPES_BY_ID[channel.type]} Channel Deleted**
                         #${channel.name}
                         `),
-      ],
-    });
+        ],
+      })
+      .catch(() => {});
   },
 };

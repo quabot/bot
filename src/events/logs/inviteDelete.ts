@@ -26,13 +26,15 @@ export default {
     const channel = invite.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Red).setDescription(`
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Red).setDescription(`
                     **Invite Deleted**
                     discord.gg/${invite.code}
                     ${invite.channel}`),
-      ],
-    });
+        ],
+      })
+      .catch(() => {});
   },
 };

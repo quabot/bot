@@ -44,12 +44,14 @@ export default {
 
     if (!oldState.channelId || !newState.channelId) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(Colors.Yellow).setDescription(
-          `**User Moved**\n${newState.member} switched from ${oldState.channel} to ${newState.channel}`,
-        ),
-      ],
-    });
+    await channel
+      .send({
+        embeds: [
+          new Embed(Colors.Yellow).setDescription(
+            `**User Moved**\n${newState.member} switched from ${oldState.channel} to ${newState.channel}`,
+          ),
+        ],
+      })
+      .catch(() => {});
   },
 };

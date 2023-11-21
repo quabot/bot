@@ -40,21 +40,23 @@ export default {
 
     if (!role) return;
 
-    await channel.send({
-      embeds: [
-        new Embed(moreRoles ? Colors.Green : Colors.Red)
-          .setDescription(
-            `
+    await channel
+      .send({
+        embeds: [
+          new Embed(moreRoles ? Colors.Red : Colors.Green)
+            .setDescription(
+              `
                         **Role(s) ${moreRoles ? 'Removed' : 'Given'}**
                         **User:** ${newMember}
                         ${role}
                         `,
-          )
-          .setFooter({
-            text: `${newMember.user.username}`,
-            iconURL: `${newMember.user.displayAvatarURL({ forceStatic: false })}`,
-          }),
-      ],
-    });
+            )
+            .setFooter({
+              text: `${newMember.user.username}`,
+              iconURL: `${newMember.user.displayAvatarURL({ forceStatic: false })}`,
+            }),
+        ],
+      })
+      .catch(() => {});
   },
 };
