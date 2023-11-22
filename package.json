@@ -1,10 +1,11 @@
 {
   "name": "quabot",
-  "version": "7.0.3c",
+  "version": "7.1.0",
   "main": "dist/main.js",
-  "author": "Joa_sss",
+  "author": "(c) QuaBot Development",
   "license": "none",
   "private": true,
+  "description": "QuaBot Discord Bot developed by QuaBot Development. All rights reserved, 2023",
   "scripts": {
     "dev": "yarn install && nodemon",
     "production": "yarn deploy && sh run.sh",
