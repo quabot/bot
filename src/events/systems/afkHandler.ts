@@ -21,7 +21,7 @@ export default {
     const color = configColor?.color ?? '#416683';
     if (!config || !color) return;
 
-    if (config.userId === user.id) return;
+    if (config.userId === message.author.id) return;
 
     if (config.afk) {
       message.reply({
