@@ -14,7 +14,7 @@ export class CustomEmbed extends EmbedBuilder {
     const text = getParsedString(rawEmbed.footer.text).substring(0, 2048);
     const iconURL = getParsedString(rawEmbed.footer.icon).substring(0, 2048);
 
-    this.setFooter(isValidHttpUrl(iconURL) ? { text, iconURL } : { text });
+    if (text) this.setFooter(isValidHttpUrl(iconURL) ? { text, iconURL } : { text });
 
     if (rawEmbed.author) {
       if (!rawEmbed.author.text) return;
