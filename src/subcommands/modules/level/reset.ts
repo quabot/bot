@@ -21,7 +21,7 @@ export default {
 
     if (hasAnyPerms(interaction.member, [PermissionFlagsBits.ManageGuild]))
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('You do not have the required permissions.')],
+        embeds: [new Embed(color).setDescription('You do not have the required permissions. (Manage Server)')],
       });
 
     const config = await getLevelConfig(interaction.guildId!, client);
