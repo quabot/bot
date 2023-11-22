@@ -35,7 +35,7 @@ export default {
 
     await channel.send({
       embeds: [sentEmbed],
-      content: getParsedString(data.message.content) ?? '',
+      content: getParsedString(data.message.content) ?? null,
       components: [row],
     });
   },
