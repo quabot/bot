@@ -23,7 +23,7 @@ export default {
       const channel = guild.channels.cache.get(config.updatesChannel);
       if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-      channel.send({ embeds: [sentEmbed] });
+      channel.send({ embeds: [sentEmbed] }).catch(() => { });
       console.log(`'Sent the update message to ${guild.name} (${guild.id})`);
     });
   },
