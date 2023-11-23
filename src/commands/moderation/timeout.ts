@@ -110,7 +110,7 @@ export default {
     const fields: APIEmbedField[] = [
       {
         name: 'Account Created',
-        value: `t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+        value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
         inline: true,
       },
     ];
@@ -118,7 +118,7 @@ export default {
     if (member.joinedTimestamp !== null) {
       fields.splice(0, 0, {
         name: 'Joined Server',
-        value: `t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+        value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
         inline: true,
       });
     }
@@ -152,11 +152,11 @@ export default {
           .replaceAll('{server}', interaction.guild?.name ?? '')
           .replaceAll('{color}', color.toString())
           .replaceAll('{id}', `${id}`)
-          .replaceAll('{created}', `t:${Math.floor(user.createdTimestamp / 1000)}:R>`)
+          .replaceAll('{created}', `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`)
           .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
 
         if (member.joinedTimestamp !== null) {
-          return text.replaceAll('{joined}', `t:${Math.floor(member.joinedTimestamp / 1000)}:R>`);
+          return text.replaceAll('{joined}', `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`);
         }
 
         return res;
@@ -198,7 +198,7 @@ export default {
         },
         {
           name: 'Account Created',
-          value: `t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+          value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
           inline: true,
         },
         { name: 'Reason', value: `${reason}` },
@@ -207,7 +207,7 @@ export default {
       if (member.joinedTimestamp !== null) {
         fields.splice(4, 0, {
           name: 'Joined Server',
-          value: `t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+          value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
           inline: true,
         });
       }

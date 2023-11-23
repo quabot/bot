@@ -65,7 +65,7 @@ export default {
     const fields: APIEmbedField[] = [
       {
         name: 'Account Created',
-        value: `t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+        value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
         inline: true,
       },
     ];
@@ -73,7 +73,7 @@ export default {
     if (member.joinedTimestamp !== null) {
       fields.splice(0, 0, {
         name: 'Joined Server',
-        value: `t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+        value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
         inline: true,
       });
     }
@@ -105,7 +105,7 @@ export default {
         },
         {
           name: 'Account Created',
-          value: `t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+          value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
           inline: true,
         },
       ];
@@ -113,7 +113,7 @@ export default {
       if (member.joinedTimestamp !== null) {
         fields.splice(3, 0, {
           name: 'Joined Server',
-          value: `t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+          value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
           inline: true,
         });
       }
