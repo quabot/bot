@@ -30,11 +30,16 @@ export default {
       setTimeout(function() {
         axios
           .post(
-            `${API_URL}/staff/set-stats`,
+            `${API_URL}/site/set-stats`,
             {
               servers: client.guilds.cache.size,
               channels: client.channels.cache.size,
               users: client.users.cache.size,
+            },
+            {
+              headers: {
+                Authorization: process.env.STATS_KEY,
+              },
             },
           )
           .catch(() => {});
