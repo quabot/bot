@@ -17,14 +17,15 @@ export class CustomEmbed extends EmbedBuilder {
     if (text) this.setFooter(isValidHttpUrl(iconURL) ? { text, iconURL } : { text });
 
     if (rawEmbed.author) {
-      if (!rawEmbed.author.text) return;
-      const author: EmbedAuthorOptions = { name: getParsedString(rawEmbed.author.text).substring(0, 256) };
-      if (rawEmbed.author.url && isValidHttpUrl(getParsedString(rawEmbed.author.url).substring(0, 2048)))
-        author.url = getParsedString(rawEmbed.author.url).substring(0, 2048);
-      if (rawEmbed.author.icon && isValidHttpUrl(getParsedString(rawEmbed.author.icon).substring(0, 2048)))
-        author.iconURL = getParsedString(rawEmbed.author.icon).substring(0, 2048);
-
-      this.setAuthor(author);
+      if (rawEmbed.author.text) {
+        const author: EmbedAuthorOptions = { name: getParsedString(rawEmbed.author.text).substring(0, 256) };
+        if (rawEmbed.author.url && isValidHttpUrl(getParsedString(rawEmbed.author.url).substring(0, 2048)))
+          author.url = getParsedString(rawEmbed.author.url).substring(0, 2048);
+        if (rawEmbed.author.icon && isValidHttpUrl(getParsedString(rawEmbed.author.icon).substring(0, 2048)))
+          author.iconURL = getParsedString(rawEmbed.author.icon).substring(0, 2048);
+  
+        this.setAuthor(author);
+      }
     }
 
     if (rawEmbed.description) this.setDescription(getParsedString(rawEmbed.description).substring(0, 4096));
