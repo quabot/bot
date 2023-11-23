@@ -4,9 +4,9 @@ import type { ContextArgs } from '@typings/functionArgs';
 import { getRoleIds } from '@functions/discord';
 
 const houses = new Collection<string, string>();
-houses.set('HypeSquadOnlineHouse1', '<:QBravery:1011633937296138341> Bravery');
-houses.set('HypeSquadOnlineHouse2', '<:QBrilliance:1011633938441195572> Brilliance');
-houses.set('HypeSquadOnlineHouse3', '<:QBalance:1011633936088182834> Balance');
+houses.set('HypeSquadOnlineHouse1', '<:bravery:1142386790897041460> Bravery');
+houses.set('HypeSquadOnlineHouse2', '<:brilliance:1142386793816264714> Brilliance');
+houses.set('HypeSquadOnlineHouse3', '<:balance:1142386789529686090> Balance');
 
 export default {
   data: new ContextMenuCommandBuilder().setName('Userinfo').setType(ApplicationCommandType.User).setDMPermission(false),
