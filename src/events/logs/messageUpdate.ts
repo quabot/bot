@@ -23,7 +23,7 @@ export default {
     const channel = newMessage.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    if (oldMessage.author.bot) return;
+    if (!oldMessage.author || oldMessage.author.bot) return;
 
     const embed = new Embed(Colors.Yellow).setDescription(`**Message Edited**
             ${newMessage.channel} - [Jump to Message](${newMessage.url})`);
