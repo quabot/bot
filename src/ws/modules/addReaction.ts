@@ -16,10 +16,9 @@ export default {
     if (!channel || channel.type === ChannelType.GuildCategory) return;
 
     //* Fetch the messsage and add a reaction.
-    await channel.messages.fetch(item.messageId).then(async message => {
-      if (!message) return;
+    const message = await channel.messages.fetch(item.messageId);
+    if (!message || !('react' in message) || typeof message.react !== 'function') return;
 
-      await message.react(item.emoji);
-    });
+    await message.react(item.emoji);
   },
 };
