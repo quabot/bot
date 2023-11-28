@@ -15,6 +15,6 @@ export default {
     const config = await getServerConfig(client, interaction.guildId);
     const color = config?.color ?? '#416683';
 
-    button.execute({ client, interaction, color }).catch(async e => await handleError(client, e, interaction.customId));
+    await button.execute({ client, interaction, color }).catch(async e => await handleError(client, e, interaction.customId));
   },
 };

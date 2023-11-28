@@ -144,8 +144,8 @@ export default {
           await channel.send({
             embeds: [embed],
             content: `${parse(config.message.content)}`,
-          });
-        if (config.messageType === 'text') await channel.send({ content: `${parse(config.messageText)}` });
+          }).catch(() => { });
+        if (config.messageType === 'text') await channel.send({ content: `${parse(config.messageText)}` }).catch(() => { });
         if (config.messageType === 'card') {
           const card = await drawCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
@@ -159,7 +159,7 @@ export default {
             await channel.send({
               files: [attachment],
               content: `${message.author}`,
-            });
+            }).catch(() => { });
         }
       }
 
@@ -171,7 +171,7 @@ export default {
             embeds: [embed],
             content: `${parse(config.dmMessage.content)}`,
             components: [sentFrom],
-          });
+          }).catch(() => { });
         if (config.dmType === 'text')
           await member.send({
             content: `${parse(config.dmMessageText)}`,
@@ -193,7 +193,7 @@ export default {
               await member.send({
                 files: [attachment],
                 content: `${message.author}`,
-              });
+              }).catch(() => { });
           }
         }
       }
