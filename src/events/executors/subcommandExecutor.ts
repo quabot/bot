@@ -40,7 +40,7 @@ export default {
 
       const color = config?.color ?? '#416683';
 
-      subcommand
+      await subcommand
         .execute({ client, interaction, color })
         .catch(e => handleError(client, e, `${interaction.options.getSubcommand()}/${interaction.commandName}`));
     } catch (e) {
