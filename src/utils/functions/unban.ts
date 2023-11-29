@@ -38,7 +38,7 @@ export async function tempUnban(client: Client, document: NonNullMongooseReturn<
 
   await logChannel.send({
     embeds: [
-      new Embed(colorConfig!.color ?? '#fff').setTitle('Member Auto-Unbanned').addFields(
+      new Embed(colorConfig!.color ?? '#ffffff').setTitle('Member Auto-Unbanned').addFields(
         { name: 'User', value: `<@${document.userId}>`, inline: true },
         {
           name: 'Unbanned After',

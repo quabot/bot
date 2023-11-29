@@ -68,7 +68,7 @@ export async function rollGiveaway(
 
       await message.edit({
         embeds: [
-          new Embed(colorConfig.color ?? '#fff')
+          new Embed(colorConfig.color ?? '#ffffff')
             .setTitle(`${giveaway.prize}`)
             .setDescription(
               `Ended: <t:${
@@ -85,14 +85,16 @@ export async function rollGiveaway(
 
       if (isWinner)
         await message.reply({
-          embeds: [new Embed(colorConfig.color ?? '#fff').setDescription(`${winMsg}, you won **${giveaway.prize}**!`)],
+          embeds: [
+            new Embed(colorConfig.color ?? '#ffffff').setDescription(`${winMsg}, you won **${giveaway.prize}**!`),
+          ],
           content: `${winMsg}`,
         });
 
       if (!isWinner)
         await message.reply({
           embeds: [
-            new Embed(colorConfig.color ?? '#fff').setDescription(
+            new Embed(colorConfig.color ?? '#ffffff').setDescription(
               'There were not enough entries for a winner to be determined.',
             ),
           ],
