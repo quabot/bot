@@ -28,6 +28,10 @@ export default {
       new ButtonBuilder().setCustomId('embed-image').setLabel('Set Image').setStyle(ButtonStyle.Primary),
       new ButtonBuilder().setCustomId('embed-footer').setLabel('Set Footer').setStyle(ButtonStyle.Primary),
       new ButtonBuilder().setCustomId('embed-timestamp').setLabel('Add Timestamp').setStyle(ButtonStyle.Primary),
+      new ButtonBuilder()
+        .setCustomId('embed-removetimestamp')
+        .setLabel('Remove Timestamp')
+        .setStyle(ButtonStyle.Danger),
     );
 
     const buttons3 = new ActionRowBuilder<ButtonBuilder>().setComponents(
@@ -45,7 +49,7 @@ export default {
     await interaction.editReply({
       embeds: [
         new Embed(color).setDescription(
-          `Click the buttons below this message to set components of the embed.\nThe message will be sent to ${channel}. If the description is empty the embed will not be sent.`,
+          `Click the buttons below this message to set components of the embed.\nThe message will be sent to ${channel}. If the embed is empty it will not be sent.`,
         ),
         new EmbedBuilder().setDescription('\u200b').setColor(color),
       ],

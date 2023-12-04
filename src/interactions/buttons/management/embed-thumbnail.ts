@@ -2,7 +2,7 @@ import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, Embed
 import { Embed } from '@constants/embed';
 import { isValidHttpUrl } from '@functions/string';
 import type { ButtonArgs } from '@typings/functionArgs';
-import { prepareEmbed } from '@functions/discord';
+import { fixEmbed, prepareEmbed } from '@functions/discord';
 
 export default {
   name: 'embed-thumbnail',
@@ -18,7 +18,7 @@ export default {
             .setLabel('New thumbnail')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.thumbnail?.url ?? '')
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(500)
             .setPlaceholder('Insert your awesome hippo photo url here...'),
         ),
@@ -38,10 +38,19 @@ export default {
 
       await modal.deferReply({ ephemeral: true }).catch(() => {});
       const thumbnail = modal.fields.getTextInputValue('thumbnail');
-      if (!thumbnail)
-        return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No thumbnail entered, try again.')],
+      if (!thumbnail) {
+        await interaction.message.edit({
+          embeds: [
+            EmbedBuilder.from(interaction.message.embeds[0]),
+            fixEmbed(prepareEmbed(interaction.message.embeds[1]).setThumbnail(null)),
+          ],
         });
+
+        await modal.editReply({
+          embeds: [new Embed(color).setDescription(`Removed the thumbnail.`)],
+        });
+        return;
+      }
 
       if (!isValidHttpUrl(thumbnail))
         return await modal.editReply({

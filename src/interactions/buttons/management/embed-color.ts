@@ -15,7 +15,7 @@ export default {
             .setCustomId('color')
             .setLabel('New color')
             .setStyle(TextInputStyle.Short)
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(500)
             .setPlaceholder('#fffff'),
         ),
@@ -35,10 +35,19 @@ export default {
 
       await modal.deferReply({ ephemeral: true }).catch(() => {});
       const enteredColor = modal.fields.getTextInputValue('color');
-      if (!enteredColor)
-        return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No color entered, try again.')],
+      if (!enteredColor) {
+        await interaction.message.edit({
+          embeds: [
+            EmbedBuilder.from(interaction.message.embeds[0]),
+            EmbedBuilder.from(interaction.message.embeds[1]).setColor(color),
+          ],
         });
+
+        await modal.editReply({
+          embeds: [new Embed(color).setDescription(`Set the color to the server default: \n**${color}**`)],
+        });
+        return;
+      }
 
       if (!/^#([0-9A-F]{6}){1,2}$/i.test(enteredColor) || !enteredColor.startsWith('#'))
         return await modal.editReply({

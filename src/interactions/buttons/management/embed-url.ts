@@ -18,7 +18,7 @@ export default {
             .setLabel('New url')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.url ?? '')
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(500)
             .setPlaceholder('https://quabot.net'),
         ),
@@ -37,11 +37,27 @@ export default {
       if (modal.customId !== 'embed-url-modal') return;
 
       await modal.deferReply({ ephemeral: true }).catch(() => {});
-      const url = modal.fields.getTextInputValue('url');
-      if (!url)
+
+      if (!interaction.message.embeds[1].title) {
         return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No url entered, try again.')],
+          embeds: [new Embed(color).setDescription(`Can't change url when there's no title.`)],
         });
+      }
+
+      const url = modal.fields.getTextInputValue('url');
+
+      if (!url) {
+        await interaction.message.edit({
+          embeds: [
+            EmbedBuilder.from(interaction.message.embeds[0]),
+            prepareEmbed(interaction.message.embeds[1]).setURL(null),
+          ],
+        });
+
+        return await modal.editReply({
+          embeds: [new Embed(color).setDescription('Removed url.')],
+        });
+      }
 
       if (!isValidHttpUrl(url))
         return await modal.editReply({
