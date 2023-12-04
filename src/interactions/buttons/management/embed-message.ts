@@ -16,7 +16,7 @@ export default {
             .setLabel('New message')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.content ?? '')
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(1950)
             .setPlaceholder('This is my message!'),
         ),
@@ -35,15 +35,15 @@ export default {
       if (modal.customId !== 'embed-message-modal') return;
 
       await modal.deferReply({ ephemeral: true }).catch(() => {});
-      const message = modal.fields.getTextInputValue('message');
-      if (!message)
-        return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No message entered, try again.')],
-        });
+      const message = modal.fields.getTextInputValue('message') || null;
 
       await interaction.message.edit({
         content: message,
       });
+
+      if (!message) {
+        return await modal.editReply('Deleted the message.');
+      }
 
       await modal.editReply({
         embeds: [new Embed(color).setDescription(`Set the message to: \n**${message}**`.slice(0, 2000))],

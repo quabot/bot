@@ -1,7 +1,8 @@
+import { Embed } from '@constants/embed';
 import {
   PermissionsBitField,
   type APIInteractionGuildMember,
-  type Embed,
+  type Embed as DiscordEmbed,
   type GuildMember,
   type GuildMemberRoleManager,
   type Snowflake,
@@ -9,11 +10,28 @@ import {
   EmbedBuilder,
 } from 'discord.js';
 
-export function prepareEmbed(embed: Embed) {
+export function prepareEmbed(embed: DiscordEmbed) {
   const res = EmbedBuilder.from(embed);
   if (res.data.description === '\u200b') res.setDescription(null);
 
   return res;
+}
+
+export function fixEmbed(embed: Embed) {
+  if (
+    !(
+      embed.data.title ||
+      embed.data.image ||
+      embed.data.thumbnail ||
+      embed.data.footer ||
+      embed.data.author ||
+      embed.data.fields?.length
+    )
+  ) {
+    embed.setDescription('\u200b');
+  }
+
+  return embed;
 }
 
 export function hasAnyRole(

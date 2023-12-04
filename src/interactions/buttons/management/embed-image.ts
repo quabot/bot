@@ -2,7 +2,7 @@ import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, Embed
 import { Embed } from '@constants/embed';
 import { isValidHttpUrl } from '@functions/string';
 import type { ButtonArgs } from '@typings/functionArgs';
-import { prepareEmbed } from '@functions/discord';
+import { fixEmbed, prepareEmbed } from '@functions/discord';
 
 export default {
   name: 'embed-image',
@@ -18,7 +18,7 @@ export default {
             .setLabel('New image')
             .setValue(interaction.message.embeds[1].data.image?.url ?? '')
             .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(500)
             .setPlaceholder('Insert your awesome hippo photo url here...'),
         ),
@@ -38,10 +38,20 @@ export default {
 
       await modal.deferReply({ ephemeral: true }).catch(() => {});
       const image = modal.fields.getTextInputValue('image');
-      if (!image)
-        return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No image entered, try again.')],
+
+      if (!image) {
+        await interaction.message.edit({
+          embeds: [
+            EmbedBuilder.from(interaction.message.embeds[0]),
+            fixEmbed(prepareEmbed(interaction.message.embeds[1]).setImage(null)),
+          ],
         });
+
+        await modal.editReply({
+          embeds: [new Embed(color).setDescription(`Removed the image.`)],
+        });
+        return;
+      }
 
       if (!isValidHttpUrl(image))
         return await modal.editReply({

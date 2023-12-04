@@ -1,6 +1,7 @@
 import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { fixEmbed } from '@functions/discord';
 
 export default {
   name: 'embed-removefield',
@@ -45,7 +46,7 @@ export default {
       await interaction.message.edit({
         embeds: [
           EmbedBuilder.from(interaction.message.embeds[0]),
-          EmbedBuilder.from(interaction.message.embeds[1]).spliceFields(indexSplice, 1),
+          fixEmbed(EmbedBuilder.from(interaction.message.embeds[1]).spliceFields(indexSplice, 1)),
         ],
       });
 

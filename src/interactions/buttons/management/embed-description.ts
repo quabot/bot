@@ -1,6 +1,7 @@
 import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { fixEmbed } from '@functions/discord';
 
 export default {
   name: 'embed-description',
@@ -16,7 +17,7 @@ export default {
             .setLabel('New description')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.description ?? '')
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(4000)
             .setPlaceholder('This is my embed description!'),
         ),
@@ -36,10 +37,19 @@ export default {
 
       await modal.deferReply({ ephemeral: true }).catch(() => {});
       const description = modal.fields.getTextInputValue('description');
-      if (!description)
-        return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No description entered, try again.')],
+
+      if (!description) {
+        await interaction.message.edit({
+          embeds: [
+            EmbedBuilder.from(interaction.message.embeds[0]),
+            fixEmbed(EmbedBuilder.from(interaction.message.embeds[1]).setDescription(null)),
+          ],
         });
+
+        return await modal.editReply({
+          embeds: [new Embed(color).setDescription(`Removed the description.`.slice(0, 2000))],
+        });
+      }
 
       await interaction.message.edit({
         embeds: [
