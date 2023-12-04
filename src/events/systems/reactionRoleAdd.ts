@@ -24,29 +24,37 @@ export default {
 
   async execute({ client, color }: EventArgs, reaction: MessageReaction, user: User) {
     if (!reaction.message.guild?.id) return;
+
+    const clientMember = reaction.message.guild.members.me;
+    if (!clientMember || !clientMember.permissions.has(PermissionFlagsBits.ManageRoles)) return;
+
     let reactionRole = await Reaction.findOne({
-      guildId: reaction.message.guild!.id,
+      guildId: reaction.message.guild.id,
       messageId: reaction.message.id,
       emoji: reaction.emoji.name,
     });
     if (!reactionRole)
       reactionRole = await Reaction.findOne({
-        guildId: reaction.message.guild!.id,
+        guildId: reaction.message.guild.id,
         messageId: reaction.message.id,
         emoji: `<:${reaction.emoji.name}:${reaction.emoji.id}>`,
       });
 
     if (!reactionRole) return;
 
-    const rawRole = reaction.message.guild!.roles.cache.get(`${reactionRole.roleId}`);
-    const rawMember = reaction.message.guild!.members.cache.get(`${user.id}`);
+    const rawRole = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
+    const rawMember = reaction.message.guild.members.cache.get(`${user.id}`);
 
     if (!rawMember || !rawRole) return;
     const member = rawMember as GuildMember;
     const role = rawRole as Role;
 
+    const highestClientRole = clientMember.roles.highest;
+    //* Return if the highestClientRole position is below or the same as 'role'
+    if (highestClientRole.comparePositionTo(role) < 1) return;
+
     if (role.managed) return;
-    if (role.id === reaction.message.guild!.id) return;
+    if (role.id === reaction.message.guild.id) return;
 
     if (reactionRole.reqPermission !== 'None' && reactionRole.reqPermission !== 'none') {
       if (
@@ -59,8 +67,8 @@ export default {
         return;
     }
 
-    const rawConfig = await getReactionConfig(client, reaction.message.guild!.id);
-    const rawCustomConfig = await getServerConfig(client, reaction.message.guild!.id);
+    const rawConfig = await getReactionConfig(client, reaction.message.guild.id);
+    const rawCustomConfig = await getServerConfig(client, reaction.message.guild.id);
 
     if (!rawConfig?.enabled || !rawCustomConfig) return;
     const config = rawConfig as NonNullMongooseReturn<IReactionConfig>;
