@@ -5,11 +5,15 @@ import {
   TextInputStyle,
   EmbedBuilder,
   type EmbedAuthorData,
+  ComponentType,
+  ButtonBuilder,
+  ButtonStyle,
+  Colors,
 } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { isValidHttpUrl } from '@functions/string';
 import type { ButtonArgs } from '@typings/functionArgs';
-import { prepareEmbed } from '@functions/discord';
+import { fixEmbed, prepareEmbed } from '@functions/discord';
 
 export default {
   name: 'embed-author',
@@ -25,7 +29,7 @@ export default {
             .setLabel('Author Name')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.author?.name ?? '')
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(256)
             .setPlaceholder('My author name...'),
         ),
@@ -37,6 +41,7 @@ export default {
             .setValue(interaction.message.embeds[1].data.author?.icon_url ?? '')
 
             .setMaxLength(250)
+            .setRequired(false)
             .setPlaceholder('Insert your favorite author icon here...'),
         ),
         new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -47,6 +52,7 @@ export default {
             .setValue(interaction.message.embeds[1].data.author?.url ?? '')
 
             .setMaxLength(250)
+            .setRequired(false)
             .setPlaceholder('https://quabot.net'),
         ),
       );
@@ -67,28 +73,87 @@ export default {
       const text = modal.fields.getTextInputValue('text');
       let url: string | null = modal.fields.getTextInputValue('url');
       let icon: string | null = modal.fields.getTextInputValue('icon');
-      if (!text)
-        return await modal.editReply({
-          embeds: [new Embed(color).setDescription('Not all fields were filled out, try again.')],
-        });
 
       if (!isValidHttpUrl(url)) url = null;
       if (!isValidHttpUrl(icon)) icon = null;
 
-      const author: EmbedAuthorData = { name: text };
+      let author: EmbedAuthorData | null = { name: text };
       if (icon) author.iconURL = icon;
       if (url) author.url = url;
 
-      await interaction.message.edit({
-        embeds: [
-          EmbedBuilder.from(interaction.message.embeds[0]),
-          prepareEmbed(interaction.message.embeds[1]).setAuthor(author),
-        ],
-      });
+      if (!text) {
+        const reply = await modal.editReply({
+          embeds: [
+            new Embed(Colors.Red).setDescription(
+              'The author gets removed when the "text" field is empty!\nClick on continue to remove (automatically cancels in 10s).',
+            ),
+          ],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().setComponents(
+              new ButtonBuilder().setCustomId('continue').setStyle(ButtonStyle.Success).setLabel('Continue'),
+              new ButtonBuilder().setCustomId('cancel').setStyle(ButtonStyle.Danger).setLabel('Cancel'),
+            ),
+          ],
+        });
 
-      await modal.editReply({
-        embeds: [new Embed(color).setDescription('Changed the author!')],
-      });
+        const collector = reply.createMessageComponentCollector({
+          componentType: ComponentType.Button,
+          time: 10 * 1000,
+          max: 1,
+        });
+
+        collector.once('collect', async i => {
+          if (i.customId === 'cancel') {
+            await i.update({
+              embeds: [
+                new Embed(color).setDescription(
+                  "Canceled the removal of the author.\nReason: \"Pressed the 'cancel' button'",
+                ),
+              ],
+              components: [],
+            });
+            return;
+          }
+          if (i.customId === 'continue') {
+            await interaction.message.edit({
+              embeds: [
+                EmbedBuilder.from(interaction.message.embeds[0]),
+                fixEmbed(prepareEmbed(interaction.message.embeds[1]).setAuthor(null)),
+              ],
+            });
+
+            await i.update({
+              embeds: [new Embed(color).setDescription('The author has been removed.')],
+              components: [],
+            });
+            return;
+          }
+        });
+
+        collector.once('end', async collected => {
+          if (collected.size < 1) {
+            await reply.edit({
+              embeds: [
+                new Embed(color).setDescription(
+                  'Canceled the removal of the author.\nReason: "Didn\'t respond in 10s"',
+                ),
+              ],
+              components: [],
+            });
+          }
+        });
+      } else {
+        await interaction.message.edit({
+          embeds: [
+            EmbedBuilder.from(interaction.message.embeds[0]),
+            prepareEmbed(interaction.message.embeds[1]).setAuthor(author),
+          ],
+        });
+
+        await modal.editReply({
+          embeds: [new Embed(color).setDescription('Changed the author!')],
+        });
+      }
     }
   },
 };

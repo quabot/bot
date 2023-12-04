@@ -27,7 +27,7 @@ export default {
     // Post the stats to the QuaBot Site
     (function loop() {
       if (process.env.POST_STATS !== 'true') return;
-      setTimeout(function() {
+      setTimeout(function () {
         axios
           .post(
             `${API_URL}/site/set-stats`,
@@ -38,7 +38,7 @@ export default {
             },
             {
               headers: {
-                Authorization: process.env.STATS_KEY,
+                Authorization: process.env.STATS_KEY!,
               },
             },
           )

@@ -11,19 +11,27 @@ export default {
     const msg = interaction.message.embeds[0].data.description;
     if (!msg) return await interaction.editReply({ content: 'Why tf we even do desc thing' });
 
-    const channel = interaction.guild?.channels.cache.get(`${msg.slice(msg.indexOf('<') + 2, msg.length - 58)}`);
+    const channel = interaction.guild?.channels.cache.get(`${msg.slice(msg.indexOf('<') + 2, msg.indexOf('>'))}`);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum)
       return await interaction.editReply({
         content: "Can't send a message to this channel. It doesn't exist or isn't a valid channel type",
       });
 
     const embed = EmbedBuilder.from(interaction.message.embeds[1]);
-    if (embed.data.description === '\u200b') await channel.send({ content: interaction.message.content });
-    if (embed.data.description !== '\u200b')
+    if (embed.data.description === '\u200b') {
+      if (!interaction.message.content) {
+        return await interaction.editReply({
+          embeds: [new Embed(color).setDescription("Can't send an empty message.")],
+        });
+      }
+
+      await channel.send({ content: interaction.message.content });
+    } else {
       await channel.send({
         content: interaction.message.content,
         embeds: [embed],
       });
+    }
 
     const buttons1 = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -103,7 +111,7 @@ export default {
       components: [buttons1, buttons2, buttons3, buttons4],
     });
 
-    interaction.editReply({
+    await interaction.editReply({
       embeds: [new Embed(color).setDescription('Message has been sent!')],
     });
   },

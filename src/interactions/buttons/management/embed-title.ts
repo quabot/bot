@@ -1,7 +1,7 @@
 import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
-import { prepareEmbed } from '@functions/discord';
+import { fixEmbed, prepareEmbed } from '@functions/discord';
 
 export default {
   name: 'embed-title',
@@ -17,7 +17,7 @@ export default {
             .setLabel('New title')
             .setStyle(TextInputStyle.Paragraph)
             .setValue(interaction.message.embeds[1].data.title ?? '')
-            .setRequired(true)
+            .setRequired(false)
             .setMaxLength(256)
             .setPlaceholder('This is my embed title!'),
         ),
@@ -37,10 +37,20 @@ export default {
 
       await modal.deferReply({ ephemeral: true }).catch(() => {});
       const title = modal.fields.getTextInputValue('title');
-      if (!title)
-        return await modal.editReply({
-          embeds: [new Embed(color).setDescription('No title entered, try again.')],
+
+      if (!title) {
+        await interaction.message.edit({
+          embeds: [
+            EmbedBuilder.from(interaction.message.embeds[0]),
+            fixEmbed(prepareEmbed(interaction.message.embeds[1]).setTitle(null)),
+          ],
         });
+
+        await modal.editReply({
+          embeds: [new Embed(color).setDescription(`Removed the title.`)],
+        });
+        return;
+      }
 
       await interaction.message.edit({
         embeds: [
