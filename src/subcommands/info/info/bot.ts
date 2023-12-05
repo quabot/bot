@@ -72,7 +72,7 @@ export default {
               )}MB\``,
               inline: true,
             },
-            { name: 'Commands', value: `${info.commands}`, inline: true },
+            { name: 'Commands', value: `\`${info.commands}\``, inline: true },
 
             { name: 'CPU', value: `\`\`\`${info.cpu}\`\`\`` },
           ),
