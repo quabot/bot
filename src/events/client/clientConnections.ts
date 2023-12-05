@@ -24,10 +24,12 @@ export default {
 
     if (process.env.NODE_ENV !== 'production') return;
 
-    // Post the stats to the QuaBot Site
-    (function loop() {
-      if (process.env.POST_STATS !== 'true') return;
-      setTimeout(function () {
+    // Post the stats to the QuaBot Site every minute
+    if (process.env.POST_STATS === 'true') {
+      postStats()
+      setInterval(postStats, 60 * 1000);
+
+      function postStats() {
         axios
           .post(
             `${API_URL}/site/set-stats`,
@@ -43,9 +45,8 @@ export default {
             },
           )
           .catch(() => {});
-        loop();
-      }, 60000);
-    })();
+      }
+    }
 
     // Post the stats to top.gg
     if (!process.env.TOPGG_API_KEY) return;
