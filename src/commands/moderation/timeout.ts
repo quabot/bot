@@ -45,7 +45,7 @@ export default {
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
     const duration = interaction.options.getString('duration', true).slice(0, 800);
     const user = interaction.options.getUser('user', true);
-    const member = interaction.guild?.members.cache.get(user.id)!;
+    const member = (interaction.guild ?? (await client.guilds.fetch(interaction.guildId!))).members.cache.get(user.id)!;
 
     await getUser(interaction.guildId!, member.id);
 
