@@ -1,11 +1,11 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, GuildTextBasedChannel } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
-import { hasAnyRole } from '@functions/discord';
+import { hasAnyRole, hasSendPerms } from '@functions/discord';
 
 export default {
   name: 'claim-ticket',
@@ -80,9 +80,10 @@ export default {
       embeds: [new Embed(color).setDescription('You have successfully claimed the ticket.')],
     });
 
-    await interaction.channel?.send({
-      embeds: [new Embed(color).setDescription(`This ticket has been claimed by ${interaction.user}.`)],
-    });
+    if (hasSendPerms(interaction.channel as GuildTextBasedChannel | null))
+      await interaction.channel?.send({
+        embeds: [new Embed(color).setDescription(`This ticket has been claimed by ${interaction.user}.`)],
+      });
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (
@@ -92,6 +93,11 @@ export default {
       !config.logEnabled
     )
       return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
 
     await logChannel.send({
       embeds: [

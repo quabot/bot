@@ -15,6 +15,7 @@ import { getSuggestConfig } from '@configs/suggestConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { Embed } from '@constants/embed';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: 'guildCreate',
@@ -47,7 +48,8 @@ export default {
         !channel.name.includes('rules') &&
         !channel.name.includes('announcements') &&
         !channel.name.includes('info') &&
-        !channel.name.includes('information')
+        !channel.name.includes('information') &&
+        hasSendPerms(channel)
       ) {
         done = true;
         channel

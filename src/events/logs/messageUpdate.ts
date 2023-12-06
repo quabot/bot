@@ -2,6 +2,7 @@ import { Events, Colors, Message, ChannelType } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.MessageUpdate,
@@ -22,6 +23,7 @@ export default {
 
     const channel = newMessage.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!hasSendPerms(channel)) return;
 
     if (!oldMessage.author || oldMessage.author.bot) return;
 

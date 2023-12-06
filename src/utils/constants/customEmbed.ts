@@ -23,7 +23,7 @@ export class CustomEmbed extends EmbedBuilder {
           author.url = getParsedString(rawEmbed.author.url).substring(0, 2048);
         if (rawEmbed.author.icon && isValidHttpUrl(getParsedString(rawEmbed.author.icon).substring(0, 2048)))
           author.iconURL = getParsedString(rawEmbed.author.icon).substring(0, 2048);
-  
+
         this.setAuthor(author);
       }
     }

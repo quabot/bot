@@ -17,7 +17,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import type { EventArgs } from '@typings/functionArgs';
 import Vote from '@schemas/Vote';
 import { drawCard } from '@functions/levelCard';
-import { hasAnyRole } from '@functions/discord';
+import { hasAnyRole, hasSendPerms } from '@functions/discord';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
@@ -144,7 +144,14 @@ export default {
 
       if (config.channel !== 'none') {
         const channel = config.channel === 'current' ? interChannel : guild.channels.cache.get(`${config.channel}`);
-        if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+        if (
+          !channel ||
+          channel.type === ChannelType.GuildCategory ||
+          channel.type === ChannelType.GuildForum ||
+          channel.type === ChannelType.DM
+        )
+          return;
+        if (!hasSendPerms(channel)) return;
 
         const embed = new CustomEmbed(config.message, parse);
 

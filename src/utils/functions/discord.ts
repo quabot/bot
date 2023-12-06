@@ -6,8 +6,10 @@ import {
   type GuildMember,
   type GuildMemberRoleManager,
   type Snowflake,
-  APIInteractionDataResolvedGuildMember,
+  type APIInteractionDataResolvedGuildMember,
   EmbedBuilder,
+  type GuildBasedChannel,
+  type GuildChannel,
 } from 'discord.js';
 
 export function prepareEmbed(embed: DiscordEmbed) {
@@ -49,6 +51,13 @@ export function getRoleIds(
   if (!member) return [];
 
   return 'cache' in member.roles ? (member.roles as GuildMemberRoleManager).cache.map(r => r.id) : member.roles;
+}
+
+export function hasSendPerms(channel: GuildBasedChannel | GuildChannel | null) {
+  const member = channel?.guild.members.me;
+  if (!member) return false;
+
+  return channel.permissionsFor(member).has(PermissionsBitField.Flags.SendMessages);
 }
 
 export function hasAnyPerms(member: GuildMember | APIInteractionGuildMember | null | undefined, perms: bigint[]) {

@@ -1,6 +1,7 @@
 import { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   name: 'embed-send',
@@ -14,7 +15,11 @@ export default {
     const channel = interaction.guild?.channels.cache.get(`${msg.slice(msg.indexOf('<') + 2, msg.indexOf('>'))}`);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum)
       return await interaction.editReply({
-        content: "Can't send a message to this channel. It doesn't exist or isn't a valid channel type",
+        content: "Can't send a message to this channel. It doesn't exist or isn't a valid channel type.",
+      });
+    if (!hasSendPerms(channel))
+      return await interaction.editReply({
+        content: "Can't send a message to this channel. I don't have the `SendMessages` permission.",
       });
 
     const embed = EmbedBuilder.from(interaction.message.embeds[1]);

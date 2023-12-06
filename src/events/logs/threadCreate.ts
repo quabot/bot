@@ -3,6 +3,7 @@ import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import { CHANNEL_TYPES_BY_ID } from '@constants/discord';
 import type { EventArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.ThreadCreate,
@@ -25,6 +26,7 @@ export default {
 
     const channel = thread.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!hasSendPerms(channel)) return;
 
     await channel
       .send({

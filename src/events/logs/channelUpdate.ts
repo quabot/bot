@@ -4,6 +4,7 @@ import { CHANNEL_TYPES_BY_ID } from '@constants/discord';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
 import type { GuildChannel } from '@typings/discord';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.ChannelUpdate,
@@ -23,6 +24,7 @@ export default {
     const logChannel = newChannel.guild.channels.cache.get(config.channelId);
     if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
       return;
+    if (!hasSendPerms(logChannel)) return;
 
     let actions = ['', '', '', '', '', '', '', '', '', ''];
     if (oldChannel.rawPosition !== newChannel.rawPosition) return;

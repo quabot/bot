@@ -12,6 +12,7 @@ import {
 } from 'discord.js';
 import ms from 'ms';
 import { getPollConfig } from '@configs/pollConfig';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   name: 'create-poll',
@@ -75,6 +76,15 @@ export default {
         embeds: [
           new Embed(color).setDescription(
             "Couldn't find the poll channel. Are sure it still exists and that I have access to it?",
+          ),
+        ],
+        ephemeral: true,
+      });
+    if (!hasSendPerms(ch))
+      return await interaction.reply({
+        embeds: [
+          new Embed(color).setDescription(
+            "Can't send a message in the poll channel. I don't have the `SendMessages` permission.",
           ),
         ],
         ephemeral: true,
@@ -161,6 +171,11 @@ export default {
     if (!config.logEnabled) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
 
     await logChannel.send({
       embeds: [

@@ -2,6 +2,7 @@ import { Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, type GuildMember,
 import { Embed } from '@constants/embed';
 import type { WsEventArgs } from '@typings/functionArgs';
 import Application from '@schemas/Application';
+import { hasSendPerms } from '@functions/discord';
 
 //* Handle what happens when a form gets responded to.
 export default {
@@ -30,6 +31,7 @@ export default {
       submission_channel.type === ChannelType.GuildForum
     )
       return;
+    if (!hasSendPerms(submission_channel)) return;
 
     let submission_user: GuildMember | undefined | string = guild.members.cache.get(form.userId);
     if (FoundForm.anonymous) submission_user = 'Anonymous';

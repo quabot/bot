@@ -1,9 +1,10 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, type GuildTextBasedChannel } from 'discord.js';
 import { getTicketConfig } from '@configs/ticketConfig';
 import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -71,13 +72,19 @@ export default {
       embeds: [new Embed(color).setDescription('You have successfully unclaimed the ticket.')],
     });
 
-    await interaction.channel?.send({
-      embeds: [new Embed(color).setDescription('This ticket is no longer claimed.')],
-    });
+    if (hasSendPerms(interaction.channel as GuildTextBasedChannel | null))
+      await interaction.channel?.send({
+        embeds: [new Embed(color).setDescription('This ticket is no longer claimed.')],
+      });
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
       return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
 
     await logChannel.send({
       embeds: [
