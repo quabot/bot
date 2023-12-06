@@ -11,6 +11,7 @@ import type { EventArgs } from '@typings/functionArgs';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: 'messageCreate',
@@ -136,16 +137,26 @@ export default {
 
       if (config.channel !== 'none') {
         const channel = config.channel === 'current' ? msgChannel : guild.channels.cache.get(`${config.channel}`);
-        if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+        if (
+          !channel ||
+          channel.type === ChannelType.GuildCategory ||
+          channel.type === ChannelType.GuildForum ||
+          channel.type === ChannelType.DM
+        )
+          return;
+        if (!hasSendPerms(channel)) return;
 
         const embed = new CustomEmbed(config.message, parse);
 
         if (config.messageType === 'embed')
-          await channel.send({
-            embeds: [embed],
-            content: `${parse(config.message.content)}`,
-          }).catch(() => { });
-        if (config.messageType === 'text') await channel.send({ content: `${parse(config.messageText)}` }).catch(() => { });
+          await channel
+            .send({
+              embeds: [embed],
+              content: `${parse(config.message.content)}`,
+            })
+            .catch(() => {});
+        if (config.messageType === 'text')
+          await channel.send({ content: `${parse(config.messageText)}` }).catch(() => {});
         if (config.messageType === 'card') {
           const card = await drawCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
@@ -156,10 +167,12 @@ export default {
 
           if (!config.cardMention) await channel.send({ files: [attachment] });
           if (config.cardMention)
-            await channel.send({
-              files: [attachment],
-              content: `${message.author}`,
-            }).catch(() => { });
+            await channel
+              .send({
+                files: [attachment],
+                content: `${message.author}`,
+              })
+              .catch(() => {});
         }
       }
 
@@ -167,11 +180,13 @@ export default {
         const embed = new CustomEmbed(config.dmMessage, parse);
 
         if (config.dmType === 'embed')
-          await member.send({
-            embeds: [embed],
-            content: `${parse(config.dmMessage.content)}`,
-            components: [sentFrom],
-          }).catch(() => { });
+          await member
+            .send({
+              embeds: [embed],
+              content: `${parse(config.dmMessage.content)}`,
+              components: [sentFrom],
+            })
+            .catch(() => {});
         if (config.dmType === 'text')
           await member.send({
             content: `${parse(config.dmMessageText)}`,
@@ -190,10 +205,12 @@ export default {
 
             if (!config.cardMention) await member.send({ files: [attachment] });
             if (config.cardMention)
-              await member.send({
-                files: [attachment],
-                content: `${message.author}`,
-              }).catch(() => { });
+              await member
+                .send({
+                  files: [attachment],
+                  content: `${message.author}`,
+                })
+                .catch(() => {});
           }
         }
       }

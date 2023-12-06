@@ -6,6 +6,7 @@ import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import discordTranscripts from 'discord-html-transcripts';
 import { checkUserPerms } from '@functions/ticket';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   name: 'confirm-delete-ticket',
@@ -95,6 +96,11 @@ export default {
       !config.logEnabled
     )
       return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
 
     await logChannel.send({
       embeds: [

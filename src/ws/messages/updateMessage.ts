@@ -2,6 +2,7 @@ import { CustomEmbed } from '@constants/customEmbed';
 import type { WsEventArgs } from '@typings/functionArgs';
 import Server from '@schemas/Server';
 import { ChannelType } from 'discord.js';
+import { hasSendPerms } from '@functions/discord';
 
 //* QuaBot Staff Update Message Sender.
 export default {
@@ -22,8 +23,9 @@ export default {
 
       const channel = guild.channels.cache.get(config.updatesChannel);
       if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!hasSendPerms(channel)) return;
 
-      channel.send({ embeds: [sentEmbed] }).catch(() => { });
+      channel.send({ embeds: [sentEmbed] }).catch(() => {});
       console.log(`'Sent the update message to ${guild.name} (${guild.id})`);
     });
   },

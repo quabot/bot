@@ -2,6 +2,7 @@ import { Events, Colors, GuildMember, ChannelType } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.GuildMemberUpdate,
@@ -18,6 +19,7 @@ export default {
 
     const channel = oldMember.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!hasSendPerms(channel)) return;
 
     if (oldMember.nickname === newMember.nickname) return;
     if (!oldMember.nickname && !newMember.nickname) return;

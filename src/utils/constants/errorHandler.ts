@@ -1,3 +1,4 @@
+import { hasSendPerms } from '@functions/discord';
 import { ChannelType, Client, Colors, EmbedBuilder } from 'discord.js';
 
 export async function handleError(client: Client, error: any, location: string) {
@@ -11,6 +12,7 @@ export async function handleError(client: Client, error: any, location: string) 
   const guild = client.guilds.cache.get(process.env.GUILD_ID!);
   const channel = guild?.channels.cache.get(process.env.ERROR_CHANNEL_ID!);
   if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+  if (!hasSendPerms(channel)) return;
 
   await channel.send({
     embeds: [

@@ -16,6 +16,7 @@ import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import ms from 'ms';
 import type { CommandArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   data: new SlashCommandBuilder()
@@ -174,6 +175,16 @@ export default {
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
       if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!hasSendPerms(channel)) {
+        return await interaction.followUp({
+          embeds: [
+            new Embed(color).setTitle(
+              "Didn't send the log message, because I don't have the `SendMessage` permission.",
+            ),
+          ],
+          ephemeral: true,
+        });
+      }
 
       const fields = [
         {

@@ -2,6 +2,7 @@ import { ChannelType, Events, Role } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.GuildRoleUpdate,
@@ -18,6 +19,7 @@ export default {
 
     const channel = newRole.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!hasSendPerms(channel)) return;
 
     let description = `**Role Edited**\n${newRole}`;
     if (oldRole.mentionable !== newRole.mentionable)

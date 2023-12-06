@@ -9,6 +9,7 @@ import type { CommandArgs } from '@typings/functionArgs';
 import type { NonNullMongooseReturn } from '@typings/mongoose';
 import type { IIds } from '@typings/schemas';
 import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/discord';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'giveaway',
@@ -44,6 +45,12 @@ export default {
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription('Please create the giveaway in either a text or announcement channel.'),
+        ],
+      });
+    if (!hasSendPerms(channel))
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription("Can't send the giveaway. I don't have the `SendMessages` permission."),
         ],
       });
 

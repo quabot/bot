@@ -7,6 +7,7 @@ import { Embed } from '@constants/embed';
 import type { ModalArgs } from '@typings/functionArgs';
 import { IIds } from '@typings/schemas';
 import { NonNullMongooseReturn } from '@typings/mongoose';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   name: 'suggest',
@@ -37,6 +38,12 @@ export default {
     if (channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription("The suggestions channel isn't the right type.")],
+      });
+    if (!hasSendPerms(channel))
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription("Can't send the suggestion. I don't have the `SendMessages` permission."),
+        ],
       });
 
     const suggestion = interaction.fields.getTextInputValue('suggestion');
@@ -108,6 +115,11 @@ export default {
     const logChannel = interaction.guild?.channels.cache.get(config.logChannelId);
     if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
       return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
 
     await logChannel.send({
       embeds: [

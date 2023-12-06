@@ -9,6 +9,7 @@ import { drawCard } from '@functions/levelCard';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.VoiceStateUpdate,
@@ -140,6 +141,7 @@ export default {
                     ? newState.channel
                     : newState.guild.channels.cache.get(`${config.channel}`);
                 if (!channel?.isTextBased()) return;
+                if (!hasSendPerms(channel)) return;
 
                 const embed = new CustomEmbed(config.message, parse);
 

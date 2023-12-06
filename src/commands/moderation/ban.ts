@@ -15,6 +15,7 @@ import Punishment from '@schemas/Punishment';
 import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
@@ -43,6 +44,7 @@ export default {
     .setDMPermission(false),
 
   async execute({ client, interaction, color }: CommandArgs) {
+    console.log(`🚀 ~ file: ban.ts:47 ~ execute ~ color:`, color);
     //* Determine if the command should be ephemeral or not.
     const ephemeral = interaction.options.getBoolean('private') ?? false;
 
@@ -187,6 +189,16 @@ export default {
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
       if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!hasSendPerms(channel)) {
+        return await interaction.followUp({
+          embeds: [
+            new Embed(color).setTitle(
+              "Didn't send the log message, because I don't have the `SendMessage` permission.",
+            ),
+          ],
+          ephemeral: true,
+        });
+      }
 
       const fields = [
         {

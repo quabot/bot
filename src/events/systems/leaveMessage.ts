@@ -3,6 +3,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.GuildMemberRemove,
@@ -16,6 +17,7 @@ export default {
 
     const channel = member.guild.channels.cache.get(config.leaveChannel);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!hasSendPerms(channel)) return;
 
     const parseString = (text: string) =>
       text

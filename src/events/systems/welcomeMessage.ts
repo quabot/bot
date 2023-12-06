@@ -3,6 +3,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.GuildMemberAdd,
@@ -16,6 +17,7 @@ export default {
 
     const channel = member.guild.channels.cache.get(config.joinChannel);
     if (!channel?.isTextBased()) return;
+    if (!hasSendPerms(channel)) return;
 
     const parseString = (text: string) =>
       text

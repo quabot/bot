@@ -2,6 +2,7 @@ import { Events, Role, ChannelType } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.GuildRoleDelete,
@@ -18,6 +19,7 @@ export default {
 
     const channel = role.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!hasSendPerms(channel)) return;
 
     let description = '';
     const perms = role.permissions.toArray().join('\n');
