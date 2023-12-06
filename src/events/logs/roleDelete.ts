@@ -19,11 +19,6 @@ export default {
     const channel = role.guild.channels.cache.get(config.channelId);
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
 
-    let description = '';
-    const perms = role.permissions.toArray().join('\n');
-    const permsLength = String(perms);
-    if (permsLength.length < 970 && permsLength.length !== 0) description += `\n**Permissions:**\n${perms}`;
-
     await channel
       .send({
         embeds: [
