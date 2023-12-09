@@ -18,8 +18,8 @@ export default async function (client: Client) {
 
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/commands/*/*.js`);
   files.forEach(async file => {
-    const command: Command = require(file).default;
-    if (!command.data) return;
+    const command: Command | undefined = require(file).default;
+    if (!command?.data) return;
 
     client.commands.set(command.data.name, command);
     commandsList.push(command.data);
