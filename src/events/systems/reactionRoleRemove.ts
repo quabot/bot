@@ -17,6 +17,7 @@ import { permissionBitToString } from '@constants/discord';
 import { screamingSnakeToPascalCase } from '@functions/string';
 import type { NonNullMongooseReturn, ReactionRoleType } from '@typings/mongoose';
 import type { IReactionConfig, IServer } from '@typings/schemas';
+import { hasRolePerms } from '@functions/discord';
 
 export default {
   event: 'messageReactionRemove',
@@ -59,6 +60,8 @@ export default {
       )
         return;
     }
+
+    if (!hasRolePerms(role)) return;
 
     const rawConfig = await getReactionConfig(client, reaction.message.guild.id);
     const rawCustomConfig = await getServerConfig(client, reaction.message.guild.id);

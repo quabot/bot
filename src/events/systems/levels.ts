@@ -11,7 +11,7 @@ import type { EventArgs } from '@typings/functionArgs';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
-import { hasSendPerms } from '@functions/discord';
+import { hasRolePerms, hasSendPerms } from '@functions/discord';
 
 export default {
   event: 'messageCreate',
@@ -262,18 +262,18 @@ export default {
         if (config.rewardsMode === 'replace') {
           if (levelDB.role !== 'none') {
             const role = guild.roles.cache.get(levelDB.role);
-            if (role) await member.roles.remove(role).catch(() => {});
+            if (hasRolePerms(role)) await member.roles.remove(role!).catch(() => {});
           }
 
           const role = guild.roles.cache.get(check.role);
-          if (role) await member.roles.add(role).catch(() => {});
+          if (hasRolePerms(role)) await member.roles.add(role!).catch(() => {});
           levelDB.role = check.role;
           await levelDB.save();
         }
 
         if (config.rewardsMode === 'stack') {
           const role = guild.roles.cache.get(check.role);
-          if (role) await member.roles.add(role).catch(() => {});
+          if (hasRolePerms(role)) await member.roles.add(role!).catch(() => {});
           levelDB.role = check.role;
           await levelDB.save();
         }

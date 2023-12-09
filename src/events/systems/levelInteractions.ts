@@ -17,7 +17,7 @@ import { getServerConfig } from '@configs/serverConfig';
 import type { EventArgs } from '@typings/functionArgs';
 import Vote from '@schemas/Vote';
 import { drawCard } from '@functions/levelCard';
-import { hasAnyRole, hasSendPerms } from '@functions/discord';
+import { hasAnyRole, hasRolePerms, hasSendPerms } from '@functions/discord';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
@@ -259,18 +259,18 @@ export default {
         if (config.rewardsMode === 'replace') {
           if (levelDB.role !== 'none') {
             const role = guild.roles.cache.get(levelDB.role);
-            if (role) await member.roles.remove(role);
+            if (hasRolePerms(role)) await member.roles.remove(role!);
           }
 
           const role = guild.roles.cache.get(check.role);
-          if (role) await member.roles.add(role);
+          if (hasRolePerms(role)) await member.roles.add(role!);
           levelDB.role = check.role;
           await levelDB.save();
         }
 
         if (config.rewardsMode === 'stack') {
           const role = guild.roles.cache.get(check.role);
-          if (role) await member.roles.add(role);
+          if (hasRolePerms(role)) await member.roles.add(role!);
           levelDB.role = check.role;
           await levelDB.save();
         }

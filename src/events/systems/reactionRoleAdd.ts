@@ -17,6 +17,7 @@ import { permissionBitToString } from '@constants/discord';
 import { screamingSnakeToPascalCase } from '@functions/string';
 import type { NonNullMongooseReturn, ReactionRoleType } from '@typings/mongoose';
 import type { IReactionConfig, IServer } from '@typings/schemas';
+import { hasRolePerms } from '@functions/discord';
 
 export default {
   event: 'messageReactionAdd',
@@ -49,9 +50,8 @@ export default {
     const member = rawMember as GuildMember;
     const role = rawRole as Role;
 
-    const highestClientRole = clientMember.roles.highest;
     //* Return if the highestClientRole position is below or the same as 'role'
-    if (highestClientRole.comparePositionTo(role) < 1) return;
+    if (!hasRolePerms(role)) return;
 
     if (role.managed) return;
     if (role.id === reaction.message.guild.id) return;

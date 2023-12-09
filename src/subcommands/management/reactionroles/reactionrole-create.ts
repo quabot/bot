@@ -6,6 +6,7 @@ import Reaction from '@schemas/ReactionRole';
 import type { CommandArgs } from '@typings/functionArgs';
 import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/discord';
 import type { GuildTextBasedChannel } from 'discord.js';
+import { hasRolePerms } from '@functions/discord';
 
 export default {
   parent: 'reactionroles',
@@ -43,10 +44,12 @@ export default {
         embeds: [new Embed(color).setDescription('Please enter a valid channel type.')],
       });
 
-    if (role.position > (interaction.guild?.members.me?.roles.highest.rawPosition ?? 0))
+    if (hasRolePerms(role))
       return await interaction.editReply({
         embeds: [
-          new Embed(color).setDescription('I cannot give that role to users! Make sure the role is below my roles.'),
+          new Embed(color).setDescription(
+            'I cannot give that role to users! Make sure the role is below my roles and that I have the `ManageRoles` permission.',
+          ),
         ],
       });
 

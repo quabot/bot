@@ -9,7 +9,7 @@ import { drawCard } from '@functions/levelCard';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
-import { hasSendPerms } from '@functions/discord';
+import { hasRolePerms, hasSendPerms } from '@functions/discord';
 
 export default {
   event: Events.VoiceStateUpdate,
@@ -254,18 +254,18 @@ export default {
                 if (config.rewardsMode === 'replace') {
                   if (levelDB.role !== 'none') {
                     const role = newState.guild.roles.cache.get(levelDB.role);
-                    if (role) await member.roles.remove(role);
+                    if (hasRolePerms(role)) await member.roles.remove(role!);
                   }
 
                   const role = newState.guild.roles.cache.get(check.role);
-                  if (role) await member.roles.add(role);
+                  if (hasRolePerms(role)) await member.roles.add(role!);
                   levelDB.role = check.role;
                   await levelDB.save();
                 }
 
                 if (config.rewardsMode === 'stack') {
                   const role = newState.guild.roles.cache.get(check.role);
-                  if (role) await member.roles.add(role);
+                  if (hasRolePerms(role)) await member.roles.add(role!);
                   levelDB.role = check.role;
                   await levelDB.save();
                 }

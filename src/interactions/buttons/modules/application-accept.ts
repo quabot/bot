@@ -3,7 +3,7 @@ import { Embed } from '@constants/embed';
 import ApplicationAnswer from '@schemas/ApplicationAnswer';
 import Application from '@schemas/Application';
 import type { ButtonArgs } from '@typings/functionArgs';
-import { hasAnyRole } from '@functions/discord';
+import { hasAnyRole, hasRolePerms } from '@functions/discord';
 
 export default {
   name: 'application-accept',
@@ -57,14 +57,14 @@ export default {
     if (form.add_roles) {
       form.add_roles.forEach(async role => {
         const roleToAdd = interaction.guild?.roles.cache.get(role);
-        if (roleToAdd) member?.roles.add(roleToAdd);
+        if (hasRolePerms(roleToAdd)) member?.roles.add(roleToAdd!);
       });
     }
 
     if (form.remove_roles) {
       form.remove_roles.forEach(async role => {
         const roleToAdd = interaction.guild?.roles.cache.get(role);
-        if (roleToAdd) member.roles.remove(roleToAdd);
+        if (hasRolePerms(roleToAdd)) member.roles.remove(roleToAdd!);
       });
     }
 

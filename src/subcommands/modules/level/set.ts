@@ -2,7 +2,7 @@ import { Embed } from '@constants/embed';
 import { getLevelConfig } from '@configs/levelConfig';
 import { getLevel } from '@configs/level';
 import type { CommandArgs } from '@typings/functionArgs';
-import { hasAnyPerms } from '@functions/discord';
+import { hasAnyPerms, hasRolePerms } from '@functions/discord';
 import { PermissionFlagsBits } from 'discord.js';
 
 export default {
@@ -45,6 +45,8 @@ export default {
 
     if (config.removeRewards) {
       config.rewards!.forEach(async reward => {
+        if (!hasRolePerms(await interaction.guild?.roles.fetch(reward.role))) return;
+
         if (level < reward.level) {
           if ('remove' in member.roles) await member.roles.remove(reward.role).catch(() => {});
         }

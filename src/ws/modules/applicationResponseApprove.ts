@@ -1,6 +1,7 @@
 import { Embed } from '@constants/embed';
 import type { WsEventArgs } from '@typings/functionArgs';
 import Application from '@schemas/Application';
+import { hasRolePerms } from '@functions/discord';
 
 //* Handle what happens when a form gets responded to.
 export default {
@@ -27,14 +28,14 @@ export default {
     if (FoundForm.add_roles) {
       FoundForm.add_roles.forEach(async role => {
         const roleToAdd = guild.roles.cache.get(role);
-        if (roleToAdd) member.roles.add(roleToAdd);
+        if (hasRolePerms(roleToAdd)) member.roles.add(roleToAdd!);
       });
     }
 
     if (FoundForm.remove_roles) {
       FoundForm.remove_roles.forEach(async role => {
         const roleToAdd = guild.roles.cache.get(role);
-        if (roleToAdd) member.roles.remove(roleToAdd);
+        if (hasRolePerms(roleToAdd)) member.roles.remove(roleToAdd!);
       });
     }
 

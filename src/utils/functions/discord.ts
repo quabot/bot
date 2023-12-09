@@ -10,6 +10,8 @@ import {
   EmbedBuilder,
   type GuildBasedChannel,
   type GuildChannel,
+  Role,
+  APIRole,
 } from 'discord.js';
 
 export function prepareEmbed(embed: DiscordEmbed) {
@@ -51,6 +53,15 @@ export function getRoleIds(
   if (!member) return [];
 
   return 'cache' in member.roles ? (member.roles as GuildMemberRoleManager).cache.map(r => r.id) : member.roles;
+}
+
+export function hasRolePerms(role: Role | APIRole | undefined | null) {
+  if (!role || !('guild' in role)) return false;
+
+  const member = role.guild.members.me;
+  if (!member) return false;
+
+  return !(member.roles.highest.comparePositionTo(role) < 1) && member.permissions.has('ManageRoles');
 }
 
 export function hasSendPerms(channel: GuildBasedChannel | GuildChannel | null) {
