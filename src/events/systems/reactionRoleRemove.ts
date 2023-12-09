@@ -49,7 +49,7 @@ export default {
     if (role.managed) return;
     if (role.id === reaction.message.guild.id) return;
 
-    if (reactionRole.reqPermission !== 'none') {
+    if (reactionRole.reqPermission.toLowerCase() !== 'none') {
       if (
         !member.permissions.has(
           screamingSnakeToPascalCase(
