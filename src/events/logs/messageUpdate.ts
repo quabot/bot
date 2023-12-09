@@ -37,10 +37,8 @@ export default {
     )
       return;
     if (oldMessage.content !== newMessage.content) {
-      embed.addFields(
-        { name: 'Old Content', value: `${oldMessage.content}`.slice(0, 1020) },
-        { name: 'New Content', value: `${newMessage.content}`.slice(0, 1020) },
-      );
+      if (oldMessage.content) embed.addFields({ name: 'Old Content', value: `${oldMessage.content}`.slice(0, 1020) });
+      if (newMessage.content) embed.addFields({ name: 'New Content', value: `${newMessage.content}`.slice(0, 1020) });
     }
 
     if (newMessage.author)
@@ -50,15 +48,23 @@ export default {
       });
 
     const oldAttachments = oldMessage.attachments.map(i => i.url);
+    const newAttachments = newMessage.attachments.map(i => i.url);
 
-    const newAttachments = [];
-    newMessage.attachments.map(i => newAttachments.push(i.url));
+    if (oldAttachments.length > newAttachments.length) {
+      if (oldAttachments.length > 0) {
+        embed.addFields({
+          name: '**Old Attachments**',
+          value: `${oldAttachments.join('\n')}`.slice(0, 1024),
+        });
+      }
 
-    if (oldAttachments.length > newAttachments.length && oldMessage.attachments !== newMessage.attachments)
-      embed.addFields({
-        name: '**Attachments**',
-        value: `${oldAttachments.join('\n')}`.slice(0, 1024),
-      });
+      if (newAttachments.length > 0) {
+        embed.addFields({
+          name: '**New Attachments**',
+          value: `${newAttachments.join('\n')}`.slice(0, 1024),
+        });
+      }
+    }
 
     await channel
       .send({
