@@ -38,7 +38,7 @@ export interface IApplication {
   questions?: Types.Array<{
     question: string;
     description?: string;
-    type: 'multiple' | 'checkbox' | 'short' | 'paragraph';
+    type: 'multiple' | 'checkbox' | 'short' | 'paragraph' | 'bool';
     required: boolean;
   }>;
 
@@ -48,7 +48,7 @@ export interface IApplication {
   ignored_roles?: Types.Array<Snowflake>;
   allowed_roles?: Types.Array<Snowflake>;
   reapply: boolean;
-  dashboard_allowed: boolean;
+  allowed_from: 'dashboard' | 'bot' | 'both';
   anonymous: boolean;
   cooldown_enabled: boolean;
   cooldown: string;
@@ -66,8 +66,9 @@ export interface IApplicationAnswer {
 
   userId: Snowflake;
   time: string;
-  answers?: Types.Array<string>;
+  answers: Types.Array<string>;
   state: Status;
+  reason: string;
 }
 
 export interface IApplicationConfig {
