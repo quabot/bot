@@ -61,6 +61,16 @@ export default {
         embeds: [new Embed(color).setDescription('That emoji is already used for a reactionrole on that message.')],
       });
 
+    if (!/\d/g.test(messageId)) {
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "This isn't a valid id, a message id looks something like this `1138538614419095643`.\nFor help you could look at [this article](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)",
+          ),
+        ],
+      });
+    }
+
     channel.messages
       .fetch({ message: messageId })
       .then(async message => {
