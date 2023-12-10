@@ -39,7 +39,8 @@ export class CustomEmbed extends EmbedBuilder {
     if (rawEmbed.image && isValidHttpUrl(getParsedString(rawEmbed.image).substring(0, 2048)))
       this.setImage(getParsedString(rawEmbed.image).substring(0, 2048));
 
-    if (rawEmbed.color) this.setColor((getParsedString(rawEmbed.color.toString()) as ColorResolvable) ?? '#416683');
+    const color = getParsedString(rawEmbed.color.toString()) as '{color}' | ColorResolvable;
+    if (rawEmbed.color) this.setColor((color === '{color}' ? '#416683' : color) ?? '#416683');
 
     const newFields: APIEmbedField[] = [];
     rawEmbed.fields.forEach(field =>
