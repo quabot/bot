@@ -21,6 +21,18 @@ export default {
         ],
       });
 
+    const guild = client.guilds.cache.get(process.env.GUILD_ID!);
+  const channel = guild?.channels.cache.get("1183481019735736440");
+    if (!channel) return;
+
+  await channel.send({
+    embeds: [
+      new EmbedBuilder()
+        .setTimestamp()
+        .setDescription(`${interaction.commandName} - ${interaction.user.username} - ${interaction.guild.name}`),
+    ],
+  });
+    
     const config = await getServerConfig(client, interaction.guildId);
     if (config && config.disabledCommands && config.disabledCommands.includes(interaction.commandName))
       return await interaction.reply({
