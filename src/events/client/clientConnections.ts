@@ -26,7 +26,7 @@ export default {
 
     // Post the stats to the QuaBot Site every minute
     if (process.env.POST_STATS === 'true') {
-      postStats()
+      postStats();
       setInterval(postStats, 60 * 1000);
 
       function postStats() {
