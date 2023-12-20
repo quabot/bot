@@ -17,7 +17,7 @@ export default {
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID!);
     if (!guild) return;
-    const channel = guild?.channels.cache.get("1183481019735736440");
+    const channel = guild?.channels.cache.get('1183481019735736440');
     if (!channel) return;
 
     // @ts-ignore
@@ -29,6 +29,8 @@ export default {
       ],
     });
 
-    await button.execute({ client, interaction, color }).catch(async e => await handleError(client, e, interaction.customId));
+    await button
+      .execute({ client, interaction, color })
+      .catch(async e => await handleError(client, e, interaction, interaction.customId));
   },
 };

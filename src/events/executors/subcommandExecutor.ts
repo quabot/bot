@@ -29,7 +29,7 @@ export default {
 
       const guild = client.guilds.cache.get(process.env.GUILD_ID!);
       if (!guild) return;
-      const channel = guild?.channels.cache.get("1183481019735736440");
+      const channel = guild?.channels.cache.get('1183481019735736440');
       if (!channel) return;
 
       // @ts-ignore
@@ -37,7 +37,9 @@ export default {
         embeds: [
           new EmbedBuilder()
             .setTimestamp()
-            .setDescription(`${interaction.commandName}/${subcommandName} - ${interaction.user.username} - ${interaction.guild?.name}`),
+            .setDescription(
+              `${interaction.commandName}/${subcommandName} - ${interaction.user.username} - ${interaction.guild?.name}`,
+            ),
         ],
       });
 
@@ -56,7 +58,9 @@ export default {
 
       await subcommand
         .execute({ client, interaction, color })
-        .catch(e => handleError(client, e, `${interaction.options.getSubcommand()}/${interaction.commandName}`));
+        .catch(e =>
+          handleError(client, e, interaction, `${interaction.options.getSubcommand()}/${interaction.commandName}`),
+        );
     } catch (e) {
       return;
     }
