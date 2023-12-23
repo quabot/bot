@@ -8,7 +8,10 @@ export default {
     let location =
       interaction.isCommand() || interaction.isAutocomplete() ? interaction.commandName : interaction.customId;
 
-    if (interaction.isChatInputCommand()) {
+    if (
+      interaction.isChatInputCommand() &&
+      client.subcommands.filter(subcommand => subcommand.parent === interaction.commandName).size > 0
+    ) {
       const subcommand = interaction.options.getSubcommand();
       if (subcommand) location += `/${subcommand}`;
     }
