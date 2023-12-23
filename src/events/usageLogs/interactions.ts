@@ -1,11 +1,12 @@
-import { EmbedBuilder, type ButtonInteraction } from 'discord.js';
+import { EmbedBuilder, type Interaction } from 'discord.js';
 import { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: 'interactionCreate',
   name: 'buttonExecutor',
-  async execute({ client }: EventArgs, interaction: ButtonInteraction) {
-    if (!interaction.isButton()) return;
+  async execute({ client }: EventArgs, interaction: Interaction) {
+    const location =
+      interaction.isCommand() || interaction.isAutocomplete() ? interaction.commandName : interaction.customId;
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID!);
     if (!guild) return;
@@ -16,7 +17,7 @@ export default {
       embeds: [
         new EmbedBuilder()
           .setTimestamp()
-          .setDescription(`${interaction.customId} - ${interaction.user.username} - ${interaction.guild?.name}`),
+          .setDescription(`${location} - ${interaction.user.username} - ${interaction.guild?.name}`),
       ],
     });
   },
