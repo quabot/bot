@@ -50,7 +50,7 @@ export default {
     ticket.staff = interaction.user.id;
     await ticket.save();
 
-    const ticketMsg = interaction.channel?.messages.cache.last();
+    const ticketMsg = interaction.channel?.messages.cache.first();
     if (ticketMsg?.author.id !== process.env.CLIENT_ID!)
       return await interaction.editReply({
         embeds: [

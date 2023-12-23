@@ -12,7 +12,10 @@ export default {
 
     await channel.send({
       embeds: [
-        new EmbedBuilder().setTimestamp().setDescription(`Left ${leftGuild.name} (${leftGuild.id})`).setColor('Red'),
+        new EmbedBuilder()
+          .setTimestamp()
+          .setDescription(`Left **${leftGuild.name}** *(${leftGuild.id})*`)
+          .setColor('Red'),
       ],
     });
   },
