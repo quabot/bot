@@ -3,7 +3,7 @@ import { EventArgs } from '@typings/functionArgs';
 
 export default {
   event: 'interactionCreate',
-  name: 'buttonExecutor',
+  name: 'interactionUsage',
   async execute({ client }: EventArgs, interaction: Interaction) {
     const location =
       interaction.isCommand() || interaction.isAutocomplete() ? interaction.commandName : interaction.customId;
