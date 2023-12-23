@@ -1,13 +1,13 @@
 import { getServerConfig } from '@configs/serverConfig';
 import { handleError } from '@constants/errorHandler';
 import type { EventArgs } from '@typings/functionArgs';
-import { EmbedBuilder, type ModalSubmitInteraction } from 'discord.js';
+import { EmbedBuilder, type Interaction } from 'discord.js';
 
 export default {
   event: 'interactionCreate',
   name: 'modalExecutor',
 
-  async execute({ client }: EventArgs, interaction: ModalSubmitInteraction) {
+  async execute({ client }: EventArgs, interaction: Interaction) {
     if (!interaction.isModalSubmit() || !interaction.guildId) return;
 
     const modal = client.modals.get(interaction.customId);

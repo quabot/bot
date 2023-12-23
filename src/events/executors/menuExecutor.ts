@@ -1,14 +1,14 @@
 import { getServerConfig } from '@configs/serverConfig';
 import { handleError } from '@constants/errorHandler';
 import type { EventArgs } from '@typings/functionArgs';
-import { EmbedBuilder, type AnySelectMenuInteraction } from 'discord.js';
+import { EmbedBuilder, type Interaction } from 'discord.js';
 
 export default {
   event: 'interactionCreate',
   name: 'menuExecutor',
 
-  async execute({ client }: EventArgs, interaction: AnySelectMenuInteraction) {
-    if (!interaction.isStringSelectMenu() || !interaction.guildId) return;
+  async execute({ client }: EventArgs, interaction: Interaction) {
+    if (!interaction.isAnySelectMenu() || !interaction.guildId) return;
 
     const menu = client.menus.get(interaction.customId);
     if (!menu) return;
