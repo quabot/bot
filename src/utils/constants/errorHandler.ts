@@ -28,16 +28,16 @@ export async function handleError(
   if (blocked_codes.includes(error.code)) return;
 
   if (error.code === 50001) {
-    if (interaction.deferred || interaction.replied) {
-      await interaction.editReply({
-        content: `An error occured! The bot doesn't have all the permissions that are required for this action (${location}).`,
-      });
-    } else {
-      await interaction.reply({
-        content: `An error occured! The bot doesn't have all the permissions that are required for this action (${location}).`,
-        ephemeral: true,
-      });
-    }
+    await handleInteractionReply(
+      `An error occured! The bot doesn't have access to something that's used for this action (${location}).`,
+    );
+
+    return;
+  }
+  if (error.code === 50013) {
+    await handleInteractionReply(
+      `An error occured! The bot doesn't have all the permissions that are required for this action (${location}).`,
+    );
 
     return;
   }
@@ -58,4 +58,17 @@ export async function handleError(
         .setDescription(`\`\`\`${error.message}\`\`\`\n**Location/Command:**\n\`${location}\``),
     ],
   });
+
+  async function handleInteractionReply(content: string) {
+    if (interaction.deferred || interaction.replied) {
+      await interaction.editReply({
+        content,
+      });
+    } else {
+      await interaction.reply({
+        content,
+        ephemeral: true,
+      });
+    }
+  }
 }
