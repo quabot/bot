@@ -5,8 +5,13 @@ export default {
   event: 'interactionCreate',
   name: 'interactionUsage',
   async execute({ client }: EventArgs, interaction: Interaction) {
-    const location =
+    let location =
       interaction.isCommand() || interaction.isAutocomplete() ? interaction.commandName : interaction.customId;
+
+    if (interaction.isChatInputCommand()) {
+      const subcommand = interaction.options.getSubcommand();
+      if (subcommand) location += `/${subcommand}`;
+    }
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID!);
     if (!guild) return;

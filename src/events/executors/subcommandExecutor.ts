@@ -42,9 +42,7 @@ export default {
 
       await subcommand
         .execute({ client, interaction, color })
-        .catch(e =>
-          handleError(client, e, interaction, `${interaction.options.getSubcommand()}/${interaction.commandName}`),
-        );
+        .catch(e => handleError(client, e, interaction, `${interaction.commandName}/${subcommandName}`));
     } catch (e) {
       return;
     }
