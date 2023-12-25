@@ -15,7 +15,10 @@ export default model<IApplication>(
     // {
     //   question: 'question goes here', // will be shown to user
     //   description: 'description here' // optional description for user
+    //   image: 'url' // optional image for user
+    //   thumbnail: 'url' // optional thumbnail for user
     //   type: string (multiple = multiple choice, checkbox = 1 option selectable, short =  short Text, paragraph = long text),
+    //   options: string[]
     //   required: true/false
     // }
 

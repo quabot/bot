@@ -39,7 +39,10 @@ export interface IApplication {
     question: string;
     description?: string;
     type: 'multiple' | 'checkbox' | 'short' | 'paragraph' | 'bool';
+    options?: string[];
     required: boolean;
+    image?: string;
+    thumbnail?: string;
   }>;
 
   submissions_channel: Snowflake;
