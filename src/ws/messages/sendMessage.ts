@@ -1,7 +1,6 @@
 import { CustomEmbed } from '@constants/customEmbed';
 import { hasSendPerms } from '@functions/discord';
 import type { WsEventArgs } from '@typings/functionArgs';
-import { ChannelType } from 'discord.js';
 
 //* QuaBot Dashboard Message Sender Handler.
 export default {
@@ -12,7 +11,7 @@ export default {
     if (!guild) return;
     const channel = guild.channels.cache.get(data.channelId);
     const embed = data.embed;
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     //* Send the message.

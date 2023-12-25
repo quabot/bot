@@ -1,4 +1,4 @@
-import { type Message, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { type Message, Collection, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { getLevelConfig } from '@configs/levelConfig';
 import { AttachmentBuilder } from 'discord.js';
 import { getLevel } from '@configs/level';
@@ -137,13 +137,7 @@ export default {
 
       if (config.channel !== 'none') {
         const channel = config.channel === 'current' ? msgChannel : guild.channels.cache.get(`${config.channel}`);
-        if (
-          !channel ||
-          channel.type === ChannelType.GuildCategory ||
-          channel.type === ChannelType.GuildForum ||
-          channel.type === ChannelType.DM
-        )
-          return;
+        if (!channel?.isTextBased() || channel.isDMBased()) return;
         if (!hasSendPerms(channel)) return;
 
         const embed = new CustomEmbed(config.message, parse);

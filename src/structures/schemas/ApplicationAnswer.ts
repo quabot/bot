@@ -10,7 +10,7 @@ export default model<IApplicationAnswer>(
     response_uuid: reqString, // unique identifier for the response
     //! should NEVER be undefined, we NEED it for giving roles, sending messages etc.
     userId: reqString, // user id or none if anonymous
-    time: reqString, // time of fillout
+    time: { type: Date, required: true }, // time of fillout
     answers: reqArray, // the users answers
     state: reqString, // pending, approved or denied
   }),

@@ -1,5 +1,6 @@
 import { Embed } from '@constants/embed';
 import Application from '@schemas/Application';
+import ApplicationAnswer from '@schemas/ApplicationAnswer';
 import { MenuArgs } from '@typings/functionArgs';
 import {
   ActionRowBuilder,
@@ -19,6 +20,7 @@ import {
   type ModalSubmitInteraction,
   type StringSelectMenuInteraction,
 } from 'discord.js';
+import uuid from 'uuid-wand';
 
 export default {
   name: 'applications-apply',
@@ -28,6 +30,18 @@ export default {
 
     const application = await Application.findOne({ guildId: interaction.guildId!, id: interaction.values[0] });
     if (!application) return;
+
+    // const answer: IApplicationAnswer = ;
+
+    const applicationAnswers: (string | string[] | number[])[] = application.questions!.map(q =>
+      q.type === 'short' || q.type === 'paragraph' ? '' : [],
+    );
+
+    // console.log(applicationAnswers);
+
+    // applicationAnswers.addToSet(
+    //   ...application.questions!.map(q => (q.type === 'short' || q.type === 'paragraph' ? '' : [])),
+    // );
 
     interface Page {
       embeds: Embed[];
@@ -69,8 +83,8 @@ export default {
                 .setOptions(
                   question
                     .options!.filter(option => option)
-                    .map(value => {
-                      return { label: value, value };
+                    .map((value, i) => {
+                      return { label: value, value: i.toString() };
                     }),
                 )
                 .setCustomId(i.toString()),
@@ -157,6 +171,11 @@ export default {
     const answerCollector = initMsg.createMessageComponentCollector({
       filter: i => !['submit', 'previous', 'next'].includes(i.customId),
     });
+    const submitCollector = initMsg.createMessageComponentCollector({
+      componentType: ComponentType.Button,
+      filter: i => i.customId === 'submit',
+      max: 1,
+    });
 
     answerCollector.on('collect', async inter => {
       const i = parseInt(inter.customId);
@@ -199,6 +218,23 @@ export default {
       await handleAnswer(inter, i, inter.values);
     });
 
+    submitCollector.once('collect', async inter => {
+      await new ApplicationAnswer({
+        guildId: interaction.guildId!,
+        userId: interaction.user.id,
+        id: application.id,
+        response_uuid: uuid.v4(),
+        state: 'pending',
+        time: new Date(),
+        answers: applicationAnswers,
+      }).save();
+
+      inter.update({
+        embeds: [new Embed(color).setDescription('Your application is submitted.')],
+        components: [],
+      });
+    });
+
     pageCollector.on('collect', async inter => {
       await inter.deferReply({ ephemeral: true });
 
@@ -223,11 +259,29 @@ export default {
       i: number,
       answers: string[],
     ) {
+      const question = application!.questions![i];
+      const { type } = question;
+      const isCheckbox = type === 'checkbox';
+      const processedAnswers = isCheckbox
+        ? answers.map(a => parseInt(a))
+        : type === 'paragraph' || type === 'short'
+        ? answers[0]
+        : answers;
+
+      console.log(`🚀 ~ file: applications-apply.ts:266 ~ execute ~ applicationAnswers:`, applicationAnswers);
+      console.log(`🚀 ~ file: applications-apply.ts:267 ~ execute ~ applicationAnswers[i]:`, applicationAnswers[i]);
+      applicationAnswers[i] = processedAnswers;
+      // applicationAnswers.splice(i, 1, processedAnswers);
+
       await interaction.deferReply({ ephemeral: true });
 
       pages[i].embeds[0].setFields({
         name: 'Answer',
-        value: (answers.length > 1 ? '- ' : '') + answers.join('\n- '),
+        value: isCheckbox
+          ? '- ' + (processedAnswers as number[]).map(a => question.options![a]).join('\n- ')
+          : typeof processedAnswers === 'object'
+          ? processedAnswers[0].toString()
+          : processedAnswers,
       });
 
       await updatePage();

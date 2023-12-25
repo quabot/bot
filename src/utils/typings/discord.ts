@@ -1,7 +1,7 @@
 import {
+  ChannelType,
   type ApplicationCommandOptionAllowedChannelTypes,
   type CategoryChannel,
-  ChannelType,
   type ForumChannel,
   type NewsChannel,
   type StageChannel,

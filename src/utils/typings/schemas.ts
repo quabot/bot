@@ -68,8 +68,8 @@ export interface IApplicationAnswer {
   response_uuid: string;
 
   userId: Snowflake;
-  time: string;
-  answers: Types.Array<string>;
+  time: Date;
+  answers: Types.Array<string[] | string | number[]>;
   state: Status;
 }
 

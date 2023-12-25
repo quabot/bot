@@ -3,7 +3,6 @@ import {
   ButtonBuilder,
   ButtonStyle,
   type GuildTextBasedChannel,
-  ChannelType,
   type PrivateThreadChannel,
   type PublicThreadChannel,
 } from 'discord.js';
@@ -14,6 +13,7 @@ import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import { hasSendPerms } from '@functions/discord';
+import { ChannelType } from 'discord.js';
 
 export default {
   name: 'reopen-ticket',
@@ -134,13 +134,7 @@ export default {
     await ticket.save();
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
-    if (
-      !logChannel ||
-      logChannel.type === ChannelType.GuildCategory ||
-      logChannel.type === ChannelType.GuildForum ||
-      !config.logEnabled
-    )
-      return;
+    if (!logChannel?.isTextBased() || !config.logEnabled) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
         embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],

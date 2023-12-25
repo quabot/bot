@@ -1,4 +1,4 @@
-import { Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, type GuildMember, ChannelType } from 'discord.js';
+import { Colors, ActionRowBuilder, ButtonBuilder, ButtonStyle, type GuildMember } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { WsEventArgs } from '@typings/functionArgs';
 import Application from '@schemas/Application';
@@ -25,12 +25,7 @@ export default {
 
     //* Get the submission channel and send a message in it.
     const submission_channel = guild.channels.cache.get(FoundForm.submissions_channel);
-    if (
-      !submission_channel ||
-      submission_channel.type === ChannelType.GuildCategory ||
-      submission_channel.type === ChannelType.GuildForum
-    )
-      return;
+    if (!submission_channel?.isTextBased()) return;
     if (!hasSendPerms(submission_channel)) return;
 
     let submission_user: GuildMember | undefined | string = guild.members.cache.get(form.userId);

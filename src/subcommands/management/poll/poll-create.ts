@@ -1,9 +1,10 @@
-import { ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import ms from 'ms';
 import { getIdConfig } from '@configs/idConfig';
 import { getPollConfig } from '@configs/pollConfig';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
+import { ChannelType } from 'discord.js';
 
 export default {
   parent: 'poll',

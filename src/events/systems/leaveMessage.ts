@@ -1,4 +1,4 @@
-import { ChannelType, Events, type GuildMember } from 'discord.js';
+import { Events, type GuildMember } from 'discord.js';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
@@ -16,7 +16,7 @@ export default {
     if (!config.leaveEnabled) return;
 
     const channel = member.guild.channels.cache.get(config.leaveChannel);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     const parseString = (text: string) =>
