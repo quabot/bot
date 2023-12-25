@@ -71,6 +71,7 @@ export interface IApplicationAnswer {
   time: Date;
   answers: Types.Array<string[] | string | number[]>;
   state: Status;
+  reason: string;
 }
 
 export interface IApplicationConfig {
