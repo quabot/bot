@@ -60,7 +60,7 @@ export default {
       };
 
       switch (question.type) {
-        case 'multiple': {
+        case 'checkbox': {
           message.components?.push(
             new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
               new StringSelectMenuBuilder()
@@ -93,7 +93,7 @@ export default {
           break;
         }
 
-        case 'checkbox': {
+        case 'multiple': {
           message.components?.push(
             new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
               new StringSelectMenuBuilder()
