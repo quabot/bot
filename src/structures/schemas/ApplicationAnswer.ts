@@ -13,6 +13,5 @@ export default model<IApplicationAnswer>(
     time: reqString, // time of fillout
     answers: reqArray, // the users answers
     state: reqString, // pending, approved or denied
-    reason: reqString,
   }),
 );
