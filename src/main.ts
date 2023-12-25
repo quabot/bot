@@ -1,5 +1,3 @@
-require('module-alias/register');
-
 import { Client } from '@classes/discord';
 import { Collection, Partials } from 'discord.js';
 const { Channel, Reaction, Message } = Partials;

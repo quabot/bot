@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "yarn install && nodemon",
     "production": "yarn deploy && sh run.sh",
-    "start": "node --require dotenv/config dist/main.js",
+    "start": "node --require dotenv/config --require module-alias/register dist/main.js",
     "build": "rimraf ./dist && yarn tsc",
     "deploy": "sh deploy.sh",
     "prettier": "prettier --write src"
