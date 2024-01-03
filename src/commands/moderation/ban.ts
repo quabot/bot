@@ -51,6 +51,11 @@ export default {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply({ ephemeral });
 
+    if (!interaction.user)
+      return await interaction.editReply(
+        "Discord made a mistake, we can't access the user who used this command!\nPlease try again.",
+      );
+
     //* Get the moderation config and return if it doesn't exist.
     const config = await getModerationConfig(client, interaction.guildId!);
     if (!config)
