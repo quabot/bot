@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildMemberRoleManager, Snowflake } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import ApplicationAnswer from '@schemas/ApplicationAnswer';
 import Application from '@schemas/Application';
@@ -41,9 +41,7 @@ export default {
         if (!interaction.member) return;
 
         const hasRole =
-          'cache' in interaction.member.roles
-            ? (interaction.member.roles as GuildMemberRoleManager).cache.get
-            : (interaction.member.roles as Snowflake[]).includes;
+          'cache' in interaction.member.roles ? interaction.member.roles.cache.get : interaction.member.roles.includes;
 
         if (hasRole(manager)) allowed = true;
       });
