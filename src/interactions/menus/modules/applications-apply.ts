@@ -256,7 +256,7 @@ export default {
         return;
       }
 
-      await new ApplicationAnswer({
+      const applicationAnswer = await new ApplicationAnswer({
         guildId: interaction.guildId!,
         userId: interaction.user.id,
         id: application.id,
@@ -267,11 +267,34 @@ export default {
         reason: '',
       }).save();
 
-      //todo sending staff msg
-
       await inter.update({
         embeds: [new Embed(color).setDescription('Your application is submitted.')],
         components: [],
+      });
+
+      const submission_channel = interaction.guild?.channels.cache.get(application.submissions_channel);
+      if (!submission_channel?.isTextBased()) return;
+
+      await submission_channel.send({
+        embeds: [
+          new Embed(Colors.Grey)
+            .setTitle('New application form submitted!')
+            .setDescription(`**${interaction.user}** has submitted an answer to ${application.name}!`)
+            .addFields({
+              name: 'Link',
+              value: `[Click here](https://quabot.net/dashboard/${interaction.guildId!}/modules/applications/responses/${
+                applicationAnswer.response_uuid
+              })`,
+              inline: true,
+            })
+            .setFooter({ text: `${applicationAnswer.response_uuid}` }),
+        ],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().setComponents(
+            new ButtonBuilder().setCustomId('application-accept').setLabel('Accept').setStyle(ButtonStyle.Success),
+            new ButtonBuilder().setCustomId('application-deny').setLabel('Deny').setStyle(ButtonStyle.Danger),
+          ),
+        ],
       });
     });
 
