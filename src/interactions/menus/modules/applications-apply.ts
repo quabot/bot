@@ -19,6 +19,7 @@ import {
   TextInputStyle,
   type ModalSubmitInteraction,
   type StringSelectMenuInteraction,
+  Colors,
 } from 'discord.js';
 import uuid from 'uuid-wand';
 
@@ -30,6 +31,8 @@ export default {
 
     const application = await Application.findOne({ guildId: interaction.guildId!, id: interaction.values[0] });
     if (!application) return;
+
+    //todo implement 'reapply' field
 
     // const answer: IApplicationAnswer = ;
 
@@ -59,7 +62,8 @@ export default {
             .setTitle(question.question)
             .setDescription(question.description ?? null)
             .setImage(question.image ?? null)
-            .setThumbnail(question.thumbnail ?? null),
+            .setThumbnail(question.thumbnail ?? null)
+            .setFields({ name: 'Required?', value: question.required ? 'Yes' : 'No' }),
         ],
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
@@ -87,7 +91,8 @@ export default {
                       return { label: value, value: i.toString() };
                     }),
                 )
-                .setCustomId(i.toString()),
+                .setCustomId(i.toString())
+                .setPlaceholder('Choose all options that apply'),
             ),
           );
 
@@ -100,7 +105,8 @@ export default {
               new StringSelectMenuBuilder()
                 .setMinValues(question.required ? 1 : 0)
                 .setOptions({ label: 'Yes', value: 'Yes' }, { label: 'No', value: 'No' })
-                .setCustomId(i.toString()),
+                .setCustomId(i.toString())
+                .setPlaceholder('Yes/No'),
             ),
           );
 
@@ -119,7 +125,8 @@ export default {
                       return { label: value, value };
                     }),
                 )
-                .setCustomId(i.toString()),
+                .setCustomId(i.toString())
+                .setPlaceholder('Choose an option'),
             ),
           );
 
@@ -219,6 +226,26 @@ export default {
     });
 
     submitCollector.once('collect', async inter => {
+      const validated = applicationAnswers.map(
+        (a, i) => !(a.length === 0 && application.questions![i].required === true),
+      );
+      if (validated.includes(false)) {
+        await inter.reply({
+          embeds: [
+            new Embed(Colors.Red).setDescription(
+              `You haven't filled out all of the required questions yet!\n Questions ${validated
+                .map((v, i) => [v, i])
+                .filter(v => v[0] === false)
+                .map(v => `\`${(v[1] as number) + 1}\``)
+                .join(', ')} haven't been answered yet!`,
+            ),
+          ],
+          ephemeral: true,
+        });
+
+        return;
+      }
+
       await new ApplicationAnswer({
         guildId: interaction.guildId!,
         userId: interaction.user.id,
@@ -227,9 +254,12 @@ export default {
         state: 'pending',
         time: new Date(),
         answers: applicationAnswers,
+        reason: '',
       }).save();
 
-      inter.update({
+      //todo sending staff msg
+
+      await inter.update({
         embeds: [new Embed(color).setDescription('Your application is submitted.')],
         components: [],
       });
@@ -265,23 +295,20 @@ export default {
       const processedAnswers = isCheckbox
         ? answers.map(a => parseInt(a))
         : type === 'paragraph' || type === 'short'
-        ? answers[0]
-        : answers;
+          ? answers[0]
+          : answers;
 
-      console.log(`🚀 ~ file: applications-apply.ts:266 ~ execute ~ applicationAnswers:`, applicationAnswers);
-      console.log(`🚀 ~ file: applications-apply.ts:267 ~ execute ~ applicationAnswers[i]:`, applicationAnswers[i]);
       applicationAnswers[i] = processedAnswers;
-      // applicationAnswers.splice(i, 1, processedAnswers);
 
       await interaction.deferReply({ ephemeral: true });
 
-      pages[i].embeds[0].setFields({
+      pages[i].embeds[0].spliceFields(1, 1, {
         name: 'Answer',
         value: isCheckbox
           ? '- ' + (processedAnswers as number[]).map(a => question.options![a]).join('\n- ')
           : typeof processedAnswers === 'object'
-          ? processedAnswers[0].toString()
-          : processedAnswers,
+            ? processedAnswers[0].toString()
+            : processedAnswers,
       });
 
       await updatePage();
