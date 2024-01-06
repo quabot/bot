@@ -30,21 +30,31 @@ export default {
     await interaction.deferReply({ ephemeral: true });
 
     const application = await Application.findOne({ guildId: interaction.guildId!, id: interaction.values[0] });
-    if (!application) return;
+    if (!application)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription("This application doesn't exist anymore.")],
+      });
 
-    //todo implement 'reapply' field
+    if (!application.reapply) {
+      const applicationAnswer = await ApplicationAnswer.findOne({
+        guildId: interaction.guildId!,
+        id: interaction.values[0],
+        userId: interaction.user.id,
+      });
 
-    // const answer: IApplicationAnswer = ;
+      if (applicationAnswer)
+        return await interaction.editReply({
+          embeds: [
+            new Embed(color).setDescription(
+              "You've already applied for this application and re-applying is turned off for this application.",
+            ),
+          ],
+        });
+    }
 
     const applicationAnswers: (string | string[] | number[])[] = application.questions!.map(q =>
       q.type === 'short' || q.type === 'paragraph' ? '' : [],
     );
-
-    // console.log(applicationAnswers);
-
-    // applicationAnswers.addToSet(
-    //   ...application.questions!.map(q => (q.type === 'short' || q.type === 'paragraph' ? '' : [])),
-    // );
 
     interface Page {
       embeds: Embed[];
