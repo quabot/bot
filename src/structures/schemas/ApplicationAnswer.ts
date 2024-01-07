@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqArray } from '@constants/schemas';
+import { reqString, reqArray, optString } from '@constants/schemas';
 import type { IApplicationAnswer } from '@typings/schemas';
 
 export default model<IApplicationAnswer>(
@@ -13,6 +13,6 @@ export default model<IApplicationAnswer>(
     time: { type: Date, required: true }, // time of fillout
     answers: reqArray, // the users answers
     state: reqString, // pending, approved or denied
-    reason: reqString,
+    reason: optString,
   }),
 );

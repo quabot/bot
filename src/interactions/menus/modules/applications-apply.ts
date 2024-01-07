@@ -46,7 +46,7 @@ export default {
         return await interaction.editReply({
           embeds: [
             new Embed(color).setDescription(
-              "You've already applied for this application and re-applying is turned off for this application.",
+              "You've already applied for this application and re-applying is turned off.",
             ),
           ],
         });
@@ -264,11 +264,10 @@ export default {
         state: 'pending',
         time: new Date(),
         answers: applicationAnswers,
-        reason: '',
       }).save();
 
       await inter.update({
-        embeds: [new Embed(color).setDescription('Your application is submitted.')],
+        embeds: [new Embed(color).setDescription('Your application has been submitted.')],
         components: [],
       });
 
@@ -279,7 +278,7 @@ export default {
         embeds: [
           new Embed(Colors.Grey)
             .setTitle('New application form submitted!')
-            .setDescription(`**${interaction.user}** has submitted an answer to ${application.name}!`)
+            .setDescription(`**${interaction.user}** has submitted an answer to \`${application.name}\`!`)
             .addFields({
               name: 'Link',
               value: `[Click here](https://quabot.net/dashboard/${interaction.guildId!}/modules/applications/responses/${
