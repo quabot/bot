@@ -19,7 +19,7 @@ export default {
         embeds: [new Embed(color).setDescription('You need to specify a user.')],
       });
 
-    if (hasAnyPerms(interaction.member, [PermissionFlagsBits.ManageGuild]))
+    if (!hasAnyPerms(interaction.member, [PermissionFlagsBits.ManageGuild]))
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You do not have the required permissions. (Manage Server)')],
       });
