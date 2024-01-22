@@ -1,8 +1,7 @@
-import { PermissionFlagsBits } from 'discord.js';
 import { getLevelConfig } from '@configs/levelConfig';
 import Level from '@schemas/Level';
 import { Embed } from '@constants/embed';
-import { hasAnyPerms, hasRolePerms } from '@functions/discord';
+import { hasRolePerms } from '@functions/discord';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -17,11 +16,6 @@ export default {
     if (!user)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You need to specify a user.')],
-      });
-
-    if (hasAnyPerms(interaction.member, [PermissionFlagsBits.ManageGuild]))
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('You do not have the required permissions. (Manage Server)')],
       });
 
     const config = await getLevelConfig(interaction.guildId!, client);
