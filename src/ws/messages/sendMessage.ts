@@ -21,7 +21,13 @@ export default {
 
     //* Send the message.
     const getParsedString = (s: string) => {
-      return `${s}`.replaceAll('{guild}', guild.name).replaceAll('{members}', guild.memberCount.toString());
+      return `${s}`.replaceAll('{server.name}', guild.name)
+        .replaceAll('{server.id}', guild.id)
+        .replaceAll('{server.members}', guild.memberCount.toString())
+        .replaceAll('{server.owner}', `${guild.ownerId}`)
+        .replaceAll("{server.channels}", guild.channels.cache.size.toString())
+        .replaceAll('{server.owner}', guild.ownerId)
+        .replaceAll('{server.icon}', guild.icon ?? '').replaceAll('{server.iconUrl}', guild.iconURL() ?? '');
     };
 
     const sentEmbed = new CustomEmbed(data.message, getParsedString);
