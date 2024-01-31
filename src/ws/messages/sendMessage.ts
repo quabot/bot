@@ -5,7 +5,7 @@ import { ChannelType } from 'discord.js';
 
 //* QuaBot Dashboard Message Sender Handler.
 export default {
-  code: 'send-message',
+  code: 'message-guild',
   async execute({ client, data }: WsEventArgs) {
     //* Get the guild and channel.
     const guild = client.guilds.cache.get(data.guildId);
@@ -14,6 +14,10 @@ export default {
     const embed = data.embed;
     if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
     if (!hasSendPerms(channel)) return;
+
+    //@ts-ignore
+    const testMessage = (msg: any): msg is CustomEmbed => { return true; }
+    if (!testMessage(embed)) return;
 
     //* Send the message.
     const getParsedString = (s: string) => {
