@@ -10,8 +10,8 @@ export default async (client: Client) => {
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/subcommands/*/*/*.js`);
 
   files.forEach(async file => {
-    const subcommand: Subcommand = require(file).default;
-    if (!subcommand.parent || !subcommand.name) return;
+    const subcommand: Subcommand | undefined = require(file).default;
+    if (!subcommand?.parent || !subcommand.name) return;
 
     client.subcommands.set(`${subcommand.name}/${subcommand.parent}`, subcommand);
   });

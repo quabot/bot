@@ -43,7 +43,7 @@ export default {
       .addFields({ name: 'Channel', value: `${message.channel}`, inline: true })
       .setFooter({
         text: `User: @${message.author.username ?? 'none'}`,
-        iconURL: `${message.author.avatarURL({ forceStatic: false })}`,
+        iconURL: message.author.displayAvatarURL({ forceStatic: false }),
       });
 
     const attachments = message.attachments.map(i => i.url);

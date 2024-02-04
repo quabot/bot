@@ -1,3 +1,7 @@
+export function isSnowflake(string: string) {
+  return /\d/g.test(string);
+}
+
 export function isValidHttpUrl(string: string) {
   let url;
 

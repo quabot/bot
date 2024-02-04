@@ -4,7 +4,7 @@ import type { WsEventArgs } from '@typings/functionArgs';
 
 //* QuaBot Dashboard Message Sender Handler.
 export default {
-  code: 'send-message',
+  code: 'message-guild',
   async execute({ client, data }: WsEventArgs) {
     //* Get the guild and channel.
     const guild = client.guilds.cache.get(data.guildId);
@@ -14,9 +14,19 @@ export default {
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
+    //@ts-ignore
+    const testMessage = (msg: any): msg is CustomEmbed => { return true; }
+    if (!testMessage(embed)) return;
+
     //* Send the message.
     const getParsedString = (s: string) => {
-      return `${s}`.replaceAll('{guild}', guild.name).replaceAll('{members}', guild.memberCount.toString());
+      return `${s}`.replaceAll('{server.name}', guild.name)
+        .replaceAll('{server.id}', guild.id)
+        .replaceAll('{server.members}', guild.memberCount.toString())
+        .replaceAll('{server.owner}', `${guild.ownerId}`)
+        .replaceAll("{server.channels}", guild.channels.cache.size.toString())
+        .replaceAll('{server.owner}', guild.ownerId)
+        .replaceAll('{server.icon}', guild.icon ?? '').replaceAll('{server.iconUrl}', guild.iconURL() ?? '');
     };
 
     const sentEmbed = new CustomEmbed(data.message, getParsedString);
