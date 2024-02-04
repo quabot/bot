@@ -1,4 +1,4 @@
-import { EmbedBuilder } from 'discord.js';
+import { ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { Embed } from '@constants/embed';
 import ApplicationAnswer from '@schemas/ApplicationAnswer';
 import Application from '@schemas/Application';
@@ -46,8 +46,21 @@ export default {
         ephemeral: true,
       });
 
-    //todo actually show modal
-    await interaction.showModal();
+    await interaction.showModal(
+      new ModalBuilder()
+        .setTitle('Approve Application Submission')
+        .setComponents(
+          new ActionRowBuilder<TextInputBuilder>().setComponents(
+            new TextInputBuilder()
+              .setLabel('Reason')
+              .setPlaceholder('You have a lot of experience!')
+              .setStyle(TextInputStyle.Short)
+              .setRequired(false)
+              .setCustomId('reason'),
+          ),
+        )
+        .setCustomId('application-accept'),
+    );
 
     const modal = await interaction
       .awaitModalSubmit({
@@ -102,7 +115,10 @@ export default {
       .send({
         embeds: [
           new Embed('#416683').setDescription(
-            `Your application response for the form \`${form.name}\` has been accepted! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${interaction.guild?.id}/user/applications/answers/${id}).`,
+            `Your application response for the form \`${form.name}\` has been accepted${
+              reason ? ` With reason: \`${reason}\`` : ''
+            }! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${interaction
+              .guild?.id}/user/applications/answers/${id}).`,
           ),
         ],
       })

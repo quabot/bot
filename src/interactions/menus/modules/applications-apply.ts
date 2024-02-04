@@ -191,7 +191,6 @@ export default {
     const submitCollector = initMsg.createMessageComponentCollector({
       componentType: ComponentType.Button,
       filter: i => i.customId === 'submit',
-      max: 1,
     });
 
     answerCollector.on('collect', async inter => {
@@ -235,7 +234,7 @@ export default {
       await handleAnswer(inter, i, inter.values);
     });
 
-    submitCollector.once('collect', async inter => {
+    submitCollector.on('collect', async inter => {
       const validated = applicationAnswers.map(
         (a, i) => !(a.length === 0 && application.questions![i].required === true),
       );
@@ -265,6 +264,8 @@ export default {
         time: new Date(),
         answers: applicationAnswers,
       }).save();
+
+      submitCollector.stop();
 
       await inter.update({
         embeds: [new Embed(color).setDescription('Your application has been submitted.')],
