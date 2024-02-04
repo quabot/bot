@@ -6,7 +6,7 @@ import { hasSendPerms } from '@functions/discord';
 
 //* QuaBot Staff Update Message Sender.
 export default {
-  code: 'update-message',
+  code: 'bot-update',
   async execute({ client, data }: WsEventArgs) {
     //* Get the message and prepare for CE.
     const message = data.message;
@@ -26,7 +26,7 @@ export default {
       if (!hasSendPerms(channel)) return;
 
       channel.send({ embeds: [sentEmbed] }).catch(() => {});
-      console.log(`'Sent the update message to ${guild.name} (${guild.id})`);
+      console.log(`Sent the update message to ${guild.name} (${guild.id})`);
     });
   },
 };
