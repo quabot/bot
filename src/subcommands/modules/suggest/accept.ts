@@ -1,9 +1,10 @@
-import { ChannelType, Colors, EmbedBuilder } from 'discord.js';
+import { Colors, EmbedBuilder } from 'discord.js';
 import { getSuggestConfig } from '@configs/suggestConfig';
 import { Embed } from '@constants/embed';
 import Suggest from '@schemas/Suggestion';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
+import { ChannelType } from 'discord.js';
 
 export default {
   parent: 'suggestion',

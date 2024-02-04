@@ -1,4 +1,4 @@
-import { ChannelType, type ContextMenuCommandInteraction } from 'discord.js';
+import { type ContextMenuCommandInteraction } from 'discord.js';
 import { getServerConfig } from '@configs/serverConfig';
 import { handleError } from '@constants/errorHandler';
 import type { EventArgs } from '@typings/functionArgs';
@@ -8,7 +8,7 @@ export default {
   name: 'buttonExecutor',
 
   async execute({ client }: EventArgs, interaction: ContextMenuCommandInteraction) {
-    if (interaction.channel!.type === ChannelType.DM) return;
+    if (interaction.channel!.isDMBased()) return;
     if (!interaction.isUserContextMenuCommand() || !interaction.guildId) return;
 
     const context = client.contexts.get(interaction.commandName);

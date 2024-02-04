@@ -1,7 +1,8 @@
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
-import { ChannelType, ThreadChannel } from 'discord.js';
+import { ThreadChannel } from 'discord.js';
 import type { GuildChannel } from '@typings/discord';
+import { ChannelType } from 'discord.js';
 
 export default {
   parent: 'channel',

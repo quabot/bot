@@ -1,5 +1,6 @@
 import type { Client } from '@classes/discord';
 import type {
+  AnySelectMenuInteraction,
   ButtonInteraction,
   ChatInputCommandInteraction,
   ColorResolvable,
@@ -22,6 +23,10 @@ export interface CommandExecutableFromButtonArgs extends BaseArgs {
 
 export interface ButtonArgs extends BaseArgs {
   interaction: ButtonInteraction;
+}
+
+export interface MenuArgs extends BaseArgs {
+  interaction: AnySelectMenuInteraction;
 }
 
 export interface ContextArgs extends BaseArgs {

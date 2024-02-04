@@ -5,7 +5,6 @@ import {
   ButtonStyle,
   Events,
   type Interaction,
-  ChannelType,
   type GuildMember,
 } from 'discord.js';
 import { getLevelConfig } from '@configs/levelConfig';
@@ -144,13 +143,7 @@ export default {
 
       if (config.channel !== 'none') {
         const channel = config.channel === 'current' ? interChannel : guild.channels.cache.get(`${config.channel}`);
-        if (
-          !channel ||
-          channel.type === ChannelType.GuildCategory ||
-          channel.type === ChannelType.GuildForum ||
-          channel.type === ChannelType.DM
-        )
-          return;
+        if (!channel?.isTextBased() || channel.isDMBased()) return;
         if (!hasSendPerms(channel)) return;
 
         const embed = new CustomEmbed(config.message, parse);

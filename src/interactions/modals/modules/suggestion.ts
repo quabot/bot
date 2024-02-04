@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonStyle, ButtonBuilder, ChannelType } from 'discord.js';
+import { ActionRowBuilder, ButtonStyle, ButtonBuilder } from 'discord.js';
 import Suggestion from '@schemas/Suggestion';
 import { getIdConfig } from '@configs/idConfig';
 import { getSuggestConfig } from '@configs/suggestConfig';
@@ -35,7 +35,7 @@ export default {
           ),
         ],
       });
-    if (channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum)
+    if (!channel.isTextBased())
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription("The suggestions channel isn't the right type.")],
       });
@@ -113,8 +113,7 @@ export default {
 
     if (!config.logEnabled) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannelId);
-    if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
-      return;
+    if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
         embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],

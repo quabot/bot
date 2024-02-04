@@ -1,6 +1,7 @@
-import { ButtonBuilder, ActionRowBuilder, ButtonStyle, EmbedBuilder, ChannelType } from 'discord.js';
+import { ButtonBuilder, ActionRowBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { CommandArgs } from '@typings/functionArgs';
+import { ChannelType } from 'discord.js';
 
 export default {
   parent: 'message',

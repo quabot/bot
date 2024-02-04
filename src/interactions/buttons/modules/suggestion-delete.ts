@@ -1,9 +1,10 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Colors } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } from 'discord.js';
 import Suggest from '@schemas/Suggestion';
 import { getSuggestConfig } from '@configs/suggestConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { ChannelType } from 'discord.js';
 
 export default {
   name: 'suggestion-delete',

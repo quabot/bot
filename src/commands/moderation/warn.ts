@@ -4,7 +4,6 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  ChannelType,
   type APIEmbedField,
   GuildMemberRoleManager,
 } from 'discord.js';
@@ -150,7 +149,7 @@ export default {
 
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
-      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!channel?.isTextBased()) return;
       if (!hasSendPerms(channel)) {
         return await interaction.followUp({
           embeds: [

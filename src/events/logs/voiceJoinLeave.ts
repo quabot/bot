@@ -1,4 +1,4 @@
-import { Events, Colors, VoiceState, ChannelType } from 'discord.js';
+import { Events, Colors, VoiceState } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
@@ -32,7 +32,7 @@ export default {
       return;
 
     const channel = newState.guild.channels.cache.get(config.channelId);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     if (oldState.channelId && newState.channelId) return;

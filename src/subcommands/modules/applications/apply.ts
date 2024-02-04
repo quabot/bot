@@ -2,15 +2,15 @@ import { Embed } from '@constants/embed';
 import { getApplicationConfig } from '@configs/applicationConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import Application from '@schemas/Application';
+import { ActionRowBuilder, APISelectMenuOption, StringSelectMenuBuilder } from 'discord.js';
 
 export default {
   parent: 'applications',
   name: 'apply',
 
   async execute({ client, interaction, color }: CommandArgs) {
-    await interaction.deferReply({ ephemeral: false });
+    await interaction.deferReply({ ephemeral: true });
 
-    const id = interaction.options.getString('id');
     const config = await getApplicationConfig(interaction.guildId!, client);
     if (!config)
       return await interaction.editReply({
@@ -22,25 +22,37 @@ export default {
         embeds: [new Embed(color).setDescription('This module is disabled in this server.')],
       });
 
-    if (!id)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please specify a valid application ID.')],
-      });
-
-    const fApplication = await Application.findOne({
+    const applications = await Application.find({
       guildId: interaction.guildId,
-      id,
     });
 
-    if (!fApplication)
+    if (applications.length < 1)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please specify a valid application ID.')],
+        embeds: [new Embed(color).setDescription('This server has no applications.')],
       });
 
     await interaction.editReply({
-      embeds: [
-        new Embed(color).setDescription(
-          `In order to fillout that application, go to our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/user/applications/form/${id}).`,
+      embeds: [new Embed(color).setDescription("Choose the application that you'd like to apply for.")],
+      components: [
+        new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
+          new StringSelectMenuBuilder()
+            .setMinValues(1)
+            .setMaxValues(1)
+            .setPlaceholder('Very cool moderator')
+            .setOptions(
+              applications.map(application => {
+                const option: APISelectMenuOption = {
+                  label: application.name.slice(0, 100),
+                  value: application.id.slice(0, 100),
+                };
+
+                if (application.description)
+                  option.description = application.description.replace('\n', '').slice(0, 100);
+
+                return option;
+              }),
+            )
+            .setCustomId('applications-apply'),
         ),
       ],
     });

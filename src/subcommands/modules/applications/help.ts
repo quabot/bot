@@ -25,7 +25,7 @@ export default {
         new Embed(color)
           .setTitle('What is the Applications module and how do i use it?')
           .setDescription(
-            `The Applications module is like google forms, but on Discord. This module is still in beta and can change at all times. Staff can create custom forms with custom questions that users can then answer (Discord fillout soon). The staff can then view the answers and decide if the user is accepted or not. We recommend you to use this module from [our dashboard](https://quabot.net/dashboard/${interaction.guildId}/user/applications).`,
+            `The Applications module is like google forms, but on Discord. Staff can create custom forms with custom questions that users can then answer (on dashboard or in Discord). The staff can then view the answers and decide if the user is accepted or not.`,
           ),
       ],
     });

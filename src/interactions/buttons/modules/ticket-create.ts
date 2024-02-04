@@ -5,7 +5,6 @@ import {
   ModalBuilder,
   TextInputStyle,
   TextInputBuilder,
-  ChannelType,
   PermissionFlagsBits,
 } from 'discord.js';
 import Ticket from '@schemas/Ticket';
@@ -13,6 +12,7 @@ import { getIdConfig } from '@configs/idConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { ChannelType } from 'discord.js';
 
 export default {
   name: 'ticket-create',
@@ -178,14 +178,7 @@ export default {
       });
 
       const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
-      if (
-        !(
-          !logChannel ||
-          logChannel.type === ChannelType.GuildCategory ||
-          logChannel.type === ChannelType.GuildForum ||
-          !config.logEnabled
-        )
-      )
+      if (!(!logChannel?.isTextBased() || !config.logEnabled))
         await logChannel.send({
           embeds: [
             new Embed(color)
@@ -297,14 +290,7 @@ export default {
     });
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
-    if (
-      !(
-        !logChannel ||
-        logChannel.type === ChannelType.GuildCategory ||
-        logChannel.type === ChannelType.GuildForum ||
-        !config.logEnabled
-      )
-    )
+    if (!(!logChannel?.isTextBased() || !config.logEnabled))
       await logChannel.send({
         embeds: [
           new Embed(color)

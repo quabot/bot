@@ -5,7 +5,7 @@ import { Embed } from '@constants/embed';
 import type { NonNullMongooseReturn } from '@typings/mongoose';
 import type { IPunishment } from '@typings/schemas';
 import Punishment from '@schemas/Punishment';
-import { ChannelType } from 'discord.js';
+
 import { hasSendPerms } from './discord';
 
 export async function tempUnban(client: Client, document: NonNullMongooseReturn<IPunishment>) {
@@ -34,8 +34,7 @@ export async function tempUnban(client: Client, document: NonNullMongooseReturn<
   const moderationConfig = await getModerationConfig(client, document.guildId);
 
   const logChannel = guild.channels.cache.get(`${moderationConfig!.channelId}`);
-  if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
-    return;
+  if (!logChannel?.isTextBased()) return;
   if (!hasSendPerms(logChannel)) return;
 
   await logChannel.send({

@@ -1,9 +1,22 @@
-import type { ButtonArgs, CommandArgs, ContextArgs, EventArgs, ModalArgs, WsEventArgs } from '@typings/functionArgs';
+import type {
+  ButtonArgs,
+  CommandArgs,
+  ContextArgs,
+  EventArgs,
+  ModalArgs,
+  WsEventArgs,
+  MenuArgs,
+} from '@typings/functionArgs';
 import { type ContextMenuCommandBuilder, type SlashCommandBuilder } from 'discord.js';
 
 export interface Button {
   name: string;
   execute: (arg0: ButtonArgs) => Promise<any>;
+}
+
+export interface Menu {
+  name: string;
+  execute: (arg0: MenuArgs) => Promise<any>;
 }
 
 export interface Command {
