@@ -1,6 +1,6 @@
 {
   "name": "quabot",
-  "version": "7.1.1b",
+  "version": "7.2.0",
   "main": "dist/main.js",
   "author": "(c) QuaBot Development",
   "license": "none",
