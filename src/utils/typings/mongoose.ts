@@ -100,10 +100,25 @@ export interface WelcomeCard {
     size: number;
   };
 
+  welcomeTxt: {
+    enabled: boolean;
+    value: string;
+    color: Color;
+    weight: FontWeight;
+  };
+
+  memberTxt: {
+    enabled: boolean;
+    value: string;
+    color: Color;
+    weight: FontWeight;
+  };
+
   customTxt: {
     enabled: boolean;
     value: string;
     color: Color;
+    weight: FontWeight;
   };
 
   pfp: {
@@ -115,3 +130,5 @@ export type Color =
   | `#${string}`
   | `rgb(${number},${number},${number})`
   | `rgba(${number},${number},${number},${number})`;
+
+export type FontWeight = 'Bold' | 'SemiBold' | 'Medium' | 'Normal';

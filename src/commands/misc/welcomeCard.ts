@@ -20,10 +20,23 @@ export default {
         color: '#ff0099',
         size: 20,
       },
+      welcomeTxt: {
+        enabled: true,
+        value: 'No vars yet',
+        color: '#fff',
+        weight: 'SemiBold',
+      },
+      memberTxt: {
+        enabled: false,
+        color: '#444',
+        value: 'Boldie',
+        weight: 'Bold',
+      },
       customTxt: {
         enabled: true,
         color: '#f09',
         value: 'Third line option, custom color',
+        weight: 'Normal',
       },
       pfp: {
         rounded: true,

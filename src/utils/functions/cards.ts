@@ -10,8 +10,8 @@ import { request } from 'undici';
 const baseFontPath = join(__dirname, '../assets/fonts');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'inter-SemiBold.ttf'), 'Inter SemiBold');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'inter-Normal.ttf'), 'Inter');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-SemiBold.ttf'), 'GG Sans SemiBold');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Medium.ttf'), 'GG Sans Medium');
 
 export async function drawLevelCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
   // Destructuring user
@@ -159,26 +159,30 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
   }
 
   //* Welcome Person
-  const welcomeTxt = `Welcome ${member.displayName}!`;
-  context.font = '32px Inter SemiBold';
-  context.fillStyle = '#fff';
-  context.fillText(
-    welcomeTxt,
-    canvas.width / 2 - context.measureText(welcomeTxt).width / 2,
-    //location + size - size / 5
-    139 + 39 - 39 / 5,
-  );
+  if (options.welcomeTxt.enabled) {
+    const welcomeTxt = options.welcomeTxt.value;
+    context.font = `32px GG Sans ${options.welcomeTxt.weight}`;
+    context.fillStyle = options.welcomeTxt.color;
+    context.fillText(
+      welcomeTxt,
+      canvas.width / 2 - context.measureText(welcomeTxt).width / 2,
+      //location + size - size / 5
+      139 + 39 - 39 / 5,
+    );
+  }
 
   //* You are member
-  const memberTxt = `You are the ${member.guild.memberCount}th member!`;
-  context.font = '28px Inter';
-  context.fillStyle = '#B5B9BF';
-  context.fillText(
-    memberTxt,
-    canvas.width / 2 - context.measureText(memberTxt).width / 2,
-    //location + size - size / 5
-    183 + 34 - 34 / 5,
-  );
+  if (options.memberTxt.enabled) {
+    const memberTxt = options.memberTxt.value;
+    context.font = `28px GG Sans ${options.memberTxt.weight}`;
+    context.fillStyle = options.memberTxt.color;
+    context.fillText(
+      memberTxt,
+      canvas.width / 2 - context.measureText(memberTxt).width / 2,
+      //location + size - size / 5
+      183 + 34 - 34 / 5,
+    );
+  }
 
   //* Custom
   if (options.customTxt.enabled) {
