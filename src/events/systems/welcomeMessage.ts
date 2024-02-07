@@ -32,15 +32,26 @@ export default {
         .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
         .replaceAll('{color}', `${custom?.color ?? '#416683'}`);
 
-    if (config.joinType === 'embed') {
-      const embed = new CustomEmbed(config.joinMessage, parseString);
-      await channel.send({
-        embeds: [embed],
-        content: parseString(config.joinMessage.content),
-      });
-    } else {
-      if (config.joinMessage.content === '') return;
-      await channel.send({ content: parseString(config.joinMessage.content) });
+    switch (config.joinType) {
+      case 'embed': {
+        const embed = new CustomEmbed(config.joinMessage, parseString);
+        await channel.send({
+          embeds: [embed],
+          content: parseString(config.joinMessage.content),
+        });
+
+        break;
+      }
+
+      case 'text': {
+        if (config.joinMessage.content === '') return;
+        await channel.send({ content: parseString(config.joinMessage.content) });
+
+        break;
+      }
+
+      case 'card': {
+      }
     }
   },
 };

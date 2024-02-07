@@ -6,7 +6,7 @@ const cooldowns = new Map();
 import { CustomEmbed } from '@constants/customEmbed';
 import { getServerConfig } from '@configs/serverConfig';
 import Vote from '@schemas/Vote';
-import { drawCard } from '@functions/levelCard';
+import { drawLevelCard } from '@functions/cards';
 import type { EventArgs } from '@typings/functionArgs';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
@@ -152,7 +152,7 @@ export default {
         if (config.messageType === 'text')
           await channel.send({ content: `${parse(config.messageText)}` }).catch(() => {});
         if (config.messageType === 'card') {
-          const card = await drawCard(member, level, xp, formula(level), config.levelCard);
+          const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
 
           const attachment = new AttachmentBuilder(card, {
@@ -186,7 +186,7 @@ export default {
             content: `${parse(config.dmMessageText)}`,
           });
         if (config.dmType === 'card') {
-          const card = await drawCard(member, level, xp, formula(level), config.levelCard);
+          const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
           if (!card)
             return member.send(
               'You leveled up! Sorry, we tried to send a card to the configured channel, but there was an error. Sorry for the inconvinience! All level rewards have been given.',

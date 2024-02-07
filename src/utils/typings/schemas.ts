@@ -358,7 +358,7 @@ export interface IWelcomeConfig {
 
   joinEnabled: boolean;
   joinChannel: Snowflake | 'none';
-  joinType: MessageType;
+  joinType: MessageTypeWithCard;
   joinMessage: Message;
 
   leaveEnabled: boolean;

@@ -1,4 +1,4 @@
-import type { LevelCard } from '@typings/mongoose';
+import type { LevelCard, WelcomeCard } from '@typings/mongoose';
 import type { GuildMember } from 'discord.js';
 
 import Canvas from '@napi-rs/canvas';
@@ -7,10 +7,13 @@ import { join } from 'path';
 import moment from 'moment';
 import { request } from 'undici';
 
-Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Normal.ttf'), 'GG Sans');
-Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Bold.ttf'), 'GG Sans Bold');
+const baseFontPath = join(__dirname, '../assets/fonts');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'inter-SemiBold.ttf'), 'Inter SemiBold');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'inter-Normal.ttf'), 'Inter');
 
-export async function drawCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
+export async function drawLevelCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
   // Destructuring user
   const { user } = member;
 
@@ -120,6 +123,95 @@ export async function drawCard(member: GuildMember, level: number, xp: number, r
   const avatar = new Canvas.Image();
   avatar.src = Buffer.from(await body.arrayBuffer());
   context.drawImage(avatar, 32, 32, 102, 102);
+
+  // Exporting it as PNG image
+  const result = await canvas.encode('png');
+  return result;
+}
+
+export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard) {
+  // Defining canvas
+  const canvas = Canvas.createCanvas(719, 288); // <- Canvas size here
+  const context = canvas.getContext('2d');
+
+  // Background
+  if (options.bg.type === 'color') {
+    // Static Color BG
+    context.fillStyle = options.bg.color;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  } else if (options.bg.type === 'image') {
+    // do imgs
+    let background = await readFile(`./src/utils/assets/backgrounds/${options.bg.image}.jpg`).catch(() => {});
+    if (!background) background = await readFile('./src/utils/assets/backgrounds/fallback.jpg');
+    const backgroundImage = new Canvas.Image();
+    backgroundImage.src = background;
+    context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
+    context.fillStyle = options.bg.image_overlay;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Stroke/Border
+  if (options.border.enabled) {
+    context.strokeStyle = options.border.color;
+    context.lineWidth = options.border.size;
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+  }
+
+  //* Welcome Person
+  const welcomeTxt = `Welcome ${member.displayName}!`;
+  context.font = '32px Inter SemiBold';
+  context.fillStyle = '#fff';
+  context.fillText(
+    welcomeTxt,
+    canvas.width / 2 - context.measureText(welcomeTxt).width / 2,
+    //location + size - size / 5
+    139 + 39 - 39 / 5,
+  );
+
+  //* You are member
+  const memberTxt = `You are the ${member.guild.memberCount}th member!`;
+  context.font = '28px Inter';
+  context.fillStyle = '#B5B9BF';
+  context.fillText(
+    memberTxt,
+    canvas.width / 2 - context.measureText(memberTxt).width / 2,
+    //location + size - size / 5
+    183 + 34 - 34 / 5,
+  );
+
+  //* Custom
+  if (options.customTxt.enabled) {
+    const customTxt = options.customTxt.value;
+    context.font = '28px Inter';
+    context.fillStyle = options.customTxt.color;
+    context.fillText(
+      customTxt,
+      canvas.width / 2 - context.measureText(customTxt).width / 2,
+      //location + size - size / 5
+      222 + 34 - 34 / 5,
+    );
+  }
+
+  //* Avatar
+  const AVATAR_POS = [309, 32];
+  const AVATAR_SIZE = 102;
+  const avatarRadius = AVATAR_SIZE / 2;
+  // Profile Picture
+  // Make it rounded (if enabled)
+  if (options.pfp.rounded) {
+    context.beginPath();
+    context.arc(AVATAR_POS[0] + avatarRadius, AVATAR_POS[1] + avatarRadius, avatarRadius, 0, Math.PI * 2, true);
+    // context.stroke();
+    context.closePath();
+    context.clip();
+  }
+
+  // Drawing pfp image itself
+  const { body } = await request(member.displayAvatarURL({ extension: 'jpg' }));
+  const avatar = new Canvas.Image();
+  avatar.src = Buffer.from(await body.arrayBuffer());
+  context.drawImage(avatar, AVATAR_POS[0], AVATAR_POS[1], AVATAR_SIZE, AVATAR_SIZE);
 
   // Exporting it as PNG image
   const result = await canvas.encode('png');

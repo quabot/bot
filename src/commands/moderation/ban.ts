@@ -6,6 +6,7 @@ import {
   ButtonStyle,
   GuildMemberRoleManager,
   type APIEmbedField,
+  type User,
 } from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';

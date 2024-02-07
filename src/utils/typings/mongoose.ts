@@ -75,6 +75,42 @@ export interface LevelCard {
   };
 }
 
+export interface WelcomeCard {
+  bg: {
+    type: 'none' | 'color' | 'image';
+    color: Color;
+    image:
+      | 'amsterdam'
+      | 'helsinki'
+      | 'london'
+      | 'paris'
+      | 'mit'
+      | 'new york'
+      | 'new york 2'
+      | 'new york 3'
+      | 'new york 4'
+      | 'san francisco'
+      | 'prague';
+    image_overlay: Color;
+  };
+
+  border: {
+    enabled: boolean;
+    color: Color;
+    size: number;
+  };
+
+  customTxt: {
+    enabled: boolean;
+    value: string;
+    color: Color;
+  };
+
+  pfp: {
+    rounded: boolean; //! Option not implemented in Dashboard
+  };
+}
+
 export type Color =
   | `#${string}`
   | `rgb(${number},${number},${number})`
