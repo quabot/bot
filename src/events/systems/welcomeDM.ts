@@ -1,8 +1,9 @@
-import { Events, type GuildMember } from 'discord.js';
+import { AttachmentBuilder, Events, type GuildMember } from 'discord.js';
 import type { EventArgs } from '@typings/functionArgs';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
+import { drawWelcomeCard } from '@functions/cards';
 
 export default {
   event: Events.GuildMemberAdd,
@@ -27,15 +28,30 @@ export default {
         .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
         .replaceAll('{color}', `${custom?.color ?? '#416683'}`);
 
-    if (config.joinDMType === 'embed') {
-      const embed = new CustomEmbed(config.dm, parseString);
-      await member.send({
-        embeds: [embed],
-        content: parseString(config.dm.content),
-      });
-    } else {
-      if (config.dm.content === '') return;
-      await member.send({ content: parseString(config.dm.content) });
+    switch (config.joinDMType) {
+      case 'embed': {
+        const embed = new CustomEmbed(config.dm, parseString);
+        await member.send({
+          embeds: [embed],
+          content: parseString(config.dm.content),
+        });
+
+        break;
+      }
+
+      case 'text': {
+        if (config.dm.content === '') return;
+        await member.send({ content: parseString(config.dm.content) });
+
+        break;
+      }
+
+      case 'card': {
+        const card = await drawWelcomeCard(member, config.dmCard);
+        await member.send({ files: [new AttachmentBuilder(card)] });
+
+        break;
+      }
     }
   },
 };

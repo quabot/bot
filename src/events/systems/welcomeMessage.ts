@@ -1,9 +1,10 @@
-import { Events, type GuildMember } from 'discord.js';
+import { AttachmentBuilder, Events, type GuildMember } from 'discord.js';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { drawWelcomeCard } from '@functions/cards';
 
 export default {
   event: Events.GuildMemberAdd,
@@ -32,15 +33,30 @@ export default {
         .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
         .replaceAll('{color}', `${custom?.color ?? '#416683'}`);
 
-    if (config.joinType === 'embed') {
-      const embed = new CustomEmbed(config.joinMessage, parseString);
-      await channel.send({
-        embeds: [embed],
-        content: parseString(config.joinMessage.content),
-      });
-    } else {
-      if (config.joinMessage.content === '') return;
-      await channel.send({ content: parseString(config.joinMessage.content) });
+    switch (config.joinType) {
+      case 'embed': {
+        const embed = new CustomEmbed(config.joinMessage, parseString);
+        await channel.send({
+          embeds: [embed],
+          content: parseString(config.joinMessage.content),
+        });
+
+        break;
+      }
+
+      case 'text': {
+        if (config.joinMessage.content === '') return;
+        await channel.send({ content: parseString(config.joinMessage.content) });
+
+        break;
+      }
+
+      case 'card': {
+        const card = await drawWelcomeCard(member, config.joinCard);
+        await channel.send({ files: [new AttachmentBuilder(card)] });
+
+        break;
+      }
     }
   },
 };
