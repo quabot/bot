@@ -10,8 +10,12 @@ export async function getFromCollection<T>({ Schema, query, client, cacheName, d
     res = await find();
 
     if (res === null && defaultObj !== undefined) {
+      if (client?.cache.has(`creating_${cacheName}`)) return;
+      client?.cache.set(`creating_${cacheName}`);
+      
       await new Schema(defaultObj).save();
 
+      client.cache.del(`creating_${cacheName}`);
       res = await find();
     }
 
