@@ -1,5 +1,13 @@
 import type { ColorResolvable, Snowflake } from 'discord.js';
-import type { LevelCard, Message, MessageType, MessageTypeWithCard, ReactionRoleType, Status } from '@typings/mongoose';
+import type {
+  LevelCard,
+  Message,
+  MessageType,
+  MessageTypeWithCard,
+  ReactionRoleType,
+  Status,
+  WelcomeCard,
+} from '@typings/mongoose';
 import { Types } from 'mongoose';
 
 export interface IUserGame {
@@ -360,18 +368,21 @@ export interface IWelcomeConfig {
   joinChannel: Snowflake | 'none';
   joinType: MessageTypeWithCard;
   joinMessage: Message;
+  joinCard: WelcomeCard;
 
   leaveEnabled: boolean;
   leaveChannel: Snowflake | 'none';
-  leaveType: MessageType;
+  leaveType: MessageTypeWithCard;
   leaveMessage: Message;
+  leaveCard: WelcomeCard;
 
   joinRole?: Types.Array<{ role: Snowflake; delay: number; bot: true }>;
   joinRoleEnabled: boolean;
 
   joinDM: boolean;
-  joinDMType: MessageType;
+  joinDMType: MessageTypeWithCard;
   dm: Message;
+  dmCard: WelcomeCard;
 }
 
 export interface IVote {

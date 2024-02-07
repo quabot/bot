@@ -10,7 +10,7 @@
     "dev": "yarn install && nodemon",
     "production": "yarn deploy && sh run.sh",
     "start": "node --require dotenv/config --require module-alias/register dist/main.js",
-    "build": "rimraf ./dist && yarn tsc",
+    "build": "yarn tsc",
     "deploy": "sh deploy.sh",
     "prettier": "prettier --write src"
   },
@@ -45,7 +45,6 @@
     "nodemon": "^3.0.1",
     "prettier": "^3.0.2",
     "reddit-interfaces": "^1.0.7",
-    "rimraf": "^5.0.1",
     "typescript": "5.3.3"
   },
   "_moduleAliases": {

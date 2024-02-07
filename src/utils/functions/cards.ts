@@ -160,7 +160,7 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
 
   //* Welcome Person
   if (options.welcomeTxt.enabled) {
-    const welcomeTxt = options.welcomeTxt.value;
+    const welcomeTxt = parseString(options.welcomeTxt.value);
     context.font = `32px GG Sans ${options.welcomeTxt.weight}`;
     context.fillStyle = options.welcomeTxt.color;
     context.fillText(
@@ -173,7 +173,7 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
 
   //* You are member
   if (options.memberTxt.enabled) {
-    const memberTxt = options.memberTxt.value;
+    const memberTxt = parseString(options.memberTxt.value);
     context.font = `28px GG Sans ${options.memberTxt.weight}`;
     context.fillStyle = options.memberTxt.color;
     context.fillText(
@@ -186,7 +186,7 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
 
   //* Custom
   if (options.customTxt.enabled) {
-    const customTxt = options.customTxt.value;
+    const customTxt = parseString(options.customTxt.value);
     context.font = '28px Inter';
     context.fillStyle = options.customTxt.color;
     context.fillText(
@@ -220,4 +220,39 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
   // Exporting it as PNG image
   const result = await canvas.encode('png');
   return result;
+
+  function parseString(str: string) {
+    const { createdAt } = member.user;
+    return str
+      .replaceAll('{server.name}', member.guild.name)
+      .replaceAll('{server.id}', member.guild.id)
+      .replaceAll('{server.members}', member.guild.memberCount.toString())
+      .replaceAll('{server.channels}', member.guild.channels.cache.size.toString())
+      .replaceAll('{server.owner}', member.guild.members.cache.get(member.guild.ownerId)?.displayName ?? '')
+      .replaceAll('{user.username}', member.user.username)
+      .replaceAll('{user.displayname}', member.user.displayName)
+      .replaceAll('{user.display_name}', member.user.displayName)
+      .replaceAll('{user.id}', member.id)
+      .replaceAll(
+        '{user.createdAt}',
+        `${createdAt.getDate()} ${
+          [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+          ][createdAt.getMonth()]
+        } ${createdAt.getFullYear()}`,
+      )
+      .replaceAll('{user.global_name}', member.user.globalName ?? member.user.displayName)
+      .replaceAll('{user.globalname}', member.user.globalName ?? member.user.displayName);
+  }
 }

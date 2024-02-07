@@ -1,9 +1,10 @@
-import { Events, type GuildMember } from 'discord.js';
+import { AttachmentBuilder, Events, type GuildMember } from 'discord.js';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { drawWelcomeCard } from '@functions/cards';
 
 export default {
   event: Events.GuildMemberAdd,
@@ -51,6 +52,10 @@ export default {
       }
 
       case 'card': {
+        const card = await drawWelcomeCard(member, config.joinCard);
+        await channel.send({ files: [new AttachmentBuilder(card)] });
+
+        break;
       }
     }
   },
