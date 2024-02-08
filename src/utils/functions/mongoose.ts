@@ -2,7 +2,13 @@ import type { Client } from '@classes/discord';
 import type { MongooseReturn, NonNullMongooseReturn } from '@typings/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 
-export async function getFromCollection<T>({ Schema, query, client, cacheName, defaultObj }: GetFromCollectionArgs<T>) {
+export async function getFromCollection<T>({
+  Schema,
+  query,
+  client,
+  cacheName,
+  defaultObj,
+}: GetFromCollectionArgs<T>): Promise<MongooseReturn<T> | void> {
   try {
     let res: MongooseReturn<T> | undefined = client?.cache.get<NonNullMongooseReturn<T>>(cacheName);
 

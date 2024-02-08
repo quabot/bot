@@ -3,6 +3,7 @@ import type { WsEventArgs } from '@typings/functionArgs';
 import Server from '@schemas/Server';
 
 import { hasSendPerms } from '@functions/discord';
+import { BaseParser } from '@classes/parsers';
 
 //* QuaBot Staff Update Message Sender.
 export default {
@@ -12,10 +13,8 @@ export default {
     const message = data.message;
     if (!message) return;
 
-    const getParsedString = (s: string) => s;
-
     //* Send the embed to all servers.
-    const sentEmbed = new CustomEmbed(message, getParsedString);
+    const sentEmbed = new CustomEmbed(message, new BaseParser());
 
     client.guilds.cache.forEach(async guild => {
       const config = await Server.findOne({ guildId: guild.id });

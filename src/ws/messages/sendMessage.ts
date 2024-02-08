@@ -1,3 +1,4 @@
+import { GuildParser } from '@classes/parsers';
 import { CustomEmbed } from '@constants/customEmbed';
 import { hasSendPerms } from '@functions/discord';
 import type { WsEventArgs } from '@typings/functionArgs';
@@ -15,29 +16,23 @@ export default {
     if (!hasSendPerms(channel)) return;
 
     //@ts-ignore
-    const testMessage = (msg: any): msg is CustomEmbed => { return true; }
+    const testMessage = (msg: any): msg is CustomEmbed => {
+      return true;
+    };
     if (!testMessage(embed)) return;
 
     //* Send the message.
-    const getParsedString = (s: string) => {
-      return `${s}`.replaceAll('{server.name}', guild.name)
-        .replaceAll('{server.id}', guild.id)
-        .replaceAll('{server.members}', guild.memberCount.toString())
-        .replaceAll('{server.owner}', `${guild.ownerId}`)
-        .replaceAll("{server.channels}", guild.channels.cache.size.toString())
-        .replaceAll('{server.owner}', guild.ownerId)
-        .replaceAll('{server.icon}', guild.icon ?? '').replaceAll('{server.iconUrl}', guild.iconURL() ?? '');
-    };
+    const parser = new GuildParser(guild);
 
-    const sentEmbed = new CustomEmbed(data.message, getParsedString);
+    const sentEmbed = new CustomEmbed(data.message, parser);
     if (embed)
       await channel.send({
         embeds: [sentEmbed],
-        content: getParsedString(data.message.content) ?? '',
+        content: parser.parse(data.message.content) ?? '',
       });
-    if (!embed && (getParsedString(data.message.content) ?? '** **') !== '')
+    if (!embed && (parser.parse(data.message.content) ?? '** **') !== '')
       await channel.send({
-        content: getParsedString(data.message.content) ?? '** **',
+        content: parser.parse(data.message.content) ?? '** **',
       });
   },
 };

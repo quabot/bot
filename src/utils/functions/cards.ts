@@ -1,11 +1,12 @@
 import type { LevelCard, WelcomeCard } from '@typings/mongoose';
-import type { GuildMember } from 'discord.js';
+import type { ColorResolvable, GuildMember } from 'discord.js';
 
 import Canvas from '@napi-rs/canvas';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import moment from 'moment';
 import { request } from 'undici';
+import { CardParser } from '@classes/parsers';
 
 const baseFontPath = join(__dirname, '../assets/fonts');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
@@ -129,7 +130,7 @@ export async function drawLevelCard(member: GuildMember, level: number, xp: numb
   return result;
 }
 
-export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard) {
+export async function drawWelcomeCard(member: GuildMember, color: ColorResolvable, options: WelcomeCard) {
   // Defining canvas
   const canvas = Canvas.createCanvas(719, 288); // <- Canvas size here
   const context = canvas.getContext('2d');
@@ -158,11 +159,13 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
     context.strokeRect(0, 0, canvas.width, canvas.height);
   }
 
+  const parser = new CardParser({ member, color });
+
   //* Welcome Person
   if (options.welcomeTxt.enabled) {
-    const welcomeTxt = parseString(options.welcomeTxt.value);
+    const welcomeTxt = parser.parse(options.welcomeTxt.value);
     context.font = `32px GG Sans ${options.welcomeTxt.weight}`;
-    context.fillStyle = options.welcomeTxt.color;
+    context.fillStyle = parser.parse(options.welcomeTxt.color);
     context.fillText(
       welcomeTxt,
       canvas.width / 2 - context.measureText(welcomeTxt).width / 2,
@@ -173,9 +176,9 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
 
   //* You are member
   if (options.memberTxt.enabled) {
-    const memberTxt = parseString(options.memberTxt.value);
+    const memberTxt = parser.parse(options.memberTxt.value);
     context.font = `28px GG Sans ${options.memberTxt.weight}`;
-    context.fillStyle = options.memberTxt.color;
+    context.fillStyle = parser.parse(options.memberTxt.color);
     context.fillText(
       memberTxt,
       canvas.width / 2 - context.measureText(memberTxt).width / 2,
@@ -186,9 +189,9 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
 
   //* Custom
   if (options.customTxt.enabled) {
-    const customTxt = parseString(options.customTxt.value);
+    const customTxt = parser.parse(options.customTxt.value);
     context.font = '28px Inter';
-    context.fillStyle = options.customTxt.color;
+    context.fillStyle = parser.parse(options.customTxt.color);
     context.fillText(
       customTxt,
       canvas.width / 2 - context.measureText(customTxt).width / 2,
@@ -220,39 +223,4 @@ export async function drawWelcomeCard(member: GuildMember, options: WelcomeCard)
   // Exporting it as PNG image
   const result = await canvas.encode('png');
   return result;
-
-  function parseString(str: string) {
-    const { createdAt } = member.user;
-    return str
-      .replaceAll('{server.name}', member.guild.name)
-      .replaceAll('{server.id}', member.guild.id)
-      .replaceAll('{server.members}', member.guild.memberCount.toString())
-      .replaceAll('{server.channels}', member.guild.channels.cache.size.toString())
-      .replaceAll('{server.owner}', member.guild.members.cache.get(member.guild.ownerId)?.displayName ?? '')
-      .replaceAll('{user.username}', member.user.username)
-      .replaceAll('{user.displayname}', member.user.displayName)
-      .replaceAll('{user.display_name}', member.user.displayName)
-      .replaceAll('{user.id}', member.id)
-      .replaceAll(
-        '{user.createdAt}',
-        `${createdAt.getDate()} ${
-          [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December',
-          ][createdAt.getMonth()]
-        } ${createdAt.getFullYear()}`,
-      )
-      .replaceAll('{user.global_name}', member.user.globalName ?? member.user.displayName)
-      .replaceAll('{user.globalname}', member.user.globalName ?? member.user.displayName);
-  }
 }

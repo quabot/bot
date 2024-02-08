@@ -1,5 +1,7 @@
 export function isSnowflake(string: string) {
-  return /\d/g.test(string);
+  const arr = string.split('');
+
+  return !arr.map(v => /\d/g.test(v)).some(v => v === false);
 }
 
 export function isValidHttpUrl(string: string) {

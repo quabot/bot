@@ -5,12 +5,13 @@ import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
 import { drawWelcomeCard } from '@functions/cards';
+import { MemberParser } from '@classes/parsers';
 
 export default {
   event: Events.GuildMemberRemove,
   name: 'leaveMessage',
 
-  async execute({ client }: EventArgs, member: GuildMember) {
+  async execute({ client, color }: EventArgs, member: GuildMember) {
     const config = await getWelcomeConfig(client, member.guild.id);
     const custom = await getServerConfig(client, member.guild.id);
     if (!config) return;
@@ -20,25 +21,16 @@ export default {
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
-    const parseString = (text: string) =>
-      text
-        .replaceAll('{user}', `${member}`)
-        .replaceAll('{username}', member.user.username ?? '')
-        .replaceAll('{tag}', member.user.tag ?? '')
-        .replaceAll('{discriminator}', member.user.discriminator ?? '')
-        .replaceAll('{avatar}', member.displayAvatarURL() ?? '')
-        .replaceAll('{icon}', member.guild.iconURL() ?? '')
-        .replaceAll('{server}', member.guild.name ?? '')
-        .replaceAll('{id}', `${member.user.id}`)
-        .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
-        .replaceAll('{color}', `${custom?.color ?? '#416683'}`);
+    color = custom?.color ?? color;
+
+    const parser = new MemberParser({ member, color });
 
     switch (config.leaveType) {
       case 'embed': {
-        const embed = new CustomEmbed(config.leaveMessage, parseString);
+        const embed = new CustomEmbed(config.leaveMessage, parser);
         await channel.send({
           embeds: [embed],
-          content: parseString(config.leaveMessage.content),
+          content: parser.parse(config.leaveMessage.content),
         });
 
         break;
@@ -46,12 +38,12 @@ export default {
 
       case 'text': {
         if (config.leaveMessage.content === '') return;
-        await channel.send({ content: parseString(config.leaveMessage.content) });
+        await channel.send({ content: parser.parse(config.leaveMessage.content) });
         break;
       }
 
       case 'card': {
-        const card = await drawWelcomeCard(member, config.leaveCard);
+        const card = await drawWelcomeCard(member, color, config.leaveCard);
         await channel.send({ files: [new AttachmentBuilder(card)] });
         break;
       }

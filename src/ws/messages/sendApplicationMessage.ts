@@ -2,6 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { WsEventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { BaseParser } from '@classes/parsers';
 
 //* QuaBot Applications Message Sender Handler.
 export default {
@@ -32,9 +33,7 @@ export default {
         components: [row],
       });
 
-    const sentEmbed = new CustomEmbed(data.message, e => {
-      return e;
-    });
+    const sentEmbed = new CustomEmbed(data.message, new BaseParser());
 
     await channel.send({
       embeds: [sentEmbed],

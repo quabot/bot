@@ -17,6 +17,7 @@ import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
 import { isSnowflake } from '@functions/string';
+import { ModerationParser } from '@classes/parsers';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
@@ -189,33 +190,13 @@ export default {
         .setDisabled(true),
     );
 
-    if (config.banDM) {
-      const parseString = (text: string) => {
-        const res = text
-          .replaceAll('{reason}', reason)
-          .replaceAll('{user}', `${member}`)
-          .replaceAll('{moderator}', interaction.user.toString())
-          .replaceAll('{staff}', interaction.user.toString())
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{id}', `${id}`)
-          .replaceAll(
-            '{created}',
-            user?.createdTimestamp ? `<t:${Math.floor(user.createdTimestamp / 1000)}:R>` : 'null',
-          )
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
-
-        if (member?.joinedTimestamp != null) {
-          return text.replaceAll('{joined}', `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`);
-        }
-
-        return res;
-      };
+    if (config.banDM && member) {
+      const parser = new ModerationParser({ member, reason, interaction, color, id });
 
       await member
         ?.send({
-          embeds: [new CustomEmbed(config.banDMMessage, parseString)],
-          content: parseString(config.banDMMessage.content),
+          embeds: [new CustomEmbed(config.banDMMessage, parser)],
+          content: parser.parse(config.banDMMessage.content),
           components: [sentFrom],
         })
         .catch(() => {});

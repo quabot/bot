@@ -12,6 +12,7 @@ import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
 import { hasRolePerms, hasSendPerms } from '@functions/discord';
+import { LevelParser, RewardLevelParser } from '@classes/parsers';
 
 export default {
   event: 'messageCreate',
@@ -19,6 +20,7 @@ export default {
 
   async execute({ client }: EventArgs, message: Message) {
     if (!message.guild || !message.channel || !message.member) return;
+    if (message.channel.isDMBased()) return;
     if (message.author.bot) return;
 
     const guild = message.guild!;
@@ -90,6 +92,8 @@ export default {
       if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
     }
 
+    const parserOptions = { member, color, xp, level, channel: msgChannel };
+
     if (xp + rndXp >= reqXp) {
       levelDB.xp += rndXp;
       levelDB.level += 1;
@@ -98,59 +102,24 @@ export default {
       xp = xp += rndXp;
       level = level += 1;
 
-      const parse = (s: string) => {
-        return s
-          .replaceAll('{server.name}', `${guild.name}`)
-          .replaceAll('{server}', `${guild.name}` ?? '')
-          .replaceAll('{server.id}', `${guild.id}` ?? '')
-          .replaceAll('{server.icon_url}', `${guild.iconURL()}` ?? '')
-          .replaceAll('{server.icon}', `${guild.icon}` ?? '')
-          .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-          .replaceAll('{server.owner}', `<@${guild.ownerId}>` ?? '')
-          .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-          .replaceAll('{id}', `${message.author.id}` ?? '')
-          .replaceAll('{server.owner_id}', `${guild.ownerId}` ?? '')
-          .replaceAll('{server.members}', `${guild.memberCount}` ?? '')
-          .replaceAll('{members}', `${guild.memberCount}` ?? '')
-          .replaceAll('{user}', `${message.author}` ?? '')
-          .replaceAll('{username}', `${message.author.username}` ?? '')
-          .replaceAll('{user.name}', `${message.author.username}` ?? '')
-          .replaceAll('{user.username}', `${message.author.username}` ?? '')
-          .replaceAll('{user.tag}', `${message.author.tag}` ?? '')
-          .replaceAll('{tag}', `${message.author.tag}` ?? '')
-          .replaceAll('{user.discriminator}', `${message.author.discriminator}` ?? '')
-          .replaceAll('{user.displayname}', `${message.author.displayName}` ?? '')
-          .replaceAll('{user.id}', `${message.author.id}` ?? '')
-          .replaceAll('{user.avatar_url}', `${message.author.avatarURL()}` ?? '')
-          .replaceAll('{user.avatar}', `${message.author.avatar}` ?? '')
-          .replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '')
-          .replaceAll('{user.created_at}', `${message.author.createdAt}` ?? '')
-          .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
-          .replaceAll('{channel}', `${msgChannel}` ?? '')
-          .replaceAll('{channel.name}', 'name' in msgChannel ? `${msgChannel.name}` : '')
-          .replaceAll('{channel.id}', `${msgChannel.id}` ?? '')
-          .replaceAll('{level}', `${level}` ?? '')
-          .replaceAll('{xp}', `${xp}` ?? '')
-          .replaceAll('{required_xp}', `${formula(level)}` ?? '')
-          .replaceAll('{color}', `${color}` ?? '');
-      };
+      const parser = new LevelParser(parserOptions);
 
       if (config.channel !== 'none') {
         const channel = config.channel === 'current' ? msgChannel : guild.channels.cache.get(`${config.channel}`);
         if (!channel?.isTextBased() || channel.isDMBased()) return;
         if (!hasSendPerms(channel)) return;
 
-        const embed = new CustomEmbed(config.message, parse);
+        const embed = new CustomEmbed(config.message, parser);
 
         if (config.messageType === 'embed')
           await channel
             .send({
               embeds: [embed],
-              content: `${parse(config.message.content)}`,
+              content: `${parser.parse(config.message.content)}`,
             })
             .catch(() => {});
         if (config.messageType === 'text')
-          await channel.send({ content: `${parse(config.messageText)}` }).catch(() => {});
+          await channel.send({ content: `${parser.parse(config.messageText)}` }).catch(() => {});
         if (config.messageType === 'card') {
           const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
@@ -171,19 +140,19 @@ export default {
       }
 
       if (config.dmEnabled) {
-        const embed = new CustomEmbed(config.dmMessage, parse);
+        const embed = new CustomEmbed(config.dmMessage, parser);
 
         if (config.dmType === 'embed')
           await member
             .send({
               embeds: [embed],
-              content: `${parse(config.dmMessage.content)}`,
+              content: `${parser.parse(config.dmMessage.content)}`,
               components: [sentFrom],
             })
             .catch(() => {});
         if (config.dmType === 'text')
           await member.send({
-            content: `${parse(config.dmMessageText)}`,
+            content: `${parser.parse(config.dmMessageText)}`,
           });
         if (config.dmType === 'card') {
           const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
@@ -211,47 +180,7 @@ export default {
 
       const nextCheck = config.rewards!.filter(i => i.level === level) ?? [];
       nextCheck.forEach(async check => {
-        const parseCheck = (s: string) => {
-          return s
-            .replaceAll('{server.name}', `${guild.name}`)
-            .replaceAll('{server}', `${guild.name}` ?? '')
-            .replaceAll('{server.id}', `${guild.id}` ?? '')
-            .replaceAll('{server.icon_url}', `${guild.iconURL()}` ?? '')
-            .replaceAll('{server.icon}', `${guild.icon}` ?? '')
-            .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-            .replaceAll('{server.owner}', `<@${guild.ownerId}>` ?? '')
-            .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-            .replaceAll('{id}', `${message.author.id}` ?? '')
-            .replaceAll('{server.owner_id}', `${guild.ownerId}` ?? '')
-            .replaceAll('{server.members}', `${guild.memberCount}` ?? '')
-            .replaceAll('{members}', `${guild.memberCount}` ?? '')
-            .replaceAll('{user}', `${message.author}` ?? '')
-            .replaceAll('{username}', `${message.author.username}` ?? '')
-            .replaceAll('{user.name}', `${message.author.username}` ?? '')
-            .replaceAll('{user.username}', `${message.author.username}` ?? '')
-            .replaceAll('{user.tag}', `${message.author.tag}` ?? '')
-            .replaceAll('{tag}', `${message.author.tag}` ?? '')
-            .replaceAll('{user.discriminator}', `${message.author.discriminator}` ?? '')
-            .replaceAll('{user.displayname}', `${message.author.displayName}` ?? '')
-            .replaceAll('{user.id}', `${message.author.id}` ?? '')
-            .replaceAll('{user.avatar_url}', `${message.author.avatarURL()}` ?? '')
-            .replaceAll('{user.avatar}', `${message.author.avatar}` ?? '')
-            .replaceAll('{avatar}', `${message.author.avatarURL()}` ?? '')
-            .replaceAll('{user.created_at}', `${message.author.createdAt}` ?? '')
-            .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
-            .replaceAll('{channel}', `${msgChannel}` ?? '')
-            .replaceAll('{channel.name}', 'name' in msgChannel ? `${msgChannel.name}` : '')
-            .replaceAll('{channel.id}', `${msgChannel.id}` ?? '')
-            .replaceAll('{level}', `${level}` ?? '')
-            .replaceAll('{xp}', `${xp}` ?? '')
-            .replaceAll('{required_xp}', `${formula(level)}` ?? '')
-            .replaceAll('{color}', `${color}` ?? '')
-            .replaceAll('{role}', `<@&${check.role}>` ?? '')
-            .replaceAll('{reward}', `<@&${check.role}>` ?? '')
-            .replaceAll('{required_level}', `${check.level}` ?? '')
-            .replaceAll('{reward.level}', `${check.level}` ?? '')
-            .replaceAll('{reward.role}', `<@&${check.role}>` ?? '');
-        };
+        const parser = new RewardLevelParser({ ...parserOptions, reward: check });
 
         if (config.rewardsMode === 'replace') {
           if (levelDB.role !== 'none') {
@@ -276,13 +205,13 @@ export default {
 
         if (config.rewardDmType === 'embed')
           await member.send({
-            embeds: [new CustomEmbed(config.rewardDmMessage, parseCheck)],
-            content: `${parseCheck(config.rewardDmMessage.content)}`,
+            embeds: [new CustomEmbed(config.rewardDmMessage, parser)],
+            content: `${parser.parse(config.rewardDmMessage.content)}`,
             components: [sentFrom],
           });
         if (config.rewardDmType === 'text')
           await member.send({
-            content: `${parseCheck(config.rewardDmMessageText)}`,
+            content: `${parser.parse(config.rewardDmMessageText)}`,
             components: [sentFrom],
           });
       });
