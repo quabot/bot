@@ -5,6 +5,7 @@ import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import { ChannelType, GuildTextBasedChannel, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -78,6 +79,39 @@ export default {
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Removed ${user} from the ticket.`)],
+    });
+
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('remove')) return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log, I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('User Removed From Ticket')
+          .addFields(
+            {
+              name: 'Ticket Owner',
+              value: `<@${ticket.owner}>`,
+              inline: true,
+            },
+            {
+              name: 'Channel',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            {
+              name: 'User Removed',
+              value: `${user}`,
+              inline: true,
+            },
+          )
+          .setFooter({ text: `ID: ${ticket.id}` }),
+      ],
     });
   },
 };

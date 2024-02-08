@@ -173,7 +173,7 @@ export default {
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
-        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        embeds: [new Embed(color).setDescription("Didn't send the log, I don't have the `SendMessages` permission.")],
         ephemeral: true,
       });
 

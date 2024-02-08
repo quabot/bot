@@ -3,6 +3,7 @@ import { getFromCollection } from '@functions/mongoose';
 import TicketConfig from '@schemas/TicketConfig';
 import { ITicketConfig } from '@typings/schemas';
 import type { Client } from '@classes/discord';
+import { Types } from 'mongoose';
 
 export async function getTicketConfig(client: Client, guildId: Snowflake) {
   return await getFromCollection<ITicketConfig>({
@@ -25,6 +26,7 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
       topicButton: true,
 
       logChannel: 'none',
+      logActions: new Types.Array('claim', 'close', 'create', 'delete', 'reopen', 'unclaim'),
       logEnabled: false,
     },
   });

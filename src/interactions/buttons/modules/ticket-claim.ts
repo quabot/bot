@@ -86,10 +86,10 @@ export default {
       });
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
-    if (!logChannel?.isTextBased() || !config.logEnabled) return;
+    if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('claim')) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
-        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        embeds: [new Embed(color).setDescription("Didn't send the log, I don't have the `SendMessages` permission.")],
         ephemeral: true,
       });
 

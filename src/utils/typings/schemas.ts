@@ -348,6 +348,9 @@ export interface ITicketConfig {
   topicButton: boolean;
 
   logChannel: Snowflake;
+  logActions: Types.Array<
+    'add' | 'claim' | 'close' | 'create' | 'delete' | 'remove' | 'rename' | 'reopen' | 'transfer' | 'unclaim'
+  >;
   logEnabled: boolean;
 }
 

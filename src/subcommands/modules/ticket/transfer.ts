@@ -4,6 +4,7 @@ import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -89,6 +90,39 @@ export default {
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Made ${user} the ticket owner.`)],
+    });
+
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('transfer')) return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log, I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('Transferred Ticket Owner')
+          .addFields(
+            {
+              name: 'Old Ticket Owner',
+              value: `<@${interaction.user}>`,
+              inline: true,
+            },
+            {
+              name: 'Channel',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            {
+              name: 'New Ticket Owner',
+              value: `${user}`,
+              inline: true,
+            },
+          )
+          .setFooter({ text: `ID: ${ticket.id}` }),
+      ],
     });
   },
 };

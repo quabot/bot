@@ -20,6 +20,7 @@ export default model<ITicketConfig>(
     topicButton: reqBool,
 
     logChannel: reqString,
+    logActions: reqArray,
     logEnabled: reqBool,
   }),
 );

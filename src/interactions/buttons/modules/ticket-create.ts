@@ -290,7 +290,7 @@ export default {
     });
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
-    if (!(!logChannel?.isTextBased() || !config.logEnabled))
+    if (!(!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('create')))
       await logChannel.send({
         embeds: [
           new Embed(color)
