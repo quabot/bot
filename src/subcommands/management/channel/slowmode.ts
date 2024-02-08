@@ -2,7 +2,8 @@ import { Embed } from '@constants/embed';
 import ms from 'ms';
 import type { CommandArgs } from '@typings/functionArgs';
 import { GuildChannel, GuildTextBasedChannel } from '@typings/discord';
-import { CategoryChannel, ChannelType } from 'discord.js';
+import { CategoryChannel } from 'discord.js';
+import { ChannelType } from 'discord.js';
 
 export default {
   parent: 'channel',

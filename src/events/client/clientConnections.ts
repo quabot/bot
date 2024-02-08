@@ -2,8 +2,6 @@ import type { EventArgs } from '@typings/functionArgs';
 import { connect, set } from 'mongoose';
 import consola from 'consola';
 import { AutoPoster } from 'topgg-autoposter';
-import axios from 'axios';
-import { API_URL } from '@constants/discord';
 
 export default {
   event: 'ready',

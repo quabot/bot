@@ -8,7 +8,10 @@ export default {
   once: true,
 
   async execute({ client }: EventArgs) {
-    client.guilds.cache.forEach(guild => guild.members.fetch().catch(() => {}));
+    client.guilds.cache.forEach(guild => {
+      guild.members.fetch().catch(() => {});
+      guild.roles.fetch();
+    });
 
     function setActivity(activity: string) {
       client.user?.setActivity({ type: ActivityType.Watching, name: activity });

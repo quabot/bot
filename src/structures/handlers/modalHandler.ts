@@ -10,8 +10,8 @@ export default async (client: Client) => {
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/modals/*/*.js`);
 
   files.forEach(async file => {
-    const modal: Modal = require(file).default;
-    if (!modal.name) return;
+    const modal: Modal | undefined = require(file).default;
+    if (!modal?.name) return;
 
     client.modals.set(modal.name, modal);
   });

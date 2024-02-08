@@ -1,4 +1,4 @@
-import { Events, Colors, Message, ChannelType } from 'discord.js';
+import { Events, Colors, Message } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
@@ -18,12 +18,12 @@ export default {
 
     if (!config.events!.includes('messageDelete')) return;
     if (config.excludedChannels!.includes(message.channelId)) return;
-    if (message.channel.type !== ChannelType.DM) {
+    if (!message.channel.isDMBased()) {
       if (message.channel.parentId && config.excludedCategories!.includes(message.channel.parentId)) return;
     }
 
     const channel = message.guild.channels.cache.get(config.channelId);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     let description = '';
@@ -43,7 +43,7 @@ export default {
       .addFields({ name: 'Channel', value: `${message.channel}`, inline: true })
       .setFooter({
         text: `User: @${message.author.username ?? 'none'}`,
-        iconURL: `${message.author.avatarURL({ forceStatic: false })}`,
+        iconURL: message.author.displayAvatarURL({ forceStatic: false }),
       });
 
     const attachments = message.attachments.map(i => i.url);

@@ -8,6 +8,7 @@ import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/dis
 import type { GuildTextBasedChannel } from 'discord.js';
 import { hasRolePerms } from '@functions/discord';
 import { handleError } from '@constants/errorHandler';
+import { isSnowflake } from '@functions/string';
 
 export default {
   parent: 'reactionroles',
@@ -65,7 +66,7 @@ export default {
         embeds: [new Embed(color).setDescription('That emoji is already used for a reactionrole on that message.')],
       });
 
-    if (!/\d/g.test(messageId)) {
+    if (!isSnowflake(messageId)) {
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription(

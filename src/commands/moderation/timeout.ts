@@ -6,7 +6,6 @@ import {
   ButtonStyle,
   GuildMemberRoleManager,
   APIEmbedField,
-  ChannelType,
 } from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';
@@ -17,6 +16,7 @@ import { CustomEmbed } from '@constants/customEmbed';
 import ms from 'ms';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { TimedModerationParser } from '@classes/parsers';
 
 export default {
   data: new SlashCommandBuilder()
@@ -142,39 +142,21 @@ export default {
         .setDisabled(true),
     );
 
-    if (config.timeoutDM) {
-      const parseString = (text: string) => {
-        const res = text
-          .replaceAll('{reason}', reason)
-          .replaceAll('{user}', `${member}`)
-          .replaceAll('{moderator}', interaction.user.toString())
-          .replaceAll('{duration}', duration)
-          .replaceAll('{staff}', interaction.user.toString())
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{id}', `${id}`)
-          .replaceAll('{created}', `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`)
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
-
-        if (member.joinedTimestamp !== null) {
-          return text.replaceAll('{joined}', `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`);
-        }
-
-        return res;
-      };
+    if (config.timeoutDM && member) {
+      const parser = new TimedModerationParser({ member, reason, interaction, color, id, duration });
 
       await member
         .send({
-          embeds: [new CustomEmbed(config.timeoutDMMessage, parseString)],
+          embeds: [new CustomEmbed(config.timeoutDMMessage, parser)],
           components: [sentFrom],
-          content: parseString(config.timeoutDMMessage.content),
+          content: parser.parse(config.timeoutDMMessage.content),
         })
         .catch(() => {});
     }
 
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
-      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!channel?.isTextBased()) return;
       if (!hasSendPerms(channel)) {
         return await interaction.followUp({
           embeds: [

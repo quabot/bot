@@ -1,5 +1,5 @@
 import type { EventArgs } from '@typings/functionArgs';
-import { Guild, ChannelType } from 'discord.js';
+import { Guild } from 'discord.js';
 import { getApplicationConfig } from '@configs/applicationConfig';
 import { getAfkConfig } from '@configs/afkConfig';
 import { getGiveawayConfig } from '@configs/giveawayConfig';
@@ -16,6 +16,7 @@ import { getTicketConfig } from '@configs/ticketConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { Embed } from '@constants/embed';
 import { hasSendPerms } from '@functions/discord';
+import { ChannelType } from 'discord.js';
 
 export default {
   event: 'guildCreate',

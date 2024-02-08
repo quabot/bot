@@ -1,46 +1,52 @@
-import { ChannelType, Events, type GuildMember } from 'discord.js';
+import { Events, type GuildMember, AttachmentBuilder } from 'discord.js';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { drawWelcomeCard } from '@functions/cards';
+import { MemberParser } from '@classes/parsers';
 
 export default {
   event: Events.GuildMemberRemove,
   name: 'leaveMessage',
 
-  async execute({ client }: EventArgs, member: GuildMember) {
+  async execute({ client, color }: EventArgs, member: GuildMember) {
     const config = await getWelcomeConfig(client, member.guild.id);
     const custom = await getServerConfig(client, member.guild.id);
     if (!config) return;
     if (!config.leaveEnabled) return;
 
     const channel = member.guild.channels.cache.get(config.leaveChannel);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
-    const parseString = (text: string) =>
-      text
-        .replaceAll('{user}', `${member}`)
-        .replaceAll('{username}', member.user.username ?? '')
-        .replaceAll('{tag}', member.user.tag ?? '')
-        .replaceAll('{discriminator}', member.user.discriminator ?? '')
-        .replaceAll('{avatar}', member.displayAvatarURL() ?? '')
-        .replaceAll('{icon}', member.guild.iconURL() ?? '')
-        .replaceAll('{server}', member.guild.name ?? '')
-        .replaceAll('{id}', `${member.user.id}`)
-        .replaceAll('{members}', member.guild.memberCount?.toString() ?? '')
-        .replaceAll('{color}', `${custom?.color ?? '#416683'}`);
+    color = custom?.color ?? color;
 
-    if (config.leaveType === 'embed') {
-      const embed = new CustomEmbed(config.leaveMessage, parseString);
-      await channel.send({
-        embeds: [embed],
-        content: parseString(config.leaveMessage.content),
-      });
-    } else {
-      if (config.leaveMessage.content === '') return;
-      await channel.send({ content: parseString(config.leaveMessage.content) });
+    const parser = new MemberParser({ member, color });
+
+    switch (config.leaveType) {
+      case 'embed': {
+        const embed = new CustomEmbed(config.leaveMessage, parser);
+        await channel.send({
+          embeds: [embed],
+          content: parser.parse(config.leaveMessage.content),
+        });
+
+        break;
+      }
+
+      case 'text': {
+        if (config.leaveMessage.content === '') return;
+        await channel.send({ content: parser.parse(config.leaveMessage.content) });
+        break;
+      }
+
+      case 'card': {
+        const card = await drawWelcomeCard(member, color, config.leaveCard);
+        await channel.send({ files: [new AttachmentBuilder(card)] });
+        break;
+      }
     }
   },
 };

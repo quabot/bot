@@ -4,6 +4,7 @@ import { Embed } from '@constants/embed';
 import Suggest from '@schemas/Suggestion';
 import { getSuggestConfig } from '@configs/suggestConfig';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { SuggestionParser } from '@classes/parsers';
 
 export default {
   name: 'suggestion-approve',
@@ -122,21 +123,13 @@ export default {
       if (!config.dm) return;
 
       const user = interaction.guild?.members.cache.get(`${suggestion.userId}`);
+      if (!user) return;
 
-      const parseString = (text: string) =>
-        text
-          .replaceAll('{suggestion}', suggestion.suggestion)
-          .replaceAll('{user}', `${user}`)
-          .replaceAll('{avatar}', user?.displayAvatarURL() ?? '')
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{staff}', `${interaction.user ?? ''}`)
-          .replaceAll('{state}', 'approved')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
+      const parser = new SuggestionParser({ member: user, interaction, color, suggestion });
 
       user?.send({
-        embeds: [new CustomEmbed(config.dmMessage, parseString)],
-        content: parseString(config.dmMessage.content),
+        embeds: [new CustomEmbed(config.dmMessage, parser)],
+        content: parser.parse(config.dmMessage.content),
       });
     });
   },

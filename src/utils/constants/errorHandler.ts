@@ -46,7 +46,7 @@ export async function handleError(
 
   const guild = client.guilds.cache.get(process.env.GUILD_ID!);
   const channel = guild?.channels.cache.get(process.env.ERROR_CHANNEL_ID!);
-  if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+  if (!channel?.isTextBased()) return;
   if (!hasSendPerms(channel)) return;
 
   await channel.send({

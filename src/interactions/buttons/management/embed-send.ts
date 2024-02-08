@@ -1,4 +1,4 @@
-import { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
@@ -13,7 +13,7 @@ export default {
     if (!msg) return await interaction.editReply({ content: 'Why tf we even do desc thing' });
 
     const channel = interaction.guild?.channels.cache.get(`${msg.slice(msg.indexOf('<') + 2, msg.indexOf('>'))}`);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum)
+    if (!channel?.isTextBased())
       return await interaction.editReply({
         content: "Can't send a message to this channel. It doesn't exist or isn't a valid channel type.",
       });

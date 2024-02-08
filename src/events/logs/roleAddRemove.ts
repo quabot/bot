@@ -1,4 +1,4 @@
-import { Events, Colors, GuildMember, ChannelType } from 'discord.js';
+import { Events, Colors, GuildMember } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
@@ -23,7 +23,7 @@ export default {
     if (oldMember.avatar !== newMember.avatar) return;
 
     const channel = oldMember.guild.channels.cache.get(config.channelId);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     const moreRoles = oldMember.roles.cache.size > newMember.roles.cache.size;

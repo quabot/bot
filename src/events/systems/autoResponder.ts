@@ -5,6 +5,7 @@ import { getResponderConfig } from '@configs/responderConfig';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasAnyRole } from '@functions/discord';
 import type { IResponder } from '@typings/schemas';
+import { MemberParser } from '@classes/parsers';
 
 export default {
   event: 'messageCreate',
@@ -33,29 +34,20 @@ export default {
     });
 
     async function runTrigger(document: IResponder) {
-      const parse = (s: string) => {
-        return `${s}`
-          .replaceAll('{color}', `${color}`)
-          .replaceAll('{guild}', `${message.guild?.name}`)
-          .replaceAll('{server}', `${message.guild?.name}`)
-          .replaceAll('{members}', `${message.guild?.memberCount}`)
-          .replaceAll('{user}', message.author?.toString())
-          .replaceAll('{username}', message.author.username)
-          .replaceAll('{tag}', message.author.tag);
-      };
+      const parser = new MemberParser({ color, member: message.member! });
 
       if (document.type === 'message') {
         await message.reply({
-          content: parse(document.message) ?? '** **',
+          content: parser.parse(document.message) ?? '** **',
           allowedMentions: { repliedUser: false },
         });
       } else if (document.type === 'reaction') {
         await message.react(document.reaction);
       } else if (document.type === 'embed') {
-        const embed = new CustomEmbed(document.embed, parse);
+        const embed = new CustomEmbed(document.embed, parser);
         await message.reply({
           embeds: [embed],
-          content: parse(document.embed.content),
+          content: parser.parse(document.embed.content),
         });
       }
     }

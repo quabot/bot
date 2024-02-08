@@ -2,7 +2,7 @@ import { AttachmentBuilder, GuildMember } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { getLevelConfig } from '@configs/levelConfig';
 import { getLevel } from '@configs/level';
-import { drawCard } from '@functions/levelCard';
+import { drawLevelCard } from '@functions/cards';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -43,7 +43,7 @@ export default {
         ],
       });
     } else {
-      const card = await drawCard(
+      const card = await drawLevelCard(
         interaction.member as GuildMember,
         levelDB.level,
         levelDB.xp,

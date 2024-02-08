@@ -6,7 +6,7 @@ import {
   ButtonStyle,
   GuildMemberRoleManager,
   type APIEmbedField,
-  ChannelType,
+  type User,
 } from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';
@@ -16,13 +16,14 @@ import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { isSnowflake } from '@functions/string';
+import { ModerationParser } from '@classes/parsers';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
   data: new SlashCommandBuilder()
     .setName('ban')
     .setDescription('Ban a user.')
-    .addUserOption(option => option.setName('user').setDescription('The user you wish to ban.').setRequired(true))
     .addIntegerOption(option =>
       option
         .setName('delete_messages')
@@ -38,13 +39,16 @@ export default {
           { name: 'Previous 7 days', value: 604800 },
         ),
     )
+    .addUserOption(option => option.setName('user').setDescription('The user you wish to ban.').setRequired(false))
+    .addStringOption(option =>
+      option.setName('user-id').setDescription('The id of the user you wish to ban.').setRequired(false),
+    )
     .addStringOption(option => option.setName('reason').setDescription('The reason for banning the user.'))
     .addBooleanOption(option => option.setName('private').setDescription('Should the message be visible to you only?'))
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false),
 
   async execute({ client, interaction, color }: CommandArgs) {
-    console.log(`🚀 ~ file: ban.ts:47 ~ execute ~ color:`, color);
     //* Determine if the command should be ephemeral or not.
     const ephemeral = interaction.options.getBoolean('private') ?? false;
 
@@ -66,10 +70,32 @@ export default {
     //* Get the user-defined variables and return errors if they're invalid
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
     const deleteMessages = interaction.options.getInteger('delete_messages', true);
-    const user = interaction.options.getUser('user', true);
-    const member = interaction.guild?.members.cache.get(user.id)!;
+    let user = interaction.options.getUser('user');
+    const userId = user?.id ?? interaction.options.getString('user-id');
 
-    await getUser(interaction.guildId!, member.id);
+    if (!userId) {
+      return await interaction.editReply('You have to fill in the `user` field or the `user-id` field.');
+    }
+
+    if (!user) {
+      if (!isSnowflake(userId)) {
+        return await interaction.editReply(
+          "This isn't a valid id, a user id looks something like this `683217001896083456`.\nFor help you could look at [this article](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)",
+        );
+      }
+
+      user = await client.users.fetch(userId);
+    }
+
+    if (!user) {
+      return await interaction.editReply(
+        "Can't find a user with this id.\nFor help on getting id's, you could look at [this article](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)",
+      );
+    }
+
+    user = user as NonNullable<User>;
+
+    const member = interaction.guild?.members.cache.get(userId);
 
     //* Prevent non-allowed bans.
     if (member === interaction.member)
@@ -79,27 +105,35 @@ export default {
 
     if (!((interaction.member?.roles as any) instanceof GuildMemberRoleManager)) return;
 
-    if (member.roles.highest.rawPosition > (interaction.member!.roles as GuildMemberRoleManager).highest.rawPosition)
-      return interaction.editReply({
-        embeds: [new Embed(color).setDescription('You cannot ban a user with roles higher than your own.')],
-      });
+    if (member) {
+      if (member.roles.highest.rawPosition > (interaction.member!.roles as GuildMemberRoleManager).highest.rawPosition)
+        return interaction.editReply({
+          embeds: [new Embed(color).setDescription('You cannot ban a user with roles higher than your own.')],
+        });
+    }
 
     //* Get the user's database and add them if they don't exist.
-    const userDatabase = await getUser(interaction.guildId!, member.id);
-    if (!userDatabase)
+    const userDatabase = await getUser(interaction.guildId!, userId);
+
+    if (!userDatabase) {
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
+    }
 
     //* Try to ban the user and return if it fails.
     let ban = true;
-    await member.ban({ reason, deleteMessageSeconds: deleteMessages }).catch(async () => {
-      ban = false;
+    await interaction.guild?.members
+      .ban(user ?? userId, { reason, deleteMessageSeconds: deleteMessages })
+      .catch(async e => {
+        ban = false;
 
-      await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Failed to ban the user.')],
+        console.log(e);
+
+        await interaction.editReply({
+          embeds: [new Embed(color).setDescription('Failed to ban the user.')],
+        });
       });
-    });
 
     if (!ban) return;
 
@@ -111,7 +145,7 @@ export default {
 
     const NewPunishment = new Punishment({
       guildId: interaction.guildId,
-      userId: member.id,
+      userId,
 
       channelId: interaction.channelId,
       moderatorId: interaction.user.id,
@@ -133,7 +167,7 @@ export default {
       },
     ];
 
-    if (member.joinedTimestamp !== null) {
+    if (member?.joinedTimestamp != null) {
       fields.splice(0, 0, {
         name: 'Joined Server',
         value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
@@ -146,7 +180,7 @@ export default {
       embeds: [
         new Embed(color)
           .setTitle('User Banned')
-          .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
+          .setDescription(`**User:** ${member ?? user ?? `<@${userId}>`} (@${user.username})\n**Reason:** ${reason}`)
           .addFields(fields)
           .setFooter({ text: `ID: ${id}` }),
       ],
@@ -161,30 +195,13 @@ export default {
         .setDisabled(true),
     );
 
-    if (config.banDM) {
-      const parseString = (text: string) => {
-        const res = text
-          .replaceAll('{reason}', reason)
-          .replaceAll('{user}', `${member}`)
-          .replaceAll('{moderator}', interaction.user.toString())
-          .replaceAll('{staff}', interaction.user.toString())
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{id}', `${id}`)
-          .replaceAll('{created}', `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`)
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
-
-        if (member.joinedTimestamp !== null) {
-          return text.replaceAll('{joined}', `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`);
-        }
-
-        return res;
-      };
+    if (config.banDM && member) {
+      const parser = new ModerationParser({ member, reason, interaction, color, id });
 
       await member
-        .send({
-          embeds: [new CustomEmbed(config.banDMMessage, parseString)],
-          content: parseString(config.banDMMessage.content),
+        ?.send({
+          embeds: [new CustomEmbed(config.banDMMessage, parser)],
+          content: parser.parse(config.banDMMessage.content),
           components: [sentFrom],
         })
         .catch(() => {});
@@ -193,7 +210,7 @@ export default {
     //* Send the log message.
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
-      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!channel?.isTextBased()) return;
       if (!hasSendPerms(channel)) {
         return await interaction.followUp({
           embeds: [
@@ -230,10 +247,10 @@ export default {
         { name: 'Reason', value: `${reason}` },
       ];
 
-      if (member.joinedTimestamp !== null) {
+      if (member?.joinedTimestamp != null) {
         fields.splice(4, 0, {
           name: 'Joined Server',
-          value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+          value: `<t:${Math.floor(member?.joinedTimestamp / 1000)}:R>`,
           inline: true,
         });
       }

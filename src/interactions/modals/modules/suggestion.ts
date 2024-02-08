@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonStyle, ButtonBuilder, ChannelType } from 'discord.js';
+import { ActionRowBuilder, ButtonStyle, ButtonBuilder, type GuildMember } from 'discord.js';
 import Suggestion from '@schemas/Suggestion';
 import { getIdConfig } from '@configs/idConfig';
 import { getSuggestConfig } from '@configs/suggestConfig';
@@ -8,6 +8,7 @@ import type { ModalArgs } from '@typings/functionArgs';
 import { IIds } from '@typings/schemas';
 import { NonNullMongooseReturn } from '@typings/mongoose';
 import { hasSendPerms } from '@functions/discord';
+import { MemberParser } from '@classes/parsers';
 
 export default {
   name: 'suggest',
@@ -35,7 +36,7 @@ export default {
           ),
         ],
       });
-    if (channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum)
+    if (!channel.isTextBased())
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription("The suggestions channel isn't the right type.")],
       });
@@ -62,26 +63,16 @@ export default {
 
     const ids = rawIds as Omit<NonNullMongooseReturn<IIds>, 'suggestId'> & { suggestId: number };
 
-    const getParsedString = (text: string) =>
-      text
-        .replaceAll('{suggestion}', suggestion)
-        .replaceAll('{user}', `${interaction.user}`)
-        .replaceAll('{avatar}', interaction.user.displayAvatarURL() ?? '')
-        .replaceAll('{username}', `${interaction.user.username}`)
-        .replaceAll('{tag}', `${interaction.user.tag}`)
-        .replaceAll('{discriminator}', `${interaction.user.discriminator}`)
-        .replaceAll('{servername}', `${interaction.guild?.name}`)
-        .replaceAll('{id}', (++ids.suggestId).toString())
-        .replaceAll('{server}', interaction.guild?.name ?? '')
-        .replaceAll('{guild}', interaction.guild?.name ?? '')
-        .replaceAll('{servername}', interaction.guild?.name ?? '')
-        .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
+    const parser = new MemberParser({ member: interaction.member as GuildMember, color }).addVariables({
+      name: 'suggestion',
+      value: suggestion,
+    });
 
-    const suggestEmbed = new CustomEmbed(config.message, getParsedString);
+    const suggestEmbed = new CustomEmbed(config.message, parser);
 
     const msg = await channel.send({
       embeds: [suggestEmbed],
-      content: getParsedString(config.message.content),
+      content: parser.parse(config.message.content),
     });
     await msg.react(config.emojiGreen);
     await msg.react(config.emojiRed);
@@ -113,8 +104,7 @@ export default {
 
     if (!config.logEnabled) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannelId);
-    if (!logChannel || logChannel.type === ChannelType.GuildCategory || logChannel.type === ChannelType.GuildForum)
-      return;
+    if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
         embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
