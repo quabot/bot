@@ -11,6 +11,7 @@ export default model<ITicketConfig>(
     openCategory: reqString,
     closedCategory: reqString,
 
+    guildMax: reqNum,
     userMax: reqNum,
     deleteOnClose: reqBool,
 

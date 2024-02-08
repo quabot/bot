@@ -27,6 +27,16 @@ export default {
       });
 
     if (
+      config.guildMax > 0 &&
+      (await Ticket.find({ guildId: interaction.guildId!, closed: false })).length >= config.guildMax
+    )
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(`This server has reached the configured ticket maximum (${config.guildMax})`),
+        ],
+      });
+
+    if (
       config.userMax > 0 &&
       (await Ticket.find({ owner: interaction.user.id, closed: false })).length >= config.userMax
     )

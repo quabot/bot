@@ -339,6 +339,7 @@ export interface ITicketConfig {
   openCategory: Snowflake;
   closedCategory: Snowflake;
 
+  guildMax: number;
   userMax: number;
   deleteOnClose: boolean;
 
