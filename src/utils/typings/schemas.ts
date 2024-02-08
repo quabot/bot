@@ -339,6 +339,8 @@ export interface ITicketConfig {
   openCategory: Snowflake;
   closedCategory: Snowflake;
 
+  deleteOnClose: boolean;
+
   staffRoles?: Types.Array<Snowflake>;
   staffPing: Snowflake;
   topicButton: boolean;

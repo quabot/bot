@@ -45,15 +45,17 @@ export default {
         embeds: [new Embed(color).setDescription('You are not allowed to close the ticket.')],
       });
 
-    const closedCategory = interaction.guild?.channels.cache.get(config.closedCategory);
-    if (!closedCategory)
-      return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            'There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).',
-          ),
-        ],
-      });
+    if (!config.deleteOnClose) {
+      const closedCategory = interaction.guild?.channels.cache.get(config.closedCategory);
+      if (!closedCategory)
+        return await interaction.editReply({
+          embeds: [
+            new Embed(color).setDescription(
+              'There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).',
+            ),
+          ],
+        });
+    }
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription('Close this ticket with the button below this message.')],

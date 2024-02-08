@@ -54,85 +54,89 @@ export default {
         embeds: [new Embed(color).setDescription('You are not allowed to close the ticket.')],
       });
 
-    const closedCategory = interaction.guild?.channels.cache.get(config.closedCategory);
-    if (!closedCategory)
-      return await interaction.editReply({
-        embeds: [
-          new Embed(color).setDescription(
-            'There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).',
-          ),
-        ],
-      });
-    if (closedCategory.type !== ChannelType.GuildCategory)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription("The closed ticket category doesn't have the right type.")],
-      });
-
-    const interChannel = interaction.channel as GuildTextBasedChannel | null;
-    if (interChannel?.type === ChannelType.PrivateThread || interChannel?.type === ChannelType.PublicThread)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription("This channel doesn't have the right type.")],
-      });
-
-    const channel = interChannel as Exclude<GuildTextBasedChannel, PrivateThreadChannel | PublicThreadChannel>;
-
-    await channel?.setParent(closedCategory, {
-      lockPermissions: false,
-    });
-
-    await channel?.permissionOverwrites.edit(ticket.owner, {
-      ViewChannel: true,
-      SendMessages: false,
-    });
-    ticket.users!.forEach(async user => {
-      await channel?.permissionOverwrites.edit(user, {
-        ViewChannel: true,
-        SendMessages: false,
-      });
-    });
-
-    await interaction.message.edit({
-      components: [
-        new ActionRowBuilder<ButtonBuilder>().setComponents(
-          new ButtonBuilder()
-            .setCustomId('close-ticket')
-            .setLabel('🔒 Close')
-            .setStyle(ButtonStyle.Secondary)
-            .setDisabled(true),
-        ),
-      ],
-    });
-
-    await interaction.editReply({
-      embeds: [
-        new Embed(color)
-          .setTitle('Ticket Closed')
-          .setDescription('Reopen, delete or get a transcript with the buttons below this message.'),
-      ],
-      components: [
-        new ActionRowBuilder<ButtonBuilder>()
-          .setComponents(
-            new ButtonBuilder().setCustomId('reopen-ticket').setLabel('🔓 Reopen').setStyle(ButtonStyle.Primary),
-          )
-          .addComponents(
-            new ButtonBuilder().setCustomId('delete-ticket').setLabel('🗑️ Delete').setStyle(ButtonStyle.Danger),
-          )
-          .addComponents(
-            new ButtonBuilder()
-              .setCustomId('transcript-ticket')
-              .setLabel('📝 Transcript')
-              .setStyle(ButtonStyle.Success),
-          ),
-      ],
-    });
-
-    ticket.closed = true;
-    await ticket.save();
-
     const attachment = await discordTranscripts.createTranscript(interaction.channel!, {
       limit: -1,
       saveImages: false,
     });
+
+    if (config.deleteOnClose) {
+      await interaction.channel?.delete();
+    } else {
+      const closedCategory = interaction.guild?.channels.cache.get(config.closedCategory);
+      if (!closedCategory)
+        return await interaction.editReply({
+          embeds: [
+            new Embed(color).setDescription(
+              'There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).',
+            ),
+          ],
+        });
+      if (closedCategory.type !== ChannelType.GuildCategory)
+        return await interaction.editReply({
+          embeds: [new Embed(color).setDescription("The closed ticket category doesn't have the right type.")],
+        });
+
+      const interChannel = interaction.channel as GuildTextBasedChannel | null;
+      if (interChannel?.type === ChannelType.PrivateThread || interChannel?.type === ChannelType.PublicThread)
+        return await interaction.editReply({
+          embeds: [new Embed(color).setDescription("This channel doesn't have the right type.")],
+        });
+
+      const channel = interChannel as Exclude<GuildTextBasedChannel, PrivateThreadChannel | PublicThreadChannel>;
+
+      await channel?.setParent(closedCategory, {
+        lockPermissions: false,
+      });
+
+      await channel?.permissionOverwrites.edit(ticket.owner, {
+        ViewChannel: true,
+        SendMessages: false,
+      });
+      ticket.users!.forEach(async user => {
+        await channel?.permissionOverwrites.edit(user, {
+          ViewChannel: true,
+          SendMessages: false,
+        });
+      });
+
+      await interaction.message.edit({
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().setComponents(
+            new ButtonBuilder()
+              .setCustomId('close-ticket')
+              .setLabel('🔒 Close')
+              .setStyle(ButtonStyle.Secondary)
+              .setDisabled(true),
+          ),
+        ],
+      });
+
+      await interaction.editReply({
+        embeds: [
+          new Embed(color)
+            .setTitle('Ticket Closed')
+            .setDescription('Reopen, delete or get a transcript with the buttons below this message.'),
+        ],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>()
+            .setComponents(
+              new ButtonBuilder().setCustomId('reopen-ticket').setLabel('🔓 Reopen').setStyle(ButtonStyle.Primary),
+            )
+            .addComponents(
+              new ButtonBuilder().setCustomId('delete-ticket').setLabel('🗑️ Delete').setStyle(ButtonStyle.Danger),
+            )
+            .addComponents(
+              new ButtonBuilder()
+                .setCustomId('transcript-ticket')
+                .setLabel('📝 Transcript')
+                .setStyle(ButtonStyle.Success),
+            ),
+        ],
+      });
+    }
+
+    ticket.closed = true;
+    await ticket.save();
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased() || !config.logEnabled) return;

@@ -2,7 +2,6 @@ import { hasSendPerms } from '@functions/discord';
 import {
   AnySelectMenuInteraction,
   ButtonInteraction,
-  ChannelType,
   ChatInputCommandInteraction,
   Client,
   Colors,

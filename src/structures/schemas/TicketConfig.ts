@@ -11,6 +11,8 @@ export default model<ITicketConfig>(
     openCategory: reqString,
     closedCategory: reqString,
 
+    deleteOnClose: reqBool,
+
     staffRoles: reqArray,
     staffPing: reqString,
     topicButton: reqBool,
