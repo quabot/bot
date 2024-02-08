@@ -26,6 +26,14 @@ export default {
         embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
+    if (
+      config.userMax > 0 &&
+      (await Ticket.find({ owner: interaction.user.id, closed: false })).length >= config.userMax
+    )
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription(`You've reached the configured ticket maximum (${config.userMax})`)],
+      });
+
     const topic = interaction.options.getString('topic');
     if (!topic)
       return await interaction.editReply({

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqArray } from '@constants/schemas';
+import { reqString, reqBool, reqArray, reqNum } from '@constants/schemas';
 import type { ITicketConfig } from '@typings/schemas';
 
 export default model<ITicketConfig>(
@@ -11,6 +11,7 @@ export default model<ITicketConfig>(
     openCategory: reqString,
     closedCategory: reqString,
 
+    userMax: reqNum,
     deleteOnClose: reqBool,
 
     staffRoles: reqArray,

@@ -339,6 +339,7 @@ export interface ITicketConfig {
   openCategory: Snowflake;
   closedCategory: Snowflake;
 
+  userMax: number;
   deleteOnClose: boolean;
 
   staffRoles?: Types.Array<Snowflake>;
