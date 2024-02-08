@@ -1,4 +1,4 @@
-import { type ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js';
+import { type Interaction, Colors, EmbedBuilder } from 'discord.js';
 import { getServerConfig } from '@configs/serverConfig';
 import { handleError } from '@constants/errorHandler';
 import type { EventArgs } from '@typings/functionArgs';
@@ -7,7 +7,7 @@ export default {
   event: 'interactionCreate',
   name: 'subcommandExecutor',
 
-  async execute({ client }: EventArgs, interaction: ChatInputCommandInteraction) {
+  async execute({ client }: EventArgs, interaction: Interaction) {
     try {
       if (!interaction.isChatInputCommand() || !interaction.guildId) return;
 
@@ -42,7 +42,7 @@ export default {
 
       await subcommand
         .execute({ client, interaction, color })
-        .catch(e => handleError(client, e, `${interaction.options.getSubcommand()}/${interaction.commandName}`));
+        .catch(e => handleError(client, e, interaction, `${interaction.commandName}/${subcommandName}`));
     } catch (e) {
       return;
     }

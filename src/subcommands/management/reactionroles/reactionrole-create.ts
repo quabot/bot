@@ -7,6 +7,7 @@ import type { CommandArgs } from '@typings/functionArgs';
 import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/discord';
 import type { GuildTextBasedChannel } from 'discord.js';
 import { hasRolePerms } from '@functions/discord';
+import { handleError } from '@constants/errorHandler';
 import { isSnowflake } from '@functions/string';
 
 export default {
@@ -80,7 +81,11 @@ export default {
       .then(async message => {
         if (!message)
           return await interaction.editReply({
-            embeds: [new Embed(color).setDescription(`Couldn't find any messages with that id in ${channel}.`)],
+            embeds: [
+              new Embed(color).setDescription(
+                `Couldn't find any messages with that id in ${channel}. Do I have the \`ReadMessages\` permission?`,
+              ),
+            ],
           });
 
         await message
@@ -118,10 +123,13 @@ export default {
 
             await newReaction.save();
           })
-          .catch(async () => {
-            return await interaction.editReply({
-              embeds: [new Embed(color).setDescription('That is not a valid emoji.')],
-            });
+          .catch(async e => {
+            if (e.code === 10014)
+              return await interaction.editReply({
+                embeds: [new Embed(color).setDescription('That is not a valid emoji.')],
+              });
+
+            handleError(client, e, interaction, 'reactionrole/create');
           });
       })
       .catch(async () => {
