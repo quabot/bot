@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, GuildTextBasedChannel } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
@@ -7,6 +7,8 @@ import type { ButtonArgs } from '@typings/functionArgs';
 import discordTranscripts from 'discord-html-transcripts';
 import { checkUserPerms } from '@functions/ticket';
 import { hasSendPerms } from '@functions/discord';
+import { TicketParser } from '@classes/parsers';
+import { CustomEmbed } from '@constants/customEmbed';
 
 export default {
   name: 'confirm-delete-ticket',
@@ -88,6 +90,25 @@ export default {
       id: ticket.id,
       guildId: interaction.guildId,
     });
+
+    const { dmMessages } = config;
+    if (dmMessages.delete.enabled) {
+      const parser = new TicketParser({
+        member: interaction.member as GuildMember,
+        color,
+        channel: interaction.channel as GuildTextBasedChannel,
+        ticket,
+      });
+      const owner = client.users.cache.get(ticket.owner);
+
+      await owner
+        ?.send(
+          dmMessages.delete.type === 'embed'
+            ? { embeds: [new CustomEmbed(dmMessages.delete.message, parser)] }
+            : { content: parser.parse(dmMessages.delete.message.content) },
+        )
+        .catch(() => null);
+    }
 
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('delete')) return;
     if (!hasSendPerms(logChannel))

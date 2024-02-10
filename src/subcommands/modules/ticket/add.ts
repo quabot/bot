@@ -11,6 +11,8 @@ import {
   type PublicThreadChannel,
 } from 'discord.js';
 import { hasSendPerms } from '@functions/discord';
+import { CustomEmbed } from '@constants/customEmbed';
+import { TicketParser } from '@classes/parsers';
 
 export default {
   parent: 'ticket',
@@ -73,6 +75,27 @@ export default {
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Added ${user} to the ticket.`)],
     });
+
+    const {
+      dmMessages: { add },
+    } = config;
+    if (add.enabled) {
+      const parser = new TicketParser({
+        member: interaction.guild!.members.cache.get(user!.id)!,
+        color,
+        channel,
+        ticket,
+      });
+      const owner = client.users.cache.get(ticket.owner);
+
+      await owner
+        ?.send(
+          add.type === 'embed'
+            ? { embeds: [new CustomEmbed(add.message, parser)] }
+            : { content: parser.parse(add.message.content) },
+        )
+        .catch(() => null);
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('add')) return;

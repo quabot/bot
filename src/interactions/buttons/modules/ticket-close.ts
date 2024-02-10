@@ -6,6 +6,7 @@ import {
   PrivateThreadChannel,
   PublicThreadChannel,
   ChannelType,
+  GuildMember,
 } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
@@ -15,6 +16,8 @@ import type { ButtonArgs } from '@typings/functionArgs';
 import discordTranscripts from 'discord-html-transcripts';
 import { checkUserPerms } from '@functions/ticket';
 import { hasSendPerms } from '@functions/discord';
+import { TicketParser } from '@classes/parsers';
+import { CustomEmbed } from '@constants/customEmbed';
 
 export default {
   name: 'close-ticket',
@@ -137,6 +140,27 @@ export default {
 
     ticket.closed = true;
     await ticket.save();
+
+    const {
+      dmMessages: { close },
+    } = config;
+    if (close.enabled) {
+      const parser = new TicketParser({
+        member: interaction.member as GuildMember,
+        color,
+        channel: interaction.channel as GuildTextBasedChannel,
+        ticket,
+      });
+      const owner = client.users.cache.get(ticket.owner);
+
+      await owner
+        ?.send(
+          close.type === 'embed'
+            ? { embeds: [new CustomEmbed(close.message, parser)] }
+            : { content: parser.parse(close.message.content) },
+        )
+        .catch(() => null);
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('close')) return;

@@ -132,3 +132,15 @@ export type Color =
   | `rgba(${number},${number},${number},${number})`;
 
 export type FontWeight = 'Bold' | 'SemiBold' | 'Medium' | 'Normal';
+
+export type TicketAction =
+  | 'add'
+  | 'claim'
+  | 'close'
+  | 'create'
+  | 'delete'
+  | 'remove'
+  | 'rename'
+  | 'reopen'
+  | 'transfer'
+  | 'unclaim';

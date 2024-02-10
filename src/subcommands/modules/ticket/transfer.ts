@@ -1,10 +1,12 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, GuildTextBasedChannel } from 'discord.js';
 import { getTicketConfig } from '@configs/ticketConfig';
 import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { TicketParser } from '@classes/parsers';
+import { CustomEmbed } from '@constants/customEmbed';
 
 export default {
   parent: 'ticket',
@@ -92,6 +94,26 @@ export default {
       embeds: [new Embed(color).setDescription(`Made ${user} the ticket owner.`)],
     });
 
+    const {
+      dmMessages: { transfer },
+    } = config;
+    if (transfer.enabled) {
+      const parser = new TicketParser({
+        member: interaction.member as GuildMember,
+        color,
+        channel: interaction.channel as GuildTextBasedChannel,
+        ticket,
+      });
+
+      await interaction.user
+        ?.send(
+          transfer.type === 'embed'
+            ? { embeds: [new CustomEmbed(transfer.message, parser)] }
+            : { content: parser.parse(transfer.message.content) },
+        )
+        .catch(() => null);
+    }
+
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('transfer')) return;
     if (!hasSendPerms(logChannel))
@@ -107,7 +129,7 @@ export default {
           .addFields(
             {
               name: 'Old Ticket Owner',
-              value: `<@${interaction.user}>`,
+              value: `${interaction.user}`,
               inline: true,
             },
             {

@@ -1,10 +1,19 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, PermissionFlagsBits } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ChannelType,
+  GuildMember,
+  PermissionFlagsBits,
+} from 'discord.js';
 import { getTicketConfig } from '@configs/ticketConfig';
 import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { TicketParser } from '@classes/parsers';
+import { CustomEmbed } from '@constants/customEmbed';
 
 export default {
   parent: 'ticket',
@@ -158,6 +167,26 @@ export default {
 
     ids.ticketId = ids.ticketId ? ids.ticketId + 1 : 0;
     await ids.save();
+
+    const {
+      dmMessages: { create },
+    } = config;
+    if (create.enabled) {
+      const parser = new TicketParser({
+        member: interaction.member as GuildMember,
+        color,
+        channel,
+        ticket: newTicket,
+      });
+
+      await interaction.user
+        ?.send(
+          create.type === 'embed'
+            ? { embeds: [new CustomEmbed(create.message, parser)] }
+            : { content: parser.parse(create.message.content) },
+        )
+        .catch(() => null);
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('create')) return;

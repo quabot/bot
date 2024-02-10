@@ -6,6 +6,8 @@ import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import { ChannelType, GuildTextBasedChannel, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
 import { hasSendPerms } from '@functions/discord';
+import { CustomEmbed } from '@constants/customEmbed';
+import { TicketParser } from '@classes/parsers';
 
 export default {
   parent: 'ticket',
@@ -80,6 +82,27 @@ export default {
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Removed ${user} from the ticket.`)],
     });
+
+    const {
+      dmMessages: { remove },
+    } = config;
+    if (remove.enabled) {
+      const parser = new TicketParser({
+        member: interaction.guild!.members.cache.get(user!.id)!,
+        color,
+        channel: interaction.channel as GuildTextBasedChannel,
+        ticket,
+      });
+      const owner = client.users.cache.get(ticket.owner);
+
+      await owner
+        ?.send(
+          remove.type === 'embed'
+            ? { embeds: [new CustomEmbed(remove.message, parser)] }
+            : { content: parser.parse(remove.message.content) },
+        )
+        .catch(() => null);
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('remove')) return;

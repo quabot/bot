@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildTextBasedChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, GuildTextBasedChannel } from 'discord.js';
 import { getTicketConfig } from '@configs/ticketConfig';
 import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
@@ -6,6 +6,8 @@ import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import { hasAnyRole, hasSendPerms } from '@functions/discord';
+import { TicketParser } from '@classes/parsers';
+import { CustomEmbed } from '@constants/customEmbed';
 
 export default {
   parent: 'ticket',
@@ -85,6 +87,27 @@ export default {
       await interaction.channel?.send({
         embeds: [new Embed(color).setDescription(`This ticket has been claimed by ${interaction.user}.`)],
       });
+
+    const {
+      dmMessages: { claim },
+    } = config;
+    if (claim.enabled) {
+      const parser = new TicketParser({
+        member: interaction.member as GuildMember,
+        color,
+        channel: interaction.channel as GuildTextBasedChannel,
+        ticket,
+      });
+      const owner = client.users.cache.get(ticket.owner);
+
+      await owner
+        ?.send(
+          claim.type === 'embed'
+            ? { embeds: [new CustomEmbed(claim.message, parser)] }
+            : { content: parser.parse(claim.message.content) },
+        )
+        .catch(() => null);
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('claim')) return;

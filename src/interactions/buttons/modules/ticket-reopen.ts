@@ -2,6 +2,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  GuildMember,
   type GuildTextBasedChannel,
   type PrivateThreadChannel,
   type PublicThreadChannel,
@@ -14,6 +15,8 @@ import type { ButtonArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import { hasSendPerms } from '@functions/discord';
 import { ChannelType } from 'discord.js';
+import { TicketParser } from '@classes/parsers';
+import { CustomEmbed } from '@constants/customEmbed';
 
 export default {
   name: 'reopen-ticket',
@@ -132,6 +135,27 @@ export default {
 
     ticket.closed = false;
     await ticket.save();
+
+    const {
+      dmMessages: { reopen },
+    } = config;
+    if (reopen.enabled) {
+      const parser = new TicketParser({
+        member: interaction.member as GuildMember,
+        color,
+        channel: interaction.channel as GuildTextBasedChannel,
+        ticket,
+      });
+      const owner = client.users.cache.get(ticket.owner);
+
+      await owner
+        ?.send(
+          reopen.type === 'embed'
+            ? { embeds: [new CustomEmbed(reopen.message, parser)] }
+            : { content: parser.parse(reopen.message.content) },
+        )
+        .catch(() => null);
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('reopen')) return;

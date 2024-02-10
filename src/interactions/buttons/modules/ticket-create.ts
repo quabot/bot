@@ -6,6 +6,7 @@ import {
   TextInputStyle,
   TextInputBuilder,
   PermissionFlagsBits,
+  GuildMember,
 } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
@@ -13,6 +14,8 @@ import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { ChannelType } from 'discord.js';
+import { TicketParser } from '@classes/parsers';
+import { CustomEmbed } from '@constants/customEmbed';
 
 export default {
   name: 'ticket-create',
@@ -288,6 +291,26 @@ export default {
       ],
       ephemeral: true,
     });
+
+    const {
+      dmMessages: { create },
+    } = config;
+    if (create.enabled) {
+      const parser = new TicketParser({
+        member: interaction.member as GuildMember,
+        color,
+        channel,
+        ticket: newTicket,
+      });
+
+      await interaction.user
+        ?.send(
+          create.type === 'embed'
+            ? { embeds: [new CustomEmbed(create.message, parser)] }
+            : { content: parser.parse(create.message.content) },
+        )
+        .catch(() => null);
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!(!config.logEnabled || !logChannel?.isTextBased() || !config.logActions.includes('create')))

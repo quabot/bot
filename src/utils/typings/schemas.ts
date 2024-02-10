@@ -6,6 +6,7 @@ import type {
   MessageTypeWithCard,
   ReactionRoleType,
   Status,
+  TicketAction,
   WelcomeCard,
 } from '@typings/mongoose';
 import { Types } from 'mongoose';
@@ -347,10 +348,13 @@ export interface ITicketConfig {
   staffPing: Snowflake;
   topicButton: boolean;
 
+  dmEnabled: boolean;
+  dmMessages: {
+    [key in TicketAction]: { enabled: boolean; type: MessageType; message: Message };
+  };
+
   logChannel: Snowflake;
-  logActions: Types.Array<
-    'add' | 'claim' | 'close' | 'create' | 'delete' | 'remove' | 'rename' | 'reopen' | 'transfer' | 'unclaim'
-  >;
+  logActions: Types.Array<TicketAction>;
   logEnabled: boolean;
 }
 

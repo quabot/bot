@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqArray, reqNum } from '@constants/schemas';
+import { reqString, reqBool, reqArray, reqNum, reqObject } from '@constants/schemas';
 import type { ITicketConfig } from '@typings/schemas';
 
 export default model<ITicketConfig>(
@@ -18,6 +18,9 @@ export default model<ITicketConfig>(
     staffRoles: reqArray,
     staffPing: reqString,
     topicButton: reqBool,
+
+    dmEnabled: reqBool,
+    dmMessages: reqObject,
 
     logChannel: reqString,
     logActions: reqArray,

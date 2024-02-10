@@ -1,6 +1,6 @@
 import { isSnowflake } from '@functions/string';
 import type { GuildChannel } from '@typings/discord';
-import type { ISuggestion } from '@typings/schemas';
+import type { ISuggestion, ITicket } from '@typings/schemas';
 import type {
   ColorResolvable,
   Guild,
@@ -172,6 +172,32 @@ export class MemberParser extends GuildParser {
   }
 }
 
+export class ChannelParser extends MemberParser {
+  constructor({ channel, member, color }: ChannelParserArgs) {
+    super({ member, color });
+
+    this.addVariables(
+      { name: 'channel', value: channel.toString() },
+      { name: 'channel.name', value: channel.name },
+      { name: 'channel.id', value: channel.id },
+    );
+  }
+}
+
+export class TicketParser extends ChannelParser {
+  constructor({ channel, member, color, ticket }: TicketParserArgs) {
+    super({ channel, member, color });
+
+    this.addVariables(
+      { name: 'ticket', value: channel.toString() },
+      { name: 'ticket.id', value: ticket.id.toString() },
+      { name: 'ticket.topic', value: ticket.topic },
+      { name: 'ticket.owner', value: `<@${ticket.owner}>` },
+      { name: 'ticket.staff', value: `<@${ticket.staff}>` },
+    );
+  }
+}
+
 export class CardParser extends MemberParser {
   constructor({ member, color }: MemberParserArgs) {
     super({ member, color });
@@ -239,16 +265,13 @@ export class ReactionRoleParser extends MemberParser {
   }
 }
 
-export class LevelParser extends MemberParser {
+export class LevelParser extends ChannelParser {
   constructor({ channel, level, xp, member, color }: LevelParserArgs) {
-    super({ member, color });
+    super({ member, color, channel });
 
     const formula = (lvl: number) => 120 * lvl ** 2 + 100;
 
     this.addVariables(
-      { name: 'channel', value: channel.toString() },
-      { name: 'channel.name', value: channel.name },
-      { name: 'channel.id', value: channel.id },
       { name: 'level', value: level.toString() },
       { name: 'xp', value: xp.toString() },
       { name: 'required_xp', value: formula(level).toString() },
@@ -338,8 +361,7 @@ export interface RewardLevelParserArgs extends LevelParserArgs {
   reward: { level: number; role: Snowflake };
 }
 
-export interface LevelParserArgs extends MemberParserArgs {
-  channel: GuildChannel | ThreadChannel;
+export interface LevelParserArgs extends ChannelParserArgs {
   level: number;
   xp: number;
 }
@@ -348,6 +370,14 @@ export interface ReactionRoleParserArgs extends MemberParserArgs {
   action: string;
   role: Role;
   reaction: MessageReaction;
+}
+
+export interface TicketParserArgs extends ChannelParserArgs {
+  ticket: ITicket;
+}
+
+export interface ChannelParserArgs extends MemberParserArgs {
+  channel: GuildChannel | ThreadChannel;
 }
 
 export interface MemberParserArgs {
