@@ -38,7 +38,9 @@ export default {
             .setThumbnail(user.displayAvatarURL({ forceStatic: false }))
             .setTitle(`${user.displayName}'s level status`)
             .setDescription(
-              `${user} is level **${levelDB.level}** and has **${levelDB.xp}/${formula(levelDB.level)}** xp.`,
+              `${user} is level **${levelDB.level}** and has **${Math.floor(levelDB.xp)}/${formula(
+                levelDB.level,
+              )}** xp.`,
             ),
         ],
       });
@@ -46,7 +48,7 @@ export default {
       const card = await drawLevelCard(
         interaction.member as GuildMember,
         levelDB.level,
-        levelDB.xp,
+        Math.floor(levelDB.xp),
         formula(levelDB.level),
         config.levelCard,
       );
