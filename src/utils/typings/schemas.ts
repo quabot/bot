@@ -342,6 +342,8 @@ export interface ITicketConfig {
 
   guildMax: number;
   userMax: number;
+
+  inactiveDaysToDelete: number;
   deleteOnClose: boolean;
 
   staffRoles?: Types.Array<Snowflake>;

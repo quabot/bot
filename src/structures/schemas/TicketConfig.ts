@@ -13,7 +13,9 @@ export default model<ITicketConfig>(
 
     guildMax: reqNum,
     userMax: reqNum,
+
     deleteOnClose: reqBool,
+    inactiveDaysToDelete: reqNum,
 
     staffRoles: reqArray,
     staffPing: reqString,

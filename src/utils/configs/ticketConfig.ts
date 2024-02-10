@@ -20,6 +20,8 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
 
       guildMax: -1,
       userMax: -1,
+
+      inactiveDaysToDelete: -1,
       deleteOnClose: true,
 
       staffPing: 'none',
