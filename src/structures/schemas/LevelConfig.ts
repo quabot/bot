@@ -12,12 +12,10 @@ export default model<ILevelConfig>(
     messageType: reqString, // none, current, other
     levelCard: reqObject,
     cardMention: reqBool,
-    messageText: reqString,
     message: reqObject,
 
     dmEnabled: reqBool,
     dmType: reqString,
-    dmMessageText: reqString,
     dmMessage: reqObject,
 
     voiceXp: reqBool,
@@ -36,7 +34,6 @@ export default model<ILevelConfig>(
 
     rewardDm: reqBool,
     rewardDmType: reqString,
-    rewardDmMessageText: reqString,
     rewardDmMessage: reqObject,
 
     viewCard: reqBool, // Show the level card on /level view

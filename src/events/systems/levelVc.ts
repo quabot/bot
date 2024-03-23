@@ -120,7 +120,7 @@ export default {
                   });
                 if (config.messageType === 'text')
                   await channel.send({
-                    content: `${parser.parse(config.messageText)}`,
+                    content: `${parser.parse(config.message.content)}`,
                   });
                 if (config.messageType === 'card') {
                   const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
@@ -150,7 +150,7 @@ export default {
                   });
                 if (config.dmType === 'text')
                   await member.send({
-                    content: `${parser.parse(config.dmMessageText)}`,
+                    content: `${parser.parse(config.dmMessage.content)}`,
                   });
                 if (config.dmType === 'card') {
                   const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
@@ -208,7 +208,7 @@ export default {
                   });
                 if (config.rewardDmType === 'text')
                   await member.send({
-                    content: `${parser.parse(config.rewardDmMessageText)}`,
+                    content: `${parser.parse(config.rewardDmMessage.content)}`,
                     components: [sentFrom],
                   });
               });

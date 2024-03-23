@@ -134,12 +134,10 @@ export interface ILevelConfig {
   levelCard: LevelCard;
 
   cardMention: true;
-  messageText: string;
   message: Message;
 
   dmEnabled: boolean;
   dmType: MessageTypeWithCard;
-  dmMessageText: string;
   dmMessage: Message;
 
   voiceXp: boolean;
@@ -158,7 +156,6 @@ export interface ILevelConfig {
 
   rewardDm: boolean;
   rewardDmType: MessageType;
-  rewardDmMessageText: string;
   rewardDmMessage: Message;
 
   viewCard: boolean;
