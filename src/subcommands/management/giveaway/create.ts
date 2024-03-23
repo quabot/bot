@@ -94,7 +94,7 @@ export default {
           )
           .setFooter({ text: `ID: ${ids.giveawayId}` }),
       ],
-      content: `${config.pingEveryone ? '@everyone\n**:tada: GIVEAWAY :tada:**' : '**:tada: GIVEAWAY :tada:**'}`,
+      content: `${config.pingRole === 'none' ? '' : `<@&${config.pingRole}>\n`}**:tada: GIVEAWAY :tada:**`,
     });
 
     if (!message)

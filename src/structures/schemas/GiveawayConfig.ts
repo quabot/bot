@@ -7,6 +7,6 @@ export default model<IGiveawayConfig>(
   new Schema({
     guildId: reqString,
     enabled: reqBool,
-    pingEveryone: reqBool,
+    pingRole: reqString,
   }),
 );

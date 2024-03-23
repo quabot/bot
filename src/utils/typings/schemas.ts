@@ -105,7 +105,7 @@ export interface IGiveaway {
 export interface IGiveawayConfig {
   guildId: Snowflake;
   enabled: boolean;
-  pingEveryone: boolean;
+  pingRole: Snowflake | 'none';
 }
 
 export interface IIds {
@@ -333,14 +333,14 @@ export interface ITicketConfig {
   guildId: Snowflake;
 
   enabled: boolean;
-  openCategory: Snowflake;
-  closedCategory: Snowflake;
+  openCategory: Snowflake | 'none';
+  closedCategory: Snowflake | 'none';
 
   staffRoles?: Types.Array<Snowflake>;
-  staffPing: Snowflake;
+  staffPing: Snowflake | 'none';
   topicButton: boolean;
 
-  logChannel: Snowflake;
+  logChannel: Snowflake | 'none';
   logEnabled: boolean;
 }
 
