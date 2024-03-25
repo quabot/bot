@@ -278,6 +278,11 @@ export class SuggestionParser extends BaseStaffParser {
   constructor(data: SuggestionParserArgs) {
     super(data);
 
+    this.changeVariables({
+      name: 'color',
+      newValue: data.suggestion.status === 'approved' ? '#57f288' : '#ed4245',
+    });
+
     this.addVariables(
       { name: 'suggestion', value: data.suggestion.suggestion },
       { name: 'state', value: data.suggestion.status },
