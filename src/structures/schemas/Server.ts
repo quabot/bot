@@ -6,6 +6,7 @@ export default model<IServer>(
   'Server',
   new Schema({
     guildId: reqString,
+    nickname: reqString,
     locale: reqString,
     color: reqString,
     updatesChannel: reqString,
