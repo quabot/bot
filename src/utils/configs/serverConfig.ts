@@ -12,7 +12,6 @@ export async function getServerConfig(client: Client, guildId: Snowflake) {
     client,
     defaultObj: {
       guildId,
-      nickname: client.guilds.cache.get(guildId)?.members.me?.nickname ?? '',
       locale: 'en-us',
       color: '#416683',
       updatesChannel: 'none',
