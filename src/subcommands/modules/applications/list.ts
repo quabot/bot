@@ -1,7 +1,7 @@
 import { Embed } from '@constants/embed';
 import { getApplicationConfig } from '@configs/applicationConfig';
 import type { CommandArgs } from '@typings/functionArgs';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 
 export default {
   parent: 'applications',

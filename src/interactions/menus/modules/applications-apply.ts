@@ -1,5 +1,5 @@
 import { Embed } from '@constants/embed';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 import ApplicationAnswer from '@schemas/ApplicationAnswer';
 import { MenuArgs } from '@typings/functionArgs';
 import {

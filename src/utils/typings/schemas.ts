@@ -40,6 +40,7 @@ export interface IApplication {
   guildId: Snowflake;
   id: string;
 
+  enabled: boolean;
   name: string;
   description?: string;
 

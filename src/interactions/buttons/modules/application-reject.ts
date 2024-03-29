@@ -1,7 +1,7 @@
 import { ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { Embed } from '@constants/embed';
 import ApplicationAnswer from '@schemas/ApplicationAnswer';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { hasAnyRole } from '@functions/discord';
 

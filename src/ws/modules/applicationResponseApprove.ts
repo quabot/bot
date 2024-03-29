@@ -1,6 +1,6 @@
 import { Embed } from '@constants/embed';
 import type { WsEventArgs } from '@typings/functionArgs';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 import { hasRolePerms } from '@functions/discord';
 
 //* Handle what happens when a form gets responded to.
