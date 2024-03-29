@@ -215,7 +215,6 @@ export interface IPoll {
 export interface IServer {
   guildId: Snowflake;
   locale: string;
-  nickname: string;
   color: ColorResolvable;
   updatesChannel: Snowflake;
   disabledCommands?: Types.Array<string>;
