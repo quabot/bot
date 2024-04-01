@@ -107,7 +107,7 @@ export class GuildParser extends BaseParser {
     super();
 
     this.addVariables(
-      { name: 'server.name', value: guild.name },
+      { name: 'server.name', aliases: ['server'], value: guild.name },
       { name: 'server.id', value: guild.id },
       { name: 'server.members', value: guild.memberCount.toString() },
       { name: 'server.channels', value: guild.channels.cache.size.toString() },

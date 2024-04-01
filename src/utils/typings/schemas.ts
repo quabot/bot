@@ -48,7 +48,7 @@ export interface IApplication {
     question: string;
     description?: string;
     type: 'multiple' | 'checkbox' | 'short' | 'paragraph' | 'bool';
-    options?: string[];
+    options: string[];
     required: boolean;
     image?: string;
     thumbnail?: string;
