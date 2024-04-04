@@ -261,7 +261,7 @@ export class RewardLevelParser extends LevelParser {
     super(data);
 
     this.addVariables(
-      { name: 'role', aliases: ['reward', 'reward.role'], value: data.reward.role },
+      { name: 'role', aliases: ['reward', 'reward.role'], value: `<@%${data.reward.role}>` },
       { name: 'reward.level', aliases: ['required_level'], value: data.reward.level.toString() },
     );
   }
