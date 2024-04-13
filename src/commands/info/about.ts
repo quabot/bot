@@ -37,7 +37,7 @@ export default {
       .setFooter({ text: 'Created by @joa_sss' })
       .setDescription(`Welcome to information center for **<:QLogo:1009229825908674570> [QuaBot](https://quabot.net)**! Here you can find loads of info about QuaBot and it's features. QuaBot uses slash commands, so the prefix to use it is \`/\`! We use interactions all throughout our commands and modules.
         
-            QuaBot was designed and developed by [Joa_sss](https://joasss.xyz) and his [team](https://quabot.net/about/credits) and was written in Javascript with the [discord.js](https://discord.js.org) framework.
+            QuaBot was designed and developed by [Joa_sss](https://github.com/Joasss) and his [team](https://quabot.net/credits) and was written in Javascript with the [discord.js](https://discord.js.org) framework.
         
             It's very easy to get started with QuaBot, by simply typing a \`/\`! If you're still stuck somewhere, you can join our **[Support Server](https://discord.gg/HYGA7Y6ptk)** and ask for help there. To view all commands use \`/help\`. Go to the next page for more information.
         
@@ -87,7 +87,7 @@ export default {
             > Read our privacy policy, by using the bot, you agree to the collection and use of information in accordance with our Privacy Policy.
             
             **Where can i find these Terms of Service an Privacy Policy?**
-            You can find the Terms of Service **[here](https://quabot.net/about/tos)** and the Privacy Policy **[here](https://quabot.net/about/privacy)**`);
+            You can find the Terms of Service **[here](https://quabot.net/tos)** and the Privacy Policy **[here](https://quabot.net/privacy)**`);
 
     //* Put the embeds in a list and get the page system setup.
     const aboutEmbeds = [embed1, embed2, embed3, embed4];

@@ -104,7 +104,7 @@ export default {
             `Your application response for the form \`${form.name}\` has been denied${
               reason ? ` With reason: \`${reason}\`` : ''
             }! You can view your answers [here](https://quabot.net/dashboard/${interaction.guild
-              ?.id}/user/applications/answers/${id}).`,
+              ?.id}/applications/answers/${id}).`,
           ),
         ],
       })
