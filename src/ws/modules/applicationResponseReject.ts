@@ -27,7 +27,7 @@ export default {
       .send({
         embeds: [
           new Embed('#416683').setDescription(
-            `Your application response for the form **${FoundForm.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/user/applications/answers/${data.responseId}).`,
+            `Your application response for the form **${FoundForm.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/applications/answers/${data.response_uuid}).`,
           ),
         ],
       })

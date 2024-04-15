@@ -10,6 +10,7 @@ export default {
     //* Get the data and the server.
     const form = data.form;
     if (!form) return;
+    console.log('hi', data)
 
     const guild = client.guilds.cache.get(form.guildId);
     if (!guild) return;
@@ -38,12 +39,12 @@ export default {
         if (hasRolePerms(roleToAdd)) member.roles.remove(roleToAdd!);
       });
     }
-
+console.log('hi')
     await member
       .send({
         embeds: [
           new Embed('#416683').setDescription(
-            `Your application response for the form **${FoundForm.name}** has been approved! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/user/applications/answers/${data.responseId}).`,
+            `Your application response for the form **${FoundForm.name}** has been approved! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/applications/answers/${data.response_uuid}).`,
           ),
         ],
       })
