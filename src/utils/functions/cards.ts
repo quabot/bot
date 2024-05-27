@@ -9,8 +9,8 @@ import { request } from 'undici';
 import { CardParser } from '@classes/parsers';
 
 const baseFontPath = join(__dirname, '../assets/fonts');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
+Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Normal.ttf'), 'GG Sans');
+Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Bold.ttf'), 'GG Sans Bold');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-SemiBold.ttf'), 'GG Sans SemiBold');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Medium.ttf'), 'GG Sans Medium');
 
@@ -47,7 +47,7 @@ export async function drawLevelCard(member: GuildMember, level: number, xp: numb
   }
 
   // "Displayname"
-  context.font = '32px GG Sans Bold';
+  context.font = '32px GG Sans';
   context.fillStyle = options.colors.displayname;
   const usernameWidth = context.measureText(user.displayName).width;
   context.fillText(`${user.displayName}`, 166, 51 + 43 / 2);
