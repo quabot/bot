@@ -70,7 +70,7 @@ export default {
         embeds: [
           new Embed(color)
             .setTitle(question.question)
-            .setDescription(question.description ?? null)
+            .setDescription(question.description ?? "No description.")
             .setImage(question.image ?? null)
             .setThumbnail(question.thumbnail ?? null)
             .setFields({ name: 'Required?', value: question.required ? 'Yes' : 'No' }),
