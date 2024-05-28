@@ -8,9 +8,6 @@ import { getServerConfig } from '@configs/serverConfig';
 import Vote from '@schemas/Vote';
 import { drawLevelCard } from '@functions/cards';
 import type { EventArgs } from '@typings/functionArgs';
-import type { CallbackError } from 'mongoose';
-import type { MongooseReturn } from '@typings/mongoose';
-import type { IVote } from '@typings/schemas';
 import { hasRolePerms, hasSendPerms } from '@functions/discord';
 import { LevelParser, RewardLevelParser } from '@classes/parsers';
 
@@ -78,16 +75,16 @@ export default {
     if (message.content.length > 200) rndXp += 1;
     rndXp = rndXp * config.xpMultiplier ?? 1;
 
-    const vote = await Vote.findOne({ userId: message.author.id }, (err: CallbackError, c: MongooseReturn<IVote>) => {
-      if (err) console.log(err);
-      if (!c)
-        new Vote({
-          userId: message.author.id,
-          lastVote: '0',
-        }).save();
-    })
+    const vote = await Vote.findOne({ userId: message.author.id })
       .clone()
       .catch(() => {});
+
+    if (!vote) {
+      new Vote({
+        userId: message.author.id,
+        lastVote: '0',
+      }).save();
+    }
     if (vote) {
       if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
     }

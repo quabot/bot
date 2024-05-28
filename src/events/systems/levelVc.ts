@@ -6,9 +6,6 @@ import { getServerConfig } from '@configs/serverConfig';
 import Vote from '@schemas/Vote';
 import { CustomEmbed } from '@constants/customEmbed';
 import { drawLevelCard } from '@functions/cards';
-import type { CallbackError } from 'mongoose';
-import type { MongooseReturn } from '@typings/mongoose';
-import type { IVote } from '@typings/schemas';
 import { hasRolePerms, hasSendPerms } from '@functions/discord';
 import { LevelParser, RewardLevelParser } from '@classes/parsers';
 
@@ -77,16 +74,15 @@ export default {
             let rndXp = Math.floor(Math.random() * 3);
             rndXp = rndXp * config.voiceXpMultiplier ?? 1;
 
-            const vote = await Vote.findOne({ userId: member.id }, (err: CallbackError, c: MongooseReturn<IVote>) => {
-              if (err) console.log(err);
-              if (!c)
+            const vote = await Vote.findOne({ userId: member.id })
+              .clone()
+              .catch(() => {});
+              if (!vote) {
                 new Vote({
                   userId: member.id,
                   lastVote: '0',
                 }).save();
-            })
-              .clone()
-              .catch(() => {});
+              }
             if (vote) {
               if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
             }
