@@ -28,6 +28,31 @@ export default {
           console.log(e);
         });
       });
+
+      client.on('guildCreate', async guild => {
+        ws.send(JSON.stringify({ status: 200, type: 'guildCreate', guild: guild.id }));
+      });
+      client.on('guildDelete', async guild => {
+        ws.send(JSON.stringify({ status: 200, type: 'guildDelete', guild: guild.id }));
+      });
+
+      if (process.env.NODE_ENV !== 'production') return;
+
+      // Post the stats to the QuaBot Site every minute
+      if (process.env.POST_STATS === 'true') {
+        postStats()
+        setInterval(postStats, 30 * 1000);
+
+        function postStats() {
+          ws.send(JSON.stringify({
+            status: 200, type: 'siteStats', stats: {
+              servers: client.guilds.cache.size,
+              channels: client.channels.cache.size,
+              users: client.users.cache.size,
+            }
+          }))
+        }
+      }
     });
   },
 };

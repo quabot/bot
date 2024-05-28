@@ -1,4 +1,4 @@
-import { ChannelType, type GuildTextBasedChannel } from 'discord.js';
+import { type GuildTextBasedChannel } from 'discord.js';
 import { getGiveawayConfig } from '@configs/giveawayConfig';
 import { getIdConfig } from '@configs/idConfig';
 import { Embed } from '@constants/embed';
@@ -10,6 +10,7 @@ import type { NonNullMongooseReturn } from '@typings/mongoose';
 import type { IIds } from '@typings/schemas';
 import { GuildTextBasedChannel as GuildTextBasedChannelEnum } from '@typings/discord';
 import { hasSendPerms } from '@functions/discord';
+import { ChannelType } from 'discord.js';
 
 export default {
   parent: 'giveaway',
@@ -93,7 +94,7 @@ export default {
           )
           .setFooter({ text: `ID: ${ids.giveawayId}` }),
       ],
-      content: `${config.pingEveryone ? '@everyone\n**:tada: GIVEAWAY :tada:**' : '**:tada: GIVEAWAY :tada:**'}`,
+      content: `${config.pingRole === 'none' ? '' : `<@&${config.pingRole}>\n`}**:tada: GIVEAWAY :tada:**`,
     });
 
     if (!message)

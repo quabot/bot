@@ -1,4 +1,4 @@
-import { Events, Colors, ThreadChannel, ChannelType } from 'discord.js';
+import { Events, Colors, ThreadChannel } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import { CHANNEL_TYPES_BY_ID } from '@constants/discord';
@@ -25,7 +25,7 @@ export default {
       return;
 
     const channel = thread.guild.channels.cache.get(config.channelId);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     await channel

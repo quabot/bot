@@ -5,7 +5,6 @@ import {
   ButtonStyle,
   Events,
   type Interaction,
-  ChannelType,
   type GuildMember,
 } from 'discord.js';
 import { getLevelConfig } from '@configs/levelConfig';
@@ -16,11 +15,12 @@ import { CustomEmbed } from '@constants/customEmbed';
 import { getServerConfig } from '@configs/serverConfig';
 import type { EventArgs } from '@typings/functionArgs';
 import Vote from '@schemas/Vote';
-import { drawCard } from '@functions/levelCard';
+import { drawLevelCard } from '@functions/cards';
 import { hasAnyRole, hasRolePerms, hasSendPerms } from '@functions/discord';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
+import { LevelParser, RewardLevelParser } from '@classes/parsers';
 
 export default {
   event: Events.InteractionCreate,
@@ -29,6 +29,7 @@ export default {
   async execute({ client }: EventArgs, interaction: Interaction) {
     if (!interaction.guild || !interaction.channel || !interaction.member || !('joinedTimestamp' in interaction.member))
       return;
+    if (interaction.channel.isDMBased()) return;
     if (interaction.user.bot) return;
 
     const guild = interaction.guild!;
@@ -74,8 +75,8 @@ export default {
 
     if (!levelDB) return;
 
-    let xp = levelDB.xp;
-    let level = levelDB.level;
+    let { xp } = levelDB;
+    let { level } = levelDB;
 
     const formula = (lvl: number) => 120 * lvl ** 2 + 100;
     const reqXp = formula(level);
@@ -97,6 +98,8 @@ export default {
       if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
     }
 
+    const parserOptions = { member, color, xp, level, channel: interChannel };
+
     if (xp + rndXp >= reqXp) {
       levelDB.xp += rndXp;
       levelDB.level += 1;
@@ -105,64 +108,23 @@ export default {
       xp = xp += rndXp;
       level = level += 1;
 
-      const parse = (s: string) => {
-        return s
-          .replaceAll('{server.name}', `${guild.name}`)
-          .replaceAll('{server}', `${guild.name}` ?? '')
-          .replaceAll('{server.id}', `${guild.id}` ?? '')
-          .replaceAll('{server.icon_url}', `${guild.iconURL()}` ?? '')
-          .replaceAll('{server.icon}', `${guild.icon}` ?? '')
-          .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-          .replaceAll('{server.owner}', `<@${guild.ownerId}>` ?? '')
-          .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-          .replaceAll('{id}', `${interaction.user.id}` ?? '')
-          .replaceAll('{server.owner_id}', `${guild.ownerId}` ?? '')
-          .replaceAll('{server.members}', `${guild.memberCount}` ?? '')
-          .replaceAll('{members}', `${guild.memberCount}` ?? '')
-          .replaceAll('{user}', `${interaction.user}` ?? '')
-          .replaceAll('{username}', `${interaction.user.username}` ?? '')
-          .replaceAll('{user.name}', `${interaction.user.username}` ?? '')
-          .replaceAll('{user.username}', `${interaction.user.username}` ?? '')
-          .replaceAll('{user.tag}', `${interaction.user.tag}` ?? '')
-          .replaceAll('{tag}', `${interaction.user.tag}` ?? '')
-          .replaceAll('{user.discriminator}', `${interaction.user.discriminator}` ?? '')
-          .replaceAll('{user.displayname}', `${interaction.user.displayName}` ?? '')
-          .replaceAll('{user.id}', `${interaction.user.id}` ?? '')
-          .replaceAll('{user.avatar_url}', `${interaction.user.avatarURL()}` ?? '')
-          .replaceAll('{user.avatar}', `${interaction.user.avatar}` ?? '')
-          .replaceAll('{avatar}', `${interaction.user.avatarURL()}` ?? '')
-          .replaceAll('{user.created_at}', `${interaction.user.createdAt}` ?? '')
-          .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
-          .replaceAll('{channel}', `${interChannel}` ?? '')
-          .replaceAll('{channel.name}', 'name' in interChannel ? `${interChannel.name}` : '')
-          .replaceAll('{channel.id}', `${interChannel.id}` ?? '')
-          .replaceAll('{level}', `${level}` ?? '')
-          .replaceAll('{xp}', `${xp}` ?? '')
-          .replaceAll('{required_xp}', `${formula(level)}` ?? '')
-          .replaceAll('{color}', `${color}` ?? '');
-      };
+      const parser = new LevelParser(parserOptions);
 
       if (config.channel !== 'none') {
         const channel = config.channel === 'current' ? interChannel : guild.channels.cache.get(`${config.channel}`);
-        if (
-          !channel ||
-          channel.type === ChannelType.GuildCategory ||
-          channel.type === ChannelType.GuildForum ||
-          channel.type === ChannelType.DM
-        )
-          return;
+        if (!channel?.isTextBased() || channel.isDMBased()) return;
         if (!hasSendPerms(channel)) return;
 
-        const embed = new CustomEmbed(config.message, parse);
+        const embed = new CustomEmbed(config.message, parser);
 
         if (config.messageType === 'embed')
           await channel.send({
             embeds: [embed],
-            content: `${parse(config.message.content)}`,
+            content: `${parser.parse(config.message.content)}`,
           });
-        if (config.messageType === 'text') await channel.send({ content: `${parse(config.messageText)}` });
+        if (config.messageType === 'text') await channel.send({ content: `${parser.parse(config.message.content)}` });
         if (config.messageType === 'card') {
-          const card = await drawCard(member, level, xp, formula(level), config.levelCard);
+          const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
 
           const attachment = new AttachmentBuilder(card, {
@@ -179,20 +141,20 @@ export default {
       }
 
       if (config.dmEnabled) {
-        const embed = new CustomEmbed(config.dmMessage, parse);
+        const embed = new CustomEmbed(config.dmMessage, parser);
 
         if (config.dmType === 'embed')
           await member.send({
             embeds: [embed],
-            content: `${parse(config.dmMessage.content)}`,
+            content: `${parser.parse(config.dmMessage.content)}`,
             components: [sentFrom],
           });
         if (config.dmType === 'text')
           await member.send({
-            content: `${parse(config.dmMessageText)}`,
+            content: `${parser.parse(config.dmMessage.content)}`,
           });
         if (config.dmType === 'card') {
-          const card = await drawCard(member, level, xp, formula(level), config.levelCard);
+          const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
           if (!card)
             return member.send(
               'You leveled up! Sorry, we tried to send a card to the configured channel, but there was an error. Sorry for the inconvinience! All level rewards have been given.',
@@ -215,46 +177,7 @@ export default {
 
       const nextCheck = config.rewards!.filter(i => i.level === level) ?? [];
       nextCheck.forEach(async check => {
-        const parseCheck = (s: string) =>
-          s
-            .replaceAll('{server.name}', `${guild.name}`)
-            .replaceAll('{server}', `${guild.name}` ?? '')
-            .replaceAll('{server.id}', `${guild.id}` ?? '')
-            .replaceAll('{server.icon_url}', `${guild.iconURL()}` ?? '')
-            .replaceAll('{server.icon}', `${guild.icon}` ?? '')
-            .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-            .replaceAll('{server.owner}', `<@${guild.ownerId}>` ?? '')
-            .replaceAll('{icon}', `${guild.iconURL()}` ?? '')
-            .replaceAll('{id}', `${interaction.user.id}` ?? '')
-            .replaceAll('{server.owner_id}', `${guild.ownerId}` ?? '')
-            .replaceAll('{server.members}', `${guild.memberCount}` ?? '')
-            .replaceAll('{members}', `${guild.memberCount}` ?? '')
-            .replaceAll('{user}', `${interaction.user}` ?? '')
-            .replaceAll('{username}', `${interaction.user.username}` ?? '')
-            .replaceAll('{user.name}', `${interaction.user.username}` ?? '')
-            .replaceAll('{user.username}', `${interaction.user.username}` ?? '')
-            .replaceAll('{user.tag}', `${interaction.user.tag}` ?? '')
-            .replaceAll('{tag}', `${interaction.user.tag}` ?? '')
-            .replaceAll('{user.discriminator}', `${interaction.user.discriminator}` ?? '')
-            .replaceAll('{user.displayname}', `${interaction.user.displayName}` ?? '')
-            .replaceAll('{user.id}', `${interaction.user.id}` ?? '')
-            .replaceAll('{user.avatar_url}', `${interaction.user.avatarURL()}` ?? '')
-            .replaceAll('{user.avatar}', `${interaction.user.avatar}` ?? '')
-            .replaceAll('{avatar}', `${interaction.user.avatarURL()}` ?? '')
-            .replaceAll('{user.created_at}', `${interaction.user.createdAt}` ?? '')
-            .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
-            .replaceAll('{channel}', `${interChannel}` ?? '')
-            .replaceAll('{channel.name}', 'name' in interChannel ? `${interChannel.name}` : '')
-            .replaceAll('{channel.id}', `${interChannel.id}` ?? '')
-            .replaceAll('{level}', `${level}` ?? '')
-            .replaceAll('{xp}', `${xp}` ?? '')
-            .replaceAll('{required_xp}', `${formula(level)}` ?? '')
-            .replaceAll('{color}', `${color}` ?? '')
-            .replaceAll('{role}', `<@&${check.role}>` ?? '')
-            .replaceAll('{reward}', `<@&${check.role}>` ?? '')
-            .replaceAll('{required_level}', `${check.level}` ?? '')
-            .replaceAll('{reward.level}', `${check.level}` ?? '')
-            .replaceAll('{reward.role}', `<@&${check.role}>` ?? '');
+        const parser = new RewardLevelParser({ ...parserOptions, reward: check });
 
         if (config.rewardsMode === 'replace') {
           if (levelDB.role !== 'none') {
@@ -279,13 +202,13 @@ export default {
 
         if (config.rewardDmType === 'embed')
           await member.send({
-            embeds: [new CustomEmbed(config.rewardDmMessage, parseCheck)],
-            content: `${parseCheck(config.rewardDmMessage.content)}`,
+            embeds: [new CustomEmbed(config.rewardDmMessage, parser)],
+            content: `${parser.parse(config.rewardDmMessage.content)}`,
             components: [sentFrom],
           });
         if (config.rewardDmType === 'text')
           await member.send({
-            content: `${parseCheck(config.rewardDmMessageText)}`,
+            content: `${parser.parse(config.rewardDmMessage.content)}`,
             components: [sentFrom],
           });
       });

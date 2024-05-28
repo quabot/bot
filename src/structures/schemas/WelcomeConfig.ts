@@ -11,11 +11,13 @@ export default model<IWelcomeConfig>(
     joinChannel: reqString,
     joinType: reqString,
     joinMessage: reqObject,
+    joinCard: reqObject,
 
     leaveEnabled: reqBool,
     leaveChannel: reqString,
     leaveType: reqString,
     leaveMessage: reqObject,
+    leaveCard: reqObject,
 
     joinRole: reqArray,
     joinRoleEnabled: reqBool,
@@ -23,5 +25,6 @@ export default model<IWelcomeConfig>(
     joinDM: reqBool,
     joinDMType: reqString,
     dm: reqObject,
+    dmCard: reqObject,
   }),
 );

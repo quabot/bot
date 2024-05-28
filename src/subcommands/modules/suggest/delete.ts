@@ -4,6 +4,7 @@ import { CustomEmbed } from '@constants/customEmbed';
 import Suggest from '@schemas/Suggestion';
 import type { CommandArgs } from '@typings/functionArgs';
 import { ChannelType } from 'discord.js';
+import { SuggestionParser } from '@classes/parsers';
 
 export default {
   parent: 'suggestion',
@@ -60,21 +61,14 @@ export default {
       if (!config.dm) return;
 
       const user = interaction.guild?.members.cache.get(`${suggestion.userId}`);
-      const parseString = (text: string) =>
-        text
-          .replaceAll('{suggestion}', suggestion.suggestion)
-          .replaceAll('{user}', `${user}`)
-          .replaceAll('{avatar}', user?.displayAvatarURL() ?? '')
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{staff}', `${interaction.user ?? ''}`)
-          .replaceAll('{state}', 'deleted')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
+      if (!user) return;
 
-      const embed = new CustomEmbed(config.dmMessage, parseString);
+      const parser = new SuggestionParser({ member: user, interaction, color, suggestion });
+
+      const embed = new CustomEmbed(config.dmMessage, parser);
       user?.send({
         embeds: [embed],
-        content: parseString(config.dmMessage.content),
+        content: parser.parse(config.dmMessage.content),
       });
     });
   },

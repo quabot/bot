@@ -2,7 +2,7 @@ import { AttachmentBuilder, GuildMember } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { getLevelConfig } from '@configs/levelConfig';
 import { getLevel } from '@configs/level';
-import { drawCard } from '@functions/levelCard';
+import { drawLevelCard } from '@functions/cards';
 import type { CommandArgs } from '@typings/functionArgs';
 
 export default {
@@ -38,15 +38,17 @@ export default {
             .setThumbnail(user.displayAvatarURL({ forceStatic: false }))
             .setTitle(`${user.displayName}'s level status`)
             .setDescription(
-              `${user} is level **${levelDB.level}** and has **${levelDB.xp}/${formula(levelDB.level)}** xp.`,
+              `${user} is level **${levelDB.level}** and has **${Math.floor(levelDB.xp)}/${formula(
+                levelDB.level,
+              )}** xp.`,
             ),
         ],
       });
     } else {
-      const card = await drawCard(
+      const card = await drawLevelCard(
         interaction.member as GuildMember,
         levelDB.level,
-        levelDB.xp,
+        Math.floor(levelDB.xp),
         formula(levelDB.level),
         config.levelCard,
       );

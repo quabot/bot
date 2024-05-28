@@ -1,5 +1,13 @@
 import type { ColorResolvable, Snowflake } from 'discord.js';
-import type { LevelCard, Message, MessageType, MessageTypeWithCard, ReactionRoleType, Status } from '@typings/mongoose';
+import type {
+  LevelCard,
+  Message,
+  MessageType,
+  MessageTypeWithCard,
+  ReactionRoleType,
+  Status,
+  WelcomeCard,
+} from '@typings/mongoose';
 import { Types } from 'mongoose';
 
 export interface IUserGame {
@@ -32,14 +40,18 @@ export interface IApplication {
   guildId: Snowflake;
   id: string;
 
+  enabled: boolean;
   name: string;
   description?: string;
 
   questions?: Types.Array<{
     question: string;
     description?: string;
-    type: 'multiple' | 'checkbox' | 'short' | 'paragraph';
+    type: 'multiple' | 'checkbox' | 'short' | 'paragraph' | 'bool';
+    options: string[];
     required: boolean;
+    image?: string;
+    thumbnail?: string;
   }>;
 
   submissions_channel: Snowflake;
@@ -48,7 +60,7 @@ export interface IApplication {
   ignored_roles?: Types.Array<Snowflake>;
   allowed_roles?: Types.Array<Snowflake>;
   reapply: boolean;
-  dashboard_allowed: boolean;
+  allowed_from: 'dashboard' | 'bot' | 'both';
   anonymous: boolean;
   cooldown_enabled: boolean;
   cooldown: string;
@@ -65,9 +77,10 @@ export interface IApplicationAnswer {
   response_uuid: string;
 
   userId: Snowflake;
-  time: string;
-  answers?: Types.Array<string>;
+  time: Date;
+  answers: Types.Array<string[] | string | number[]>;
   state: Status;
+  reason?: string;
 }
 
 export interface IApplicationConfig {
@@ -93,7 +106,7 @@ export interface IGiveaway {
 export interface IGiveawayConfig {
   guildId: Snowflake;
   enabled: boolean;
-  pingEveryone: boolean;
+  pingRole: Snowflake | 'none';
 }
 
 export interface IIds {
@@ -122,12 +135,10 @@ export interface ILevelConfig {
   levelCard: LevelCard;
 
   cardMention: true;
-  messageText: string;
   message: Message;
 
   dmEnabled: boolean;
   dmType: MessageTypeWithCard;
-  dmMessageText: string;
   dmMessage: Message;
 
   voiceXp: boolean;
@@ -146,7 +157,6 @@ export interface ILevelConfig {
 
   rewardDm: boolean;
   rewardDmType: MessageType;
-  rewardDmMessageText: string;
   rewardDmMessage: Message;
 
   viewCard: boolean;
@@ -218,13 +228,13 @@ export type IResponder = {
   ignored_channels?: Types.Array<Snowflake>;
   ignored_roles?: Types.Array<Snowflake>;
 } & (
-  | { type: 'message'; message: string }
-  | { type: 'reaction'; reaction: string }
-  | {
+    | { type: 'message'; message: string }
+    | { type: 'reaction'; reaction: string }
+    | {
       type: 'embed';
-      embed?: any; //! Option not implemented in Dashboard
+      embed?: any; //? Should be added in v7.2.0
     }
-);
+  );
 
 export interface IPollConfig {
   guildId: Snowflake;
@@ -324,14 +334,14 @@ export interface ITicketConfig {
   guildId: Snowflake;
 
   enabled: boolean;
-  openCategory: Snowflake;
-  closedCategory: Snowflake;
+  openCategory: Snowflake | 'none';
+  closedCategory: Snowflake | 'none';
 
   staffRoles?: Types.Array<Snowflake>;
-  staffPing: Snowflake;
+  staffPing: Snowflake | 'none';
   topicButton: boolean;
 
-  logChannel: Snowflake;
+  logChannel: Snowflake | 'none';
   logEnabled: boolean;
 }
 
@@ -354,20 +364,23 @@ export interface IWelcomeConfig {
 
   joinEnabled: boolean;
   joinChannel: Snowflake | 'none';
-  joinType: MessageType;
+  joinType: MessageTypeWithCard;
   joinMessage: Message;
+  joinCard: WelcomeCard;
 
   leaveEnabled: boolean;
   leaveChannel: Snowflake | 'none';
-  leaveType: MessageType;
+  leaveType: MessageTypeWithCard;
   leaveMessage: Message;
+  leaveCard: WelcomeCard;
 
   joinRole?: Types.Array<{ role: Snowflake; delay: number; bot: true }>;
   joinRoleEnabled: boolean;
 
   joinDM: boolean;
-  joinDMType: MessageType;
+  joinDMType: MessageTypeWithCard;
   dm: Message;
+  dmCard: WelcomeCard;
 }
 
 export interface IVote {

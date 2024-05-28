@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, GuildTextBasedChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildTextBasedChannel } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
@@ -86,13 +86,7 @@ export default {
       });
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
-    if (
-      !logChannel ||
-      logChannel.type === ChannelType.GuildCategory ||
-      logChannel.type === ChannelType.GuildForum ||
-      !config.logEnabled
-    )
-      return;
+    if (!logChannel?.isTextBased() || !config.logEnabled) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
         embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],

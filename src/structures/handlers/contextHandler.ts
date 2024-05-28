@@ -13,8 +13,8 @@ export default async function (client: Client) {
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/context/*.js`);
 
   files.forEach(async file => {
-    const menu: Context = require(file).default;
-    if (!menu.data) return;
+    const menu: Context | undefined = require(file).default;
+    if (!menu?.data) return;
 
     client.contexts.set(menu.data.name, menu);
     ContextList.push(menu.data);

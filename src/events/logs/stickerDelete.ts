@@ -1,4 +1,4 @@
-import { Events, Sticker, Colors, ChannelType } from 'discord.js';
+import { Events, Sticker, Colors } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
@@ -18,7 +18,7 @@ export default {
     if (!config.events!.includes('stickerDelete')) return;
 
     const channel = sticker.guild.channels.cache.get(config.channelId);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     await channel

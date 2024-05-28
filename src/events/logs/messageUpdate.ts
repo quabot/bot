@@ -1,4 +1,4 @@
-import { Events, Colors, Message, ChannelType } from 'discord.js';
+import { Events, Colors, Message } from 'discord.js';
 import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
@@ -17,12 +17,12 @@ export default {
 
     if (!config.events!.includes('messageDelete')) return;
     if (config.excludedChannels!.includes(newMessage.channelId)) return;
-    if (newMessage.channel.type !== ChannelType.DM) {
+    if (!newMessage.channel.isDMBased()) {
       if (newMessage.channel.parentId && config.excludedCategories!.includes(newMessage.channel.parentId)) return;
     }
 
     const channel = newMessage.guild.channels.cache.get(config.channelId);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     if (!oldMessage.author || oldMessage.author.bot) return;

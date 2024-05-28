@@ -1,6 +1,6 @@
 import { Embed } from '@constants/embed';
 import type { WsEventArgs } from '@typings/functionArgs';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 
 //* Handle what happens when a form gets responded to.
 export default {
@@ -27,7 +27,7 @@ export default {
       .send({
         embeds: [
           new Embed('#416683').setDescription(
-            `Your application response for the form **${FoundForm.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/user/applications/answers/${data.responseId}).`,
+            `Your application response for the form **${FoundForm.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/applications/answers/${data.response_uuid}).`,
           ),
         ],
       })

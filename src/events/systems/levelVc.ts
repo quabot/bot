@@ -5,11 +5,12 @@ import { getLevel } from '@configs/level';
 import { getServerConfig } from '@configs/serverConfig';
 import Vote from '@schemas/Vote';
 import { CustomEmbed } from '@constants/customEmbed';
-import { drawCard } from '@functions/levelCard';
+import { drawLevelCard } from '@functions/cards';
 import type { CallbackError } from 'mongoose';
 import type { MongooseReturn } from '@typings/mongoose';
 import type { IVote } from '@typings/schemas';
 import { hasRolePerms, hasSendPerms } from '@functions/discord';
+import { LevelParser, RewardLevelParser } from '@classes/parsers';
 
 export default {
   event: Events.VoiceStateUpdate,
@@ -90,6 +91,8 @@ export default {
               if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
             }
 
+            const parserOptions = { member, color, xp, level, channel: newState.channel! };
+
             if (xp + rndXp >= reqXp) {
               levelDB.xp += rndXp;
               levelDB.level += 1;
@@ -98,42 +101,7 @@ export default {
               xp = xp += rndXp;
               level = level += 1;
 
-              const parse = (s: string) => {
-                return s
-                  .replaceAll('{server.name}', `${newState.guild.name}`)
-                  .replaceAll('{server}', `${newState.guild.name}` ?? '')
-                  .replaceAll('{server.id}', `${newState.guild.id}` ?? '')
-                  .replaceAll('{server.icon_url}', `${newState.guild.iconURL()}` ?? '')
-                  .replaceAll('{server.icon}', `${newState.guild.icon}` ?? '')
-                  .replaceAll('{icon}', `${newState.guild.iconURL()}` ?? '')
-                  .replaceAll('{server.owner}', `<@${newState.guild.ownerId}>` ?? '')
-                  .replaceAll('{icon}', `${newState.guild.iconURL()}` ?? '')
-                  .replaceAll('{id}', `${member.id}` ?? '')
-                  .replaceAll('{server.owner_id}', `${newState.guild.ownerId}` ?? '')
-                  .replaceAll('{server.members}', `${newState.guild.memberCount}` ?? '')
-                  .replaceAll('{members}', `${newState.guild.memberCount}` ?? '')
-                  .replaceAll('{user}', `${member}` ?? '')
-                  .replaceAll('{username}', `${member.user.username}` ?? '')
-                  .replaceAll('{user.name}', `${member.user.username}` ?? '')
-                  .replaceAll('{user.username}', `${member.user.username}` ?? '')
-                  .replaceAll('{user.tag}', `${member.user.tag}` ?? '')
-                  .replaceAll('{tag}', `${member.user.tag}` ?? '')
-                  .replaceAll('{user.discriminator}', `${member.user.discriminator}` ?? '')
-                  .replaceAll('{user.displayname}', `${member.user.displayName}` ?? '')
-                  .replaceAll('{user.id}', `${member.user.id}` ?? '')
-                  .replaceAll('{user.avatar_url}', `${member.user.avatarURL()}` ?? '')
-                  .replaceAll('{user.avatar}', `${member.user.avatar}` ?? '')
-                  .replaceAll('{avatar}', `${member.user.avatarURL()}` ?? '')
-                  .replaceAll('{user.created_at}', `${member.user.createdAt}` ?? '')
-                  .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
-                  .replaceAll('{channel}', `${newState.channel}` ?? '')
-                  .replaceAll('{channel.name}', `${newState.channel?.name}` ?? '')
-                  .replaceAll('{channel.id}', `${newState.channel?.id}` ?? '')
-                  .replaceAll('{level}', `${level}` ?? '')
-                  .replaceAll('{xp}', `${xp}` ?? '')
-                  .replaceAll('{required_xp}', `${formula(level)}` ?? '')
-                  .replaceAll('{color}', `${color}` ?? '');
-              };
+              const parser = new LevelParser(parserOptions);
 
               if (config.channel !== 'none') {
                 const channel =
@@ -143,19 +111,19 @@ export default {
                 if (!channel?.isTextBased()) return;
                 if (!hasSendPerms(channel)) return;
 
-                const embed = new CustomEmbed(config.message, parse);
+                const embed = new CustomEmbed(config.message, parser);
 
                 if (config.messageType === 'embed')
                   await channel.send({
                     embeds: [embed],
-                    content: `${parse(config.message.content)}`,
+                    content: `${parser.parse(config.message.content)}`,
                   });
                 if (config.messageType === 'text')
                   await channel.send({
-                    content: `${parse(config.messageText)}`,
+                    content: `${parser.parse(config.message.content)}`,
                   });
                 if (config.messageType === 'card') {
-                  const card = await drawCard(member, level, xp, formula(level), config.levelCard);
+                  const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
                   if (!card) return channel.send('Internal error with card');
 
                   const attachment = new AttachmentBuilder(card, {
@@ -172,23 +140,23 @@ export default {
               }
 
               if (config.dmEnabled) {
-                const embed = new CustomEmbed(config.dmMessage, parse);
+                const embed = new CustomEmbed(config.dmMessage, parser);
 
                 if (config.dmType === 'embed')
                   await member.send({
                     embeds: [embed],
-                    content: `${parse(config.dmMessage.content)}`,
+                    content: `${parser.parse(config.dmMessage.content)}`,
                     components: [sentFrom],
                   });
                 if (config.dmType === 'text')
                   await member.send({
-                    content: `${parse(config.dmMessageText)}`,
+                    content: `${parser.parse(config.dmMessage.content)}`,
                   });
                 if (config.dmType === 'card') {
-                  const card = await drawCard(member, level, xp, formula(level), config.levelCard);
+                  const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
                   if (!card)
                     await member.send(
-                      'You leveled up! Sorry, we tried to send a card to the configured channel, but there was an error. Sorry for the inconvinience! All level rewards have been given.',
+                      'You leveled up! Sorry, we tried to send a card to the configured channel, but there was an error. Sorry for the inconvenience! All level rewards have been given.',
                     );
 
                   if (card) {
@@ -209,47 +177,7 @@ export default {
               const nextCheck = config.rewards!.filter(i => i.level === level);
 
               nextCheck.forEach(async check => {
-                const parseCheck = (s: string) => {
-                  return s
-                    .replaceAll('{server.name}', `${newState.guild.name}`)
-                    .replaceAll('{server}', `${newState.guild.name}` ?? '')
-                    .replaceAll('{server.id}', `${newState.guild.id}` ?? '')
-                    .replaceAll('{server.icon_url}', `${newState.guild.iconURL()}` ?? '')
-                    .replaceAll('{server.icon}', `${newState.guild.icon}` ?? '')
-                    .replaceAll('{icon}', `${newState.guild.iconURL()}` ?? '')
-                    .replaceAll('{server.owner}', `<@${newState.guild.ownerId}>` ?? '')
-                    .replaceAll('{icon}', `${newState.guild.iconURL()}` ?? '')
-                    .replaceAll('{id}', `${member.id}` ?? '')
-                    .replaceAll('{server.owner_id}', `${newState.guild.ownerId}` ?? '')
-                    .replaceAll('{server.members}', `${newState.guild.memberCount}` ?? '')
-                    .replaceAll('{members}', `${newState.guild.memberCount}` ?? '')
-                    .replaceAll('{user}', `${member}` ?? '')
-                    .replaceAll('{username}', `${member.user.username}` ?? '')
-                    .replaceAll('{user.name}', `${member.user.username}` ?? '')
-                    .replaceAll('{user.username}', `${member.user.username}` ?? '')
-                    .replaceAll('{user.tag}', `${member.user.tag}` ?? '')
-                    .replaceAll('{tag}', `${member.user.tag}` ?? '')
-                    .replaceAll('{user.discriminator}', `${member.user.discriminator}` ?? '')
-                    .replaceAll('{user.displayname}', `${member.user.displayName}` ?? '')
-                    .replaceAll('{user.id}', `${member.user.id}` ?? '')
-                    .replaceAll('{user.avatar_url}', `${member.user.avatarURL()}` ?? '')
-                    .replaceAll('{user.avatar}', `${member.user.avatar}` ?? '')
-                    .replaceAll('{avatar}', `${member.user.avatarURL()}` ?? '')
-                    .replaceAll('{user.created_at}', `${member.user.createdAt}` ?? '')
-                    .replaceAll('{user.joined_at}', `${member.joinedAt}` ?? '')
-                    .replaceAll('{channel}', `${newState.channel}` ?? '')
-                    .replaceAll('{channel.name}', `${newState.channel?.name}` ?? '')
-                    .replaceAll('{channel.id}', `${newState.channel?.id}` ?? '')
-                    .replaceAll('{level}', `${level}` ?? '')
-                    .replaceAll('{xp}', `${xp}` ?? '')
-                    .replaceAll('{required_xp}', `${formula(level)}` ?? '')
-                    .replaceAll('{color}', `${color}` ?? '')
-                    .replaceAll('{role}', `<@&${check.role}>` ?? '')
-                    .replaceAll('{reward}', `<@&${check.role}>` ?? '')
-                    .replaceAll('{required_level}', `${check.level}` ?? '')
-                    .replaceAll('{reward.level}', `${check.level}` ?? '')
-                    .replaceAll('{reward.role}', `<@&${check.role}>` ?? '');
-                };
+                const parser = new RewardLevelParser({ ...parserOptions, reward: check });
 
                 if (config.rewardsMode === 'replace') {
                   if (levelDB.role !== 'none') {
@@ -274,13 +202,13 @@ export default {
 
                 if (config.rewardDmType === 'embed')
                   await member.send({
-                    embeds: [new CustomEmbed(config.rewardDmMessage, parseCheck)],
-                    content: `${parseCheck(config.rewardDmMessage.content)}`,
+                    embeds: [new CustomEmbed(config.rewardDmMessage, parser)],
+                    content: `${parser.parse(config.rewardDmMessage.content)}`,
                     components: [sentFrom],
                   });
                 if (config.rewardDmType === 'text')
                   await member.send({
-                    content: `${parseCheck(config.rewardDmMessageText)}`,
+                    content: `${parser.parse(config.rewardDmMessage.content)}`,
                     components: [sentFrom],
                   });
               });

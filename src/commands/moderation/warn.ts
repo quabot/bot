@@ -4,7 +4,6 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  ChannelType,
   type APIEmbedField,
   GuildMemberRoleManager,
 } from 'discord.js';
@@ -16,6 +15,7 @@ import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { ModerationParser } from '@classes/parsers';
 
 export default {
   data: new SlashCommandBuilder()
@@ -111,7 +111,7 @@ export default {
       ],
     });
 
-    if (config.warnDM) {
+    if (config.warnDM && member) {
       const sentFrom = new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
           .setCustomId('sentFrom')
@@ -120,37 +120,20 @@ export default {
           .setDisabled(true),
       );
 
-      const parseString = (text: string) => {
-        const res = text
-          .replaceAll('{reason}', reason)
-          .replaceAll('{user}', `${member}`)
-          .replaceAll('{moderator}', interaction.user.toString())
-          .replaceAll('{staff}', interaction.user.toString())
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{id}', `${id}`)
-          .replaceAll('{created}', `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`)
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
-
-        if (member.joinedTimestamp !== null) {
-          return text.replaceAll('{joined}', `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`);
-        }
-
-        return res;
-      };
+      const parser = new ModerationParser({ member, reason, interaction, color, id });
 
       await user
         .send({
-          embeds: [new CustomEmbed(config.warnDMMessage, parseString)],
+          embeds: [new CustomEmbed(config.warnDMMessage, parser)],
           components: [sentFrom],
-          content: parseString(config.warnDMMessage.content),
+          content: parser.parse(config.warnDMMessage.content),
         })
         .catch(() => {});
     }
 
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
-      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!channel?.isTextBased()) return;
       if (!hasSendPerms(channel)) {
         return await interaction.followUp({
           embeds: [

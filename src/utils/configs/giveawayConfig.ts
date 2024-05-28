@@ -13,7 +13,7 @@ export async function getGiveawayConfig(guildId: Snowflake, client: Client) {
     defaultObj: {
       guildId,
       enabled: true,
-      pingEveryone: false,
+      pingRole: 'none',
     },
   });
 }

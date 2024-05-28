@@ -10,8 +10,8 @@ export default async (client: Client) => {
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/interactions/buttons/*/*.js`);
 
   files.forEach(async file => {
-    const button: Button = require(file).default;
-    if (!button.name) return;
+    const button: Button | undefined = require(file).default;
+    if (!button?.name) return;
 
     client.buttons.set(button.name, button);
   });

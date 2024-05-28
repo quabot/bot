@@ -6,7 +6,6 @@ import {
   ButtonStyle,
   GuildMemberRoleManager,
   type APIEmbedField,
-  ChannelType,
 } from 'discord.js';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';
@@ -16,6 +15,7 @@ import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { ModerationParser } from '@classes/parsers';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
@@ -139,31 +139,14 @@ export default {
         .setDisabled(true),
     );
 
-    if (config.kickDM) {
-      const parseString = (text: string) => {
-        const res = text
-          .replaceAll('{reason}', reason)
-          .replaceAll('{user}', `${member}`)
-          .replaceAll('{moderator}', interaction.user.toString())
-          .replaceAll('{staff}', interaction.user.toString())
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{id}', `${id}`)
-          .replaceAll('{created}', `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`)
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
-
-        if (member.joinedTimestamp !== null) {
-          return text.replaceAll('{joined}', `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`);
-        }
-
-        return res;
-      };
+    if (config.kickDM && member) {
+      const parser = new ModerationParser({ member, reason, interaction, color, id });
 
       await member
         .send({
-          embeds: [new CustomEmbed(config.kickDMMessage, parseString)],
+          embeds: [new CustomEmbed(config.kickDMMessage, parser)],
           components: [sentFrom],
-          content: parseString(config.kickDMMessage.content),
+          content: parser.parse(config.kickDMMessage.content),
         })
         .catch(() => {});
     }
@@ -171,7 +154,7 @@ export default {
     //* Send the log to the log channel.
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
-      if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+      if (!channel?.isTextBased()) return;
       if (!hasSendPerms(channel)) {
         return await interaction.followUp({
           embeds: [

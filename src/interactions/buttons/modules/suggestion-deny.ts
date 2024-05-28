@@ -14,6 +14,7 @@ import { getSuggestConfig } from '@configs/suggestConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
+import { SuggestionParser } from '@classes/parsers';
 
 export default {
   name: 'suggestion-deny',
@@ -173,24 +174,17 @@ export default {
       if (!config.dm) return;
 
       const user = interaction.guild?.members.cache.get(`${suggestion.userId}`);
-      const parseString = (text: string) =>
-        text
-          .replaceAll('{suggestion}', suggestion.suggestion)
-          .replaceAll('{user}', `${user}`)
-          .replaceAll('{avatar}', user?.displayAvatarURL() ?? '')
-          .replaceAll('{server}', interaction.guild?.name ?? '')
-          .replaceAll('{staff}', `${interaction.user ?? ''}`)
-          .replaceAll('{state}', 'denied')
-          .replaceAll('{color}', color.toString())
-          .replaceAll('{icon}', interaction.guild?.iconURL() ?? '');
+      if (!user) return;
 
-      const embed = new CustomEmbed(config.dmMessage, parseString).addFields(
+      const parser = new SuggestionParser({ member: user, interaction, color, suggestion });
+
+      const embed = new CustomEmbed(config.dmMessage, parser).addFields(
         { name: 'Denied by', value: `${interaction.user}`, inline: true },
         { name: 'Reason', value: `${rejectionReason}`, inline: true },
       );
       user?.send({
         embeds: [embed],
-        content: parseString(config.dmMessage.content),
+        content: parser.parse(config.dmMessage.content),
       });
     });
   },

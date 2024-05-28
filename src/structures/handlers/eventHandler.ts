@@ -12,8 +12,8 @@ export default async (client: Client) => {
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/events/*/*.js`);
 
   files.forEach(async eventFile => {
-    const event: Event = require(eventFile).default;
-    if (!event.name || !event.event) return;
+    const event: Event | undefined = require(eventFile).default;
+    if (!event?.name || !event.event) return;
 
     const defaultArgs: EventArgs = { client, color: '#416683' };
 

@@ -1,7 +1,8 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { WsEventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { BaseParser } from '@classes/parsers';
 
 //* QuaBot Applications Message Sender Handler.
 export default {
@@ -11,7 +12,7 @@ export default {
     const guild = client.guilds.cache.get(data.guildId);
     if (!guild) return;
     const channel = guild.channels.cache.get(data.channelId);
-    if (!channel || channel.type === ChannelType.GuildCategory || channel.type === ChannelType.GuildForum) return;
+    if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 
     const embed = data.embed;
@@ -32,9 +33,7 @@ export default {
         components: [row],
       });
 
-    const sentEmbed = new CustomEmbed(data.message, e => {
-      return e;
-    });
+    const sentEmbed = new CustomEmbed(data.message, new BaseParser());
 
     await channel.send({
       embeds: [sentEmbed],

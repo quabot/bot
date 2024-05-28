@@ -18,12 +18,13 @@ import { screamingSnakeToPascalCase } from '@functions/string';
 import type { NonNullMongooseReturn, ReactionRoleType } from '@typings/mongoose';
 import type { IReactionConfig, IServer } from '@typings/schemas';
 import { hasRolePerms } from '@functions/discord';
+import { ReactionRoleParser } from '@classes/parsers';
 
 export default {
   event: 'messageReactionAdd',
   name: 'reactionRoleAdd',
 
-  async execute({ client, color }: EventArgs, reaction: MessageReaction, user: User) {
+  async execute({ client }: EventArgs, reaction: MessageReaction, user: User) {
     if (!reaction.message.guild?.id) return;
 
     const clientMember = reaction.message.guild.members.me;
@@ -92,32 +93,20 @@ export default {
         .setDisabled(true),
     );
 
+    const parserOptions = { member, color: customConfig.color, role, reaction };
+    const addedParser = new ReactionRoleParser({ ...parserOptions, action: 'added' });
+    const removedParser = new ReactionRoleParser({ ...parserOptions, action: 'removed' });
+
     async function asyncSwitch(type: ReactionRoleType) {
       switch (type) {
         // * Give and remove
         case 'normal':
           await member.roles.add(role);
 
-          const parseNormal = (s: string) =>
-            s
-              .replaceAll('{action}', 'added')
-              .replaceAll('{id}', user.id)
-              .replaceAll('{username}', user.username)
-              .replaceAll('{discriminator}', user.discriminator)
-              .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
-              .replaceAll('{avatar}', user.displayAvatarURL())
-              .replaceAll('{servername}', reaction.message.guild!.name)
-              .replaceAll('{color}', (customConfig.color ?? color).toString())
-              .replaceAll('{server}', reaction.message.guild!.name)
-              .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user.toString())
-              .replaceAll('{message}', reaction.message.url);
-
           if (config.dmEnabled)
             await member
               .send({
-                embeds: [new CustomEmbed(config.dm, parseNormal)],
+                embeds: [new CustomEmbed(config.dm, addedParser)],
                 components: [sentFrom],
               })
               .catch(() => {});
@@ -128,26 +117,10 @@ export default {
         case 'verify':
           await member.roles.add(role);
 
-          const parseVerify = (s: string) =>
-            s
-              .replaceAll('{action}', 'added')
-              .replaceAll('{id}', user.id)
-              .replaceAll('{username}', user.username)
-              .replaceAll('{discriminator}', user.discriminator)
-              .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
-              .replaceAll('{avatar}', user.displayAvatarURL())
-              .replaceAll('{servername}', reaction.message.guild!.name)
-              .replaceAll('{color}', (customConfig.color ?? color).toString())
-              .replaceAll('{server}', reaction.message.guild!.name)
-              .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user.toString())
-              .replaceAll('{message}', reaction.message.url);
-
           if (config.dmEnabled)
             await member
               .send({
-                embeds: [new CustomEmbed(config.dm, parseVerify)],
+                embeds: [new CustomEmbed(config.dm, addedParser)],
                 components: [sentFrom],
               })
               .catch(() => {});
@@ -158,26 +131,10 @@ export default {
         case 'drop':
           await member.roles.remove(role);
 
-          const parseDrop = (s: string) =>
-            s
-              .replaceAll('{action}', 'removed')
-              .replaceAll('{id}', user.id)
-              .replaceAll('{username}', user.username)
-              .replaceAll('{discriminator}', user.discriminator)
-              .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
-              .replaceAll('{avatar}', user.displayAvatarURL())
-              .replaceAll('{servername}', reaction.message.guild!.name)
-              .replaceAll('{color}', (customConfig.color ?? color).toString())
-              .replaceAll('{server}', reaction.message.guild!.name)
-              .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user.toString())
-              .replaceAll('{message}', reaction.message.url);
-
           if (config.dmEnabled)
             await member
               .send({
-                embeds: [new CustomEmbed(config.dm, parseDrop)],
+                embeds: [new CustomEmbed(config.dm, removedParser)],
                 components: [sentFrom],
               })
               .catch(() => {});
@@ -188,26 +145,10 @@ export default {
         case 'reversed':
           await member.roles.remove(role);
 
-          const parseReversed = (s: string) =>
-            s
-              .replaceAll('{action}', 'removed')
-              .replaceAll('{id}', user.id)
-              .replaceAll('{username}', user.username)
-              .replaceAll('{discriminator}', user.discriminator)
-              .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
-              .replaceAll('{avatar}', user.displayAvatarURL())
-              .replaceAll('{servername}', reaction.message.guild!.name)
-              .replaceAll('{color}', (customConfig.color ?? color).toString())
-              .replaceAll('{server}', reaction.message.guild!.name)
-              .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user.toString())
-              .replaceAll('{message}', reaction.message.url);
-
           if (config.dmEnabled)
             await member
               .send({
-                embeds: [new CustomEmbed(config.dm, parseReversed)],
+                embeds: [new CustomEmbed(config.dm, removedParser)],
                 components: [sentFrom],
               })
               .catch(() => {});
@@ -236,26 +177,10 @@ export default {
           if (!hasRole) {
             await member.roles.add(role);
 
-            const parseUnique = (s: string) =>
-              s
-                .replaceAll('{action}', 'added')
-                .replaceAll('{id}', user.id)
-                .replaceAll('{username}', user.username)
-                .replaceAll('{discriminator}', user.discriminator)
-                .replaceAll('{tag}', user.tag)
-                .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
-                .replaceAll('{avatar}', user.displayAvatarURL())
-                .replaceAll('{servername}', reaction.message.guild!.name)
-                .replaceAll('{color}', (customConfig.color ?? color).toString())
-                .replaceAll('{server}', reaction.message.guild!.name)
-                .replaceAll('{role}', role.name)
-                .replaceAll('{user}', user.toString())
-                .replaceAll('{message}', reaction.message.url);
-
             if (config.dmEnabled)
               await member
                 .send({
-                  embeds: [new CustomEmbed(config.dm, parseUnique)],
+                  embeds: [new CustomEmbed(config.dm, addedParser)],
                   components: [sentFrom],
                 })
                 .catch(() => {});
@@ -266,26 +191,10 @@ export default {
         case 'binding':
           await member.roles.add(role);
 
-          const parseBinding = (s: string) =>
-            s
-              .replaceAll('{action}', 'added')
-              .replaceAll('{id}', user.id)
-              .replaceAll('{username}', user.username)
-              .replaceAll('{discriminator}', user.discriminator)
-              .replaceAll('{tag}', user.tag)
-              .replaceAll('{icon}', reaction.message.guild!.iconURL() ?? '')
-              .replaceAll('{avatar}', user.displayAvatarURL())
-              .replaceAll('{servername}', reaction.message.guild!.name)
-              .replaceAll('{color}', (customConfig.color ?? color).toString())
-              .replaceAll('{server}', reaction.message.guild!.name)
-              .replaceAll('{role}', role.name)
-              .replaceAll('{user}', user.toString())
-              .replaceAll('{message}', reaction.message.url);
-
           if (config.dmEnabled)
             await member
               .send({
-                embeds: [new CustomEmbed(config.dm, parseBinding)],
+                embeds: [new CustomEmbed(config.dm, addedParser)],
                 components: [sentFrom],
               })
               .catch(() => {});
