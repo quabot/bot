@@ -9,8 +9,8 @@ import { request } from 'undici';
 import { CardParser } from '@classes/parsers';
 
 const baseFontPath = join(__dirname, '../assets/fonts');
-Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Normal.ttf'), 'GG Sans');
-Canvas.GlobalFonts.registerFromPath(join(__dirname, '..', 'assets', 'fonts', 'ggsans-Bold.ttf'), 'GG Sans Bold');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
+Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-SemiBold.ttf'), 'GG Sans SemiBold');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Medium.ttf'), 'GG Sans Medium');
 
