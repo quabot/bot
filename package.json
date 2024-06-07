@@ -11,13 +11,15 @@
     "production": "yarn deploy && sh run.sh",
     "start": "node --require dotenv/config --require module-alias/register dist/main.js",
     "build": "yarn tsc",
-    "deploy": "sh deploy.sh",
-    "prettier": "prettier --write src"
+    "deploy": "sh deploy.sh && yarn copy-files",
+    "prettier": "prettier --write src",
+    "copy-files": "copyfiles -u 1 src/**/*.ttf src/**/*.css dist/"
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.52",
     "axios": "^1.6.0",
     "consola": "^2.15.3",
+    "cpx": "^1.5.0",
     "discord-html-transcripts": "^3.1.3",
     "discord.js": "^14.14.1",
     "dotenv": "^16.0.3",
@@ -41,10 +43,12 @@
     "@types/lodash": "^4.14.197",
     "@types/module-alias": "^2.0.4",
     "@types/ms": "^0.7.32",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.47.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.2",
     "reddit-interfaces": "^1.0.7",
+    "rimraf": "^5.0.7",
     "typescript": "5.3.3"
   },
   "_moduleAliases": {

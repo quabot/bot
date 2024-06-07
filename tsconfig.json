@@ -34,6 +34,8 @@
 
     // JSON
     "resolveJsonModule": true,
+    "removeComments": true,
+    
 
     // _moduleAliases
     "baseUrl": "./src",
