@@ -1,7 +1,7 @@
 import type { LevelCard, WelcomeCard } from '@typings/mongoose';
 import type { ColorResolvable, GuildMember } from 'discord.js';
 
-import Canvas from '@napi-rs/canvas';
+import Canvas, { GlobalFonts } from '@napi-rs/canvas';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import moment from 'moment';
@@ -13,6 +13,8 @@ Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-SemiBold.ttf'), 'GG Sans SemiBold');
 Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Medium.ttf'), 'GG Sans Medium');
+
+console.info(GlobalFonts.families)
 
 export async function drawLevelCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
   // Destructuring user
