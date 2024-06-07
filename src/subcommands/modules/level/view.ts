@@ -23,6 +23,7 @@ export default {
       });
 
     const user = interaction.options.getUser('user') ?? interaction.user;
+    const member = interaction.options.getMember('user') ?? interaction.member;
     const levelDB = await getLevel(interaction.guildId!, user.id);
     if (!levelDB)
       return await interaction.editReply({
@@ -46,7 +47,7 @@ export default {
       });
     } else {
       const card = await drawLevelCard(
-        interaction.member as GuildMember,
+        member as GuildMember,
         levelDB.level,
         Math.floor(levelDB.xp),
         formula(levelDB.level),
