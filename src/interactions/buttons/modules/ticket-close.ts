@@ -86,7 +86,7 @@ export default {
     });
     ticket.users!.forEach(async user => {
       const member = await interaction.guild?.members.fetch(user);
-      if (member) await channel?.permissionOverwrites.edit(member, {
+      if (member) await channel?.permissionOverwrites.edit(member.user, {
         ViewChannel: true,
         SendMessages: false,
       });
