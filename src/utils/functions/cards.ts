@@ -8,7 +8,7 @@ import moment from 'moment';
 import { request } from 'undici';
 import { CardParser } from '@classes/parsers';
 
-const baseFontPath = join(__dirname, '../../../src/utils/assets/fonts');
+const baseFontPath = join(__dirname, '../../../assets/fonts');
 GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
 GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
 GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-SemiBold.ttf'), 'GG Sans SemiBold');
