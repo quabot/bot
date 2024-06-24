@@ -63,6 +63,7 @@ export default {
           ),
         ],
       });
+
     if (closedCategory.type !== ChannelType.GuildCategory)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription("The closed ticket category doesn't have the right type.")],
@@ -79,8 +80,9 @@ export default {
     await channel?.setParent(closedCategory, {
       lockPermissions: false,
     });
-
-    await channel?.permissionOverwrites.edit(ticket.owner, {
+  
+    const owner = await interaction.guild?.members.fetch(ticket.owner);
+    if (owner) await channel?.permissionOverwrites.edit(owner.user, {
       ViewChannel: true,
       SendMessages: false,
     });
