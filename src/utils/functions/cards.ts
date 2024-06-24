@@ -48,12 +48,12 @@ export async function drawLevelCard(member: GuildMember, level: number, xp: numb
   }
 
   // "Displayname"
-  context.font = '32px DejaVu Sans';
+  context.font = '32px GG Sans';
   context.fillStyle = options.colors.displayname;
   const usernameWidth = context.measureText(user.displayName).width;
   context.fillText(`${user.displayName}`, 166, 51 + 43 / 2);
   // Username & Joined Date
-  context.font = '28px DejaVu Sans';
+  context.font = '28px GG Sans';
   context.fillStyle = options.colors.username;
   context.fillText(
     `@${user.username} • Joined ${moment(member.joinedTimestamp).format('MMM D, YYYY')}`,
