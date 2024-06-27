@@ -22,6 +22,7 @@ import {
   Colors,
 } from 'discord.js';
 import uuid from 'uuid-wand';
+import ms from 'ms';
 
 export default {
   name: 'applications-apply',
@@ -34,6 +35,41 @@ export default {
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription("This application doesn't exist anymore.")],
       });
+
+    //* Check ignored roles
+    const member = interaction.guild?.members.cache.get(interaction.user.id);
+    if (!member) return await interaction.editReply({ content: 'An error occurred.' });
+
+    const ignoredRoles = application.ignored_roles ?? [];
+    if (ignoredRoles.some(r => member.roles.cache.has(r)))
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "You can't apply for this application, you have (some) roles that aren't allowed to apply to this application.",
+          ),
+        ],
+      });
+
+    //* When there are allowed roles, they must have (one of) them.
+    const allowedRoles = application.allowed_roles ?? [];
+    if (allowedRoles.length && !allowedRoles.some(r => member.roles.cache.has(r)))
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "You can't apply for this application, you don't have any of the roles that are allowed to apply to this application.",
+          ),
+        ],
+      });
+
+    if (application.allowed_from === 'dashboard')
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            `You can't apply for this application, you can only apply from the [dashboard](https://quabot.net/dashboard/${interaction.guildId}/applications/fillout/${application.id}).`,
+          ),
+        ],
+      });
+      
 
     if (!application.reapply) {
       const applicationAnswer = await ApplicationAnswer.findOne({
@@ -50,6 +86,33 @@ export default {
             ),
           ],
         });
+    }
+
+    //* Check cooldown, if enabled
+    if (application.cooldown_enabled) {
+      const applicationAnswer = await ApplicationAnswer.findOne({
+        guildId: interaction.guildId!,
+        id: interaction.values[0],
+        userId: interaction.user.id,
+      });
+
+      if (applicationAnswer) {
+        const time = applicationAnswer.time;
+        const cooldown = application.cooldown;
+        const now = new Date();
+
+        const timeDiff = now.getTime() - time.getTime();
+        const cooldownTime = ms(cooldown);
+
+        if (timeDiff < cooldownTime)
+          return await interaction.editReply({
+            embeds: [
+              new Embed(color).setDescription(
+                `You can't apply for this application yet, you have to wait for ${cooldown} before applying again.`,
+              ),
+            ],
+          });
+      }
     }
 
     const applicationAnswers: (string | string[] | number[])[] = application.questions!.map(q =>
@@ -70,7 +133,7 @@ export default {
         embeds: [
           new Embed(color)
             .setTitle(question.question)
-            .setDescription(question.description ?? "No description.")
+            .setDescription(question.description === '' ? 'No description.' : question.description ?? null)
             .setImage(question.image ?? null)
             .setThumbnail(question.thumbnail ?? null)
             .setFields({ name: 'Required?', value: question.required ? 'Yes' : 'No' }),
@@ -282,7 +345,7 @@ export default {
             .setDescription(`**${interaction.user}** has submitted an answer to \`${application.name}\`!`)
             .addFields({
               name: 'Link',
-              value: `[Click here](https://quabot.net/dashboard/${interaction.guildId!}/modules/applications/responses/${
+              value: `[Click here](https://quabot.net/dashboard/${interaction.guildId!}/applications/responses/${
                 applicationAnswer.response_uuid
               })`,
               inline: true,
