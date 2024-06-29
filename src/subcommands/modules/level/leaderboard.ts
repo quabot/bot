@@ -37,7 +37,7 @@ export default {
         new Embed(color)
           .setTitle(`${interaction.guild?.name}'s level leaderboard`)
           .setDescription(
-            `To view the full leaderboard, visit our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/levels/leaderboard)\n\n${lb}`,
+            `To view the full leaderboard, visit our [dashboard](https://quabot.net/dashboard/${interaction.guildId}/level/leaderboard)\n\n${lb}`,
           ),
       ],
     });
