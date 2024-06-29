@@ -95,7 +95,7 @@ export default {
         new Embed(color)
           .setDescription(
             `Successfully created your suggestion! You can check it out [here](${msg.url}). ${
-              config.dm && 'You will receive a DM when staff has approved/denied your suggestion.'
+              config.dm ? 'You will receive a DM when staff has approved/denied your suggestion.' : ''
             }`,
           )
           .setFooter({ text: `ID: ${ids.suggestId}` }),
@@ -107,7 +107,7 @@ export default {
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
-        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `Send Messages` permission.")],
         ephemeral: true,
       });
 
