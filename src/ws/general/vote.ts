@@ -1,9 +1,6 @@
 import Vote from '@schemas/Vote';
 import { Embed } from '@constants/embed';
 import type { WsEventArgs } from '@typings/functionArgs';
-import type { CallbackError } from 'mongoose';
-import type { MongooseReturn } from '@typings/mongoose';
-import type { IVote } from '@typings/schemas';
 import axios from 'axios';
 
 //* Handle the vote of a user. Send a message and update DB.
@@ -53,18 +50,15 @@ export default {
       .catch(() => {});
 
     //* Update the DB.
-    const config = await Vote.findOne({ userId: data.body.user }, (err: CallbackError, c: MongooseReturn<IVote>) => {
-      if (err) console.log(err);
-      if (!c)
-        new Vote({
-          userId: data.body.user,
-          lastVote: `${new Date().getTime()}`,
-        }).save();
-    })
+    const config = await Vote.findOne({ userId: data.body.user })
       .clone()
       .catch(() => {});
 
-    if (!config) return;
+    if (!config)
+      return new Vote({
+        userId: data.body.user,
+        lastVote: '0',
+      }).save();
     config.lastVote = `${new Date().getTime()}`;
   },
 };

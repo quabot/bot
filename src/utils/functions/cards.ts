@@ -1,18 +1,19 @@
 import type { LevelCard, WelcomeCard } from '@typings/mongoose';
 import type { ColorResolvable, GuildMember } from 'discord.js';
 
-import Canvas from '@napi-rs/canvas';
+import Canvas, { GlobalFonts } from '@napi-rs/canvas';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import moment from 'moment';
 import { request } from 'undici';
 import { CardParser } from '@classes/parsers';
 
-const baseFontPath = join(__dirname, '../assets/fonts');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-SemiBold.ttf'), 'GG Sans SemiBold');
-Canvas.GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Medium.ttf'), 'GG Sans Medium');
+const baseFontPath = join(__dirname, '../../../assets/fonts');
+GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Normal.ttf'), 'GG Sans');
+GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Bold.ttf'), 'GG Sans Bold');
+GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-SemiBold.ttf'), 'GG Sans SemiBold');
+GlobalFonts.registerFromPath(join(baseFontPath, 'ggsans-Medium.ttf'), 'GG Sans Medium');
+
 
 export async function drawLevelCard(member: GuildMember, level: number, xp: number, reqXp: number, options: LevelCard) {
   // Destructuring user
@@ -47,7 +48,7 @@ export async function drawLevelCard(member: GuildMember, level: number, xp: numb
   }
 
   // "Displayname"
-  context.font = '32px GG Sans Bold';
+  context.font = '32px GG Sans';
   context.fillStyle = options.colors.displayname;
   const usernameWidth = context.measureText(user.displayName).width;
   context.fillText(`${user.displayName}`, 166, 51 + 43 / 2);

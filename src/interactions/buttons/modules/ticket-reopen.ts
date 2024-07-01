@@ -82,12 +82,14 @@ export default {
       lockPermissions: false,
     });
 
-    await channel?.permissionOverwrites.edit(ticket.owner, {
+    const owner = interaction.guild?.members.cache.get(ticket.owner);
+    if (owner) await channel?.permissionOverwrites.edit(owner.user, {
       ViewChannel: true,
       SendMessages: true,
     });
     ticket.users!.forEach(async user => {
-      await channel?.permissionOverwrites.edit(user, {
+      const member = interaction.guild?.members.cache.get(user);
+      if (member) await channel?.permissionOverwrites.edit(member.user, {
         ViewChannel: true,
         SendMessages: true,
       });

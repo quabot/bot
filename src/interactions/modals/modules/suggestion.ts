@@ -95,7 +95,7 @@ export default {
         new Embed(color)
           .setDescription(
             `Successfully created your suggestion! You can check it out [here](${msg.url}). ${
-              config.dm && 'You will receive a DM when staff has approved/denied your suggestion.'
+              config.dm ? 'You will receive a DM when staff has approved/denied your suggestion.' : ''
             }`,
           )
           .setFooter({ text: `ID: ${ids.suggestId}` }),

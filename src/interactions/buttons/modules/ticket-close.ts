@@ -61,6 +61,20 @@ export default {
       limit: -1,
       saveImages: false,
     });
+    const closedCategory = interaction.guild?.channels.cache.get(config.closedCategory);
+    if (!closedCategory)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            'There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).',
+          ),
+        ],
+      });
+
+    if (closedCategory.type !== ChannelType.GuildCategory)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription("The closed ticket category doesn't have the right type.")],
+      });
 
     if (config.deleteOnClose) {
       await interaction.channel?.delete();
@@ -92,6 +106,20 @@ export default {
       });
 
       await channel?.permissionOverwrites.edit(ticket.owner, {
+    const channel = interChannel as Exclude<GuildTextBasedChannel, PrivateThreadChannel | PublicThreadChannel>;
+
+    await channel?.setParent(closedCategory, {
+      lockPermissions: false,
+    });
+  
+    const owner = await interaction.guild?.members.fetch(ticket.owner);
+    if (owner) await channel?.permissionOverwrites.edit(owner.user, {
+      ViewChannel: true,
+      SendMessages: false,
+    });
+    ticket.users!.forEach(async user => {
+      const member = await interaction.guild?.members.fetch(user);
+      if (member) await channel?.permissionOverwrites.edit(member.user, {
         ViewChannel: true,
         SendMessages: false,
       });

@@ -63,10 +63,10 @@ export async function getWelcomeConfig(client: Client, guildId: Snowflake) {
           value: 'You are the {server.members}th member!',
         },
         customTxt: {
-          enabled: true,
+          enabled: false,
           color: '#f00',
           weight: 'Normal',
-          value: "We hope you're happy!",
+          value: "Use this text to add some extra text.",
         },
 
         pfp: {

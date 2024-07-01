@@ -24,7 +24,6 @@ export default {
 
     const found = await User.find({
       guildId: interaction.guildId,
-      userId: interaction.user.id,
       afk: true,
     });
 

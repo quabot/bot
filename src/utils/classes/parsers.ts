@@ -107,7 +107,7 @@ export class GuildParser extends BaseParser {
     super();
 
     this.addVariables(
-      { name: 'server.name', value: guild.name },
+      { name: 'server.name', aliases: ['server'], value: guild.name },
       { name: 'server.id', value: guild.id },
       { name: 'server.members', value: guild.memberCount.toString() },
       { name: 'server.channels', value: guild.channels.cache.size.toString() },
@@ -284,7 +284,7 @@ export class RewardLevelParser extends LevelParser {
     super(data);
 
     this.addVariables(
-      { name: 'role', aliases: ['reward', 'reward.role'], value: data.reward.role },
+      { name: 'role', aliases: ['reward', 'reward.role'], value: `<@%${data.reward.role}>` },
       { name: 'reward.level', aliases: ['required_level'], value: data.reward.level.toString() },
     );
   }
@@ -300,6 +300,11 @@ export class BaseStaffParser extends MemberParser {
 export class SuggestionParser extends BaseStaffParser {
   constructor(data: SuggestionParserArgs) {
     super(data);
+
+    this.changeVariables({
+      name: 'color',
+      newValue: data.suggestion.status === 'approved' ? '#57f288' : '#ed4245',
+    });
 
     this.addVariables(
       { name: 'suggestion', value: data.suggestion.suggestion },

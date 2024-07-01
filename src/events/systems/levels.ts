@@ -8,9 +8,6 @@ import { getServerConfig } from '@configs/serverConfig';
 import Vote from '@schemas/Vote';
 import { drawLevelCard } from '@functions/cards';
 import type { EventArgs } from '@typings/functionArgs';
-import type { CallbackError } from 'mongoose';
-import type { MongooseReturn } from '@typings/mongoose';
-import type { IVote } from '@typings/schemas';
 import { hasRolePerms, hasSendPerms } from '@functions/discord';
 import { LevelParser, RewardLevelParser } from '@classes/parsers';
 
@@ -78,16 +75,16 @@ export default {
     if (message.content.length > 200) rndXp += 1;
     rndXp = rndXp * config.xpMultiplier ?? 1;
 
-    const vote = await Vote.findOne({ userId: message.author.id }, (err: CallbackError, c: MongooseReturn<IVote>) => {
-      if (err) console.log(err);
-      if (!c)
-        new Vote({
-          userId: message.author.id,
-          lastVote: '0',
-        }).save();
-    })
+    const vote = await Vote.findOne({ userId: message.author.id })
       .clone()
       .catch(() => {});
+
+    if (!vote) {
+      new Vote({
+        userId: message.author.id,
+        lastVote: '0',
+      }).save();
+    }
     if (vote) {
       if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
     }
@@ -119,7 +116,7 @@ export default {
             })
             .catch(() => {});
         if (config.messageType === 'text')
-          await channel.send({ content: `${parser.parse(config.messageText)}` }).catch(() => {});
+          await channel.send({ content: `${parser.parse(config.message.content)}` }).catch(() => {});
         if (config.messageType === 'card') {
           const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
@@ -152,7 +149,7 @@ export default {
             .catch(() => {});
         if (config.dmType === 'text')
           await member.send({
-            content: `${parser.parse(config.dmMessageText)}`,
+            content: `${parser.parse(config.dmMessage.content)}`,
           });
         if (config.dmType === 'card') {
           const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
@@ -211,7 +208,7 @@ export default {
           });
         if (config.rewardDmType === 'text')
           await member.send({
-            content: `${parser.parse(config.rewardDmMessageText)}`,
+            content: `${parser.parse(config.rewardDmMessage.content)}`,
             components: [sentFrom],
           });
       });

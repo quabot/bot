@@ -23,6 +23,7 @@ export default {
       });
 
     const user = interaction.options.getUser('user') ?? interaction.user;
+    const member = interaction.options.getMember('user') ?? interaction.member;
     const levelDB = await getLevel(interaction.guildId!, user.id);
     if (!levelDB)
       return await interaction.editReply({
@@ -38,15 +39,17 @@ export default {
             .setThumbnail(user.displayAvatarURL({ forceStatic: false }))
             .setTitle(`${user.displayName}'s level status`)
             .setDescription(
-              `${user} is level **${levelDB.level}** and has **${levelDB.xp}/${formula(levelDB.level)}** xp.`,
+              `${user} is level **${levelDB.level}** and has **${Math.floor(levelDB.xp)}/${formula(
+                levelDB.level,
+              )}** xp.`,
             ),
         ],
       });
     } else {
       const card = await drawLevelCard(
-        interaction.member as GuildMember,
+        member as GuildMember,
         levelDB.level,
-        levelDB.xp,
+        Math.floor(levelDB.xp),
         formula(levelDB.level),
         config.levelCard,
       );

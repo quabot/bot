@@ -1,7 +1,7 @@
 import { Embed } from '@constants/embed';
 import { getApplicationConfig } from '@configs/applicationConfig';
 import type { CommandArgs } from '@typings/functionArgs';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 import { ActionRowBuilder, APISelectMenuOption, StringSelectMenuBuilder } from 'discord.js';
 
 export default {
@@ -24,11 +24,12 @@ export default {
 
     const applications = await Application.find({
       guildId: interaction.guildId,
+      enabled: true,
     });
 
     if (applications.length < 1)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('This server has no applications.')],
+        embeds: [new Embed(color).setDescription('This server has no enabled applications.')],
       });
 
     await interaction.editReply({

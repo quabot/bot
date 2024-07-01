@@ -1,7 +1,7 @@
 import { ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { Embed } from '@constants/embed';
 import ApplicationAnswer from '@schemas/ApplicationAnswer';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { hasAnyRole, hasRolePerms } from '@functions/discord';
 
@@ -118,7 +118,7 @@ export default {
             `Your application response for the form \`${form.name}\` has been accepted${
               reason ? ` With reason: \`${reason}\`` : ''
             }! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${interaction
-              .guild?.id}/user/applications/answers/${id}).`,
+              .guild?.id}/applications/answers/${id}).`,
           ),
         ],
       })

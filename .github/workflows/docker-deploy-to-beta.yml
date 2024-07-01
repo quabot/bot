@@ -16,8 +16,6 @@ jobs:
       run: docker stop quabot-beta-bot || echo
     - name: Removing existing bot container
       run: docker rm quabot-beta-bot || echo
-    - name: Removing unused images
-      run: docker system prune -a -f
     - name: Build the new Docker image
       run: docker build . --file Dockerfile --tag quabot/beta-bot:$(date +%s)
     - name: Running the container from this image

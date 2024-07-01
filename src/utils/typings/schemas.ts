@@ -41,6 +41,7 @@ export interface IApplication {
   guildId: Snowflake;
   id: string;
 
+  enabled: boolean;
   name: string;
   description?: string;
 
@@ -48,7 +49,7 @@ export interface IApplication {
     question: string;
     description?: string;
     type: 'multiple' | 'checkbox' | 'short' | 'paragraph' | 'bool';
-    options?: string[];
+    options: string[];
     required: boolean;
     image?: string;
     thumbnail?: string;
@@ -106,7 +107,7 @@ export interface IGiveaway {
 export interface IGiveawayConfig {
   guildId: Snowflake;
   enabled: boolean;
-  pingEveryone: boolean;
+  pingRole: Snowflake | 'none';
 }
 
 export interface IIds {
@@ -135,12 +136,10 @@ export interface ILevelConfig {
   levelCard: LevelCard;
 
   cardMention: true;
-  messageText: string;
   message: Message;
 
   dmEnabled: boolean;
   dmType: MessageTypeWithCard;
-  dmMessageText: string;
   dmMessage: Message;
 
   voiceXp: boolean;
@@ -159,7 +158,6 @@ export interface ILevelConfig {
 
   rewardDm: boolean;
   rewardDmType: MessageType;
-  rewardDmMessageText: string;
   rewardDmMessage: Message;
 
   viewCard: boolean;
@@ -231,13 +229,13 @@ export type IResponder = {
   ignored_channels?: Types.Array<Snowflake>;
   ignored_roles?: Types.Array<Snowflake>;
 } & (
-  | { type: 'message'; message: string }
-  | { type: 'reaction'; reaction: string }
-  | {
+    | { type: 'message'; message: string }
+    | { type: 'reaction'; reaction: string }
+    | {
       type: 'embed';
-      embed?: any; //! Option not implemented in Dashboard
+      embed?: any; //? Should be added in v7.2.0
     }
-);
+  );
 
 export interface IPollConfig {
   guildId: Snowflake;
@@ -337,8 +335,8 @@ export interface ITicketConfig {
   guildId: Snowflake;
 
   enabled: boolean;
-  openCategory: Snowflake;
-  closedCategory: Snowflake;
+  openCategory: Snowflake | 'none';
+  closedCategory: Snowflake | 'none';
 
   guildMax: number;
   userMax: number;
@@ -347,7 +345,7 @@ export interface ITicketConfig {
   deleteOnClose: boolean;
 
   staffRoles?: Types.Array<Snowflake>;
-  staffPing: Snowflake;
+  staffPing: Snowflake | 'none';
   topicButton: boolean;
 
   dmEnabled: boolean;
@@ -355,8 +353,8 @@ export interface ITicketConfig {
     [key in TicketAction]: { enabled: boolean; type: MessageType; message: Message };
   };
 
-  logChannel: Snowflake;
   logActions: Types.Array<TicketAction>;
+  logChannel: Snowflake | 'none';
   logEnabled: boolean;
 }
 

@@ -1,7 +1,7 @@
 import { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle, type Interaction } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { getServerConfig } from '@configs/serverConfig';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 import type { EventArgs } from '@typings/functionArgs';
 
 export default {

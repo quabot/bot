@@ -3,11 +3,12 @@ import { reqString, reqBool, reqArray, optString } from '@constants/schemas';
 import type { IApplication } from '@typings/schemas';
 
 export default model<IApplication>(
-  'Application',
+  'ApplicationForm',
   new Schema({
     guildId: reqString,
     id: reqString, // Application ID
 
+    enabled: reqBool, // Is form enabled?
     name: reqString, // Form name
     description: optString, // Form description
 

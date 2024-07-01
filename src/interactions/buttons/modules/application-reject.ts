@@ -1,7 +1,7 @@
 import { ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { Embed } from '@constants/embed';
 import ApplicationAnswer from '@schemas/ApplicationAnswer';
-import Application from '@schemas/Application';
+import Application from '@schemas/ApplicationForm';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { hasAnyRole } from '@functions/discord';
 
@@ -104,7 +104,7 @@ export default {
             `Your application response for the form \`${form.name}\` has been denied${
               reason ? ` With reason: \`${reason}\`` : ''
             }! You can view your answers [here](https://quabot.net/dashboard/${interaction.guild
-              ?.id}/user/applications/answers/${id}).`,
+              ?.id}/applications/answers/${id}).`,
           ),
         ],
       })

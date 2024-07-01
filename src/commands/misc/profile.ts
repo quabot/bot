@@ -29,7 +29,12 @@ export default {
             .setRequired(true),
         )
         .addNumberOption(option =>
-          option.setName('year').setDescription('Year of your birthday').setMinValue(1900).setRequired(true),
+          option
+            .setName('year')
+            .setDescription('Year of your birthday')
+            .setMinValue(1900)
+            .setRequired(true)
+            .setMaxValue(2023),
         ),
     )
     .setDMPermission(false),

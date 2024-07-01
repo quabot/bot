@@ -19,7 +19,12 @@ export class CustomEmbed extends EmbedBuilder {
 
     if (rawEmbed.author) {
       if (rawEmbed.author.text) {
-        const author: EmbedAuthorOptions = { name: parser.parse(rawEmbed.author.text).substring(0, 256) };
+        const author: EmbedAuthorOptions = {
+          name:
+            `${parser.parse(rawEmbed.author.text).substring(0, 256)}`.length !== 0
+              ? `${parser.parse(rawEmbed.author.text).substring(0, 256)}`
+              : ' ',
+        };
         if (rawEmbed.author.url && isValidHttpUrl(parser.parse(rawEmbed.author.url).substring(0, 2048)))
           author.url = parser.parse(rawEmbed.author.url).substring(0, 2048);
         if (rawEmbed.author.icon && isValidHttpUrl(parser.parse(rawEmbed.author.icon).substring(0, 2048)))

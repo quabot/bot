@@ -46,9 +46,8 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
         },
       },
       cardMention: true,
-      messageText: '{user} leveled up to level {level}!',
       message: {
-        content: '',
+        content: '{user} leveled up to level {level}!',
         title: '{user.displayname} leveled up!',
         color: '{color}',
         timestamp: true,
@@ -70,10 +69,9 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
 
       dmEnabled: false,
       dmType: 'embed',
-      dmMessageText:
-        'You leveled up in **{server}** to level {level}. You now have {xp} xp and need {required_xp} for the next level.',
       dmMessage: {
-        content: '',
+        content:
+          'You leveled up in **{server}** to level {level}. You now have {xp} xp and need {required_xp} for the next level.',
         title: '{user.displayname} leveled up!',
         color: '{color}',
         timestamp: true,
@@ -105,9 +103,8 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
 
       rewardDm: false,
       rewardDmType: 'embed',
-      rewardDmMessageText: 'You received the role {reward} in **{server}** for surpassing level {level}!',
       rewardDmMessage: {
-        content: '',
+        content: 'You received the role {reward} in **{server}** for surpassing level {level}!',
         title: 'Reward received!',
         color: '{color}',
         timestamp: true,
