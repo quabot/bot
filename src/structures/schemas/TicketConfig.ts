@@ -25,5 +25,7 @@ export default model<ITicketConfig>(
     ticketLimitUser: reqNum,
     ticketLimitGlobal: reqNum,
     
+    dmEnabled: reqBool,
+    dmEvents: []
   }),
 );

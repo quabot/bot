@@ -351,6 +351,9 @@ export interface ITicketConfig {
   autoDeleteOnClose: boolean;
   ticketLimitUser: number;
   ticketLimitGlobal: number;
+
+  dmEnabled: boolean;
+  dmEvents: LogEvents[];
 }
 
 export type LogEvents = 'close' | 'delete' | 'reopen' | 'create' | 'add' | 'remove' | 'claim' | 'unclaim' | 'updated' | 'transfer';

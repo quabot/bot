@@ -28,6 +28,9 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
       autoDeleteOnClose: false,
       ticketLimitUser: 0,
       ticketLimitGlobal: 0,
+
+      dmEnabled: false,
+      dmEvents: ['close', 'delete', 'reopen', 'claim', 'transfer'],
     },
   });
 }
