@@ -126,6 +126,7 @@ export default {
 
       owner: interaction.user.id,
       users: [],
+      roles: [],
       staff: 'none',
     });
     await newTicket.save();

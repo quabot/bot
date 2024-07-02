@@ -327,6 +327,7 @@ export interface ITicket {
 
   owner: Snowflake;
   users?: Types.Array<Snowflake>;
+  roles?: Types.Array<Snowflake>;
   staff: Snowflake;
 }
 
