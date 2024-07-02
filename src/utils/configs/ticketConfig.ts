@@ -19,6 +19,7 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
 
       staffPing: 'none',
       topicButton: true,
+      topicRequired: true,
 
       logChannel: 'none',
       logEnabled: false,

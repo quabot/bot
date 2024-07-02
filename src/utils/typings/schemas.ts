@@ -342,6 +342,8 @@ export interface ITicketConfig {
   staffPing: Snowflake | 'none';
   topicButton: boolean;
 
+  topicRequired: boolean;
+
   logChannel: Snowflake | 'none';
   logEnabled: boolean;
 

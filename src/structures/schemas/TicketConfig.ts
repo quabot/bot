@@ -15,6 +15,8 @@ export default model<ITicketConfig>(
     staffPing: reqString,
     topicButton: reqBool,
 
+    topicRequired: reqBool,
+
     logChannel: reqString,
     logEnabled: reqBool,
     

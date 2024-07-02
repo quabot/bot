@@ -26,10 +26,10 @@ export default {
         embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
-    const topic = interaction.options.getString('topic');
-    if (!topic)
+    const topic = interaction.options.getString('topic') ?? "No topic specified.";
+    if (!interaction.options.getString('topic') && config.topicRequired)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please enter all the required fields.')],
+        embeds: [new Embed(color).setDescription('Please give a topic for the ticket.')],
       });
 
     const category = interaction.guild?.channels.cache.get(config.openCategory);

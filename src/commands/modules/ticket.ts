@@ -8,7 +8,7 @@ export default {
       subcommand
         .setName('create')
         .setDescription('Create a ticket.')
-        .addStringOption(option => option.setName('topic').setRequired(true).setDescription('The ticket topic.')),
+        .addStringOption(option => option.setName('topic').setRequired(false).setDescription('The ticket topic.')),
     )
     .addSubcommand(subcommand => subcommand.setName('claim').setDescription('Claim a ticket.'))
     .addSubcommand(subcommand =>
