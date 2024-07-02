@@ -228,13 +228,13 @@ export type IResponder = {
   ignored_channels?: Types.Array<Snowflake>;
   ignored_roles?: Types.Array<Snowflake>;
 } & (
-    | { type: 'message'; message: string }
-    | { type: 'reaction'; reaction: string }
-    | {
+  | { type: 'message'; message: string }
+  | { type: 'reaction'; reaction: string }
+  | {
       type: 'embed';
       embed?: any; //? Should be added in v7.2.0
     }
-  );
+);
 
 export interface IPollConfig {
   guildId: Snowflake;
@@ -346,6 +346,8 @@ export interface ITicketConfig {
   logEnabled: boolean;
 
   autoDeleteOnClose: boolean;
+  ticketLimitUser: number;
+  ticketLimitGlobal: number;
 }
 
 export interface IUser {

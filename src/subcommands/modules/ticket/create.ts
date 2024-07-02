@@ -65,6 +65,25 @@ export default {
         ],
       });
 
+    const userTickets = await Ticket.find({
+      guildId: interaction.guildId,
+      owner: interaction.user.id,
+      closed: false
+    });
+    if (userTickets.length >= config.ticketLimitUser)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription(`You have reached the maximum amount of tickets, you can only have ${config.ticketLimitUser} open tickets.`)],
+      });
+
+    const totalTickets = await Ticket.find({
+      guildId: interaction.guildId,
+      closed: false
+    });
+    if (totalTickets.length >= config.ticketLimitGlobal)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription(`The server has reached the maximum amount of tickets, there can only be ${config.ticketLimitGlobal} open tickets, as configured by this server's moderators.`)],
+      });
+
     const channel = await interaction.guild?.channels.create({
       name: `ticket-${ids.ticketId}`,
       type: ChannelType.GuildText,
