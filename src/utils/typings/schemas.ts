@@ -343,6 +343,8 @@ export interface ITicketConfig {
 
   logChannel: Snowflake | 'none';
   logEnabled: boolean;
+
+  autoDeleteOnClose: boolean;
 }
 
 export interface IUser {

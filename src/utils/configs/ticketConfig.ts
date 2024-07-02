@@ -22,6 +22,8 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
 
       logChannel: 'none',
       logEnabled: false,
+
+      autoDeleteOnClose: false,
     },
   });
 }

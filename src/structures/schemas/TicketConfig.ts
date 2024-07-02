@@ -17,5 +17,7 @@ export default model<ITicketConfig>(
 
     logChannel: reqString,
     logEnabled: reqBool,
+    
+    autoDeleteOnClose: reqBool,
   }),
 );

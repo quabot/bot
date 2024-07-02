@@ -80,18 +80,20 @@ export default {
     await channel?.setParent(closedCategory, {
       lockPermissions: false,
     });
-  
+
     const owner = await interaction.guild?.members.fetch(ticket.owner);
-    if (owner) await channel?.permissionOverwrites.edit(owner.user, {
-      ViewChannel: true,
-      SendMessages: false,
-    });
-    ticket.users!.forEach(async user => {
-      const member = await interaction.guild?.members.fetch(user);
-      if (member) await channel?.permissionOverwrites.edit(member.user, {
+    if (owner)
+      await channel?.permissionOverwrites.edit(owner.user, {
         ViewChannel: true,
         SendMessages: false,
       });
+    ticket.users!.forEach(async user => {
+      const member = await interaction.guild?.members.fetch(user);
+      if (member)
+        await channel?.permissionOverwrites.edit(member.user, {
+          ViewChannel: true,
+          SendMessages: false,
+        });
     });
 
     await interaction.message.edit({
@@ -106,28 +108,29 @@ export default {
       ],
     });
 
-    await interaction.editReply({
-      embeds: [
-        new Embed(color)
-          .setTitle('Ticket Closed')
-          .setDescription('Reopen, delete or get a transcript with the buttons below this message.'),
-      ],
-      components: [
-        new ActionRowBuilder<ButtonBuilder>()
-          .setComponents(
-            new ButtonBuilder().setCustomId('reopen-ticket').setLabel('🔓 Reopen').setStyle(ButtonStyle.Primary),
-          )
-          .addComponents(
-            new ButtonBuilder().setCustomId('delete-ticket').setLabel('🗑️ Delete').setStyle(ButtonStyle.Danger),
-          )
-          .addComponents(
-            new ButtonBuilder()
-              .setCustomId('transcript-ticket')
-              .setLabel('📝 Transcript')
-              .setStyle(ButtonStyle.Success),
-          ),
-      ],
-    });
+    if (!config.autoDeleteOnClose)
+      await interaction.editReply({
+        embeds: [
+          new Embed(color)
+            .setTitle('Ticket Closed')
+            .setDescription('Reopen, delete or get a transcript with the buttons below this message.'),
+        ],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>()
+            .setComponents(
+              new ButtonBuilder().setCustomId('reopen-ticket').setLabel('🔓 Reopen').setStyle(ButtonStyle.Primary),
+            )
+            .addComponents(
+              new ButtonBuilder().setCustomId('delete-ticket').setLabel('🗑️ Delete').setStyle(ButtonStyle.Danger),
+            )
+            .addComponents(
+              new ButtonBuilder()
+                .setCustomId('transcript-ticket')
+                .setLabel('📝 Transcript')
+                .setStyle(ButtonStyle.Success),
+            ),
+        ],
+      });
 
     ticket.closed = true;
     await ticket.save();
@@ -145,27 +148,64 @@ export default {
         ephemeral: true,
       });
 
-    await logChannel.send({
-      embeds: [
-        new Embed(color)
-          .setTitle('Ticket Closed')
-          .setDescription('Ticket transcript added as attachment.')
-          .addFields(
-            {
-              name: 'Ticket Owner',
-              value: `<@${ticket.owner}>`,
-              inline: true,
-            },
-            {
-              name: 'Channel',
-              value: `${interaction.channel}`,
-              inline: true,
-            },
-            { name: 'Closed By', value: `${interaction.user}`, inline: true },
-          )
-          .setFooter({ text: `ID: ${ticket.id}` }),
-      ],
-      files: [attachment],
-    });
+    if (!config.autoDeleteOnClose)
+      await logChannel.send({
+        embeds: [
+          new Embed(color)
+            .setTitle('Ticket Closed')
+            .setDescription('Ticket transcript added as attachment.')
+            .addFields(
+              {
+                name: 'Ticket Owner',
+                value: `<@${ticket.owner}>`,
+                inline: true,
+              },
+              {
+                name: 'Channel',
+                value: `${interaction.channel}`,
+                inline: true,
+              },
+              { name: 'Closed By', value: `${interaction.user}`, inline: true },
+            )
+            .setFooter({ text: `ID: ${ticket.id}` }),
+        ],
+        files: [attachment],
+      });
+
+    if (config.autoDeleteOnClose) {
+      await logChannel.send({
+        embeds: [
+          new Embed(color)
+            .setTitle('Ticket Deleted')
+            .setDescription('Ticket transcript added as attachment. The ticket was closed and subsequently deleted.')
+            .addFields(
+              {
+                name: 'Ticket Owner',
+                value: `<@${ticket.owner}>`,
+                inline: true,
+              },
+              {
+                name: 'Channel',
+                value: `${interaction.channel}`,
+                inline: true,
+              },
+              {
+                name: 'Deleted By',
+                value: `${interaction.user}`,
+                inline: true,
+              },
+            )
+            .setFooter({ text: `ID: ${ticket.id}` }),
+        ],
+        files: [attachment],
+      });
+
+      await interaction.channel?.delete();
+
+      await Ticket.findOneAndDelete({
+        id: ticket.id,
+        guildId: interaction.guildId!,
+      });
+    }
   },
 };
