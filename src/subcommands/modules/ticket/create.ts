@@ -26,7 +26,7 @@ export default {
         embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
-    const topic = interaction.options.getString('topic') ?? "No topic specified.";
+    const topic = interaction.options.getString('topic') ?? 'No topic specified.';
     if (!interaction.options.getString('topic') && config.topicRequired)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('Please give a topic for the ticket.')],
@@ -68,20 +68,28 @@ export default {
     const userTickets = await Ticket.find({
       guildId: interaction.guildId,
       owner: interaction.user.id,
-      closed: false
+      closed: false,
     });
     if (userTickets.length >= config.ticketLimitUser)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription(`You have reached the maximum amount of tickets, you can only have ${config.ticketLimitUser} open tickets.`)],
+        embeds: [
+          new Embed(color).setDescription(
+            `You have reached the maximum amount of tickets, you can only have ${config.ticketLimitUser} open tickets.`,
+          ),
+        ],
       });
 
     const totalTickets = await Ticket.find({
       guildId: interaction.guildId,
-      closed: false
+      closed: false,
     });
     if (totalTickets.length >= config.ticketLimitGlobal)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription(`The server has reached the maximum amount of tickets, there can only be ${config.ticketLimitGlobal} open tickets, as configured by this server's moderators.`)],
+        embeds: [
+          new Embed(color).setDescription(
+            `The server has reached the maximum amount of tickets, there can only be ${config.ticketLimitGlobal} open tickets, as configured by this server's moderators.`,
+          ),
+        ],
       });
 
     const channel = await interaction.guild?.channels.create({
@@ -161,6 +169,7 @@ export default {
     ids.ticketId = ids.ticketId ? ids.ticketId + 1 : 0;
     await ids.save();
 
+    if (!config.logEvents.includes('create')) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))

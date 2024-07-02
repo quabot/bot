@@ -346,11 +346,14 @@ export interface ITicketConfig {
 
   logChannel: Snowflake | 'none';
   logEnabled: boolean;
+  logEvents: LogEvents[];
 
   autoDeleteOnClose: boolean;
   ticketLimitUser: number;
   ticketLimitGlobal: number;
 }
+
+export type LogEvents = 'close' | 'delete' | 'reopen' | 'create' | 'add' | 'remove' | 'claim' | 'unclaim' | 'updated' | 'transfer';
 
 export interface IUser {
   guildId: Snowflake;

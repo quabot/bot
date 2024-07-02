@@ -10,6 +10,7 @@ import {
   type PrivateThreadChannel,
   type PublicThreadChannel,
 } from 'discord.js';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -71,6 +72,32 @@ export default {
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Added ${user} to the ticket.`)],
+    });
+
+    if (!config.logEvents.includes("add")) return;
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!logChannel?.isTextBased()) return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('User added to ticket')
+          .addFields(
+            { name: 'User', value: `${user}`, inline: true },
+            {
+              name: 'Ticket',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            { name: 'Added By', value: `${interaction.user}`, inline: true },
+          )
+          .setFooter({ text: `ID: ${ids.ticketId}` }),
+      ],
     });
   },
 };

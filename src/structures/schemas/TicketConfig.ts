@@ -19,9 +19,11 @@ export default model<ITicketConfig>(
 
     logChannel: reqString,
     logEnabled: reqBool,
+    logEvents: [],
     
     autoDeleteOnClose: reqBool,
     ticketLimitUser: reqNum,
     ticketLimitGlobal: reqNum,
+    
   }),
 );

@@ -23,6 +23,7 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
 
       logChannel: 'none',
       logEnabled: false,
+      logEvents: ['close', 'delete', 'reopen', 'create', 'add', 'remove', 'claim', 'unclaim', 'updated', 'transfer'],
 
       autoDeleteOnClose: false,
       ticketLimitUser: 0,

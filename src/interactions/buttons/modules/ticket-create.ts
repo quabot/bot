@@ -177,6 +177,7 @@ export default {
         ephemeral: true,
       });
 
+      if (!config.logEvents.includes("create")) return;
       const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
       if (!(!logChannel?.isTextBased() || !config.logEnabled))
         await logChannel.send({

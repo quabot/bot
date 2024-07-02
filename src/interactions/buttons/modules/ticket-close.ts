@@ -135,6 +135,7 @@ export default {
     ticket.closed = true;
     await ticket.save();
 
+    if (!config.logEvents.includes("close")) return;
     const attachment = await discordTranscripts.createTranscript(interaction.channel!, {
       limit: -1,
       saveImages: false,

@@ -89,6 +89,7 @@ export default {
       guildId: interaction.guildId,
     });
 
+    if (!config.logEvents.includes("delete")) return;
     if (!logChannel?.isTextBased() || !config.logEnabled) return;
     if (!hasSendPerms(logChannel))
       return await interaction.followUp({
@@ -105,11 +106,6 @@ export default {
             {
               name: 'Ticket Owner',
               value: `<@${ticket.owner}>`,
-              inline: true,
-            },
-            {
-              name: 'Channel',
-              value: `${interaction.channel}`,
               inline: true,
             },
             {

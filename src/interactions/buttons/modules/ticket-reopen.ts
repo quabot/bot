@@ -135,6 +135,7 @@ export default {
     ticket.closed = false;
     await ticket.save();
 
+    if (!config.logEvents.includes("reopen")) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased() || !config.logEnabled) return;
     if (!hasSendPerms(logChannel))

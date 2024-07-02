@@ -86,6 +86,7 @@ export default {
         embeds: [new Embed(color).setDescription(`This ticket has been claimed by ${interaction.user}.`)],
       });
 
+      if (!config.logEvents.includes("claim")) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased() || !config.logEnabled) return;
     if (!hasSendPerms(logChannel))

@@ -77,6 +77,8 @@ export default {
         embeds: [new Embed(color).setDescription('This ticket is no longer claimed.')],
       });
 
+    if (!config.logEvents.includes('unclaim')) return;
+
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))

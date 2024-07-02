@@ -5,6 +5,7 @@ import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -76,6 +77,32 @@ export default {
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Changed the topic to \`${newTopic}\`.`)],
+    });
+
+    if (!config.logEvents.includes("updated")) return;
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!logChannel?.isTextBased()) return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('Topic Changed')
+          .addFields(
+            { name: 'New Topic', value: `${ticket.topic}`, inline: true },
+            {
+              name: 'Ticket',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            { name: 'Changed By', value: `${interaction.user}`, inline: true },
+          )
+          .setFooter({ text: `ID: ${ids.ticketId}` }),
+      ],
     });
   },
 };

@@ -5,6 +5,7 @@ import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import { ChannelType, GuildTextBasedChannel, Role, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -79,6 +80,32 @@ export default {
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Removed ${role} from the ticket.`)],
+    });
+
+    if (!config.logEvents.includes("remove")) return;
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!logChannel?.isTextBased()) return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('Role removed from ticket')
+          .addFields(
+            { name: 'Role', value: `${role}`, inline: true },
+            {
+              name: 'Ticket',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            { name: 'Removed By', value: `${interaction.user}`, inline: true },
+          )
+          .setFooter({ text: `ID: ${ids.ticketId}` }),
+      ],
     });
   },
 };
