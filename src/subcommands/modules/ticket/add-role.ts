@@ -6,6 +6,8 @@ import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import {
   ChannelType,
+  GuildMember,
+  PermissionFlagsBits,
   Role,
   type GuildTextBasedChannel,
   type PrivateThreadChannel,
@@ -44,6 +46,15 @@ export default {
 
     if (!role) return;
 
+    //* Users must have Manage Roles permission to add roles to tickets
+    if (!interaction.member) return await interaction.editReply({ content: 'Internal error.' });
+
+    const member = interaction.member as GuildMember;
+    if (!member.permissions.has(PermissionFlagsBits.ManageChannels))
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('You are not allowed to add roles to the ticket.')],
+      });
+
     const valid = checkUserPerms(ticket, interaction.user, interaction.member);
     if (!valid)
       return await interaction.editReply({
@@ -76,7 +87,27 @@ export default {
       embeds: [new Embed(color).setDescription(`Added ${role} to the ticket.`)],
     });
 
-    if (!config.logEvents.includes("add")) return;
+    if (config.dmEnabled && config.dmEvents.includes('add')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('Role added to ticket')
+                .setDescription(
+                  `A role (${role}) can now also view your ticket (${interaction.channel}) in ${interaction.guild.name}. This role was added by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
+    if (!config.logEvents.includes('add')) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))

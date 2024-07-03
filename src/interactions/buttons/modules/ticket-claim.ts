@@ -42,6 +42,7 @@ export default {
     let allowed =
       checkUserPerms(ticket, interaction.user, interaction.member) ||
       hasAnyRole(interaction.member, config.staffRoles!);
+    if (ticket.owner === interaction.user.id) allowed = false;
     if (!allowed)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('You are not allowed to claim this ticket.')],
@@ -84,6 +85,26 @@ export default {
       await interaction.channel?.send({
         embeds: [new Embed(color).setDescription(`This ticket has been claimed by ${interaction.user}.`)],
       });
+
+      if (config.dmEnabled && config.dmEvents.includes('claim')) {
+        const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+  
+        if (ticketOwner) {
+          const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+  
+          if (dmChannel && interaction.guild) {
+            await dmChannel.send({
+              embeds: [
+                new Embed(color)
+                  .setTitle('Ticket Claimed')
+                  .setDescription(
+                    `Your ticket (${interaction.channel}) in ${interaction.guild.name} has been claimed by ${interaction.user}.`,
+                  ),
+              ],
+            });
+          }
+        }
+      }
 
     if (!config.logEvents.includes('claim')) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);

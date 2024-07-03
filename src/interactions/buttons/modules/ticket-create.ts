@@ -177,7 +177,7 @@ export default {
         ephemeral: true,
       });
 
-      if (!config.logEvents.includes("create")) return;
+      if (!config.logEvents.includes('create')) return;
       const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
       if (!(!logChannel?.isTextBased() || !config.logEnabled))
         await logChannel.send({
@@ -289,6 +289,22 @@ export default {
       ],
       ephemeral: true,
     });
+
+    if (config.dmEnabled && config.dmEvents.includes('create')) {
+      const dmChannel = await interaction.user.createDM().catch(() => null);
+
+      if (dmChannel && interaction.guild) {
+        await dmChannel.send({
+          embeds: [
+            new Embed(color)
+              .setTitle('Ticket Created')
+              .setDescription(
+                `You have created a ticket (${interaction.channel}) in ${interaction.guild.name}.`,
+              ),
+          ],
+        });
+      }
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!(!logChannel?.isTextBased() || !config.logEnabled))

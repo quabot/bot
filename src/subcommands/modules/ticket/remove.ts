@@ -81,6 +81,26 @@ export default {
       embeds: [new Embed(color).setDescription(`Removed ${user} from the ticket.`)],
     });
 
+    if (config.dmEnabled && config.dmEvents.includes('remove')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('User removed from ticket')
+                .setDescription(
+                  `A user (${user}) can no longer view your ticket (${interaction.channel}) in ${interaction.guild.name}. This user was removed by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
     if (!config.logEvents.includes("remove")) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;

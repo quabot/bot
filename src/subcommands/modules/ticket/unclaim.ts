@@ -77,6 +77,26 @@ export default {
         embeds: [new Embed(color).setDescription('This ticket is no longer claimed.')],
       });
 
+      if (config.dmEnabled && config.dmEvents.includes('unclaim')) {
+        const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+  
+        if (ticketOwner) {
+          const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+  
+          if (dmChannel && interaction.guild) {
+            await dmChannel.send({
+              embeds: [
+                new Embed(color)
+                  .setTitle('Ticket Unclaimed')
+                  .setDescription(
+                    `Your ticket (${interaction.channel}) in ${interaction.guild.name} is no longer claimed.`,
+                  ),
+              ],
+            });
+          }
+        }
+      }
+
     if (!config.logEvents.includes('unclaim')) return;
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);

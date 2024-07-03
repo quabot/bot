@@ -74,7 +74,27 @@ export default {
       embeds: [new Embed(color).setDescription(`Added ${user} to the ticket.`)],
     });
 
-    if (!config.logEvents.includes("add")) return;
+    if (config.dmEnabled && config.dmEvents.includes('add')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('User added to ticket')
+                .setDescription(
+                  `A user (${user}) can now also view your ticket (${interaction.channel}) in ${interaction.guild.name}. This user was added by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
+    if (!config.logEvents.includes('add')) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))

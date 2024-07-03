@@ -79,6 +79,26 @@ export default {
       embeds: [new Embed(color).setDescription(`Changed the topic to \`${newTopic}\`.`)],
     });
 
+    if (config.dmEnabled && config.dmEvents.includes('updated')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+      
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('Ticket Topic Changed')
+                .setDescription(
+                  `Your ticket (${interaction.channel}) in ${interaction.guild.name} has a new topic: **${ticket.topic}**. It was changed by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
     if (!config.logEvents.includes("updated")) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;

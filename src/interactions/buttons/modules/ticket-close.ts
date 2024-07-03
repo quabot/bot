@@ -135,7 +135,27 @@ export default {
     ticket.closed = true;
     await ticket.save();
 
-    if (!config.logEvents.includes("close")) return;
+    if (config.dmEnabled && config.dmEvents.includes('close')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+      
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('Ticket Closed')
+                .setDescription(
+                  `Your ticket (${interaction.channel}) in ${interaction.guild.name} was closed. If you need further assistance, feel free to open another ticket or reopen your current ticket.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
+    if (!config.logEvents.includes('close')) return;
     const attachment = await discordTranscripts.createTranscript(interaction.channel!, {
       limit: -1,
       saveImages: false,

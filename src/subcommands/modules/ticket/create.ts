@@ -169,6 +169,22 @@ export default {
     ids.ticketId = ids.ticketId ? ids.ticketId + 1 : 0;
     await ids.save();
 
+    if (config.dmEnabled && config.dmEvents.includes('create')) {
+      const dmChannel = await interaction.user.createDM().catch(() => null);
+
+      if (dmChannel && interaction.guild) {
+        await dmChannel.send({
+          embeds: [
+            new Embed(color)
+              .setTitle('Ticket Created')
+              .setDescription(
+                `You have created a ticket (${interaction.channel}) in ${interaction.guild.name}.`,
+              ),
+          ],
+        });
+      }
+    }
+
     if (!config.logEvents.includes('create')) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;

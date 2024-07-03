@@ -135,6 +135,26 @@ export default {
     ticket.closed = false;
     await ticket.save();
 
+    if (config.dmEnabled && config.dmEvents.includes('reopen')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+      
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('Ticket Reopened')
+                .setDescription(
+                  `Your ticket (${interaction.channel}) in ${interaction.guild.name} was reopened by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
     if (!config.logEvents.includes("reopen")) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased() || !config.logEnabled) return;

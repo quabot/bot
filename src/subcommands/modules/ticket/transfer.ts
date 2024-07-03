@@ -92,7 +92,41 @@ export default {
       embeds: [new Embed(color).setDescription(`Made ${user} the ticket owner.`)],
     });
 
-    if (!config.logEvents.includes("transfer")) return;
+    if (config.dmEnabled && config.dmEvents.includes('transfer')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+
+      const dmChannel = await interaction.user.createDM().catch(() => null);
+
+      if (dmChannel && interaction.guild) {
+        await dmChannel.send({
+          embeds: [
+            new Embed(color)
+              .setTitle('Ticket Transferred')
+              .setDescription(
+                `Your ticket (${interaction.channel}) in ${interaction.guild.name} has been transferred to a new user: ${user}.`,
+              ),
+          ],
+        });
+      }
+
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('Ticket Transferred')
+                .setDescription(
+                  `The ticket (${interaction.channel}) in ${interaction.guild.name} has been transferred to you by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
+    if (!config.logEvents.includes('transfer')) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))

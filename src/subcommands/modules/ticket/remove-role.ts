@@ -4,7 +4,7 @@ import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
-import { ChannelType, GuildTextBasedChannel, Role, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
+import { ChannelType, GuildMember, GuildTextBasedChannel, PermissionFlagsBits, Role, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
 import { hasSendPerms } from '@functions/discord';
 
 export default {
@@ -37,6 +37,15 @@ export default {
       });
 
     if (!role) return;
+
+    //* Users must have Manage Roles permission to remove roles from tickets
+    if (!interaction.member) return await interaction.editReply({ content: 'Internal error.' });
+
+    const member = interaction.member as GuildMember;
+    if (!member.permissions.has(PermissionFlagsBits.ManageChannels))
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('You are not allowed to remove roles from the ticket.')],
+      });
 
     const valid = checkUserPerms(ticket, interaction.user, interaction.member);
     if (!valid)
@@ -81,6 +90,26 @@ export default {
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Removed ${role} from the ticket.`)],
     });
+
+    if (config.dmEnabled && config.dmEvents.includes('remove')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('Role removed from ticket')
+                .setDescription(
+                  `A role (${role}) can no longer view your ticket (${interaction.channel}) in ${interaction.guild.name}. This role was removed by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
 
     if (!config.logEvents.includes("remove")) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);

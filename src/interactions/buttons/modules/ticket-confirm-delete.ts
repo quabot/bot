@@ -88,6 +88,27 @@ export default {
       id: ticket.id,
       guildId: interaction.guildId,
     });
+    
+    if (config.dmEnabled && config.dmEvents.includes('delete')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+      
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('Ticket Deleted')
+                .setDescription(
+                  `Your ticket in ${interaction.guild.name} was deleted. If you need further assistance, feel free to open another ticket. The transcript for your deleted ticket can be found above this message.`,
+                ),
+            ],
+            files: [attachment]
+          });
+        }
+      }
+    }
 
     if (!config.logEvents.includes("delete")) return;
     if (!logChannel?.isTextBased() || !config.logEnabled) return;
