@@ -26,6 +26,12 @@ export default model<ITicketConfig>(
     ticketLimitGlobal: reqNum,
     
     dmEnabled: reqBool,
-    dmEvents: []
+    dmEvents: [],
+
+    autoClose: reqBool,
+    autoCloseDays: reqNum,
+
+    autoRemind: reqBool,
+    autoRemindDays: reqNum,
   }),
 );

@@ -354,6 +354,12 @@ export interface ITicketConfig {
 
   dmEnabled: boolean;
   dmEvents: LogEvents[];
+
+  autoClose: boolean;
+  autoCloseDays: number;
+
+  autoRemind: boolean;
+  autoRemindDays: number;
 }
 
 export type LogEvents = 'close' | 'delete' | 'reopen' | 'create' | 'add' | 'remove' | 'claim' | 'unclaim' | 'updated' | 'transfer';
