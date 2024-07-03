@@ -13,6 +13,7 @@ import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { ChannelType } from 'discord.js';
+import { ticketInactivity } from '@functions/ticket-inactivity';
 
 export default {
   name: 'ticket-create',
@@ -280,6 +281,10 @@ export default {
       staff: 'none',
     });
     await newTicket.save();
+
+    setTimeout(() => {
+      ticketInactivity(client, newTicket);
+    }, 600000);
 
     await interaction.reply({
       embeds: [

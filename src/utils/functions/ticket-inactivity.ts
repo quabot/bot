@@ -52,8 +52,7 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
   }
 
   if (config.autoClose) {
-    if (timeDiff >= config.autoCloseDays * 1000) {
-      //!86400000
+    if (timeDiff >= config.autoCloseDays * 86400000) {
       channel.send({
         content: `<@${document.owner}>`,
         embeds: [
@@ -247,5 +246,5 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
     if (ticketFetched.closed) return;
 
     ticketInactivity(client, ticketFetched);
-  }, 1000); //! set to 10min
+  }, 60000);
 }

@@ -14,6 +14,7 @@ import type { ButtonArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
 import { hasSendPerms } from '@functions/discord';
 import { ChannelType } from 'discord.js';
+import { ticketInactivity } from '@functions/ticket-inactivity';
 
 export default {
   name: 'reopen-ticket',
@@ -134,6 +135,10 @@ export default {
 
     ticket.closed = false;
     await ticket.save();
+
+    setTimeout(() => {
+      ticketInactivity(client, ticket);
+    }, 600000);
 
     if (config.dmEnabled && config.dmEvents.includes('reopen')) {
       const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);

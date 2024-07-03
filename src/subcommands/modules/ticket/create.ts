@@ -5,6 +5,7 @@ import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { ticketInactivity } from '@functions/ticket-inactivity';
 
 export default {
   parent: 'ticket',
@@ -157,6 +158,10 @@ export default {
       staff: 'none',
     });
     await newTicket.save();
+
+    setTimeout(() => {
+      ticketInactivity(client, newTicket);
+    }, 600000);
 
     await interaction.editReply({
       embeds: [
