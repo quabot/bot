@@ -13,7 +13,7 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
     defaultObj: {
       guildId,
 
-      enabled: false,
+      enabled: true,
       openCategory: 'none',
       closedCategory: 'none',
 
