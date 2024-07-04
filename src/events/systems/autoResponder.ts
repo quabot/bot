@@ -42,7 +42,7 @@ export default {
           allowedMentions: { repliedUser: false },
         });
       } else if (document.type === 'reaction') {
-        await message.react(document.reaction);
+        await message.react(document.reaction).catch(() => null);
       } else if (document.type === 'embed') {
         const embed = new CustomEmbed(document.embed, parser);
         await message.reply({
