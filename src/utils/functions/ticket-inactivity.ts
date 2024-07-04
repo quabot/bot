@@ -6,7 +6,15 @@ import Ticket from '@schemas/Ticket';
 import type { NonNullMongooseReturn } from '@typings/mongoose';
 import type { ITicket } from '@typings/schemas';
 import discordTranscripts from 'discord-html-transcripts';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, GuildTextBasedChannel, PrivateThreadChannel, PublicThreadChannel } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ChannelType,
+  GuildTextBasedChannel,
+  PrivateThreadChannel,
+  PublicThreadChannel,
+} from 'discord.js';
 import { hasSendPerms } from './discord';
 
 export async function ticketInactivity(client: Client, document: NonNullMongooseReturn<ITicket>) {
@@ -16,7 +24,7 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
   const config = await getTicketConfig(client, document.guildId);
   if (!config) return;
 
-  const channel = await guild.channels.fetch(`${document.channelId}`);
+  const channel = await guild.channels.fetch(`${document.channelId}`).catch(() => null);
   if (!channel) return;
 
   if (!channel.isTextBased()) return;
@@ -64,23 +72,22 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
 
       const ids = await getIdConfig(document.guildId!);
 
-      if (!config || !ids)return;
+      if (!config || !ids) return;
 
       if (!config.enabled) return;
 
       const ticket = await Ticket.findOne({
         channelId: document.channelId,
       });
-      if (!ticket)  return;
+      if (!ticket) return;
 
       if (ticket.closed) return;
-
 
       const closedCategory = guild?.channels.cache.get(config.closedCategory);
       if (!closedCategory)
         return await channel.send({
           embeds: [
-            new Embed("#416683").setDescription(
+            new Embed('#416683').setDescription(
               'There is no category to move this ticket to once closed. Configure this on our [dashboard](https://quabot.net/dashboard).',
             ),
           ],
@@ -88,13 +95,13 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
 
       if (closedCategory.type !== ChannelType.GuildCategory)
         return await channel.send({
-          embeds: [new Embed("#416683").setDescription("The closed ticket category doesn't have the right type.")],
+          embeds: [new Embed('#416683').setDescription("The closed ticket category doesn't have the right type.")],
         });
 
       const interChannel = channel as GuildTextBasedChannel | null;
       if (interChannel?.type === ChannelType.PrivateThread || interChannel?.type === ChannelType.PublicThread)
         return await channel.send({
-          embeds: [new Embed("#416683").setDescription("This channel doesn't have the right type.")],
+          embeds: [new Embed('#416683').setDescription("This channel doesn't have the right type.")],
         });
 
       const ticketChannel = interChannel as Exclude<GuildTextBasedChannel, PrivateThreadChannel | PublicThreadChannel>;
@@ -123,7 +130,7 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
 
       await channel.send({
         embeds: [
-          new Embed("#416683")
+          new Embed('#416683')
             .setTitle('Ticket Closed')
             .setDescription('Reopen, delete or get a transcript with the buttons below this message.'),
         ],
@@ -153,7 +160,7 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
           if (dmChannel && guild) {
             await dmChannel.send({
               embeds: [
-                new Embed("#416683")
+                new Embed('#416683')
                   .setTitle('Ticket Closed')
                   .setDescription(
                     `Your ticket (${channel}) in ${guild.name} was closed due to inactivity. If you need further assistance, feel free to open another ticket or reopen your current ticket.`,
@@ -177,7 +184,7 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
       if (!config.autoDeleteOnClose)
         await logChannel.send({
           embeds: [
-            new Embed("#416683")
+            new Embed('#416683')
               .setTitle('Ticket Closed')
               .setDescription('Ticket transcript added as attachment.')
               .addFields(
@@ -201,7 +208,7 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
       if (config.autoDeleteOnClose) {
         await logChannel.send({
           embeds: [
-            new Embed("#416683")
+            new Embed('#416683')
               .setTitle('Ticket Deleted')
               .setDescription('Ticket transcript added as attachment. The ticket was closed and subsequently deleted.')
               .addFields(
