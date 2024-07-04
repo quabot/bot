@@ -71,7 +71,7 @@ export default {
       owner: interaction.user.id,
       closed: false,
     });
-    if (userTickets.length >= config.ticketLimitUser)
+    if (userTickets.length >= config.ticketLimitUser && config.ticketLimitUser !== 0)
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription(
@@ -84,7 +84,7 @@ export default {
       guildId: interaction.guildId,
       closed: false,
     });
-    if (totalTickets.length >= config.ticketLimitGlobal)
+    if (totalTickets.length >= config.ticketLimitGlobal && config.ticketLimitGlobal !== 0)
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription(
