@@ -31,6 +31,10 @@ export default {
     let error = false;
 
     //* Delete the messages, give an error if failed.
+    if (!interaction.channel?.isTextBased()) return await interaction.editReply({
+      embeds: [new Embed(color).setDescription('Invalid channel. Please use this command in a text channel.')],
+    });
+    
     await (interaction.channel as GuildTextBasedChannel).bulkDelete(amount, true).catch(async e => {
       if (e.code === 50013) {
         await interaction.editReply({
