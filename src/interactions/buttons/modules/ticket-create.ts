@@ -34,8 +34,8 @@ export default {
         ephemeral: true,
       });
 
-    let topic = 'No topic specified';
-    if (config.topicButton) {
+    let topic = 'No topic specified.';
+    if (config.topicRequired) {
       const modal = new ModalBuilder()
         .setTitle('Ticket Topic')
         .setCustomId('ticket-topic')
