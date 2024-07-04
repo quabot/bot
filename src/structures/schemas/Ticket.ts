@@ -15,6 +15,7 @@ export default model<ITicket>(
 
     owner: reqString,
     users: reqArray,
+    roles: reqArray,
     staff: reqString,
   }),
 );

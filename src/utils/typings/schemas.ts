@@ -228,13 +228,13 @@ export type IResponder = {
   ignored_channels?: Types.Array<Snowflake>;
   ignored_roles?: Types.Array<Snowflake>;
 } & (
-    | { type: 'message'; message: string }
-    | { type: 'reaction'; reaction: string }
-    | {
+  | { type: 'message'; message: string }
+  | { type: 'reaction'; reaction: string }
+  | {
       type: 'embed';
       embed?: any; //? Should be added in v7.2.0
     }
-  );
+);
 
 export interface IPollConfig {
   guildId: Snowflake;
@@ -327,6 +327,7 @@ export interface ITicket {
 
   owner: Snowflake;
   users?: Types.Array<Snowflake>;
+  roles?: Types.Array<Snowflake>;
   staff: Snowflake;
 }
 
@@ -341,9 +342,27 @@ export interface ITicketConfig {
   staffPing: Snowflake | 'none';
   topicButton: boolean;
 
+  topicRequired: boolean;
+
   logChannel: Snowflake | 'none';
   logEnabled: boolean;
+  logEvents: LogEvents[];
+
+  autoDeleteOnClose: boolean;
+  ticketLimitUser: number;
+  ticketLimitGlobal: number;
+
+  dmEnabled: boolean;
+  dmEvents: LogEvents[];
+
+  autoClose: boolean;
+  autoCloseDays: number;
+
+  autoRemind: boolean;
+  autoRemindDays: number;
 }
+
+export type LogEvents = 'close' | 'delete' | 'reopen' | 'create' | 'add' | 'remove' | 'claim' | 'unclaim' | 'updated' | 'transfer';
 
 export interface IUser {
   guildId: Snowflake;

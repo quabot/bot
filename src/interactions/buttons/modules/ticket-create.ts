@@ -13,6 +13,7 @@ import { getTicketConfig } from '@configs/ticketConfig';
 import { Embed } from '@constants/embed';
 import type { ButtonArgs } from '@typings/functionArgs';
 import { ChannelType } from 'discord.js';
+import { ticketInactivity } from '@functions/ticket-inactivity';
 
 export default {
   name: 'ticket-create',
@@ -33,8 +34,8 @@ export default {
         ephemeral: true,
       });
 
-    let topic = 'No topic specified';
-    if (config.topicButton) {
+    let topic = 'No topic specified.';
+    if (config.topicRequired) {
       const modal = new ModalBuilder()
         .setTitle('Ticket Topic')
         .setCustomId('ticket-topic')
@@ -177,6 +178,7 @@ export default {
         ephemeral: true,
       });
 
+      if (!config.logEvents.includes('create')) return;
       const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
       if (!(!logChannel?.isTextBased() || !config.logEnabled))
         await logChannel.send({
@@ -280,6 +282,10 @@ export default {
     });
     await newTicket.save();
 
+    setTimeout(() => {
+      ticketInactivity(client, newTicket);
+    }, 600000);
+
     await interaction.reply({
       embeds: [
         new Embed(color)
@@ -288,6 +294,22 @@ export default {
       ],
       ephemeral: true,
     });
+
+    if (config.dmEnabled && config.dmEvents.includes('create')) {
+      const dmChannel = await interaction.user.createDM().catch(() => null);
+
+      if (dmChannel && interaction.guild) {
+        await dmChannel.send({
+          embeds: [
+            new Embed(color)
+              .setTitle('Ticket Created')
+              .setDescription(
+                `You have created a ticket (${interaction.channel}) in ${interaction.guild.name}.`,
+              ),
+          ],
+        });
+      }
+    }
 
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!(!logChannel?.isTextBased() || !config.logEnabled))

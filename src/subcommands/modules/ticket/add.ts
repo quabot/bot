@@ -10,6 +10,7 @@ import {
   type PrivateThreadChannel,
   type PublicThreadChannel,
 } from 'discord.js';
+import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
@@ -71,6 +72,52 @@ export default {
 
     await interaction.editReply({
       embeds: [new Embed(color).setDescription(`Added ${user} to the ticket.`)],
+    });
+
+    if (config.dmEnabled && config.dmEvents.includes('add')) {
+      const ticketOwner = await interaction.guild?.members.fetch(ticket.owner).catch(() => null);
+
+      if (ticketOwner) {
+        const dmChannel = await ticketOwner.user.createDM().catch(() => null);
+
+        if (dmChannel && interaction.guild) {
+          await dmChannel.send({
+            embeds: [
+              new Embed(color)
+                .setTitle('User added to ticket')
+                .setDescription(
+                  `A user (${user}) can now also view your ticket (${interaction.channel}) in ${interaction.guild.name}. This user was added by ${interaction.user}.`,
+                ),
+            ],
+          });
+        }
+      }
+    }
+
+    if (!config.logEvents.includes('add')) return;
+    const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
+    if (!logChannel?.isTextBased()) return;
+    if (!hasSendPerms(logChannel))
+      return await interaction.followUp({
+        embeds: [new Embed(color).setDescription("Didn't send the log. I don't have the `SendMessages` permission.")],
+        ephemeral: true,
+      });
+
+    await logChannel.send({
+      embeds: [
+        new Embed(color)
+          .setTitle('User added to ticket')
+          .addFields(
+            { name: 'User', value: `${user}`, inline: true },
+            {
+              name: 'Ticket',
+              value: `${interaction.channel}`,
+              inline: true,
+            },
+            { name: 'Added By', value: `${interaction.user}`, inline: true },
+          )
+          .setFooter({ text: `ID: ${ids.ticketId}` }),
+      ],
     });
   },
 };

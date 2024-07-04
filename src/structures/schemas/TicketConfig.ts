@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqArray } from '@constants/schemas';
+import { reqString, reqBool, reqArray, reqNum } from '@constants/schemas';
 import type { ITicketConfig } from '@typings/schemas';
 
 export default model<ITicketConfig>(
@@ -15,7 +15,23 @@ export default model<ITicketConfig>(
     staffPing: reqString,
     topicButton: reqBool,
 
+    topicRequired: reqBool,
+
     logChannel: reqString,
     logEnabled: reqBool,
+    logEvents: [],
+    
+    autoDeleteOnClose: reqBool,
+    ticketLimitUser: reqNum,
+    ticketLimitGlobal: reqNum,
+    
+    dmEnabled: reqBool,
+    dmEvents: [],
+
+    autoClose: reqBool,
+    autoCloseDays: reqNum,
+
+    autoRemind: reqBool,
+    autoRemindDays: reqNum,
   }),
 );

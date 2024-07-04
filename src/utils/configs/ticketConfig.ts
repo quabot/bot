@@ -19,9 +19,24 @@ export async function getTicketConfig(client: Client, guildId: Snowflake) {
 
       staffPing: 'none',
       topicButton: true,
+      topicRequired: true,
 
       logChannel: 'none',
       logEnabled: false,
+      logEvents: ['close', 'delete', 'reopen', 'create', 'add', 'remove', 'claim', 'unclaim', 'updated', 'transfer'],
+
+      autoDeleteOnClose: false,
+      ticketLimitUser: 0,
+      ticketLimitGlobal: 0,
+
+      dmEnabled: false,
+      dmEvents: ['close', 'delete', 'reopen', 'claim', 'transfer'],
+
+      autoClose: false,
+      autoCloseDays: 0,
+
+      autoRemind: true,
+      autoRemindDays: 7,
     },
   });
 }

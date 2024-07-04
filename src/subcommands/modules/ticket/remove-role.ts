@@ -4,16 +4,16 @@ import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { checkUserPerms } from '@functions/ticket';
-import { ChannelType, GuildTextBasedChannel, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
+import { ChannelType, GuildMember, GuildTextBasedChannel, PermissionFlagsBits, Role, type PrivateThreadChannel, type PublicThreadChannel } from 'discord.js';
 import { hasSendPerms } from '@functions/discord';
 
 export default {
   parent: 'ticket',
-  name: 'remove',
+  name: 'remove-role',
 
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: false });
-    const user = interaction.options.getUser('user');
+    const role = interaction.options.getRole('role');
 
     const config = await getTicketConfig(client, interaction.guildId!);
     const ids = await getIdConfig(interaction.guildId!);
@@ -36,7 +36,16 @@ export default {
         embeds: [new Embed(color).setDescription('This is not a valid ticket.')],
       });
 
-    if (!user) return;
+    if (!role) return;
+
+    //* Users must have Manage Roles permission to remove roles from tickets
+    if (!interaction.member) return await interaction.editReply({ content: 'Internal error.' });
+
+    const member = interaction.member as GuildMember;
+    if (!member.permissions.has(PermissionFlagsBits.ManageChannels))
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('You are not allowed to remove roles from the ticket.')],
+      });
 
     const valid = checkUserPerms(ticket, interaction.user, interaction.member);
     if (!valid)
@@ -44,16 +53,16 @@ export default {
         embeds: [new Embed(color).setDescription('You are not allowed to add users to the ticket.')],
       });
 
-    const array = ticket.users!;
-    if (!array.includes(user.id))
+    const array = ticket.roles!;
+    if (!array.includes(role.id))
       return await interaction
         .editReply({
-          embeds: [new Embed(color).setDescription("That user isn't in this ticket!")],
+          embeds: [new Embed(color).setDescription("That role isn't in this ticket!")],
         })
         .catch(() => {});
 
     for (var i = 0; i < array.length; i++) {
-      if (array[i] === `${user.id}`) {
+      if (array[i] === `${role.id}`) {
         array.splice(i, 1);
         i--;
       }
@@ -72,13 +81,14 @@ export default {
 
     const channel = interChannel as Exclude<GuildTextBasedChannel, PrivateThreadChannel | PublicThreadChannel>;
 
-    await channel?.permissionOverwrites.edit(user, {
+    const roleType = role as Role;
+    await channel?.permissionOverwrites.edit(roleType, {
       ViewChannel: false,
       SendMessages: false,
     });
 
     await interaction.editReply({
-      embeds: [new Embed(color).setDescription(`Removed ${user} from the ticket.`)],
+      embeds: [new Embed(color).setDescription(`Removed ${role} from the ticket.`)],
     });
 
     if (config.dmEnabled && config.dmEvents.includes('remove')) {
@@ -91,9 +101,9 @@ export default {
           await dmChannel.send({
             embeds: [
               new Embed(color)
-                .setTitle('User removed from ticket')
+                .setTitle('Role removed from ticket')
                 .setDescription(
-                  `A user (${user}) can no longer view your ticket (${interaction.channel}) in ${interaction.guild.name}. This user was removed by ${interaction.user}.`,
+                  `A role (${role}) can no longer view your ticket (${interaction.channel}) in ${interaction.guild.name}. This role was removed by ${interaction.user}.`,
                 ),
             ],
           });
@@ -113,9 +123,9 @@ export default {
     await logChannel.send({
       embeds: [
         new Embed(color)
-          .setTitle('User removed from ticket')
+          .setTitle('Role removed from ticket')
           .addFields(
-            { name: 'User', value: `${user}`, inline: true },
+            { name: 'Role', value: `${role}`, inline: true },
             {
               name: 'Ticket',
               value: `${interaction.channel}`,

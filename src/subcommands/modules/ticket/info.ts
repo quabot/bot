@@ -38,6 +38,7 @@ export default {
                     **💻 Channel:** ${interaction.channel}
                     **📝 Created by**: <@${ticket.owner}>
                     **👥 Users:** ${ticket.users!.join(' ') ?? 'No users have been added'}
+                    **🧑‍🤝‍🧑 Roles:** ${ticket.roles!.join(' ') ?? 'No roles have been added'}
                     **🙋‍♂️ Claimed by:** ${ticket.staff === 'none' ? 'Unclaimed' : `<@${ticket.staff}>`}
                     **🔒 Closed:** ${ticket.closed ? 'Yes' : 'No'}
                     **❓ Topic:** ${ticket.topic ?? 'No topic given'}

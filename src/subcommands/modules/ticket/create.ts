@@ -5,6 +5,7 @@ import { Embed } from '@constants/embed';
 import { getIdConfig } from '@configs/idConfig';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { ticketInactivity } from '@functions/ticket-inactivity';
 
 export default {
   parent: 'ticket',
@@ -26,10 +27,10 @@ export default {
         embeds: [new Embed(color).setDescription('Tickets are disabled in this server.')],
       });
 
-    const topic = interaction.options.getString('topic');
-    if (!topic)
+    const topic = interaction.options.getString('topic') ?? 'No topic specified.';
+    if (!interaction.options.getString('topic') && config.topicRequired)
       return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Please enter all the required fields.')],
+        embeds: [new Embed(color).setDescription('Please give a topic for the ticket.')],
       });
 
     const category = interaction.guild?.channels.cache.get(config.openCategory);
@@ -61,6 +62,33 @@ export default {
         embeds: [
           new Embed(color).setDescription(
             `I don't have access to the configured category for tickets, please contact a staff member from this server.`,
+          ),
+        ],
+      });
+
+    const userTickets = await Ticket.find({
+      guildId: interaction.guildId,
+      owner: interaction.user.id,
+      closed: false,
+    });
+    if (userTickets.length >= config.ticketLimitUser)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            `You have reached the maximum amount of tickets, you can only have ${config.ticketLimitUser} open tickets.`,
+          ),
+        ],
+      });
+
+    const totalTickets = await Ticket.find({
+      guildId: interaction.guildId,
+      closed: false,
+    });
+    if (totalTickets.length >= config.ticketLimitGlobal)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            `The server has reached the maximum amount of tickets, there can only be ${config.ticketLimitGlobal} open tickets, as configured by this server's moderators.`,
           ),
         ],
       });
@@ -126,9 +154,14 @@ export default {
 
       owner: interaction.user.id,
       users: [],
+      roles: [],
       staff: 'none',
     });
     await newTicket.save();
+
+    setTimeout(() => {
+      ticketInactivity(client, newTicket);
+    }, 600000);
 
     await interaction.editReply({
       embeds: [
@@ -141,6 +174,23 @@ export default {
     ids.ticketId = ids.ticketId ? ids.ticketId + 1 : 0;
     await ids.save();
 
+    if (config.dmEnabled && config.dmEvents.includes('create')) {
+      const dmChannel = await interaction.user.createDM().catch(() => null);
+
+      if (dmChannel && interaction.guild) {
+        await dmChannel.send({
+          embeds: [
+            new Embed(color)
+              .setTitle('Ticket Created')
+              .setDescription(
+                `You have created a ticket (${interaction.channel}) in ${interaction.guild.name}.`,
+              ),
+          ],
+        });
+      }
+    }
+
+    if (!config.logEvents.includes('create')) return;
     const logChannel = interaction.guild?.channels.cache.get(config.logChannel);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel))

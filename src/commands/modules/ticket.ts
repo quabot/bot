@@ -8,7 +8,7 @@ export default {
       subcommand
         .setName('create')
         .setDescription('Create a ticket.')
-        .addStringOption(option => option.setName('topic').setRequired(true).setDescription('The ticket topic.')),
+        .addStringOption(option => option.setName('topic').setRequired(false).setDescription('The ticket topic.')),
     )
     .addSubcommand(subcommand => subcommand.setName('claim').setDescription('Claim a ticket.'))
     .addSubcommand(subcommand =>
@@ -37,6 +37,14 @@ export default {
     )
     .addSubcommand(subcommand =>
       subcommand
+        .setName('add-role')
+        .setDescription('Add a role to the ticket.')
+        .addRoleOption(option =>
+          option.setName('role').setRequired(true).setDescription('The role to add to the ticket.'),
+        ),
+    )
+    .addSubcommand(subcommand =>
+      subcommand
         .setName('transfer')
         .setDescription('Change ownership of the ticket.')
         .addUserOption(option =>
@@ -52,6 +60,14 @@ export default {
         .setDescription('Remove a user from the ticket.')
         .addUserOption(option =>
           option.setName('user').setRequired(true).setDescription('The user to remove from the ticket.'),
+        ),
+    )
+    .addSubcommand(subcommand =>
+      subcommand
+        .setName('remove-role')
+        .setDescription('Remove a role from the ticket.')
+        .addRoleOption(option =>
+          option.setName('role').setRequired(true).setDescription('The role to from to the ticket.'),
         ),
     )
     .setDMPermission(false),
