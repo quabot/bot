@@ -29,7 +29,7 @@ export default {
           .setThumbnail(client.user?.displayAvatarURL() ?? '')
           .addFields(
             {
-              name: 'Uptime',
+              name: 'Online Since',
               value: `<t:${Math.round((client.readyTimestamp ?? 0) / 1000)}:R>`,
               inline: true,
             },
