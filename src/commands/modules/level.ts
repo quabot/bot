@@ -28,6 +28,11 @@ export default {
           option.setName('user').setDescription('The user to reset the XP of.').setRequired(true),
         ),
     )
+    .addSubcommand(command =>
+      command
+        .setName('reset-old-members')
+        .setDescription('Force-reset the XP and levels from the users that have left the server.'),
+    )
     .setDMPermission(false),
 
   async execute() {},
