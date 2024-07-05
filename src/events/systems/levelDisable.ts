@@ -9,7 +9,6 @@ export default {
       guildId: member.guild.id,
       userId: member.id,
     });
-    console.log(user)
     if (user) user.active = false;
   },
 };
