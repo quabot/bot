@@ -90,7 +90,7 @@ export default {
     }
 
     const parserOptions = { member, color, xp, level, channel: msgChannel };
-
+console.log(rndXp, xp)
     if (xp + rndXp >= reqXp) {
       levelDB.xp += rndXp;
       levelDB.level += 1;
