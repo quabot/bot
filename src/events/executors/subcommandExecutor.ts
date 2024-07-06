@@ -10,6 +10,8 @@ export default {
   async execute({ client }: EventArgs, interaction: Interaction) {
     try {
       if (!interaction.isChatInputCommand() || !interaction.guildId) return;
+    
+      if (!client.isReady()) return await interaction.reply('QuaBot is starting. Please wait a few seconds and try again.').catch(() => null);
 
       const subcommandName = interaction.options.getSubcommand();
       if (!subcommandName) return;

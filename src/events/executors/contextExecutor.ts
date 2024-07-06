@@ -10,6 +10,8 @@ export default {
   async execute({ client }: EventArgs, interaction: ContextMenuCommandInteraction) {
     if (interaction.channel!.isDMBased()) return;
     if (!interaction.isUserContextMenuCommand() || !interaction.guildId) return;
+    
+    if (!client.isReady()) return await interaction.reply('QuaBot is starting. Please wait a few seconds and try again.').catch(() => null);
 
     const context = client.contexts.get(interaction.commandName);
     if (!context) return;
