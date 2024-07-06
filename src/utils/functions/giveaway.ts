@@ -66,6 +66,16 @@ export async function rollGiveaway(
       let winMsg = winners.map(u => `<@${u.value.id}>`).join(', ');
       if (!isWinner) winMsg = 'Not enough entries!';
 
+      if (giveaway.winnerRole) {
+        const role = guild.roles.cache.get(giveaway.winnerRole);
+        if (!role) return;
+        winners.forEach(async u => {
+          await guild.members.fetch(u.value.id).then(async member => {
+            await member.roles.add(role);
+          });
+        });
+      }
+
       await message.edit({
         embeds: [
           new Embed(colorConfig.color ?? '#ffffff')

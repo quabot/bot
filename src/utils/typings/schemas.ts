@@ -94,6 +94,7 @@ export interface IGiveaway {
 
   prize: string;
   winners: number;
+  winnerRole?: string;
 
   channel: string;
   message: string;
