@@ -8,6 +8,8 @@ export default {
   name: 'buttonExecutor',
   async execute({ client }: EventArgs, interaction: Interaction) {
     if (!interaction.isButton() || !interaction.guildId) return;
+    
+    if (!client.isReady()) return await interaction.reply('QuaBot is starting. Please wait a few seconds and try again.').catch(() => null);
 
     const button = client.buttons.get(interaction.customId);
     if (!button) return;
