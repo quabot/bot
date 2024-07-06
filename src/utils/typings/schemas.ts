@@ -107,6 +107,7 @@ export interface IGiveawayConfig {
   guildId: Snowflake;
   enabled: boolean;
   pingRole: Snowflake | 'none';
+  autoPin: boolean;
 }
 
 export interface IIds {

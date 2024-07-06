@@ -134,6 +134,8 @@ export default {
       ],
     });
 
+    if (config.autoPin) message.pin().catch(() => null);
+
     setTimeout(async () => {
       await rollGiveaway(client, newGiveaway, true);
     }, ms(duration));
