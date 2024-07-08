@@ -9,6 +9,7 @@ export default {
     if (!guild) return;
     const channel = guild?.channels.cache.get('1195016205212323871');
     if (!channel?.isTextBased()) return;
+    if (!leftGuild.name) return;
 
     await channel.send({
       embeds: [
