@@ -14,6 +14,7 @@ export async function getGiveawayConfig(guildId: Snowflake, client: Client) {
       guildId,
       enabled: true,
       pingRole: 'none',
+      autoPin: false,
     },
   });
 }
