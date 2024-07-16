@@ -62,6 +62,9 @@ export async function rollGiveaway(
       );
 
       const winners = shuffled.slice(0, giveaway.winners);
+      const winnerIds:any = [];
+      winners.forEach((w) => winnerIds.push(w.value.id));
+
       const isWinner = winners.length !== 0;
       let winMsg = winners.map(u => `<@${u.value.id}>`).join(', ');
       if (!isWinner) winMsg = 'Not enough entries!';
@@ -111,6 +114,9 @@ export async function rollGiveaway(
         });
 
       if (end) giveaway.ended = true;
+
+      giveaway.winnerIds = winnerIds;
+      giveaway.endTimestamp = `${new Date().getTime()}`;
       await giveaway.save();
     })
     .catch(() => {});

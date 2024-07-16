@@ -10,7 +10,6 @@ export default {
     //* Get the data and the server.
     const form = data.form;
     if (!form) return;
-    console.log('hi', data)
 
     const guild = client.guilds.cache.get(form.guildId);
     if (!guild) return;

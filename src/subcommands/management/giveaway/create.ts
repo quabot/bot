@@ -120,6 +120,10 @@ export default {
       message: message.id,
       host: interaction.user.id,
 
+      duration: duration,
+      entries: [],
+      
+      startTimestamp: new Date().getTime(),
       endTimestamp: new Date().getTime() + ms(duration),
       ended: false,
     });

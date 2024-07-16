@@ -100,6 +100,11 @@ export interface IGiveaway {
   message: string;
   host: string;
 
+  duration: string;
+  entries: Types.Array<string[] | number[]>;
+  winnerIds: Types.Array<string[]>;
+
+  startTimestamp: string;
   endTimestamp: string;
   ended: boolean;
 }
