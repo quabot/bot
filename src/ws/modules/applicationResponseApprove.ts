@@ -38,7 +38,7 @@ export default {
         if (hasRolePerms(roleToAdd)) member.roles.remove(roleToAdd!);
       });
     }
-console.log('hi')
+    
     await member
       .send({
         embeds: [
