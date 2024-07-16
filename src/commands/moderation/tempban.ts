@@ -62,7 +62,7 @@ export default {
     const duration = interaction.options.getString('duration', true).slice(0, 800);
     const seconds = interaction.options.getInteger('delete_messages', true);
     const user = interaction.options.getUser('user', true);
-    const member = interaction.guild?.members.cache.get(user.id)!;
+    const member = interaction.guild?.members.fetch(user.id);
 
     await getUser(interaction.guildId!, member.id);
 
