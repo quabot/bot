@@ -33,7 +33,7 @@ export default {
 
       case 'text': {
         if (config.dm.content === '') return;
-        await member.send({ content: parser.parse(config.dm.content) });
+        await member.send({ content: parser.parse(config.dm.content) }).catch(() => null);
 
         break;
       }
