@@ -26,6 +26,9 @@ export default {
         )
         .addStringOption(option =>
           option.setName('duration').setDescription('The length that the giveaway should last for.').setRequired(true),
+        )
+        .addRoleOption(option =>
+          option.setName('winner-role').setDescription('The role that the winner(s) will receive.').setRequired(false),
         ),
     )
 

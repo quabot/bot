@@ -8,5 +8,6 @@ export default model<IGiveawayConfig>(
     guildId: reqString,
     enabled: reqBool,
     pingRole: reqString,
+    autoPin: reqBool,
   }),
 );

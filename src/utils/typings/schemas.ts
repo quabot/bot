@@ -94,11 +94,17 @@ export interface IGiveaway {
 
   prize: string;
   winners: number;
+  winnerRole?: string;
 
   channel: string;
   message: string;
   host: string;
 
+  duration: string;
+  entries: Types.Array<string[] | number[]>;
+  winnerIds: Types.Array<string[]>;
+
+  startTimestamp: string;
   endTimestamp: string;
   ended: boolean;
 }
@@ -107,6 +113,7 @@ export interface IGiveawayConfig {
   guildId: Snowflake;
   enabled: boolean;
   pingRole: Snowflake | 'none';
+  autoPin: boolean;
 }
 
 export interface IIds {

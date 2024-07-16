@@ -36,6 +36,7 @@ export default {
     const prize = interaction.options.getString('prize');
     const winners = interaction.options.getNumber('winners');
     const duration = interaction.options.getString('duration');
+    const winnerRole = interaction.options.getRole('winner-role');
 
     if (!channel || !prize || !winners || !duration)
       return await interaction.editReply({
@@ -113,11 +114,16 @@ export default {
 
       prize,
       winners,
+      winnerRole: winnerRole ? winnerRole.id : null,
 
       channel: channel.id,
       message: message.id,
       host: interaction.user.id,
 
+      duration: duration,
+      entries: [],
+      
+      startTimestamp: new Date().getTime(),
       endTimestamp: new Date().getTime() + ms(duration),
       ended: false,
     });
@@ -133,6 +139,8 @@ export default {
         ),
       ],
     });
+
+    if (config.autoPin) message.pin().catch(() => null);
 
     setTimeout(async () => {
       await rollGiveaway(client, newGiveaway, true);
