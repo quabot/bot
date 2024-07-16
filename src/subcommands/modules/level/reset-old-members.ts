@@ -12,7 +12,7 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    return await interaction.editReply('This command has been temporarily disabled.')
+    if (interaction) await interaction.editReply('This command has been temporarily disabled, we\'re sorry for the inconvinience.');
 
     if (!hasAnyPerms(interaction.member, [PermissionFlagsBits.ManageGuild]))
       return await interaction.editReply({
