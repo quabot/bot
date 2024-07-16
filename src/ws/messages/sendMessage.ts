@@ -1,6 +1,7 @@
 import { GuildParser } from '@classes/parsers';
 import { CustomEmbed } from '@constants/customEmbed';
 import { hasSendPerms } from '@functions/discord';
+import SentMessage from '@schemas/SentMessage';
 import type { WsEventArgs } from '@typings/functionArgs';
 
 //* QuaBot Dashboard Message Sender Handler.
@@ -19,20 +20,45 @@ export default {
     const testMessage = (msg: any): msg is CustomEmbed => {
       return true;
     };
-    if (!testMessage(embed)) return;
+    if (!testMessage(data.message)) return;
 
     //* Send the message.
     const parser = new GuildParser(guild);
 
     const sentEmbed = new CustomEmbed(data.message, parser);
-    if (embed)
-      await channel.send({
+    if (embed) {
+      const msg = await channel.send({
         embeds: [sentEmbed],
         content: parser.parse(data.message.content) ?? '',
       });
-    if (!embed && (parser.parse(data.message.content) ?? '** **') !== '')
-      await channel.send({
+
+      const newSent = new SentMessage({
+        channel: data.channelId,
+        date: new Date().getTime(),
+        guildId: data.guildId,
+        id: msg.id,
+        message: data.message,
+        user: data.userId ?? "unknown",
+        title: "A message"
+      });
+      await newSent.save();
+    }
+
+    if (!embed && (parser.parse(data.message.content) ?? '** **') !== '') {
+      const msg = await channel.send({
         content: parser.parse(data.message.content) ?? '** **',
       });
+
+      const newSent = new SentMessage({
+        channel: data.channelId,
+        date: new Date().getTime(),
+        guildId: data.guildId,
+        id: msg.id,
+        message: data.message,
+        user: data.userId ?? "unknown",
+        title: "A message"
+      });
+      await newSent.save();
+    }
   },
 };

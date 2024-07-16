@@ -109,6 +109,16 @@ export interface IGiveaway {
   ended: boolean;
 }
 
+export interface ISentMessages {
+  guildId: string;
+  message: Message;
+  date: string;
+  user: string;
+  id: string;
+  channel: string;
+  title: string;
+}
+
 export interface IGiveawayConfig {
   guildId: Snowflake;
   enabled: boolean;
