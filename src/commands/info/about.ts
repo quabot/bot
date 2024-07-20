@@ -35,7 +35,7 @@ export default {
       })
       .setThumbnail(`${clientUser.avatarURL({ forceStatic: false })}`)
       .setFooter({ text: 'Created by @joa_sss' })
-      .setDescription(`Welcome to information center for **<:QLogo:1009229825908674570> [QuaBot](https://quabot.net)**! Here you can find loads of info about QuaBot and it's features. QuaBot uses slash commands, so the prefix to use it is \`/\`! We use interactions all throughout our commands and modules.
+      .setDescription(`Welcome to information center for **<:logo_quabot:1263823618123501608> [QuaBot](https://quabot.net)**! Here you can find loads of info about QuaBot and it's features. QuaBot uses slash commands, so the prefix to use it is \`/\`! We use interactions all throughout our commands and modules.
         
             QuaBot was designed and developed by [Joa_sss](https://github.com/Joasss) and his [team](https://quabot.net/credits) and was written in Javascript with the [discord.js](https://discord.js.org) framework.
         
