@@ -18,6 +18,7 @@ export default {
         cpu: cpus()[0].model,
         platform: process.platform.replace('win32', 'windows'),
         commands: client.commands.size,
+        subcommands: client.subcommands.size
       });
 
     const info = client.cache.get('client-info') as any;
@@ -73,6 +74,7 @@ export default {
               inline: true,
             },
             { name: 'Commands', value: `\`${info.commands}\``, inline: true },
+            { name: 'Subcommands', value: `\`${info.subcommands}\``, inline: true },
 
             { name: 'CPU', value: `\`\`\`${info.cpu}\`\`\`` },
           ),

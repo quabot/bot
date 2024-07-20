@@ -14,6 +14,7 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
       guildId,
       enabled: false,
       channel: 'current', // none, current, other
+      levelupCardContent: '',
 
       messageType: 'embed', // Embed, Text or card
       levelCard: {
@@ -47,7 +48,7 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
       },
       message: {
         content: '{user} leveled up to level {level}!',
-        title: '{user.displayname} leveled up!',
+        title: '{user.displa,yname} leveled up!',
         color: '{color}',
         timestamp: true,
         footer: {

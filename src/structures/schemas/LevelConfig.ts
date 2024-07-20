@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqArray, reqObject, reqNum } from '@constants/schemas';
+import { reqString, reqBool, reqArray, reqObject, reqNum, optString } from '@constants/schemas';
 import type { ILevelConfig } from '@typings/schemas';
 
 export default model<ILevelConfig>(
@@ -11,7 +11,7 @@ export default model<ILevelConfig>(
 
     messageType: reqString, // none, current, other
     levelCard: reqObject,
-    levelupCardContent: reqString,
+    levelupCardContent: optString,
     message: reqObject,
 
     dmEnabled: reqBool,

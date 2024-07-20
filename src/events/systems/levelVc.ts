@@ -126,8 +126,8 @@ export default {
                     name: 'level_card.png',
                   });
 
-                  if (!config.cardMention) await channel.send({ files: [attachment] });
-                  if (config.cardMention)
+                  if (config.levelupCardContent === '') await channel.send({ files: [attachment] });
+                  if (config.levelupCardContent !== '')
                     await channel.send({
                       files: [attachment],
                       content: `${member}`,
@@ -160,8 +160,8 @@ export default {
                       name: 'level_card.png',
                     });
 
-                    if (!config.cardMention) await member.send({ files: [attachment] });
-                    if (config.cardMention)
+                    if (config.levelupCardContent === '') await member.send({ files: [attachment] });
+                    if (config.levelupCardContent !== '')
                       await member.send({
                         files: [attachment],
                         content: `${member}`,
