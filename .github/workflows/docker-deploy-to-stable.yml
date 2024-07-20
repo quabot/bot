@@ -12,13 +12,13 @@ jobs:
       with:
         node-version: 16
         cache: 'npm'
+    - name: Removing unused images
+      run: docker system prune -a -f
     - name: Build the new Docker image
       run: docker build . --file Dockerfile --tag quabot/bot:$(date +%s)
     - name: Stopping existing bot container
       run: docker stop quabot-bot || echo
     - name: Removing existing bot container
       run: docker rm quabot-bot || echo
-    - name: Removing unused images
-      run: docker system prune -a -f
     - name: Running the container from this image
       run: docker run --network="host" --restart=always --name quabot-bot -p 8081:8081 --env-file /root/credentials/bot.env -d $(docker images --filter "reference=quabot/bot" | awk '{print $3}' | awk 'NR==2')
