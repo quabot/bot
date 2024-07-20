@@ -150,8 +150,7 @@ export interface ILevelConfig {
 
   messageType: MessageTypeWithCard;
   levelCard: LevelCard;
-
-  cardMention: true;
+  levelupCardContent: string;
   message: Message;
 
   dmEnabled: boolean;

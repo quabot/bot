@@ -11,7 +11,7 @@ export default model<ILevelConfig>(
 
     messageType: reqString, // none, current, other
     levelCard: reqObject,
-    cardMention: reqBool,
+    levelupCardContent: reqString,
     message: reqObject,
 
     dmEnabled: reqBool,

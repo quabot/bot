@@ -45,7 +45,6 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
           rounded: true, // default true
         },
       },
-      cardMention: true,
       message: {
         content: '{user} leveled up to level {level}!',
         title: '{user.displayname} leveled up!',
