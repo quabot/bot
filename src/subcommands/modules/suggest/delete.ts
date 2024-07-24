@@ -70,6 +70,10 @@ export default {
         embeds: [embed],
         content: parser.parse(config.dmMessage.content),
       });
+    }).catch(() => {
+      interaction.editReply({
+        embeds: [new Embed(color).setDescription("Couldn't find the suggestion! Are you sure it wasn't deleted?")],
+      });
     });
   },
 };
