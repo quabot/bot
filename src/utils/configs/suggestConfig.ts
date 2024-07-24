@@ -22,7 +22,7 @@ export async function getSuggestConfig(client: Client, guildId: Snowflake) {
         color: '#8f8d8d',
         timestamp: true,
         footer: {
-          text: 'Vote with the 🟢 and 🔴 below this message.',
+          text: 'Vote with the 🟢 and 🔴 below this message. ID: {id}',
           icon: '',
         },
         author: {

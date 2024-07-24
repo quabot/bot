@@ -64,6 +64,9 @@ export default {
     const ids = rawIds as Omit<NonNullMongooseReturn<IIds>, 'suggestId'> & { suggestId: number };
 
     const parser = new MemberParser({ member: interaction.member as GuildMember, color }).addVariables({
+      name: 'id',
+      value: `${ids.suggestId}`,
+    }).addVariables({
       name: 'suggestion',
       value: suggestion,
     });
