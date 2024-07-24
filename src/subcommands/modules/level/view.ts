@@ -24,6 +24,10 @@ export default {
 
     const user = interaction.options.getUser('user') ?? interaction.user;
     const member = interaction.options.getMember('user') ?? interaction.member;
+    if (user.bot) return await interaction.editReply({
+      embeds: [new Embed(color).setDescription('Bots cannot get XP. Someone should get them some roses, so they won\'t feel left out ;(')],
+    });
+    
     const levelDB = await getLevel(interaction.guildId!, user.id);
     if (!levelDB)
       return await interaction.editReply({

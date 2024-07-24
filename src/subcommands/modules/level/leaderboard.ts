@@ -29,7 +29,7 @@ export default {
 
     let lb = '';
     leaderboard.forEach(
-      i => (lb = lb + `**${leaderboard.indexOf(i) + 1}.** <@${i.userId}> - Level: ${i.level}, XP: ${i.xp}\n`),
+      i => (lb = lb + `**${leaderboard.indexOf(i) + 1}.** <@${i.userId}> - Level: ${i.level}, XP: ${Math.round(i.xp)}\n`),
     );
 
     await interaction.editReply({

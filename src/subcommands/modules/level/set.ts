@@ -34,6 +34,10 @@ export default {
         embeds: [new Embed(color).setDescription("This user isn't in the guild anymore.")],
       });
 
+    if (user.bot) return await interaction.editReply({
+      embeds: [new Embed(color).setDescription('Bots cannot get XP. Someone should get them some chocolate, so they won\'t feel left out ;(')],
+    });
+
     const levelDB = await getLevel(interaction.guildId!, user.id);
     if (!levelDB)
       return await interaction.editReply({
@@ -48,11 +52,11 @@ export default {
         if (!hasRolePerms(await interaction.guild?.roles.fetch(reward.role))) return;
 
         if (level < reward.level) {
-          if ('remove' in member.roles) await member.roles.remove(reward.role).catch(() => {});
+          if ('remove' in member.roles) await member.roles.remove(reward.role).catch(() => { });
         }
 
         if (level >= reward.level) {
-          if ('add' in member.roles) await member.roles.add(reward.role).catch(() => {});
+          if ('add' in member.roles) await member.roles.add(reward.role).catch(() => { });
         }
       });
     }
