@@ -11,6 +11,7 @@ export default model<IStarMessage>(
     messageId: reqString,
     stars: reqNum,
     starboardId: reqString,
+    starboardMessageId: reqString,
     date: reqNum,
   }),
 );

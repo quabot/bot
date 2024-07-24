@@ -41,6 +41,8 @@ export default {
 
     const message = new CustomEmbed(config.message, parser);
 
+    if (await StarMessage.findOne({ messageId: reaction.message.id })) return;
+
     const newMsg = await starboardChannel.send({
       embeds: [message],
       content: parser.parse(config.message.content),
@@ -51,7 +53,7 @@ export default {
       await reaction.message.reply({
         embeds: [
           new Embed('#416683')
-          .setDescription('Your message has received enough stars to be featured in the starboard! Go check it out here: ' + starboardChannel.toString())
+          .setDescription('Your message has received enough stars to be featured in the star channel! Go check it out here: ' + starboardChannel.toString())
         ]
       });
     }

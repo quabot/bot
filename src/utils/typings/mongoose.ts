@@ -152,5 +152,6 @@ export interface IStarMessage {
   messageId: string;
   stars: number;
   starboardId: string;
+  starboardMessageId: string;
   date: number;
 }
