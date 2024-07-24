@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Colors, ChannelType } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Colors, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { CustomEmbed } from '@constants/customEmbed';
 import { Embed } from '@constants/embed';
 import Suggest from '@schemas/Suggestion';
@@ -10,8 +10,6 @@ export default {
   name: 'suggestion-approve',
 
   async execute({ client, interaction, color }: ButtonArgs) {
-    await interaction.deferReply({ ephemeral: true });
-
     const id = parseInt(interaction.message.embeds[0].fields[2].value);
     const suggestion = await Suggest.findOne({
       guildId: interaction.guildId,
@@ -19,43 +17,88 @@ export default {
     });
 
     if (!suggestion)
-      return await interaction.editReply({
+      return await interaction.reply({
         embeds: [new Embed(color).setDescription("Couldn't find the suggestion.")],
+        ephemeral: true
       });
 
     if (suggestion.status === 'approved')
-      return await interaction.editReply({
+      return await interaction.reply({
         embeds: [new Embed(color).setDescription('The suggestion has already been approved.')],
+        ephemeral: true
       });
 
     const config = await getSuggestConfig(client, interaction.guildId!);
     if (!config)
-      return await interaction.editReply({
+      return await interaction.reply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
+        ephemeral: true
       });
 
     if (!config.enabled)
-      return await interaction.editReply({
+      return await interaction.reply({
         embeds: [new Embed(color).setDescription('Suggestions are disabled in this server!')],
+        ephemeral: true
       });
 
     const channel = interaction.guild?.channels.cache.get(config.channelId);
     if (!channel)
-      return await interaction.editReply({
+      return await interaction.reply({
         embeds: [new Embed(color).setDescription("Couldn't find the suggestions channel.")],
+        ephemeral: true
       });
     if (channel.type === ChannelType.GuildCategory)
-      return await interaction.editReply({ content: "Channel isn't the correct type." });
+      return await interaction.reply({ content: "Channel isn't the correct type." });
 
     await channel.messages.fetch(suggestion.msgId).then(async message => {
       if (!message)
-        return interaction.editReply({
+        return interaction.reply({
           embeds: [new Embed(color).setDescription("Couldn't find the suggestion! Are you sure it wasn't deleted?")],
+          ephemeral: true
         });
 
-      await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Suggestion approved.')],
-      });
+
+        let approvalReason = 'No reason specified.';
+        if (config.reasonRequired) {
+          const modal = new ModalBuilder()
+            .setTitle('Reason for approving')
+            .setCustomId('approve-suggest')
+            .addComponents(
+              new ActionRowBuilder<TextInputBuilder>().setComponents(
+                new TextInputBuilder()
+                  .setCustomId('reason')
+                  .setLabel('Approval Reason')
+                  .setMaxLength(500)
+                  .setMinLength(2)
+                  .setPlaceholder('Leave an approval reason...')
+                  .setRequired(true)
+                  .setStyle(TextInputStyle.Paragraph),
+              ),
+            );
+  
+          await interaction.showModal(modal);
+  
+          const modalResponse = await interaction
+            .awaitModalSubmit({
+              time: 60000,
+              filter: i => i.user.id === interaction.user.id,
+            })
+            .catch(() => { });
+  
+          if (modalResponse && modalResponse.customId === 'approve-suggest')
+            approvalReason = modalResponse.fields.getTextInputValue('reason');
+  
+          if (!modalResponse) return;
+  
+          await modalResponse.reply({
+            embeds: [new Embed(color).setDescription('Suggestion approved.')],
+            ephemeral: true,
+          });
+        } else {
+          await interaction.reply({
+            embeds: [new Embed(color).setDescription('Suggestion approved.')],
+          });
+        }
 
       suggestion.status = 'approved';
       await suggestion.save();
@@ -68,7 +111,8 @@ export default {
               name: 'Approved By',
               value: `${interaction.user}`,
               inline: true,
-            })
+            },
+          { name: 'Reason', value: `${approvalReason}`, inline: true })
             .setFooter({ text: 'This suggestion was approved!' }),
         ],
       });
@@ -97,6 +141,11 @@ export default {
               name: 'Suggestion',
               value: `${suggestion.suggestion}`,
             },
+            {
+              name: 'Approval Reason',
+              value: `${approvalReason}`,
+              inline: true
+            }
           ),
         ],
         components: [
