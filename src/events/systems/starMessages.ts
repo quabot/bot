@@ -16,6 +16,8 @@ export default {
   async execute({ client }: EventArgs, reaction: MessageReaction, user: User) {
     if (!reaction.message.guild?.id) return;
     if (user.bot) return;
+    if (!reaction.message.author) return;
+    if (reaction.message.author.bot) return;
 
     const config = await getStarMessagesConfig(reaction.message.guild.id, client);
     if (!config) return;
