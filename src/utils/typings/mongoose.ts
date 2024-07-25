@@ -132,3 +132,26 @@ export type Color =
   | `rgba(${number},${number},${number},${number})`;
 
 export type FontWeight = 'Bold' | 'SemiBold' | 'Medium' | 'Normal';
+
+
+
+export interface IStarMessagesConfig {
+  guildId: string;
+  enabled: boolean;
+  channel: string;
+  minStars: number;
+  emoji: string;
+  message: Message;
+  notifyUser: boolean;
+  ignoredChannels: Types.Array<string> | string[];
+}
+export interface IStarMessage {
+  guildId: string;
+  channelId: string;
+  userId: string;
+  messageId: string;
+  stars: number;
+  starboardId: string;
+  starboardMessageId: string;
+  date: number;
+}

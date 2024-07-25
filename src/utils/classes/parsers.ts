@@ -6,7 +6,9 @@ import type {
   Guild,
   GuildMember,
   Interaction,
+  Message,
   MessageReaction,
+  PartialMessage,
   Role,
   Snowflake,
   ThreadChannel,
@@ -256,6 +258,23 @@ export class LevelParser extends MemberParser {
   }
 }
 
+export class StarMessagesParser extends MemberParser {
+  constructor({ channel, emoji, member, color, count, message }: StarMessageArgs) {
+    super({ member, color });
+
+    this.addVariables(
+      { name: 'channel', value: `<#${channel.id}>` },
+      { name: 'channel.name', value: channel.name },
+      { name: 'channel.id', value: channel.id },
+      { name: 'emoji', value: emoji },
+      { name: 'stars', value: `${count}` },
+      { name: 'message.content', value: message.content ?? '' },
+      { name: 'message.id', value: message.id },
+      { name: 'message.url', value: message.url },
+    );
+  }
+}
+
 export class RewardLevelParser extends LevelParser {
   constructor(data: RewardLevelParserArgs) {
     super(data);
@@ -347,6 +366,13 @@ export interface LevelParserArgs extends MemberParserArgs {
   channel: GuildChannel | ThreadChannel;
   level: number;
   xp: number;
+}
+
+export interface StarMessageArgs extends MemberParserArgs {
+  channel: GuildChannel | ThreadChannel;
+  emoji: string;
+  count: number;
+  message: Message | PartialMessage;
 }
 
 export interface ReactionRoleParserArgs extends MemberParserArgs {
