@@ -27,7 +27,7 @@ export default {
     // Post the stats to the QuaBot Site every minute
     if (process.env.POST_STATS === 'true') {
       postStats();
-      setInterval(postStats, 60 * 1000);
+      setInterval(postStats, 120 * 1000);
 
       function postStats() {
         axios
@@ -51,8 +51,8 @@ export default {
     // Post the stats to top.gg
     if (!process.env.TOPGG_API_KEY) return;
 
-    AutoPoster(process.env.TOPGG_API_KEY ?? '', client).on('posted', stats =>
-      consola.info(`Published statistics: ${stats.serverCount} servers.`),
-    );
+    AutoPoster(process.env.TOPGG_API_KEY ?? '', client, {
+      interval: 60 * 60 * 1000,
+    });
   },
 };
