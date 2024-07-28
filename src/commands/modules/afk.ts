@@ -8,7 +8,7 @@ export default {
       command
         .setName('toggle')
         .setDescription('Set your AFK to enabled/disabled.')
-        .addBooleanOption(option => option.setName('enabled').setDescription('Are you AFK?')),
+        .addBooleanOption(option => option.setName('enabled').setDescription('Are you AFK?')).addStringOption(option => option.setName('status').setDescription('Set your AFK status quickly').setRequired(false)),
     )
     .addSubcommand(command => command.setName('status').setDescription('Set your AFK status.'))
     .addSubcommand(command => command.setName('list').setDescription('See a list of AFK users in the server.'))

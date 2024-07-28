@@ -113,6 +113,6 @@ export default {
 
         await interaction.reply({ ephemeral: true, embeds: [new Embed(color).setDescription('Roles updated!')] });
       })
-      .catch(e => console.log(e));
+      .catch(() => {});
   },
 };
