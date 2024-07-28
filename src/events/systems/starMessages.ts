@@ -8,6 +8,7 @@ import { CustomEmbed } from '@constants/customEmbed';
 import { StarMessagesParser } from '@classes/parsers';
 import { Embed } from '@constants/embed';
 import StarMessage from '@schemas/StarMessage';
+import { getServerConfig } from '@configs/serverConfig';
 
 export default {
   event: 'messageReactionAdd',
@@ -39,7 +40,9 @@ export default {
     const reactionMessage = await reaction.message.fetch();
     if (!reactionMessage) return;
 
-    const parser = new StarMessagesParser({ channel: starboardChannel, emoji: config.emoji, member, color: '#416683', count: reactionUsers.size, message: reactionMessage });
+    const serverConfig = await getServerConfig(client, reaction.message.guild.id);
+    const color = serverConfig ? serverConfig.color : '#416683';
+    const parser = new StarMessagesParser({ channel: starboardChannel, emoji: config.emoji, member, color, count: reactionUsers.size, message: reactionMessage });
 
     const message = new CustomEmbed(config.message, parser);
 

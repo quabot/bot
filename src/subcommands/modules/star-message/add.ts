@@ -99,7 +99,7 @@ export default {
 
       const reactionUsers = await message.reactions.cache.get('⭐')?.users.fetch();
 
-      const parser = new StarMessagesParser({ channel: starMessagesChannel, emoji: config.emoji, member, color: '#416683', count: reactionUsers ? reactionUsers.size : 0, message });
+      const parser = new StarMessagesParser({ channel: starMessagesChannel, emoji: config.emoji, member, color, count: reactionUsers ? reactionUsers.size : 0, message });
 
       const customMessage = new CustomEmbed(config.message, parser);
 
@@ -112,7 +112,7 @@ export default {
       if (config.notifyUser) {
         await message.reply({
           embeds: [
-            new Embed('#416683')
+            new Embed(color)
               .setDescription('Your message has been added to the star channel! Go check it out here: ' + starMessagesChannel.toString())
           ]
         });

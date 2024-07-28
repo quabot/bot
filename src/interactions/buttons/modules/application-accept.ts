@@ -114,7 +114,7 @@ export default {
     await member
       .send({
         embeds: [
-          new Embed('#416683').setDescription(
+          new Embed(color).setDescription(
             `Your application response for the form \`${form.name}\` has been accepted${
               reason ? ` With reason: \`${reason}\`` : ''
             }! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${interaction

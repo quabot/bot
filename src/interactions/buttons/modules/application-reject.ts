@@ -100,7 +100,7 @@ export default {
     await member
       .send({
         embeds: [
-          new Embed('#416683').setDescription(
+          new Embed(color).setDescription(
             `Your application response for the form \`${form.name}\` has been denied${
               reason ? ` With reason: \`${reason}\`` : ''
             }! You can view your answers [here](https://quabot.net/dashboard/${interaction.guild
