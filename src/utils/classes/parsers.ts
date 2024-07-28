@@ -2,6 +2,7 @@ import { isSnowflake } from '@functions/string';
 import type { GuildChannel } from '@typings/discord';
 import type { ISuggestion } from '@typings/schemas';
 import type {
+  ButtonInteraction,
   ColorResolvable,
   Guild,
   GuildMember,
@@ -378,7 +379,7 @@ export interface StarMessageArgs extends MemberParserArgs {
 export interface ReactionRoleParserArgs extends MemberParserArgs {
   action: string;
   role: Role;
-  reaction: MessageReaction;
+  reaction: MessageReaction | ButtonInteraction;
 }
 
 export interface MemberParserArgs {
