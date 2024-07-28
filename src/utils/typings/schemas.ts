@@ -4,7 +4,6 @@ import type {
   Message,
   MessageType,
   MessageTypeWithCard,
-  ReactionRoleType,
   Status,
   WelcomeCard,
 } from '@typings/mongoose';
@@ -281,16 +280,43 @@ export interface IReactionConfig {
   dm: Message;
 }
 
+export type ReactionRoleType = 'normal' | 'verify' | 'drop' | 'reversed' | 'unique' | string;
 export interface IReactionRoles {
-  guildId: Snowflake;
-  channelId: Snowflake;
-  reqPermission: string;
-  reqRoles?: Types.Array<Snowflake>;
-  excludedRoles?: Types.Array<Snowflake>;
-  roleId: Snowflake;
-  messageId: Snowflake;
+  guildId: string;
+  type: 'reaction' | 'button' | 'dropdown' | string;
+  name: string;
+  messageId: string;
+  channelId: string;
+  active: boolean; // does it work rn
+
+  buttons?: ReactionRoleButtonType[] | any | Types.Array<string>; //
+
+  dropdown?: ReactionRoleDropdownType[] | any | Types.Array<string>; //
+  dropdownPlaceholder?: string; // dropdown placeholder
+  dropdownMin?: number; // minimum amount of roles that can be selected
+  dropdownMax?: number;
+
+  reactions?: ReactionRoleReactionType[] | any | Types.Array<string>; // the actual reaction role emojis/options//
+
+  mode: ReactionRoleType;
+  allowedRoles: string[] | Types.Array<string>;
+  ignoredRoles: string[] | Types.Array<string>;
+}
+
+export type ReactionRoleReactionType = {
   emoji: string;
-  type: ReactionRoleType;
+  role: string;
+}
+export type ReactionRoleButtonType = {
+  emoji: string;
+  label: string;
+  role: string;
+}
+export type ReactionRoleDropdownType = {
+  emoji: string;
+  label: string;
+  description?: string;
+  role: string;
 }
 
 export interface IResponderConfig {
@@ -378,7 +404,17 @@ export interface ITicketConfig {
   autoRemindDays: number;
 }
 
-export type LogEvents = 'close' | 'delete' | 'reopen' | 'create' | 'add' | 'remove' | 'claim' | 'unclaim' | 'updated' | 'transfer';
+export type LogEvents =
+  | 'close'
+  | 'delete'
+  | 'reopen'
+  | 'create'
+  | 'add'
+  | 'remove'
+  | 'claim'
+  | 'unclaim'
+  | 'updated'
+  | 'transfer';
 
 export interface IUser {
   guildId: Snowflake;

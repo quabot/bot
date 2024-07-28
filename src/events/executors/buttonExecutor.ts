@@ -11,7 +11,8 @@ export default {
     
     if (!client.isReady()) return await interaction.reply('QuaBot is starting. Please wait a few seconds and try again.').catch(() => null);
 
-    const button = client.buttons.get(interaction.customId);
+    let button = client.buttons.get(interaction.customId);
+    if (interaction.customId.startsWith('reaction-roles-') && !interaction.customId.includes('dropdown')) button = client.buttons.get('reaction-roles');
     if (!button) return;
 
     const config = await getServerConfig(client, interaction.guildId);
