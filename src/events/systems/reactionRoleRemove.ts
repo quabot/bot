@@ -1,22 +1,20 @@
 import {
+  type MessageReaction,
+  type User,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  PermissionFlagsBits,
-  type User,
   type GuildMember,
-  type MessageReaction,
   type Role,
+  PermissionFlagsBits,
 } from 'discord.js';
 import { getReactionConfig } from '@configs/reactionConfig';
 import { getServerConfig } from '@configs/serverConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
 import Reaction from '@schemas/ReactionRole';
-import { permissionBitToString } from '@constants/discord';
-import { screamingSnakeToPascalCase } from '@functions/string';
-import type { NonNullMongooseReturn, ReactionRoleType } from '@typings/mongoose';
-import type { IReactionConfig, IServer } from '@typings/schemas';
+import type { NonNullMongooseReturn } from '@typings/mongoose';
+import type { IReactionConfig, IServer, ReactionRoleReactionType, ReactionRoleType } from '@typings/schemas';
 import { hasRolePerms } from '@functions/discord';
 import { ReactionRoleParser } from '@classes/parsers';
 
@@ -27,42 +25,33 @@ export default {
   async execute({ client }: EventArgs, reaction: MessageReaction, user: User) {
     if (!reaction.message.guild?.id) return;
 
-    let reactionRole = await Reaction.findOne({
+    const clientMember = reaction.message.guild.members.me;
+    if (!clientMember || !clientMember.permissions.has(PermissionFlagsBits.ManageRoles)) return;
+
+    const reactionRole = await Reaction.findOne({
       guildId: reaction.message.guild.id,
       messageId: reaction.message.id,
-      emoji: reaction.emoji.name,
+      channelId: reaction.message.channel.id,
     });
-    if (!reactionRole)
-      reactionRole = await Reaction.findOne({
-        guildId: reaction.message.guild.id,
-        messageId: reaction.message.id,
-        emoji: `<:${reaction.emoji.name}:${reaction.emoji.id}>`,
-      });
-
     if (!reactionRole) return;
 
-    const rawRole = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
+    const foundReaction: ReactionRoleReactionType = reactionRole.reactions.find(
+      (r: ReactionRoleReactionType) => r.emoji === reaction.emoji.toString(),
+    );
+    if (!foundReaction) return;
+
+    const rawRole = reaction.message.guild.roles.cache.get(`${foundReaction.role}`);
     const rawMember = reaction.message.guild.members.cache.get(`${user.id}`);
 
     if (!rawMember || !rawRole) return;
     const member = rawMember as GuildMember;
     const role = rawRole as Role;
 
+    //* Return if the highestClientRole position is below or the same as 'role'
+    if (!hasRolePerms(role)) return;
+
     if (role.managed) return;
     if (role.id === reaction.message.guild.id) return;
-
-    if (reactionRole.reqPermission.toLowerCase() !== 'none') {
-      if (
-        !member.permissions.has(
-          screamingSnakeToPascalCase(
-            permissionBitToString(reactionRole.reqPermission),
-          ) as keyof typeof PermissionFlagsBits,
-        )
-      )
-        return;
-    }
-
-    if (!hasRolePerms(role)) return;
 
     const rawConfig = await getReactionConfig(client, reaction.message.guild.id);
     const rawCustomConfig = await getServerConfig(client, reaction.message.guild.id);
@@ -72,14 +61,14 @@ export default {
     const customConfig = rawCustomConfig as NonNullMongooseReturn<IServer>;
 
     let excluded = false;
-    reactionRole.excludedRoles?.forEach(r => {
+    reactionRole.ignoredRoles?.forEach(r => {
       if (member.roles.cache.some(ra => ra.id === r)) excluded = true;
     });
     let required = false;
-    reactionRole.reqRoles?.forEach(r => {
+    reactionRole.allowedRoles?.forEach(r => {
       if (member.roles.cache.some(ra => ra.id === r)) required = true;
     });
-    if (excluded && !required && reactionRole.reqRoles?.length == 0) return;
+    if (excluded && !required && reactionRole.allowedRoles?.length == 0) return;
 
     const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -97,6 +86,9 @@ export default {
       switch (type) {
         // * Give and remove
         case 'normal':
+          if (!reactionRole) return;
+          if (!member.roles.cache.some(r => reactionRole.reactions.map((r:any) => r.role).includes(r.id))) return;
+          
           await member.roles.remove(role);
 
           if (config.dmEnabled)
@@ -117,7 +109,7 @@ export default {
         case 'drop':
           break;
 
-        // * Give and remove, but reversed.
+        // * Give and removed, but reversed.
         case 'reversed':
           await member.roles.add(role);
 
@@ -131,8 +123,10 @@ export default {
 
           break;
 
-        // * Unique mode
+        // * Unique (only pick one role from the message at a time)
         case 'unique':
+          if (!reactionRole) return;
+          if (!member.roles.cache.some(r => reactionRole.reactions.map((r:any) => r.role).includes(r.id))) return;
           await member.roles.remove(role);
 
           if (config.dmEnabled)
@@ -142,6 +136,7 @@ export default {
                 components: [sentFrom],
               })
               .catch(() => {});
+
           break;
 
         case 'binding':
@@ -149,6 +144,6 @@ export default {
       }
     }
 
-    asyncSwitch(reactionRole.type);
+    asyncSwitch(reactionRole.mode);
   },
 };

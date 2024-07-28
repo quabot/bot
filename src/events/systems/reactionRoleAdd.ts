@@ -13,10 +13,8 @@ import { getServerConfig } from '@configs/serverConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { EventArgs } from '@typings/functionArgs';
 import Reaction from '@schemas/ReactionRole';
-import { permissionBitToString } from '@constants/discord';
-import { screamingSnakeToPascalCase } from '@functions/string';
-import type { NonNullMongooseReturn, ReactionRoleType } from '@typings/mongoose';
-import type { IReactionConfig, IServer } from '@typings/schemas';
+import type { NonNullMongooseReturn } from '@typings/mongoose';
+import type { IReactionConfig, IServer, ReactionRoleReactionType, ReactionRoleType } from '@typings/schemas';
 import { hasRolePerms } from '@functions/discord';
 import { ReactionRoleParser } from '@classes/parsers';
 
@@ -30,21 +28,19 @@ export default {
     const clientMember = reaction.message.guild.members.me;
     if (!clientMember || !clientMember.permissions.has(PermissionFlagsBits.ManageRoles)) return;
 
-    let reactionRole = await Reaction.findOne({
+    const reactionRole = await Reaction.findOne({
       guildId: reaction.message.guild.id,
       messageId: reaction.message.id,
-      emoji: reaction.emoji.name,
+      channelId: reaction.message.channel.id,
     });
-    if (!reactionRole)
-      reactionRole = await Reaction.findOne({
-        guildId: reaction.message.guild.id,
-        messageId: reaction.message.id,
-        emoji: `<:${reaction.emoji.name}:${reaction.emoji.id}>`,
-      });
-
     if (!reactionRole) return;
 
-    const rawRole = reaction.message.guild.roles.cache.get(`${reactionRole.roleId}`);
+    const foundReaction: ReactionRoleReactionType = reactionRole.reactions.find(
+      (r: ReactionRoleReactionType) => r.emoji === reaction.emoji.toString(),
+    );
+    if (!foundReaction) return;
+
+    const rawRole = reaction.message.guild.roles.cache.get(`${foundReaction.role}`);
     const rawMember = reaction.message.guild.members.cache.get(`${user.id}`);
 
     if (!rawMember || !rawRole) return;
@@ -57,17 +53,6 @@ export default {
     if (role.managed) return;
     if (role.id === reaction.message.guild.id) return;
 
-    if (reactionRole.reqPermission !== 'None' && reactionRole.reqPermission !== 'none') {
-      if (
-        !member.permissions.has(
-          screamingSnakeToPascalCase(
-            permissionBitToString(reactionRole.reqPermission),
-          ) as keyof typeof PermissionFlagsBits,
-        )
-      )
-        return;
-    }
-
     const rawConfig = await getReactionConfig(client, reaction.message.guild.id);
     const rawCustomConfig = await getServerConfig(client, reaction.message.guild.id);
 
@@ -76,14 +61,14 @@ export default {
     const customConfig = rawCustomConfig as NonNullMongooseReturn<IServer>;
 
     let excluded = false;
-    reactionRole.excludedRoles?.forEach(r => {
+    reactionRole.ignoredRoles?.forEach(r => {
       if (member.roles.cache.some(ra => ra.id === r)) excluded = true;
     });
     let required = false;
-    reactionRole.reqRoles?.forEach(r => {
+    reactionRole.allowedRoles?.forEach(r => {
       if (member.roles.cache.some(ra => ra.id === r)) required = true;
     });
-    if (excluded && !required && reactionRole.reqRoles?.length == 0) return;
+    if (excluded && !required && reactionRole.allowedRoles?.length == 0) return;
 
     const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -157,21 +142,9 @@ export default {
 
         // * Unique (only pick one role from the message at a time)
         case 'unique':
-          const reactions = await Reaction.find({
-            guildId: reaction.message.guild!.id,
-            messageId: reaction.message.id,
-            mode: 'unique',
-          });
-          if (!reactions) return;
-
-          let hasRole = false;
-
-          reactions.forEach(item => {
-            const ra = reaction.message.guild!.roles.cache.get(item.roleId);
-            if (!ra) return;
-
-            if (member.roles.cache.some(rd => rd.id === `${item.roleId}`)) hasRole = true;
-          });
+          if (!reactionRole) return;
+          const roles = reactionRole.reactions.map((r: ReactionRoleReactionType) => r.role);
+          const hasRole = member.roles.cache.some(r => roles.includes(r.id));
 
           if (hasRole) return;
           if (!hasRole) {
@@ -203,6 +176,6 @@ export default {
       }
     }
 
-    asyncSwitch(reactionRole.type);
+    asyncSwitch(reactionRole.mode);
   },
 };
