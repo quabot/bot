@@ -12,7 +12,7 @@ export default async (client: Client) => {
   files.forEach(async file => {
     const subcommand: Subcommand | undefined = require(file).default;
     if (!subcommand?.parent || !subcommand.name) return;
-console.log(`${subcommand.name}/${subcommand.parent}`)
+    
     client.subcommands.set(`${subcommand.name}/${subcommand.parent}`, subcommand);
   });
 

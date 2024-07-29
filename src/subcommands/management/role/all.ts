@@ -4,7 +4,7 @@ import { PermissionFlagsBits } from 'discord.js';
 
 export default {
   parent: 'role',
-  name: 'add',
+  name: 'all',
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
     
@@ -36,13 +36,13 @@ export default {
     ];
     const hasBannedPermissions = bannedPermissions.some(permission => fetchedRole.permissions.has(permission));
     if (hasBannedPermissions) {
-      return await interaction.editReply({ embeds: [new Embed(color).setDescription('You cannot give a role with administrative or moderation permissions to everyone, due to the sensitive nature of these permissions, and the ability to harm the server. These permissions include but are not limited to: Manage Channels, Manage Messages, View Audit Log, Administrator, Manage Server and more.')] });
+      return await interaction.editReply({ embeds: [new Embed(color).setDescription('❌ You cannot give a role with administrative or moderation permissions to everyone, due to the sensitive nature of these permissions, and the ability to harm the server. \n\nThese blocked permissions include but are not limited to: Manage Channels, Manage Messages, View Audit Log, Administrator, Manage Server and more.')] });
     }
 
     let members:any = [];
     switch (group) {
       case 'all': {
-        members = interaction.guild?.members.cache.filter(member => !member.user.bot).map(member => member);
+        members = interaction.guild?.members.cache.map(member => member);
         break;
       }
 
@@ -58,6 +58,14 @@ export default {
     }
 
     if (!members) return await interaction.editReply({ embeds: [new Embed(color).setDescription('No members found.')] });
+
+    await interaction.editReply({
+      embeds: [
+        new Embed(color).setDescription(
+          `Roles are being given to the users. This might take a few minutes, and we'll continue doing this in the background.`,
+        ),
+      ]
+    });
 
     const failed = [];
     const success = [];
