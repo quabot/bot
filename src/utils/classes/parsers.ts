@@ -241,6 +241,16 @@ export class ReactionRoleParser extends MemberParser {
     );
   }
 }
+export class BoostParser extends MemberParser {
+  constructor({ member, color, guild }: BoostParserArgs) {
+    super({ member, color });
+
+    this.addVariables(
+      { name: 'boosts', value: guild.premiumSubscriptionCount ? guild.premiumSubscriptionCount.toString() : '0' },
+      { name: 'tier', value: guild.premiumTier.toString() },
+    );
+  }
+}
 
 export class LevelParser extends MemberParser {
   constructor({ channel, level, xp, member, color }: LevelParserArgs) {
@@ -380,6 +390,9 @@ export interface ReactionRoleParserArgs extends MemberParserArgs {
   action: string;
   role: Role;
   reaction: MessageReaction | ButtonInteraction;
+}
+export interface BoostParserArgs extends MemberParserArgs {
+  guild: Guild;
 }
 
 export interface MemberParserArgs {

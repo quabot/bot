@@ -29,6 +29,13 @@ export interface IUserGame {
   };
   bio: string;
 }
+export interface IBoostConfig {
+  guildId: string;
+  enabled: boolean;
+  channel: string;
+  message: Message,
+  type: MessageType;
+}
 
 export interface IAfkConfig {
   guildId: Snowflake;
