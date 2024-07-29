@@ -5,7 +5,6 @@ import type { RoleCreateOptions } from 'discord.js';
 export default {
   parent: 'role',
   name: 'create',
-
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
 

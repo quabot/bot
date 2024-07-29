@@ -5,7 +5,6 @@ import { PermissionFlagsBits } from 'discord.js';
 export default {
   parent: 'role',
   name: 'add',
-
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: true });
     
