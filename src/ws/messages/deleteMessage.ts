@@ -18,6 +18,6 @@ export default {
     //* Find the message in the channel.
     const message = await channel.messages.fetch(messageId);
     if (!message) return;
-    await message.delete();
+    await message.delete().catch(() => null);
   },
 };

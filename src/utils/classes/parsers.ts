@@ -29,9 +29,9 @@ export class BaseParser {
     let res = text;
 
     for (const variable of this.variables) {
-      res = res.replaceAll(`{${variable.name}}`, variable.value);
+      res = (res ?? '').replaceAll(`{${variable.name}}`, variable.value);
 
-      variable.aliases?.forEach(a => (res = res.replaceAll(`{${a}}`, variable.value)));
+      variable.aliases?.forEach(a => (res = (res ?? '').replaceAll(`{${a}}`, variable.value)));
     }
 
     for (const variable of this.functionalVariables) {

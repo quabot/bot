@@ -63,7 +63,7 @@ export default {
 
     if (xp) levelDB.xp = xp;
     if (level) levelDB.level = level;
-    await levelDB.save();
+    await levelDB.save().catch(() => null);
 
     await interaction.editReply({
       embeds: [

@@ -99,7 +99,7 @@ export default {
     if (xp + rndXp >= reqXp) {
       levelDB.xp += rndXp;
       levelDB.level += 1;
-      await levelDB.save();
+      await levelDB.save().catch(() => null);
 
       xp = xp += rndXp;
       level = level += 1;
@@ -184,14 +184,14 @@ export default {
           const role = guild.roles.cache.get(check.role);
           if (hasRolePerms(role)) await member.roles.add(role!);
           levelDB.role = check.role;
-          await levelDB.save();
+          await levelDB.save().catch(() => null);
         }
 
         if (config.rewardsMode === 'stack') {
           const role = guild.roles.cache.get(check.role);
           if (hasRolePerms(role)) await member.roles.add(role!);
           levelDB.role = check.role;
-          await levelDB.save();
+          await levelDB.save().catch(() => null);
         }
 
         if (config.rewardDm === false) return;
@@ -210,7 +210,7 @@ export default {
       });
     } else {
       levelDB.xp += rndXp;
-      await levelDB.save();
+      await levelDB.save().catch(() => null);
     }
   },
 };
