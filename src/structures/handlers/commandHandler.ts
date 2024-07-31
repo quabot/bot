@@ -4,7 +4,8 @@ import { type ContextMenuCommandBuilder, Routes, type SlashCommandBuilder } from
 import consola from 'consola';
 
 import { REST } from '@discordjs/rest';
-import getContexts from './contextHandler';
+import getUserContexts from './userContextHandler';
+import getMessageContexts from './messageContextHandler';
 import type { Client } from '@classes/discord';
 import type { Command } from '@typings/structures';
 
@@ -13,8 +14,10 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN!);
 
 export default async function (client: Client) {
   const commandsList: (SlashCommandBuilder | ContextMenuCommandBuilder)[] = [];
-  const contexts = await getContexts(client);
-  contexts.forEach(context => commandsList.push(context));
+  const userContexts = await getUserContexts(client);
+  const messageContexts = await getMessageContexts(client);
+  userContexts.forEach(context => commandsList.push(context));
+  messageContexts.forEach(context => commandsList.push(context));
 
   const files = await PG(`${process.cwd().replace(/\\/g, '/')}/dist/commands/*/*.js`);
   files.forEach(async file => {

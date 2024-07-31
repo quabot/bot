@@ -213,6 +213,9 @@ export interface IModerationConfig {
 
   tempbanDM: boolean;
   tempbanDMMessage: Message;
+
+  reportEnabled: boolean;
+  reportChannelId: string;
 }
 
 export interface IPoll {

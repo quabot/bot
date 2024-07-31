@@ -23,5 +23,9 @@ export default model<IModerationConfig>(
 
     tempbanDM: reqBool,
     tempbanDMMessage: reqObject,
+
+
+    reportEnabled: reqBool,
+    reportChannelId: reqString,
   }),
 );

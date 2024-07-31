@@ -11,7 +11,8 @@ const client = new Client({
 //* Define the collections that will store different types of events/interactions and the websocket events.
 client.buttons = new Collection();
 client.commands = new Collection();
-client.contexts = new Collection();
+client.userContexts = new Collection();
+client.messageContexts = new Collection();
 client.menus = new Collection();
 client.modals = new Collection();
 client.ws_events = new Collection();

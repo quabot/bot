@@ -1,6 +1,6 @@
 import { ApplicationCommandType, ContextMenuCommandBuilder, Collection } from 'discord.js';
 import { Embed } from '@constants/embed';
-import type { ContextArgs } from '@typings/functionArgs';
+import type { UserContextArgs } from '@typings/functionArgs';
 import { getRoleIds } from '@functions/discord';
 
 const houses = new Collection<string, string>();
@@ -11,7 +11,7 @@ houses.set('HypeSquadOnlineHouse3', '<:balance:1142386789529686090> Balance');
 export default {
   data: new ContextMenuCommandBuilder().setName('Userinfo').setType(ApplicationCommandType.User).setDMPermission(false),
 
-  async execute({ interaction, color }: ContextArgs) {
+  async execute({ interaction, color }: UserContextArgs) {
     await interaction.deferReply();
 
     const member = interaction.targetMember;

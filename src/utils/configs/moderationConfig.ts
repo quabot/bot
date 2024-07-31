@@ -126,6 +126,9 @@ export async function getModerationConfig(client: Client, guildId: Snowflake) {
         thumbnail: '',
         image: '',
       },
+
+      reportEnabled: true,
+      reportChannelId: 'none',
     },
   });
 }
