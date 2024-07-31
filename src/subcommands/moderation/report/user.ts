@@ -1,23 +1,16 @@
 import { Client } from '@classes/discord';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { Embed } from '@constants/embed';
-import { MessageContextArgs } from '@typings/functionArgs';
-import {
-  ActionRowBuilder,
-  ApplicationCommandType,
-  ContextMenuCommandBuilder,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle
-} from 'discord.js';
+import type { CommandArgs } from '@typings/functionArgs';
+import { ActionRowBuilder, GuildMember, ModalBuilder, PermissionFlagsBits, TextInputBuilder, TextInputStyle } from 'discord.js';
 
 export default {
-  data: new ContextMenuCommandBuilder()
-    .setName('Report Message To Staff')
-    .setType(ApplicationCommandType.Message)
-    .setDMPermission(false),
-  async execute({ interaction, color }: MessageContextArgs, client: Client) {
-    const message = interaction.targetMessage;
+  parent: 'report',
+  name: 'user',
+
+  async execute({ interaction, color }: CommandArgs, client: Client) {
+    const member = interaction.options.getMember('user') as GuildMember;
+    const user = interaction.options.getUser('user', true);
 
     const config = await getModerationConfig(client, interaction.guildId ?? '');
     if (!config)
@@ -44,9 +37,16 @@ export default {
         embeds: [new Embed(color).setDescription('The report channel must be a text channel.')],
       });
 
+    //* Check if member has admin perms
+    if (member.permissions.has(PermissionFlagsBits.Administrator))
+      return await interaction.reply({
+        embeds: [new Embed(color).setDescription('You cannot report a server administrator.')],
+        ephemeral: true,
+      });
+
     const modalBuilder = new ModalBuilder()
-      .setTitle(`Reporting a message`)
-      .setCustomId('report-message')
+      .setTitle(`Reporting @${user.username}`)
+      .setCustomId('report-user')
       .setComponents(
         new ActionRowBuilder<TextInputBuilder>().setComponents(
           new TextInputBuilder()
@@ -80,8 +80,8 @@ export default {
     await channel.send({
       embeds: [
         new Embed(color)
-          .setTitle('Message Reported')
-          .setDescription(`**Author:** ${message.author} ([Click to jump](${message.url}))\n\n**Reported by:** ${interaction.user}\n**Reason:** ${reason}`)
+          .setTitle('User Reported')
+          .setDescription(`**User:** ${member}\n**Reported by:** ${interaction.user}\n**Reason:** ${reason}`)
           .setTimestamp(),
       ],
     });
@@ -89,7 +89,7 @@ export default {
     await modal.editReply({
       embeds: [
         new Embed(color).setDescription(
-          'The report has been sent to the staff, thank you for your report.\n\nPlease note that if this user has done something that violates the Discord Terms of Service, you should report them, as well as the message, to Discord Trust & Safety.',
+          'The report has been sent to the staff, thank you for your report.\n\nPlease note that if this user has done something that violates the Discord Terms of Service, you should report them to Discord Trust & Safety.',
         ),
       ],
     });
