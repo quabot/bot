@@ -46,7 +46,7 @@ export default {
     const buildEmbed = (i: number) => {
       return new Embed(color)
         .setTitle(`Question ${i + 1}/${config.appealQuestions.length}`)
-        .setDescription(`${config.appealQuestions![i]}\n\n${appeal.answers[i] ?? "No answer given."}`);
+        .setDescription(`**${config.appealQuestions![i]}**\n${appeal.answers[i] ?? "No answer given."}`);
     };
 
     let page = 0;
