@@ -228,5 +228,25 @@ export default {
         embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields)],
       });
     }
+
+    const appealChannel = interaction.guild?.channels.cache.get(config.appealChannelId);
+    if (appealChannel && config.appealEnabled && config.appealTypes.includes('tempban') && member) {
+      const appealButton = new ActionRowBuilder<ButtonBuilder>().setComponents(
+        new ButtonBuilder().setCustomId('punishment-appeal').setLabel('Click to appeal').setStyle(ButtonStyle.Primary),
+      );
+
+      await member
+        .send({
+          embeds: [
+            new Embed(color)
+              .setDescription(
+                'Appeal your punishment by clicking on the button below. A staff member will review your appeal.',
+              )
+              .setFooter({ text: `${id}` }),
+          ],
+          components: [appealButton],
+        })
+        .catch(() => {});
+    }
   },
 };
