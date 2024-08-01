@@ -15,9 +15,13 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('guildBanRemove')) return;
 
-    const channel = ban.guild.channels.cache.get(config.channelId);
+    const event = config.events?.find(event => event.event === 'guildBanRemove');
+    if (!event) return;
+
+    if (!event.enabled) return;
+
+    const channel = ban.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

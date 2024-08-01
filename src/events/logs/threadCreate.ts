@@ -16,7 +16,10 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('threadCreate')) return;
+    const event = config.events?.find(event => event.event === 'threadCreate');
+    if (!event) return;
+
+    if (!event.enabled) return;
     if (
       thread.parentId &&
       ((thread.parent?.parentId && config.excludedCategories!.includes(thread.parent.parentId)) ||
@@ -24,7 +27,7 @@ export default {
     )
       return;
 
-    const channel = thread.guild.channels.cache.get(config.channelId);
+    const channel = thread.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

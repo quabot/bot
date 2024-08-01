@@ -18,11 +18,15 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('channelUpdate')) return;
+
+    const event = config.events?.find(event => event.event === 'channelUpdate');
+    if (!event) return;
+
+    if (!event.enabled) return;
     if (newChannel.parentId && config.excludedCategories!.includes(newChannel.parentId)) return;
     if (config.excludedChannels!.includes(newChannel.id)) return;
 
-    const logChannel = newChannel.guild.channels.cache.get(config.channelId);
+    const logChannel = newChannel.guild.channels.cache.get(event.channelId);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel)) return;
 

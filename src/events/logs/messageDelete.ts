@@ -15,14 +15,18 @@ export default {
     const config = await getLoggingConfig(client, message.guild.id);
     if (!config) return;
     if (!config.enabled) return;
+    if (!config.logBotActions && message.author.bot) return;
 
-    if (!config.events!.includes('messageDelete')) return;
+    const event = config.events?.find(event => event.event === 'messageDelete');
+    if (!event) return;
+
+    if (!event.enabled) return;
     if (config.excludedChannels!.includes(message.channelId)) return;
     if (!message.channel.isDMBased()) {
       if (message.channel.parentId && config.excludedCategories!.includes(message.channel.parentId)) return;
     }
 
-    const channel = message.guild.channels.cache.get(config.channelId);
+    const channel = message.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

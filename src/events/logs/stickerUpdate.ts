@@ -15,9 +15,12 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('stickerUpdate')) return;
+    const event = config.events?.find(event => event.event === 'stickerUpdate');
+    if (!event) return;
 
-    const channel = newSticker.guild.channels.cache.get(config.channelId);
+    if (!event.enabled) return;
+
+    const channel = newSticker.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

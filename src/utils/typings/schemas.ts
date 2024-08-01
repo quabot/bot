@@ -1,12 +1,5 @@
 import type { ColorResolvable, Snowflake } from 'discord.js';
-import type {
-  LevelCard,
-  Message,
-  MessageType,
-  MessageTypeWithCard,
-  Status,
-  WelcomeCard,
-} from '@typings/mongoose';
+import type { LevelCard, Message, MessageType, MessageTypeWithCard, Status, WelcomeCard } from '@typings/mongoose';
 import { Types } from 'mongoose';
 
 export interface IUserGame {
@@ -33,7 +26,7 @@ export interface IBoostConfig {
   guildId: string;
   enabled: boolean;
   channel: string;
-  message: Message,
+  message: Message;
   type: MessageType;
 }
 
@@ -188,10 +181,10 @@ export interface ILevelConfig {
 export interface ILoggingConfig {
   guildId: Snowflake;
   enabled: boolean;
-  channelId: string;
   excludedChannels?: Types.Array<Snowflake>;
   excludedCategories?: Types.Array<Snowflake>;
-  events?: Types.Array<string>;
+  events?: Types.Array<{ enabled: boolean; event: string; channelId: string }>;
+  logBotActions: boolean;
 }
 
 export interface IModerationConfig {
@@ -316,18 +309,18 @@ export interface IReactionRoles {
 export type ReactionRoleReactionType = {
   emoji: string;
   role: string;
-}
+};
 export type ReactionRoleButtonType = {
   emoji: string;
   label: string;
   role: string;
-}
+};
 export type ReactionRoleDropdownType = {
   emoji: string;
   label: string;
   description?: string;
   role: string;
-}
+};
 
 export interface IResponderConfig {
   guildId: Snowflake;

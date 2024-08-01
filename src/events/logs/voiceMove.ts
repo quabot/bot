@@ -14,7 +14,13 @@ export default {
     const config = await getLoggingConfig(client, oldState.guild.id);
     if (!config) return;
     if (!config.enabled) return;
-    if (!config.events!.includes('voiceMove')) return;
+    if (!newState.member) return;
+    if (!config.logBotActions && newState.member.user.bot) return;
+    
+    const event = config.events?.find(event => event.event === 'voiceMove');
+    if (!event) return;
+
+    if (!event.enabled) return;
 
     if (oldState.member?.user.bot || newState.member?.user.bot) return;
 
@@ -41,7 +47,7 @@ export default {
     )
       return;
 
-    const channel = newState.guild.channels.cache.get(config.channelId);
+    const channel = newState.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

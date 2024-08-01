@@ -7,7 +7,7 @@ export default {
   name: 'messageDeleteBulk',
 
   async execute({ client }: EventArgs, messages: Collection<Snowflake, Message>, channel: GuildTextBasedChannel) {
-    if (!channel.guild.id) return;
+    if (!channel.guild.id) return; 
 
     messages.reverse().forEach(m => messageDeleteEvent.execute({ client }, m));
   },
