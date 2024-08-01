@@ -209,6 +209,21 @@ export interface IModerationConfig {
 
   reportEnabled: boolean;
   reportChannelId: string;
+
+  appealEnabled: boolean;
+  appealChannelId: string;
+  appealTypes: Types.Array<string> | string[];
+  appealQuestions: Types.Array<string> | string[];
+}
+
+export interface IPunishmentAppeal {
+  guildId: Snowflake;
+  userId: Snowflake;
+  type: string;
+  punishmentId: string;
+  answers: Types.Array<string> | string[];
+  state: Status;
+  response?: string;
 }
 
 export interface IPoll {

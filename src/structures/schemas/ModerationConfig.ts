@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqObject } from '@constants/schemas';
+import { reqString, reqBool, reqObject, reqArray } from '@constants/schemas';
 import type { IModerationConfig } from '@typings/schemas';
 
 export default model<IModerationConfig>(
@@ -27,5 +27,10 @@ export default model<IModerationConfig>(
 
     reportEnabled: reqBool,
     reportChannelId: reqString,
+
+    appealEnabled: reqBool,
+    appealChannelId: reqString,
+    appealTypes: reqArray,
+    appealQuestions: reqArray,
   }),
 );
