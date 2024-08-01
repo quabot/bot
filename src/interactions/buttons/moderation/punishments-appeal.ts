@@ -158,7 +158,6 @@ export default {
 
     submitCollector.on('collect', async inter => {
       const invalid = config.appealQuestions.filter((_, i) => (answers[i] ? answers[i].length === 0 : true));
-      console.log(invalid);
       if (invalid.length > 0) {
         await inter.reply({
           embeds: [
@@ -170,7 +169,7 @@ export default {
             ),
           ],
           ephemeral: true,
-        });
+        }).catch(() => {});
 
         return;
       }
@@ -208,8 +207,8 @@ export default {
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder().setCustomId('appeal-view').setLabel('View answers').setStyle(ButtonStyle.Primary),
-            new ButtonBuilder().setCustomId('appeal-accept').setLabel('Accept').setStyle(ButtonStyle.Success),
-            new ButtonBuilder().setCustomId('appeal-deny').setLabel('Deny').setStyle(ButtonStyle.Danger),
+            new ButtonBuilder().setCustomId('appeal-accept').setLabel('Accept and revoke punishment').setStyle(ButtonStyle.Success),
+            new ButtonBuilder().setCustomId('appeal-deny').setLabel('Deny and keep punishment').setStyle(ButtonStyle.Danger),
           ),
         ],
       });
@@ -243,10 +242,10 @@ export default {
 
       await interaction.deferReply({ ephemeral: true });
 
-      pages[i].embeds[0].spliceFields(1, 1, {
+      pages[i].embeds[0].setFields([{
         name: 'Answer',
         value: answer[0] ?? 'No answer.',
-      });
+      }]);
 
       await updatePage();
       await interaction.deleteReply();
