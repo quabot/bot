@@ -11,7 +11,7 @@ export default {
 
   async execute({ client }: EventArgs, oldMember: GuildMember, newMember: GuildMember) {
     if (!newMember.premiumSince) return;
-    if (oldMember.premiumSince === newMember.premiumSince) return;
+    if (new Date(oldMember.premiumSince ?? "").getTime() === new Date(newMember.premiumSince).getTime()) return;
 
     const config = await getBoostConfig(newMember.guild.id, client);
     if (!config) return;
