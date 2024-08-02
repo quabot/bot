@@ -2,6 +2,10 @@ import { Client } from '@classes/discord';
 import { Collection, Partials } from 'discord.js';
 const { Channel, Reaction, Message } = Partials;
 
+//* Configuring a timeout for the undici agent, used for the HTTP requests (needed for production).
+import { setGlobalDispatcher, Agent } from 'undici';
+setGlobalDispatcher(new Agent({ connect: { timeout: 60_000 } }) );
+
 //* Create the client & set intents and partials.
 const client = new Client({
   intents: 46847,
