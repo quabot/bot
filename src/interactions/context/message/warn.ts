@@ -10,7 +10,8 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ContextMenuCommandBuilder,
-  GuildMemberRoleManager
+  GuildMemberRoleManager,
+  PermissionFlagsBits
 } from 'discord.js';
 import { randomUUID } from 'crypto';
 import Punishment from '@schemas/Punishment';
@@ -22,6 +23,7 @@ export default {
   data: new ContextMenuCommandBuilder()
     .setName('Warn User Based On Message')
     .setType(ApplicationCommandType.Message)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDMPermission(false),
   async execute({ interaction, color }: MessageContextArgs, client: Client) {
     const message = interaction.targetMessage;
@@ -33,7 +35,8 @@ export default {
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    const reason = message.content ?? 'No reason provided.';
+    let reason = `Your message: ${message.content.substring(0,500)}` ?? 'No reason provided.';
+    if (message.content === '') reason = 'No reason provided.';
     const user = message.author;
     const member = message.member ?? (await interaction.guild?.members.fetch(user.id).catch(() => null));
     if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
