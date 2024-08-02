@@ -12,6 +12,8 @@ export default {
 
     let enabled = interaction.options.getBoolean('enabled');
 
+    const status = interaction.options.getString('status');
+
     const config = await getAfkConfig(interaction.guildId!, client);
     const user = await getUser(interaction.guildId!, interaction.user.id);
     if (!config || !user)
@@ -25,6 +27,7 @@ export default {
         embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
       });
 
+    if (status) user.afkMessage = status;
     user.afk = enabled;
     await user.save();
 

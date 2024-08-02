@@ -34,6 +34,23 @@ export default {
     )
     .addSubcommand(subcommand =>
       subcommand
+        .setName('all')
+        .setDescription('Give a role to all of a certain group.')
+        .addStringOption(option =>
+          option
+            .setDescription('The group to give the role.')
+            .setRequired(true)
+            .setName('group')
+            .addChoices(
+              { name: 'All Members', value: 'all' },
+              { name: 'Humans', value: 'humans' },
+              { name: 'Bots', value: 'bots' },
+            ),
+        )
+        .addRoleOption(option => option.setDescription('The role to give.').setRequired(true).setName('role')),
+    )
+    .addSubcommand(subcommand =>
+      subcommand
         .setName('edit')
         .setDescription('Edit a role.')
         .addRoleOption(option => option.setDescription('The role to edit.').setRequired(true).setName('role'))

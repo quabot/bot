@@ -2,6 +2,7 @@ import { isSnowflake } from '@functions/string';
 import type { GuildChannel } from '@typings/discord';
 import type { ISuggestion } from '@typings/schemas';
 import type {
+  ButtonInteraction,
   ColorResolvable,
   Guild,
   GuildMember,
@@ -28,9 +29,9 @@ export class BaseParser {
     let res = text;
 
     for (const variable of this.variables) {
-      res = res.replaceAll(`{${variable.name}}`, variable.value);
+      res = (res ?? '').replaceAll(`{${variable.name}}`, variable.value);
 
-      variable.aliases?.forEach(a => (res = res.replaceAll(`{${a}}`, variable.value)));
+      variable.aliases?.forEach(a => (res = (res ?? '').replaceAll(`{${a}}`, variable.value)));
     }
 
     for (const variable of this.functionalVariables) {
@@ -240,6 +241,16 @@ export class ReactionRoleParser extends MemberParser {
     );
   }
 }
+export class BoostParser extends MemberParser {
+  constructor({ member, color, guild }: BoostParserArgs) {
+    super({ member, color });
+
+    this.addVariables(
+      { name: 'boosts', value: guild.premiumSubscriptionCount ? guild.premiumSubscriptionCount.toString() : '0' },
+      { name: 'tier', value: guild.premiumTier.toString() },
+    );
+  }
+}
 
 export class LevelParser extends MemberParser {
   constructor({ channel, level, xp, member, color }: LevelParserArgs) {
@@ -378,7 +389,10 @@ export interface StarMessageArgs extends MemberParserArgs {
 export interface ReactionRoleParserArgs extends MemberParserArgs {
   action: string;
   role: Role;
-  reaction: MessageReaction;
+  reaction: MessageReaction | ButtonInteraction;
+}
+export interface BoostParserArgs extends MemberParserArgs {
+  guild: Guild;
 }
 
 export interface MemberParserArgs {

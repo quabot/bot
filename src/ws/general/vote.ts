@@ -43,7 +43,7 @@ export default {
       .send({
         embeds: [
           new Embed('#416683').setDescription(
-            `Hey ${user}! Thank you so much for voting for QuaBot. It really means a lot to us. As a reward, we have given you a 1.5x level XP multiplier for 12 hours! We hope you enjoy your time with QuaBot! You are our **${voteCount}th** vote this month!`,
+            `Hey ${user}! Thank you so much for voting for QuaBot. It _really_ means a lot to us. As a reward, we have given you a 1.5x level XP multiplier for 12 hours! We hope you enjoy your time with QuaBot! You are our **${voteCount}th** vote this month!`,
           ),
         ],
       })

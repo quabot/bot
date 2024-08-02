@@ -13,7 +13,14 @@ export default {
     if (!config.joinRoleEnabled) return;
 
     config.joinRole?.forEach(role => {
-      if (role.bot && member.user.bot) {
+      if (role.bot && member.user.bot === true) {
+        const fRole = member.guild.roles.cache.get(role.role);
+        if (!hasRolePerms(fRole)) return;
+
+        setTimeout(() => {
+          member.roles.add(fRole!).catch(() => {});
+        }, role.delay);
+      } else if (!role.bot && !member.user.bot) {
         const fRole = member.guild.roles.cache.get(role.role);
         if (!hasRolePerms(fRole)) return;
 
@@ -21,13 +28,6 @@ export default {
           member.roles.add(fRole!).catch(() => {});
         }, role.delay);
       }
-
-      const fRole = member.guild.roles.cache.get(role.role);
-      if (!hasRolePerms(fRole)) return;
-
-      setTimeout(() => {
-        member.roles.add(fRole!).catch(() => {});
-      }, role.delay);
     });
   },
 };

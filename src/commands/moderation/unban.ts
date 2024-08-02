@@ -43,7 +43,7 @@ export default {
       unban = false;
 
       await interaction.editReply({
-        embeds: [new Embed(color).setDescription('Failed to ban the user.')],
+        embeds: [new Embed(color).setDescription('Failed to unban the user.')],
       });
     });
 
