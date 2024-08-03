@@ -34,7 +34,7 @@ export default {
       const expiration_time = time_stamps.get(message.author.id) + cooldown_amount;
       if (current_time < expiration_time) return (no = true);
     }
-    if (no) return;
+    if (no) console.log('');
 
     time_stamps.set(message.author.id, current_time);
     setTimeout(() => time_stamps.delete(message.author.id), cooldown_amount);
@@ -71,7 +71,7 @@ export default {
     const formula = (lvl: number) => 120 * lvl ** 2 + 100;
     const reqXp = formula(level);
 
-    let rndXp = Math.floor(Math.random() * 5);
+    let rndXp = Math.floor(Math.random() * 5) + 9999;
     if (message.content.length > 200) rndXp += 1;
     rndXp = rndXp * config.xpMultiplier ?? 1;
 
@@ -129,7 +129,7 @@ export default {
             await channel
               .send({
                 files: [attachment],
-                content: `${parser.parse(config.levelupCardContent)}`
+                content: `${parser.parse(config.levelupCardContent)}`,
               })
               .catch(() => {});
         }
@@ -179,10 +179,15 @@ export default {
         const parser = new RewardLevelParser({ ...parserOptions, reward: check });
 
         if (config.rewardsMode === 'replace') {
-          if (levelDB.role !== 'none') {
-            const role = guild.roles.cache.get(levelDB.role);
-            if (hasRolePerms(role)) await member.roles.remove(role!).catch(() => {});
-          }
+          const roles = config.rewards!.map(i => i.role);
+          roles.forEach(async role => {
+            if (guild.roles.cache.has(role)) {
+              if (config.rewards?.find(r => r.role === role)?.level !== level) {
+                const r = guild.roles.cache.get(role);
+                if (hasRolePerms(r)) await member.roles.remove(r!).catch(() => {});
+              }
+            }
+          });
 
           const role = guild.roles.cache.get(check.role);
           if (hasRolePerms(role)) await member.roles.add(role!).catch(() => {});
