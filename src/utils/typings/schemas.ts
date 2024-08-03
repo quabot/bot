@@ -35,6 +35,22 @@ export interface IAfkConfig {
   enabled: boolean;
 }
 
+export interface IModerationRules {
+  guildId: Snowflake;
+  enabled: boolean;
+  title: string;
+  trigger: {
+    type: 'warn' | 'kick' | 'timeout' | 'ban';
+    amount: number;
+    time: string;
+  };
+  action: {
+    type: 'kick' | 'timeout' | 'ban' | 'warn';
+    duration: string;
+    reason: string;
+  };
+}
+
 export interface IApplication {
   guildId: Snowflake;
   id: string;
@@ -282,7 +298,7 @@ export interface IPunishment {
 
   channelId: Snowflake;
   moderatorId: Snowflake;
-  time: string;
+  time: number;
 
   type: 'ban' | 'kick' | 'tempban' | 'timeout' | 'warn';
   id: Snowflake;

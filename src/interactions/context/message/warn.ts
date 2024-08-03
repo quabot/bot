@@ -1,4 +1,3 @@
-import { Client } from '@classes/discord';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getUser } from '@configs/user';
 import { Embed } from '@constants/embed';
@@ -18,6 +17,7 @@ import Punishment from '@schemas/Punishment';
 import { ModerationParser } from '@classes/parsers';
 import { CustomEmbed } from '@constants/customEmbed';
 import { hasSendPerms } from '@functions/discord';
+import { checkModerationRules } from '@functions/moderation-rules';
 
 export default {
   data: new ContextMenuCommandBuilder()
@@ -25,7 +25,7 @@ export default {
     .setType(ApplicationCommandType.Message)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDMPermission(false),
-  async execute({ interaction, color }: MessageContextArgs, client: Client) {
+  async execute({ interaction, color, client }: MessageContextArgs) {
     const message = interaction.targetMessage;
     await interaction.deferReply({ ephemeral: true });
 
@@ -130,6 +130,7 @@ export default {
 
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
+      console.log(channel)
       if (!channel?.isTextBased()) return;
       if (!hasSendPerms(channel)) {
         return await interaction.followUp({
@@ -174,5 +175,7 @@ export default {
         embeds: [new Embed(color).setTitle('Member Warned').addFields(fields)],
       });
     }
+
+    await checkModerationRules(client, interaction.guildId!, member.id, 'warn');
   },
 };

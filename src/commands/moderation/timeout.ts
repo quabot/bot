@@ -17,6 +17,7 @@ import ms from 'ms';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
 import { TimedModerationParser } from '@classes/parsers';
+import { checkModerationRules } from '@functions/moderation-rules';
 
 export default {
   data: new SlashCommandBuilder()
@@ -32,6 +33,7 @@ export default {
     .setDMPermission(false),
 
   async execute({ client, interaction, color }: CommandArgs) {
+    console.log(interaction)
     const ephemeral = interaction.options.getBoolean('private') ?? false;
 
     await interaction.deferReply({ ephemeral });
@@ -229,5 +231,7 @@ export default {
         })
         .catch(() => {});
     }
+
+    await checkModerationRules(client, interaction.guildId!, member.id, 'timeout');
   },
 };

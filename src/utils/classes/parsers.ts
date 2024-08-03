@@ -366,7 +366,7 @@ export interface SuggestionParserArgs extends BaseStaffParserArgs {
 }
 
 export interface BaseStaffParserArgs extends MemberParserArgs {
-  interaction: Interaction;
+  interaction: Interaction | any;
 }
 
 export interface RewardLevelParserArgs extends LevelParserArgs {

@@ -65,7 +65,7 @@ export default {
             },
             {
               name: 'Time',
-              value: `<t:${Math.floor(parseFloat(punishment.time) / 1000)}:R>`,
+              value: `<t:${Math.floor(punishment.time / 1000)}:R>`,
               inline: true,
             },
             {
