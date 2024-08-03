@@ -160,7 +160,7 @@ export default {
     const sentFrom = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
-        .setLabel('Sent from server: ' + interaction.guild?.name ?? 'Unknown')
+        .setLabel(`Sent from server: ${interaction.guild?.name ?? 'Unknown'}`.substring(0, 80))
         .setStyle(ButtonStyle.Primary)
         .setDisabled(true),
     );
