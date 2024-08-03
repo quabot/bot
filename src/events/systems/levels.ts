@@ -34,7 +34,7 @@ export default {
       const expiration_time = time_stamps.get(message.author.id) + cooldown_amount;
       if (current_time < expiration_time) return (no = true);
     }
-    if (no) console.log('');
+    if (no) return;
 
     time_stamps.set(message.author.id, current_time);
     setTimeout(() => time_stamps.delete(message.author.id), cooldown_amount);
@@ -71,7 +71,7 @@ export default {
     const formula = (lvl: number) => 120 * lvl ** 2 + 100;
     const reqXp = formula(level);
 
-    let rndXp = Math.floor(Math.random() * 5) + 9999;
+    let rndXp = Math.floor(Math.random() * 5);
     if (message.content.length > 200) rndXp += 1;
     rndXp = rndXp * config.xpMultiplier ?? 1;
 
