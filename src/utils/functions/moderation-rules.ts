@@ -10,8 +10,9 @@ import { randomUUID } from 'crypto';
 import { Embed } from '@constants/embed';
 import { hasSendPerms } from './discord';
 import { getServerConfig } from '@configs/serverConfig';
-import { ModerationParser } from '@classes/parsers';
+import { ModerationParser, TimedModerationParser } from '@classes/parsers';
 import { CustomEmbed } from '@constants/customEmbed';
+import { tempUnban } from './unban';
 
 export const checkModerationRules = async (client: Client, guildId: string, userId: string, triggerType: string) => {
   const punishments = await Punishment.find({ guildId, userId });
@@ -411,10 +412,260 @@ export const checkModerationRules = async (client: Client, guildId: string, user
         const duration = rule.action.duration ?? 'permanent';
 
         if (duration === 'permanent') {
-          // ban regular
+          //* Try to ban the user and return if it fails.
+          let ban = true;
+          await guild?.members.ban(user ?? userId, { reason }).catch(() => {
+            ban = false;
+          });
+
+          if (!ban) return;
+
+          //* Update the databases
+          userDatabase.bans += 1;
+          await userDatabase.save();
+
+          const id = randomUUID();
+
+          const NewPunishment = new Punishment({
+            guildId: guildId,
+            userId,
+            channelId: 'none',
+            moderatorId: '995243562134409296',
+            time: new Date().getTime(),
+            type: 'ban',
+            id,
+            reason,
+            duration: 'none',
+            active: false,
+          });
+          await NewPunishment.save();
+
+          const fields: APIEmbedField[] = [
+            {
+              name: 'Account Created',
+              value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+              inline: true,
+            },
+          ];
+
+          if (member?.joinedTimestamp != null) {
+            fields.splice(0, 0, {
+              name: 'Joined Server',
+              value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+              inline: true,
+            });
+          }
+
+          //* Send the ban message to the user.
+          const sentFrom = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+              .setCustomId('sentFrom')
+              .setLabel(`Sent from server: ${guild?.name ?? 'Unknown'}`.substring(0, 80))
+              .setStyle(ButtonStyle.Primary)
+              .setDisabled(true),
+          );
+
+          if (config.banDM && member) {
+            const parser = new ModerationParser({ member, reason, interaction: { user: client.user }, color, id });
+
+            await member
+              ?.send({
+                embeds: [new CustomEmbed(config.banDMMessage, parser)],
+                content: parser.parse(config.banDMMessage.content),
+                components: [sentFrom],
+              })
+              .catch(() => {});
+          }
+
+          //* Send the log message.
+          if (config.channel) {
+            const channel = guild?.channels.cache.get(config.channelId);
+            if (!channel?.isTextBased()) return;
+            if (!hasSendPerms(channel)) return;
+
+            const fields = [
+              {
+                name: 'User',
+                value: `${member} (@${user.username})`,
+                inline: true,
+              },
+              { name: 'Banned By', value: `Automated`, inline: true },
+              {
+                name: 'User Total Bans',
+                value: `${userDatabase.bans}`,
+                inline: true,
+              },
+              {
+                name: 'Account Created',
+                value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+                inline: true,
+              },
+              { name: 'Reason', value: `${reason}` },
+            ];
+
+            if (member?.joinedTimestamp != null) {
+              fields.splice(4, 0, {
+                name: 'Joined Server',
+                value: `<t:${Math.floor(member?.joinedTimestamp / 1000)}:R>`,
+                inline: true,
+              });
+            }
+
+            await channel.send({
+              embeds: [new Embed(color).setTitle('Member Banned').setFields(fields)],
+            });
+          }
+
+          const appealChannel = guild?.channels.cache.get(config.appealChannelId);
+          if (appealChannel && config.appealEnabled && config.appealTypes.includes('ban') && member) {
+            const appealButton = new ActionRowBuilder<ButtonBuilder>().setComponents(
+              new ButtonBuilder()
+                .setCustomId('punishment-appeal')
+                .setLabel('Click to appeal')
+                .setStyle(ButtonStyle.Primary),
+            );
+
+            await member
+              .send({
+                embeds: [
+                  new Embed(color)
+                    .setDescription(
+                      'Appeal your punishment by clicking on the button below. A staff member will review your appeal.',
+                    )
+                    .setFooter({ text: `${id}` }),
+                ],
+                components: [appealButton],
+              })
+              .catch(() => {});
+          }
         } else {
-          // ban  tempban
+          let ban = true;
+          await member.ban({ reason }).catch(() => {
+            ban = false;
+          });
+
+          if (!ban) return;
+
+          userDatabase.tempbans += 1;
+          await userDatabase.save();
+
+          const id = randomUUID();
+
+          const NewPunishment = new Punishment({
+            guildId: guildId,
+            userId: member.id,
+            channelId: 'none',
+            moderatorId: '995243562134409296',
+            time: new Date().getTime(),
+            type: 'tempban',
+            id,
+            reason,
+            duration,
+            active: true,
+          });
+          await NewPunishment.save();
+
+          setTimeout(async () => {
+            await tempUnban(client, NewPunishment);
+          }, ms(duration));
+
+          const fields: APIEmbedField[] = [
+            {
+              name: 'Account Created',
+              value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+              inline: true,
+            },
+          ];
+
+          if (member.joinedTimestamp !== null) {
+            fields.splice(0, 0, {
+              name: 'Joined Server',
+              value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+              inline: true,
+            });
+          }
+          const sentFrom = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+              .setCustomId('sentFrom')
+              .setLabel(`Sent from server: ${guild?.name ?? 'Unknown'}`.substring(0, 80))
+              .setStyle(ButtonStyle.Primary)
+              .setDisabled(true),
+          );
+
+          if (config.tempbanDM && member) {
+            const parser = new TimedModerationParser({ member, reason, interaction: {user: client.user}, color, id, duration });
+
+            await member
+              .send({
+                embeds: [new CustomEmbed(config.tempbanDMMessage, parser)],
+                components: [sentFrom],
+                content: parser.parse(config.tempbanDMMessage.content),
+              })
+              .catch(() => {});
+          }
+
+          if (config.channel) {
+            const channel = guild?.channels.cache.get(config.channelId);
+            if (!channel?.isTextBased()) return;
+            if (!hasSendPerms(channel)) return;
+
+            const fields = [
+              {
+                name: 'User',
+                value: `${member} (@${user.username})`,
+                inline: true,
+              },
+              { name: 'Banned By', value: `Automated`, inline: true },
+              {
+                name: 'User Total Tempbans',
+                value: `${userDatabase.tempbans}`,
+                inline: true,
+              },
+              {
+                name: 'Account Created',
+                value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+                inline: true,
+              },
+              { name: 'Reason', value: `${reason}` },
+            ];
+
+            if (member.joinedTimestamp !== null) {
+              fields.splice(4, 0, {
+                name: 'Joined Server',
+                value: `<t:${Math.floor(member.joinedTimestamp / 1000)}:R>`,
+                inline: true,
+              });
+            }
+
+            await channel.send({
+              embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields)],
+            });
+          }
+
+          const appealChannel = guild?.channels.cache.get(config.appealChannelId);
+          if (appealChannel && config.appealEnabled && config.appealTypes.includes('tempban') && member) {
+            const appealButton = new ActionRowBuilder<ButtonBuilder>().setComponents(
+              new ButtonBuilder()
+                .setCustomId('punishment-appeal')
+                .setLabel('Click to appeal')
+                .setStyle(ButtonStyle.Primary),
+            );
+
+            await member
+              .send({
+                embeds: [
+                  new Embed(color)
+                    .setDescription(
+                      'Appeal your punishment by clicking on the button below. A staff member will review your appeal.',
+                    )
+                    .setFooter({ text: `${id}` }),
+                ],
+                components: [appealButton],
+              })
+              .catch(() => {});
+          }
         }
+        await checkModerationRules(client, guildId!, member.id, 'ban');
       }
       await checkModerationRules(client, guildId!, member.id, rule.action.type);
     } else {

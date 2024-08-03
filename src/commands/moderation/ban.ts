@@ -18,6 +18,7 @@ import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
 import { isSnowflake } from '@functions/string';
 import { ModerationParser } from '@classes/parsers';
+import { checkModerationRules } from '@functions/moderation-rules';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
@@ -279,5 +280,6 @@ export default {
         })
         .catch(() => {});
     }
+    await checkModerationRules(client, interaction.guildId!, user.id, 'ban');
   },
 };
