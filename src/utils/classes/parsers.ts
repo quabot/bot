@@ -161,6 +161,7 @@ export class MemberParser extends GuildParser {
       { name: 'user.displayname', aliases: ['user.display_name'], value: member.displayName },
       { name: 'user.avatar', value: member.avatar ?? member.user.avatar ?? '' },
       { name: 'user.avatarUrl', value: member.displayAvatarURL() },
+      { name: 'user.avatar_url', value: member.displayAvatarURL() },
       { name: 'avatar', value: member.displayAvatarURL() },
       { name: 'user.id', value: member.id },
       { name: 'user.createdAt', value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>` },

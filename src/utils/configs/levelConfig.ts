@@ -63,7 +63,7 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
         description: '{user} is now level **{level}** with **{xp}** xp!',
         fields: [],
         url: '',
-        thumbnail: '{user.avatar_url}',
+        thumbnail: '{user.avatarUrl}',
         image: '',
       },
 
