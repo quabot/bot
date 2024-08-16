@@ -45,7 +45,9 @@ export default {
     //* Get the reason and member and return if it doesn't exist.
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
     const user = interaction.options.getUser('user', true);
-    const member = interaction.guild?.members.cache.get(user.id)!;
+    if (!user) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
+    const member = interaction.guild?.members.cache.get(user.id)! || (await interaction.guild?.members.fetch(user.id).catch(() => null));
+    if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found, please try again.')] });
 
     await getUser(interaction.guildId!, member.id);
 

@@ -26,7 +26,7 @@ export default {
         await member.send({
           embeds: [embed],
           content: parser.parse(config.dm.content),
-        });
+        }).catch(() => null);
 
         break;
       }
@@ -40,7 +40,7 @@ export default {
 
       case 'card': {
         const card = await drawWelcomeCard(member, color, config.dmCard);
-        await member.send({ files: [new AttachmentBuilder(card)] });
+        await member.send({ files: [new AttachmentBuilder(card)] }).catch(() => null);
 
         break;
       }

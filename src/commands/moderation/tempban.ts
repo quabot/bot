@@ -62,7 +62,9 @@ export default {
     const duration = interaction.options.getString('duration', true).slice(0, 800);
     const seconds = interaction.options.getInteger('delete_messages', true);
     const user = interaction.options.getUser('user', true);
-    const member = await interaction.guild?.members.fetch(user.id);
+    if (!user) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
+    const member = interaction.guild?.members.cache.get(user.id)! || (await interaction.guild?.members.fetch(user.id).catch(() => null));
+    if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
 
     if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
 
