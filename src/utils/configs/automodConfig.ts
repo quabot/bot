@@ -24,6 +24,13 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
         alert: true,
         deleteAlertAfter: 15,
       },
+      externalLinks: {
+        enabled: false,
+        action: 'warn',
+        duration: '1d',
+        alert: true,
+        deleteAlertAfter: 15,
+      },
     },
   });
 }

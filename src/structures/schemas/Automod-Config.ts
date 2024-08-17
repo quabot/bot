@@ -12,5 +12,6 @@ export default model<IAutomodConfig>(
     logChannel: reqString,
     logsEnabled: reqBool,
     serverInvites: reqObject,
+    externalLinks: reqObject,
   }),
 );

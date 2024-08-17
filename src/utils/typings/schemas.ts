@@ -162,7 +162,14 @@ export interface IAutomodConfig {
     duration: string,
     alert: boolean,
     deleteAlertAfter: number;
-  }
+  },
+  externalLinks: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
+  },
 }
 
 export interface IAutomodStrike {
