@@ -149,6 +149,29 @@ export interface IIds {
   ticketId?: number;
 }
 
+export interface IAutomodConfig {
+  guildId: Snowflake;
+  enabled: boolean,
+  ignoredChannels: string[] | Types.Array<string>,
+  ignoredRoles: string[] | Types.Array<string>,
+  logChannel: string,
+  logsEnabled: boolean,
+  serverInvites: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
+  }
+}
+
+export interface IAutomodStrike {
+  guildId: Snowflake;
+  userId: Snowflake;
+  type: 'invite';
+  date: string;
+}
+
 export interface ILevel {
   guildId: Snowflake;
   userId: Snowflake;

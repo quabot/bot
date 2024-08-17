@@ -26,7 +26,6 @@ export const checkModerationRules = async (client: Client, guildId: string, user
   const kickCount = punishments.filter(p => p.type === 'kick').length;
   const warnCount = punishments.filter(p => p.type === 'warn').length;
 
-  console.log('timeout' + warnCount);
   const triggeredRules: IModerationRules[] = [];
   rules.forEach(r => {
     if (r.trigger.type === 'ban' && banCount >= r.trigger.amount && triggerType === 'ban')
@@ -42,7 +41,6 @@ export const checkModerationRules = async (client: Client, guildId: string, user
   triggeredRules.forEach(async rule => {
     if (!rule) return;
     let timeSince = new Date(Date.now() - ms(rule.trigger.time === 'none' ? '0s' : rule.trigger.time)).getTime();
-    console.log(timeSince);
     if (rule.trigger.time === 'none') timeSince = 0;
 
     const punishments = await Punishment.find({ guildId, userId, type: rule.trigger.type, time: { $gte: timeSince } });
