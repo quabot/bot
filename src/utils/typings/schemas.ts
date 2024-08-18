@@ -156,59 +156,69 @@ export interface IAutomodConfig {
   ignoredRoles: string[] | Types.Array<string>,
   logChannel: string,
   logsEnabled: boolean,
-  alert: boolean,
-  deleteAlertAfter: number,
   serverInvites: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
   },
   externalLinks: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
   },
   excessiveCaps: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
     percentage: number,
+    alert: boolean,
+    deleteAlertAfter: number;
   },
   excessiveEmojis: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
     percentage: number;
   },
   excessiveMentions: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
     mentions: number;
   },
   excessiveSpoilers: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
     percentage: number;
   },
   newLines: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
     lines: number;
   },
   profanityFilter: {
     enabled: boolean,
     action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
     duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
     extraWords: string[];
     removedWords: string[];
-  },
-  chatCooldown: {
-    enabled: boolean,
-    cooldown: number;
-  },
+  }
 }
 
 export interface IAutomodStrike {

@@ -5,38 +5,26 @@ import { getAutomodConfig } from '@configs/automodConfig';
 import { hasAnyPerms } from '@functions/discord';
 import AutomodStrike from '@schemas/Automod-Strike';
 import { actionAutomod } from '@functions/automodUtils';
-import { quickCheckCooldown } from './chatCooldown.ts';
 
 export default {
   event: 'messageCreate',
-  name: 'excessiveEmojisAutomod',
+  name: 'excessiveCapsAutomod',
   async execute({ client, color }: EventArgs, message: Message) {
     if (message.author.bot) return;
     if (!message.guildId) return;
     if (!message.guild) return;
 
-    if (!quickCheckCooldown(message.author.id, message.guildId)) return;
-    
     const config = await getAutomodConfig(message.guildId, client);
     if (!config) return;
 
-    if (!config.enabled || !config.excessiveEmojis.enabled) return;
+    if (!config.enabled || !config.excessiveCaps.enabled) return;
 
-    //* Detect if the message contains more that percentage emojis (check regular emojis and custom emojis)
-    const customEmojiRegex = /<a?:[a-zA-Z0-9_]+:[0-9]+>/g;
-    const customEmojis = message.content.match(customEmojiRegex);
-    let newContent = message.content.replace(customEmojiRegex, '.');
-
-    //* Emoji Regex (even if they are back to back, should be seperated )
-    const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
-    const emojis = message.content.match(emojiRegex);
-    newContent = newContent.replace(emojiRegex, '.');
-    if (!emojis && !customEmojis) return;
-
-    const totalEmojis = (emojis?.length ?? 0) + (customEmojis?.length ?? 0);
-    const percentage = (totalEmojis / newContent.length) * 100;
-    if (percentage < config.excessiveEmojis.percentage) return;
-
+    //* Detect if the message contains more that percentage caps
+    const capsRegex = /[A-Z]/g;
+    const caps = message.content.match(capsRegex);
+    if (!caps) return;
+    const percentage = (caps.length / message.content.length) * 100;
+    if (percentage < config.excessiveCaps.percentage) return;
 
     //* Check if the user has the bypass permission
     const member =
@@ -65,27 +53,27 @@ export default {
     if (message.deletable) await message.delete().catch(() => { });
 
     //* Send the alert message (if enabled)
-    if (config.excessiveEmojis.alert) {
+    if (config.excessiveCaps.alert) {
       const alertMessage = await message.channel.send({
         embeds: [
           new Embed(color)
             .setDescription(
-              `Hey ${message.author}, please limit use of emojis in your messages! Your message has been deleted.`,
+              `Hey ${message.author}, please limit use of CAPS in your messages! Your message has been deleted.`,
             )
-            .setFooter({ text: `This message will be deleted in ${config.excessiveEmojis.deleteAlertAfter} seconds.` }),
+            .setFooter({ text: `This message will be deleted in ${config.excessiveCaps.deleteAlertAfter} seconds.` }),
         ],
         content: `<@${message.author.id}>`,
       });
       setTimeout(() => {
         if (alertMessage.deletable) alertMessage.delete();
-      }, config.excessiveEmojis.deleteAlertAfter * 1000);
+      }, config.excessiveCaps.deleteAlertAfter * 1000);
     }
 
     //* Save action to DB
     const newStrike = new AutomodStrike({
       guildId: message.guildId,
       userId: message.author.id,
-      type: 'excessive-emoji',
+      type: 'excessive-caps',
       date: new Date(),
     });
     await newStrike.save();
@@ -94,21 +82,21 @@ export default {
     const logChannel = message.guild.channels.cache.get(config.logChannel) as TextChannel;
     if (logChannel && config.logsEnabled) {
       const totalStrikes = await AutomodStrike.countDocuments({ guildId: message.guildId, userId: message.author.id });
-      const emojisStrikes = await AutomodStrike.countDocuments({
+      const capsStrikes = await AutomodStrike.countDocuments({
         guildId: message.guildId,
         userId: message.author.id,
-        type: 'excessive-emoji',
+        type: 'excessive-caps',
       });
       logChannel.send({
         embeds: [
           new Embed(color)
-            .setAuthor({ name: 'Excessive Emojis Message Deleted' })
+            .setAuthor({ name: 'Excessive Caps Message Deleted' })
             .setDescription(
               [
                 `**User**: ${message.author} (${message.author.username})`,
                 `**Channel**: ${message.channel.toString()} (${message.channelId})`,
                 `**Total Automod Strikes**: ${totalStrikes}`,
-                `**Total Excessive Emoji Strikes**: ${emojisStrikes}`,
+                `**Total Excessive Caps Strikes**: ${capsStrikes}`,
                 `**Message Content**: ${message.content}`,
               ]
                 .join('\n')
@@ -117,14 +105,14 @@ export default {
         ],
       });
     }
-
-    //* Do the action if configured
-    await actionAutomod(
-      client,
-      member,
-      config.excessiveEmojis.action,
-      config.excessiveEmojis.duration,
-      'Automatically punished after being flagged by automod, sent a message with excessive emojis.',
-    );
+			
+		//* Do the action if configured
+		await actionAutomod(
+			client,
+			member,
+			config.excessiveCaps.action,
+			config.excessiveCaps.duration,
+			'Automatically punished after being flagged by automod, sent a message with excessive caps.'
+		);
   },
 };

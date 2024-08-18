@@ -5,7 +5,6 @@ import { getAutomodConfig } from '@configs/automodConfig';
 import { hasAnyPerms } from '@functions/discord';
 import AutomodStrike from '@schemas/Automod-Strike';
 import { actionAutomod } from '@functions/automodUtils';
-import { quickCheckCooldown } from './chatCooldown.ts';
 
 export default {
   event: 'messageCreate',
@@ -15,8 +14,6 @@ export default {
     if (!message.guildId) return;
     if (!message.guild) return;
 
-    if (!quickCheckCooldown(message.author.id, message.guildId)) return;
-    
     const config = await getAutomodConfig(message.guildId, client);
     if (!config) return;
 

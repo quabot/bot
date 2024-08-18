@@ -5,13 +5,10 @@ import { getAutomodConfig } from '@configs/automodConfig';
 import { hasAnyPerms } from '@functions/discord';
 import AutomodStrike from '@schemas/Automod-Strike';
 import { actionAutomod } from '@functions/automodUtils';
-import { profanity } from '@2toad/profanity';
-import { quickCheckCooldown } from './chatCooldown.ts';
-profanity.addWords(['kut', 'kanker']);
 
 export default {
   event: 'messageCreate',
-  name: 'profanityFilterAutomod',
+  name: 'newLinesAutomod',
   async execute({ client, color }: EventArgs, message: Message) {
     if (message.author.bot) return;
     if (!message.guildId) return;
@@ -20,15 +17,14 @@ export default {
     const config = await getAutomodConfig(message.guildId, client);
     if (!config) return;
 
-    if (!quickCheckCooldown(message.author.id, message.guildId)) return;
-    
-    if (!config.enabled || !config.profanityFilter.enabled) return;
+    if (!config.enabled || !config.newLines.enabled) return;
 
-    //* Detect if the message contains profanity
-    profanity.addWords(config.profanityFilter.extraWords);
-    profanity.removeWords(config.profanityFilter.removedWords);
+    //* Detect if the message contains clears more than X lines, must not be just text but by using line-clearing methods. If there is no text between line breaks for up to X lines, blcok it
+    const lines = message.content.split('\n');
+    if (lines.length < config.newLines.lines) return;
+    const clearedLines = lines.filter(line => line.trim() === '');
+    if (clearedLines.length < config.newLines.lines) return;
 
-    if (!profanity.exists(message.content)) return;
 
     //* Check if the user has the bypass permission
     const member =
@@ -53,28 +49,31 @@ export default {
     )
       return;
 
-    if (message.deletable) await message.delete().catch(() => {});
+    
+    if (message.deletable) await message.delete().catch(() => { });
 
     //* Send the alert message (if enabled)
-    if (config.profanityFilter.alert) {
+    if (config.newLines.alert) {
       const alertMessage = await message.channel.send({
         embeds: [
           new Embed(color)
-            .setDescription(`Hey ${message.author}, please do not swear! Your message has been deleted.`)
-            .setFooter({ text: `This message will be deleted in ${config.profanityFilter.deleteAlertAfter} seconds.` }),
+            .setDescription(
+              `Hey ${message.author}, do not try to clear the chat! Your message has been deleted.`,
+            )
+            .setFooter({ text: `This message will be deleted in ${config.newLines.deleteAlertAfter} seconds.` }),
         ],
         content: `<@${message.author.id}>`,
       });
       setTimeout(() => {
         if (alertMessage.deletable) alertMessage.delete();
-      }, config.profanityFilter.deleteAlertAfter * 1000);
+      }, config.newLines.deleteAlertAfter * 1000);
     }
 
     //* Save action to DB
     const newStrike = new AutomodStrike({
       guildId: message.guildId,
       userId: message.author.id,
-      type: 'profanity',
+      type: 'new-lines',
       date: new Date(),
     });
     await newStrike.save();
@@ -83,21 +82,21 @@ export default {
     const logChannel = message.guild.channels.cache.get(config.logChannel) as TextChannel;
     if (logChannel && config.logsEnabled) {
       const totalStrikes = await AutomodStrike.countDocuments({ guildId: message.guildId, userId: message.author.id });
-      const profanityStrikes = await AutomodStrike.countDocuments({
+      const linesStrikes = await AutomodStrike.countDocuments({
         guildId: message.guildId,
         userId: message.author.id,
-        type: 'profanity',
+        type: 'new-lines',
       });
       logChannel.send({
         embeds: [
           new Embed(color)
-            .setAuthor({ name: 'Message With Profanity Deleted' })
+            .setAuthor({ name: 'Chat Clearing Message Deleted' })
             .setDescription(
               [
                 `**User**: ${message.author} (${message.author.username})`,
                 `**Channel**: ${message.channel.toString()} (${message.channelId})`,
                 `**Total Automod Strikes**: ${totalStrikes}`,
-                `**Total Profanity Strikes**: ${profanityStrikes}`,
+                `**Total Chat Clearing Strikes**: ${linesStrikes}`,
                 `**Message Content**: ${message.content}`,
               ]
                 .join('\n')
@@ -106,14 +105,14 @@ export default {
         ],
       });
     }
-
-    //* Do the action if configured
-    await actionAutomod(
-      client,
-      member,
-      config.profanityFilter.action,
-      config.profanityFilter.duration,
-      'Automatically punished after being flagged by automod, sent a message with swear words.',
-    );
+			
+		//* Do the action if configured
+		await actionAutomod(
+			client,
+			member,
+			config.newLines.action,
+			config.newLines.duration,
+			'Automatically punished after being flagged by automod, sent a message that tried to \'clear\' the chat.'
+		);
   },
 };
