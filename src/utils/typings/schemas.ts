@@ -214,7 +214,19 @@ export interface IAutomodConfig {
     enabled: boolean,
     messageLimit: number,
     duration: number;
-  }
+  },
+  mentionsCooldown: {
+    enabled: boolean,
+    messageLimit: number,
+    duration: number;
+  },
+  repeatedText: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: number,
+    messageLimit: number,
+    percentage: number;
+  },
 }
 
 export interface IAutomodStrike {

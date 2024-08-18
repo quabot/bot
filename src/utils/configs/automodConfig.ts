@@ -76,6 +76,18 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
         messageLimit: 3,
         duration: 5
       },
+      mentionsCooldown: {
+        enabled: false,
+        messageLimit: 3,
+        duration: 5
+      },
+      repeatedText: {
+        enabled: false,
+        action: 'warn',
+        duration: 30,
+        messageLimit: 3,
+        percentage: 70,
+      }
     },
   });
 }

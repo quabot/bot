@@ -23,5 +23,7 @@ export default model<IAutomodConfig>(
     profanityFilter: reqObject,
     chatCooldown: reqObject,
     attachmentsCooldown: reqObject,
+    mentionsCooldown: reqObject,
+    repeatedText: reqObject,
   }),
 );
