@@ -63,6 +63,14 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
         deleteAlertAfter: 15,
         percentage: 70,
       },
+      newLines: {
+        enabled: false,
+        action: 'warn',
+        duration: '1d',
+        alert: true,
+        deleteAlertAfter: 15,
+        lines: 10,
+      },
     },
   });
 }

@@ -17,5 +17,6 @@ export default model<IAutomodConfig>(
     excessiveEmojis: reqObject,
     excessiveMentions: reqObject,
     excessiveSpoilers: reqObject,
+    newLines: reqObject,
   }),
 );

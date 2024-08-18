@@ -202,7 +202,14 @@ export interface IAutomodConfig {
     deleteAlertAfter: number;
     percentage: number;
   },
-
+  newLines: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
+    lines: number;
+  },
 }
 
 export interface IAutomodStrike {

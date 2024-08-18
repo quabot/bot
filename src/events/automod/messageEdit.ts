@@ -6,6 +6,7 @@ import externalLinks from './externalLinks';
 import serverInvites from './serverInvites';
 import excessiveMentions from './excessiveMentions';
 import excessiveSpoilers from './excessiveSpoilers';
+import newLines from './newLines';
 
 export default {
   event: Events.MessageUpdate,
@@ -18,5 +19,6 @@ export default {
     serverInvites.execute({ client, color }, newMessage);
     excessiveMentions.execute({ client, color }, newMessage);
     excessiveSpoilers.execute({ client, color }, newMessage);
+    newLines.execute({ client, color }, newMessage);
   },
 };
