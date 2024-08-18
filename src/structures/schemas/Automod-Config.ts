@@ -15,5 +15,6 @@ export default model<IAutomodConfig>(
     externalLinks: reqObject,
     excessiveCaps: reqObject,
     excessiveEmojis: reqObject,
+    excessiveMentions: reqObject,
   }),
 );

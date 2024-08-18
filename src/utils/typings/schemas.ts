@@ -186,6 +186,15 @@ export interface IAutomodConfig {
     deleteAlertAfter: number;
     percentage: number;
   },
+  excessiveMentions: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
+    mentions: number;
+  },
+
 }
 
 export interface IAutomodStrike {
