@@ -10,6 +10,7 @@ import { externalLinks } from '@functions/automod/externalLinks';
 import { newLines } from '@functions/automod/newLines';
 import { profanityFilter } from '@functions/automod/profanityFilter';
 import { regexPreCheck } from '@functions/automod/regexPreCheck';
+import { repeatedText } from '@functions/automod/repeatedText';
 import { serverInvites } from '@functions/automod/serverInvites';
 import { hasAnyPerms } from '@functions/discord';
 import { EventArgs } from '@typings/functionArgs';
@@ -55,6 +56,7 @@ export default {
     if (await chatCooldown(message, config, client, color)) return;
     if (await profanityFilter(message, config, client, color, member)) return;
     if (await attachmentsCooldown(message, config, client, color)) return;
+    if (await repeatedText(message, config, client, color)) return;
     //* Run the regex. If there is any error in this regex, delete the message.
     if (!await regexPreCheck(message, config)) {
       //* Delete the message
