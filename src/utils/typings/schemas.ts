@@ -209,6 +209,11 @@ export interface IAutomodConfig {
     enabled: boolean,
     messageLimit: number,
     duration: number;
+  },
+  attachmentsCooldown: {
+    enabled: boolean,
+    messageLimit: number,
+    duration: number;
   }
 }
 

@@ -1,5 +1,6 @@
 import { getAutomodConfig } from '@configs/automodConfig';
 import { Embed } from '@constants/embed';
+import { attachmentsCooldown } from '@functions/automod/attachmentsCooldown';
 import { chatCooldown } from '@functions/automod/chatCooldown';
 import { excessiveCaps } from '@functions/automod/excessiveCaps';
 import { excessiveEmojis } from '@functions/automod/excessiveEmojis';
@@ -53,6 +54,7 @@ export default {
     const errors: string[] = [];
     if (await chatCooldown(message, config, client, color)) return;
     if (await profanityFilter(message, config, client, color, member)) return;
+    if (await attachmentsCooldown(message, config, client, color)) return;
     //* Run the regex. If there is any error in this regex, delete the message.
     if (!await regexPreCheck(message, config)) {
       //* Delete the message

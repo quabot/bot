@@ -71,6 +71,11 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
         messageLimit: 3,
         duration: 5
       },
+      attachmentsCooldown: {
+        enabled: false,
+        messageLimit: 3,
+        duration: 5
+      },
     },
   });
 }
