@@ -194,6 +194,14 @@ export interface IAutomodConfig {
     deleteAlertAfter: number;
     mentions: number;
   },
+  excessiveSpoilers: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
+    percentage: number;
+  },
 
 }
 
