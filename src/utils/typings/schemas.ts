@@ -207,7 +207,8 @@ export interface IAutomodConfig {
   },
   chatCooldown: {
     enabled: boolean,
-    cooldown: number;
+    messageLimit: number,
+    duration: number;
   }
 }
 

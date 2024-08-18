@@ -68,7 +68,8 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
       },
       chatCooldown: {
         enabled: false,
-        cooldown: 5,
+        messageLimit: 3,
+        duration: 5
       },
     },
   });

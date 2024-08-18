@@ -53,7 +53,6 @@ export default {
     const errors: string[] = [];
     if (await chatCooldown(message, config, client, color)) return;
     if (await profanityFilter(message, config, client, color, member)) return;
-
     //* Run the regex. If there is any error in this regex, delete the message.
     if (!await regexPreCheck(message, config)) {
       //* Delete the message
