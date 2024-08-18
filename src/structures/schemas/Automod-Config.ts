@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqArray, reqObject } from '@constants/schemas';
+import { reqString, reqBool, reqArray, reqObject, reqNum } from '@constants/schemas';
 import type { IAutomodConfig } from '@typings/schemas';
 
 export default model<IAutomodConfig>(
@@ -11,6 +11,8 @@ export default model<IAutomodConfig>(
     ignoredRoles: reqArray,
     logChannel: reqString,
     logsEnabled: reqBool,
+    alert: reqBool,
+    deleteAlertAfter: reqNum,
     serverInvites: reqObject,
     externalLinks: reqObject,
     excessiveCaps: reqObject,
@@ -19,5 +21,6 @@ export default model<IAutomodConfig>(
     excessiveSpoilers: reqObject,
     newLines: reqObject,
     profanityFilter: reqObject,
+    chatCooldown: reqObject,
   }),
 );

@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*.ts", "src/commands/fun/reddit", "src/events/systems/i"],
+  "include": ["src/**/*.ts", "src/commands/fun/reddit", "src/events/systems/i", "src/utils/functions/automod/excessiveCaps", "src/utils/functions/automod/excessiveEmojis", "src/utils/functions/automod/excessiveMentions", "src/utils/functions/automod/excessiveSpoilers", "src/utils/functions/automod/externalLinks", "src/utils/functions/automod/newLines", "src/utils/functions/automod/profanityFilter", "src/utils/functions/automod/serverInvites", "src/events/automod/messageCreate.ts", "src/utils/functions/automod/chatCooldown.ts"],
   "compilerOptions": {
     // Type Checking
     "allowUnreachableCode": false,

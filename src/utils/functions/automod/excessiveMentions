@@ -5,24 +5,27 @@ import { getAutomodConfig } from '@configs/automodConfig';
 import { hasAnyPerms } from '@functions/discord';
 import AutomodStrike from '@schemas/Automod-Strike';
 import { actionAutomod } from '@functions/automodUtils';
+import { quickCheckCooldown } from './chatCooldown.ts';
 
 export default {
   event: 'messageCreate',
-  name: 'externalLinksAutomod',
+  name: 'excessiveMentionsAutomod',
   async execute({ client, color }: EventArgs, message: Message) {
     if (message.author.bot) return;
     if (!message.guildId) return;
     if (!message.guild) return;
 
+    if (!quickCheckCooldown(message.author.id, message.guildId)) return;
+    
     const config = await getAutomodConfig(message.guildId, client);
     if (!config) return;
 
-    if (!config.enabled || !config.externalLinks.enabled) return;
+    if (!config.enabled || !config.excessiveMentions.enabled) return;
 
-    //* Detect if the message contains an external link (not discord)
-    const externalLinkRegex = /https?:\/\/(?!discord)([^\s]+)/gi;
-    const externalLinks = message.content.match(externalLinkRegex);
-    if (!externalLinks) return;
+    //* Detect if the message contains more than max mentions amount of mentions
+    const mentionsRegex = /<@&[0-9]+>|<@![0-9]+>|<@[0-9]+>|<#[0-9]+>/g;
+    const mentions = message.content.match(mentionsRegex)?.length ?? 0;
+    if (mentions < config.excessiveMentions.mentions) return;
 
     //* Check if the user has the bypass permission
     const member =
@@ -51,27 +54,27 @@ export default {
     if (message.deletable) await message.delete().catch(() => { });
 
     //* Send the alert message (if enabled)
-    if (config.externalLinks.alert) {
+    if (config.excessiveMentions.alert) {
       const alertMessage = await message.channel.send({
         embeds: [
           new Embed(color)
             .setDescription(
-              `Hey ${message.author}, you cannot send external links here! Your message has been deleted.`,
+              `Hey ${message.author}, please do not mention more than ${config.excessiveMentions.mentions} channels, users or roles! Your message has been deleted.`,
             )
-            .setFooter({ text: `This message will be deleted in ${config.externalLinks.deleteAlertAfter} seconds.` }),
+            .setFooter({ text: `This message will be deleted in ${config.excessiveMentions.deleteAlertAfter} seconds.` }),
         ],
         content: `<@${message.author.id}>`,
       });
       setTimeout(() => {
         if (alertMessage.deletable) alertMessage.delete();
-      }, config.externalLinks.deleteAlertAfter * 1000);
+      }, config.excessiveMentions.deleteAlertAfter * 1000);
     }
 
     //* Save action to DB
     const newStrike = new AutomodStrike({
       guildId: message.guildId,
       userId: message.author.id,
-      type: 'external-link',
+      type: 'excessive-mentions',
       date: new Date(),
     });
     await newStrike.save();
@@ -80,21 +83,21 @@ export default {
     const logChannel = message.guild.channels.cache.get(config.logChannel) as TextChannel;
     if (logChannel && config.logsEnabled) {
       const totalStrikes = await AutomodStrike.countDocuments({ guildId: message.guildId, userId: message.author.id });
-      const linkStrikes = await AutomodStrike.countDocuments({
+      const mentionStrikes = await AutomodStrike.countDocuments({
         guildId: message.guildId,
         userId: message.author.id,
-        type: 'external-link',
+        type: 'excessive-mentions',
       });
       logChannel.send({
         embeds: [
           new Embed(color)
-            .setAuthor({ name: 'External Link Deleted' })
+            .setAuthor({ name: 'Excessive Mentions Message Deleted' })
             .setDescription(
               [
                 `**User**: ${message.author} (${message.author.username})`,
                 `**Channel**: ${message.channel.toString()} (${message.channelId})`,
                 `**Total Automod Strikes**: ${totalStrikes}`,
-                `**Total External Link Strikes**: ${linkStrikes}`,
+                `**Total Excessive Mentions Strikes**: ${mentionStrikes}`,
                 `**Message Content**: ${message.content}`,
               ]
                 .join('\n')
@@ -108,9 +111,9 @@ export default {
 		await actionAutomod(
 			client,
 			member,
-			config.externalLinks.action,
-			config.externalLinks.duration,
-			'Automatically punished after being flagged by automod, sent an external link.'
+			config.excessiveMentions.action,
+			config.excessiveMentions.duration,
+			'Automatically punished after being flagged by automod, sent a message with excessive mentions.'
 		);
   },
 };
