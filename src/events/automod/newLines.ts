@@ -24,7 +24,6 @@ export default {
     if (lines.length < config.newLines.lines) return;
     const clearedLines = lines.filter(line => line.trim() === '');
     if (clearedLines.length < config.newLines.lines) return;
-    
 
 
     //* Check if the user has the bypass permission
@@ -50,8 +49,8 @@ export default {
     )
       return;
 
-    //* Delete the invite
-    if (message.deletable) await message.delete();
+    
+    if (message.deletable) await message.delete().catch(() => { });
 
     //* Send the alert message (if enabled)
     if (config.newLines.alert) {

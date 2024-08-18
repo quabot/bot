@@ -50,8 +50,8 @@ export default {
     )
       return;
 
-    //* Delete the invite
-    if (message.deletable) await message.delete();
+    
+    if (message.deletable) await message.delete().catch(() => { });
 
     //* Send the alert message (if enabled)
     if (config.excessiveSpoilers.alert) {

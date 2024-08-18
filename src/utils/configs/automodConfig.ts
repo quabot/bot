@@ -71,6 +71,15 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
         deleteAlertAfter: 15,
         lines: 10,
       },
+      profanityFilter: {
+        enabled: false,
+        action: 'warn',
+        duration: '1d',
+        alert: true,
+        deleteAlertAfter: 15,
+        extraWords: [],
+        removedWords: [],
+      },
     },
   });
 }

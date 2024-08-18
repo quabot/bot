@@ -210,6 +210,15 @@ export interface IAutomodConfig {
     deleteAlertAfter: number;
     lines: number;
   },
+  profanityFilter: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
+    extraWords: string[];
+    removedWords: string[];
+  }
 }
 
 export interface IAutomodStrike {

@@ -5,10 +5,12 @@ import { getAutomodConfig } from '@configs/automodConfig';
 import { hasAnyPerms } from '@functions/discord';
 import AutomodStrike from '@schemas/Automod-Strike';
 import { actionAutomod } from '@functions/automodUtils';
+import { profanity } from '@2toad/profanity';
+profanity.addWords(['kut', 'kanker']);
 
 export default {
   event: 'messageCreate',
-  name: 'excessiveEmojisAutomod',
+  name: 'profanityFilterAutomod',
   async execute({ client, color }: EventArgs, message: Message) {
     if (message.author.bot) return;
     if (!message.guildId) return;
@@ -17,23 +19,13 @@ export default {
     const config = await getAutomodConfig(message.guildId, client);
     if (!config) return;
 
-    if (!config.enabled || !config.excessiveEmojis.enabled) return;
+    if (!config.enabled || !config.profanityFilter.enabled) return;
 
-    //* Detect if the message contains more that percentage emojis (check regular emojis and custom emojis)
-    const customEmojiRegex = /<a?:[a-zA-Z0-9_]+:[0-9]+>/g;
-    const customEmojis = message.content.match(customEmojiRegex);
-    let newContent = message.content.replace(customEmojiRegex, '.');
+    //* Detect if the message contains profanity
+    profanity.addWords(config.profanityFilter.extraWords);
+    profanity.removeWords(config.profanityFilter.removedWords);
 
-    //* Emoji Regex (even if they are back to back, should be seperated )
-    const emojiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
-    const emojis = message.content.match(emojiRegex);
-    newContent = newContent.replace(emojiRegex, '.');
-    if (!emojis && !customEmojis) return;
-
-    const totalEmojis = (emojis?.length ?? 0) + (customEmojis?.length ?? 0);
-    const percentage = (totalEmojis / newContent.length) * 100;
-    if (percentage < config.excessiveEmojis.percentage) return;
-
+    if (!profanity.exists(message.content)) return;
 
     //* Check if the user has the bypass permission
     const member =
@@ -58,31 +50,28 @@ export default {
     )
       return;
 
-    
-    if (message.deletable) await message.delete().catch(() => { });
+    if (message.deletable) await message.delete().catch(() => {});
 
     //* Send the alert message (if enabled)
-    if (config.excessiveEmojis.alert) {
+    if (config.profanityFilter.alert) {
       const alertMessage = await message.channel.send({
         embeds: [
           new Embed(color)
-            .setDescription(
-              `Hey ${message.author}, please limit use of emojis in your messages! Your message has been deleted.`,
-            )
-            .setFooter({ text: `This message will be deleted in ${config.excessiveEmojis.deleteAlertAfter} seconds.` }),
+            .setDescription(`Hey ${message.author}, please do not swear! Your message has been deleted.`)
+            .setFooter({ text: `This message will be deleted in ${config.profanityFilter.deleteAlertAfter} seconds.` }),
         ],
         content: `<@${message.author.id}>`,
       });
       setTimeout(() => {
         if (alertMessage.deletable) alertMessage.delete();
-      }, config.excessiveEmojis.deleteAlertAfter * 1000);
+      }, config.profanityFilter.deleteAlertAfter * 1000);
     }
 
     //* Save action to DB
     const newStrike = new AutomodStrike({
       guildId: message.guildId,
       userId: message.author.id,
-      type: 'excessive-emoji',
+      type: 'profanity',
       date: new Date(),
     });
     await newStrike.save();
@@ -91,21 +80,21 @@ export default {
     const logChannel = message.guild.channels.cache.get(config.logChannel) as TextChannel;
     if (logChannel && config.logsEnabled) {
       const totalStrikes = await AutomodStrike.countDocuments({ guildId: message.guildId, userId: message.author.id });
-      const emojisStrikes = await AutomodStrike.countDocuments({
+      const profanityStrikes = await AutomodStrike.countDocuments({
         guildId: message.guildId,
         userId: message.author.id,
-        type: 'excessive-emoji',
+        type: 'profanity',
       });
       logChannel.send({
         embeds: [
           new Embed(color)
-            .setAuthor({ name: 'Excessive Emojis Message Deleted' })
+            .setAuthor({ name: 'Message With Profanity Deleted' })
             .setDescription(
               [
                 `**User**: ${message.author} (${message.author.username})`,
                 `**Channel**: ${message.channel.toString()} (${message.channelId})`,
                 `**Total Automod Strikes**: ${totalStrikes}`,
-                `**Total Excessive Emoji Strikes**: ${emojisStrikes}`,
+                `**Total Profanity Strikes**: ${profanityStrikes}`,
                 `**Message Content**: ${message.content}`,
               ]
                 .join('\n')
@@ -119,9 +108,9 @@ export default {
     await actionAutomod(
       client,
       member,
-      config.excessiveEmojis.action,
-      config.excessiveEmojis.duration,
-      'Automatically punished after being flagged by automod, sent a message with excessive emojis.',
+      config.profanityFilter.action,
+      config.profanityFilter.duration,
+      'Automatically punished after being flagged by automod, sent a message with swear words.',
     );
   },
 };

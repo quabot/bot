@@ -18,5 +18,6 @@ export default model<IAutomodConfig>(
     excessiveMentions: reqObject,
     excessiveSpoilers: reqObject,
     newLines: reqObject,
+    profanityFilter: reqObject,
   }),
 );
