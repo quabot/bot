@@ -13,5 +13,7 @@ export default model<IAutomodConfig>(
     logsEnabled: reqBool,
     serverInvites: reqObject,
     externalLinks: reqObject,
+    excessiveCaps: reqObject,
+    excessiveEmojis: reqObject,
   }),
 );

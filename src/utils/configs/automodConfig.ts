@@ -31,6 +31,22 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
         alert: true,
         deleteAlertAfter: 15,
       },
+      excessiveCaps: {
+        enabled: false,
+        action: 'warn',
+        duration: '1d',
+        alert: true,
+        deleteAlertAfter: 15,
+        percentage: 70,
+      },
+      excessiveEmojis: {
+        enabled: false,
+        action: 'warn',
+        duration: '1d',
+        alert: true,
+        deleteAlertAfter: 15,
+        percentage: 70,
+      },
     },
   });
 }

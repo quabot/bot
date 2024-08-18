@@ -170,6 +170,22 @@ export interface IAutomodConfig {
     alert: boolean,
     deleteAlertAfter: number;
   },
+  excessiveCaps: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    percentage: number,
+    alert: boolean,
+    deleteAlertAfter: number;
+  },
+  excessiveEmojis: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    alert: boolean,
+    deleteAlertAfter: number;
+    percentage: number;
+  },
 }
 
 export interface IAutomodStrike {
