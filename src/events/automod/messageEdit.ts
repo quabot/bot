@@ -7,6 +7,7 @@ import serverInvites from './serverInvites';
 import excessiveMentions from './excessiveMentions';
 import excessiveSpoilers from './excessiveSpoilers';
 import newLines from './newLines';
+import profanityFilter from './profanityFilter';
 
 export default {
   event: Events.MessageUpdate,
@@ -20,5 +21,6 @@ export default {
     excessiveMentions.execute({ client, color }, newMessage);
     excessiveSpoilers.execute({ client, color }, newMessage);
     newLines.execute({ client, color }, newMessage);
+    profanityFilter.execute({ client, color }, newMessage);
   },
 };
