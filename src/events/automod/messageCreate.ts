@@ -58,6 +58,7 @@ export default {
     if (await profanityFilter(message, config, client, color, member)) return;
     if (await attachmentsCooldown(message, config, client, color)) return;
     if (await repeatedText(message, config, client, color)) return;
+    
     //* Run the regex. If there is any error in this regex, delete the message.
     if (!(await regexPreCheck(message, config))) {
       //* Delete the message

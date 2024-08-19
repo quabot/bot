@@ -3,6 +3,8 @@ import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { getAutomodConfig } from '@configs/automodConfig';
+import { regexPreCheck } from '@functions/automod/regexPreCheck';
 
 export default {
   event: Events.MessageDelete,
@@ -25,6 +27,10 @@ export default {
     if (!message.channel.isDMBased()) {
       if (message.channel.parentId && config.excludedCategories!.includes(message.channel.parentId)) return;
     }
+
+    const automodConfig = await getAutomodConfig(message.guild.id, client);
+    if (!automodConfig) return;
+    if (automodConfig.enabled && !(await regexPreCheck(message, automodConfig))) return;
 
     const channel = message.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
