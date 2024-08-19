@@ -227,6 +227,20 @@ export interface IAutomodConfig {
     messageLimit: number,
     percentage: number;
   },
+  customRegex: {
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    regex: string;
+    matchAmount: number;
+  }[] | Types.Array<{
+    enabled: boolean,
+    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
+    duration: string,
+    regex: string;
+    matchAmount: number;
+    name: string;
+  }>;
 }
 
 export interface IAutomodStrike {

@@ -25,5 +25,6 @@ export default model<IAutomodConfig>(
     attachmentsCooldown: reqObject,
     mentionsCooldown: reqObject,
     repeatedText: reqObject,
+    customRegex: reqArray,
   }),
 );

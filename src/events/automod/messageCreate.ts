@@ -2,6 +2,7 @@ import { getAutomodConfig } from '@configs/automodConfig';
 import { Embed } from '@constants/embed';
 import { attachmentsCooldown } from '@functions/automod/attachmentsCooldown';
 import { chatCooldown } from '@functions/automod/chatCooldown';
+import { customRegex } from '@functions/automod/customRegex';
 import { excessiveCaps } from '@functions/automod/excessiveCaps';
 import { excessiveEmojis } from '@functions/automod/excessiveEmojis';
 import { excessiveMentions } from '@functions/automod/excessiveMentions';
@@ -58,7 +59,7 @@ export default {
     if (await attachmentsCooldown(message, config, client, color)) return;
     if (await repeatedText(message, config, client, color)) return;
     //* Run the regex. If there is any error in this regex, delete the message.
-    if (!await regexPreCheck(message, config)) {
+    if (!(await regexPreCheck(message, config))) {
       //* Delete the message
       if (message.deletable) await message.delete().catch(() => null);
     }
@@ -78,6 +79,11 @@ export default {
     if (nLine) errors.push(nLine);
     const invite: any = await serverInvites(message, config, client, color, member);
     if (invite) errors.push(invite);
+
+    for (const regex of config.customRegex) {
+      const result = await customRegex(message, config, client, color, member, regex);
+      if (result) errors.push(result);
+    }
 
     //* Send the alert message
     if (errors.length === 0) return;

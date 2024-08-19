@@ -87,7 +87,8 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
         duration: 30,
         messageLimit: 3,
         percentage: 70,
-      }
+      },
+      customRegex: [],
     },
   });
 }
