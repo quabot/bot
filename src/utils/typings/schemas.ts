@@ -246,7 +246,7 @@ export interface IAutomodConfig {
 export interface IAutomodStrike {
   guildId: Snowflake;
   userId: Snowflake;
-  type: 'invite';
+  type: string;
   date: string;
 }
 
