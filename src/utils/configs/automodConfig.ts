@@ -84,7 +84,7 @@ export async function getAutomodConfig(guildId: Snowflake, client: Client) {
       repeatedText: {
         enabled: false,
         action: 'warn',
-        duration: '1d',
+        duration: 30,
         messageLimit: 3,
         percentage: 70,
       },
