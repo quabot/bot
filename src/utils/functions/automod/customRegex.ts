@@ -29,7 +29,7 @@ export const customRegex = async (
     guildId: message.guildId,
     userId: message.author.id,
     type: 'custom-regex',
-    date: new Date(),
+    date: new Date().getTime(),
   });
   await newStrike.save();
 
@@ -67,6 +67,15 @@ export const customRegex = async (
     client,
     member,
     config.excessiveEmojis.action,
+    config.excessiveEmojis.duration,
+    'Automatically punished after being flagged by automod, sent a message with excessive emojis.',
+  );
+  
+  //* Do the action for the automod rules if configured
+  await actionAutomod(
+    client,
+    member,
+    'custom-regex',
     config.excessiveEmojis.duration,
     'Automatically punished after being flagged by automod, sent a message with excessive emojis.',
   );

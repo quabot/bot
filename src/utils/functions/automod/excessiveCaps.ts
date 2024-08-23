@@ -29,7 +29,7 @@ export const excessiveCaps = async (
     guildId: message.guildId,
     userId: message.author.id,
     type: 'excessive-caps',
-    date: new Date(),
+    date: new Date().getTime(),
   });
   await newStrike.save();
 
@@ -66,6 +66,15 @@ export const excessiveCaps = async (
     client,
     member,
     config.excessiveCaps.action,
+    config.excessiveCaps.duration,
+    'Automatically punished after being flagged by automod, sent a message with excessive caps.',
+  );
+
+  //* Do the action for the automod rules if configured
+  await actionAutomod(
+    client,
+    member,
+    'excessive-caps',
     config.excessiveCaps.duration,
     'Automatically punished after being flagged by automod, sent a message with excessive caps.',
   );

@@ -261,7 +261,7 @@ export interface IAutomodStrike {
   guildId: Snowflake;
   userId: Snowflake;
   type: string;
-  date: string;
+  date: number;
 }
 
 export interface ILevel {

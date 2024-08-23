@@ -27,7 +27,7 @@ export const externalLinks = async (
     guildId: message.guildId,
     userId: message.author.id,
     type: 'external-link',
-    date: new Date(),
+    date: new Date().getTime(),
   });
   await newStrike.save();
 
@@ -64,6 +64,15 @@ export const externalLinks = async (
     client,
     member,
     config.externalLinks.action,
+    config.externalLinks.duration,
+    'Automatically punished after being flagged by automod, sent a message with external links.',
+  );
+
+  //* Do the action for the automod rules if configured
+  await actionAutomod(
+    client,
+    member,
+    'external-links',
     config.externalLinks.duration,
     'Automatically punished after being flagged by automod, sent a message with external links.',
   );

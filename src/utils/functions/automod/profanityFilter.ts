@@ -39,7 +39,7 @@ export const profanityFilter = async (message: Message, config: IAutomodConfig, 
       guildId: message.guildId,
       userId: message.author.id,
       type: 'profanity',
-      date: new Date(),
+      date: new Date().getTime(),
     });
     await newStrike.save();
 
@@ -79,6 +79,16 @@ export const profanityFilter = async (message: Message, config: IAutomodConfig, 
       config.profanityFilter.duration,
       'Automatically punished after being flagged by automod, sent a message with swear words.',
     );
+
+    //* Do the action for the automod rules if configured
+    await actionAutomod(
+      client,
+      member,
+      'profanity',
+      config.profanityFilter.duration,
+      'Automatically punished after being flagged by automod, sent a message with swear words.',
+    );
+
     return true;
   }
 };

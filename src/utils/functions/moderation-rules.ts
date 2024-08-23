@@ -68,9 +68,8 @@ export const checkModerationRules = async (client: Client, guildId: string, user
     if (rule.trigger.time === 'none') timeSince = 0;
 
     const punishments = await Punishment.find({ guildId, userId, type: rule.trigger.type, time: { $gte: timeSince } });
-    const strikes = await AutomodStrike.find({ guildId, userId, time: { $gte: timeSince }, type: rule.trigger.strike });
+    const strikes = await AutomodStrike.find({ guildId, userId, date: { $gte: timeSince }, type: rule.trigger.strike });
     if (punishments.length === rule.trigger.amount || strikes.length === rule.trigger.amount) {
-      // handle timeout
 
       const reason = rule.action.reason;
       const duration = rule.action.duration;
