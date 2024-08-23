@@ -3,12 +3,12 @@ import { Embed } from '@constants/embed';
 import { getLevelConfig } from '@configs/levelConfig';
 import { getUserGame } from '@configs/userGame';
 import Level from '@schemas/Level';
-import type { ContextArgs } from '@typings/functionArgs';
+import type { UserContextArgs } from '@typings/functionArgs';
 
 export default {
   data: new ContextMenuCommandBuilder().setName('Profile').setType(ApplicationCommandType.User).setDMPermission(false),
 
-  async execute({ client, interaction, color }: ContextArgs) {
+  async execute({ client, interaction, color }: UserContextArgs) {
     await interaction.deferReply();
 
     const user = interaction.targetMember;

@@ -15,9 +15,13 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('emojiDelete')) return;
 
-    const channel = emoji.guild.channels.cache.get(config.channelId);
+    const event = config.events?.find(event => event.event === 'emojiDelete');
+    if (!event) return;
+
+    if (!event.enabled) return;
+
+    const channel = emoji.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

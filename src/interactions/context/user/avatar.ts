@@ -1,11 +1,11 @@
 import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
 import { Embed } from '@constants/embed';
-import type { ContextArgs } from '@typings/functionArgs';
+import type { UserContextArgs } from '@typings/functionArgs';
 
 export default {
   data: new ContextMenuCommandBuilder().setName('Avatar').setType(ApplicationCommandType.User).setDMPermission(false),
 
-  async execute({ interaction, color }: ContextArgs) {
+  async execute({ interaction, color }: UserContextArgs) {
     await interaction.deferReply();
 
     const user = interaction.targetUser;

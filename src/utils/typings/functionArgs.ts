@@ -4,6 +4,7 @@ import type {
   ButtonInteraction,
   ChatInputCommandInteraction,
   ColorResolvable,
+  MessageContextMenuCommandInteraction,
   ModalSubmitInteraction,
   UserContextMenuCommandInteraction,
 } from 'discord.js';
@@ -29,8 +30,11 @@ export interface MenuArgs extends BaseArgs {
   interaction: AnySelectMenuInteraction;
 }
 
-export interface ContextArgs extends BaseArgs {
+export interface UserContextArgs extends BaseArgs {
   interaction: UserContextMenuCommandInteraction;
+}
+export interface MessageContextArgs extends BaseArgs {
+  interaction: MessageContextMenuCommandInteraction;
 }
 
 export interface ModalArgs extends BaseArgs {

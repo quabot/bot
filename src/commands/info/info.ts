@@ -21,6 +21,12 @@ export default {
     )
     .addSubcommand(subcommand =>
       subcommand
+        .setName('member')
+        .setDescription('Get server-specific information about a server member.')
+        .addUserOption(option => option.setName('user').setDescription('The user to get information of.')),
+    )
+    .addSubcommand(subcommand =>
+      subcommand
         .setName('role')
         .setDescription('Get information about a role.')
         .addRoleOption(option =>

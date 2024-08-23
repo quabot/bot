@@ -126,6 +126,14 @@ export async function getModerationConfig(client: Client, guildId: Snowflake) {
         thumbnail: '',
         image: '',
       },
+
+      reportEnabled: true,
+      reportChannelId: 'none',
+
+      appealEnabled: true,
+      appealChannelId: 'none',
+      appealTypes: ['ban', 'tempban', 'timeout'],
+      appealQuestions: ['Why do you want your punishment to be revoked?', 'What will you do to prevent this from happening again?', 'Do you have anything else to add?'],
     },
   });
 }

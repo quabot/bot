@@ -16,6 +16,7 @@ import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
 import { ModerationParser } from '@classes/parsers';
+import { checkModerationRules } from '@functions/moderation-rules';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
@@ -205,5 +206,7 @@ export default {
         embeds: [new Embed(color).setTitle('Member Kicked').setFields(fields)],
       });
     }
+
+    await checkModerationRules(client, interaction.guildId!, member.id, 'kick');
   },
 };

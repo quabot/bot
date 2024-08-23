@@ -16,6 +16,7 @@ import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
 import { ModerationParser } from '@classes/parsers';
+import { checkModerationRules } from '@functions/moderation-rules';
 
 export default {
   data: new SlashCommandBuilder()
@@ -179,5 +180,7 @@ export default {
         embeds: [new Embed(color).setTitle('Member Warned').addFields(fields)],
       });
     }
+
+    await checkModerationRules(client, interaction.guildId!, member.id, 'warn');
   },
 };
