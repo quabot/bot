@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool } from '@constants/schemas';
+import { reqString, reqBool, reqNum } from '@constants/schemas';
 import type { IPunishment } from '@typings/schemas';
 
 export default model<IPunishment>(
@@ -10,7 +10,7 @@ export default model<IPunishment>(
 
     channelId: reqString,
     moderatorId: reqString,
-    time: reqString,
+    time: reqNum,
 
     type: reqString,
     id: reqString,

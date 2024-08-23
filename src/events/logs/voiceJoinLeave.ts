@@ -11,13 +11,17 @@ export default {
   async execute({ client }: EventArgs, oldState: VoiceState, newState: VoiceState) {
     if (!newState.guild.id) return;
 
-    if (oldState.member?.user.bot || newState.member?.user.bot) return;
 
     const config = await getLoggingConfig(client, oldState.guild.id);
     if (!config) return;
     if (!config.enabled) return;
+    if (!newState.member) return;
+    if (!config.logBotActions && newState.member.user.bot) return;
 
-    if (!config.events!.includes('voiceJoinLeave')) return;
+    const event = config.events?.find(event => event.event === 'voiceJoinLeave');
+    if (!event) return;
+
+    if (!event.enabled) return;
     if (
       newState.channelId &&
       ((newState.channel?.parentId && config.excludedCategories!.includes(newState.channel.parentId)) ||
@@ -31,7 +35,7 @@ export default {
     )
       return;
 
-    const channel = newState.guild.channels.cache.get(config.channelId);
+    const channel = newState.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

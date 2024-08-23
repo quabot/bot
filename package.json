@@ -15,6 +15,7 @@
     "prettier": "prettier --write src"
   },
   "dependencies": {
+    "@2toad/profanity": "^2.2.0",
     "@napi-rs/canvas": "^0.1.52",
     "axios": "^1.6.0",
     "consola": "^2.15.3",

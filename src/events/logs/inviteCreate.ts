@@ -15,7 +15,13 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('inviteDelete')) return;
+    if (!invite.inviter) return;
+    if (invite.inviter.bot && !config.logBotActions) return;
+
+    const event = config.events?.find(event => event.event === 'inviteCreate');
+    if (!event) return;
+
+    if (!event.enabled) return;
 
     if (!invite.channel) return;
     if (config.excludedChannels!.includes(invite.channel.id)) return;
@@ -24,7 +30,7 @@ export default {
     }
 
     if (!('channels' in invite.guild)) return;
-    const channel = invite.guild.channels.cache.get(config.channelId);
+    const channel = invite.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

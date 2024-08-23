@@ -1,11 +1,12 @@
 import type {
   ButtonArgs,
   CommandArgs,
-  ContextArgs,
   EventArgs,
   ModalArgs,
   WsEventArgs,
   MenuArgs,
+  UserContextArgs,
+  MessageContextArgs,
 } from '@typings/functionArgs';
 import { type ContextMenuCommandBuilder, type SlashCommandBuilder } from 'discord.js';
 
@@ -24,9 +25,13 @@ export interface Command {
   execute: (arg0: CommandArgs) => Promise<any>;
 }
 
-export interface Context {
+export interface UserContext {
   data: ContextMenuCommandBuilder;
-  execute: (argo0: ContextArgs) => Promise<any>;
+  execute: (argo0: UserContextArgs) => Promise<any>;
+}
+export interface MessageContext {
+  data: ContextMenuCommandBuilder;
+  execute: (argo0: MessageContextArgs) => Promise<any>;
 }
 
 export interface Modal {

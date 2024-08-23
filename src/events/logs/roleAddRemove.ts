@@ -14,15 +14,19 @@ export default {
     const config = await getLoggingConfig(client, oldMember.guild.id);
     if (!config) return;
     if (!config.enabled) return;
+    if (!config.logBotActions && newMember.user.bot) return;
 
-    if (!config.events!.includes('roleAddRemove')) return;
+    const event = config.events?.find(event => event.event === 'roleAddRemove');
+    if (!event) return;
+
+    if (!event.enabled) return;
 
     if (oldMember.nickname !== newMember.nickname) return;
     if (oldMember.communicationDisabledUntilTimestamp !== newMember.communicationDisabledUntilTimestamp) return;
     if (oldMember.premiumSinceTimestamp !== newMember.premiumSinceTimestamp) return;
     if (oldMember.avatar !== newMember.avatar) return;
 
-    const channel = oldMember.guild.channels.cache.get(config.channelId);
+    const channel = oldMember.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

@@ -15,9 +15,12 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('emojiCreate')) return;
+    const event = config.events?.find(event => event.event === 'emojiCreate');
+    if (!event) return;
 
-    const channel = emoji.guild.channels.cache.get(config.channelId);
+    if (!event.enabled) return;
+
+    const channel = emoji.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

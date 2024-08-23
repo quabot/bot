@@ -16,10 +16,13 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('channelCreate')) return;
+    const event = config.events?.find(event => event.event === 'channelCreate');
+    if (!event) return;
+
+    if (!event.enabled) return;
     if (channel.parentId && config.excludedCategories!.includes(channel.parentId)) return;
 
-    const logChannel = channel.guild.channels.cache.get(config.channelId);
+    const logChannel = channel.guild.channels.cache.get(event.channelId);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

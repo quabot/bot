@@ -15,7 +15,7 @@ export default {
     });
 
     Punishments.forEach(async punishment => {
-      let timeToUnban = parseInt(punishment.time) - new Date().getTime() + ms(punishment.duration);
+      let timeToUnban = punishment.time - new Date().getTime() + ms(punishment.duration);
       if (timeToUnban < 0) timeToUnban = 1;
 
       setTimeout(async () => {

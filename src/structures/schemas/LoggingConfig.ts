@@ -7,9 +7,9 @@ export default model<ILoggingConfig>(
   new Schema({
     guildId: reqString,
     enabled: reqBool,
-    channelId: reqString,
     excludedChannels: reqArray,
     excludedCategories: reqArray,
     events: reqArray,
+    logBotActions: reqBool,
   }),
 );

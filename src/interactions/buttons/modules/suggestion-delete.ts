@@ -53,6 +53,8 @@ export default {
         embeds: [new Embed(color).setDescription('Suggestion deleted.')],
       });
 
+      suggestion.status = 'deleted';
+
       await Suggest.findOneAndDelete({ id, guildId: interaction.guildId });
 
       await interaction.message.edit({

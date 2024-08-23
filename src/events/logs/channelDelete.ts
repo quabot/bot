@@ -16,11 +16,14 @@ export default {
     if (!config) return;
     if (!config.enabled) return;
 
-    if (!config.events!.includes('channelDelete')) return;
+    const event = config.events?.find(event => event.event === 'channelDelete');
+    if (!event) return;
+
+    if (!event.enabled) return;
     if (channel.parentId && config.excludedCategories!.includes(channel.parentId)) return;
     if (config.excludedChannels!.includes(channel.id)) return;
 
-    const logChannel = channel.guild.channels.cache.get(config.channelId);
+    const logChannel = channel.guild.channels.cache.get(event.channelId);
     if (!logChannel?.isTextBased()) return;
     if (!hasSendPerms(logChannel)) return;
 

@@ -3,20 +3,19 @@ import { ChannelType } from 'discord.js';
 export const API_URL = 'https://api.quabot.net';
 
 export const CHANNEL_TYPES = [
-  'GUILD_TEXT',
+  'Text',
   'DM',
-  'GUILD_VOICE',
-  'GROUP_DM',
-  'GUILD_CATEGORY',
-  'GUILD_ANNOUNCEMENT',
-  'ANNOUNCEMENT_THREAD',
-  'PUBLIC_THREAD',
-  'PRIVATE_THREAD',
-  'GUILD_STAGE_VOICE',
-  'GUILD_DIRECTORY',
-  'GUILD_FORUM',
-  //? Isn't fully supported yet
-  'GUILD_MEDIA',
+  'Voice',
+  'Group DM',
+  'Category',
+  'Announcement',
+  'Announcement Thread',
+  'Public Thread',  
+  'Private Thread',
+  'Stage',
+  'Directory',
+  'Forum',
+  'Media',
 ];
 
 export const CHANNEL_TYPES_BY_ID = [...CHANNEL_TYPES.slice(0, 6), '', '', '', '', '', ...CHANNEL_TYPES.slice(6)];

@@ -3,6 +3,8 @@ import { getLoggingConfig } from '@configs/loggingConfig';
 import { Embed } from '@constants/embed';
 import type { EventArgs } from '@typings/functionArgs';
 import { hasSendPerms } from '@functions/discord';
+import { getAutomodConfig } from '@configs/automodConfig';
+import { regexPreCheck } from '@functions/automod/regexPreCheck';
 
 export default {
   event: Events.MessageDelete,
@@ -15,14 +17,22 @@ export default {
     const config = await getLoggingConfig(client, message.guild.id);
     if (!config) return;
     if (!config.enabled) return;
+    if (!config.logBotActions && message.author.bot) return;
 
-    if (!config.events!.includes('messageDelete')) return;
+    const event = config.events?.find(event => event.event === 'messageDelete');
+    if (!event) return;
+
+    if (!event.enabled) return;
     if (config.excludedChannels!.includes(message.channelId)) return;
     if (!message.channel.isDMBased()) {
       if (message.channel.parentId && config.excludedCategories!.includes(message.channel.parentId)) return;
     }
 
-    const channel = message.guild.channels.cache.get(config.channelId);
+    const automodConfig = await getAutomodConfig(message.guild.id, client);
+    if (!automodConfig) return;
+    if (automodConfig.enabled && !(await regexPreCheck(message, automodConfig))) return;
+
+    const channel = message.guild.channels.cache.get(event.channelId);
     if (!channel?.isTextBased()) return;
     if (!hasSendPerms(channel)) return;
 

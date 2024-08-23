@@ -1,12 +1,5 @@
 import type { ColorResolvable, Snowflake } from 'discord.js';
-import type {
-  LevelCard,
-  Message,
-  MessageType,
-  MessageTypeWithCard,
-  Status,
-  WelcomeCard,
-} from '@typings/mongoose';
+import type { LevelCard, Message, MessageType, MessageTypeWithCard, Status, WelcomeCard } from '@typings/mongoose';
 import { Types } from 'mongoose';
 
 export interface IUserGame {
@@ -33,13 +26,41 @@ export interface IBoostConfig {
   guildId: string;
   enabled: boolean;
   channel: string;
-  message: Message,
+  message: Message;
   type: MessageType;
 }
 
 export interface IAfkConfig {
   guildId: Snowflake;
   enabled: boolean;
+}
+
+export interface IModerationRules {
+  guildId: Snowflake;
+  enabled: boolean;
+  title: string;
+  trigger: {
+    type: 'warn' | 'kick' | 'timeout' | 'ban' | 'automod-strike';
+    amount: number;
+    time: string;
+    strike:
+      | 'invite'
+      | 'external-link'
+      | 'profanity'
+      | 'new-lines'
+      | 'excessive-caps'
+      | 'excessive-emojis'
+      | 'excessive-mentions'
+      | 'excessive-spoilers'
+      | 'repeated-text'
+      | 'custom-regex'
+      | string;
+  };
+  action: {
+    type: 'kick' | 'timeout' | 'ban' | 'warn';
+    duration: string;
+    reason: string;
+  };
 }
 
 export interface IApplication {
@@ -140,6 +161,109 @@ export interface IIds {
   ticketId?: number;
 }
 
+export interface IAutomodConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+  ignoredChannels: string[] | Types.Array<string>;
+  ignoredRoles: string[] | Types.Array<string>;
+  logChannel: string;
+  logsEnabled: boolean;
+  alert: boolean;
+  deleteAlertAfter: number;
+  serverInvites: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+  };
+  externalLinks: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+  };
+  excessiveCaps: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+    percentage: number;
+  };
+  excessiveEmojis: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+    percentage: number;
+  };
+  excessiveMentions: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+    mentions: number;
+  };
+  excessiveSpoilers: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+    percentage: number;
+  };
+  newLines: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+    lines: number;
+  };
+  profanityFilter: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+    extraWords: string[];
+    removedWords: string[];
+  };
+  chatCooldown: {
+    enabled: boolean;
+    messageLimit: number;
+    duration: number;
+  };
+  attachmentsCooldown: {
+    enabled: boolean;
+    messageLimit: number;
+    duration: number;
+  };
+  mentionsCooldown: {
+    enabled: boolean;
+    messageLimit: number;
+    duration: number;
+  };
+  repeatedText: {
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: number;
+    messageLimit: number;
+    percentage: number;
+  };
+  customRegex:
+    | {
+        enabled: boolean;
+        action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+        duration: string;
+        regex: string;
+        matchAmount: number;
+      }[]
+    | Types.Array<{
+        enabled: boolean;
+        action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+        duration: string;
+        regex: string;
+        matchAmount: number;
+        name: string;
+      }>;
+}
+
+export interface IAutomodStrike {
+  guildId: Snowflake;
+  userId: Snowflake;
+  type: string;
+  date: string;
+}
+
 export interface ILevel {
   guildId: Snowflake;
   userId: Snowflake;
@@ -188,10 +312,10 @@ export interface ILevelConfig {
 export interface ILoggingConfig {
   guildId: Snowflake;
   enabled: boolean;
-  channelId: string;
   excludedChannels?: Types.Array<Snowflake>;
   excludedCategories?: Types.Array<Snowflake>;
-  events?: Types.Array<string>;
+  events?: Types.Array<{ enabled: boolean; event: string; channelId: string }>;
+  logBotActions: boolean;
 }
 
 export interface IModerationConfig {
@@ -213,6 +337,24 @@ export interface IModerationConfig {
 
   tempbanDM: boolean;
   tempbanDMMessage: Message;
+
+  reportEnabled: boolean;
+  reportChannelId: string;
+
+  appealEnabled: boolean;
+  appealChannelId: string;
+  appealTypes: Types.Array<string> | string[];
+  appealQuestions: Types.Array<string> | string[];
+}
+
+export interface IPunishmentAppeal {
+  guildId: Snowflake;
+  userId: Snowflake;
+  type: string;
+  punishmentId: string;
+  answers: Types.Array<string> | string[];
+  state: Status;
+  response?: string;
 }
 
 export interface IPoll {
@@ -271,7 +413,7 @@ export interface IPunishment {
 
   channelId: Snowflake;
   moderatorId: Snowflake;
-  time: string;
+  time: number;
 
   type: 'ban' | 'kick' | 'tempban' | 'timeout' | 'warn';
   id: Snowflake;
@@ -313,18 +455,18 @@ export interface IReactionRoles {
 export type ReactionRoleReactionType = {
   emoji: string;
   role: string;
-}
+};
 export type ReactionRoleButtonType = {
   emoji: string;
   label: string;
   role: string;
-}
+};
 export type ReactionRoleDropdownType = {
   emoji: string;
   label: string;
   description?: string;
   role: string;
-}
+};
 
 export interface IResponderConfig {
   guildId: Snowflake;
