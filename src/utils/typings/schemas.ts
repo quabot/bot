@@ -40,9 +40,21 @@ export interface IModerationRules {
   enabled: boolean;
   title: string;
   trigger: {
-    type: 'warn' | 'kick' | 'timeout' | 'ban';
+    type: 'warn' | 'kick' | 'timeout' | 'ban' | 'automod-strike';
     amount: number;
     time: string;
+    strike:
+      | 'invite'
+      | 'external-link'
+      | 'profanity'
+      | 'new-lines'
+      | 'excessive-caps'
+      | 'excessive-emojis'
+      | 'excessive-mentions'
+      | 'excessive-spoilers'
+      | 'repeated-text'
+      | 'custom-regex'
+      | string;
   };
   action: {
     type: 'kick' | 'timeout' | 'ban' | 'warn';
@@ -151,96 +163,98 @@ export interface IIds {
 
 export interface IAutomodConfig {
   guildId: Snowflake;
-  enabled: boolean,
-  ignoredChannels: string[] | Types.Array<string>,
-  ignoredRoles: string[] | Types.Array<string>,
-  logChannel: string,
-  logsEnabled: boolean,
-  alert: boolean,
-  deleteAlertAfter: number,
+  enabled: boolean;
+  ignoredChannels: string[] | Types.Array<string>;
+  ignoredRoles: string[] | Types.Array<string>;
+  logChannel: string;
+  logsEnabled: boolean;
+  alert: boolean;
+  deleteAlertAfter: number;
   serverInvites: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
-  },
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+  };
   externalLinks: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
-  },
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+  };
   excessiveCaps: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
-    percentage: number,
-  },
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
+    percentage: number;
+  };
   excessiveEmojis: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
     percentage: number;
-  },
+  };
   excessiveMentions: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
     mentions: number;
-  },
+  };
   excessiveSpoilers: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
     percentage: number;
-  },
+  };
   newLines: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
     lines: number;
-  },
+  };
   profanityFilter: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: string;
     extraWords: string[];
     removedWords: string[];
-  },
+  };
   chatCooldown: {
-    enabled: boolean,
-    messageLimit: number,
+    enabled: boolean;
+    messageLimit: number;
     duration: number;
-  },
+  };
   attachmentsCooldown: {
-    enabled: boolean,
-    messageLimit: number,
+    enabled: boolean;
+    messageLimit: number;
     duration: number;
-  },
+  };
   mentionsCooldown: {
-    enabled: boolean,
-    messageLimit: number,
+    enabled: boolean;
+    messageLimit: number;
     duration: number;
-  },
+  };
   repeatedText: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: number,
-    messageLimit: number,
+    enabled: boolean;
+    action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+    duration: number;
+    messageLimit: number;
     percentage: number;
-  },
-  customRegex: {
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
-    regex: string;
-    matchAmount: number;
-  }[] | Types.Array<{
-    enabled: boolean,
-    action: 'warn' | 'timeout' | 'kick'| 'ban' | 'none',
-    duration: string,
-    regex: string;
-    matchAmount: number;
-    name: string;
-  }>;
+  };
+  customRegex:
+    | {
+        enabled: boolean;
+        action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+        duration: string;
+        regex: string;
+        matchAmount: number;
+      }[]
+    | Types.Array<{
+        enabled: boolean;
+        action: 'warn' | 'timeout' | 'kick' | 'ban' | 'none';
+        duration: string;
+        regex: string;
+        matchAmount: number;
+        name: string;
+      }>;
 }
 
 export interface IAutomodStrike {

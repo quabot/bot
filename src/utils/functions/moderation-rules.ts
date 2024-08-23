@@ -13,10 +13,14 @@ import { getServerConfig } from '@configs/serverConfig';
 import { ModerationParser, TimedModerationParser } from '@classes/parsers';
 import { CustomEmbed } from '@constants/customEmbed';
 import { tempUnban } from './unban';
+import AutomodStrike from '@schemas/Automod-Strike';
 
 export const checkModerationRules = async (client: Client, guildId: string, userId: string, triggerType: string) => {
   const punishments = await Punishment.find({ guildId, userId });
   if (!punishments) return;
+
+  const strikes = await AutomodStrike.find({ guildId, userId });
+  if (!strikes) return;
 
   const rules = await ModerationRules.find({ guildId });
   if (!rules) return;
@@ -36,6 +40,26 @@ export const checkModerationRules = async (client: Client, guildId: string, user
       return triggeredRules.push(r);
     if (r.trigger.type === 'warn' && warnCount >= r.trigger.amount && triggerType === 'warn')
       return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'invite').length >= r.trigger.amount && triggerType === 'invite')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'external-link').length >= r.trigger.amount && triggerType === 'external-link')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'excessive-caps').length >= r.trigger.amount && triggerType === 'excessive-caps')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'excessive-emojis').length >= r.trigger.amount && triggerType === 'excessive-emojis')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'excessive-mentions').length >= r.trigger.amount && triggerType === 'excessive-mentions')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'excessive-spoilers').length >= r.trigger.amount && triggerType === 'excessive-spoilers')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'new-lines').length >= r.trigger.amount && triggerType === 'new-lines')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'profanity').length >= r.trigger.amount && triggerType === 'profanity')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'repeated-text').length >= r.trigger.amount && triggerType === 'repeated-text')
+      return triggeredRules.push(r);
+    if (r.trigger.type === 'automod-strike' && strikes.filter((s) => s.type === 'custom-regex').length >= r.trigger.amount && triggerType === 'custom-regex')
+      return triggeredRules.push(r);
   });
 
   triggeredRules.forEach(async rule => {
@@ -44,7 +68,8 @@ export const checkModerationRules = async (client: Client, guildId: string, user
     if (rule.trigger.time === 'none') timeSince = 0;
 
     const punishments = await Punishment.find({ guildId, userId, type: rule.trigger.type, time: { $gte: timeSince } });
-    if (punishments.length === rule.trigger.amount) {
+    const strikes = await AutomodStrike.find({ guildId, userId, time: { $gte: timeSince }, type: rule.trigger.strike });
+    if (punishments.length === rule.trigger.amount || strikes.length === rule.trigger.amount) {
       // handle timeout
 
       const reason = rule.action.reason;
