@@ -42,6 +42,6 @@ export default {
 
     await endPoll(client, poll, true);
 
-    await interaction.editReply({ embeds: [new Embed(color).setDescription("'The poll has been ended!'")] });
+    await interaction.editReply({ embeds: [new Embed(color).setDescription("The poll has been ended!")] });
   },
 };

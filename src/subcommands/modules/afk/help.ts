@@ -10,17 +10,8 @@ export default {
   async execute({ client, interaction, color }: CommandArgs) {
     await interaction.deferReply({ ephemeral: false });
 
-    const config = await getAfkConfig(interaction.guildId!, client);
-    const user = await getUser(interaction.guildId!, interaction.user.id);
-    if (!config || !user)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
-      });
-
-    if (!config.enabled)
-      return await interaction.editReply({
-        embeds: [new Embed(color).setDescription('The afk module is disabled in this server.')],
-      });
+    await getAfkConfig(interaction.guildId!, client);
+    await getUser(interaction.guildId!, interaction.user.id);
 
     await interaction.editReply({
       embeds: [

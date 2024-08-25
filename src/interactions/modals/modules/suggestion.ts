@@ -62,6 +62,8 @@ export default {
     if (!rawIds.suggestId && rawIds.suggestId !== 0) rawIds.suggestId = -1;
 
     const ids = rawIds as Omit<NonNullMongooseReturn<IIds>, 'suggestId'> & { suggestId: number };
+    ids.suggestId++;
+    await ids.save();
 
     const parser = new MemberParser({ member: interaction.member as GuildMember, color }).addVariables({
       name: 'id',
@@ -80,8 +82,6 @@ export default {
     await msg.react(config.emojiGreen);
     await msg.react(config.emojiRed);
 
-    ids.suggestId++;
-    await ids.save();
 
     const newSuggestion = new Suggestion({
       guildId: interaction.guildId,

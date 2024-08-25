@@ -1,5 +1,6 @@
 import { EmbedBuilder, ButtonStyle, ButtonBuilder, ActionRowBuilder, Colors, SlashCommandBuilder } from 'discord.js';
 import type { CommandArgs } from '@typings/functionArgs';
+import { Embed } from '@constants/embed';
 
 //* Create the command and pass the SlashCommandBuilder to the handler.
 export default {
@@ -8,12 +9,19 @@ export default {
     .setDescription('List all the server emojis.')
     .setDMPermission(false),
 
-  async execute({ interaction }: CommandArgs) {
+  async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply({ ephemeral: true });
 
     //* Create an array of all the emojis in the guild.
     const emoteList = (await interaction.guild!.emojis.fetch()).map(emoji => emoji);
+
+    if (!emoteList.length) return interaction.editReply({
+      embeds: [
+        new Embed(color)
+          .setDescription('There are no custom emojis in this server.')
+      ]
+    });
 
     //* Create the multi-page system.
     // ? don't touch it lol

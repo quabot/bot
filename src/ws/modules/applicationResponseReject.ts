@@ -30,7 +30,7 @@ export default {
       .send({
         embeds: [
           new Embed(color).setDescription(
-            `Your application response for the form **${FoundForm.name}** has been denied. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/applications/answers/${data.response_uuid}).`,
+            `Your application response for the form **${FoundForm.name}** has been denied with reason: \`${data.reason}\`. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/applications/answers/${data.id}).`,
           ),
         ],
       })

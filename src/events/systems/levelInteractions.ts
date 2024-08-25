@@ -36,7 +36,7 @@ export default {
     if (!cooldowns.has(interaction.user)) cooldowns.set(interaction.user, new Collection());
     const current_time = Date.now();
     const time_stamps = cooldowns.get(interaction.user);
-    const cooldown_amount = 20000;
+    const cooldown_amount = 12000;
 
     let no = false;
     if (time_stamps.has(interaction.user.id)) {
