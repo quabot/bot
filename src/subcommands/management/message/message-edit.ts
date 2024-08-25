@@ -33,6 +33,13 @@ export default {
         embeds: [new Embed(color).setDescription('I cannot edit that message.')],
       });
 
+    //* Check if message is not an interaction
+    if (message.interaction) {
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('I cannot edit that message.')],
+      });
+    }
+
     const buttons1 = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder().setCustomId('embed-message').setLabel('Set Message').setStyle(ButtonStyle.Primary),
       new ButtonBuilder().setCustomId('embed-title').setLabel('Set Title').setStyle(ButtonStyle.Primary),

@@ -184,7 +184,7 @@ export default {
         new Embed(color)
           .setTitle('User Banned')
           .setDescription(`**User:** ${member ?? user ?? `<@${userId}>`} (@${user.username})\n**Reason:** ${reason}`)
-          .addFields(fields)
+          .addFields(fields).setFooter({ text: `ID: ${id}` })
           .setFooter({ text: `ID: ${id}` }),
       ],
     });
@@ -259,7 +259,7 @@ export default {
       }
 
       await channel.send({
-        embeds: [new Embed(color).setTitle('Member Banned').setFields(fields)],
+        embeds: [new Embed(color).setTitle('Member Banned').setFields(fields).setFooter({ text: `ID: ${id}` })],
       });
     }
 

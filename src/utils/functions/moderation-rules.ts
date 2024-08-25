@@ -203,7 +203,7 @@ export const checkModerationRules = async (client: Client, guildId: string, user
           }
 
           await channel.send({
-            embeds: [new Embed(color).setTitle('Member Timed Out').addFields(fields)],
+            embeds: [new Embed(color).setTitle('Member Timed Out').addFields(fields).setFooter({ text: `ID: ${id}` })],
           });
         }
 
@@ -425,7 +425,7 @@ export const checkModerationRules = async (client: Client, guildId: string, user
           }
 
           await channel.send({
-            embeds: [new Embed(color).setTitle('Member Warned').addFields(fields)],
+            embeds: [new Embed(color).setTitle('Member Warned').addFields(fields).setFooter({ text: `ID: ${id}` })],
           });
         }
 
@@ -660,7 +660,7 @@ export const checkModerationRules = async (client: Client, guildId: string, user
             }
 
             await channel.send({
-              embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields)],
+              embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields).setFooter({ text: `ID: ${id}` })],
             });
           }
 

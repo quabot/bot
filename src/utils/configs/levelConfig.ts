@@ -48,7 +48,7 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
       },
       message: {
         content: '{user} leveled up to level {level}!',
-        title: '{user.displa,yname} leveled up!',
+        title: '{user.displayname} leveled up!',
         color: '{color}',
         timestamp: true,
         footer: {
@@ -87,7 +87,7 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
         description: '{user} is now level **{level}** with **{xp}** xp!',
         fields: [],
         url: '',
-        thumbnail: '{avatar}',
+        thumbnail: '{user.avatarUrl}',
         image: '',
       },
 
@@ -104,7 +104,7 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
       rewardDm: false,
       rewardDmType: 'embed',
       rewardDmMessage: {
-        content: 'You received the role {reward} in **{server}** for surpassing level {level}!',
+        content: 'You received the role {reward.role} in **{server.name}** for surpassing level {reward.level}!',
         title: 'Reward received!',
         color: '{color}',
         timestamp: true,
@@ -117,10 +117,10 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
           icon: '',
           url: '',
         },
-        description: 'You received the role {role} in **{server}** for surpassing level **{level}**!',
+        description: 'You received the role {reward.role} in **{server.name}** for surpassing level **{reward.level}**!',
         fields: [],
         url: '',
-        thumbnail: '{avatar}',
+        thumbnail: '{user.avatarUrl}',
         image: '',
       },
 

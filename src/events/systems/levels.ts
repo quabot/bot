@@ -89,7 +89,6 @@ export default {
       if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
     }
 
-    const parserOptions = { member, color, xp, level, channel: msgChannel };
     if (xp + rndXp >= reqXp) {
       levelDB.xp += rndXp;
       levelDB.level += 1;
@@ -98,6 +97,7 @@ export default {
       xp = xp += rndXp;
       level = level += 1;
 
+      const parserOptions = { member, color, xp, level, channel: msgChannel };
       const parser = new LevelParser(parserOptions);
 
       if (config.channel !== 'none') {

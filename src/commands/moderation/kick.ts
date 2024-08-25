@@ -128,7 +128,7 @@ export default {
         new Embed(color)
           .setTitle('User Kicked')
           .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
-          .addFields(fields)
+          .addFields(fields).setFooter({ text: `ID: ${id}` })
           .setFooter({ text: `ID: ${id}` }),
       ],
     });
@@ -203,7 +203,7 @@ export default {
       }
 
       await channel.send({
-        embeds: [new Embed(color).setTitle('Member Kicked').setFields(fields)],
+        embeds: [new Embed(color).setTitle('Member Kicked').setFields(fields).setFooter({ text: `ID: ${id}` })],
       });
     }
 

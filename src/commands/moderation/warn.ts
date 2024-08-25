@@ -177,7 +177,7 @@ export default {
       }
 
       await channel.send({
-        embeds: [new Embed(color).setTitle('Member Warned').addFields(fields)],
+        embeds: [new Embed(color).setTitle('Member Warned').addFields(fields).setFooter({ text: `ID: ${id}` })],
       });
     }
 

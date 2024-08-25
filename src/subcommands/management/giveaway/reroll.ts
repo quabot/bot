@@ -25,6 +25,19 @@ export default {
         embeds: [new Embed(color).setDescription("Couldn't find the giveaway!")],
       });
 
+    //* Remove the winnerRole from all the current winners (if there is a role)
+    if (giveaway.winnerRole) {
+      if (!interaction.guild) return;
+      const role = interaction.guild.roles.cache.get(giveaway.winnerRole);
+      if (role) {
+        giveaway.winnerIds.forEach(async (winner: any) => {
+          if (!interaction.guild) return;
+          const member = await interaction.guild.members.fetch(winner).catch(() => null);
+          if (member) await member.roles.remove(role);
+        });
+      }
+    }
+
     const rerolledGiveaway = await rollGiveaway(client, giveaway);
     if (rerolledGiveaway === false)
       return await interaction.editReply({
