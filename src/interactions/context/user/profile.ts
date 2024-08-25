@@ -76,7 +76,7 @@ export default {
       });
     }
 
-    embed.addFields(fields).setFooter({ text: `ID: ${id}` });
+    embed.addFields(fields);
 
     await interaction.editReply({
       embeds: [embed],
