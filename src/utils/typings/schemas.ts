@@ -35,6 +35,24 @@ export interface IAfkConfig {
   enabled: boolean;
 }
 
+export interface IUserCaptcha {
+  guildId: Snowflake;
+  userId: Snowflake;
+  date: number;
+  lastAttempt: number;
+  id: string;
+}
+
+export interface IVerificationConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+  role: Snowflake;
+  dm: boolean;
+  dmMessage: Message;
+  type: 'button' | 'web-captcha' | 'bot-captcha' | string;
+  cooldown: string;
+}
+
 export interface IModerationRules {
   guildId: Snowflake;
   enabled: boolean;
