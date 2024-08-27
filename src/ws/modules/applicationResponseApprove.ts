@@ -46,7 +46,7 @@ export default {
       .send({
         embeds: [
           new Embed(color).setDescription(
-            `Your application response for the form **${FoundForm.name}** has been approved! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/applications/answers/${data.response_uuid}).`,
+            `Your application response for the form **${FoundForm.name}** has been approved with reason: \`${data.reason}\`.! Some roles may have been added/removed. You can view your answers [here](https://quabot.net/dashboard/${guild.id}/applications/answers/${data.id}).`,
           ),
         ],
       })

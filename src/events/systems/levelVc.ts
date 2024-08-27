@@ -176,10 +176,15 @@ export default {
                 const parser = new RewardLevelParser({ ...parserOptions, reward: check });
 
                 if (config.rewardsMode === 'replace') {
-                  if (levelDB.role !== 'none') {
-                    const role = newState.guild.roles.cache.get(levelDB.role);
-                    if (hasRolePerms(role)) await member.roles.remove(role!);
-                  }
+                  const roles = config.rewards!.map(i => i.role);
+                  roles.forEach(async role => {
+                    if (newState.guild.roles.cache.has(role)) {
+                      if (config.rewards?.find(r => r.role === role)?.level !== level) {
+                        const r = newState.guild.roles.cache.get(role);
+                        if (hasRolePerms(r)) await member.roles.remove(r!).catch(() => {});
+                      }
+                    }
+                  });
 
                   const role = newState.guild.roles.cache.get(check.role);
                   if (hasRolePerms(role)) await member.roles.add(role!);

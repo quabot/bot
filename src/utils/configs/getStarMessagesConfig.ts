@@ -33,7 +33,7 @@ export async function getStarMessagesConfig(guildId: Snowflake, client: Client) 
         description: '{message.content}\n\n**[Click to jump to message!]({message.url})**',
         fields: [],
         url: '',
-        thumbnail: '{user.avatar_url}',
+        thumbnail: '{user.avatarUrl}',
         image: '',
       },
       ignoredChannels: [],

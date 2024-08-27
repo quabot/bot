@@ -27,7 +27,7 @@ export default {
     await channel
       .send({
         embeds: [
-          new Embed(Colors.Green).setDescription(`
+          new Embed(Colors.Red).setDescription(`
                         **User Left**
                         @${member.user.username}
                         `),

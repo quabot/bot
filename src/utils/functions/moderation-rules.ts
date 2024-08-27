@@ -68,9 +68,8 @@ export const checkModerationRules = async (client: Client, guildId: string, user
     if (rule.trigger.time === 'none') timeSince = 0;
 
     const punishments = await Punishment.find({ guildId, userId, type: rule.trigger.type, time: { $gte: timeSince } });
-    const strikes = await AutomodStrike.find({ guildId, userId, time: { $gte: timeSince }, type: rule.trigger.strike });
+    const strikes = await AutomodStrike.find({ guildId, userId, date: { $gte: timeSince }, type: rule.trigger.strike });
     if (punishments.length === rule.trigger.amount || strikes.length === rule.trigger.amount) {
-      // handle timeout
 
       const reason = rule.action.reason;
       const duration = rule.action.duration;
@@ -204,7 +203,7 @@ export const checkModerationRules = async (client: Client, guildId: string, user
           }
 
           await channel.send({
-            embeds: [new Embed(color).setTitle('Member Timed Out').addFields(fields)],
+            embeds: [new Embed(color).setTitle('Member Timed Out').addFields(fields).setFooter({ text: `ID: ${id}` })],
           });
         }
 
@@ -426,7 +425,7 @@ export const checkModerationRules = async (client: Client, guildId: string, user
           }
 
           await channel.send({
-            embeds: [new Embed(color).setTitle('Member Warned').addFields(fields)],
+            embeds: [new Embed(color).setTitle('Member Warned').addFields(fields).setFooter({ text: `ID: ${id}` })],
           });
         }
 
@@ -661,7 +660,7 @@ export const checkModerationRules = async (client: Client, guildId: string, user
             }
 
             await channel.send({
-              embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields)],
+              embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields).setFooter({ text: `ID: ${id}` })],
             });
           }
 

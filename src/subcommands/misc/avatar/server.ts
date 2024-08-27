@@ -10,6 +10,17 @@ export default {
 
     const guild = interaction.guild!;
 
+    //* If no avatar
+    if (!guild.iconURL()) {
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color)
+            .setDescription('This server has no avatar.')
+            .setTitle(`${guild.name}'s avatar`),
+        ],
+      });
+    }
+
     await interaction.editReply({
       embeds: [
         new Embed(color)

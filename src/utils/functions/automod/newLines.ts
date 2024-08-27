@@ -28,7 +28,7 @@ export const newLines = async (
     guildId: message.guildId,
     userId: message.author.id,
     type: 'new-lines',
-    date: new Date(),
+    date: new Date().getTime(),
   });
   await newStrike.save();
 
@@ -67,6 +67,15 @@ export const newLines = async (
     config.newLines.action,
     config.newLines.duration,
     'Automatically punished after being flagged by automod, sent a message that tried to clear chat.',
+  );
+
+  //* Do the action for the automod rules if configured
+  await actionAutomod(
+    client,
+    member,
+    'new-lines',
+    config.newLines.duration,
+    'Automatically punished after being flagged by automod, sent a message that tried to clear chat',
   );
 
   return `You have been flagged for sending a chat clearing message. Please avoid posting chat clearing messages in the future.`;

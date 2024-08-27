@@ -157,9 +157,12 @@ export class MemberParser extends GuildParser {
 
     this.addVariables(
       { name: 'user.username', value: member.user.username },
+      { name: 'username', value: member.user.username },
       { name: 'user.displayname', aliases: ['user.display_name'], value: member.displayName },
       { name: 'user.avatar', value: member.avatar ?? member.user.avatar ?? '' },
       { name: 'user.avatarUrl', value: member.displayAvatarURL() },
+      { name: 'user.avatar_url', value: member.displayAvatarURL() },
+      { name: 'avatar', value: member.displayAvatarURL() },
       { name: 'user.id', value: member.id },
       { name: 'user.createdAt', value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>` },
       {
@@ -291,7 +294,7 @@ export class RewardLevelParser extends LevelParser {
     super(data);
 
     this.addVariables(
-      { name: 'role', aliases: ['reward', 'reward.role'], value: `<@%${data.reward.role}>` },
+      { name: 'role', aliases: ['reward', 'reward.role'], value: `<@&${data.reward.role}>` },
       { name: 'reward.level', aliases: ['required_level'], value: data.reward.level.toString() },
     );
   }

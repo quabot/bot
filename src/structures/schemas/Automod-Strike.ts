@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString } from '@constants/schemas';
+import { reqNum, reqString } from '@constants/schemas';
 import type { IAutomodStrike } from '@typings/schemas';
 
 export default model<IAutomodStrike>(
@@ -7,7 +7,7 @@ export default model<IAutomodStrike>(
   new Schema({
     guildId: reqString,
     userId: reqString,
-    date: reqString,
+    date: reqNum,
     type: reqString,
   }),
 );

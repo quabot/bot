@@ -63,7 +63,9 @@ export default {
     const duration = interaction.options.getString('duration', true).slice(0, 800);
     const seconds = interaction.options.getInteger('delete_messages', true);
     const user = interaction.options.getUser('user', true);
-    const member = await interaction.guild?.members.fetch(user.id);
+    if (!user) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
+    const member = interaction.guild?.members.cache.get(user.id)! || (await interaction.guild?.members.fetch(user.id).catch(() => null));
+    if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
 
     if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
 
@@ -153,7 +155,7 @@ export default {
         new Embed(color)
           .setTitle('User Temporarily Banned')
           .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
-          .addFields(fields)
+          .addFields(fields).setFooter({ text: `ID: ${id}` })
           .setFooter({ text: `ID: ${id}` }),
       ],
     });
@@ -161,7 +163,7 @@ export default {
     const sentFrom = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
-        .setLabel('Sent from server: ' + interaction.guild?.name ?? 'Unknown')
+        .setLabel(`Sent from server: ${interaction.guild?.name ?? 'Unknown'}`.substring(0, 80))
         .setStyle(ButtonStyle.Primary)
         .setDisabled(true),
     );
@@ -226,7 +228,7 @@ export default {
       }
 
       await channel.send({
-        embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields)],
+        embeds: [new Embed(color).setTitle('Member Temporarily Banned').addFields(fields).setFooter({ text: `ID: ${id}` })],
       });
     }
 

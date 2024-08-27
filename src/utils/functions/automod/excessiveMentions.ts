@@ -28,7 +28,7 @@ export const excessiveMentions = async (
     guildId: message.guildId,
     userId: message.author.id,
     type: 'excessive-mentions',
-    date: new Date(),
+    date: new Date().getTime(),
   });
   await newStrike.save();
 
@@ -65,6 +65,15 @@ export const excessiveMentions = async (
     client,
     member,
     config.excessiveMentions.action,
+    config.excessiveMentions.duration,
+    'Automatically punished after being flagged by automod, sent a message with excessive mentions.',
+  );
+
+  //* Do the action for the automod rules if configured
+  await actionAutomod(
+    client,
+    member,
+    'excessive-mentions',
     config.excessiveMentions.duration,
     'Automatically punished after being flagged by automod, sent a message with excessive mentions.',
   );

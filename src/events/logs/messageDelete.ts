@@ -11,6 +11,7 @@ export default {
   name: 'messageDelete',
 
   async execute({ client }: Omit<EventArgs, 'color'>, message: Message) {
+    if ([10, 20, 19, 21].includes(message.type)) return;
     if (!message.guild?.id) return;
     if (!message.author) return;
 

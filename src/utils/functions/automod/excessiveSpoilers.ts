@@ -31,7 +31,7 @@ export const excessiveSpoilers = async (
     guildId: message.guildId,
     userId: message.author.id,
     type: 'excessive-spoilers',
-    date: new Date(),
+    date: new Date().getTime(),
   });
   await newStrike.save();
 
@@ -71,6 +71,16 @@ export const excessiveSpoilers = async (
     config.excessiveSpoilers.duration,
     'Automatically punished after being flagged by automod, sent a message with excessive spoilers.',
   );
+
+  //* Do the action for the automod rules if configured
+  await actionAutomod(
+    client,
+    member,
+    'excessive-spoilers',
+    config.excessiveSpoilers.duration,
+    'Automatically punished after being flagged by automod, sent a message with excessive spoilers.',
+  );
+
 
   return `You have been flagged for having too much content be a spoiler in your message. Please avoid using excessive spoilers in the future.`;
 };

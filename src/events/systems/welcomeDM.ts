@@ -1,4 +1,4 @@
-import { AttachmentBuilder, Events, type GuildMember } from 'discord.js';
+import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, Events, type GuildMember } from 'discord.js';
 import type { EventArgs } from '@typings/functionArgs';
 import { getServerConfig } from '@configs/serverConfig';
 import { getWelcomeConfig } from '@configs/welcomeConfig';
@@ -16,6 +16,14 @@ export default {
     if (!config) return;
     if (!config.joinDM) return;
 
+    const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(
+      new ButtonBuilder()
+        .setCustomId('sentFrom')
+        .setLabel('Sent from server: ' + member.guild.name ?? 'Unknown')
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(true),
+    );
+
     color = custom?.color ?? color;
 
     const parser = new MemberParser({ member, color });
@@ -26,21 +34,22 @@ export default {
         await member.send({
           embeds: [embed],
           content: parser.parse(config.dm.content),
-        });
+          components: [sentFrom],
+        }).catch(() => null);
 
         break;
       }
 
       case 'text': {
         if (config.dm.content === '') return;
-        await member.send({ content: parser.parse(config.dm.content) }).catch(() => null);
+        await member.send({ content: parser.parse(config.dm.content), components: [sentFrom] }).catch(() => null);
 
         break;
       }
 
       case 'card': {
         const card = await drawWelcomeCard(member, color, config.dmCard);
-        await member.send({ files: [new AttachmentBuilder(card)] });
+        await member.send({ files: [new AttachmentBuilder(card)], components: [sentFrom] }).catch(() => null);
 
         break;
       }

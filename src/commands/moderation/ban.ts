@@ -72,6 +72,7 @@ export default {
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
     const deleteMessages = interaction.options.getInteger('delete_messages', true);
     let user = interaction.options.getUser('user');
+    if (!user) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
     const userId = user?.id ?? interaction.options.getString('user-id');
 
     if (!userId) {
@@ -96,7 +97,8 @@ export default {
 
     user = user as NonNullable<User>;
 
-    const member = interaction.guild?.members.cache.get(userId);
+    const member = interaction.guild?.members.cache.get(user.id)! || (await interaction.guild?.members.fetch(user.id).catch(() => null));
+    if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('Server member not found, please try again.')] });
 
     //* Prevent non-allowed bans.
     if (member === interaction.member)
@@ -182,7 +184,7 @@ export default {
         new Embed(color)
           .setTitle('User Banned')
           .setDescription(`**User:** ${member ?? user ?? `<@${userId}>`} (@${user.username})\n**Reason:** ${reason}`)
-          .addFields(fields)
+          .addFields(fields).setFooter({ text: `ID: ${id}` })
           .setFooter({ text: `ID: ${id}` }),
       ],
     });
@@ -191,7 +193,7 @@ export default {
     const sentFrom = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
         .setCustomId('sentFrom')
-        .setLabel('Sent from server: ' + interaction.guild?.name ?? 'Unknown')
+        .setLabel(`Sent from server: ${interaction.guild?.name ?? 'Unknown'}`.substring(0, 80))
         .setStyle(ButtonStyle.Primary)
         .setDisabled(true),
     );
@@ -257,7 +259,7 @@ export default {
       }
 
       await channel.send({
-        embeds: [new Embed(color).setTitle('Member Banned').setFields(fields)],
+        embeds: [new Embed(color).setTitle('Member Banned').setFields(fields).setFooter({ text: `ID: ${id}` })],
       });
     }
 

@@ -10,6 +10,7 @@ export default {
 
   async execute({ client }: EventArgs, oldMessage: Message, newMessage: Message) {
     if (!newMessage.guild?.id) return;
+    if ([10, 20, 19, 21].includes(newMessage.type)) return;
 
     const config = await getLoggingConfig(client, newMessage.guild.id);
     if (!config) return;

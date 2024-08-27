@@ -12,6 +12,7 @@ export default model<IModerationRules>(
       type: reqString,
       amount: Number,
       time: reqString,
+      strike: reqString
     },
     action: {
       type: reqString,

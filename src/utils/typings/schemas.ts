@@ -35,6 +35,24 @@ export interface IAfkConfig {
   enabled: boolean;
 }
 
+export interface IUserCaptcha {
+  guildId: Snowflake;
+  userId: Snowflake;
+  date: number;
+  lastAttempt: number;
+  id: string;
+}
+
+export interface IVerificationConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+  role: Snowflake;
+  dm: boolean;
+  dmMessage: Message;
+  type: 'button' | 'web-captcha' | 'bot-captcha' | string;
+  cooldown: string;
+}
+
 export interface IModerationRules {
   guildId: Snowflake;
   enabled: boolean;
@@ -129,7 +147,7 @@ export interface IGiveaway {
 
   duration: string;
   entries: Types.Array<string[] | number[]>;
-  winnerIds: Types.Array<string[]>;
+  winnerIds: Types.Array<string[]> | string[];
 
   startTimestamp: string;
   endTimestamp: string;
@@ -261,7 +279,7 @@ export interface IAutomodStrike {
   guildId: Snowflake;
   userId: Snowflake;
   type: string;
-  date: string;
+  date: number;
 }
 
 export interface ILevel {
@@ -314,7 +332,7 @@ export interface ILoggingConfig {
   enabled: boolean;
   excludedChannels?: Types.Array<Snowflake>;
   excludedCategories?: Types.Array<Snowflake>;
-  events?: Types.Array<{ enabled: boolean; event: string; channelId: string }>;
+  events?: Types.Array<{ enabled: boolean; event: string; channelId: string }> | any[];
   logBotActions: boolean;
 }
 

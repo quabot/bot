@@ -27,7 +27,7 @@ export const serverInvites = async (
     guildId: message.guildId,
     userId: message.author.id,
     type: 'invite',
-    date: new Date(),
+    date: new Date().getTime(),
   });
   await newStrike.save();
 
@@ -64,6 +64,15 @@ export const serverInvites = async (
     client,
     member,
     config.serverInvites.action,
+    config.serverInvites.duration,
+    'Automatically punished after being flagged by automod, sent a message with a server invite.',
+  );
+
+  //* Do the action for the automod rules if configured
+  await actionAutomod(
+    client,
+    member,
+    'invite',
     config.serverInvites.duration,
     'Automatically punished after being flagged by automod, sent a message with a server invite.',
   );

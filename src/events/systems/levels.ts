@@ -27,7 +27,7 @@ export default {
     if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
     const current_time = Date.now();
     const time_stamps = cooldowns.get(message.author);
-    const cooldown_amount = 30000;
+    const cooldown_amount = 5000;
 
     let no = false;
     if (time_stamps.has(message.author.id)) {
@@ -89,7 +89,6 @@ export default {
       if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
     }
 
-    const parserOptions = { member, color, xp, level, channel: msgChannel };
     if (xp + rndXp >= reqXp) {
       levelDB.xp += rndXp;
       levelDB.level += 1;
@@ -98,6 +97,7 @@ export default {
       xp = xp += rndXp;
       level = level += 1;
 
+      const parserOptions = { member, color, xp, level, channel: msgChannel };
       const parser = new LevelParser(parserOptions);
 
       if (config.channel !== 'none') {
@@ -129,7 +129,7 @@ export default {
             await channel
               .send({
                 files: [attachment],
-                content: `${parser.parse(config.levelupCardContent)}`
+                content: `${parser.parse(config.levelupCardContent)}`,
               })
               .catch(() => {});
         }
@@ -179,10 +179,15 @@ export default {
         const parser = new RewardLevelParser({ ...parserOptions, reward: check });
 
         if (config.rewardsMode === 'replace') {
-          if (levelDB.role !== 'none') {
-            const role = guild.roles.cache.get(levelDB.role);
-            if (hasRolePerms(role)) await member.roles.remove(role!).catch(() => {});
-          }
+          const roles = config.rewards!.map(i => i.role);
+          roles.forEach(async role => {
+            if (guild.roles.cache.has(role)) {
+              if (config.rewards?.find(r => r.role === role)?.level !== level) {
+                const r = guild.roles.cache.get(role);
+                if (hasRolePerms(r)) await member.roles.remove(r!).catch(() => {});
+              }
+            }
+          });
 
           const role = guild.roles.cache.get(check.role);
           if (hasRolePerms(role)) await member.roles.add(role!).catch(() => {});

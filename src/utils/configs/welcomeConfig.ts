@@ -18,7 +18,7 @@ export async function getWelcomeConfig(client: Client, guildId: Snowflake) {
       joinType: 'embed',
       joinMessage: {
         content: '',
-        title: 'Welcome {username}!',
+        title: 'Welcome {user.username}!',
         color: '{color}',
         timestamp: true,
         footer: {
@@ -26,8 +26,8 @@ export async function getWelcomeConfig(client: Client, guildId: Snowflake) {
           icon: '',
         },
         author: {
-          text: '@{username}',
-          icon: '{avatar}',
+          text: '@{user.username}',
+          icon: '{user.avatarUrl}',
           url: '',
         },
         description: 'Welcome to **{server}**, {user.displayname}! You are the {members}th member.',
@@ -79,7 +79,7 @@ export async function getWelcomeConfig(client: Client, guildId: Snowflake) {
       leaveType: 'embed',
       leaveMessage: {
         content: '',
-        title: 'Goodbye {username}!',
+        title: 'Goodbye {user.username}!',
         color: '{color}',
         timestamp: true,
         footer: {
@@ -87,8 +87,8 @@ export async function getWelcomeConfig(client: Client, guildId: Snowflake) {
           icon: '',
         },
         author: {
-          text: '@{username}',
-          icon: '{avatar}',
+          text: '@{user.username}',
+          icon: '{user.avatarUrl}',
           url: '',
         },
         description: '{user} left **{server}**.',

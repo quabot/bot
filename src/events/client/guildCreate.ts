@@ -17,6 +17,10 @@ import { getWelcomeConfig } from '@configs/welcomeConfig';
 import { Embed } from '@constants/embed';
 import { hasSendPerms } from '@functions/discord';
 import { ChannelType } from 'discord.js';
+import { getStarMessagesConfig } from '@configs/getStarMessagesConfig';
+import { getBoostConfig } from '@configs/boostConfig';
+import { getAutomodConfig } from '@configs/automodConfig';
+import { getVerificationConfig } from '@configs/verificationConfig';
 
 export default {
   event: 'guildCreate',
@@ -40,6 +44,10 @@ export default {
     await getSuggestConfig(client, guild.id);
     await getTicketConfig(client, guild.id);
     await getWelcomeConfig(client, guild.id);
+    await getAutomodConfig(guild.id, client);
+    await getStarMessagesConfig(guild.id, client);
+    await getBoostConfig(guild.id, client);
+    await getVerificationConfig(guild.id, client);
 
     let done = false;
     guild.channels.cache.forEach(channel => {

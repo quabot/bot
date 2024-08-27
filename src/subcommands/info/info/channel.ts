@@ -34,13 +34,13 @@ export default {
                         ? channel.nsfw
                           ? 'Enabled'
                           : 'Disabled'
-                        : 'Impossable'
+                        : 'Impossible'
                     }\n- **Cooldown:** ${
                       channel.isTextBased()
                         ? channel.rateLimitPerUser !== 0
                           ? `${channel.rateLimitPerUser}s`
                           : 'Disabled'
-                        : 'Impossable'
+                        : 'Impossible'
                     }\n- **Parent:** ${channel.parentId ? '<#' + channel.parentId + '>' : 'None'}
                     `),
       ],
