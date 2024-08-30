@@ -16,6 +16,7 @@ export const excessiveSpoilers = async (
   if (!message.guildId) return;
   if (!message.guild) return;
   if (!config.enabled || !config.excessiveSpoilers.enabled) return;
+  if (message.content.length < 12) return;
 
   //* Detect what percentage of the message is a spoiler (between || on both sides), if below max return. Spoilers should include the text between them
   const spoilerRegex = /\|\|.*?\|\|/g;

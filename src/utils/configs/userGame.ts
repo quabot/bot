@@ -20,12 +20,8 @@ export async function getUserGame(userId: Snowflake) {
       rpsPoints: 0,
 
       bio: '-',
-      birthday: {
-        configured: false,
-        day: 0,
-        month: 0,
-        year: 0,
-      },
+      birthday: new Date(),
+      birthday_set: false,
     },
   });
 }

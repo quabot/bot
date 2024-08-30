@@ -16,6 +16,7 @@ export const excessiveMentions = async (
   if (!message.guildId) return;
   if (!message.guild) return;
   if (!config.enabled || !config.excessiveMentions.enabled) return;
+  if (message.content.length < 5) return;
 
   //* Detect if the message contains more than max mentions amount of mentions
   const mentionsRegex = /<@&[0-9]+>|<@![0-9]+>|<@[0-9]+>|<#[0-9]+>/g;

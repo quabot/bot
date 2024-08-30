@@ -14,12 +14,8 @@ export interface IUserGame {
   rpsTries: number;
   rpsPoints: number;
 
-  birthday: {
-    configured: boolean;
-    day: number;
-    month: number;
-    year: number;
-  };
+  birthday: Date;
+  birthday_set: boolean;
   bio: string;
 }
 export interface IBoostConfig {

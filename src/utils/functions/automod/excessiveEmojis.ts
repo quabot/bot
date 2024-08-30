@@ -16,15 +16,16 @@ export const excessiveEmojis = async (
   if (!message.guildId) return;
   if (!message.guild) return;
   if (!config.enabled || !config.excessiveEmojis.enabled) return;
+  if (message.content.length < 5) return;
 
   //* Detect if the message contains more that percentage emojis (check regular emojis and custom emojis)
   const customEmojiRegex = /<a?:[a-zA-Z0-9_]+:[0-9]+>/g;
-  const customEmojis = message.content.match(customEmojiRegex);
+  const customEmojis = message.content.match(customEmojiRegex) ?? [];
   let newContent = message.content.replace(customEmojiRegex, '.');
 
   const emojiRegex =
     /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g;
-  const emojis = message.content.match(emojiRegex);
+  const emojis = message.content.match(emojiRegex) ?? [];
   newContent = newContent.replace(emojiRegex, '.');
   if (!emojis && !customEmojis) return;
 

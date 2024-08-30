@@ -5,7 +5,6 @@ import type { WsEventArgs } from '@typings/functionArgs';
 export default {
   code: 'info',
   async execute({ data }: WsEventArgs) {
-    console.log('');
     consola.info('Websocket: ' + data.message);
   },
 };

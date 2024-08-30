@@ -130,7 +130,6 @@ export default {
 
     if (config.channel) {
       const channel = interaction.guild?.channels.cache.get(config.channelId);
-      console.log(channel)
       if (!channel?.isTextBased()) return;
       if (!hasSendPerms(channel)) {
         return await interaction.followUp({
