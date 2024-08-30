@@ -16,7 +16,7 @@ export default {
       });
 
     const description = nextBirthdays.map((u) => {
-      return `**<@${u.userId}>** - ${moment(u.birthday).format('MMMM Do, YYYY')} (${moment().diff(userConfig.birthday, 'years')})`;
+      return `**<@${u.userId}>** - ${moment(u.birthday).format('MMMM Do, YYYY')} (${moment().diff(u.birthday, 'years')})`;
     });
 
     await interaction.editReply({
