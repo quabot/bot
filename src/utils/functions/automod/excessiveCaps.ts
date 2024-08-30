@@ -16,6 +16,7 @@ export const excessiveCaps = async (
   if (!message.guildId) return;
   if (!message.guild) return;
   if (!config.enabled || !config.excessiveCaps.enabled) return;
+  if (message.content.length < 10) return;
 
   //* Detect if the message contains more that percentage caps
   const capsRegex = /[A-Z]/g;
