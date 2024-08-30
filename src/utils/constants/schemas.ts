@@ -33,6 +33,11 @@ export const reqObject = {
   required: true,
 };
 
+export const reqDate = {
+  type: Date,
+  required: true,
+};
+
 export const reqArray = {
   type: Array,
   required: true,

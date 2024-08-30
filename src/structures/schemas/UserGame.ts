@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqNum, reqObject } from '@constants/schemas';
+import { reqString, reqNum, reqDate, reqBool } from '@constants/schemas';
 import { IUserGame } from '@typings/schemas';
 
 export default model<IUserGame>(
@@ -16,7 +16,8 @@ export default model<IUserGame>(
     rpsTries: reqNum,
     rpsPoints: reqNum,
 
-    birthday: reqObject,
+    birthday: reqDate,
+    birthday_set: reqBool,
     bio: reqString,
   }),
 );
