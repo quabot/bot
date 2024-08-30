@@ -33,7 +33,6 @@ export default {
     .setDMPermission(false),
 
   async execute({ client, interaction, color }: CommandArgs) {
-    console.log(interaction)
     const ephemeral = interaction.options.getBoolean('private') ?? false;
 
     await interaction.deferReply({ ephemeral });

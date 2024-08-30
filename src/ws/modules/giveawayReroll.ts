@@ -16,11 +16,9 @@ export default {
           guildId: guildId,
           id,
         });
-        console.log(giveaway)
         if (!giveaway) return;
     
         const giveawayEnded = await rollGiveaway(client, giveaway, true, true);
-        console.log(giveawayEnded)
     
         if (giveawayEnded === false) return;
     

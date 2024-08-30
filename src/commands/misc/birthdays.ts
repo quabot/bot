@@ -11,7 +11,7 @@ export default {
       subcommand
         .setName('set')
         .setDescription("Set your birthday.")
-        .addStringOption(option => option.setName('date').setDescription('The date of your birthday in the format MM/DD/YYYY.').setRequired(true)),
+        .addStringOption(option => option.setName('date').setDescription('The date of your birthday in the format DD/MM/YYYY.').setRequired(true)),
     )
     .addSubcommand(subcommand =>
       subcommand
