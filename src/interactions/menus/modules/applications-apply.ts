@@ -52,7 +52,7 @@ export default {
 
     //* When there are allowed roles, they must have (one of) them.
     const allowedRoles = application.allowed_roles ?? [];
-    if (allowedRoles.length && !allowedRoles.some(r => member.roles.cache.has(r)))
+    if (allowedRoles.length > 0 && !allowedRoles.some(r => member.roles.cache.has(r)))
       return await interaction.editReply({
         embeds: [
           new Embed(color).setDescription(

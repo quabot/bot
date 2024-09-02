@@ -15,7 +15,7 @@ import Punishment from '@schemas/Punishment';
 import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
-import { hasSendPerms } from '@functions/discord';
+import { hasModerationPerms, hasSendPerms } from '@functions/discord';
 import { isSnowflake } from '@functions/string';
 import { ModerationParser } from '@classes/parsers';
 import { checkModerationRules } from '@functions/moderation-rules';
@@ -115,6 +115,11 @@ export default {
         });
     }
 
+    if (hasModerationPerms(member))
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('You cannot ban a user with moderation permissions.')],
+      });
+
     //* Get the user's database and add them if they don't exist.
     const userDatabase = await getUser(interaction.guildId!, userId);
 
@@ -128,10 +133,8 @@ export default {
     let ban = true;
     await interaction.guild?.members
       .ban(user ?? userId, { reason, deleteMessageSeconds: deleteMessages })
-      .catch(async e => {
+      .catch(async () => {
         ban = false;
-
-        console.log(e);
 
         await interaction.editReply({
           embeds: [new Embed(color).setDescription('Failed to ban the user.')],
@@ -177,16 +180,24 @@ export default {
         inline: true,
       });
     }
-
+    
+    const revokeButton = new ActionRowBuilder<ButtonBuilder>().setComponents(
+      new ButtonBuilder()
+        .setCustomId('revoke')
+        .setLabel('Remove Punishment')
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji('🔓'),
+    );
     //* Edit the reply to confirm the ban.
     await interaction.editReply({
       embeds: [
         new Embed(color)
           .setTitle('User Banned')
           .setDescription(`**User:** ${member ?? user ?? `<@${userId}>`} (@${user.username})\n**Reason:** ${reason}`)
-          .addFields(fields).setFooter({ text: `ID: ${id}` })
-          .setFooter({ text: `ID: ${id}` }),
+          .addFields(fields)
+          .setFooter({ text: `${id}` }),
       ],
+      components: [revokeButton],
     });
 
     //* Send the ban message to the user.
