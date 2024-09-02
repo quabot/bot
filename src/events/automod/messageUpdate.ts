@@ -1,5 +1,18 @@
 import { getAutomodConfig } from '@configs/automodConfig';
 import { Embed } from '@constants/embed';
+import { attachmentsCooldown } from '@functions/automod/attachmentsCooldown';
+import { chatCooldown } from '@functions/automod/chatCooldown';
+import { customRegex } from '@functions/automod/customRegex';
+import { excessiveCaps } from '@functions/automod/excessiveCaps';
+import { excessiveEmojis } from '@functions/automod/excessiveEmojis';
+import { excessiveMentions } from '@functions/automod/excessiveMentions';
+import { excessiveSpoilers } from '@functions/automod/excessiveSpoilers';
+import { externalLinks } from '@functions/automod/externalLinks';
+import { newLines } from '@functions/automod/newLines';
+import { profanityFilter } from '@functions/automod/profanityFilter';
+import { regexPreCheck } from '@functions/automod/regexPreCheck';
+import { repeatedText } from '@functions/automod/repeatedText';
+import { serverInvites } from '@functions/automod/serverInvites';
 import { hasAnyPerms } from '@functions/discord';
 import { EventArgs } from '@typings/functionArgs';
 import { Events, Message, PermissionFlagsBits } from 'discord.js';
@@ -41,8 +54,40 @@ export default {
       return;
 
     const errors:string[] = [];
+    if (await chatCooldown(message, config, client, color)) return;
+    if (await profanityFilter(message, config, client, color, member)) return;
+    if (await attachmentsCooldown(message, config, client, color)) return;
+    if (await repeatedText(message, config, client, color)) return;
+    
+    //* Run the regex. If there is any error in this regex, delete the message.
+    if (!(await regexPreCheck(message, config))) {
+      //* Delete the message
+      if (message.deletable) await message.delete().catch(() => null);
+    }
 
-		if (errors.length === 0) return;
+    //* Send the logs, run the actions etc.
+    const caps: any = await excessiveCaps(message, config, client, color, member);
+    if (caps) errors.push(caps);
+    const emojis: any = await excessiveEmojis(message, config, client, color, member);
+    if (emojis) errors.push(emojis);
+    const mentions: any = await excessiveMentions(message, config, client, color, member);
+    if (mentions) errors.push(mentions);
+    const spoilers: any = await excessiveSpoilers(message, config, client, color, member);
+    if (spoilers) errors.push(spoilers);
+    const eLink: any = await externalLinks(message, config, client, color, member);
+    if (eLink) errors.push(eLink);
+    const nLine: any = await newLines(message, config, client, color, member);
+    if (nLine) errors.push(nLine);
+    const invite: any = await serverInvites(message, config, client, color, member);
+    if (invite) errors.push(invite);
+
+    for (const regex of config.customRegex) {
+      const result = await customRegex(message, config, client, color, member, regex);
+      if (result) errors.push(result);
+    }
+
+    //* Send the alert message
+    if (errors.length === 0) return;
 
     let description = `Hey ${message.author}, `;
     if (errors.length === 1) description += errors[0].toLocaleLowerCase();
