@@ -77,3 +77,7 @@ export function hasAnyPerms(member: GuildMember | APIInteractionGuildMember | nu
     perms.map(p => (member.permissions as PermissionsBitField).has(p)).some(v => v === true)
   );
 }
+
+export function hasModerationPerms(member: GuildMember | APIInteractionGuildMember | null | undefined) {
+  return hasAnyPerms(member, [PermissionsBitField.Flags.KickMembers, PermissionsBitField.Flags.BanMembers, PermissionsBitField.Flags.ModerateMembers, PermissionsBitField.Flags.Administrator, PermissionsBitField.Flags.ManageGuild]);
+}

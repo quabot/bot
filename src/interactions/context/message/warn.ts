@@ -10,13 +10,13 @@ import {
   ButtonStyle,
   ContextMenuCommandBuilder,
   GuildMemberRoleManager,
-  PermissionFlagsBits
+  PermissionFlagsBits,
 } from 'discord.js';
 import { randomUUID } from 'crypto';
 import Punishment from '@schemas/Punishment';
 import { ModerationParser } from '@classes/parsers';
 import { CustomEmbed } from '@constants/customEmbed';
-import { hasSendPerms } from '@functions/discord';
+import { hasModerationPerms, hasSendPerms } from '@functions/discord';
 import { checkModerationRules } from '@functions/moderation-rules';
 
 export default {
@@ -35,7 +35,7 @@ export default {
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    let reason = `Your message: ${message.content.substring(0,500)}` ?? 'No reason provided.';
+    let reason = `Your message: ${message.content.substring(0, 500)}` ?? 'No reason provided.';
     if (message.content === '') reason = 'No reason provided.';
     const user = message.author;
     const member = message.member ?? (await interaction.guild?.members.fetch(user.id).catch(() => null));
@@ -53,6 +53,11 @@ export default {
     if (member.roles.highest.rawPosition > (interaction.member!.roles as GuildMemberRoleManager).highest.rawPosition)
       return interaction.editReply({
         embeds: [new Embed(color).setDescription('You cannot warn a user with roles higher than your own.')],
+      });
+
+    if (hasModerationPerms(member))
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('You cannot warn a user with moderation permissions.')],
       });
 
     const userDatabase = await getUser(interaction.guildId!, member.id);
@@ -98,14 +103,23 @@ export default {
       });
     }
 
+    const revokeButton = new ActionRowBuilder<ButtonBuilder>().setComponents(
+      new ButtonBuilder()
+        .setCustomId('revoke')
+        .setLabel('Remove Punishment')
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji('🔓'),
+    );
+
     await interaction.editReply({
       embeds: [
         new Embed(color)
           .setTitle('User Warned')
           .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
           .setFields(fields)
-          .setFooter({ text: `ID: ${id}` }),
+          .setFooter({ text: `${id}` }),
       ],
+      components: [revokeButton],
     });
 
     if (config.warnDM && member) {
@@ -171,7 +185,12 @@ export default {
       }
 
       await channel.send({
-        embeds: [new Embed(color).setTitle('Member Warned').addFields(fields).setFooter({ text: `ID: ${id}` })],
+        embeds: [
+          new Embed(color)
+            .setTitle('Member Warned')
+            .addFields(fields)
+            .setFooter({ text: `ID: ${id}` }),
+        ],
       });
     }
 
