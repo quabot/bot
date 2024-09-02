@@ -15,7 +15,7 @@ import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import ms from 'ms';
 import type { CommandArgs } from '@typings/functionArgs';
-import { hasSendPerms } from '@functions/discord';
+import { hasModerationPerms, hasSendPerms } from '@functions/discord';
 import { TimedModerationParser } from '@classes/parsers';
 import { checkModerationRules } from '@functions/moderation-rules';
 
@@ -73,6 +73,13 @@ export default {
         embeds: [new Embed(color).setDescription('You cannot timeout a user with roles higher than your own.')],
       });
 
+      
+    if (hasModerationPerms(member))
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('You cannot timeout a user with moderation permissions.')],
+      });
+
+
     const userDatabase = await getUser(interaction.guildId!, member.id);
     if (!userDatabase)
       return await interaction.editReply({
@@ -127,14 +134,22 @@ export default {
       });
     }
 
+    const revokeButton = new ActionRowBuilder<ButtonBuilder>().setComponents(
+      new ButtonBuilder()
+        .setCustomId('revoke')
+        .setLabel('Remove Punishment')
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji('🔓'),
+    );
     await interaction.editReply({
       embeds: [
         new Embed(color)
           .setTitle('User Timed Out')
           .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
-          .addFields(fields).setFooter({ text: `ID: ${id}` })
-          .setFooter({ text: `ID: ${id}` }),
+          .addFields(fields)
+          .setFooter({ text: `${id}` }),
       ],
+      components: [revokeButton],
     });
 
     const sentFrom = new ActionRowBuilder<ButtonBuilder>().setComponents(

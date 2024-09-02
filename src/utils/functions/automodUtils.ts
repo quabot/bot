@@ -7,7 +7,7 @@ import ms from 'ms';
 import { randomUUID } from 'crypto';
 import Punishment from '@schemas/Punishment';
 import { Embed } from '@constants/embed';
-import { hasSendPerms } from './discord';
+import { hasModerationPerms, hasSendPerms } from './discord';
 import { ModerationParser, TimedModerationParser } from '@classes/parsers';
 import { CustomEmbed } from '@constants/customEmbed';
 import { checkModerationRules } from './moderation-rules';
@@ -26,6 +26,8 @@ export const actionAutomod = async (client: Client, member: GuildMember, action:
   await getUser(member.guild.id, member.id);
 
   if (!((member?.roles as any) instanceof GuildMemberRoleManager)) return;
+  if (hasModerationPerms(member)) return;
+
 
   const serverConfig = await getServerConfig(client, member.guild.id);
   if (!serverConfig) return;

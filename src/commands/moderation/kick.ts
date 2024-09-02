@@ -14,7 +14,7 @@ import Punishment from '@schemas/Punishment';
 import { randomUUID } from 'crypto';
 import { CustomEmbed } from '@constants/customEmbed';
 import type { CommandArgs } from '@typings/functionArgs';
-import { hasSendPerms } from '@functions/discord';
+import { hasModerationPerms, hasSendPerms } from '@functions/discord';
 import { ModerationParser } from '@classes/parsers';
 import { checkModerationRules } from '@functions/moderation-rules';
 
@@ -47,8 +47,13 @@ export default {
     const reason = `${interaction.options.getString('reason') ?? 'No reason specified.'}`.slice(0, 800);
     const user = interaction.options.getUser('user', true);
     if (!user) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found.')] });
-    const member = interaction.guild?.members.cache.get(user.id)! || (await interaction.guild?.members.fetch(user.id).catch(() => null));
-    if (!member) return await interaction.editReply({ embeds: [new Embed(color).setDescription('User not found, please try again.')] });
+    const member =
+      interaction.guild?.members.cache.get(user.id)! ||
+      (await interaction.guild?.members.fetch(user.id).catch(() => null));
+    if (!member)
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('User not found, please try again.')],
+      });
 
     await getUser(interaction.guildId!, member.id);
 
@@ -63,6 +68,11 @@ export default {
     if (member.roles.highest.rawPosition > (interaction.member!.roles as GuildMemberRoleManager).highest.rawPosition)
       return interaction.editReply({
         embeds: [new Embed(color).setDescription('You cannot kick a user with roles higher than your own.')],
+      });
+
+    if (hasModerationPerms(member))
+      return await interaction.editReply({
+        embeds: [new Embed(color).setDescription('You cannot kibk a user with moderation permissions.')],
       });
 
     //* Get the user's database and return if it doesn't exist.
@@ -122,15 +132,23 @@ export default {
       });
     }
 
+    const revokeButton = new ActionRowBuilder<ButtonBuilder>().setComponents(
+      new ButtonBuilder()
+        .setCustomId('revoke')
+        .setLabel('Remove Punishment')
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji('🔓'),
+    );
     //* Update the reply to confirm the kick.
     await interaction.editReply({
       embeds: [
         new Embed(color)
           .setTitle('User Kicked')
           .setDescription(`**User:** ${member} (@${user.username})\n**Reason:** ${reason}`)
-          .addFields(fields).setFooter({ text: `ID: ${id}` })
-          .setFooter({ text: `ID: ${id}` }),
+          .addFields(fields)
+          .setFooter({ text: `${id}` }),
       ],
+      components: [revokeButton],
     });
 
     //* Send the DM to the user.
@@ -203,7 +221,12 @@ export default {
       }
 
       await channel.send({
-        embeds: [new Embed(color).setTitle('Member Kicked').setFields(fields).setFooter({ text: `ID: ${id}` })],
+        embeds: [
+          new Embed(color)
+            .setTitle('Member Kicked')
+            .setFields(fields)
+            .setFooter({ text: `ID: ${id}` }),
+        ],
       });
     }
 

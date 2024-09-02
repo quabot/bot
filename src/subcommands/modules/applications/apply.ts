@@ -39,7 +39,7 @@ export default {
           new StringSelectMenuBuilder()
             .setMinValues(1)
             .setMaxValues(1)
-            .setPlaceholder('Very cool moderator')
+            .setPlaceholder('Make a selection...')
             .setOptions(
               applications.map(application => {
                 const option: APISelectMenuOption = {

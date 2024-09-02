@@ -5,8 +5,7 @@ import User from '@schemas/User';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 export default {
-  name: 'delete-punishment',
-
+  name: 'revoke',
   async execute({ interaction, color }: ButtonArgs) {
     const id = interaction.message.embeds[0].footer?.text;
     if (!id)
@@ -62,11 +61,11 @@ export default {
 
     const row = new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setStyle(ButtonStyle.Danger)
-        .setLabel('Delete')
-        .setEmoji('🗑️')
-        .setDisabled(true)
-        .setCustomId('delete-punishment'),
+      .setCustomId('revoke')
+      .setLabel('Remove Punishment')
+      .setStyle(ButtonStyle.Danger)
+      .setDisabled(true)
+      .setEmoji('🔓'),
     );
 
     await interaction.update({
