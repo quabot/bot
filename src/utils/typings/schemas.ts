@@ -321,6 +321,7 @@ export interface ILevelConfig {
 
   viewCard: boolean;
   leaderboardPublic: boolean;
+  resetOnLeave: boolean;
 }
 
 export interface ILoggingConfig {

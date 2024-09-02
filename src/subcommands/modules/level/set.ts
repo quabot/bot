@@ -61,6 +61,11 @@ export default {
       });
     }
 
+    
+    const levelForXp = (xp: number) => Math.floor((Math.sqrt(30 * xp + 2700) + 90) / 60);
+    const levelForXpResult = levelForXp(xp);
+    
+    if (!level) levelDB.level = levelForXpResult;
     if (xp) levelDB.xp = xp;
     if (level) levelDB.level = level;
     await levelDB.save().catch(() => null);

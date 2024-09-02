@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqArray, reqObject, reqNum, optString } from '@constants/schemas';
+import { reqString, reqBool, reqArray, reqObject, reqNum, optString, reqBoolDefaultOff } from '@constants/schemas';
 import type { ILevelConfig } from '@typings/schemas';
 
 export default model<ILevelConfig>(
@@ -38,5 +38,6 @@ export default model<ILevelConfig>(
 
     viewCard: reqBool, // Show the level card on /level view
     leaderboardPublic: reqBool, // Should everyone be able to see the leaderboard
+    resetOnLeave: reqBoolDefaultOff
   }),
 );

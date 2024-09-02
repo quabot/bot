@@ -28,6 +28,12 @@ export const reqBool = {
   required: true,
 };
 
+export const reqBoolDefaultOff = {
+  type: Boolean,
+  required: true,
+  default: false,
+};
+
 export const reqObject = {
   type: Object,
   required: true,
