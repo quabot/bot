@@ -49,6 +49,7 @@ export const reqDate = {
 export const reqArray = {
   type: Array,
   required: true,
+  default: [],
 };
 
 export const automationIfArray = {
@@ -78,7 +79,7 @@ export const automationIfArray = {
     reactions?: string[];
     roles?: string[];
     role?: string;
-    buttonId?: string;
+    buttonId?: string[];
   }>,
   required: true,
   default: [],

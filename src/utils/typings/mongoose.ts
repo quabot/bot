@@ -32,6 +32,7 @@ export interface Message {
   url: string;
   thumbnail: string;
   image: string;
+  buttons?: string[],
 }
 
 export interface LevelCard {
