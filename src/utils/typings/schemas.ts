@@ -30,6 +30,157 @@ export interface IAfkConfig {
   guildId: Snowflake;
   enabled: boolean;
 }
+export interface IAutomationConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+  buttons: {
+    name: string;
+    style: 'primary' | 'secondary' | 'success' | 'danger';
+    emoji: string;
+    id: string;
+  }[] | Types.Array<{ name: string; style: 'primary' | 'secondary' | 'success' | 'danger'; emoji: string; id: string }>;
+}
+
+export interface IAutomation {
+  guildId: Snowflake;
+  name: string;
+  enabled: boolean;
+  trigger:
+    | 'sent-message'
+    | 'deleted-message'
+    | 'edited-message'
+    | 'reaction-added'
+    | 'reaction-removed'
+    | 'role-added'
+    | 'role-removed'
+    | 'join-vc'
+    | 'leave-vc'
+    | 'create-thread'
+    | 'create-channel'
+    | 'join-server'
+    | 'leave-server'
+    | 'click-button';
+  if: {
+    type:
+      | 'in-channel'
+      | 'contains-words'
+      | 'is-exactly'
+      | 'has-not'
+      | 'has-image'
+      | 'has-text-attachment'
+      | 'has-video'
+      | 'is-reply'
+      | 'not-reply'
+      | 'is-emoji'
+      | 'has-reactions'
+      | 'has-role'
+      | 'not-role'
+      | 'gained-role'
+      | 'lost-role'
+      | 'click-button'
+      | 'is-thread';
+    channels?: Snowflake[];
+    words?: string[];
+    sentence?: string;
+    emoji?: string;
+    reactions?: string[];
+    roles?: Snowflake[];
+    role?: Snowflake;
+    buttonId?: string;
+  }[] | Types.Array<{
+    type:
+      | 'in-channel'
+      | 'contains-words'
+      | 'is-exactly'
+      | 'has-not'
+      | 'has-image'
+      | 'has-text-attachment'
+      | 'has-video'
+      | 'is-reply'
+      | 'not-reply'
+      | 'is-emoji'
+      | 'has-reactions'
+      | 'has-role'
+      | 'not-role'
+      | 'gained-role'
+      | 'lost-role'
+      | 'click-button'
+      | 'is-thread';
+    channels?: Snowflake[];
+    words?: string[];
+    sentence?: string;
+    emoji?: string;
+    reactions?: string[];
+    roles?: Snowflake[];
+    role?: Snowflake;
+    buttonId?: string;
+  }>;
+  action: {
+    type:
+      | 'create-thread'
+      | 'send-message'
+      | 'reply'
+      | 'repost'
+      | 'pin'
+      | 'delete-message'
+      | 'delete-channel'
+      | 'add-reaction'
+      | 'remove-reaction'
+      | 'remove-all-reactions'
+      | 'add-role'
+      | 'remove-role'
+      | 'add-users-to-thread'
+      | 'send-in-thread'
+      | 'give-xp'
+      | 'take-xp'
+      | 'warn'
+      | 'kick'
+      | 'ban'
+      | 'timeout'
+      | 'send-dm';
+    threadName?: string;
+    message?: Message;
+    channelId?: string;
+    reaction?: string;
+    role?: Snowflake;
+    users?: Snowflake[];
+    reason?: string;
+    xp?: number;
+    duration?: string;
+  }[] | Types.Array<{
+    type:
+      | 'create-thread'
+      | 'send-message'
+      | 'reply'
+      | 'repost'
+      | 'pin'
+      | 'delete-message'
+      | 'delete-channel'
+      | 'add-reaction'
+      | 'remove-reaction'
+      | 'remove-all-reactions'
+      | 'add-role'
+      | 'remove-role'
+      | 'add-users-to-thread'
+      | 'send-in-thread'
+      | 'give-xp'
+      | 'take-xp'
+      | 'warn'
+      | 'kick'
+      | 'ban'
+      | 'timeout'
+      | 'send-dm';
+    threadName?: string;
+    message?: Message;
+    channelId?: string;
+    reaction?: string;
+    role?: Snowflake;
+    users?: Snowflake[];
+    reason?: string;
+    xp?: number;
+    duration?: string;
+  }>;
+}
 
 export interface IUserCaptcha {
   guildId: Snowflake;
