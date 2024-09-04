@@ -157,6 +157,7 @@ export class MemberParser extends GuildParser {
 
     this.addVariables(
       { name: 'user.username', value: member.user.username },
+      { name: 'user.name', value: member.user.username },
       { name: 'username', value: member.user.username },
       { name: 'user.displayname', aliases: ['user.display_name'], value: member.displayName },
       { name: 'user.avatar', value: member.avatar ?? member.user.avatar ?? '' },
