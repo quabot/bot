@@ -79,6 +79,7 @@ export interface IAutomation {
           | 'has-role'
           | 'not-role'
           | 'gained-role'
+          | 'is-type'
           | 'lost-role'
           | 'click-button'
           | 'is-thread';
@@ -87,8 +88,10 @@ export interface IAutomation {
         sentence?: string;
         emoji?: string;
         reactions?: string[];
+        reactionCount?: number;
         roles?: Snowflake[];
         role?: Snowflake;
+        channelType?: number;
         buttonId?: string;
       }[]
     | Types.Array<{
@@ -117,7 +120,7 @@ export interface IAutomation {
         reactions?: string[];
         roles?: Snowflake[];
         role?: Snowflake;
-        buttonId?: string[];
+        buttonId?: string;
       }>;
   action:
     | {
@@ -220,6 +223,38 @@ export interface IAutomationAction {
   reason?: string;
   xp?: number;
   duration?: string;
+}
+
+export interface IAutomationIf {
+  type:
+    | 'in-channel'
+    | 'contains-words'
+    | 'is-exactly'
+    | 'has-not'
+    | 'has-image'
+    | 'has-text-attachment'
+    | 'has-video'
+    | 'is-reply'
+    | 'not-reply'
+    | 'is-emoji'
+    | 'has-reactions'
+    | 'has-role'
+    | 'not-role'
+    | 'gained-role'
+    | 'lost-role'
+    | 'click-button'
+    | 'is-type'
+    | 'is-thread';
+  channels?: Snowflake[];
+  words?: string[];
+  sentence?: string;
+  emoji?: string;
+  reactions?: string[];
+  reactionCount?: number;
+  roles?: Snowflake[];
+  channelType?: number;
+  role?: Snowflake;
+  buttonId?: string;
 }
 
 export interface IUserCaptcha {

@@ -3,7 +3,7 @@ import { MemberParser } from '@classes/parsers';
 import { getAutomationConfig } from '@configs/automationConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import { GuildMember, Message } from 'discord.js';
-import { getButtons } from './utils/getButtons';
+import { getButtons } from '../utils/getButtons';
 import { IAutomationAction } from '@typings/schemas';
 
 export const createThreadAutomation = async (message: Message | null, client: Client, action: IAutomationAction) => {

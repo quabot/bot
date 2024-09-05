@@ -3,7 +3,7 @@ import { GuildParser } from '@classes/parsers';
 import { getAutomationConfig } from '@configs/automationConfig';
 import { CustomEmbed } from '@constants/customEmbed';
 import { TextChannel } from 'discord.js';
-import { getButtons } from './utils/getButtons';
+import { getButtons } from '../utils/getButtons';
 import { IAutomationAction } from '@typings/schemas';
 
 export const sendMessageAutomation = async (channel: TextChannel, client: Client, action: IAutomationAction) => {
