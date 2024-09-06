@@ -21,6 +21,7 @@ import { notHasWordsCheck } from '@functions/automations/if/notHasWords';
 import { hasImageCheck } from '@functions/automations/if/hasImage';
 import { hasTextCheck } from '@functions/automations/if/hasText';
 import { hasVideoCheck } from '@functions/automations/if/hasVideo';
+import { hasRoleCheck } from '@functions/automations/if/hasRole';
 
 export default {
   event: 'messageCreate',
@@ -40,7 +41,6 @@ export default {
     if (!automations) return;
 
     let shouldRun = true;
-    //* Check for each of the ifs
     for (const automation of automations) {
       if (automation.if) {
         for (const automationIf of automation.if) {
@@ -59,14 +59,16 @@ export default {
           if (automationIf.type === 'has-video' && !(await hasVideoCheck(message, client))) shouldRun = false;
           if (automationIf.type === 'is-reply' && message.reference === null) shouldRun = false;
           if (automationIf.type === 'not-reply' && message.reference !== null) shouldRun = false;
+          if (automationIf.type === 'has-role' && !(await hasRoleCheck(message.member, client, automationIf)))
+            shouldRun = false;
+          if (automationIf.type === 'not-role' && (await hasRoleCheck(message.member, client, automationIf)))
+            shouldRun = false;
         }
       }
     }
 
     if (!shouldRun) return;
     // the message has X of this reactions
-    // the user has this role
-    // the user doesnt have this role
 
     automations.forEach(async (automation: IAutomation) => {
       automation.action.map(async action => {

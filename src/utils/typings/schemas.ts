@@ -87,7 +87,7 @@ export interface IAutomation {
         words?: string[];
         sentence?: string;
         emoji?: string;
-        reactions?: string[];
+        reactions?: { reaction: string; count: number }[];
         reactionCount?: number;
         roles?: Snowflake[];
         role?: Snowflake;
@@ -117,7 +117,7 @@ export interface IAutomation {
         words?: string[];
         sentence?: string;
         emoji?: string;
-        reactions?: string[];
+        reactions?: { reaction: string; count: number }[];
         roles?: Snowflake[];
         role?: Snowflake;
         buttonId?: string;
@@ -249,7 +249,7 @@ export interface IAutomationIf {
   words?: string[];
   sentence?: string;
   emoji?: string;
-  reactions?: string[];
+  reactions?: { reaction: string; count: number }[];
   reactionCount?: number;
   roles?: Snowflake[];
   channelType?: number;
