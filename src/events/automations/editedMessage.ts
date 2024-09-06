@@ -4,10 +4,13 @@ import { getAutomationConfig } from '@configs/automationConfig';
 import Automation from '@schemas/Automation';
 import { sendMessageAutomation } from '@functions/automations/actions/sendMessage';
 import { IAutomation } from '@typings/schemas';
+import { replyToMessageAutomation } from '@functions/automations/actions/replyToMessage';
 import { sendDmAutomation } from '@functions/automations/actions/sendDm';
 import { repostMessageAutomation } from '@functions/automations/actions/repostMessage';
+import { reactToMessageAutomation } from '@functions/automations/actions/reactToMessage';
 import { addRoleAutomation } from '@functions/automations/actions/addRole';
 import { removeRoleAutomation } from '@functions/automations/actions/removeRole';
+import { createThreadAutomation } from '@functions/automations/actions/createThread';
 import { giveXPAutomation } from '@functions/automations/actions/giveXP';
 import { removeXPAutomation } from '@functions/automations/actions/removeXP';
 import { inChannelCheck } from '@functions/automations/if/inChannel';
@@ -20,12 +23,12 @@ import { hasTextCheck } from '@functions/automations/if/hasText';
 import { hasVideoCheck } from '@functions/automations/if/hasVideo';
 import { hasRoleCheck } from '@functions/automations/if/hasRole';
 import { hasReactionCheck } from '@functions/automations/if/hasReaction';
+import { removeReactionsAutomation } from '@functions/automations/actions/removeReactions';
 
 export default {
-  event: 'messageDelete',
-  name: 'automationDeletedMessage',
-  async execute({ client }: EventArgs, message: Message) {
-    if (!message.author) return;
+  event: 'messageUpdate',
+  name: 'automationEditedMessage',
+  async execute({ client }: EventArgs, _: Message, message: Message) {
     if (message.author.bot) return;
     if (!message.guildId) return;
 
@@ -35,7 +38,7 @@ export default {
 
     const automations = await Automation.find({
       guildId: message.guildId,
-      trigger: 'deleted-message',
+      trigger: 'edited-message',
     });
     if (!automations) return;
 
@@ -73,13 +76,19 @@ export default {
     automations.forEach(async (automation: IAutomation) => {
       automation.action.map(async action => {
         if (action.type === 'send-message') await sendMessageAutomation(message.channel as TextChannel, client, action);
+        if (action.type === 'reply') await replyToMessageAutomation(message, client, action);
+        if (action.type === 'delete-message') await message.delete();
+        if (action.type === 'pin') await message.pin();
         if (action.type === 'send-dm') sendDmAutomation(message.member, client, action);
         if (action.type === 'delete-channel') await message.channel.delete();
         if (action.type === 'repost') await repostMessageAutomation(message, client, action);
+        if (action.type === 'add-reaction') await reactToMessageAutomation(message, client, action);
         if (action.type === 'add-role') await addRoleAutomation(message.member, client, action);
         if (action.type === 'remove-role') await removeRoleAutomation(message.member, client, action);
+        if (action.type === 'create-thread') await createThreadAutomation(message, client, action);
         if (action.type === 'give-xp') await giveXPAutomation(message, client, action);
         if (action.type === 'take-xp') await removeXPAutomation(message, client, action);
+        if (action.type === 'remove-all-reactions') await removeReactionsAutomation(message, client);
       });
     });
   },
