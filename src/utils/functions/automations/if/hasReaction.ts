@@ -13,12 +13,14 @@ export const hasReactionCheck = async (message: Message | null, client: Client, 
 
   if (!automationIf.reactions) return false;
   if (automationIf.reactions?.length === 0) return false;
-//! UNFINISHED
-  // let hasReaction = false;
-  for (const reaction of automationIf.reactions) {
-    console.log(reaction)
-    console.log(message.reactions.cache);
+
+  let hasReaction = false;
+  for (const reaction of message.reactions.cache) {
+    const reactionConfig = automationIf.reactions.find(r => reaction[0] === r.reaction);
+    if (reactionConfig) {
+      if (reaction[1].count >= reactionConfig.count) hasReaction = true;
+    }
   }
 
-  return true;
+  return hasReaction;
 };
