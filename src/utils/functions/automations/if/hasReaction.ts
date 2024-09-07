@@ -1,9 +1,9 @@
 import { Client } from '@classes/discord';
 import { getAutomationConfig } from '@configs/automationConfig';
 import { IAutomationIf } from '@typings/schemas';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 
-export const hasReactionCheck = async (message: Message | null, client: Client, automationIf: IAutomationIf) => {
+export const hasReactionCheck = async (message: Message | PartialMessage | null, client: Client, automationIf: IAutomationIf) => {
   if (!message) return false;
   if (!message.guild) return false;
 

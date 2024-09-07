@@ -1,9 +1,9 @@
 import { Client } from '@classes/discord';
 import { getAutomationConfig } from '@configs/automationConfig';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { IAutomationIf } from '@typings/schemas';
 
-export const isSentenceCheck = async (message: Message | null, client: Client, automation: IAutomationIf) => {
+export const isSentenceCheck = async (message: Message | PartialMessage | null, client: Client, automation: IAutomationIf) => {
   if (!message) return false;
   if (!message.guild) return false;
 
@@ -13,7 +13,8 @@ export const isSentenceCheck = async (message: Message | null, client: Client, a
 
   if (!automation.sentence) return false;
 
-  if (message.content.toLowerCase() === automation.sentence.toLowerCase()) return true;
+  const content = message.content ?? "";
+  if (content.toLowerCase() === automation.sentence.toLowerCase()) return true;
 
   return false;
 };

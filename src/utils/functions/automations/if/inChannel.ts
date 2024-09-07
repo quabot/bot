@@ -1,9 +1,9 @@
 import { Client } from '@classes/discord';
 import { getAutomationConfig } from '@configs/automationConfig';
-import { GuildChannel, Message } from 'discord.js';
+import { GuildChannel, Message, PartialMessage } from 'discord.js';
 import { IAutomationIf } from '@typings/schemas';
 
-export const inChannelCheck = async (message: Message | null, client: Client, automation: IAutomationIf) => {
+export const inChannelCheck = async (message: Message | null | PartialMessage, client: Client, automation: IAutomationIf) => {
   if (!message) return false;
   if (!message.guild) return false;
 

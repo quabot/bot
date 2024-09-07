@@ -1,9 +1,9 @@
 import { Client } from '@classes/discord';
 import { getAutomationConfig } from '@configs/automationConfig';
-import { Message } from 'discord.js';
+import { Message, PartialMessage } from 'discord.js';
 import { IAutomationIf } from '@typings/schemas';
 
-export const notHasWordsCheck = async (message: Message | null, client: Client, automation: IAutomationIf) => {
+export const notHasWordsCheck = async (message: Message | PartialMessage | null, client: Client, automation: IAutomationIf) => {
   if (!message) return false;
   if (!message.guild) return false;
 
@@ -16,7 +16,8 @@ export const notHasWordsCheck = async (message: Message | null, client: Client, 
 
   let hasNotWord = true;
   for (const word of automation.words) {
-    if (message.content.toLowerCase().includes(word.toLowerCase())) hasNotWord = false;
+    const content = message.content ?? "";
+    if (content.toLowerCase().includes(word.toLowerCase())) hasNotWord = false;
   }
 
   return hasNotWord;
