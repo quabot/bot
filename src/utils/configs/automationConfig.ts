@@ -2,7 +2,7 @@ import type { Snowflake } from 'discord.js';
 import { getFromCollection } from '@functions/mongoose';
 import { IAutomationConfig } from '@typings/schemas';
 import type { Client } from '@classes/discord';
-import AutomationConfig from '@schemas/AutomationConfig';
+import AutomationConfig from '@schemas/Automation-Config';
 
 export async function getAutomationConfig(guildId: Snowflake, client: Client) {
   return await getFromCollection<IAutomationConfig>({
