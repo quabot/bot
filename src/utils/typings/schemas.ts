@@ -271,7 +271,7 @@ export interface IUserCaptcha {
 export interface IVerificationConfig {
   guildId: Snowflake;
   enabled: boolean;
-  role: Snowflake;
+  role: Snowflake | 'none';
   dm: boolean;
   dmMessage: Message;
   type: 'button' | 'web-captcha' | 'bot-captcha' | string;
@@ -512,7 +512,7 @@ export interface ILevel {
   userId: Snowflake;
   xp: number;
   level: number;
-  role: Snowflake;
+  role: Snowflake | 'none';
   active: boolean;
 }
 
@@ -540,7 +540,7 @@ export interface ILevelConfig {
   excludedChannels?: Types.Array<Snowflake>;
   excludedRoles?: Types.Array<Snowflake>;
 
-  rewards?: Types.Array<{ level: number; role: Snowflake }>;
+  rewards?: Types.Array<{ level: number; role: Snowflake | 'none' }>;
   rewardsMode: 'stack' | 'replace';
   removeRewards: boolean;
 
@@ -838,7 +838,7 @@ export interface IWelcomeConfig {
   leaveMessage: Message;
   leaveCard: WelcomeCard;
 
-  joinRole?: Types.Array<{ role: Snowflake; delay: number; bot: true }>;
+  joinRole?: Types.Array<{ role: Snowflake | 'none'; delay: number; bot: true }>;
   joinRoleEnabled: boolean;
 
   joinDM: boolean;

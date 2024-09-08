@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, Colors } from 'discord.js';
+import { SlashCommandBuilder, Colors, TextChannel } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { getUserGame } from '@configs/userGame';
 import type { CommandArgs } from '@typings/functionArgs';
@@ -748,7 +748,7 @@ export default {
 
       //* Create a collector.
 
-      const collector = interaction.channel!.createMessageCollector({
+      const collector =(interaction.channel as TextChannel)!.createMessageCollector({
         filter: m => m.author.id === interaction.user.id,
         time: 15000,
       });

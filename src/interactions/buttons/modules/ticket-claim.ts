@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildTextBasedChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildTextBasedChannel, TextChannel } from 'discord.js';
 import Ticket from '@schemas/Ticket';
 import { getIdConfig } from '@configs/idConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
@@ -82,7 +82,7 @@ export default {
     });
 
     if (hasSendPerms(interaction.channel as GuildTextBasedChannel | null))
-      await interaction.channel?.send({
+      await (interaction.channel as TextChannel)?.send({
         embeds: [new Embed(color).setDescription(`This ticket has been claimed by ${interaction.user}.`)],
       });
 

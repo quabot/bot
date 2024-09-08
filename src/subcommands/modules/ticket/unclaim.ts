@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type GuildTextBasedChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, TextChannel, type GuildTextBasedChannel } from 'discord.js';
 import { getTicketConfig } from '@configs/ticketConfig';
 import Ticket from '@schemas/Ticket';
 import { Embed } from '@constants/embed';
@@ -73,7 +73,7 @@ export default {
     });
 
     if (hasSendPerms(interaction.channel as GuildTextBasedChannel | null))
-      await interaction.channel?.send({
+      await (interaction.channel as TextChannel)?.send({
         embeds: [new Embed(color).setDescription('This ticket is no longer claimed.')],
       });
 

@@ -19,5 +19,5 @@ export const repostMessageAutomation = async (message: Message, client: Client, 
   const content = message.content;
   const embeds = message.embeds;
   const components = message.components;
-  await sendChannel.send({ content, embeds, components }).catch(() => {});  
+  await (sendChannel as TextChannel).send({ content, embeds, components }).catch(() => {});  
 };

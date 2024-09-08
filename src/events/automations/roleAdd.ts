@@ -21,7 +21,7 @@ export default {
     if (oldMember.avatar !== newMember.avatar) return;
     const roleRemoved = oldMember.roles.cache.size > newMember.roles.cache.size;
 
-    let role;
+    let role:any;
     if (oldMember.roles.cache.size < newMember.roles.cache.size)
       role = newMember.roles.cache
         .filter(n => !oldMember.roles.cache.has(n.id))

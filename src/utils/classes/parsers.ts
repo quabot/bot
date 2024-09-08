@@ -374,7 +374,7 @@ export interface BaseStaffParserArgs extends MemberParserArgs {
 }
 
 export interface RewardLevelParserArgs extends LevelParserArgs {
-  reward: { level: number; role: Snowflake };
+  reward: { level: number; role: Snowflake | 'none' };
 }
 
 export interface LevelParserArgs extends MemberParserArgs {
