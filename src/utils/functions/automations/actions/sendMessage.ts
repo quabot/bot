@@ -2,13 +2,14 @@ import { Client } from '@classes/discord';
 import { GuildParser } from '@classes/parsers';
 import { getAutomationConfig } from '@configs/automationConfig';
 import { CustomEmbed } from '@constants/customEmbed';
-import { TextChannel, VoiceBasedChannel } from 'discord.js';
+import { GuildChannel, TextChannel, ThreadChannel, VoiceBasedChannel } from 'discord.js';
 import { getButtons } from '../utils/getButtons';
 import { IAutomationAction } from '@typings/schemas';
 
-export const sendMessageAutomation = async (channel: TextChannel | VoiceBasedChannel | null, client: Client, action: IAutomationAction) => {
+export const sendMessageAutomation = async (channel: TextChannel | VoiceBasedChannel | ThreadChannel | GuildChannel | null, client: Client, action: IAutomationAction) => {
   if (!channel) return;
   if (!channel.guild) return;
+  if (!channel.isTextBased()) return;
 
   const config = await getAutomationConfig(channel.guild.id, client);
   if (!config) return;
@@ -18,6 +19,7 @@ export const sendMessageAutomation = async (channel: TextChannel | VoiceBasedCha
   if (action.channelId && action.channelId !== 'current')
     sendChannel = (await client.channels.fetch(action.channelId)) as TextChannel;
   if (action.channelId && !sendChannel) return;
+  if (!sendChannel.isTextBased()) return;
 
   if (!action.message) return;
 
