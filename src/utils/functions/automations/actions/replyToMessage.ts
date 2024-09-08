@@ -2,11 +2,11 @@ import { Client } from '@classes/discord';
 import { GuildParser } from '@classes/parsers';
 import { getAutomationConfig } from '@configs/automationConfig';
 import { CustomEmbed } from '@constants/customEmbed';
-import { Message } from 'discord.js';
+import { ButtonInteraction, Message } from 'discord.js';
 import { getButtons } from '../utils/getButtons';
 import { IAutomationAction } from '@typings/schemas';
 
-export const replyToMessageAutomation = async (message: Message, client: Client, action: IAutomationAction) => {
+export const replyToMessageAutomation = async (message: Message | ButtonInteraction, client: Client, action: IAutomationAction) => {
   if (!message) return;
   if (!message.guild) return;
 
