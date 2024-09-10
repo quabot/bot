@@ -9,7 +9,10 @@ export default {
   async execute({ interaction, color }: CommandArgs) {
     await interaction.deferReply();
 
-    const nextBirthdays = await UserGame.find({ birthday_set: true }).sort({ birthday: 1 }).limit(10);
+    if (!interaction.guild) return await interaction.editReply({ embeds: [new Embed(color).setDescription('This command can only be used in a server.')] });
+    const arrayMemberIds = interaction.guild.members.cache.map((m) => m.id);
+
+    const nextBirthdays = await UserGame.find({ birthday_set: true, userId: { $in: arrayMemberIds } }).sort({ birthday: 1 }).limit(10);
     if (!nextBirthdays.length)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('No birthdays have been set.')],
