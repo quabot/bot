@@ -24,6 +24,8 @@ export const getButtons = async (
   }[],
   buttonIds: string[],
 ) => {
+  if (buttons.length === 0) return;
+  if (buttonIds.length === 0) return;
   const newButtons = new ActionRowBuilder<ButtonBuilder>();
 
   for (const buttonId of buttonIds) {
@@ -38,5 +40,6 @@ export const getButtons = async (
     );
   }
 
+  if (newButtons.components.length === 0) return;
   return newButtons;
 };
