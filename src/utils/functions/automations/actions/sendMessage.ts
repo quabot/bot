@@ -26,6 +26,7 @@ export const sendMessageAutomation = async (channel: TextChannel | VoiceBasedCha
   const parser = new GuildParser(sendChannel.guild);
   const embed = new CustomEmbed(action.message, parser);
   const buttons: any = (await getButtons(config.buttons, action.message.buttons ?? [])) ?? [];
-  if (!buttons || buttons.length === 0) return await sendChannel.send({ embeds: [embed], content: parser.parse(action.message.content) }).catch(() => {});
-  await sendChannel.send({ embeds: [embed], components: [buttons], content: parser.parse(action.message.content) }).catch(() => {});
+  //! Re-add the catch
+  if (!buttons || buttons.length === 0) return await sendChannel.send({ embeds: [embed], content: parser.parse(action.message.content) });
+  await sendChannel.send({ embeds: [embed], components: [buttons], content: parser.parse(action.message.content) })
 };
