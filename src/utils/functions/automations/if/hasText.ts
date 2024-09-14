@@ -12,7 +12,6 @@ export const hasTextCheck = async (message: Message | PartialMessage | null, cli
 
   if (!message.attachments.size) return false;
 
-  console.log(message.attachments)
   const images = message.attachments.filter((attachment) => attachment.contentType?.startsWith('text/'));
   if (!images.size) return false;
 
