@@ -19,5 +19,6 @@ export const sendDmAutomation = async (member: GuildMember | null, client: Clien
   const parser = new GuildParser(member.guild);
   const embed = new CustomEmbed(action.message, parser);
   const buttons: any = (await getButtons(config.buttons, action.message.buttons ?? [])) ?? [];
-  await member.send({ embeds: [embed], components: [buttons], content: parser.parse(action.message.content) }).catch(() => {});
+  if (!buttons || buttons.length === 0) return await member.send({ embeds: [embed], content: parser.parse(action.message.content) }).catch(() => { });
+  await member.send({ embeds: [embed], components: [buttons], content: parser.parse(action.message.content) }).catch(() => { });
 };

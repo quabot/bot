@@ -89,7 +89,7 @@ export default {
       
       await StarMessage.deleteOne({ starboardMessageId: message.id, guildId: interaction.guildId });
 
-      await message.delete();
+      await message.delete().catch(() => { });
 
       await interaction.editReply({
         embeds: [

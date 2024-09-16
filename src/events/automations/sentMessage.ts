@@ -68,10 +68,10 @@ export default {
       automation.action.map(async action => {
         if (action.type === 'send-message') await sendMessageAutomation(message.channel as TextChannel, client, action);
         if (action.type === 'reply') await replyToMessageAutomation(message, client, action);
-        if (action.type === 'delete-message') await message.delete();
-        if (action.type === 'pin') await message.pin();
+        if (action.type === 'delete-message') await message.delete().catch(() => { });
+        if (action.type === 'pin') await message.pin().catch(() => { });
         if (action.type === 'send-dm') sendDmAutomation(message.member, client, action);
-        if (action.type === 'delete-channel') await message.channel.delete();
+        if (action.type === 'delete-channel') await message.channel.delete().catch(() => { });
         if (action.type === 'repost') await repostMessageAutomation(message, client, action);
         if (action.type === 'add-reaction') await reactToMessageAutomation(message, client, action);
         if (action.type === 'add-role') await addRoleAutomation(message.member, client, action);

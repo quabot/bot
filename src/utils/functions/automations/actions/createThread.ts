@@ -28,6 +28,7 @@ export const createThreadAutomation = async (message: Message | null, client: Cl
 
       const embed = new CustomEmbed(action.message, memberParser);
       const buttons: any = (await getButtons(config.buttons, action.message.buttons ?? [])) ?? [];
-      await thread.send({ embeds: [embed], components: [buttons], content: memberParser.parse(action.message.content) });
-    });
+      if (!buttons || buttons.length === 0) return await thread.send({ embeds: [embed], content: memberParser.parse(action.message.content) }).catch(() => { });
+      await thread.send({ embeds: [embed], components: [buttons], content: memberParser.parse(action.message.content) }).catch(() => { });
+    }).catch(() => { });
 };
