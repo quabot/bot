@@ -43,6 +43,7 @@ export default {
     const automations = await Automation.find({
       guildId: reaction.message.guildId,
       trigger: 'reaction-added',
+      enabled: true
     });
     if (!automations) return;
 

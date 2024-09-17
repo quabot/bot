@@ -152,7 +152,7 @@ export interface IAutomation {
         message?: Message;
         channelId?: string;
         reaction?: string;
-        role?: Snowflake;
+        role?: Snowflake | 'none';
         users?: Snowflake[];
         reason?: string;
         xp?: number;
@@ -185,7 +185,7 @@ export interface IAutomation {
         message?: Message;
         channelId?: string;
         reaction?: string;
-        role?: Snowflake;
+        role?: Snowflake | 'none';
         users?: Snowflake[];
         reason?: string;
         xp?: number;

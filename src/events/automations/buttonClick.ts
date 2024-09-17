@@ -32,6 +32,7 @@ export default {
     const automations = await Automation.find({
       guildId: interaction.guildId,
       trigger: 'click-button',
+      enabled: true
     });
     if (!automations) return;
 

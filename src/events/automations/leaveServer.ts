@@ -20,6 +20,7 @@ export default {
     const automations = await Automation.find({
       guildId: member.guild.id,
       trigger: 'leave-server',
+      enabled: true
     });
     if (!automations) return;
 

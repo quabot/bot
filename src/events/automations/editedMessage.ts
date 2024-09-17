@@ -39,6 +39,7 @@ export default {
     const automations = await Automation.find({
       guildId: message.guildId,
       trigger: 'edited-message',
+      enabled: true
     });
     if (!automations) return;
 

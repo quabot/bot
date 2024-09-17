@@ -20,6 +20,7 @@ export default {
     const automations = await Automation.find({
       guildId: channel.guildId,
       trigger: 'create-channel',
+      enabled: true
     });
     if (!automations) return;
 

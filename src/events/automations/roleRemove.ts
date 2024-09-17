@@ -47,6 +47,7 @@ export default {
     const automations = await Automation.find({
       guildId: newMember.guild.id,
       trigger: 'role-removed',
+      enabled: true
     });
     if (!automations) return;
 

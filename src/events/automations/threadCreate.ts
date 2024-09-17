@@ -26,6 +26,7 @@ export default {
     const automations = await Automation.find({
       guildId: channel.guildId,
       trigger: 'create-thread',
+      enabled: true
     });
     if (!automations) return;
 

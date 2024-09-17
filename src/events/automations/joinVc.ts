@@ -26,6 +26,7 @@ export default {
       const automations = await Automation.find({
         guildId: newState.guild.id,
         trigger: 'join-vc',
+        enabled: true
       });
       if (!automations) return;
 
