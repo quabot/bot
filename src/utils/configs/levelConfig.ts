@@ -126,6 +126,7 @@ export async function getLevelConfig(guildId: Snowflake, client: Client) {
 
       viewCard: false,
       leaderboardPublic: false,
+      resetOnLeave: false,
     },
   });
 }

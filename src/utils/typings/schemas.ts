@@ -30,6 +30,235 @@ export interface IAfkConfig {
   guildId: Snowflake;
   enabled: boolean;
 }
+export interface IAutomationConfig {
+  guildId: Snowflake;
+  enabled: boolean;
+  buttons:
+    | {
+        name: string;
+        style: 'primary' | 'secondary' | 'success' | 'danger';
+        emoji: string;
+        id: string;
+      }[]
+    | Types.Array<{ name: string; style: 'primary' | 'secondary' | 'success' | 'danger'; emoji: string; id: string }>;
+}
+
+export interface IAutomation {
+  guildId: Snowflake;
+  name: string;
+  enabled: boolean;
+  trigger:
+    | 'sent-message'
+    | 'deleted-message'
+    | 'edited-message'
+    | 'reaction-added'
+    | 'reaction-removed'
+    | 'role-added'
+    | 'role-removed'
+    | 'join-vc'
+    | 'leave-vc'
+    | 'create-thread'
+    | 'create-channel'
+    | 'join-server'
+    | 'leave-server'
+    | 'click-button';
+  if:
+    | {
+        type:
+          | 'in-channel'
+          | 'contains-words'
+          | 'is-exactly'
+          | 'has-not'
+          | 'has-image'
+          | 'has-text-attachment'
+          | 'has-video'
+          | 'is-reply'
+          | 'not-reply'
+          | 'is-emoji'
+          | 'is-not-emoji'
+          | 'has-reactions'
+          | 'has-role'
+          | 'not-role'
+          | 'gained-role'
+          | 'is-type'
+          | 'lost-role'
+          | 'click-button'
+          | 'is-thread';
+        channels?: Snowflake[];
+        words?: string[];
+        sentence?: string;
+        emoji?: string;
+        reactions?: { reaction: string; count: number }[];
+        reactionCount?: number;
+        roles?: Snowflake[];
+        role?: Snowflake;
+        channelType?: number;
+        buttonId?: string;
+      }[]
+    | Types.Array<{
+        type:
+          | 'in-channel'
+          | 'contains-words'
+          | 'is-exactly'
+          | 'has-not'
+          | 'has-image'
+          | 'has-text-attachment'
+          | 'has-video'
+          | 'is-reply'
+          | 'not-reply'
+          | 'is-emoji'
+          | 'is-not-emoji'
+          | 'has-reactions'
+          | 'has-role'
+          | 'not-role'
+          | 'gained-role'
+          | 'lost-role'
+          | 'click-button'
+          | 'is-thread';
+        channels?: Snowflake[];
+        words?: string[];
+        sentence?: string;
+        emoji?: string;
+        reactions?: { reaction: string; count: number }[];
+        roles?: Snowflake[];
+        role?: Snowflake;
+        buttonId?: string;
+      }>;
+  action:
+    | {
+        type:
+          | 'create-thread'
+          | 'send-message'
+          | 'reply'
+          | 'repost'
+          | 'pin'
+          | 'delete-message'
+          | 'delete-channel'
+          | 'add-reaction'
+          | 'remove-reaction'
+          | 'remove-all-reactions'
+          | 'add-role'
+          | 'remove-role'
+          | 'add-users-to-thread'
+          | 'send-in-thread'
+          | 'give-xp'
+          | 'take-xp'
+          | 'warn'
+          | 'kick'
+          | 'ban'
+          | 'timeout'
+          | 'send-dm';
+        threadName?: string;
+        message?: Message;
+        channelId?: string;
+        reaction?: string;
+        role?: Snowflake | 'none';
+        users?: Snowflake[];
+        reason?: string;
+        xp?: number;
+        duration?: string;
+      }[]
+    | Types.Array<{
+        type:
+          | 'create-thread'
+          | 'send-message'
+          | 'reply'
+          | 'repost'
+          | 'pin'
+          | 'delete-message'
+          | 'delete-channel'
+          | 'add-reaction'
+          | 'remove-reaction'
+          | 'remove-all-reactions'
+          | 'add-role'
+          | 'remove-role'
+          | 'add-users-to-thread'
+          | 'send-in-thread'
+          | 'give-xp'
+          | 'take-xp'
+          | 'warn'
+          | 'kick'
+          | 'ban'
+          | 'timeout'
+          | 'send-dm';
+        threadName?: string;
+        message?: Message;
+        channelId?: string;
+        reaction?: string;
+        role?: Snowflake | 'none';
+        users?: Snowflake[];
+        reason?: string;
+        xp?: number;
+        duration?: string;
+      }>;
+}
+
+export interface IAutomationAction {
+  type:
+    | 'create-thread'
+    | 'send-message'
+    | 'reply'
+    | 'repost'
+    | 'pin'
+    | 'delete-message'
+    | 'delete-channel'
+    | 'add-reaction'
+    | 'remove-reaction'
+    | 'remove-all-reactions'
+    | 'add-role'
+    | 'remove-role'
+    | 'add-users-to-thread'
+    | 'send-in-thread'
+    | 'give-xp'
+    | 'take-xp'
+    | 'warn'
+    | 'kick'
+    | 'ban'
+    | 'timeout'
+    | 'send-dm';
+  threadName?: string;
+  message?: Message;
+  channelId?: string;
+  reaction?: string;
+  role?: Snowflake;
+  users?: Snowflake[];
+  reason?: string;
+  xp?: number;
+  duration?: string;
+}
+
+export interface IAutomationIf {
+  type:
+    | 'in-channel'
+    | 'contains-words'
+    | 'is-exactly'
+    | 'has-not'
+    | 'has-image'
+    | 'has-text-attachment'
+    | 'has-video'
+    | 'is-reply'
+    | 'not-reply'
+    | 'is-emoji'
+    | 'is-not-emoji'
+    | 'has-reactions'
+    | 'has-role'
+    | 'not-role'
+    | 'gained-role'
+    | 'lost-role'
+    | 'click-button'
+    | 'is-type'
+    | 'is-thread';
+  channels?: Snowflake[];
+  words?: string[];
+  sentence?: string;
+  emoji?: string;
+  reactions?: { reaction: string; count: number }[];
+  reactionCount?: number;
+  roles?: Snowflake[];
+  channelType?: number;
+  role?: Snowflake;
+  buttonId?: string;
+}
 
 export interface IUserCaptcha {
   guildId: Snowflake;
@@ -42,7 +271,7 @@ export interface IUserCaptcha {
 export interface IVerificationConfig {
   guildId: Snowflake;
   enabled: boolean;
-  role: Snowflake;
+  role: Snowflake | 'none';
   dm: boolean;
   dmMessage: Message;
   type: 'button' | 'web-captcha' | 'bot-captcha' | string;
@@ -283,7 +512,7 @@ export interface ILevel {
   userId: Snowflake;
   xp: number;
   level: number;
-  role: Snowflake;
+  role: Snowflake | 'none';
   active: boolean;
 }
 
@@ -311,7 +540,7 @@ export interface ILevelConfig {
   excludedChannels?: Types.Array<Snowflake>;
   excludedRoles?: Types.Array<Snowflake>;
 
-  rewards?: Types.Array<{ level: number; role: Snowflake }>;
+  rewards?: Types.Array<{ level: number; role: Snowflake | 'none' }>;
   rewardsMode: 'stack' | 'replace';
   removeRewards: boolean;
 
@@ -321,6 +550,7 @@ export interface ILevelConfig {
 
   viewCard: boolean;
   leaderboardPublic: boolean;
+  resetOnLeave: boolean;
 }
 
 export interface ILoggingConfig {
@@ -608,7 +838,7 @@ export interface IWelcomeConfig {
   leaveMessage: Message;
   leaveCard: WelcomeCard;
 
-  joinRole?: Types.Array<{ role: Snowflake; delay: number; bot: true }>;
+  joinRole?: Types.Array<{ role: Snowflake | 'none'; delay: number; bot: true }>;
   joinRoleEnabled: boolean;
 
   joinDM: boolean;

@@ -48,7 +48,7 @@ export default {
           embeds: [new Embed(color).setDescription("Couldn't find the suggestion! Are you sure it wasn't deleted?")],
         });
 
-      await message.delete();
+      await message.delete().catch(() => { });
       await interaction.editReply({
         embeds: [new Embed(color).setDescription('Suggestion deleted.')],
       });

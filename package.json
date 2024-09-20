@@ -1,6 +1,6 @@
 {
   "name": "quabot",
-  "version": "7.2.5.3",
+  "version": "7.2.6",
   "main": "dist/main.js",
   "author": "(c) QuaBot Development 2021-2024",
   "license": "none",
@@ -45,7 +45,6 @@
     "@types/module-alias": "^2.0.4",
     "@types/ms": "^0.7.32",
     "eslint": "^8.47.0",
-    "nodemon": "^3.0.1",
     "prettier": "^3.0.2",
     "reddit-interfaces": "^1.0.7",
     "rimraf": "^5.0.7",

@@ -9,7 +9,6 @@ import { getIdConfig } from '@configs/idConfig';
 import { getModerationConfig } from '@configs/moderationConfig';
 import { getPollConfig } from '@configs/pollConfig';
 import { getReactionConfig } from '@configs/reactionConfig';
-import { getResponderConfig } from '@configs/responderConfig';
 import { getServerConfig } from '@configs/serverConfig';
 import { getSuggestConfig } from '@configs/suggestConfig';
 import { getTicketConfig } from '@configs/ticketConfig';
@@ -21,6 +20,7 @@ import { getStarMessagesConfig } from '@configs/getStarMessagesConfig';
 import { getBoostConfig } from '@configs/boostConfig';
 import { getAutomodConfig } from '@configs/automodConfig';
 import { getVerificationConfig } from '@configs/verificationConfig';
+import { getAutomationConfig } from '@configs/automationConfig';
 
 export default {
   event: 'guildCreate',
@@ -39,7 +39,6 @@ export default {
     await getModerationConfig(client, guild.id);
     await getPollConfig(client, guild.id);
     await getReactionConfig(client, guild.id);
-    await getResponderConfig(client, guild.id);
     await getServerConfig(client, guild.id);
     await getSuggestConfig(client, guild.id);
     await getTicketConfig(client, guild.id);
@@ -48,6 +47,7 @@ export default {
     await getStarMessagesConfig(guild.id, client);
     await getBoostConfig(guild.id, client);
     await getVerificationConfig(guild.id, client);
+    await getAutomationConfig(guild.id, client);
 
     let done = false;
     guild.channels.cache.forEach(channel => {

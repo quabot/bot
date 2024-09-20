@@ -3,7 +3,7 @@ import { getLevelConfig } from '@configs/levelConfig';
 import { getLevel } from '@configs/level';
 import type { CommandArgs } from '@typings/functionArgs';
 import { hasAnyPerms, hasRolePerms } from '@functions/discord';
-import { PermissionFlagsBits } from 'discord.js';
+import { GuildMember, PermissionFlagsBits } from 'discord.js';
 
 export default {
   parent: 'level',
@@ -28,7 +28,7 @@ export default {
       });
 
     const user = interaction.options.getUser('user', true);
-    const member = interaction.options.getMember('user');
+    const member = interaction.options.getMember('user') as GuildMember;
     if (!member)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription("This user isn't in the guild anymore.")],
@@ -47,20 +47,27 @@ export default {
     const xp = interaction.options.getNumber('xp') ?? levelDB.xp;
     const level = interaction.options.getNumber('level') ?? levelDB.level;
 
+    
+    const levelForXp = (xp: number) => Math.floor((Math.sqrt(30 * xp + 2700) + 90) / 60);
+    const levelForXpResult = levelForXp(xp);
+    
+    const newLevel = interaction.options.getNumber('level') ?? levelForXpResult;
+
     if (config.removeRewards) {
       config.rewards!.forEach(async reward => {
         if (!hasRolePerms(await interaction.guild?.roles.fetch(reward.role))) return;
 
-        if (level < reward.level) {
-          if ('remove' in member.roles) await member.roles.remove(reward.role).catch(() => { });
+        if (newLevel < reward.level) {
+          await member.roles.remove(reward.role).catch(() => { });
         }
 
-        if (level >= reward.level) {
-          if ('add' in member.roles) await member.roles.add(reward.role).catch(() => { });
+        if (newLevel >= reward.level) {
+          await member.roles.add(reward.role).catch(() => { });
         }
       });
     }
 
+    if (!level) levelDB.level = levelForXpResult;
     if (xp) levelDB.xp = xp;
     if (level) levelDB.level = level;
     await levelDB.save().catch(() => null);

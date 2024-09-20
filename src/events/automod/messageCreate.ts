@@ -15,7 +15,7 @@ import { repeatedText } from '@functions/automod/repeatedText';
 import { serverInvites } from '@functions/automod/serverInvites';
 import { hasAnyPerms } from '@functions/discord';
 import { EventArgs } from '@typings/functionArgs';
-import { Events, Message, PermissionFlagsBits } from 'discord.js';
+import { Events, Message, PermissionFlagsBits, TextChannel } from 'discord.js';
 
 export default {
   event: Events.MessageCreate,
@@ -95,7 +95,7 @@ export default {
 
     //* Send the alert message (if enabled)
     if (config.alert) {
-      const alertMessage = await message.channel.send({
+      const alertMessage = await (message.channel as TextChannel).send({
         embeds: [
           new Embed(color)
             .setDescription(description)

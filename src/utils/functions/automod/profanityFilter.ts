@@ -21,7 +21,7 @@ export const profanityFilter = async (message: Message, config: IAutomodConfig, 
 
     //* Send the alert message (if enabled)
     if (config.alert) {
-      const alertMessage = await message.channel.send({
+      const alertMessage = await (message.channel as TextChannel).send({
         embeds: [
           new Embed(color)
             .setDescription(`Hey ${message.author}, please do not swear! Your message has been deleted.`)
