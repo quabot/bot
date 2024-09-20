@@ -41,7 +41,7 @@ export default {
       if (!interaction.message.embeds[1].title) {
         return await modal.editReply({
           embeds: [new Embed(color).setDescription(`Can't change url when there's no title.`)],
-        });
+        })
       }
 
       const url = modal.fields.getTextInputValue('url');

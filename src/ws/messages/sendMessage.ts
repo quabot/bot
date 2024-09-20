@@ -30,7 +30,8 @@ export default {
       const msg = await channel.send({
         embeds: [sentEmbed],
         content: parser.parse(data.message.content) ?? '',
-      });
+      }).catch(() => {});
+      if (!msg) return;
 
       const newSent = new SentMessage({
         channel: data.channelId,
@@ -47,7 +48,8 @@ export default {
     if (!embed && (parser.parse(data.message.content) ?? '** **') !== '') {
       const msg = await channel.send({
         content: parser.parse(data.message.content) ?? '** **',
-      });
+      }).catch(() => {});
+      if (!msg) return;
 
       const newSent = new SentMessage({
         channel: data.channelId,

@@ -117,8 +117,8 @@ export default {
           await channel.send({
             embeds: [embed],
             content: `${parser.parse(config.message.content)}`,
-          });
-        if (config.messageType === 'text') await channel.send({ content: `${parser.parse(config.message.content)}` });
+          }).catch(() => {});
+        if (config.messageType === 'text') await channel.send({ content: `${parser.parse(config.message.content)}` }).catch(() => {});
         if (config.messageType === 'card') {
           const card = await drawLevelCard(member, level, xp, formula(level), config.levelCard);
           if (!card) return channel.send('Internal error with card');
@@ -132,7 +132,7 @@ export default {
             await channel.send({
               files: [attachment],
               content: `${parser.parse(config.levelupCardContent)}`,
-            });
+            }).catch(() => {});
         }
       }
 
