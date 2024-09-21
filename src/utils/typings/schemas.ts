@@ -624,6 +624,8 @@ export interface IServer {
   guildId: Snowflake;
   locale: string;
   color: ColorResolvable;
+  footer: string;
+  footer_icon: string;
   updatesChannel: Snowflake;
   disabledCommands?: Types.Array<string>;
 }

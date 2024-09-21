@@ -68,7 +68,7 @@ export default {
                 .setTitle("Hi, I'm QuaBot!")
                 .setThumbnail(client.user!.displayAvatarURL({ forceStatic: false }))
                 .setDescription(
-                  "I'm a multipurpose Discord bot with loads of features. To configure me, go to [my dashboard](https://quabot.net/dashboard). If you need help with anything, join [my support server](https://discord.quabot.net).\nThanks for adding me to your server!",
+                  "I'm a multipurpose Discord bot with loads of features. To configure me, go to [my dashboard](https://quabot.net/dashboard). If you need help with anything, visit my [wiki](https://wiki.quabot.net) or join [my support server](https://discord.quabot.net).\nThanks for adding me to your server!",
                 ),
             ],
           })
