@@ -8,7 +8,6 @@ export default {
     .setName('support')
     .setDescription('Get the invite to the QuaBot support server.')
     .setDMPermission(false),
-
   async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
@@ -20,7 +19,7 @@ export default {
           .setThumbnail(`${client.user!.avatarURL()}`)
           .setTitle('QuaBot Support')
           .setDescription(
-            'Join our support server [here](https://discord.gg/kxKHuy47Eq) for fun, events, questions and suggestions!',
+            'Join our support server [here](https://discord.gg/kxKHuy47Eq) for fun, events, questions and suggestions! You can also take a look at our [documentation](https://wiki.quabot.net) for more information.',
           ),
       ],
     });
