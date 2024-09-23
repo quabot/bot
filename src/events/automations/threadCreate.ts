@@ -11,6 +11,7 @@ import { addRoleAutomation } from '@functions/automations/actions/addRole';
 import { IAutomation } from '@typings/schemas';
 import { removeRoleAutomation } from '@functions/automations/actions/removeRole';
 import { addToThreadAutomation } from '@functions/automations/actions/addToThread';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 
 export default {
   event: 'threadCreate',
@@ -49,7 +50,7 @@ export default {
             shouldRun = false;
           if (automationIf.type === 'has-role' && !(await hasRoleCheck(owner, client, automationIf)))
             shouldRun = false;
-          if (automationIf.type === 'not-role' && (await hasRoleCheck(owner, client, automationIf)))
+          if (automationIf.type === 'not-role' && (await hasOneRoleCheck(owner, client, automationIf)))
             shouldRun = false;
         }
       }

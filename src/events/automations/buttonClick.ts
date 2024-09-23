@@ -15,6 +15,7 @@ import { inChannelCheck } from '@functions/automations/if/inChannel';
 import { isTypeCheck } from '@functions/automations/if/isType';
 import { hasRoleCheck } from '@functions/automations/if/hasRole';
 import { hasReactionCheck } from '@functions/automations/if/hasReaction';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 
 export default {
   event: 'interactionCreate',
@@ -53,7 +54,7 @@ export default {
             shouldRun = false;
           if (automationIf.type === 'has-role' && !(await hasRoleCheck(interaction.member as GuildMember, client, automationIf)))
             shouldRun = false;
-          if (automationIf.type === 'not-role' && (await hasRoleCheck(interaction.member as GuildMember, client, automationIf)))
+          if (automationIf.type === 'not-role' && (await hasOneRoleCheck(interaction.member as GuildMember, client, automationIf)))
             shouldRun = false;
           if (automationIf.type === 'has-reactions' && !(await hasReactionCheck(interaction.message, client, automationIf)))
             shouldRun = false;

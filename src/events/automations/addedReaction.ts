@@ -12,6 +12,7 @@ import { repostMessageAutomation } from '@functions/automations/actions/repostMe
 import { sendDmAutomation } from '@functions/automations/actions/sendDm';
 import { sendMessageAutomation } from '@functions/automations/actions/sendMessage';
 import { hasImageCheck } from '@functions/automations/if/hasImage';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 import { hasReactionCheck } from '@functions/automations/if/hasReaction';
 import { hasRoleCheck } from '@functions/automations/if/hasRole';
 import { hasTextCheck } from '@functions/automations/if/hasText';
@@ -71,7 +72,7 @@ export default {
           if (automationIf.type === 'not-reply' && reaction.message.reference !== null) shouldRun = false;
           if (automationIf.type === 'has-role' && !(await hasRoleCheck(member, client, automationIf)))
             shouldRun = false;
-          if (automationIf.type === 'not-role' && (await hasRoleCheck(member, client, automationIf)))
+          if (automationIf.type === 'not-role' && (await hasOneRoleCheck(member, client, automationIf)))
             shouldRun = false;
           if (automationIf.type === 'has-reactions' && !(await hasReactionCheck(reaction.message, client, automationIf)))
             shouldRun = false;

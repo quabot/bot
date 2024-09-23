@@ -21,6 +21,7 @@ import { hasImageCheck } from '@functions/automations/if/hasImage';
 import { hasTextCheck } from '@functions/automations/if/hasText';
 import { hasVideoCheck } from '@functions/automations/if/hasVideo';
 import { hasRoleCheck } from '@functions/automations/if/hasRole';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 
 export default {
   event: 'messageCreate',
@@ -60,7 +61,7 @@ export default {
         if (automationIf.type === 'not-reply' && message.reference !== null) shouldRun = false;
         if (automationIf.type === 'has-role' && !(await hasRoleCheck(message.member, client, automationIf)))
           shouldRun = false;
-        if (automationIf.type === 'not-role' && (await hasRoleCheck(message.member, client, automationIf)))
+        if (automationIf.type === 'not-role' && (await hasOneRoleCheck(message.member, client, automationIf)))
           shouldRun = false;
       }
 

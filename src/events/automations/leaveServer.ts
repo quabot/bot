@@ -6,6 +6,7 @@ import { IAutomation } from '@typings/schemas';
 import { hasRoleCheck } from '@functions/automations/if/hasRole';
 import { sendDmAutomation } from '@functions/automations/actions/sendDm';
 import { sendMessageAutomation } from '@functions/automations/actions/sendMessage';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 
 export default {
   event: 'guildMemberRemove',
@@ -30,7 +31,7 @@ export default {
         for (const automationIf of automation.if) {
           if (automationIf.type === 'has-role' && !(await hasRoleCheck(member, client, automationIf)))
             shouldRun = false;
-          if (automationIf.type === 'not-role' && (await hasRoleCheck(member, client, automationIf)))
+          if (automationIf.type === 'not-role' && (await hasOneRoleCheck(member, client, automationIf)))
             shouldRun = false;
         }
       }

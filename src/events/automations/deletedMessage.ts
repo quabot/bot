@@ -20,6 +20,7 @@ import { hasTextCheck } from '@functions/automations/if/hasText';
 import { hasVideoCheck } from '@functions/automations/if/hasVideo';
 import { hasRoleCheck } from '@functions/automations/if/hasRole';
 import { hasReactionCheck } from '@functions/automations/if/hasReaction';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 
 export default {
   event: 'messageDelete',
@@ -61,7 +62,7 @@ export default {
           if (automationIf.type === 'not-reply' && message.reference !== null) shouldRun = false;
           if (automationIf.type === 'has-role' && !(await hasRoleCheck(message.member, client, automationIf)))
             shouldRun = false;
-          if (automationIf.type === 'not-role' && (await hasRoleCheck(message.member, client, automationIf)))
+          if (automationIf.type === 'not-role' && (await hasOneRoleCheck(message.member, client, automationIf)))
             shouldRun = false;
           if (automationIf.type === 'has-reactions' && !(await hasReactionCheck(message, client, automationIf)))
             shouldRun = false;

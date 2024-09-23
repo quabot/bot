@@ -8,6 +8,7 @@ import { sendDmAutomation } from '@functions/automations/actions/sendDm';
 import { addRoleAutomation } from '@functions/automations/actions/addRole';
 import { removeRoleAutomation } from '@functions/automations/actions/removeRole';
 import { IAutomation } from '@typings/schemas';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 
 export default {
   event: Events.GuildMemberUpdate,
@@ -57,7 +58,7 @@ export default {
         for (const automationIf of automation.if) {
           if (automationIf.type === 'has-role' && !(await hasRoleCheck(newMember, client, automationIf)))
             shouldRun = false;
-          if (automationIf.type === 'not-role' && (await hasRoleCheck(newMember, client, automationIf)))
+          if (automationIf.type === 'not-role' && (await hasOneRoleCheck(newMember, client, automationIf)))
             shouldRun = false;
           if (automationIf.type === 'gained-role' && !(await gainedRoleCheck(fetchedRole, client, automationIf)))
             shouldRun = false;

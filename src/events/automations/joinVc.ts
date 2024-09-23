@@ -10,6 +10,7 @@ import { removeRoleAutomation } from '@functions/automations/actions/removeRole'
 import { inChannelCheck } from '@functions/automations/if/inChannel';
 import { isTypeCheck } from '@functions/automations/if/isType';
 import { hasRoleCheck } from '@functions/automations/if/hasRole';
+import { hasOneRoleCheck } from '@functions/automations/if/hasOneRole';
 
 export default {
   event: Events.VoiceStateUpdate,
@@ -43,7 +44,7 @@ export default {
               shouldRun = false;
             if (automationIf.type === 'has-role' && !(await hasRoleCheck(newState.member, client, automationIf)))
               shouldRun = false;
-            if (automationIf.type === 'not-role' && (await hasRoleCheck(newState.member, client, automationIf)))
+            if (automationIf.type === 'not-role' && (await hasOneRoleCheck(newState.member, client, automationIf)))
               shouldRun = false;
           }
         }
