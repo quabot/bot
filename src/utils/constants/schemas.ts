@@ -1,3 +1,5 @@
+import { Message } from "@typings/mongoose";
+
 export const reqString = {
   type: String,
   required: true,
@@ -47,5 +49,82 @@ export const reqDate = {
 export const reqArray = {
   type: Array,
   required: true,
+  default: [],
+};
+
+export const automationIfArray = {
+  type: Array<{
+    type:
+      | 'in-channel'
+      | 'contains-words'
+      | 'is-exactly'
+      | 'has-not'
+      | 'has-image'
+      | 'has-text-attachment'
+      | 'has-video'
+      | 'is-reply'
+      | 'not-reply'
+      | 'is-emoji'
+      | 'has-reactions'
+      | 'has-role'
+      | 'not-role'
+      | 'gained-role'
+      | 'lost-role'
+      | 'click-button'
+      | 'is-thread';
+    channels?: string[];
+    words?: string[];
+    sentence?: string;
+    emoji?: string;
+    reactions?: string[];
+    roles?: string[];
+    role?: string;
+    buttonId?: string[];
+  }>,
+  required: true,
+  default: [],
+};
+
+export const automationActionArray = {
+  type: Array<{
+    type:
+      | 'create-thread'
+      | 'send-message'
+      | 'reply'
+      | 'repost'
+      | 'pin'
+      | 'delete-message'
+      | 'delete-channel'
+      | 'add-reaction'
+      | 'remove-reaction'
+      | 'remove-all-reactions'
+      | 'add-role'
+      | 'remove-role'
+      | 'add-users-to-thread'
+      | 'send-in-thread'
+      | 'give-xp'
+      | 'take-xp'
+      | 'warn'
+      | 'kick'
+      | 'ban'
+      | 'timeout'
+      | 'send-dm';
+    threadName?: string;
+    message?: Message;
+    channelId?: string;
+    reaction?: string;
+    role?: string;
+    users?: string[];
+    reason?: string;
+    xp?: number;
+    duration?: string;
+  }>,
+  required: true,
+  default: [],
+};
+
+export const optArray = {
+  type: Array,
+  required: false,
   default: [],
 };

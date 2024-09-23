@@ -12,6 +12,8 @@ export async function getServerConfig(client: Client, guildId: Snowflake) {
     client,
     defaultObj: {
       guildId,
+      footer: 'quabot.net',
+      footer_icon: 'https://quabot.net/logo512.png',
       locale: 'en-us',
       color: '#416683',
       updatesChannel: 'none',

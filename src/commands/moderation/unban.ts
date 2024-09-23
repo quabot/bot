@@ -39,6 +39,8 @@ export default {
 
     let unban = true;
 
+    if (!interaction.guild) return await interaction.editReply({ content: 'Discord made an error handling our request, please run the command again.' });
+    if (!interaction.guild!.members) return await interaction.editReply({ content: 'Discord made an error handling our request, please run the command again.' });
     await interaction.guild!.members.unban(userId).catch(async () => {
       unban = false;
 

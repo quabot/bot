@@ -7,6 +7,8 @@ export default model<IServer>(
   new Schema({
     guildId: reqString,
     locale: reqString,
+    footer: reqString,
+    footer_icon: reqString,
     color: reqString,
     updatesChannel: reqString,
     disabledCommands: reqArray,

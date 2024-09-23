@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, Colors } from 'discord.js';
+import { SlashCommandBuilder, Colors, TextChannel } from 'discord.js';
 import { Embed } from '@constants/embed';
 import { getUserGame } from '@configs/userGame';
 import type { CommandArgs } from '@typings/functionArgs';
@@ -737,18 +737,18 @@ export default {
 
   async execute({ interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
-    await interaction.deferReply();
+    await interaction.deferReply().catch(() => {});
     {
       //* Get a random sentence from the array and send it to the user.
       const sentence = sentences[Math.floor(Math.random() * sentences.length)];
 
       await interaction.editReply({
         embeds: [new Embed(color).setDescription(sentence).setTitle('Try to type this sentence as within 15 seconds!')],
-      });
+      }).catch(() => {});
 
       //* Create a collector.
 
-      const collector = interaction.channel!.createMessageCollector({
+      const collector =(interaction.channel as TextChannel)!.createMessageCollector({
         filter: m => m.author.id === interaction.user.id,
         time: 15000,
       });
@@ -788,7 +788,7 @@ export default {
                   },
                 ),
             ],
-          });
+          }).catch(() => {});
 
           //* Update the DB and save it.
           userDB.typePoints++;
@@ -818,7 +818,7 @@ export default {
                   },
                 ),
             ],
-          });
+          }).catch(() => {});
 
           //* Update the DB and save it.
           userDB.typePoints -= 1;

@@ -1,4 +1,4 @@
-import { ColorResolvable, type Message } from 'discord.js';
+import { ColorResolvable, TextChannel, type Message } from 'discord.js';
 import { IAutomodConfig } from '@typings/schemas';
 import { Embed } from '@constants/embed';
 import { Client } from '@classes/discord';
@@ -30,7 +30,7 @@ export const chatCooldown = async (message: Message, config: IAutomodConfig, _: 
 
     //* Send the alert message (if enabled)
     if (config.alert) {
-      const alertMessage = await message.channel.send({
+      const alertMessage = await (message.channel as TextChannel).send({
         embeds: [
           new Embed(color)
             .setDescription(

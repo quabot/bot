@@ -35,6 +35,6 @@ export default {
       embeds: [sentEmbed],
       content: parser.parse(data.message.content) ?? null,
       components: [row],
-    });
+    }).catch(() => {});
   },
 };
