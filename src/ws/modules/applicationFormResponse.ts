@@ -50,6 +50,6 @@ export default {
           new ButtonBuilder().setCustomId('application-deny').setLabel('Deny').setStyle(ButtonStyle.Danger),
         ),
       ],
-    });
+    }).catch(() => { });
   },
 };
