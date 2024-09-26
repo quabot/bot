@@ -34,6 +34,6 @@ export default {
         new CustomEmbed(config.dmMessage, new MemberParser({ member, color })).setFooter({ text: `${config.guildId}` }),
       ],
       components: [row, sentFrom],
-    });
+    }).catch(() => null);
   },
 };

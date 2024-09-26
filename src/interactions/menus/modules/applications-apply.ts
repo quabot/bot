@@ -132,8 +132,7 @@ export default {
       const message: Page = {
         embeds: [
           new Embed(color)
-            .setTitle(question.question)
-            .setDescription(question.description === '' ? 'No description.' : question.description ?? null)
+            .setDescription(`**${question.question}**\n` + question.description === '' ? 'No description.' : question.description ?? null)
             .setImage(question.image ?? null)
             .setThumbnail(question.thumbnail ?? null)
             .setFields({ name: 'Required?', value: question.required ? 'Yes' : 'No' }),

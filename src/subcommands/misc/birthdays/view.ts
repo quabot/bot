@@ -25,7 +25,9 @@ export default {
     await interaction.editReply({
       embeds: [
         new Embed(color).setDescription(
-          `${user}'s birthday is on **${moment(userConfig.birthday).format('MMMM Do, YYYY')}**. They will turn ${moment().diff(userConfig.birthday, 'years')} years old.`,
+          `${user}'s birthday is on **${moment(userConfig.birthday).format('MMMM Do, YYYY')}**. They will turn ${
+            moment().diff(userConfig.birthday, 'years') + 1
+          } years old.`,
         ),
       ],
     });

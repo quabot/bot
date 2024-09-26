@@ -36,6 +36,6 @@ export default {
     await message.edit({
       embeds: [sentEmbed],
       content: parser.parse(messageEmbed.content) ?? '',
-    })
+    }).catch(() => null);
   },
 };

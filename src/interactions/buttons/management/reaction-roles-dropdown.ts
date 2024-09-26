@@ -46,6 +46,10 @@ export default {
         : reactionRole.dropdownMax ?? reactionRole.dropdown.length;
     if (reactionRole.mode === 'unique') maxValue = 1;
 
+    let minValues = 0;
+    if (reactionRole.dropdownMin) minValues = reactionRole.dropdownMin;
+    if (minValues > reactionRole.dropdown.length) minValues = reactionRole.dropdown.length;
+
     const select = new StringSelectMenuBuilder()
       .setCustomId('select-reaction-roles')
       .setMinValues(reactionRole.dropdownMin ?? 0)
