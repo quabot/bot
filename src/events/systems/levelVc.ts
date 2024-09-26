@@ -68,10 +68,11 @@ export default {
             let xp = levelDB.xp;
             let level = levelDB.level;
 
-            const formula = (lvl: number) => 120 * lvl ** 2 + 100;
+            const formula = (lvl: number) => 200 + (150*lvl) + (10*lvl**2);
             const reqXp = formula(level);
 
-            let rndXp = Math.floor(Math.random() * 3);
+            let rndXp = Math.floor(Math.random() * 10);
+            if (rndXp < 0.5) rndXp = 1;
             rndXp = rndXp * config.voiceXpMultiplier ?? 1;
 
             const vote = await Vote.findOne({ userId: member.id })
