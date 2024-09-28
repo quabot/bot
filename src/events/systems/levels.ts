@@ -89,7 +89,7 @@ export default {
     if (vote) {
       if (parseInt(vote.lastVote) + 43200000 > new Date().getTime()) rndXp = rndXp * 1.5;
     }
-return;
+
     if (xp + rndXp >= reqXp) {
       levelDB.xp += rndXp;
       levelDB.level += 1;
