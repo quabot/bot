@@ -271,7 +271,8 @@ export interface IUserCaptcha {
 export interface IVerificationConfig {
   guildId: Snowflake;
   enabled: boolean;
-  role: Snowflake | 'none';
+  roles: Types.Array<Snowflake> | Snowflake[];
+  removeRoles: Types.Array<Snowflake> | Snowflake[];
   dm: boolean;
   dmMessage: Message;
   type: 'button' | 'web-captcha' | 'bot-captcha' | string;
