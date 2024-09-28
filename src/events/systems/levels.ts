@@ -68,11 +68,10 @@ export default {
     let xp = levelDB.xp;
     let level = levelDB.level;
 
-    const formula = (lvl: number) => 200 + (150*lvl) + (10*lvl**2);
+    const formula = (lvl: number) => 120 * lvl ** 2 + 100;
     const reqXp = formula(level);
 
     let rndXp = Math.floor(Math.random() * 5);
-    if (rndXp < 0.5) rndXp = 1;
     if (message.content.length > 200) rndXp += 1;
     rndXp = rndXp * config.xpMultiplier ?? 1;
 
