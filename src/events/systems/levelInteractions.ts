@@ -75,7 +75,7 @@ export default {
     let { xp } = levelDB;
     let { level } = levelDB;
 
-    const formula = (lvl: number) => 120 * lvl ** 2 + 100;
+    const formula = (lvl: number) => 200 + 150 * lvl + 10 * lvl ** 2;
     const reqXp = formula(level);
 
     let rndXp = Math.floor(Math.random() * 3);

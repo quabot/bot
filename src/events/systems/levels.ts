@@ -27,7 +27,7 @@ export default {
     if (!cooldowns.has(message.author)) cooldowns.set(message.author, new Collection());
     const current_time = Date.now();
     const time_stamps = cooldowns.get(message.author);
-    const cooldown_amount = 3000;
+    const cooldown_amount = 0;
 
     let no = false;
     if (time_stamps.has(message.author.id)) {
@@ -68,12 +68,13 @@ export default {
     let xp = levelDB.xp;
     let level = levelDB.level;
 
-    const formula = (lvl: number) => 120 * lvl ** 2 + 100;
+    const formula = (lvl: number) => 200 + 150 * lvl + 10 * lvl ** 2;
     const reqXp = formula(level);
 
     let rndXp = Math.floor(Math.random() * 5);
     if (message.content.length > 200) rndXp += 1;
     rndXp = rndXp * config.xpMultiplier ?? 1;
+    if (rndXp < 0.5) rndXp = 1;
 
     const vote = await Vote.findOne({ userId: message.author.id })
       .clone()
