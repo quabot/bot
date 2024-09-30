@@ -260,7 +260,7 @@ export class LevelParser extends MemberParser {
   constructor({ channel, level, xp, member, color }: LevelParserArgs) {
     super({ member, color });
 
-    const formula = (lvl: number) => 120 * lvl ** 2 + 100;
+    const formula = (lvl: number) => 200 + 150 * lvl + 10 * lvl ** 2;
 
     this.addVariables(
       { name: 'channel', value: channel.toString() },

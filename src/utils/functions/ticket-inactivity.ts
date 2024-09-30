@@ -32,7 +32,7 @@ export async function ticketInactivity(client: Client, document: NonNullMongoose
 
   const textChannel = channel as GuildTextBasedChannel;
 
-  const lastMessage = await textChannel.messages.fetch({ limit: 1 });
+  const lastMessage = await textChannel.messages.fetch({ limit: 1 }).catch(() => null);
   if (!lastMessage) return;
 
   const lastMessageTime = lastMessage.first()?.createdTimestamp;

@@ -7,7 +7,7 @@ export default {
   async execute({ interaction }: CommandArgs) {
     await interaction.deferReply();
 
-    await interaction.editReply('This command has been temporarily disabled, we\'re sorry for the inconvinience.');
+    await interaction.editReply('This command has been temporarily disabled, we\'re sorry for the inconvenience.');
 
   },
 };

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { reqString, reqBool, reqObject } from '@constants/schemas';
+import { reqString, reqBool, reqObject, reqArray } from '@constants/schemas';
 import type { IVerificationConfig } from '@typings/schemas';
 
 export default model<IVerificationConfig>(
@@ -7,7 +7,8 @@ export default model<IVerificationConfig>(
   new Schema({
     guildId: reqString,
     enabled: reqBool,
-    role: reqString,
+    roles: reqArray,
+    removeRoles: reqArray,
     dm: reqBool,
     dmMessage: reqObject,
     type: reqString,

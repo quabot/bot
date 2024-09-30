@@ -13,7 +13,8 @@ export async function getVerificationConfig(guildId: Snowflake, client: Client) 
     defaultObj: {
       guildId,
       enabled: false,
-      role: 'none',
+      roles: [],
+      removeRoles: [],
       dm: false,
       dmMessage: {
         content: '',

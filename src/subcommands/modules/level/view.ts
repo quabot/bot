@@ -24,17 +24,22 @@ export default {
 
     const user = interaction.options.getUser('user') ?? interaction.user;
     const member = interaction.options.getMember('user') ?? interaction.member;
-    if (user.bot) return await interaction.editReply({
-      embeds: [new Embed(color).setDescription('Bots cannot get XP. Someone should get them some roses, so they won\'t feel left out ;(')],
-    });
-    
+    if (user.bot)
+      return await interaction.editReply({
+        embeds: [
+          new Embed(color).setDescription(
+            "Bots cannot get XP. Someone should get them some roses, so they won't feel left out ;(",
+          ),
+        ],
+      });
+
     const levelDB = await getLevel(interaction.guildId!, user.id);
     if (!levelDB)
       return await interaction.editReply({
         embeds: [new Embed(color).setDescription('There was an error. Please try again.')],
       });
 
-    const formula = (lvl: number) => 120 * lvl ** 2 + 100;
+    const formula = (lvl: number) => 200 + 150 * lvl + 10 * lvl ** 2;
 
     if (!config.viewCard) {
       await interaction.editReply({

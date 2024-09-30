@@ -31,11 +31,17 @@ export default {
         embeds: [new Embed(color).setDescription('The verification system is disabled.')],
       });
 
-    const role = guild?.roles.cache.get(config.role) ?? (await guild?.roles.fetch(config.role));
-    if (!role)
+    let validRoles = true;
+    config.roles.forEach(async (roleId: any) => {
+      if (!guild?.roles.cache.get(roleId) && !(await guild?.roles.fetch(roleId))) validRoles = false;
+    });
+    config.removeRoles.forEach(async (roleId: any) => {
+      if (!guild?.roles.cache.get(roleId) && !(await guild?.roles.fetch(roleId))) validRoles = false;
+    });
+    if (!validRoles)
       return await interaction.reply({
         ephemeral: true,
-        embeds: [new Embed(color).setDescription('The verification role is invalid.')],
+        embeds: [new Embed(color).setDescription('The roles are invalid.')],
       });
 
     const member = (interaction.member ?? (await guild?.members.fetch(interaction.user.id))) as GuildMember;
@@ -52,11 +58,13 @@ export default {
         .setStyle(ButtonStyle.Primary)
         .setDisabled(true),
     );
-    if (member.roles.cache.has(role.id) && !interaction.guildId)
+    if (!interaction.guildId)
       return await interaction.update({
         components: [sentFrom],
       });
-    if (member.roles.cache.has(role.id) && interaction.guildId)
+
+    //* CHeck if the user is already verified
+    if (member.roles.cache.some(role => config.roles.includes(role.id)))
       return await interaction.reply({
         ephemeral: true,
         embeds: [new Embed(color).setDescription('You are already verified.')],
@@ -64,7 +72,19 @@ export default {
 
     switch (config.type) {
       case 'button':
-        member.roles.add(role);
+        config.roles.forEach(async (roleId: any) => {
+          const role = guild?.roles.cache.get(roleId) ?? (await guild?.roles.fetch(roleId));
+          if (!role) return;
+
+          member.roles.add(role).catch(() => {});
+        });
+        config.removeRoles.forEach(async (roleId: any) => {
+          const role = guild?.roles.cache.get(roleId) ?? (await guild?.roles.fetch(roleId));
+          if (!role) return;
+
+          member.roles.remove(role).catch(() => {});
+        });
+
         await interaction.reply({
           ephemeral: true,
           embeds: [new Embed(color).setDescription('You have been verified.')],
@@ -169,7 +189,20 @@ export default {
 
             if (text === captchaText) {
               collector.stop();
-              member.roles.add(role);
+
+              config.roles.forEach(async (roleId: any) => {
+                const role = guild?.roles.cache.get(roleId) ?? (await guild?.roles.fetch(roleId));
+                if (!role) return;
+
+                member.roles.add(role).catch(() => {});
+              });
+              config.removeRoles.forEach(async (roleId: any) => {
+                const role = guild?.roles.cache.get(roleId) ?? (await guild?.roles.fetch(roleId));
+                if (!role) return;
+
+                member.roles.remove(role).catch(() => {});
+              });
+
               await modal.editReply({
                 embeds: [new Embed(color).setDescription('You have been verified.')],
               });
