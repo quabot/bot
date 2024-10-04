@@ -52,7 +52,6 @@ export interface Subcommand {
 
 export interface Event {
   event: string;
-  name: string;
   once: boolean;
   execute: (arg0: EventArgs, ...lastArgs: any[]) => Promise<any>;
 }

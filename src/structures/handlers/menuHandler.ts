@@ -1,6 +1,5 @@
 import { glob } from 'glob';
 import { promisify } from 'util';
-import consola from 'consola';
 import type { Client } from '@classes/discord';
 import { Menu } from '@typings/structures';
 
@@ -15,6 +14,4 @@ export default async (client: Client) => {
 
     client.menus.set(menu.name, menu);
   });
-
-  consola.success(`Loaded ${client.menus.size}/${files.length} select menus.`);
 };

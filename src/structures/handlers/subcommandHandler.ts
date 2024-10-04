@@ -1,7 +1,6 @@
 import { glob } from 'glob';
 import { promisify } from 'util';
 import { Client } from '@classes/discord';
-import consola from 'consola';
 import { Subcommand } from '@typings/structures';
 
 const PG = promisify(glob);
@@ -15,6 +14,4 @@ export default async (client: Client) => {
     
     client.subcommands.set(`${subcommand.name}/${subcommand.parent}`, subcommand);
   });
-
-  consola.success(`Loaded ${client.subcommands.size}/${files.length} subcommands.`);
 };

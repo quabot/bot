@@ -1,17 +1,18 @@
 import { glob } from 'glob';
 import { promisify } from 'util';
 import { type ContextMenuCommandBuilder, Routes, type SlashCommandBuilder } from 'discord.js';
-import consola from 'consola';
 
 import { REST } from '@discordjs/rest';
 import getUserContexts from './userContextHandler';
 import getMessageContexts from './messageContextHandler';
 import type { Client } from '@classes/discord';
 import type { Command } from '@typings/structures';
+import consola from 'consola';
 
 const PG = promisify(glob);
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN!);
 
+//* Load all commands from the commands folder. Create them with the user and message contexts.
 export default async function (client: Client) {
   const commandsList: (SlashCommandBuilder | ContextMenuCommandBuilder)[] = [];
   const userContexts = await getUserContexts(client);
@@ -28,9 +29,10 @@ export default async function (client: Client) {
     commandsList.push(command.data);
   });
 
-  consola.success(`Loaded ${client.commands.size}/${files.length} commands.`);
-
   try {
+    //* Only reload commands for the first shard.
+    
+    if (client.shard?.ids[0] !== 0) return;
     if (process.env.RELOAD_COMMANDS === 'false') return;
 
     if (process.env.NODE_ENV === 'development') {
@@ -43,7 +45,7 @@ export default async function (client: Client) {
       });
     }
 
-    consola.info('Reloaded all commands.');
+    consola.success('Reloaded all commands.');
   } catch (error) {
     consola.warn(`Failed to reload commands: ${error}`);
   }

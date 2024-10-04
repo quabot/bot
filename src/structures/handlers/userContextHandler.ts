@@ -1,6 +1,5 @@
 import { glob } from 'glob';
 import { promisify } from 'util';
-import consola from 'consola';
 import type { Client } from '@classes/discord';
 import type { ContextMenuCommandBuilder } from 'discord.js';
 import { UserContext } from '@typings/structures';
@@ -19,8 +18,6 @@ export default async function (client: Client) {
     client.userContexts.set(menu.data.name, menu);
     ContextList.push(menu.data);
   });
-
-  consola.success(`Loaded ${client.userContexts.size}/${files.length} user context menus.`);
 
   return ContextList;
 }

@@ -1,7 +1,6 @@
 import { glob } from 'glob';
 import { promisify } from 'util';
 import { Client } from '@classes/discord';
-import consola from 'consola';
 import { Modal } from '@typings/structures';
 
 const PG = promisify(glob);
@@ -15,6 +14,4 @@ export default async (client: Client) => {
 
     client.modals.set(modal.name, modal);
   });
-
-  consola.success(`Loaded ${client.modals.size}/${files.length} modals.`);
 };

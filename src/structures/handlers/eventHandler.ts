@@ -1,7 +1,6 @@
 import { promisify } from 'util';
 import { glob } from 'glob';
 const PG = promisify(glob);
-import consola from 'consola';
 import type { Client } from '@classes/discord';
 import type { Event } from '@typings/structures';
 import type { EventArgs } from '@typings/functionArgs';
@@ -13,7 +12,7 @@ export default async (client: Client) => {
 
   files.forEach(async eventFile => {
     const event: Event | undefined = require(eventFile).default;
-    if (!event?.name || !event.event) return;
+    if (!event?.event) return;
 
     const defaultArgs: EventArgs = { client, color: '#416683' };
 
@@ -25,6 +24,4 @@ export default async (client: Client) => {
 
     loaded++;
   });
-
-  consola.success(`Loaded ${loaded}/${files.length} events.`);
 };
