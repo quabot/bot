@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface EconomyUser {
   userId: string;
   walletCoins: number;
@@ -5,21 +7,40 @@ export interface EconomyUser {
   walletSize: number;
   passive: boolean;
   lastRobbedBy: number; //* Users can only be robbed once every 5 minutes.
-  lastRobbed: number; //* Users can only be rob once every 2 minutes.
+  cooldowns: {
+    gamble: number;
+    beg: number;
+    fish: number;
+    hack: number;
+    game: number;
+    socialMedia: number;
+    stream: number;
+    rob: number;
+    bankRob: number;
+    work: number;
+  }
   achievements: {
     id: Achievement;
     unlocked: boolean;
     unlockedAt: number;
-  }[];
+  }[] | Types.Array<{
+    id: Achievement;
+    unlocked: boolean;
+    unlockedAt: number;
+  }>;
   inventory: {
     item: Item;
     uses: number;
     active: boolean;
-  }[];
-  boosts: { type: Boost; endsAt: number }[];
+  }[] | Types.Array<{
+    item: Item;
+    uses: number;
+    active: boolean;
+  }>;
+  boosts: { type: Boost; endsAt: number }[] | Types.Array<{ type: Boost; endsAt: number }>;
   job: {
     job: Job;
-    strikes: { reason: number; timestamp: number }[];
+    strikes: { reason: number; timestamp: number }[] | Types.Array<{ reason: number; timestamp: number }>;
     performance: number;
   };
 }
@@ -692,3 +713,8 @@ export const Jobs = [
   },
 ];
 export type Job = (typeof Jobs)[number]['id'];
+
+
+export const cooldowns = {
+  gamble: 300000,
+}
