@@ -13,7 +13,6 @@ import { getServerConfig } from '@configs/serverConfig';
 export default {
   event: 'messageReactionAdd',
   name: 'starMessages',
-
   async execute({ client }: EventArgs, reaction: MessageReaction, user: User) {
     if (!reaction.message.guild?.id) return;
     if (user.bot) return;
@@ -42,7 +41,10 @@ export default {
 
     const serverConfig = await getServerConfig(client, reaction.message.guild.id);
     const color = serverConfig ? serverConfig.color : '#416683';
-    const parser = new StarMessagesParser({ channel: starboardChannel, emoji: config.emoji, member, color, count: reactionUsers.size, message: reactionMessage });
+    const messageMember = reaction.message.guild.members.cache.get(reactionMessage.author.id) || null;
+    if (!messageMember) return;
+    
+    const parser = new StarMessagesParser({ channel: starboardChannel, emoji: config.emoji, member: messageMember, color, count: reactionUsers.size, message: reactionMessage });
 
     const message = new CustomEmbed(config.message, parser);
 

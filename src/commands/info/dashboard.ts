@@ -6,9 +6,7 @@ import type { CommandArgs } from '@typings/functionArgs';
 export default {
   data: new SlashCommandBuilder()
     .setName('dashboard')
-    .setDescription('Get the URL to our dashboard.')
-    .setDMPermission(false),
-
+    .setDescription('Get the URL to our dashboard.'),
   async execute({ client, interaction, color }: CommandArgs) {
     //* Defer the reply to give the user an instant response.
     await interaction.deferReply();
