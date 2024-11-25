@@ -27,6 +27,12 @@ export default {
     //* Create clientUser variable. Now we don't have to do `client.user!` everytime
     const clientUser = client.user!;
 
+    return await interaction.editReply({
+      embeds: [
+        new Embed(color).setDescription('Hello everyone! QuaBot is coming to an end in 2025. Read the full article here: https://quabot.net/news/shutdown-2024\n\nIf you have any questions, feel free to ask in our [Support Server](https://discord.gg/HYGA7Y6ptk). We recommend you to switch to [ProBot](https://probot.io). Thank you for using QuaBot!'),
+      ]
+    });
+
     //* Create the different embeds for the about system.
     const embed1 = new Embed(color)
       .setAuthor({
