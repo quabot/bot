@@ -32,8 +32,7 @@ export default {
         embeds: [
           new EmbedBuilder()
             .setColor(Colors.Red)
-            .setDescription('### QuaBot is shutting down on January 1, 2025.\nDear users, QuaBot is shutting down after 3 years. We recommend switching to [ProBot](https://probot.io), and recommend switching soon. Thank you for 3 amazing years of operations. Read the full announcement [here](https://quabot.net/news/shutdown-2024).\n-# This message will only show up once. Re-run the command and the message will not show up again.')
-            .setTimestamp(),
+            .setDescription('### QuaBot is shutting down on January 1, 2025.\nDear users, QuaBot is shutting down after 3 years. We recommend switching to [ProBot](https://probot.io), and recommend switching soon. Thank you for 3 amazing years of operations. Read the full announcement [here](https://quabot.net/news/shutdown-2024).\n-# This message will only show up once. Re-run the command and the message will not show up again.'),
         ],
         ephemeral: false,
       });
