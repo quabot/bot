@@ -25,6 +25,9 @@ export default {
     if (process.env.NODE_ENV !== 'production') return;
 
     // Post the stats to the QuaBot Site every minute
+    //* If the year is 2025, stop.
+    if (new Date().getFullYear() === 2025) return;
+
     if (process.env.POST_STATS === 'true') {
       postStats();
       setInterval(postStats, 120 * 1000);

@@ -17,7 +17,12 @@ export default {
 
     const config = await getServerConfig(client, interaction.guildId ?? "none");
     const color = config?.color ?? '#416683';
-    await button
+
+    //* If year is 2025, return a message.
+    if (new Date().getFullYear() === 2025) {
+      return await interaction.reply({ content: 'As of January 1, 2025, QuaBot has stopped operation. We recommend switching to [ProBot](https://probot.io). We are sorry for the inconvenience. Thank you for 3 amazing years of operations.', ephemeral: true }).catch(() => null);
+    }
+    if (new Date().getFullYear() === 2024) await button
       .execute({ client, interaction, color })
       .catch(async e => await handleError(client, e, interaction, interaction.customId));
   },
