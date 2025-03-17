@@ -27,7 +27,8 @@ export default {
 
     //* If the user's userID is not in the passedUserIds array, add it to the array, but before that, send a message (with a return)
     if (!passedUserIds.includes(`${interaction.user.id}`)) {
-      await interaction.reply({
+      passedUserIds.push(`${interaction.user.id}`);
+      return await interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setColor(Colors.Red)
@@ -36,7 +37,6 @@ export default {
         ephemeral: false,
       });
     }
-    if (!passedUserIds.includes(`${interaction.user.id}`)) return passedUserIds.push(`${interaction.user.id}`);
 
     const config = await getServerConfig(client, interaction.guildId);
     if (config && config.disabledCommands && config.disabledCommands.includes(interaction.commandName))
