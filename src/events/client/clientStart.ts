@@ -14,20 +14,20 @@ export default {
     });
 
     function setActivity(activity: string) {
-      client.user?.setActivity({ type: ActivityType.Watching, name: activity, state: 'idle' });
+      client.user?.setActivity({ type: ActivityType.Watching, name: activity });
     }
     (function loop() {
       setTimeout(function () {
-        setActivity('shutting down | /about');
+        setActivity(`${client.commands.size} commands | /help`);
       }, 10000);
       setTimeout(function () {
-        setActivity('shutting down | /about');
+        setActivity(`${client.users.cache.size.toLocaleString()} users |  /help`);
       }, 20000);
       setTimeout(function () {
-        setActivity('shutting down | /about');
+        setActivity('quabot.net |  /help');
       }, 30000);
       setTimeout(function () {
-        setActivity('shutting down | /about');
+        setActivity(`${client.guilds.cache.size} servers |  /help`);
         loop();
       }, 40000);
     })();

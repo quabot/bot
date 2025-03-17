@@ -27,7 +27,11 @@ export default {
     //* Create clientUser variable. Now we don't have to do `client.user!` everytime
     const clientUser = client.user!;
 
-    const embed0 = new Embed(color).setDescription('Hello everyone! QuaBot is coming to an end in 2025. Read the full article here: https://quabot.net/news/shutdown-2024\n\nIf you have any questions, feel free to ask in our [Support Server](https://discord.gg/HYGA7Y6ptk). We recommend you to switch to [ProBot](https://probot.io). Thank you for using QuaBot!');
+    return await interaction.editReply({
+      embeds: [
+        new Embed(color).setDescription('Hello everyone! QuaBot is coming to an end in 2025. Read the full article here: https://quabot.net/news/shutdown-2024\n\nIf you have any questions, feel free to ask in our [Support Server](https://discord.gg/HYGA7Y6ptk). We recommend you to switch to [ProBot](https://probot.io). Thank you for using QuaBot!'),
+      ]
+    });
 
     //* Create the different embeds for the about system.
     const embed1 = new Embed(color)
@@ -107,7 +111,7 @@ export default {
                           Thanks to everyone that is has worked on QuaBot. Without these people QuaBot wouldn't have been where it is today.`);
 
     //* Put the embeds in a list and get the page system setup.
-    const aboutEmbeds = [embed0, embed1, embed2, embed3, embed4, embed5];
+    const aboutEmbeds = [embed1, embed2, embed3, embed4, embed5];
 
     let page = 0;
 
