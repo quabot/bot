@@ -14,9 +14,9 @@ export default {
     });
 
     function setActivity(activity: string) {
-      client.user?.setPresence({ status: 'idle' });
       client.user?.setActivity({ type: ActivityType.Watching, name: activity, state: 'QuaBot is shutting down on January 1, 2025' });
       //* set idle
+      client.user?.setStatus('idle');
     }
     (function loop() {
       setTimeout(function () {
