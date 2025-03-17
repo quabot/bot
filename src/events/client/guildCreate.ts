@@ -29,38 +29,6 @@ export default {
    * @param {Guild} guild
    */
   async execute({ client }: EventArgs, guild: Guild) {
-    //* leave the guild, but first send a shutdfown message
-    let done2 = false;
-    guild.channels.cache.forEach(channel => {
-      if (
-        channel.type === ChannelType.GuildText &&
-        !done2 &&
-        !channel.name.includes('rules') &&
-        !channel.name.includes('announcements') &&
-        !channel.name.includes('info') &&
-        !channel.name.includes('information') &&
-        hasSendPerms(channel)
-      ) {
-        done2 = true;
-        channel
-          .send({
-            embeds: [
-              new Embed('#416683')
-                .setTitle("Hi, I'm QuaBot!")
-                .setThumbnail(client.user!.displayAvatarURL({ forceStatic: false }))
-                .setDescription(
-                  "QuaBot is shutting down on January 1, 2025. For that reason, it has automatically left this server. We recommend [ProBot](https://probot.io) as an alternative.",
-                ),
-            ],
-          })
-          .catch(() => {
-            done2 = false;
-          });
-      }
-    });
-
-    guild.leave().catch(() => {});
-
     console.log(`Joined ${guild.name} (${guild.id})`);
     await getAfkConfig(guild.id, client);
     await getApplicationConfig(guild.id, client);
@@ -81,35 +49,35 @@ export default {
     await getVerificationConfig(guild.id, client);
     await getAutomationConfig(guild.id, client);
 
-    // let done = false;
-    // guild.channels.cache.forEach(channel => {
-    //   if (
-    //     channel.type === ChannelType.GuildText &&
-    //     !done &&
-    //     !channel.name.includes('rules') &&
-    //     !channel.name.includes('announcements') &&
-    //     !channel.name.includes('info') &&
-    //     !channel.name.includes('information') &&
-    //     hasSendPerms(channel)
-    //   ) {
-    //     done = true;
-    //     channel
-    //       .send({
-    //         embeds: [
-    //           new Embed('#416683')
-    //             .setTitle("Hi, I'm QuaBot!")
-    //             .setThumbnail(client.user!.displayAvatarURL({ forceStatic: false }))
-    //             .setDescription(
-    //               "I'm a multipurpose Discord bot with loads of features. To configure me, go to [my dashboard](https://quabot.net/dashboard). If you need help with anything, visit my [wiki](https://wiki.quabot.net) or join [my support server](https://discord.quabot.net).\nThanks for adding me to your server!",
-    //             ),
-    //         ],
-    //       })
-    //       .catch(() => {
-    //         done = false;
-    //       });
-    //   }
-    // });
+    let done = false;
+    guild.channels.cache.forEach(channel => {
+      if (
+        channel.type === ChannelType.GuildText &&
+        !done &&
+        !channel.name.includes('rules') &&
+        !channel.name.includes('announcements') &&
+        !channel.name.includes('info') &&
+        !channel.name.includes('information') &&
+        hasSendPerms(channel)
+      ) {
+        done = true;
+        channel
+          .send({
+            embeds: [
+              new Embed('#416683')
+                .setTitle("Hi, I'm QuaBot!")
+                .setThumbnail(client.user!.displayAvatarURL({ forceStatic: false }))
+                .setDescription(
+                  "I'm a multipurpose Discord bot with loads of features. To configure me, go to [my dashboard](https://quabot.net/dashboard). If you need help with anything, visit my [wiki](https://wiki.quabot.net) or join [my support server](https://discord.quabot.net).\nThanks for adding me to your server!",
+                ),
+            ],
+          })
+          .catch(() => {
+            done = false;
+          });
+      }
+    });
 
-    // guild.members.fetch().catch(() => {});
+    guild.members.fetch().catch(() => {});
   },
 };

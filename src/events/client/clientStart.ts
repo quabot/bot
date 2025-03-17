@@ -8,15 +8,6 @@ export default {
   once: true,
 
   async execute({ client }: EventArgs) {
-    //* If the year is 2025, stop.
-    if (new Date().getFullYear() === 2025) {
-      consola.info('QuaBot has stopped operation. We recommend switching to ProBot (https://probot.io). We are sorry for the inconvenience. Thank you for 3 amazing years of operations.');
-      
-      client.user?.setPresence({ status: 'invisible' });
-      client.user?.setActivity({ type: ActivityType.Watching, name: 'thank you for 3 years of operation', state: 'QuaBot has been shut down.' });
-    }
-    if (new Date().getFullYear() === 2025) return;
-
     client.guilds.cache.forEach(guild => {
       guild.members.fetch().catch(() => {});
       guild.roles.fetch();
@@ -29,10 +20,6 @@ export default {
     }
     (function loop() {
       setTimeout(function () {
-        //* if 2025, kill process
-        if (new Date().getFullYear() === 2025) {
-          process.exit(0);
-        }
         setActivity('shutting down | /about');
       }, 10000);
       setTimeout(function () {

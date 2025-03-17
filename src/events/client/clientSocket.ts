@@ -8,9 +8,6 @@ export default {
   once: true,
 
   async execute({ client }: EventArgs) {
-    //* If the year is 2025, stop.
-    if (new Date().getFullYear() === 2025) return;
-    
     const wss = new WebSocketServer({ port: parseInt(process.env.WEBSOCKET_PORT!) });
     consola.info(`Listening on port :${process.env.WEBSOCKET_PORT}`);
 
